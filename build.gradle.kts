@@ -30,9 +30,4 @@ subprojects {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
     }
-
-    dependencies {
-        testImplementation(TestDeps.jupiterApi)
-        testRuntimeOnly(TestDeps.jupiterEngine)
-    }
 }
