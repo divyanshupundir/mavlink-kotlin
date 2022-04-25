@@ -1,5 +1,5 @@
 # mavlink-kotlin
-A mavlink library for the JVM written in Kotlin.
+A MAVLink library for the JVM written in Kotlin.
 
 ## Project Structure
 - `api`: Interfaces and classes for the MAVLink protocol
