@@ -1,14 +1,11 @@
 package com.urbanmatrix.mavlink.api
 
-/**
- * Serves as an index of a Mavlink dialect.
- */
 interface MavDialect {
     /**
-     * Resolves the class of a message by its ID.
+     * Resolves the metadata of a message by its ID.
      *
      * @param messageId The ID of the message to resolve.
-     * @return The class of the message of the specified ID.
+     * @return The metadata of the message of the specified ID.
      */
     fun resolveMetadataOrNull(messageId: Int): MavMessage.Metadata<out MavMessage<*>>?
 

@@ -1,5 +1,8 @@
 package com.urbanmatrix.mavlink.api
 
+/**
+ * Wrapper class for a [MavEnum].
+ */
 class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: Int) {
 
     companion object {

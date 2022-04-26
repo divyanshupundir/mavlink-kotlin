@@ -8,32 +8,32 @@ package com.urbanmatrix.mavlink.api
 </T> */
 interface MavFrame<T : MavMessage<T>> {
     /**
-     * Returns the sequence of this frame.
+     * The sequence of this frame.
      */
     val sequence: Int
 
     /**
-     * Returns the ID of the system that originated this frame.
+     * The ID of the system that originated this frame.
      */
     val systemId: Int
 
     /**
-     * Returns the ID of the component that originated this frame.
+     * The ID of the component that originated this frame.
      */
     val componentId: Int
 
     /**
-     * Returns the message/payload of this frame.
+     * The message/payload of this frame.
      */
     val message: T
 
     /**
-     * Returns a copy of the original raw bytes of this frame.
+     * A copy of the original raw bytes of this frame.
      */
     val frameBytes: ByteArray
 
     /**
-     * Returns the checksum of this frame.
+     * The checksum of this frame.
      */
     val checksum: Int
 }

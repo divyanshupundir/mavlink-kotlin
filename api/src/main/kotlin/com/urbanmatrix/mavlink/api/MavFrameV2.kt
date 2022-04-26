@@ -17,7 +17,7 @@ interface MavFrameV2<T : MavMessage<T>> : MavFrame<T> {
     val signatureTimestamp: Long
 
     /**
-     * Returns the complete signature of this message.
+     * The complete signature of this message.
      */
     val signature: ByteArray
 
