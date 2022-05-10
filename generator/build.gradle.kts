@@ -7,6 +7,8 @@ tasks.getByName<Test>("test") {
 }
 
 dependencies {
+    implementation(Deps.orgJson)
+    
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
 }
