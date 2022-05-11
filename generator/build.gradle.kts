@@ -20,7 +20,7 @@ gradlePlugin {
         create("mavlinkGenerator") {
             id = "com.urbanmatrix.mavlink.generator"
             displayName = "Mavlink Kotlin Generator"
-            description = "Mavlink Kotlin Generator"
+            description = "This plugin is in the development stage. Feel free to contribute."
             implementationClass = "com.urbanmatrix.mavlink.generator.MavlinkGeneratorPlugin"
         }
     }
