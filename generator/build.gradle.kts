@@ -37,6 +37,7 @@ publishing {
 
 dependencies {
     implementation(Deps.orgJson)
+    implementation(gradleApi())
 
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)

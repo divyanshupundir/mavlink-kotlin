@@ -5,10 +5,10 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-class MavlinkGeneratorTask : DefaultTask() {
+abstract class MavlinkGeneratorTask : DefaultTask() {
 
     @OutputDirectory
-    var generatedSourcesDir: File? = null
+    lateinit var generatedSourcesDir: File
 
     private val definitions = mutableListOf<File>()
 
@@ -17,7 +17,5 @@ class MavlinkGeneratorTask : DefaultTask() {
     }
 
     @TaskAction
-    fun generate() {
-
-    }
+    fun generate() { }
 }

@@ -6,13 +6,13 @@ import org.gradle.api.Project
 class MavlinkGeneratorPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-        val generateMavlink = target.tasks.create(
+        target.tasks.create(
             "generateMavlink",
             MavlinkGeneratorTask::class.java
         )
 
         target.tasks
             .getByName("compileJava")
-            .dependsOn(generateMavlink)
+            .dependsOn("generateMavlink")
     }
 }
