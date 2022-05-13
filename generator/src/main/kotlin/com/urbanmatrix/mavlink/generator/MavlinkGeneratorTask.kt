@@ -17,5 +17,23 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
     }
 
     @TaskAction
-    fun generate() { }
+    fun generate() {
+        if (definitions.isEmpty())
+            throw IllegalStateException("No XML definition provided.")
+
+        for (def in definitions) if (!def.isFile)
+            throw IllegalStateException("$def is not a file.")
+
+        if (!this::generatedSourcesDir.isInitialized)
+            throw IllegalStateException("No generated source directory provided.")
+
+        if (!generatedSourcesDir.isDirectory)
+            throw IllegalStateException("Generated sources directory should be a directory.")
+
+        if (generatedSourcesDir.exists() && !generatedSourcesDir.deleteRecursively())
+            throw IllegalStateException("Cannot delete generated sources directory.")
+
+        if (!generatedSourcesDir.mkdirs())
+            throw IllegalStateException("Cannot create generated sources directory.")
+    }
 }
