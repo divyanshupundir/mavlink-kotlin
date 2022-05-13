@@ -26,6 +26,15 @@ gradlePlugin {
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "localPluginRepository"
+            url = uri("../build/localPluginRepository")
+        }
+    }
+}
+
 dependencies {
     implementation(Deps.orgJson)
 

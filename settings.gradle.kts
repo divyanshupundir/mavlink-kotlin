@@ -2,6 +2,7 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        maven(uri("build/localPluginRepository"))
     }
     plugins {
         kotlin("jvm") version "1.6.20"
