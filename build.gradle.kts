@@ -5,8 +5,8 @@ plugins {
 }
 
 allprojects {
-    group = "com.urbanmatrix.mavlink"
-    version = "0.0.1"
+    group = Specs.group
+    version = Specs.version
 
     repositories {
         mavenCentral()

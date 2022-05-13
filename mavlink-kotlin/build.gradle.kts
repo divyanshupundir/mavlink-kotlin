@@ -1,22 +1,19 @@
-import com.urbanmatrix.mavlink.generator.MavlinkGeneratorTask
-
 buildscript {
     dependencies {
-        classpath("com.urbanmatrix.mavlink:generator:0.0.1")
+        classpath("${Specs.group}:generator:${Specs.version}")
     }
 }
 
 plugins {
     kotlin("jvm")
-    id("com.urbanmatrix.mavlink.generator") version "0.0.1"
+    id("${Specs.group}.generator") version Specs.version
 }
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-
-tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
+tasks.getByName<com.urbanmatrix.mavlink.generator.MavlinkGeneratorTask>("generateMavlink") {
     generatedSourcesDir = file("build/mavlink")
 }
 
