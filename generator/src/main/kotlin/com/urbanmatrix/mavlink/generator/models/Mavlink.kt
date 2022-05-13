@@ -5,6 +5,6 @@ data class Mavlink(
     val includes: List<String>,
     val version: Int,
     val dialect: Int,
-    val enums: List<Enum>,
+    val enums: List<EnumXml>,
     val messages: List<Message>
 )

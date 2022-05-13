@@ -1,6 +1,6 @@
 package com.urbanmatrix.mavlink.generator.models
 
-data class Enum(
+data class EnumXml(
     val name: String,
     val entries: List<EnumEntry>,
     val deprecated: Deprecated?,

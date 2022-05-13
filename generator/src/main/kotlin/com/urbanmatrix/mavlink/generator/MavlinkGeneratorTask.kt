@@ -10,7 +10,7 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
     @OutputDirectory
     lateinit var generatedSourcesDir: File
 
-    private val definitions = mutableListOf<File>()
+    private val definitions = mutableSetOf<File>()
 
     fun include(file: File){
         definitions.add(file)
