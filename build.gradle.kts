@@ -6,7 +6,7 @@ plugins {
 
 allprojects {
     group = Specs.group
-    version = Specs.version
+    version = Specs.Lib.version
 
     repositories {
         mavenCentral()

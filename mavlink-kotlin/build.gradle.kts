@@ -1,12 +1,12 @@
 buildscript {
     dependencies {
-        classpath("${Specs.group}:generator:${Specs.version}")
+        classpath("${Specs.group}:generator:${Specs.Plugin.version}")
     }
 }
 
 plugins {
     kotlin("jvm")
-    id("${Specs.group}.generator") version Specs.version
+    id("${Specs.group}.generator") version Specs.Plugin.version
 }
 
 tasks.getByName<Test>("test") {
