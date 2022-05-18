@@ -1,11 +1,11 @@
 package com.urbanmatrix.mavlink.generator
 
-import com.urbanmatrix.mavlink.generator.models.Mavlink
+import com.urbanmatrix.mavlink.generator.models.MavlinkMod
 import java.io.File
 
 class MavlinkDefinitionParser(private val definition: File) {
 
-    fun parse(): Mavlink? {
+    fun parse(): MavlinkMod? {
         return null
     }
 }

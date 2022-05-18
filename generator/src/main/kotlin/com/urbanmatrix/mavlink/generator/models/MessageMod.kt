@@ -1,10 +1,10 @@
 package com.urbanmatrix.mavlink.generator.models
 
-data class Message(
+data class MessageMod(
     val id: Int,
     val name: String,
-    val fields: List<Field>,
+    val fields: List<FieldMod>,
     val workInProgress: Boolean,
-    val deprecated: Deprecated?,
+    val deprecated: DeprecatedMod?,
     val description: String?
 )

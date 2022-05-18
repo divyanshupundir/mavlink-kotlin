@@ -1,9 +1,9 @@
 package com.urbanmatrix.mavlink.generator.models
 
-data class EnumEntry(
+data class EnumEntryMod(
     val value: Int,
     val name: String,
-    val params: List<Param>,
-    val deprecated: Deprecated?,
+    val params: List<ParamMod>,
+    val deprecated: DeprecatedMod?,
     val description: String?
 )

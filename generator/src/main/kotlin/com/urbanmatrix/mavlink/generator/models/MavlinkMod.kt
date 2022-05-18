@@ -1,10 +1,10 @@
 package com.urbanmatrix.mavlink.generator.models
 
-data class Mavlink(
+data class MavlinkMod(
     val name: String,
     val includes: List<String>,
     val version: Int,
     val dialect: Int,
-    val enums: List<EnumXml>,
-    val messages: List<Message>
+    val enums: List<EnumMod>,
+    val messages: List<MessageMod>
 )

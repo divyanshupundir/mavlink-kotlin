@@ -1,8 +1,8 @@
 package com.urbanmatrix.mavlink.generator.models
 
-sealed class Field(
+sealed class FieldMod(
     position: Int,
-    type: Type,
+    type: TypeMod,
     name: String,
     extension: Boolean,
     display: String?,
@@ -11,9 +11,9 @@ sealed class Field(
     printFormat: String?,
     description: String?,
 ) {
-    data class ValueField(
+    data class ValueFieldMod(
         val position: Int,
-        val type: Type,
+        val type: TypeMod,
         val name: String,
         val extension: Boolean,
         val display: String?,
@@ -21,7 +21,7 @@ sealed class Field(
         val invalid: String?,
         val printFormat: String?,
         val description: String?
-    ) : Field(
+    ) : FieldMod(
         position = position,
         type = type,
         name = name,
@@ -33,9 +33,9 @@ sealed class Field(
         description = description
     )
 
-    data class EnumField(
+    data class EnumFieldMod(
         val position: Int,
-        val type: Type,
+        val type: TypeMod,
         val name: String,
         val enum: String,
         val extension: Boolean,
@@ -44,7 +44,7 @@ sealed class Field(
         val invalid: String?,
         val printFormat: String?,
         val description: String?
-    ) : Field(
+    ) : FieldMod(
         position = position,
         type = type,
         name = name,
