@@ -1,23 +1,28 @@
 package com.urbanmatrix.mavlink.generator.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-class DeprecatedMod(
+data class DeprecatedMod(
     val since: String,
     val replacedBy: String,
-    val message: String?
+    val content: String?
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "deprecated")
-class DeprecatedXml {
+data class DeprecatedXml(
 
     @JacksonXmlProperty(localName = "since", isAttribute = true)
-    var since: String? = null
+    val since: String,
 
     @JacksonXmlProperty(localName = "replaced_by", isAttribute = true)
-    var replacedBy: String? = null
+    val replacedBy: String
+) {
+    @JacksonXmlText
+    var content: String? = null
 
-    @JacksonXmlProperty(isAttribute = false)
-    var message: String? = null
+    fun toMod() = DeprecatedMod(since, replacedBy, content)
 }
