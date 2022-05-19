@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test
 
 class DeprecatedXmlTest {
 
-    private val mapper = XmlMapper.builder()
-        .defaultUseWrapper(false)
-        .build()
-        .registerKotlinModule()
+    private val mapper = createXmlMapper()
 
     @Test
     fun withContent() {
