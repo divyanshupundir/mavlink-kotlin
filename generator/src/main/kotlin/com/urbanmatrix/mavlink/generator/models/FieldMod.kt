@@ -5,61 +5,42 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-sealed class FieldMod(
-    position: Int,
-    type: TypeMod,
-    name: String,
-    extension: Boolean,
-    display: String?,
-    units: String?,
-    invalid: String?,
-    printFormat: String?,
-    description: String?,
-) {
+sealed class FieldMod {
+
+    abstract val position: Int
+    abstract val type: TypeMod
+    abstract val name: String
+    abstract val extension: Boolean
+    abstract val display: String?
+    abstract val units: String?
+    abstract val invalid: String?
+    abstract val printFormat: String?
+    abstract val content: String?
+
     data class ValueFieldMod(
-        val position: Int,
-        val type: TypeMod,
-        val name: String,
-        val extension: Boolean,
-        val display: String?,
-        val units: String?,
-        val invalid: String?,
-        val printFormat: String?,
-        val description: String?
-    ) : FieldMod(
-        position = position,
-        type = type,
-        name = name,
-        extension = extension,
-        display = display,
-        units = units,
-        invalid = invalid,
-        printFormat = printFormat,
-        description = description
-    )
+        override val position: Int,
+        override val type: TypeMod,
+        override val name: String,
+        override val extension: Boolean,
+        override val display: String?,
+        override val units: String?,
+        override val invalid: String?,
+        override val printFormat: String?,
+        override val content: String?
+    ) : FieldMod()
 
     data class EnumFieldMod(
-        val position: Int,
-        val type: TypeMod,
-        val name: String,
+        override val position: Int,
+        override val type: TypeMod,
+        override val name: String,
         val enum: String,
-        val extension: Boolean,
-        val display: String?,
-        val units: String?,
-        val invalid: String?,
-        val printFormat: String?,
-        val description: String?
-    ) : FieldMod(
-        position = position,
-        type = type,
-        name = name,
-        extension = extension,
-        display = display,
-        units = units,
-        invalid = invalid,
-        printFormat = printFormat,
-        description = description
-    )
+        override val extension: Boolean,
+        override val display: String?,
+        override val units: String?,
+        override val invalid: String?,
+        override val printFormat: String?,
+        override val content: String?
+    ) : FieldMod()
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
