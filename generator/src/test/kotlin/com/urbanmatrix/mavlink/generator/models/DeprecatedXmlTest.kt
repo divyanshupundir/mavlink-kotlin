@@ -1,7 +1,5 @@
 package com.urbanmatrix.mavlink.generator.models
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.junit.jupiter.api.Test
 
 class DeprecatedXmlTest {
