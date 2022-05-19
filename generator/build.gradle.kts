@@ -38,8 +38,10 @@ publishing {
 }
 
 dependencies {
-    implementation(Deps.orgJson)
     implementation(gradleApi())
+
+    implementation(Deps.jacksonDataFormatXml)
+    implementation(Deps.jacksonModuleKotlin)
 
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
