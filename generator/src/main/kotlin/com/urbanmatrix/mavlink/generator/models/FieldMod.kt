@@ -30,10 +30,10 @@ sealed class FieldMod {
     ) : FieldMod()
 
     data class EnumFieldMod(
+        val enum: String,
         override val position: Int,
         override val type: TypeMod,
         override val name: String,
-        val enum: String,
         override val extension: Boolean,
         override val display: String?,
         override val units: String?,
@@ -68,10 +68,6 @@ data class FieldXml(
     @JacksonXmlProperty(localName = "print_format", isAttribute = true)
     val printFormat: String?,
 ) {
-    var position: Int? = null
-
-    var extension: Boolean? = null
-
     @JacksonXmlText
     var content: String? = null
 
