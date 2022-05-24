@@ -71,13 +71,43 @@ data class FieldXml(
     @JacksonXmlText
     var content: String? = null
 
-    fun getTypeMod(): TypeMod {
-        return if (type.endsWith("]")) {
-            val rawType = type.substringBefore("[")
-            val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
-            TypeMod.ArrayTypeMod(rawType, arrayLength)
+    val typeMod: TypeMod
+        get() {
+            return if (type.endsWith("]")) {
+                val rawType = type.substringBefore("[")
+                val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
+                TypeMod.ArrayTypeMod(rawType, arrayLength)
+            } else {
+                TypeMod.UnitTypeMod(type)
+            }
+        }
+
+    fun toMod(pos: Int, ext: Boolean): FieldMod {
+        return if (enum == null) {
+            FieldMod.ValueFieldMod(
+                pos,
+                typeMod,
+                name,
+                ext,
+                display,
+                units,
+                invalid,
+                printFormat,
+                content
+            )
         } else {
-            TypeMod.UnitTypeMod(type)
+            FieldMod.EnumFieldMod(
+                enum,
+                pos,
+                typeMod,
+                name,
+                ext,
+                display,
+                units,
+                invalid,
+                printFormat,
+                content
+            )
         }
     }
 }

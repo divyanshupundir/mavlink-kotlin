@@ -28,8 +28,7 @@ class FieldXmlTest {
         )
 
         for (inp in inpList) {
-            val mod = mapper.readValue(inp, FieldXml::class.java).getTypeMod()
-            println("${mod.name}\t${mod.unitLength}\t${if (mod is TypeMod.ArrayTypeMod) mod.arrayLength else null}")
+            println(mapper.readValue(inp, FieldXml::class.java).toMod(-1, false))
         }
     }
 }
