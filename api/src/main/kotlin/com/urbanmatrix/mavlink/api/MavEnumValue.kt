@@ -3,7 +3,7 @@ package com.urbanmatrix.mavlink.api
 /**
  * Wrapper class for a [MavEnum].
  */
-class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: Int) {
+class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: Long) {
 
     companion object {
 
@@ -11,13 +11,13 @@ class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: In
         fun <E : MavEnum> of(entry: E) = MavEnumValue<E>(entry, entry.value)
 
         @JvmStatic
-        fun <E : MavEnum> fromValue(value: Int) = MavEnumValue<E>(null, value)
+        fun <E : MavEnum> fromValue(value: Long) = MavEnumValue<E>(null, value)
 
         @JvmStatic
         fun <E : MavEnum> fromMask(flags: Collection<E>) = fromValue<E>(
             flags.map { it.value }
                 .reduceOrNull { bitmask, value -> bitmask or value }
-                ?: 0
+                ?: 0L
         )
     }
 
@@ -35,7 +35,7 @@ class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: In
 
     override fun hashCode(): Int {
         var result = entry?.hashCode() ?: 0
-        result = 31 * result + value
+        result = 31 * result + value.hashCode()
         return result
     }
 

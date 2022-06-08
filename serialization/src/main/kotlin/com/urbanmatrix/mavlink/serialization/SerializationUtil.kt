@@ -101,7 +101,7 @@ fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataLength: Int) = encodeArr
     ByteBuffer::encodeDouble
 )
 
-fun ByteBuffer.encodeEnumValue(value: Int, length: Int): Unit = encodeIntegerValue(value.toLong(), length)
+fun ByteBuffer.encodeEnumValue(value: Long, length: Int): Unit = encodeIntegerValue(value, length)
 
 private inline fun <T : Any> ByteBuffer.encodeArray(arr: List<T>, elementCount: Int, encode: ByteBuffer.(T) -> Unit) {
     for (i in 0 until elementCount) this.encode(arr[i])
