@@ -65,10 +65,3 @@ data class MessageXml(
     )
 }
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JacksonXmlRootElement(localName = "wip")
-class WipXml
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JacksonXmlRootElement(localName = "extensions")
-class ExtensionsXml

@@ -9,6 +9,7 @@ data class EnumEntryModel(
     val value: Long,
     val name: String,
     val params: List<ParamModel>,
+    val workInProgress: Boolean,
     val deprecated: DeprecatedModel?,
     val description: String?
 )
@@ -36,10 +37,14 @@ data class EnumEntryXml(
         params += param
     }
 
+    var workInProgress: WipXml? = null
+        @JsonSetter("wip") set
+
     fun toModel() = EnumEntryModel(
         value,
         name,
         params.map { it.toModel() },
+        workInProgress != null,
         deprecated?.toModel(),
         description
     )
