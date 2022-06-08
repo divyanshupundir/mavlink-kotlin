@@ -1,6 +1,6 @@
 package com.urbanmatrix.mavlink.api
 
-interface MavDeserializer<T> {
+fun interface MavDeserializer<T> {
 
     /**
      * Deserializes a [ByteArray] as a MAVLink message.
