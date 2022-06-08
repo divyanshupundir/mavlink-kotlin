@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class MavlinkXmlTest {
 
-    val mapper = createXmlMapper()
+    private val mapper = createXmlMapper()
 
     @Test
     fun common() {
