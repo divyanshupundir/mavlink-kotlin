@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 data class EnumEntryModel(
-    val value: Int,
+    val value: Long,
     val name: String,
     val params: List<ParamModel>,
     val deprecated: DeprecatedModel?,
@@ -18,7 +18,7 @@ data class EnumEntryModel(
 data class EnumEntryXml(
 
     @JacksonXmlProperty(localName = "value", isAttribute = true)
-    val value: Int,
+    val value: Long,
 
     @JacksonXmlProperty(localName = "name", isAttribute = true)
     val name: String,
