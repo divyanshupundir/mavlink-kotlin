@@ -39,9 +39,11 @@ publishing {
 
 dependencies {
     implementation(gradleApi())
+    implementation(project(":api"))
 
     implementation(Deps.jacksonDataFormatXml)
     implementation(Deps.jacksonModuleKotlin)
+    implementation(Deps.kotlinPoet)
 
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)

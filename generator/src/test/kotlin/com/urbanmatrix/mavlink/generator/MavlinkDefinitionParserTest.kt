@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.generator
 
+import com.urbanmatrix.mavlink.generator.plugin.MavlinkDefinitionParser
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File

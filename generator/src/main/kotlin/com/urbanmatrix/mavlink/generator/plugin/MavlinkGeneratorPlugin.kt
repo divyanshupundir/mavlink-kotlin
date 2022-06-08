@@ -1,4 +1,4 @@
-package com.urbanmatrix.mavlink.generator
+package com.urbanmatrix.mavlink.generator.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

@@ -1,4 +1,4 @@
-package com.urbanmatrix.mavlink.generator
+package com.urbanmatrix.mavlink.generator.plugin
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule

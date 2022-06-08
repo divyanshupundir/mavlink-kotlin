@@ -1,4 +1,4 @@
-package com.urbanmatrix.mavlink.generator
+package com.urbanmatrix.mavlink.generator.plugin
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.OutputDirectory

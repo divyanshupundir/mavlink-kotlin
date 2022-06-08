@@ -2,6 +2,7 @@ object Deps {
     const val orgJson = "org.json:json:20220320"
     const val jacksonDataFormatXml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.0"
     const val jacksonModuleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2"
+    const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
 }
 
 object TestDeps {
