@@ -8,7 +8,7 @@ class EnumGenTest {
     private val mapper = createXmlMapper()
 
     @Test
-    fun onlyEntries() {
+    fun basic() {
         val inp = """
         <enum name="HL_FAILURE_FLAG" bitmask="true">
             <description>Flags to report failure cases over the high latency telemtry.</description>
@@ -53,6 +53,45 @@ class EnumGenTest {
             </entry>
             <entry value="8192" name="HL_FAILURE_FLAG_MISSION">
                 <description>Mission failure.</description>
+            </entry>
+        </enum>
+        """.trimIndent()
+
+        val model = mapper.readValue(inp, EnumXml::class.java).toModel()
+        val fileSpec = model.generateFileSpec("com.urbanmatrix.mavlink.test")
+
+        val s = StringBuilder()
+        fileSpec.writeTo(s)
+
+        println(s)
+    }
+
+    @Test
+    fun deprecated() {
+        val inp = """
+        <enum name="MAV_MOUNT_MODE">
+            <deprecated since="2020-01" replaced_by="GIMBAL_MANAGER_FLAGS"/>
+            <description>Enumeration of possible mount operation modes. This message is used by obsolete/deprecated gimbal messages.</description>
+            <entry value="0" name="MAV_MOUNT_MODE_RETRACT">
+                <description>Load and keep safe position (Roll,Pitch,Yaw) from permant memory and stop stabilization</description>
+            </entry>
+            <entry value="1" name="MAV_MOUNT_MODE_NEUTRAL">
+                <description>Load and keep neutral position (Roll,Pitch,Yaw) from permanent memory.</description>
+            </entry>
+            <entry value="2" name="MAV_MOUNT_MODE_MAVLINK_TARGETING">
+                <description>Load neutral position and start MAVLink Roll,Pitch,Yaw control with stabilization</description>
+            </entry>
+            <entry value="3" name="MAV_MOUNT_MODE_RC_TARGETING">
+                <description>Load neutral position and start RC Roll,Pitch,Yaw control with stabilization</description>
+            </entry>
+            <entry value="4" name="MAV_MOUNT_MODE_GPS_POINT">
+                <description>Load neutral position and start to point to Lat,Lon,Alt</description>
+            </entry>
+            <entry value="5" name="MAV_MOUNT_MODE_SYSID_TARGET">
+                <description>Gimbal tracks system with specified system ID</description>
+            </entry>
+            <entry value="6" name="MAV_MOUNT_MODE_HOME_LOCATION">
+                <description>Gimbal tracks home location</description>
             </entry>
         </enum>
         """.trimIndent()

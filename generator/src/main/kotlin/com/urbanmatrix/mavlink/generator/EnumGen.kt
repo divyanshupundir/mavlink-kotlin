@@ -19,9 +19,22 @@ fun EnumModel.generateFileSpec(packageName: String): FileSpec {
             PropertySpec.builder("value", Long::class, KModifier.OVERRIDE)
                 .initializer("value")
                 .build()
-        ).apply {
+        )
+        .apply {
             entries.forEach {
                 addEnumConstant(it.name, it.generateTypeSpec())
+            }
+
+            if (description != null) {
+                addKdoc(description)
+            }
+
+            if (deprecated != null) {
+                addAnnotation(
+                    AnnotationSpec.builder(Deprecated::class)
+                        .addMember("message = %S", deprecated.content ?: "")
+                        .build()
+                )
             }
         }
         .build()
