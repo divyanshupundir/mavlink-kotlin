@@ -2,7 +2,6 @@ package com.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.urbanmatrix.mavlink.api.MavEnum
-import com.urbanmatrix.mavlink.generator.models.EnumEntryModel
 import com.urbanmatrix.mavlink.generator.models.EnumModel
 import kotlin.Long
 
@@ -30,23 +29,12 @@ fun EnumModel.generateFileSpec(packageName: String): FileSpec {
             }
 
             if (deprecated != null) {
-                addAnnotation(
-                    AnnotationSpec.builder(Deprecated::class)
-                        .addMember("message = %S", deprecated.content ?: "")
-                        .build()
-                )
+                addAnnotation(deprecated.generateAnnotationSpec())
             }
         }
         .build()
 
     return FileSpec.builder(packageName, CaseFormat.fromSnake(name).toUpperCamel())
         .addType(enum)
-        .build()
-}
-
-fun EnumEntryModel.generateTypeSpec(): TypeSpec {
-    return TypeSpec
-        .anonymousClassBuilder()
-        .addSuperclassConstructorParameter("%LL", value)
         .build()
 }
