@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-sealed class FieldModel {
+sealed class FieldModel : Comparable<FieldModel>{
 
     abstract val position: Int
     abstract val type: TypeModel
@@ -41,6 +41,18 @@ sealed class FieldModel {
         override val printFormat: String?,
         override val content: String?
     ) : FieldModel()
+
+    override fun compareTo(other: FieldModel): Int {
+        if (this.extension && !other.extension) return 1
+
+        if (!this.extension && other.extension) return -1
+
+        if (!this.extension && this.type.unitLength != other.type.unitLength) {
+            other.type.unitLength - this.type.unitLength
+        }
+
+        return this.position - other.position
+    }
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
