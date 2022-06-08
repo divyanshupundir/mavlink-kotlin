@@ -3,8 +3,7 @@ package com.urbanmatrix.mavlink.generator
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.urbanmatrix.mavlink.generator.models.DeprecatedModel
 
-fun DeprecatedModel.generateAnnotationSpec(): AnnotationSpec {
-    return AnnotationSpec.builder(Deprecated::class)
-        .addMember("message = %S", content ?: "")
-        .build()
-}
+fun DeprecatedModel.generateAnnotationSpec() = AnnotationSpec
+    .builder(Deprecated::class)
+    .addMember("message = %S", content ?: "")
+    .build()

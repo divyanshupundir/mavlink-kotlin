@@ -33,7 +33,8 @@ fun MessageModel.generateFileSpec(packageName: String): FileSpec {
         .build()
 }
 
-fun MessageModel.generateCompanionObject() = TypeSpec.companionObjectBuilder()
+fun MessageModel.generateCompanionObject() = TypeSpec
+    .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
     .addProperty(generateDeserializer())
@@ -68,7 +69,8 @@ fun MessageModel.generateMetadataProperty() = PropertySpec
     .initializer("%T(ID, CRC, DESERIALIZER)", MavMessage.Metadata::class)
     .build()
 
-fun MessageModel.generateSerialize() = FunSpec.builder("serialize")
+fun MessageModel.generateSerialize() = FunSpec
+    .builder("serialize")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
     .addCode("TODO()")
