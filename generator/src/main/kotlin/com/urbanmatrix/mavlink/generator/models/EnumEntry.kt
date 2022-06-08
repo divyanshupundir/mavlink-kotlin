@@ -43,7 +43,7 @@ data class EnumEntryXml(
     fun toModel() = EnumEntryModel(
         value,
         name,
-        params.map { it.toModel() },
+        params.reversed().map { it.toModel() },
         workInProgress != null,
         deprecated?.toModel(),
         description

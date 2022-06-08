@@ -10,17 +10,19 @@ fun EnumEntryModel.generateTypeSpec(): TypeSpec {
         .anonymousClassBuilder()
         .addSuperclassConstructorParameter("%LL", value)
         .apply {
-            if (description != null) {
-                addKdoc(description)
+            if (description != null) addKdoc(description)
+
+            if (params.isNotEmpty()) addKdoc("\n\n")
+            params.forEach {
+                addKdoc("index = %L; ", it.index)
+                if (it.label != null) addKdoc("label = %L; ", it.label)
+                if (it.units != null) addKdoc("units = %L; ", it.units)
+                if (it.content != null) addKdoc("\n${it.content}\n\n")
             }
 
-            if (deprecated != null) {
-                addAnnotation(deprecated.generateAnnotationSpec())
-            }
+            if (workInProgress) addAnnotation(WorkInProgress::class)
 
-            if (workInProgress) {
-                addAnnotation(WorkInProgress::class)
-            }
+            if (deprecated != null) addAnnotation(deprecated.generateAnnotationSpec())
         }
         .build()
 }

@@ -20,17 +20,9 @@ fun EnumModel.generateFileSpec(packageName: String): FileSpec {
                 .build()
         )
         .apply {
-            entries.forEach {
-                addEnumConstant(it.name, it.generateTypeSpec())
-            }
-
-            if (description != null) {
-                addKdoc(description)
-            }
-
-            if (deprecated != null) {
-                addAnnotation(deprecated.generateAnnotationSpec())
-            }
+            entries.forEach { addEnumConstant(it.name, it.generateTypeSpec()) }
+            if (deprecated != null) addAnnotation(deprecated.generateAnnotationSpec())
+            if (description != null) addKdoc(description)
         }
         .build()
 
