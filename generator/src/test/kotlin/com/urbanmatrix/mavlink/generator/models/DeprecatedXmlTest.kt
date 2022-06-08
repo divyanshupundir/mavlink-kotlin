@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.generator.models
 
+import com.urbanmatrix.mavlink.generator.createXmlMapper
 import org.junit.jupiter.api.Test
 
 class DeprecatedXmlTest {

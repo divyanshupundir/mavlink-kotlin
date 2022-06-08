@@ -1,6 +1,6 @@
 package com.urbanmatrix.mavlink.generator.models
 
-import org.junit.jupiter.api.Assertions.*
+import com.urbanmatrix.mavlink.generator.createXmlMapper
 import org.junit.jupiter.api.Test
 
 class MavlinkXmlTest {

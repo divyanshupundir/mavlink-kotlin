@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
-data class MavlinkMod(
+data class MavlinkModel(
     val name: String,
     val includes: List<String>,
     val version: Int,
@@ -38,7 +38,7 @@ data class MavlinkXml(
         includes += include
     }
 
-    fun toModel(name: String) = MavlinkMod(
+    fun toModel(name: String) = MavlinkModel(
         name,
         includes,
         version,

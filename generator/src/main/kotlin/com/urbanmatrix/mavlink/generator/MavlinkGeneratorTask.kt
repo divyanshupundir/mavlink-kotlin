@@ -35,5 +35,7 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
 
         if (!generatedSourcesDir.mkdirs())
             throw IllegalStateException("Cannot create generated sources directory.")
+
+        val mavlinkModels = definitions.map { MavlinkDefinitionParser.parse(it) }
     }
 }
