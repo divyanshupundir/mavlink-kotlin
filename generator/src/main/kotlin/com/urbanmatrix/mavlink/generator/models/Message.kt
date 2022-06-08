@@ -36,7 +36,7 @@ data class MessageXml(
 
     // Jackson reads lists form the bottom. Assuming all fields form the bottom
     // to be extensions. When the extensions tag comes, setting extensions field
-    // to be null. If extensions is never null, then no field is an extention.
+    // to be null. If extensions is never null, then no field is an extension.
     var extensions: ExtensionsXml? = ExtensionsXml()
         @JsonSetter("extensions") set(_) {
             field = null
