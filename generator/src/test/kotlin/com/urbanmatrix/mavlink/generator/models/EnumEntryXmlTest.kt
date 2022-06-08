@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.generator.models
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class EnumEntryXmlTest {
@@ -23,7 +22,7 @@ class EnumEntryXmlTest {
         </entry>
         """.trimIndent()
 
-        println(mapper.readValue(inp, EnumEntryXml::class.java).toMod())
+        println(mapper.readValue(inp, EnumEntryXml::class.java).toModel())
     }
 
     @Test
@@ -34,6 +33,6 @@ class EnumEntryXmlTest {
         </entry>
         """.trimIndent()
 
-        println(mapper.readValue(inp, EnumEntryXml::class.java).toMod())
+        println(mapper.readValue(inp, EnumEntryXml::class.java).toModel())
     }
 }

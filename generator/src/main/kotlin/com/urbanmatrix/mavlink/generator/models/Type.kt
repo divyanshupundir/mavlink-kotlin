@@ -1,12 +1,12 @@
 package com.urbanmatrix.mavlink.generator.models
 
-sealed class TypeMod {
+sealed class TypeModel {
 
     abstract val name: String
 
-    data class UnitTypeMod(override val name: String) : TypeMod()
+    data class UnitTypeModel(override val name: String) : TypeModel()
 
-    data class ArrayTypeMod(override val name: String, val arrayLength: Int) : TypeMod()
+    data class ArrayTypeModel(override val name: String, val arrayLength: Int) : TypeModel()
 
     val unitLength: Int
         get() {

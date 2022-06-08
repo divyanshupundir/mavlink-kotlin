@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
-data class MessageMod(
+data class MessageModel(
     val id: Int,
     val name: String,
-    val fields: List<FieldMod>,
+    val fields: List<FieldModel>,
     val workInProgress: Boolean,
-    val deprecated: DeprecatedMod?,
+    val deprecated: DeprecatedModel?,
     val description: String?
 )
 
@@ -51,16 +51,16 @@ data class MessageXml(
         fields += field
     }
 
-    fun toMod() = MessageMod(
+    fun toModel() = MessageModel(
         id,
         name,
         fields
             .reversed()
             .onEach { if (extensions != null) it.extension = false }
             .onEachIndexed { i, f -> f.position = i + 1 }
-            .map { it.toMod() },
+            .map { it.toModel() },
         workInProgress != null,
-        deprecated?.toMod(),
+        deprecated?.toModel(),
         description
     )
 }

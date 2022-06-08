@@ -5,10 +5,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-sealed class FieldMod {
+sealed class FieldModel {
 
     abstract val position: Int
-    abstract val type: TypeMod
+    abstract val type: TypeModel
     abstract val name: String
     abstract val extension: Boolean
     abstract val display: String?
@@ -17,9 +17,9 @@ sealed class FieldMod {
     abstract val printFormat: String?
     abstract val content: String?
 
-    data class ValueFieldMod(
+    data class ValueFieldModel(
         override val position: Int,
-        override val type: TypeMod,
+        override val type: TypeModel,
         override val name: String,
         override val extension: Boolean,
         override val display: String?,
@@ -27,12 +27,12 @@ sealed class FieldMod {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldMod()
+    ) : FieldModel()
 
-    data class EnumFieldMod(
+    data class EnumFieldModel(
         val enum: String,
         override val position: Int,
-        override val type: TypeMod,
+        override val type: TypeModel,
         override val name: String,
         override val extension: Boolean,
         override val display: String?,
@@ -40,7 +40,7 @@ sealed class FieldMod {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldMod()
+    ) : FieldModel()
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -71,25 +71,26 @@ data class FieldXml(
     @JacksonXmlText
     var content: String? = null
 
-    val typeMod: TypeMod
+    val typeModel: TypeModel
         get() {
             return if (type.endsWith("]")) {
                 val rawType = type.substringBefore("[")
                 val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
-                TypeMod.ArrayTypeMod(rawType, arrayLength)
+                TypeModel.ArrayTypeModel(rawType, arrayLength)
             } else {
-                TypeMod.UnitTypeMod(type)
+                TypeModel.UnitTypeModel(type)
             }
         }
 
     var position: Int = -1
+
     var extension: Boolean = false
 
-    fun toMod(): FieldMod {
+    fun toModel(): FieldModel {
         return if (enum == null) {
-            FieldMod.ValueFieldMod(
+            FieldModel.ValueFieldModel(
                 position,
-                typeMod,
+                typeModel,
                 name,
                 extension,
                 display,
@@ -99,10 +100,10 @@ data class FieldXml(
                 content
             )
         } else {
-            FieldMod.EnumFieldMod(
+            FieldModel.EnumFieldModel(
                 enum,
                 position,
-                typeMod,
+                typeModel,
                 name,
                 extension,
                 display,

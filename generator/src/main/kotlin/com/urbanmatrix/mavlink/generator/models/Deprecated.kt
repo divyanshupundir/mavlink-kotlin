@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-data class DeprecatedMod(
+data class DeprecatedModel(
     val since: String,
     val replacedBy: String,
     val content: String?
@@ -24,5 +24,9 @@ data class DeprecatedXml(
     @JacksonXmlText
     var content: String? = null
 
-    fun toMod() = DeprecatedMod(since, replacedBy, content)
+    fun toModel() = DeprecatedModel(
+        since,
+        replacedBy,
+        content
+    )
 }

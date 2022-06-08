@@ -28,7 +28,7 @@ class FieldXmlTest {
         )
 
         for (inp in inpList) {
-            println(mapper.readValue(inp, FieldXml::class.java).toMod())
+            println(mapper.readValue(inp, FieldXml::class.java).toModel())
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.generator.models
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class EnumXmlTest {
@@ -57,6 +56,6 @@ class EnumXmlTest {
         </enum>
         """.trimIndent()
 
-        println(mapper.readValue(inp, EnumXml::class.java).toMod())
+        println(mapper.readValue(inp, EnumXml::class.java).toModel())
     }
 }

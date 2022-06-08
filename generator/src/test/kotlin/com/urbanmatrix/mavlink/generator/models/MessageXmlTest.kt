@@ -20,7 +20,7 @@ class MessageXmlTest {
         </message>
         """.trimIndent()
 
-        val model = mapper.readValue(inp, MessageXml::class.java).toMod()
+        val model = mapper.readValue(inp, MessageXml::class.java).toModel()
         println(model)
 
         assertTrue(model.workInProgress)
@@ -53,7 +53,7 @@ class MessageXmlTest {
         </message>
         """.trimIndent()
 
-        val model = mapper.readValue(inp, MessageXml::class.java).toMod()
+        val model = mapper.readValue(inp, MessageXml::class.java).toModel()
         println(model)
 
         assertFalse(model.workInProgress)
@@ -105,7 +105,7 @@ class MessageXmlTest {
         </message>
         """.trimIndent()
 
-        val model = mapper.readValue(inp, MessageXml::class.java).toMod()
+        val model = mapper.readValue(inp, MessageXml::class.java).toModel()
         println(model)
 
         assertFalse(model.workInProgress)

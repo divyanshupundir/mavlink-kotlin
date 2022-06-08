@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-data class ParamMod(
+data class ParamModel(
     val index: Int,
     val label: String?,
     val units: String?,
@@ -28,5 +28,10 @@ data class ParamXml(
     @JacksonXmlText
     var content: String? = null
 
-    fun toMod() = ParamMod(index, label, units, content)
+    fun toModel() = ParamModel(
+        index,
+        label,
+        units,
+        content
+    )
 }

@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
-data class EnumEntryMod(
+data class EnumEntryModel(
     val value: Int,
     val name: String,
-    val params: List<ParamMod>,
-    val deprecated: DeprecatedMod?,
+    val params: List<ParamModel>,
+    val deprecated: DeprecatedModel?,
     val description: String?
 )
 
@@ -36,11 +36,11 @@ data class EnumEntryXml(
         params += param
     }
 
-    fun toMod() = EnumEntryMod(
+    fun toModel() = EnumEntryModel(
         value,
         name,
-        params.map { it.toMod() },
-        deprecated?.toMod(),
+        params.map { it.toModel() },
+        deprecated?.toModel(),
         description
     )
 }
