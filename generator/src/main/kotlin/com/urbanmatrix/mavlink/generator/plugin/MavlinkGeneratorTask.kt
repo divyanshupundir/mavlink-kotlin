@@ -7,6 +7,10 @@ import java.io.File
 
 abstract class MavlinkGeneratorTask : DefaultTask() {
 
+    companion object {
+        private const val BASE_PACKAGE = "com.urbanmatrix.mavlink"
+    }
+
     @OutputDirectory
     lateinit var generatedSourcesDir: File
 
