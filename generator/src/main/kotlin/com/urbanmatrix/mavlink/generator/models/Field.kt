@@ -82,13 +82,16 @@ data class FieldXml(
             }
         }
 
-    fun toMod(pos: Int, ext: Boolean): FieldMod {
+    var position: Int = -1
+    var extension: Boolean = false
+
+    fun toMod(): FieldMod {
         return if (enum == null) {
             FieldMod.ValueFieldMod(
-                pos,
+                position,
                 typeMod,
                 name,
-                ext,
+                extension,
                 display,
                 units,
                 invalid,
@@ -98,10 +101,10 @@ data class FieldXml(
         } else {
             FieldMod.EnumFieldMod(
                 enum,
-                pos,
+                position,
                 typeMod,
                 name,
-                ext,
+                extension,
                 display,
                 units,
                 invalid,
