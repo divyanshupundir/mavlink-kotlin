@@ -24,7 +24,6 @@ fun ByteBuffer.decodeUint64(): BigInteger {
     val data = ByteArray(Long.SIZE_BYTES) {
         if (this.hasRemaining()) this.get() else 0.toByte()
     }
-
     // Invert to big-endian, for BigInteger constructor
     if (this.order() == ByteOrder.LITTLE_ENDIAN) data.reverse()
 
@@ -40,85 +39,85 @@ fun ByteBuffer.decodeDouble(): Double =
 fun ByteBuffer.decodeChar(): Char =
     if (this.remaining() >= Byte.SIZE_BYTES) decodeUnsignedIntegerValue(1).toInt().toChar() else 0.toChar()
 
-fun ByteBuffer.decodeString(length: Int): String {
-    val data = ByteArray(length) { if (this.hasRemaining()) this.get() else 0.toByte() }
+fun ByteBuffer.decodeString(dataSize: Int): String {
+    val data = ByteArray(dataSize) { if (this.hasRemaining()) this.get() else 0.toByte() }
 
-    for (i in 0 until length) {
+    for (i in 0 until dataSize) {
         if (data[i] == 0.toByte()) return String(data, 0, i, StandardCharsets.UTF_8)
     }
     return String(data, StandardCharsets.UTF_8)
 }
 
-fun ByteBuffer.decodeUint8Array(dataLength: Int): List<Int> = decodeArray(
-    dataLength / Byte.SIZE_BYTES,
+fun ByteBuffer.decodeUint8Array(dataSize: Int): List<Int> = decodeArray(
+    dataSize / Byte.SIZE_BYTES,
     ByteBuffer::decodeUint8
 )
 
-fun ByteBuffer.decodeInt8Array(dataLength: Int): List<Int> = decodeArray(
-    dataLength / Byte.SIZE_BYTES,
+fun ByteBuffer.decodeInt8Array(dataSize: Int): List<Int> = decodeArray(
+    dataSize / Byte.SIZE_BYTES,
     ByteBuffer::decodeInt8
 )
 
-fun ByteBuffer.decodeUint16Array(dataLength: Int): List<Int> = decodeArray(
-    dataLength / Short.SIZE_BYTES,
+fun ByteBuffer.decodeUint16Array(dataSize: Int): List<Int> = decodeArray(
+    dataSize / Short.SIZE_BYTES,
     ByteBuffer::decodeUint16
 )
 
-fun ByteBuffer.decodeInt16Array(dataLength: Int): List<Int> = decodeArray(
-    dataLength / Short.SIZE_BYTES,
+fun ByteBuffer.decodeInt16Array(dataSize: Int): List<Int> = decodeArray(
+    dataSize / Short.SIZE_BYTES,
     ByteBuffer::decodeInt16
 )
 
-fun ByteBuffer.decodeUint32Array(dataLength: Int): List<Long> = decodeArray(
-    dataLength / Int.SIZE_BYTES,
+fun ByteBuffer.decodeUint32Array(dataSize: Int): List<Long> = decodeArray(
+    dataSize / Int.SIZE_BYTES,
     ByteBuffer::decodeUint32
 )
 
-fun ByteBuffer.decodeInt32Array(dataLength: Int): List<Int> = decodeArray(
-    dataLength / Int.SIZE_BYTES,
+fun ByteBuffer.decodeInt32Array(dataSize: Int): List<Int> = decodeArray(
+    dataSize / Int.SIZE_BYTES,
     ByteBuffer::decodeInt32
 )
 
-fun ByteBuffer.decodeUint64Array(dataLength: Int): List<BigInteger> = decodeArray(
-    dataLength / Long.SIZE_BYTES,
+fun ByteBuffer.decodeUint64Array(dataSize: Int): List<BigInteger> = decodeArray(
+    dataSize / Long.SIZE_BYTES,
     ByteBuffer::decodeUint64
 )
 
-fun ByteBuffer.decodeInt64Array(dataLength: Int): List<Long> = decodeArray(
-    dataLength / Long.SIZE_BYTES,
+fun ByteBuffer.decodeInt64Array(dataSize: Int): List<Long> = decodeArray(
+    dataSize / Long.SIZE_BYTES,
     ByteBuffer::decodeInt64
 )
 
-fun ByteBuffer.decodeFloatArray(dataLength: Int): List<Float> = decodeArray(
-    dataLength / Float.SIZE_BYTES,
+fun ByteBuffer.decodeFloatArray(dataSize: Int): List<Float> = decodeArray(
+    dataSize / Float.SIZE_BYTES,
     ByteBuffer::decodeFloat
 )
 
-fun ByteBuffer.decodeDoubleArray(dataLength: Int): List<Double> = decodeArray(
-    dataLength / Double.SIZE_BYTES,
+fun ByteBuffer.decodeDoubleArray(dataSize: Int): List<Double> = decodeArray(
+    dataSize / Double.SIZE_BYTES,
     ByteBuffer::decodeDouble
 )
 
-fun ByteBuffer.decodeEnumValue(length: Int): Long = decodeUnsignedIntegerValue(length)
+fun ByteBuffer.decodeEnumValue(dataSize: Int): Long = decodeUnsignedIntegerValue(dataSize)
 
 private inline fun <T : Any> ByteBuffer.decodeArray(elementCount: Int, decode: ByteBuffer.() -> T): List<T> =
     List(elementCount) { this.decode() }
 
-private fun ByteBuffer.decodeUnsignedIntegerValue(length: Int): Long {
-    val data = ByteArray(length) { if (this.hasRemaining()) this.get() else 0.toByte() }
+private fun ByteBuffer.decodeUnsignedIntegerValue(dataSize: Int): Long {
+    val data = ByteArray(dataSize) { if (this.hasRemaining()) this.get() else 0.toByte() }
 
     if (this.order() == ByteOrder.BIG_ENDIAN) data.reverse()
 
     var value: Long = 0
-    for (i in 0 until length) {
+    for (i in 0 until dataSize) {
         value = value or ((data[i].toLong() and 0xFF.toLong()) shl (i * Byte.SIZE_BITS))
     }
     return value
 }
 
-private fun ByteBuffer.decodeSignedIntegerValue(length: Int): Long {
-    var value = decodeUnsignedIntegerValue(length)
-    val signBitIndex = length * Byte.SIZE_BITS - 1
+private fun ByteBuffer.decodeSignedIntegerValue(dataSize: Int): Long {
+    var value = decodeUnsignedIntegerValue(dataSize)
+    val signBitIndex = dataSize * Byte.SIZE_BITS - 1
     if ((value shr signBitIndex) == 1L) {
         value = value or (-1L shl signBitIndex)
     }
