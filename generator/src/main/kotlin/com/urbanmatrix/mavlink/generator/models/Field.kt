@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 sealed class FieldModel : Comparable<FieldModel>{
 
     abstract val position: Int
-    abstract val type: TypeModel
+    abstract val type: String
     abstract val name: String
     abstract val extension: Boolean
     abstract val display: String?
@@ -17,9 +17,9 @@ sealed class FieldModel : Comparable<FieldModel>{
     abstract val printFormat: String?
     abstract val content: String?
 
-    data class ValueFieldModel(
+    data class Primitive(
         override val position: Int,
-        override val type: TypeModel,
+        override val type: String,
         override val name: String,
         override val extension: Boolean,
         override val display: String?,
@@ -29,10 +29,11 @@ sealed class FieldModel : Comparable<FieldModel>{
         override val content: String?
     ) : FieldModel()
 
-    data class EnumFieldModel(
-        val enum: String,
+    data class PrimitiveArray(
+        val primitiveType: String,
+        val arrayLength: Int,
         override val position: Int,
-        override val type: TypeModel,
+        override val type: String,
         override val name: String,
         override val extension: Boolean,
         override val display: String?,
@@ -41,14 +42,42 @@ sealed class FieldModel : Comparable<FieldModel>{
         override val printFormat: String?,
         override val content: String?
     ) : FieldModel()
+
+    data class Enum(
+        val enumType: String,
+        override val position: Int,
+        override val type: String,
+        override val name: String,
+        override val extension: Boolean,
+        override val display: String?,
+        override val units: String?,
+        override val invalid: String?,
+        override val printFormat: String?,
+        override val content: String?
+    ) : FieldModel()
+
+    val unitLength: Int
+        get() {
+            return when (name) {
+                "char" -> 1
+                "float" -> 4
+                "double" -> 8
+                "uint8_t_mavlink_version" -> 1
+                "uint8_t", "int8_t" -> 1
+                "uint16_t", "int16_t" -> 2
+                "uint32_t", "int32_t" -> 4
+                "uint64_t", "int64_t" -> 8
+                else -> throw RuntimeException("Invalid type")
+            }
+        }
 
     override fun compareTo(other: FieldModel): Int {
         if (this.extension && !other.extension) return 1
 
         if (!this.extension && other.extension) return -1
 
-        if (!this.extension && this.type.unitLength != other.type.unitLength) {
-            other.type.unitLength - this.type.unitLength
+        if (!this.extension && this.unitLength != other.unitLength) {
+            other.unitLength - this.unitLength
         }
 
         return this.position - other.position
@@ -83,39 +112,47 @@ data class FieldXml(
     @JacksonXmlText
     var content: String? = null
 
-    val typeModel: TypeModel
-        get() {
-            return if (type.endsWith("]")) {
-                val rawType = type.substringBefore("[")
-                val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
-                TypeModel.ArrayTypeModel(rawType, arrayLength)
-            } else {
-                TypeModel.UnitTypeModel(type)
-            }
-        }
-
     var position: Int = -1
 
     var extension: Boolean = false
 
     fun toModel(): FieldModel {
         return if (enum == null) {
-            FieldModel.ValueFieldModel(
-                position,
-                typeModel,
-                name,
-                extension,
-                display,
-                units,
-                invalid,
-                printFormat,
-                content
-            )
+            if (type.endsWith("]")) {
+                val primitiveType = type.substringBefore("[")
+                val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
+
+                FieldModel.PrimitiveArray(
+                    primitiveType,
+                    arrayLength,
+                    position,
+                    type,
+                    name,
+                    extension,
+                    display,
+                    units,
+                    invalid,
+                    printFormat,
+                    content
+                )
+            } else {
+                FieldModel.Primitive(
+                    position,
+                    type,
+                    name,
+                    extension,
+                    display,
+                    units,
+                    invalid,
+                    printFormat,
+                    content
+                )
+            }
         } else {
-            FieldModel.EnumFieldModel(
+            FieldModel.Enum(
                 enum,
                 position,
-                typeModel,
+                type,
                 name,
                 extension,
                 display,

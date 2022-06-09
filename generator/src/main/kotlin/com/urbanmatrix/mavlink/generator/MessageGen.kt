@@ -4,8 +4,8 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.generator.models.FieldModel
 import com.urbanmatrix.mavlink.generator.models.MessageModel
-import com.urbanmatrix.mavlink.generator.models.TypeModel
 
 fun MessageModel.generateMessageFile(packageName: String): FileSpec {
     val message = TypeSpec.classBuilder(CaseFormat.fromSnake(name).toUpperCamel())
@@ -99,10 +99,9 @@ val MessageModel.crc: Int
             .asSequence()
             .sorted()
             .filter { !it.extension }
-            .onEach { crc.accumulate(it.type.name + " ") }
+            .onEach { crc.accumulate(it.type + " ") }
             .onEach { crc.accumulate(it.name + " ") }
-            .map { it.type }
-            .filterIsInstance<TypeModel.ArrayTypeModel>()
+            .filterIsInstance<FieldModel.PrimitiveArray>()
             .toList()
             .forEach { crc.accumulate(it.arrayLength) }
 
