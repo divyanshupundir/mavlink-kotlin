@@ -5,15 +5,17 @@ import org.junit.jupiter.api.Test
 class MessageGenKtTest {
 
     @Test
-    fun basic() {
+    fun messageGeneration() {
         val model = readCommonMavlink()
         val enumResolver = EnumResolver(BASE_PACKAGE, listOf(model))
 
-        val fileSpec = model.messages[20].generateMessageFile(BASE_PACKAGE, enumResolver)
+        for (i in 1..20) {
+            val fileSpec = model.messages[i].generateMessageFile(BASE_PACKAGE, enumResolver)
 
-        val s = StringBuilder()
-        fileSpec.writeTo(s)
-
-        println(s)
+            with(StringBuilder()) {
+                fileSpec.writeTo(this)
+                println(this)
+            }
+        }
     }
 }
