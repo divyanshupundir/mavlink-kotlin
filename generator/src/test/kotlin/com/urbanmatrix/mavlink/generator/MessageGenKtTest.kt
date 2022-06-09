@@ -20,7 +20,7 @@ class MessageGenKtTest {
         """.trimIndent()
 
         val model = mapper.readValue(inp, MessageXml::class.java).toModel()
-        val fileSpec = model.generateFileSpec("com.urbanmatrix.mavlink.test")
+        val fileSpec = model.generateMessageFile("com.urbanmatrix.mavlink.test")
 
         val s = StringBuilder()
         fileSpec.writeTo(s)

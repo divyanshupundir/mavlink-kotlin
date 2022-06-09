@@ -6,7 +6,7 @@ import com.urbanmatrix.mavlink.generator.models.EnumModel
 import kotlin.Long
 
 
-fun EnumModel.generateFileSpec(packageName: String): FileSpec {
+fun EnumModel.generateEnumFile(packageName: String): FileSpec {
     val enum = TypeSpec.enumBuilder(CaseFormat.fromSnake(name).toUpperCamel())
         .addSuperinterface(MavEnum::class)
         .primaryConstructor(
@@ -20,8 +20,8 @@ fun EnumModel.generateFileSpec(packageName: String): FileSpec {
                 .build()
         )
         .apply {
-            entries.forEach { addEnumConstant(it.name, it.generateTypeSpec()) }
-            if (deprecated != null) addAnnotation(deprecated.generateAnnotationSpec())
+            entries.forEach { addEnumConstant(it.name, it.generateEnumConstant()) }
+            if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description)
         }
         .build()

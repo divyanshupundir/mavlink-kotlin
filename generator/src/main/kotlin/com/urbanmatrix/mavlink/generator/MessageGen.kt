@@ -7,26 +7,18 @@ import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.generator.models.MessageModel
 import com.urbanmatrix.mavlink.generator.models.TypeModel
 
-fun MessageModel.generateFileSpec(packageName: String): FileSpec {
+fun MessageModel.generateMessageFile(packageName: String): FileSpec {
     val message = TypeSpec.classBuilder(CaseFormat.fromSnake(name).toUpperCamel())
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(simpleClassName))
         .addType(generateCompanionObject())
         .apply {
-            if (deprecated != null) addAnnotation(deprecated.generateAnnotationSpec())
+            if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description)
         }
+        .addProperty(generateInstanceMetadata())
         .addFunction(generateSerialize())
-        .addProperty(
-            PropertySpec
-                .builder(
-                    "instanceMetadata",
-                    MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName),
-                    KModifier.OVERRIDE
-                )
-                .initializer("METADATA")
-                .build()
-        ).build()
+        .build()
 
     return FileSpec.builder(packageName, CaseFormat.fromSnake(name).toUpperCamel())
         .addType(message)
@@ -67,6 +59,15 @@ fun MessageModel.generateMetadataProperty() = PropertySpec
         KModifier.PRIVATE
     )
     .initializer("%T(ID, CRC, DESERIALIZER)", MavMessage.Metadata::class)
+    .build()
+
+fun MessageModel.generateInstanceMetadata() = PropertySpec
+    .builder(
+        "instanceMetadata",
+        MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName),
+        KModifier.OVERRIDE
+    )
+    .initializer("METADATA")
     .build()
 
 fun MessageModel.generateSerialize() = FunSpec

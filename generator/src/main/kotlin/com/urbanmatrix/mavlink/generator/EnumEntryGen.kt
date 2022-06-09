@@ -5,7 +5,7 @@ import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.generator.models.EnumEntryModel
 
 
-fun EnumEntryModel.generateTypeSpec() = TypeSpec
+fun EnumEntryModel.generateEnumConstant() = TypeSpec
     .anonymousClassBuilder()
     .addSuperclassConstructorParameter("%LL", value)
     .apply {
@@ -21,6 +21,6 @@ fun EnumEntryModel.generateTypeSpec() = TypeSpec
 
         if (workInProgress) addAnnotation(WorkInProgress::class)
 
-        if (deprecated != null) addAnnotation(deprecated.generateAnnotationSpec())
+        if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
     }
     .build()
