@@ -10,7 +10,16 @@ class MavlinkXmlTest {
     @Test
     fun common() {
         val inp = Thread.currentThread().contextClassLoader.getResourceAsStream("common.xml")
-        println(mapper.readValue(inp, MavlinkXml::class.java).toModel("common"))
+        val model = mapper.readValue(inp, MavlinkXml::class.java).toModel("common")
+        model.messages
+            .flatMap { it.fields }
+            .forEach {
+                when(it) {
+                    is FieldModel.Enum -> {}
+                    is FieldModel.Primitive -> println(it.type)
+                    is FieldModel.PrimitiveArray -> println(it.primitiveType)
+                }
+            }
     }
 
     @Test

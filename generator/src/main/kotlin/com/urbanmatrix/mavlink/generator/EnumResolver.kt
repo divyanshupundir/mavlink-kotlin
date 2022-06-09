@@ -7,17 +7,17 @@ class EnumResolver(
     private val basePackage: String,
     private val mavlinkModels: List<MavlinkModel>
 ) {
-    fun resolve(enumName: String): ClassName {
+    fun resolve(enumType: String): ClassName {
         for (mavlinkModel in mavlinkModels) {
             for (enumModel in mavlinkModel.enums) {
-                if (enumModel.name == enumName) {
+                if (enumModel.name == enumType) {
                     return ClassName(
                         "$basePackage.${mavlinkModel.name}",
-                        CaseFormat.fromSnake(enumName).toUpperCamel()
+                        CaseFormat.fromSnake(enumType).toUpperCamel()
                     )
                 }
             }
         }
-        throw IllegalArgumentException("$enumName not defined in available mavlink schema")
+        throw IllegalArgumentException("$enumType not defined in available mavlink schema")
     }
 }

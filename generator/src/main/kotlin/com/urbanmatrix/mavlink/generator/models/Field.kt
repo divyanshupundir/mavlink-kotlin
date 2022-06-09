@@ -58,7 +58,11 @@ sealed class FieldModel : Comparable<FieldModel>{
 
     val unitLength: Int
         get() {
-            return when (name) {
+            val t = when (this) {
+                is Enum, is Primitive -> type
+                is PrimitiveArray -> primitiveType
+            }
+            return when (t) {
                 "char" -> 1
                 "float" -> 4
                 "double" -> 8
@@ -67,7 +71,7 @@ sealed class FieldModel : Comparable<FieldModel>{
                 "uint16_t", "int16_t" -> 2
                 "uint32_t", "int32_t" -> 4
                 "uint64_t", "int64_t" -> 8
-                else -> throw RuntimeException("Invalid type")
+                else -> throw RuntimeException("Invalid type: $t")
             }
         }
 

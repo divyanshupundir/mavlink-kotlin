@@ -7,10 +7,12 @@ import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.generator.models.FieldModel
 import com.urbanmatrix.mavlink.generator.models.MessageModel
 
-fun MessageModel.generateMessageFile(packageName: String): FileSpec {
+fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumResolver): FileSpec {
     val message = TypeSpec.classBuilder(CaseFormat.fromSnake(name).toUpperCamel())
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(simpleClassName))
+        .primaryConstructor(generatePrimaryConstructor(enumResolver))
+        .apply { fields.forEach { addProperty(it.generateProperty(enumResolver)) } }
         .addType(generateCompanionObject())
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
@@ -24,6 +26,11 @@ fun MessageModel.generateMessageFile(packageName: String): FileSpec {
         .addType(message)
         .build()
 }
+
+fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
+    .constructorBuilder()
+    .apply { fields.forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
+    .build()
 
 fun MessageModel.generateCompanionObject() = TypeSpec
     .companionObjectBuilder()
