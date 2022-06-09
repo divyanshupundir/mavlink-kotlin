@@ -46,7 +46,7 @@ val FieldModel.defaultValue: String
             "uint8_t", "int8_t", "uint16_t",
             "int16_t", "int32_t" -> "0"
             "uint32_t", "int64_t" -> "0L"
-            "uint64_t" -> "BigInteger.valueOf(0L)"
+            "uint64_t" -> "BigInteger.ZERO"
             "float" -> "0F"
             "double" -> "0.0"
             "char" -> "''"
