@@ -31,6 +31,7 @@ fun MessageModel.generateCompanionObject() = TypeSpec
     .addProperty(generateCrcProperty())
     .addProperty(generateDeserializer())
     .addProperty(generateMetadataProperty())
+    .addProperty(generateClassMetadata())
     .build()
 
 fun MessageModel.generateIdProperty() = PropertySpec
@@ -59,6 +60,14 @@ fun MessageModel.generateMetadataProperty() = PropertySpec
         KModifier.PRIVATE
     )
     .initializer("%T(ID, CRC, DESERIALIZER)", MavMessage.Metadata::class)
+    .build()
+
+fun MessageModel.generateClassMetadata() = PropertySpec
+    .builder(
+        "classMetadata",
+        MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName)
+    )
+    .initializer("METADATA")
     .build()
 
 fun MessageModel.generateInstanceMetadata() = PropertySpec
