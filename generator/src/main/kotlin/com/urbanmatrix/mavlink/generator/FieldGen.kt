@@ -8,7 +8,7 @@ import java.math.BigInteger
 
 fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = ParameterSpec
     .builder(CaseFormat.fromSnake(name).toLowerCamel(), resolveKotlinType(enumResolver))
-    .defaultValue(defaultValue)
+    .defaultValue(defaultKotlinValue)
     .build()
 
 fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
@@ -16,7 +16,7 @@ fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
     .initializer(CaseFormat.fromSnake(name).toLowerCamel())
     .build()
 
-fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {
+private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {
     is FieldModel.Primitive -> {
         resolveKotlinPrimitiveType(this.type)
     }
@@ -40,7 +40,7 @@ private fun resolveKotlinPrimitiveType(primitiveType: String): TypeName = when (
     else -> throw IllegalArgumentException("Unknown field type")
 }
 
-val FieldModel.defaultValue: String
+private val FieldModel.defaultKotlinValue: String
     get() = when (this) {
         is FieldModel.Primitive -> when (this.type) {
             "uint8_t", "int8_t", "uint16_t",

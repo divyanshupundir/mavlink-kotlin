@@ -27,12 +27,12 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .build()
 }
 
-fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
+private fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
     .constructorBuilder()
     .apply { fields.forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
     .build()
 
-fun MessageModel.generateCompanionObject() = TypeSpec
+private fun MessageModel.generateCompanionObject() = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
@@ -41,17 +41,17 @@ fun MessageModel.generateCompanionObject() = TypeSpec
     .addProperty(generateClassMetadata())
     .build()
 
-fun MessageModel.generateIdProperty() = PropertySpec
+private fun MessageModel.generateIdProperty() = PropertySpec
     .builder("ID", Int::class, KModifier.PRIVATE, KModifier.CONST)
     .initializer("%L", id)
     .build()
 
-fun MessageModel.generateCrcProperty() = PropertySpec
+private fun MessageModel.generateCrcProperty() = PropertySpec
     .builder("CRC", Int::class, KModifier.PRIVATE, KModifier.CONST)
     .initializer("%L", crc)
     .build()
 
-fun MessageModel.generateDeserializer() = PropertySpec
+private fun MessageModel.generateDeserializer() = PropertySpec
     .builder(
         "DESERIALIZER",
         MavDeserializer::class.asClassName().parameterizedBy(simpleClassName),
@@ -60,7 +60,7 @@ fun MessageModel.generateDeserializer() = PropertySpec
     .initializer("MavDeserializer { TODO() }")
     .build()
 
-fun MessageModel.generateMetadataProperty() = PropertySpec
+private fun MessageModel.generateMetadataProperty() = PropertySpec
     .builder(
         "METADATA",
         MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName),
@@ -69,7 +69,7 @@ fun MessageModel.generateMetadataProperty() = PropertySpec
     .initializer("%T(ID, CRC, DESERIALIZER)", MavMessage.Metadata::class)
     .build()
 
-fun MessageModel.generateClassMetadata() = PropertySpec
+private fun MessageModel.generateClassMetadata() = PropertySpec
     .builder(
         "classMetadata",
         MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName)
@@ -77,7 +77,7 @@ fun MessageModel.generateClassMetadata() = PropertySpec
     .initializer("METADATA")
     .build()
 
-fun MessageModel.generateInstanceMetadata() = PropertySpec
+private fun MessageModel.generateInstanceMetadata() = PropertySpec
     .builder(
         "instanceMetadata",
         MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName),
@@ -86,14 +86,14 @@ fun MessageModel.generateInstanceMetadata() = PropertySpec
     .initializer("METADATA")
     .build()
 
-fun MessageModel.generateSerialize() = FunSpec
+private fun MessageModel.generateSerialize() = FunSpec
     .builder("serialize")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
     .addCode("TODO()")
     .build()
 
-val MessageModel.simpleClassName: ClassName
+private val MessageModel.simpleClassName: ClassName
     get() = ClassName("", CaseFormat.fromSnake(name).toUpperCamel())
 
 val MessageModel.crc: Int
