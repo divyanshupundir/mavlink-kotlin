@@ -22,7 +22,7 @@ fun EnumModel.generateEnumFile(packageName: String): FileSpec {
         .apply {
             entries.forEach { addEnumConstant(it.name, it.generateEnumConstant()) }
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
-            if (description != null) addKdoc(description)
+            if (description != null) addKdoc(description.replace("%", "%%"))
         }
         .build()
 
