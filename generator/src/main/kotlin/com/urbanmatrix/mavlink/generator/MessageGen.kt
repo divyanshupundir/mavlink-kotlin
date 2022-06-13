@@ -18,7 +18,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addType(generateCompanionObject(packageName))
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
-//            if (description != null) addKdoc(description)
+            if (description != null) addKdoc(description.replace("%", "%%"))
         }
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
@@ -95,7 +95,11 @@ private fun MessageModel.generateSerialize() = FunSpec
     .apply {
         val c = CodeBlock.builder()
 
-        c.addStatement("val outputBuffer = %T.allocate($size).order(%T.LITTLE_ENDIAN)", ByteBuffer::class, ByteOrder::class)
+        c.addStatement(
+            "val outputBuffer = %T.allocate($size).order(%T.LITTLE_ENDIAN)",
+            ByteBuffer::class,
+            ByteOrder::class
+        )
         fields.forEach { it.generateSerializeStatement("outputBuffer", c) }
         c.addStatement("return outputBuffer.array()")
 
