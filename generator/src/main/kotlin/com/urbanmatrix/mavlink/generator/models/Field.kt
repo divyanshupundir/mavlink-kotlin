@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-sealed class FieldModel : Comparable<FieldModel>{
+sealed class FieldModel : Comparable<FieldModel> {
 
     abstract val position: Int
     abstract val type: String
@@ -71,7 +71,7 @@ sealed class FieldModel : Comparable<FieldModel>{
                 "uint16_t", "int16_t" -> 2
                 "uint32_t", "int32_t" -> 4
                 "uint64_t", "int64_t" -> 8
-                else -> throw RuntimeException("Invalid type: $t")
+                else -> throw RuntimeException("Invalid type: $t for $this")
             }
         }
 
@@ -128,25 +128,25 @@ data class FieldXml(
     var extension: Boolean = false
 
     fun toModel(): FieldModel {
-        return if (enum == null) {
-            if (type.endsWith("]")) {
-                val primitiveType = type.substringBefore("[")
-                val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
+        return if (type.endsWith("]")) {
+            val primitiveType = type.substringBefore("[")
+            val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
 
-                FieldModel.PrimitiveArray(
-                    primitiveType,
-                    arrayLength,
-                    position,
-                    type,
-                    name,
-                    extension,
-                    display,
-                    units,
-                    invalid,
-                    printFormat,
-                    content
-                )
-            } else {
+            FieldModel.PrimitiveArray(
+                primitiveType,
+                arrayLength,
+                position,
+                type,
+                name,
+                extension,
+                display,
+                units,
+                invalid,
+                printFormat,
+                content
+            )
+        } else {
+            if (enum == null) {
                 FieldModel.Primitive(
                     position,
                     type,
@@ -158,20 +158,20 @@ data class FieldXml(
                     printFormat,
                     content
                 )
+            } else {
+                FieldModel.Enum(
+                    enum,
+                    position,
+                    type,
+                    name,
+                    extension,
+                    display,
+                    units,
+                    invalid,
+                    printFormat,
+                    content
+                )
             }
-        } else {
-            FieldModel.Enum(
-                enum,
-                position,
-                type,
-                name,
-                extension,
-                display,
-                units,
-                invalid,
-                printFormat,
-                content
-            )
         }
     }
 }

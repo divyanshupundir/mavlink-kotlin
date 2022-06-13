@@ -12,15 +12,15 @@ import java.nio.ByteOrder
 fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumResolver): FileSpec {
     val message = TypeSpec.classBuilder(CaseFormat.fromSnake(name).toUpperCamel())
         .addModifiers(KModifier.DATA)
-        .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(simpleClassName))
+        .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
         .apply { fields.forEach { addProperty(it.generateProperty(enumResolver)) } }
-        .addType(generateCompanionObject())
+        .addType(generateCompanionObject(packageName))
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
-            if (description != null) addKdoc(description)
+//            if (description != null) addKdoc(description)
         }
-        .addProperty(generateInstanceMetadata())
+        .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
         .build()
 
@@ -34,13 +34,13 @@ private fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) 
     .apply { fields.forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
     .build()
 
-private fun MessageModel.generateCompanionObject() = TypeSpec
+private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
-    .addProperty(generateDeserializer())
-    .addProperty(generateMetadataProperty())
-    .addProperty(generateClassMetadata())
+    .addProperty(generateDeserializer(packageName))
+    .addProperty(generateMetadataProperty(packageName))
+    .addProperty(generateClassMetadata(packageName))
     .build()
 
 private fun MessageModel.generateIdProperty() = PropertySpec
@@ -53,36 +53,36 @@ private fun MessageModel.generateCrcProperty() = PropertySpec
     .initializer("%L", crc)
     .build()
 
-private fun MessageModel.generateDeserializer() = PropertySpec
+private fun MessageModel.generateDeserializer(packageName: String) = PropertySpec
     .builder(
         "DESERIALIZER",
-        MavDeserializer::class.asClassName().parameterizedBy(simpleClassName),
+        MavDeserializer::class.asClassName().parameterizedBy(getClassName(packageName)),
         KModifier.PRIVATE
     )
     .initializer("MavDeserializer { TODO() }")
     .build()
 
-private fun MessageModel.generateMetadataProperty() = PropertySpec
+private fun MessageModel.generateMetadataProperty(packageName: String) = PropertySpec
     .builder(
         "METADATA",
-        MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName),
+        MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName)),
         KModifier.PRIVATE
     )
     .initializer("%T(ID, CRC, DESERIALIZER)", MavMessage.Metadata::class)
     .build()
 
-private fun MessageModel.generateClassMetadata() = PropertySpec
+private fun MessageModel.generateClassMetadata(packageName: String) = PropertySpec
     .builder(
         "classMetadata",
-        MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName)
+        MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName))
     )
     .initializer("METADATA")
     .build()
 
-private fun MessageModel.generateInstanceMetadata() = PropertySpec
+private fun MessageModel.generateInstanceMetadata(packageName: String) = PropertySpec
     .builder(
         "instanceMetadata",
-        MavMessage.Metadata::class.asClassName().parameterizedBy(simpleClassName),
+        MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName)),
         KModifier.OVERRIDE
     )
     .initializer("METADATA")
@@ -106,8 +106,8 @@ private fun MessageModel.generateSerialize() = FunSpec
 private val MessageModel.size: Int
     get() = fields.sumOf { it.size }
 
-private val MessageModel.simpleClassName: ClassName
-    get() = ClassName("", CaseFormat.fromSnake(name).toUpperCamel())
+private fun MessageModel.getClassName(packageName: String): ClassName =
+    ClassName(packageName, CaseFormat.fromSnake(name).toUpperCamel())
 
 val MessageModel.crc: Int
     get() {

@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     `java-gradle-plugin`
+    idea
     id("maven-publish")
     id("com.gradle.plugin-publish") version "0.18.0"
 }
@@ -9,6 +10,12 @@ version = Specs.version
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+}
+
+idea {
+    module {
+        testSourceDirs.plusAssign(file("build/generated"))
+    }
 }
 
 pluginBundle {

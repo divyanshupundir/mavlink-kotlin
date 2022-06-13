@@ -1,20 +1,26 @@
 package com.urbanmatrix.mavlink.generator
 
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class MessageGenKtTest {
 
     @Test
     fun messageGeneration() {
-        val model = readCommonMavlink()
-        val enumResolver = EnumResolver(BASE_PACKAGE, listOf(model))
+        val models = listOf(readMavlinkMinimal(), readMavlinkCommon())
+        val enumResolver = EnumResolver(BASE_PACKAGE, models)
 
-        for (i in 1..20) {
-            val fileSpec = model.messages[i].generateMessageFile(BASE_PACKAGE, enumResolver)
+        for (model in models) {
+            for (enum in model.enums) {
+                enum
+                    .generateEnumFile("$BASE_PACKAGE.${model.name}")
+                    .writeTo(File("build/generated"))
+            }
 
-            with(StringBuilder()) {
-                fileSpec.writeTo(this)
-                println(this)
+            for (message in model.messages) {
+                message
+                    .generateMessageFile("$BASE_PACKAGE.${model.name}", enumResolver)
+                    .writeTo(File("build/generated"))
             }
         }
     }
