@@ -9,6 +9,7 @@ import java.math.BigInteger
 fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = ParameterSpec
     .builder(CaseFormat.fromSnake(name).toLowerCamel(), resolveKotlinType(enumResolver))
     .defaultValue(defaultKotlinValue)
+    .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
 fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
