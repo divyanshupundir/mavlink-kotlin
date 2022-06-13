@@ -7,6 +7,34 @@ import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.generator.models.FieldModel
 import com.urbanmatrix.mavlink.generator.models.MessageModel
 
+private const val SERIALIZATION_PACKAGE = "com.urbanmatrix.mavlink.serialization"
+
+private val SERIALIZATION_FUNCTIONS: List<String> = listOf(
+    "encodeInt8",
+    "encodeUint8",
+    "encodeInt16",
+    "encodeUint16",
+    "encodeInt32",
+    "encodeUint32",
+    "encodeInt64",
+    "encodeUint64",
+    "encodeFloat",
+    "encodeDouble",
+    "encodeChar",
+    "encodeString",
+    "encodeUint8Array",
+    "encodeInt8Array",
+    "encodeUint16Array",
+    "encodeInt16Array",
+    "encodeUint32Array",
+    "encodeInt32Array",
+    "encodeUint64Array",
+    "encodeInt64Array",
+    "encodeFloatArray",
+    "encodeDoubleArray",
+    "encodeEnumValue",
+)
+
 fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumResolver): FileSpec {
     val message = TypeSpec.classBuilder(CaseFormat.fromSnake(name).toUpperCamel())
         .addModifiers(KModifier.DATA)
@@ -23,6 +51,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .build()
 
     return FileSpec.builder(packageName, CaseFormat.fromSnake(name).toUpperCamel())
+        .apply { SERIALIZATION_FUNCTIONS.forEach { addImport(SERIALIZATION_PACKAGE, it) } }
         .addType(message)
         .build()
 }

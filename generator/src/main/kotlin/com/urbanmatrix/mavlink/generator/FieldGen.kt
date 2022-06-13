@@ -29,6 +29,14 @@ private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName =
     }
 }
 
+private fun FieldModel.generateSerializeStatement(enumResolver: EnumResolver): String {
+    return when (this) {
+        is FieldModel.Enum -> TODO()
+        is FieldModel.Primitive -> TODO()
+        is FieldModel.PrimitiveArray -> TODO()
+    }
+}
+
 private fun resolveKotlinPrimitiveType(primitiveType: String): TypeName = when (primitiveType) {
     "uint8_t", "int8_t", "uint16_t",
     "int16_t", "int32_t" -> Int::class.asTypeName()
