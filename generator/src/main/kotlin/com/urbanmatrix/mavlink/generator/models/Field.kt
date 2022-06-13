@@ -56,7 +56,7 @@ sealed class FieldModel : Comparable<FieldModel>{
         override val content: String?
     ) : FieldModel()
 
-    val unitLength: Int
+    val unitSize: Int
         get() {
             val t = when (this) {
                 is Enum, is Primitive -> type
@@ -75,13 +75,20 @@ sealed class FieldModel : Comparable<FieldModel>{
             }
         }
 
+    val size: Int
+        get() = when (this) {
+            is Enum -> unitSize
+            is Primitive -> unitSize
+            is PrimitiveArray -> unitSize * arrayLength
+        }
+
     override fun compareTo(other: FieldModel): Int {
         if (this.extension && !other.extension) return 1
 
         if (!this.extension && other.extension) return -1
 
-        if (!this.extension && this.unitLength != other.unitLength) {
-            other.unitLength - this.unitLength
+        if (!this.extension && this.unitSize != other.unitSize) {
+            other.unitSize - this.unitSize
         }
 
         return this.position - other.position
