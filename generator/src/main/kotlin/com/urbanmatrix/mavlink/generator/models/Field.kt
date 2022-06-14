@@ -127,14 +127,26 @@ data class FieldXml(
 
     var extension: Boolean = false
 
-    fun toModel(): FieldModel {
-        return if (type.endsWith("]")) {
-            val primitiveType = type.substringBefore("[")
-            val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
+    fun toModel(): FieldModel = if (type.endsWith("]")) {
+        val primitiveType = type.substringBefore("[")
+        val arrayLength = type.substringAfter("[").substringBefore("]").toInt()
 
-            FieldModel.PrimitiveArray(
-                primitiveType,
-                arrayLength,
+        FieldModel.PrimitiveArray(
+            primitiveType,
+            arrayLength,
+            position,
+            type,
+            name,
+            extension,
+            display,
+            units,
+            invalid,
+            printFormat,
+            content
+        )
+    } else {
+        if (enum == null) {
+            FieldModel.Primitive(
                 position,
                 type,
                 name,
@@ -146,32 +158,18 @@ data class FieldXml(
                 content
             )
         } else {
-            if (enum == null) {
-                FieldModel.Primitive(
-                    position,
-                    type,
-                    name,
-                    extension,
-                    display,
-                    units,
-                    invalid,
-                    printFormat,
-                    content
-                )
-            } else {
-                FieldModel.Enum(
-                    enum,
-                    position,
-                    type,
-                    name,
-                    extension,
-                    display,
-                    units,
-                    invalid,
-                    printFormat,
-                    content
-                )
-            }
+            FieldModel.Enum(
+                enum,
+                position,
+                type,
+                name,
+                extension,
+                display,
+                units,
+                invalid,
+                printFormat,
+                content
+            )
         }
     }
 }
