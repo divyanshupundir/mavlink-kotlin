@@ -39,10 +39,10 @@ fun ByteBuffer.decodeDouble(): Double =
 fun ByteBuffer.decodeChar(): Char =
     if (this.remaining() >= Byte.SIZE_BYTES) decodeUnsignedIntegerValue(1).toInt().toChar() else 0.toChar()
 
-fun ByteBuffer.decodeString(dataSize: Int): String {
-    val data = ByteArray(dataSize) { if (this.hasRemaining()) this.get() else 0.toByte() }
+fun ByteBuffer.decodeString(length: Int): String {
+    val data = ByteArray(length) { if (this.hasRemaining()) this.get() else 0.toByte() }
 
-    for (i in 0 until dataSize) {
+    for (i in 0 until length) {
         if (data[i] == 0.toByte()) return String(data, 0, i, StandardCharsets.UTF_8)
     }
     return String(data, StandardCharsets.UTF_8)
