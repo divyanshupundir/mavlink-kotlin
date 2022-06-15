@@ -1,21 +1,21 @@
 buildscript {
     dependencies {
-//        classpath("${Specs.group}:generator:${Specs.releaseVersion}")
+        classpath("${Specs.group}:generator:${Specs.Plugin.releaseVersion}")
     }
 }
 
 plugins {
     kotlin("jvm")
-//    id("${Specs.group}.generator") version Specs.releaseVersion
+    id("${Specs.group}.generator") version Specs.Plugin.releaseVersion
 }
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-//tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
-//    generatedSourcesDir = file("build/mavlink")
-//}
+tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
+    generatedSourcesDir = file("build/mavlink")
+}
 
 dependencies {
     implementation(Deps.mavlinkKotlinApi)
