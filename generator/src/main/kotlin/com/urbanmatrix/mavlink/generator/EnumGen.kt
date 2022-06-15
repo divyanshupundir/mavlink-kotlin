@@ -3,30 +3,57 @@ package com.urbanmatrix.mavlink.generator
 import com.squareup.kotlinpoet.*
 import com.urbanmatrix.mavlink.api.MavEnum
 import com.urbanmatrix.mavlink.generator.models.EnumModel
+import com.urbanmatrix.mavlink.generator.models.MessageModel
 import kotlin.Long
 
 
 fun EnumModel.generateEnumFile(packageName: String): FileSpec {
     val enum = TypeSpec.enumBuilder(formattedName)
         .addSuperinterface(MavEnum::class)
-        .primaryConstructor(
-            FunSpec.constructorBuilder()
-                .addParameter("value", Long::class)
-                .build()
-        )
-        .addProperty(
-            PropertySpec.builder("value", Long::class, KModifier.OVERRIDE)
-                .initializer("value")
-                .build()
-        )
+        .primaryConstructor(generatePrimaryConstructor())
+        .addProperty(generateValueProperty())
         .apply {
             entries.forEach { addEnumConstant(it.name, it.generateEnumConstant()) }
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
+        .addType(generateCompanionObject(packageName))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
         .addType(enum)
         .build()
 }
+
+private fun generatePrimaryConstructor() = FunSpec
+    .constructorBuilder()
+    .addParameter("value", Long::class)
+    .build()
+
+private fun generateValueProperty() = PropertySpec
+    .builder("value", Long::class, KModifier.OVERRIDE)
+    .initializer("value")
+    .build()
+
+private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
+    .companionObjectBuilder()
+    .addFunction(generateEntryFromValueOrNull(packageName))
+    .build()
+
+private fun EnumModel.generateEntryFromValueOrNull(packageName: String) = FunSpec
+    .builder("entryFromValueOrNull")
+    .addParameter(ParameterSpec("v", Long::class.asTypeName()))
+    .returns(getClassName(packageName).copy(nullable = true))
+    .addCode(
+        buildCodeBlock {
+            beginControlFlow("return when (v) {")
+            entries.forEach { addStatement("${it.value}L -> ${it.name}") }
+            addStatement("else -> null")
+            endControlFlow()
+        }
+    )
+    .build()
+
+private fun EnumModel.getClassName(packageName: String): ClassName =
+    ClassName(packageName, formattedName)
+

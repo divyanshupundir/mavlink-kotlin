@@ -15,13 +15,13 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
         .apply { fields.sorted().forEach { addProperty(it.generateProperty(enumResolver)) } }
-        .addType(generateCompanionObject(packageName))
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
+        .addType(generateCompanionObject(packageName))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
