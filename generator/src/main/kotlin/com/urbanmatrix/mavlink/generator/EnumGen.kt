@@ -7,7 +7,7 @@ import kotlin.Long
 
 
 fun EnumModel.generateEnumFile(packageName: String): FileSpec {
-    val enum = TypeSpec.enumBuilder(CaseFormat.fromSnake(name).toUpperCamel())
+    val enum = TypeSpec.enumBuilder(formattedName)
         .addSuperinterface(MavEnum::class)
         .primaryConstructor(
             FunSpec.constructorBuilder()
@@ -26,7 +26,7 @@ fun EnumModel.generateEnumFile(packageName: String): FileSpec {
         }
         .build()
 
-    return FileSpec.builder(packageName, CaseFormat.fromSnake(name).toUpperCamel())
+    return FileSpec.builder(packageName, formattedName)
         .addType(enum)
         .build()
 }

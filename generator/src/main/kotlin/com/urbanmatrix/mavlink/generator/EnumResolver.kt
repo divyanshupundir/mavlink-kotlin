@@ -13,7 +13,7 @@ class EnumResolver(
                 if (enumModel.name == enumType) {
                     return ClassName(
                         "$basePackage.${mavlinkModel.name}",
-                        CaseFormat.fromSnake(enumType).toUpperCamel()
+                        enumModel.formattedName
                     )
                 }
             }
