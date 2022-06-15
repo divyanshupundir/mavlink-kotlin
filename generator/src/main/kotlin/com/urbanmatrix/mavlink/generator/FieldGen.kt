@@ -43,7 +43,9 @@ fun FieldModel.generateSerializeStatement(outputName: String): CodeBlock {
 fun FieldModel.generateDeserializeStatement(inputName: String): CodeBlock {
     val decode = CodeBlock.builder()
     when (this) {
-        is FieldModel.Enum -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+        is FieldModel.Enum -> {
+            decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+        }
         is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName)
         is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
     }
