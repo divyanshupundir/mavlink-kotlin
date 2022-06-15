@@ -7,14 +7,14 @@ import com.urbanmatrix.mavlink.generator.models.FieldModel
 import java.math.BigInteger
 
 fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = ParameterSpec
-    .builder(CaseFormat.fromSnake(name).toLowerCamel(), resolveKotlinType(enumResolver))
+    .builder(formattedName, resolveKotlinType(enumResolver))
     .defaultValue(defaultKotlinValue)
     .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
 fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
-    .builder(CaseFormat.fromSnake(name).toLowerCamel(), resolveKotlinType(enumResolver))
-    .initializer(CaseFormat.fromSnake(name).toLowerCamel())
+    .builder(formattedName, resolveKotlinType(enumResolver))
+    .initializer(formattedName)
     .build()
 
 private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {
@@ -30,16 +30,25 @@ private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName =
     }
 }
 
-fun FieldModel.generateSerializeStatement(outputName: String, codeBuilder: CodeBlock.Builder) {
-    val valName = CaseFormat.fromSnake(name).toLowerCamel()
+fun FieldModel.generateSerializeStatement(outputName: String): CodeBlock {
+    val encode = CodeBlock.builder()
     when (this) {
-        is FieldModel.Enum -> codeBuilder.addStatement("$outputName.%M($valName.value, $size)", encodeMethodName)
-        is FieldModel.Primitive -> codeBuilder.addStatement("$outputName.%M($valName)", encodeMethodName)
-        is FieldModel.PrimitiveArray -> codeBuilder.addStatement("$outputName.%M($valName, $size)", encodeMethodName)
+        is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName)
+        is FieldModel.Primitive -> encode.addStatement("$outputName.%M($formattedName)", encodeMethodName)
+        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)", encodeMethodName)
     }
+    return encode.build()
 }
 
-fun FieldModel.generateDeserializeStatement(): Unit = TODO()
+fun FieldModel.generateDeserializeStatement(inputName: String): CodeBlock {
+    val decode = CodeBlock.builder()
+    when (this) {
+        is FieldModel.Enum -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+        is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName)
+        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+    }
+    return decode.build()
+}
 
 private fun resolveKotlinPrimitiveType(primitiveType: String): TypeName = when (primitiveType) {
     "uint8_t_mavlink_version", "uint8_t", "int8_t",

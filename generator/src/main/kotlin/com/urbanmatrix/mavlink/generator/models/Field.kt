@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
+import com.urbanmatrix.mavlink.generator.CaseFormat
 
 sealed class FieldModel : Comparable<FieldModel> {
 
@@ -17,6 +18,10 @@ sealed class FieldModel : Comparable<FieldModel> {
     abstract val printFormat: String?
     abstract val content: String?
 
+    abstract val unitSize: Int
+    abstract val size: Int
+    abstract val formattedName: String
+
     data class Primitive(
         override val position: Int,
         override val type: String,
@@ -27,7 +32,11 @@ sealed class FieldModel : Comparable<FieldModel> {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldModel()
+    ) : FieldModel() {
+        override val unitSize: Int = resolveKotlinPrimitiveSize(type)
+        override val size = unitSize
+        override val formattedName: String = CaseFormat.fromSnake(name).toLowerCamel()
+    }
 
     data class PrimitiveArray(
         val primitiveType: String,
@@ -41,7 +50,11 @@ sealed class FieldModel : Comparable<FieldModel> {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldModel()
+    ) : FieldModel() {
+        override val unitSize = resolveKotlinPrimitiveSize(primitiveType)
+        override val size = unitSize * arrayLength
+        override val formattedName: String = CaseFormat.fromSnake(name).toLowerCamel()
+    }
 
     data class Enum(
         val enumType: String,
@@ -54,33 +67,11 @@ sealed class FieldModel : Comparable<FieldModel> {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldModel()
-
-    val unitSize: Int
-        get() {
-            val t = when (this) {
-                is Enum, is Primitive -> type
-                is PrimitiveArray -> primitiveType
-            }
-            return when (t) {
-                "char" -> 1
-                "float" -> 4
-                "double" -> 8
-                "uint8_t_mavlink_version" -> 1
-                "uint8_t", "int8_t" -> 1
-                "uint16_t", "int16_t" -> 2
-                "uint32_t", "int32_t" -> 4
-                "uint64_t", "int64_t" -> 8
-                else -> throw RuntimeException("Invalid type: $t for $this")
-            }
-        }
-
-    val size: Int
-        get() = when (this) {
-            is Enum -> unitSize
-            is Primitive -> unitSize
-            is PrimitiveArray -> unitSize * arrayLength
-        }
+    ) : FieldModel() {
+        override val unitSize: Int = resolveKotlinPrimitiveSize(type)
+        override val size = unitSize
+        override val formattedName: String = CaseFormat.fromSnake(name).toLowerCamel()
+    }
 
     override fun compareTo(other: FieldModel): Int {
         if (this.extension && !other.extension) return 1
@@ -93,6 +84,18 @@ sealed class FieldModel : Comparable<FieldModel> {
 
         return this.position - other.position
     }
+}
+
+private fun resolveKotlinPrimitiveSize(rawType: String) = when (rawType) {
+    "char" -> 1
+    "float" -> 4
+    "double" -> 8
+    "uint8_t_mavlink_version" -> 1
+    "uint8_t", "int8_t" -> 1
+    "uint16_t", "int16_t" -> 2
+    "uint32_t", "int32_t" -> 4
+    "uint64_t", "int64_t" -> 8
+    else -> throw RuntimeException("Invalid type: $rawType")
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)

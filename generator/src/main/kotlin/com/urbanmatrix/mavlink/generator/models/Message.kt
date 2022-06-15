@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
+import com.urbanmatrix.mavlink.generator.CaseFormat
 
 data class MessageModel(
     val id: Int,
@@ -12,7 +13,9 @@ data class MessageModel(
     val workInProgress: Boolean,
     val deprecated: DeprecatedModel?,
     val description: String?
-)
+) {
+    val formattedName = CaseFormat.fromSnake(name).toUpperCamel()
+}
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "entry")

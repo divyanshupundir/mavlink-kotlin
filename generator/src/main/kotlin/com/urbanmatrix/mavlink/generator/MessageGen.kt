@@ -10,7 +10,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumResolver): FileSpec {
-    val message = TypeSpec.classBuilder(CaseFormat.fromSnake(name).toUpperCamel())
+    val message = TypeSpec.classBuilder(formattedName)
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
@@ -24,7 +24,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addFunction(generateSerialize())
         .build()
 
-    return FileSpec.builder(packageName, CaseFormat.fromSnake(name).toUpperCamel())
+    return FileSpec.builder(packageName, formattedName)
         .addType(message)
         .build()
 }
@@ -59,7 +59,26 @@ private fun MessageModel.generateDeserializer(packageName: String) = PropertySpe
         MavDeserializer::class.asClassName().parameterizedBy(getClassName(packageName)),
         KModifier.PRIVATE
     )
-    .initializer("MavDeserializer { TODO() }")
+    .initializer(
+        buildCodeBlock {
+            beginControlFlow("%T { bytes ->", MavDeserializer::class)
+
+            addStatement(
+                "val inputBuffer = %T.wrap(bytes).order(%T.LITTLE_ENDIAN)",
+                ByteBuffer::class,
+                ByteOrder::class
+            )
+            fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer")) }
+
+            addStatement("%T(", getClassName(packageName))
+            indent()
+            fields.sorted().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
+            unindent()
+            addStatement(")")
+
+            endControlFlow()
+        }
+    )
     .build()
 
 private fun MessageModel.generateMetadataProperty(packageName: String) = PropertySpec
@@ -92,26 +111,24 @@ private fun MessageModel.generateSerialize() = FunSpec
     .builder("serialize")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
-    .apply {
-        val c = CodeBlock.builder()
-
-        c.addStatement(
-            "val outputBuffer = %T.allocate($size).order(%T.LITTLE_ENDIAN)",
-            ByteBuffer::class,
-            ByteOrder::class
-        )
-        fields.sorted().forEach { it.generateSerializeStatement("outputBuffer", c) }
-        c.addStatement("return outputBuffer.array()")
-
-        addCode(c.build())
-    }
+    .addCode(
+        buildCodeBlock {
+            addStatement(
+                "val outputBuffer = %T.allocate($size).order(%T.LITTLE_ENDIAN)",
+                ByteBuffer::class,
+                ByteOrder::class
+            )
+            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            addStatement("return outputBuffer.array()")
+        }
+    )
     .build()
 
 private val MessageModel.size: Int
     get() = fields.sumOf { it.size }
 
 private fun MessageModel.getClassName(packageName: String): ClassName =
-    ClassName(packageName, CaseFormat.fromSnake(name).toUpperCamel())
+    ClassName(packageName, formattedName)
 
 val MessageModel.crc: Int
     get() {
