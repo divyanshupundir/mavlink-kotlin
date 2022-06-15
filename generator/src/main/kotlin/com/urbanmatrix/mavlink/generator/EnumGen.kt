@@ -3,7 +3,6 @@ package com.urbanmatrix.mavlink.generator
 import com.squareup.kotlinpoet.*
 import com.urbanmatrix.mavlink.api.MavEnum
 import com.urbanmatrix.mavlink.generator.models.EnumModel
-import com.urbanmatrix.mavlink.generator.models.MessageModel
 import kotlin.Long
 
 
@@ -37,11 +36,11 @@ private fun generateValueProperty() = PropertySpec
 
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
-    .addFunction(generateEntryFromValueOrNull(packageName))
+    .addFunction(generateGetEntryFromValueOrNull(packageName))
     .build()
 
-private fun EnumModel.generateEntryFromValueOrNull(packageName: String) = FunSpec
-    .builder("entryFromValueOrNull")
+private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = FunSpec
+    .builder("getEntryFromValueOrNull")
     .addParameter(ParameterSpec("v", Long::class.asTypeName()))
     .returns(getClassName(packageName).copy(nullable = true))
     .addCode(
