@@ -3,8 +3,8 @@ object Deps {
     const val jacksonDataFormatXml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.0"
     const val jacksonModuleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2"
     const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
-    const val mavlinkKotlinApi = "com.urbanmatrix.mavlink:api:${Specs.version}"
-    const val mavlinkKotlinSerialization = "com.urbanmatrix.mavlink:serialization:${Specs.version}"
+    const val mavlinkKotlinApi = "com.urbanmatrix.mavlink:api:${Specs.releaseVersion}"
+    const val mavlinkKotlinSerialization = "com.urbanmatrix.mavlink:serialization:${Specs.releaseVersion}"
 }
 
 object TestDeps {
