@@ -44,7 +44,13 @@ fun FieldModel.generateDeserializeStatement(inputName: String): CodeBlock {
     val decode = CodeBlock.builder()
     when (this) {
         is FieldModel.Enum -> {
-            decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+            decode.beginControlFlow(
+                "val $formattedName = $inputName.%M($size).let { value ->",
+                decodeMethodName
+            )
+            decode.addStatement("val entry = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getEntryFromValueOrNull(value)")
+            decode.addStatement("if (entry != null) %1T.of(entry) else %1T.fromValue(value)", MavEnumValue::class)
+            decode.endControlFlow()
         }
         is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName)
         is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
