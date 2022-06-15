@@ -1,6 +1,6 @@
 package com.urbanmatrix.mavlink.api
 
-abstract class AbstractMavlinkDialect(
+abstract class AbstractMavDialect(
     private val dependencies: Set<MavDialect>,
     private val messages: Map<Int, MavMessage.Metadata<out MavMessage<*>>>
 ) : MavDialect {
