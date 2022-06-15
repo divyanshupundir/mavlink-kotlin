@@ -14,7 +14,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.forEach { addProperty(it.generateProperty(enumResolver)) } }
+        .apply { fields.sorted().forEach { addProperty(it.generateProperty(enumResolver)) } }
         .addType(generateCompanionObject(packageName))
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
@@ -31,7 +31,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
 
 private fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
     .constructorBuilder()
-    .apply { fields.forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
+    .apply { fields.sorted().forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
     .build()
 
 private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
@@ -100,7 +100,7 @@ private fun MessageModel.generateSerialize() = FunSpec
             ByteBuffer::class,
             ByteOrder::class
         )
-        fields.forEach { it.generateSerializeStatement("outputBuffer", c) }
+        fields.sorted().forEach { it.generateSerializeStatement("outputBuffer", c) }
         c.addStatement("return outputBuffer.array()")
 
         addCode(c.build())
@@ -126,7 +126,6 @@ val MessageModel.crc: Int
             .onEach { crc.accumulate(it.type + " ") }
             .onEach { crc.accumulate(it.name + " ") }
             .filterIsInstance<FieldModel.PrimitiveArray>()
-            .toList()
             .forEach { crc.accumulate(it.arrayLength) }
 
         return crc.get() and 0xFF

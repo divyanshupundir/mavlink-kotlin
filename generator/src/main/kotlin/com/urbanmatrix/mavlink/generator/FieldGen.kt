@@ -30,14 +30,16 @@ private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName =
     }
 }
 
-fun FieldModel.generateSerializeStatement(outputName: String, codeBuilder: CodeBlock.Builder): CodeBlock.Builder {
+fun FieldModel.generateSerializeStatement(outputName: String, codeBuilder: CodeBlock.Builder) {
     val valName = CaseFormat.fromSnake(name).toLowerCamel()
-    return when (this) {
+    when (this) {
         is FieldModel.Enum -> codeBuilder.addStatement("$outputName.%M($valName.value, $size)", encodeMethodName)
         is FieldModel.Primitive -> codeBuilder.addStatement("$outputName.%M($valName)", encodeMethodName)
         is FieldModel.PrimitiveArray -> codeBuilder.addStatement("$outputName.%M($valName, $size)", encodeMethodName)
     }
 }
+
+fun FieldModel.generateDeserializeStatement(): Unit = TODO()
 
 private fun resolveKotlinPrimitiveType(primitiveType: String): TypeName = when (primitiveType) {
     "uint8_t_mavlink_version", "uint8_t", "int8_t",
@@ -68,36 +70,66 @@ private val FieldModel.defaultKotlinValue: String
 
 private const val SERIALIZATION_PACKAGE = "com.urbanmatrix.mavlink.serialization"
 
-private val FieldModel.encodeMethodName: MemberName get() {
-    return when (this) {
-        is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "encodeEnumValue")
-        is FieldModel.Primitive -> when (type) {
-            "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8")
-            "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8")
-            "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt16")
-            "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint16")
-            "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt32")
-            "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint32")
-            "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt64")
-            "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint64")
-            "float" -> MemberName(SERIALIZATION_PACKAGE, "encodeFloat")
-            "double" -> MemberName(SERIALIZATION_PACKAGE, "encodeDouble")
-            "char" -> MemberName(SERIALIZATION_PACKAGE, "encodeChar")
-            else -> throw IllegalArgumentException("Unknown type: $type")
-        }
-        is FieldModel.PrimitiveArray -> when (primitiveType) {
-            "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8Array")
-            "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8Array")
-            "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt16Array")
-            "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint16Array")
-            "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt32Array")
-            "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint32Array")
-            "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt64Array")
-            "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint64Array")
-            "float" -> MemberName(SERIALIZATION_PACKAGE, "encodeFloatArray")
-            "double" -> MemberName(SERIALIZATION_PACKAGE, "encodeDoubleArray")
-            "char" -> MemberName(SERIALIZATION_PACKAGE, "encodeString")
-            else -> throw IllegalArgumentException("Unknown type: $primitiveType")
-        }
+private val FieldModel.encodeMethodName: MemberName get() = when (this) {
+    is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "encodeEnumValue")
+    is FieldModel.Primitive -> when (type) {
+        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8")
+        "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8")
+        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt16")
+        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint16")
+        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt32")
+        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint32")
+        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt64")
+        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint64")
+        "float" -> MemberName(SERIALIZATION_PACKAGE, "encodeFloat")
+        "double" -> MemberName(SERIALIZATION_PACKAGE, "encodeDouble")
+        "char" -> MemberName(SERIALIZATION_PACKAGE, "encodeChar")
+        else -> throw IllegalArgumentException("Unknown type: $type")
+    }
+    is FieldModel.PrimitiveArray -> when (primitiveType) {
+        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8Array")
+        "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8Array")
+        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt16Array")
+        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint16Array")
+        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt32Array")
+        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint32Array")
+        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt64Array")
+        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint64Array")
+        "float" -> MemberName(SERIALIZATION_PACKAGE, "encodeFloatArray")
+        "double" -> MemberName(SERIALIZATION_PACKAGE, "encodeDoubleArray")
+        "char" -> MemberName(SERIALIZATION_PACKAGE, "encodeString")
+        else -> throw IllegalArgumentException("Unknown type: $primitiveType")
+    }
+}
+
+private val FieldModel.decodeMethodName: MemberName get() = when (this) {
+    is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "decodeEnumValue")
+    is FieldModel.Primitive -> when (type) {
+        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8")
+        "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint8")
+        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt16")
+        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint16")
+        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt32")
+        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint32")
+        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt64")
+        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint64")
+        "float" -> MemberName(SERIALIZATION_PACKAGE, "decodeFloat")
+        "double" -> MemberName(SERIALIZATION_PACKAGE, "decodeDouble")
+        "char" -> MemberName(SERIALIZATION_PACKAGE, "decodeChar")
+        else -> throw IllegalArgumentException("Unknown type: $type")
+    }
+    is FieldModel.PrimitiveArray -> when (primitiveType) {
+        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8Array")
+        "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint8Array")
+        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt16Array")
+        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint16Array")
+        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt32Array")
+        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint32Array")
+        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt64Array")
+        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint64Array")
+        "float" -> MemberName(SERIALIZATION_PACKAGE, "decodeFloatArray")
+        "double" -> MemberName(SERIALIZATION_PACKAGE, "decodeDoubleArray")
+        "char" -> MemberName(SERIALIZATION_PACKAGE, "decodeString")
+        else -> throw IllegalArgumentException("Unknown type: $primitiveType")
     }
 }
