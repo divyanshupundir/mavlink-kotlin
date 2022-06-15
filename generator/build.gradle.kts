@@ -14,7 +14,8 @@ tasks.getByName<Test>("test") {
 
 idea {
     module {
-        testSourceDirs.plusAssign(file("build/generated"))
+        testSourceDirs.plusAssign(file("build/generated/sources"))
+        generatedSourceDirs.plusAssign(file("build/generated/sources"))
     }
 }
 
