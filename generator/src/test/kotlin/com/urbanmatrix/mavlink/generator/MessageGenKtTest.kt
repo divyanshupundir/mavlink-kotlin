@@ -11,6 +11,10 @@ class MessageGenKtTest {
         val enumResolver = EnumResolver(BASE_PACKAGE, models)
 
         for (model in models) {
+            model
+                .generateDialectFile(BASE_PACKAGE)
+                .writeTo(File(GENERATED_SOURCES_DIR))
+
             for (enum in model.enums) {
                 enum
                     .generateEnumFile("$BASE_PACKAGE.${model.name}")
