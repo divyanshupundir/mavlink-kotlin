@@ -33,7 +33,7 @@ private fun MavlinkModel.generateDependencies(basePackageName: String) = buildCo
     addStatement("setOf(")
     indent()
     includes
-        .map { it.substringBeforeLast(".xml") }
+        .map { it.removeSuffix(".xml") }
         .map {
             ClassName(
                 "$basePackageName.$it",
