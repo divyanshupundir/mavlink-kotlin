@@ -1,4 +1,4 @@
-package com.urbanmatrix.mavlink.generator
+package com.urbanmatrix.mavlink.serialization
 
 import java.nio.charset.StandardCharsets
 
@@ -13,6 +13,12 @@ class CrcX25 {
     fun accumulate(bytes: ByteArray) {
         for (b in bytes) {
             accumulate(b.toInt())
+        }
+    }
+
+    fun accumulate(bytes: ByteArray, offset: Int, length: Int) {
+        for (i in offset until length) {
+            accumulate(bytes[i].toInt())
         }
     }
 
