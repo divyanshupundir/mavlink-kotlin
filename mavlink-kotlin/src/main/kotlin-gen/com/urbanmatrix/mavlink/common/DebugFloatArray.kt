@@ -31,13 +31,13 @@ public data class DebugFloatArray(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Unique ID used to discriminate between arrays
-   */
-  public val arrayId: Int = 0,
-  /**
    * Name, for human-friendly display in a Ground Control Station
    */
   public val name: String = "",
+  /**
+   * Unique ID used to discriminate between arrays
+   */
+  public val arrayId: Int = 0,
   /**
    * data
    */
@@ -67,8 +67,8 @@ public data class DebugFloatArray(
       val data = inputBuffer.decodeFloatArray(232)
       DebugFloatArray(
         timeUsec = timeUsec,
-        arrayId = arrayId,
         name = name,
+        arrayId = arrayId,
         data = data,
       )
     }

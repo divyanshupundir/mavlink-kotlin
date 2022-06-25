@@ -35,14 +35,6 @@ public data class SensBatmon(
    */
   public val temperature: Float = 0F,
   /**
-   * Battery monitor safetystatus report bits in Hex
-   */
-  public val safetystatus: Long = 0L,
-  /**
-   * Battery monitor operation status report bits in Hex
-   */
-  public val operationstatus: Long = 0L,
-  /**
    * Battery pack voltage
    */
   public val voltage: Int = 0,
@@ -51,6 +43,10 @@ public data class SensBatmon(
    */
   public val current: Int = 0,
   /**
+   * Battery pack state-of-charge
+   */
+  public val soc: Int = 0,
+  /**
    * Battery monitor status report bits in Hex
    */
   public val batterystatus: Int = 0,
@@ -58,6 +54,14 @@ public data class SensBatmon(
    * Battery monitor serial number in Hex
    */
   public val serialnumber: Int = 0,
+  /**
+   * Battery monitor safetystatus report bits in Hex
+   */
+  public val safetystatus: Long = 0L,
+  /**
+   * Battery monitor operation status report bits in Hex
+   */
+  public val operationstatus: Long = 0L,
   /**
    * Battery pack cell 1 voltage
    */
@@ -82,10 +86,6 @@ public data class SensBatmon(
    * Battery pack cell 6 voltage
    */
   public val cellvoltage6: Int = 0,
-  /**
-   * Battery pack state-of-charge
-   */
-  public val soc: Int = 0,
 ) : MavMessage<SensBatmon> {
   public override val instanceMetadata: MavMessage.Metadata<SensBatmon> = METADATA
 
@@ -134,19 +134,19 @@ public data class SensBatmon(
       SensBatmon(
         batmonTimestamp = batmonTimestamp,
         temperature = temperature,
-        safetystatus = safetystatus,
-        operationstatus = operationstatus,
         voltage = voltage,
         current = current,
+        soc = soc,
         batterystatus = batterystatus,
         serialnumber = serialnumber,
+        safetystatus = safetystatus,
+        operationstatus = operationstatus,
         cellvoltage1 = cellvoltage1,
         cellvoltage2 = cellvoltage2,
         cellvoltage3 = cellvoltage3,
         cellvoltage4 = cellvoltage4,
         cellvoltage5 = cellvoltage5,
         cellvoltage6 = cellvoltage6,
-        soc = soc,
       )
     }
 

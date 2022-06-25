@@ -27,6 +27,10 @@ public data class TrajectoryRepresentationBezier(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Number of valid control points (up-to 5 points are possible)
+   */
+  public val validPoints: Int = 0,
+  /**
    * X-coordinate of bezier control points. Set to NaN if not being used
    */
   public val posX: List<Float> = emptyList(),
@@ -46,10 +50,6 @@ public data class TrajectoryRepresentationBezier(
    * Yaw. Set to NaN for unchanged
    */
   public val posYaw: List<Float> = emptyList(),
-  /**
-   * Number of valid control points (up-to 5 points are possible)
-   */
-  public val validPoints: Int = 0,
 ) : MavMessage<TrajectoryRepresentationBezier> {
   public override val instanceMetadata: MavMessage.Metadata<TrajectoryRepresentationBezier> =
       METADATA
@@ -83,12 +83,12 @@ public data class TrajectoryRepresentationBezier(
       val validPoints = inputBuffer.decodeUint8()
       TrajectoryRepresentationBezier(
         timeUsec = timeUsec,
+        validPoints = validPoints,
         posX = posX,
         posY = posY,
         posZ = posZ,
         delta = delta,
         posYaw = posYaw,
-        validPoints = validPoints,
       )
     }
 

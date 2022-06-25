@@ -18,14 +18,6 @@ import kotlin.Int
  */
 public data class RequestEvent(
   /**
-   * First sequence number of the requested event.
-   */
-  public val firstSequence: Int = 0,
-  /**
-   * Last sequence number of the requested event.
-   */
-  public val lastSequence: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -33,6 +25,14 @@ public data class RequestEvent(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * First sequence number of the requested event.
+   */
+  public val firstSequence: Int = 0,
+  /**
+   * Last sequence number of the requested event.
+   */
+  public val lastSequence: Int = 0,
 ) : MavMessage<RequestEvent> {
   public override val instanceMetadata: MavMessage.Metadata<RequestEvent> = METADATA
 
@@ -57,10 +57,10 @@ public data class RequestEvent(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       RequestEvent(
-        firstSequence = firstSequence,
-        lastSequence = lastSequence,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        firstSequence = firstSequence,
+        lastSequence = lastSequence,
       )
     }
 

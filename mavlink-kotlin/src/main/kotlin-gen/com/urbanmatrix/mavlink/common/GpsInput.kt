@@ -36,9 +36,25 @@ public data class GpsInput(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * ID of the GPS for multiple GPS inputs
+   */
+  public val gpsId: Int = 0,
+  /**
+   * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
+   */
+  public val ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0),
+  /**
    * GPS time (from start of GPS week)
    */
   public val timeWeekMs: Long = 0L,
+  /**
+   * GPS week number
+   */
+  public val timeWeek: Int = 0,
+  /**
+   * 0-1: no fix, 2: 2D fix, 3: 3D fix. 4: 3D with DGPS. 5: 3D with RTK
+   */
+  public val fixType: Int = 0,
   /**
    * Latitude (WGS84)
    */
@@ -83,22 +99,6 @@ public data class GpsInput(
    * GPS vertical accuracy
    */
   public val vertAccuracy: Float = 0F,
-  /**
-   * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
-   */
-  public val ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0),
-  /**
-   * GPS week number
-   */
-  public val timeWeek: Int = 0,
-  /**
-   * ID of the GPS for multiple GPS inputs
-   */
-  public val gpsId: Int = 0,
-  /**
-   * 0-1: no fix, 2: 2D fix, 3: 3D fix. 4: 3D with DGPS. 5: 3D with RTK
-   */
-  public val fixType: Int = 0,
   /**
    * Number of satellites visible.
    */
@@ -165,7 +165,11 @@ public data class GpsInput(
       val yaw = inputBuffer.decodeUint16()
       GpsInput(
         timeUsec = timeUsec,
+        gpsId = gpsId,
+        ignoreFlags = ignoreFlags,
         timeWeekMs = timeWeekMs,
+        timeWeek = timeWeek,
+        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -177,10 +181,6 @@ public data class GpsInput(
         speedAccuracy = speedAccuracy,
         horizAccuracy = horizAccuracy,
         vertAccuracy = vertAccuracy,
-        ignoreFlags = ignoreFlags,
-        timeWeek = timeWeek,
-        gpsId = gpsId,
-        fixType = fixType,
         satellitesVisible = satellitesVisible,
         yaw = yaw,
       )

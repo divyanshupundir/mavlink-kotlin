@@ -27,13 +27,30 @@ import kotlin.Long
  */
 public data class CommandLongStamped(
   /**
+   * UTC time, seconds elapsed since 01.01.1970
+   */
+  public val utcTime: Long = 0L,
+  /**
    * Microseconds elapsed since vehicle boot
    */
   public val vehicleTimestamp: BigInteger = BigInteger.ZERO,
   /**
-   * UTC time, seconds elapsed since 01.01.1970
+   * System which should execute the command
    */
-  public val utcTime: Long = 0L,
+  public val targetSystem: Int = 0,
+  /**
+   * Component which should execute the command, 0 for all components
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Command ID, as defined by MAV_CMD enum.
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
+   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
+   * command)
+   */
+  public val confirmation: Int = 0,
   /**
    * Parameter 1, as defined by MAV_CMD enum.
    */
@@ -62,23 +79,6 @@ public data class CommandLongStamped(
    * Parameter 7, as defined by MAV_CMD enum.
    */
   public val param7: Float = 0F,
-  /**
-   * Command ID, as defined by MAV_CMD enum.
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
-   * System which should execute the command
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component which should execute the command, 0 for all components
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
-   * command)
-   */
-  public val confirmation: Int = 0,
 ) : MavMessage<CommandLongStamped> {
   public override val instanceMetadata: MavMessage.Metadata<CommandLongStamped> = METADATA
 
@@ -124,8 +124,12 @@ public data class CommandLongStamped(
       val targetComponent = inputBuffer.decodeUint8()
       val confirmation = inputBuffer.decodeUint8()
       CommandLongStamped(
-        vehicleTimestamp = vehicleTimestamp,
         utcTime = utcTime,
+        vehicleTimestamp = vehicleTimestamp,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        command = command,
+        confirmation = confirmation,
         param1 = param1,
         param2 = param2,
         param3 = param3,
@@ -133,10 +137,6 @@ public data class CommandLongStamped(
         param5 = param5,
         param6 = param6,
         param7 = param7,
-        command = command,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        confirmation = confirmation,
       )
     }
 

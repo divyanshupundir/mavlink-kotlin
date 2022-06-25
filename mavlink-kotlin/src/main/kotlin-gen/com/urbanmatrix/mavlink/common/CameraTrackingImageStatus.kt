@@ -19,6 +19,18 @@ import kotlin.Int
  */
 public data class CameraTrackingImageStatus(
   /**
+   * Current tracking status
+   */
+  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Current tracking mode
+   */
+  public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0),
+  /**
+   * Defines location of target data
+   */
+  public val targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0),
+  /**
    * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is
    * right), NAN if unknown
    */
@@ -53,18 +65,6 @@ public data class CameraTrackingImageStatus(
    * is top, 1 is bottom), NAN if unknown
    */
   public val recBottomY: Float = 0F,
-  /**
-   * Current tracking status
-   */
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Current tracking mode
-   */
-  public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0),
-  /**
-   * Defines location of target data
-   */
-  public val targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0),
 ) : MavMessage<CameraTrackingImageStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
 
@@ -111,6 +111,9 @@ public data class CameraTrackingImageStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       CameraTrackingImageStatus(
+        trackingStatus = trackingStatus,
+        trackingMode = trackingMode,
+        targetData = targetData,
         pointX = pointX,
         pointY = pointY,
         radius = radius,
@@ -118,9 +121,6 @@ public data class CameraTrackingImageStatus(
         recTopY = recTopY,
         recBottomX = recBottomX,
         recBottomY = recBottomY,
-        trackingStatus = trackingStatus,
-        trackingMode = trackingMode,
-        targetData = targetData,
       )
     }
 

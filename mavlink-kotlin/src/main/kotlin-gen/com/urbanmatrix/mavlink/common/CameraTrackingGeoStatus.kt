@@ -21,6 +21,10 @@ import kotlin.Int
  */
 public data class CameraTrackingGeoStatus(
   /**
+   * Current tracking status
+   */
+  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
+  /**
    * Latitude of tracked object
    */
   public val lat: Int = 0,
@@ -68,10 +72,6 @@ public data class CameraTrackingGeoStatus(
    * Accuracy of heading, in NED. NAN if unknown
    */
   public val hdgAcc: Float = 0F,
-  /**
-   * Current tracking status
-   */
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<CameraTrackingGeoStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CameraTrackingGeoStatus> = METADATA
 
@@ -117,6 +117,7 @@ public data class CameraTrackingGeoStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       CameraTrackingGeoStatus(
+        trackingStatus = trackingStatus,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -129,7 +130,6 @@ public data class CameraTrackingGeoStatus(
         dist = dist,
         hdg = hdg,
         hdgAcc = hdgAcc,
-        trackingStatus = trackingStatus,
       )
     }
 

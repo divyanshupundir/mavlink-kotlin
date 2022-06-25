@@ -22,21 +22,21 @@ import kotlin.Long
  */
 public data class FenceStatus(
   /**
-   * Time (since boot) of last breach.
+   * Breach status (0 if currently inside fence, 1 if outside).
    */
-  public val breachTime: Long = 0L,
+  public val breachStatus: Int = 0,
   /**
    * Number of fence breaches.
    */
   public val breachCount: Int = 0,
   /**
-   * Breach status (0 if currently inside fence, 1 if outside).
-   */
-  public val breachStatus: Int = 0,
-  /**
    * Last breach type.
    */
   public val breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0),
+  /**
+   * Time (since boot) of last breach.
+   */
+  public val breachTime: Long = 0L,
   /**
    * Active action to prevent fence breach
    */
@@ -73,10 +73,10 @@ public data class FenceStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       FenceStatus(
-        breachTime = breachTime,
-        breachCount = breachCount,
         breachStatus = breachStatus,
+        breachCount = breachCount,
         breachType = breachType,
+        breachTime = breachTime,
         breachMitigation = breachMitigation,
       )
     }

@@ -60,6 +60,10 @@ public data class SysStatus(
    */
   public val currentBattery: Int = 0,
   /**
+   * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
+   */
+  public val batteryRemaining: Int = 0,
+  /**
    * Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
    * corrupted on reception on the MAV)
    */
@@ -85,10 +89,6 @@ public data class SysStatus(
    * Autopilot-specific errors
    */
   public val errorsCount4: Int = 0,
-  /**
-   * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
-   */
-  public val batteryRemaining: Int = 0,
   /**
    * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.
    * Value of 1: present.
@@ -179,13 +179,13 @@ public data class SysStatus(
         load = load,
         voltageBattery = voltageBattery,
         currentBattery = currentBattery,
+        batteryRemaining = batteryRemaining,
         dropRateComm = dropRateComm,
         errorsComm = errorsComm,
         errorsCount1 = errorsCount1,
         errorsCount2 = errorsCount2,
         errorsCount3 = errorsCount3,
         errorsCount4 = errorsCount4,
-        batteryRemaining = batteryRemaining,
         onboardControlSensorsPresentExtended = onboardControlSensorsPresentExtended,
         onboardControlSensorsEnabledExtended = onboardControlSensorsEnabledExtended,
         onboardControlSensorsHealthExtended = onboardControlSensorsHealthExtended,

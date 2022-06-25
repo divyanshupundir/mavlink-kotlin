@@ -21,10 +21,6 @@ import kotlin.Int
  */
 public data class CommandCancel(
   /**
-   * Command ID (of command to cancel).
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
    * System executing long running command. Should not be broadcast (0).
    */
   public val targetSystem: Int = 0,
@@ -32,6 +28,10 @@ public data class CommandCancel(
    * Component executing long running command.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Command ID (of command to cancel).
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
 ) : MavMessage<CommandCancel> {
   public override val instanceMetadata: MavMessage.Metadata<CommandCancel> = METADATA
 
@@ -57,9 +57,9 @@ public data class CommandCancel(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       CommandCancel(
-        command = command,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        command = command,
       )
     }
 

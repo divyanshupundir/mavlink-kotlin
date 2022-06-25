@@ -20,6 +20,10 @@ import kotlin.Long
  */
 public data class FlightInformation(
   /**
+   * Timestamp (time since system boot).
+   */
+  public val timeBootMs: Long = 0L,
+  /**
    * Timestamp at arming (time since UNIX epoch) in UTC, 0 for unknown
    */
   public val armingTimeUtc: BigInteger = BigInteger.ZERO,
@@ -31,10 +35,6 @@ public data class FlightInformation(
    * Universally unique identifier (UUID) of flight, should correspond to name of log files
    */
   public val flightUuid: BigInteger = BigInteger.ZERO,
-  /**
-   * Timestamp (time since system boot).
-   */
-  public val timeBootMs: Long = 0L,
 ) : MavMessage<FlightInformation> {
   public override val instanceMetadata: MavMessage.Metadata<FlightInformation> = METADATA
 
@@ -59,10 +59,10 @@ public data class FlightInformation(
       val flightUuid = inputBuffer.decodeUint64()
       val timeBootMs = inputBuffer.decodeUint32()
       FlightInformation(
+        timeBootMs = timeBootMs,
         armingTimeUtc = armingTimeUtc,
         takeoffTimeUtc = takeoffTimeUtc,
         flightUuid = flightUuid,
-        timeBootMs = timeBootMs,
       )
     }
 

@@ -34,38 +34,6 @@ public data class HighLatency2(
    */
   public val timestamp: Long = 0L,
   /**
-   * Latitude
-   */
-  public val latitude: Int = 0,
-  /**
-   * Longitude
-   */
-  public val longitude: Int = 0,
-  /**
-   * A bitfield for use for autopilot-specific flags (2 byte version).
-   */
-  public val customMode: Int = 0,
-  /**
-   * Altitude above mean sea level
-   */
-  public val altitude: Int = 0,
-  /**
-   * Altitude setpoint
-   */
-  public val targetAltitude: Int = 0,
-  /**
-   * Distance to target waypoint or position
-   */
-  public val targetDistance: Int = 0,
-  /**
-   * Current waypoint number
-   */
-  public val wpNum: Int = 0,
-  /**
-   * Bitmap of failure flags.
-   */
-  public val failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0),
-  /**
    * Type of the MAV (quadrotor, helicopter, etc.)
    */
   public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0),
@@ -75,6 +43,26 @@ public data class HighLatency2(
    */
   public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0),
   /**
+   * A bitfield for use for autopilot-specific flags (2 byte version).
+   */
+  public val customMode: Int = 0,
+  /**
+   * Latitude
+   */
+  public val latitude: Int = 0,
+  /**
+   * Longitude
+   */
+  public val longitude: Int = 0,
+  /**
+   * Altitude above mean sea level
+   */
+  public val altitude: Int = 0,
+  /**
+   * Altitude setpoint
+   */
+  public val targetAltitude: Int = 0,
+  /**
    * Heading
    */
   public val heading: Int = 0,
@@ -82,6 +70,10 @@ public data class HighLatency2(
    * Heading setpoint
    */
   public val targetHeading: Int = 0,
+  /**
+   * Distance to target waypoint or position
+   */
+  public val targetDistance: Int = 0,
   /**
    * Throttle
    */
@@ -126,6 +118,14 @@ public data class HighLatency2(
    * Battery level (-1 if field not provided).
    */
   public val battery: Int = 0,
+  /**
+   * Current waypoint number
+   */
+  public val wpNum: Int = 0,
+  /**
+   * Bitmap of failure flags.
+   */
+  public val failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0),
   /**
    * Field for custom payload.
    */
@@ -218,18 +218,16 @@ public data class HighLatency2(
       val custom2 = inputBuffer.decodeInt8()
       HighLatency2(
         timestamp = timestamp,
-        latitude = latitude,
-        longitude = longitude,
-        customMode = customMode,
-        altitude = altitude,
-        targetAltitude = targetAltitude,
-        targetDistance = targetDistance,
-        wpNum = wpNum,
-        failureFlags = failureFlags,
         type = type,
         autopilot = autopilot,
+        customMode = customMode,
+        latitude = latitude,
+        longitude = longitude,
+        altitude = altitude,
+        targetAltitude = targetAltitude,
         heading = heading,
         targetHeading = targetHeading,
+        targetDistance = targetDistance,
         throttle = throttle,
         airspeed = airspeed,
         airspeedSp = airspeedSp,
@@ -241,6 +239,8 @@ public data class HighLatency2(
         temperatureAir = temperatureAir,
         climbRate = climbRate,
         battery = battery,
+        wpNum = wpNum,
+        failureFlags = failureFlags,
         custom0 = custom0,
         custom1 = custom1,
         custom2 = custom2,

@@ -19,10 +19,6 @@ import kotlin.Int
  */
 public data class DigicamControl(
   /**
-   * Correspondent value to given extra_param.
-   */
-  public val extraValue: Float = 0F,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -59,6 +55,10 @@ public data class DigicamControl(
    * Extra parameters enumeration (0 means ignore).
    */
   public val extraParam: Int = 0,
+  /**
+   * Correspondent value to given extra_param.
+   */
+  public val extraValue: Float = 0F,
 ) : MavMessage<DigicamControl> {
   public override val instanceMetadata: MavMessage.Metadata<DigicamControl> = METADATA
 
@@ -95,7 +95,6 @@ public data class DigicamControl(
       val commandId = inputBuffer.decodeUint8()
       val extraParam = inputBuffer.decodeUint8()
       DigicamControl(
-        extraValue = extraValue,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         session = session,
@@ -105,6 +104,7 @@ public data class DigicamControl(
         shot = shot,
         commandId = commandId,
         extraParam = extraParam,
+        extraValue = extraValue,
       )
     }
 

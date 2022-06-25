@@ -31,13 +31,37 @@ import kotlin.Long
  */
 public data class CommandIntStamped(
   /**
+   * UTC time, seconds elapsed since 01.01.1970
+   */
+  public val utcTime: Long = 0L,
+  /**
    * Microseconds elapsed since vehicle boot
    */
   public val vehicleTimestamp: BigInteger = BigInteger.ZERO,
   /**
-   * UTC time, seconds elapsed since 01.01.1970
+   * System ID
    */
-  public val utcTime: Long = 0L,
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * The coordinate system of the COMMAND, as defined by MAV_FRAME enum
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * The scheduled action for the mission item, as defined by MAV_CMD enum
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
+   * false:0, true:1
+   */
+  public val current: Int = 0,
+  /**
+   * autocontinue to next wp
+   */
+  public val autocontinue: Int = 0,
   /**
    * PARAM1, see MAV_CMD enum
    */
@@ -67,30 +91,6 @@ public data class CommandIntStamped(
    * depending on frame).
    */
   public val z: Float = 0F,
-  /**
-   * The scheduled action for the mission item, as defined by MAV_CMD enum
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * The coordinate system of the COMMAND, as defined by MAV_FRAME enum
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * false:0, true:1
-   */
-  public val current: Int = 0,
-  /**
-   * autocontinue to next wp
-   */
-  public val autocontinue: Int = 0,
 ) : MavMessage<CommandIntStamped> {
   public override val instanceMetadata: MavMessage.Metadata<CommandIntStamped> = METADATA
 
@@ -143,8 +143,14 @@ public data class CommandIntStamped(
       val current = inputBuffer.decodeUint8()
       val autocontinue = inputBuffer.decodeUint8()
       CommandIntStamped(
-        vehicleTimestamp = vehicleTimestamp,
         utcTime = utcTime,
+        vehicleTimestamp = vehicleTimestamp,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        frame = frame,
+        command = command,
+        current = current,
+        autocontinue = autocontinue,
         param1 = param1,
         param2 = param2,
         param3 = param3,
@@ -152,12 +158,6 @@ public data class CommandIntStamped(
         x = x,
         y = y,
         z = z,
-        command = command,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        frame = frame,
-        current = current,
-        autocontinue = autocontinue,
       )
     }
 

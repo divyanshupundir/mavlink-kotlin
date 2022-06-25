@@ -32,13 +32,21 @@ import kotlin.String
  */
 public data class GimbalDeviceInformation(
   /**
-   * UID of gimbal hardware (0 if unknown).
-   */
-  public val uid: BigInteger = BigInteger.ZERO,
-  /**
    * Timestamp (time since system boot).
    */
   public val timeBootMs: Long = 0L,
+  /**
+   * Name of the gimbal vendor.
+   */
+  public val vendorName: String = "",
+  /**
+   * Name of the gimbal model.
+   */
+  public val modelName: String = "",
+  /**
+   * Custom name of the gimbal given to it by the user.
+   */
+  public val customName: String = "",
   /**
    * Version of the gimbal firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff).
@@ -49,6 +57,18 @@ public data class GimbalDeviceInformation(
    * & 0xff) << 8 | (Major & 0xff).
    */
   public val hardwareVersion: Long = 0L,
+  /**
+   * UID of gimbal hardware (0 if unknown).
+   */
+  public val uid: BigInteger = BigInteger.ZERO,
+  /**
+   * Bitmap of gimbal capability flags.
+   */
+  public val capFlags: MavEnumValue<GimbalDeviceCapFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Bitmap for use for gimbal-specific capability flags.
+   */
+  public val customCapFlags: Int = 0,
   /**
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
@@ -73,26 +93,6 @@ public data class GimbalDeviceInformation(
    * Maximum hardware yaw angle (positive: to the right, negative: to the left)
    */
   public val yawMax: Float = 0F,
-  /**
-   * Bitmap of gimbal capability flags.
-   */
-  public val capFlags: MavEnumValue<GimbalDeviceCapFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Bitmap for use for gimbal-specific capability flags.
-   */
-  public val customCapFlags: Int = 0,
-  /**
-   * Name of the gimbal vendor.
-   */
-  public val vendorName: String = "",
-  /**
-   * Name of the gimbal model.
-   */
-  public val modelName: String = "",
-  /**
-   * Custom name of the gimbal given to it by the user.
-   */
-  public val customName: String = "",
 ) : MavMessage<GimbalDeviceInformation> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceInformation> = METADATA
 
@@ -142,21 +142,21 @@ public data class GimbalDeviceInformation(
       val modelName = inputBuffer.decodeString(32)
       val customName = inputBuffer.decodeString(32)
       GimbalDeviceInformation(
-        uid = uid,
         timeBootMs = timeBootMs,
+        vendorName = vendorName,
+        modelName = modelName,
+        customName = customName,
         firmwareVersion = firmwareVersion,
         hardwareVersion = hardwareVersion,
+        uid = uid,
+        capFlags = capFlags,
+        customCapFlags = customCapFlags,
         rollMin = rollMin,
         rollMax = rollMax,
         pitchMin = pitchMin,
         pitchMax = pitchMax,
         yawMin = yawMin,
         yawMax = yawMax,
-        capFlags = capFlags,
-        customCapFlags = customCapFlags,
-        vendorName = vendorName,
-        modelName = modelName,
-        customName = customName,
       )
     }
 

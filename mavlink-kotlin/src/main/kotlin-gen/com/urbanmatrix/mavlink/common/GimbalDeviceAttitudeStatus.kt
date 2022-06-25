@@ -30,9 +30,21 @@ import kotlin.collections.List
  */
 public data class GimbalDeviceAttitudeStatus(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Timestamp (time since system boot).
    */
   public val timeBootMs: Long = 0L,
+  /**
+   * Current gimbal flags set.
+   */
+  public val flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0),
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
    * whether the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set)
@@ -54,18 +66,6 @@ public data class GimbalDeviceAttitudeStatus(
    * Failure flags (0 for no failure)
    */
   public val failureFlags: MavEnumValue<GimbalDeviceErrorFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Current gimbal flags set.
-   */
-  public val flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
 ) : MavMessage<GimbalDeviceAttitudeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceAttitudeStatus> = METADATA
 
@@ -107,15 +107,15 @@ public data class GimbalDeviceAttitudeStatus(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       GimbalDeviceAttitudeStatus(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         timeBootMs = timeBootMs,
+        flags = flags,
         q = q,
         angularVelocityX = angularVelocityX,
         angularVelocityY = angularVelocityY,
         angularVelocityZ = angularVelocityZ,
         failureFlags = failureFlags,
-        flags = flags,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
       )
     }
 

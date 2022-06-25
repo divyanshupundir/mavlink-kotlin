@@ -18,13 +18,13 @@ import kotlin.Int
 @Deprecated(message = "")
 public data class DataStream(
   /**
-   * The message rate
-   */
-  public val messageRate: Int = 0,
-  /**
    * 1 stream is enabled, 0 stream is stopped.
    */
   public val onOff: Int = 0,
+  /**
+   * The message rate
+   */
+  public val messageRate: Int = 0,
   /**
    * The ID of the requested data stream
    */
@@ -51,8 +51,8 @@ public data class DataStream(
       val onOff = inputBuffer.decodeUint8()
       val streamId = inputBuffer.decodeUint8()
       DataStream(
-        messageRate = messageRate,
         onOff = onOff,
+        messageRate = messageRate,
         streamId = streamId,
       )
     }

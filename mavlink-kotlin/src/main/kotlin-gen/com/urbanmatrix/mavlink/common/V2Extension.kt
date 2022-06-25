@@ -19,16 +19,6 @@ import kotlin.collections.List
  */
 public data class V2Extension(
   /**
-   * A code that identifies the software component that understands this message (analogous to USB
-   * device classes or mime type strings). If this code is less than 32768, it is considered a
-   * 'registered' protocol extension and the corresponding entry should be added to
-   * https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators
-   * can register blocks of message IDs as needed (useful for GCS specific metadata, etc...).
-   * Message_types greater than 32767 are considered local experiments and should not be checked in to
-   * any widely distributed codebase.
-   */
-  public val messageType: Int = 0,
-  /**
    * Network ID (0 for broadcast)
    */
   public val targetNetwork: Int = 0,
@@ -40,6 +30,16 @@ public data class V2Extension(
    * Component ID (0 for broadcast)
    */
   public val targetComponent: Int = 0,
+  /**
+   * A code that identifies the software component that understands this message (analogous to USB
+   * device classes or mime type strings). If this code is less than 32768, it is considered a
+   * 'registered' protocol extension and the corresponding entry should be added to
+   * https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators
+   * can register blocks of message IDs as needed (useful for GCS specific metadata, etc...).
+   * Message_types greater than 32767 are considered local experiments and should not be checked in to
+   * any widely distributed codebase.
+   */
+  public val messageType: Int = 0,
   /**
    * Variable length payload. The length must be encoded in the payload as part of the message_type
    * protocol, e.g. by including the length as payload data, or by terminating the payload data with a
@@ -75,10 +75,10 @@ public data class V2Extension(
       val targetComponent = inputBuffer.decodeUint8()
       val payload = inputBuffer.decodeUint8Array(249)
       V2Extension(
-        messageType = messageType,
         targetNetwork = targetNetwork,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        messageType = messageType,
         payload = payload,
       )
     }

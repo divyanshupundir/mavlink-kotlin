@@ -29,10 +29,6 @@ public data class UavionixAdsbOutCfg(
    */
   public val icao: Long = 0L,
   /**
-   * Aircraft stall speed in cm/s
-   */
-  public val stallspeed: Int = 0,
-  /**
    * Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9, " " only)
    */
   public val callsign: String = "",
@@ -53,6 +49,10 @@ public data class UavionixAdsbOutCfg(
    * and add one] (table 2-37 DO-282B)
    */
   public val gpsoffsetlon: MavEnumValue<UavionixAdsbOutCfgGpsOffsetLon> = MavEnumValue.fromValue(0),
+  /**
+   * Aircraft stall speed in cm/s
+   */
+  public val stallspeed: Int = 0,
   /**
    * ADS-B transponder reciever and transmit enable flags
    */
@@ -105,12 +105,12 @@ public data class UavionixAdsbOutCfg(
       }
       UavionixAdsbOutCfg(
         icao = icao,
-        stallspeed = stallspeed,
         callsign = callsign,
         emittertype = emittertype,
         aircraftsize = aircraftsize,
         gpsoffsetlat = gpsoffsetlat,
         gpsoffsetlon = gpsoffsetlon,
+        stallspeed = stallspeed,
         rfselect = rfselect,
       )
     }

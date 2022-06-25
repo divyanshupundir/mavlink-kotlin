@@ -16,10 +16,6 @@ import kotlin.Int
  */
 public data class LoggingAck(
   /**
-   * sequence number (must match the one in LOGGING_DATA_ACKED)
-   */
-  public val sequence: Int = 0,
-  /**
    * system ID of the target
    */
   public val targetSystem: Int = 0,
@@ -27,6 +23,10 @@ public data class LoggingAck(
    * component ID of the target
    */
   public val targetComponent: Int = 0,
+  /**
+   * sequence number (must match the one in LOGGING_DATA_ACKED)
+   */
+  public val sequence: Int = 0,
 ) : MavMessage<LoggingAck> {
   public override val instanceMetadata: MavMessage.Metadata<LoggingAck> = METADATA
 
@@ -49,9 +49,9 @@ public data class LoggingAck(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       LoggingAck(
-        sequence = sequence,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        sequence = sequence,
       )
     }
 

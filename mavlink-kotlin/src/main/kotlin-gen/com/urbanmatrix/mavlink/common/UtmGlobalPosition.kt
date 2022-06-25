@@ -31,6 +31,10 @@ public data class UtmGlobalPosition(
    */
   public val time: BigInteger = BigInteger.ZERO,
   /**
+   * Unique UAS ID.
+   */
+  public val uasId: List<Int> = emptyList(),
+  /**
    * Latitude (WGS84)
    */
   public val lat: Int = 0,
@@ -46,18 +50,6 @@ public data class UtmGlobalPosition(
    * Altitude above ground
    */
   public val relativeAlt: Int = 0,
-  /**
-   * Next waypoint, latitude (WGS84)
-   */
-  public val nextLat: Int = 0,
-  /**
-   * Next waypoint, longitude (WGS84)
-   */
-  public val nextLon: Int = 0,
-  /**
-   * Next waypoint, altitude (WGS84)
-   */
-  public val nextAlt: Int = 0,
   /**
    * Ground X speed (latitude, positive north)
    */
@@ -83,13 +75,21 @@ public data class UtmGlobalPosition(
    */
   public val velAcc: Int = 0,
   /**
+   * Next waypoint, latitude (WGS84)
+   */
+  public val nextLat: Int = 0,
+  /**
+   * Next waypoint, longitude (WGS84)
+   */
+  public val nextLon: Int = 0,
+  /**
+   * Next waypoint, altitude (WGS84)
+   */
+  public val nextAlt: Int = 0,
+  /**
    * Time until next update. Set to 0 if unknown or in data driven mode.
    */
   public val updateRate: Int = 0,
-  /**
-   * Unique UAS ID.
-   */
-  public val uasId: List<Int> = emptyList(),
   /**
    * Flight state
    */
@@ -157,21 +157,21 @@ public data class UtmGlobalPosition(
       }
       UtmGlobalPosition(
         time = time,
+        uasId = uasId,
         lat = lat,
         lon = lon,
         alt = alt,
         relativeAlt = relativeAlt,
-        nextLat = nextLat,
-        nextLon = nextLon,
-        nextAlt = nextAlt,
         vx = vx,
         vy = vy,
         vz = vz,
         hAcc = hAcc,
         vAcc = vAcc,
         velAcc = velAcc,
+        nextLat = nextLat,
+        nextLon = nextLon,
+        nextAlt = nextAlt,
         updateRate = updateRate,
-        uasId = uasId,
         flightState = flightState,
         flags = flags,
       )

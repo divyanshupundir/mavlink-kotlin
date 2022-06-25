@@ -17,10 +17,6 @@ import kotlin.Int
  */
 public data class SupportedTunes(
   /**
-   * Bitfield of supported tune formats.
-   */
-  public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0),
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -28,6 +24,10 @@ public data class SupportedTunes(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Bitfield of supported tune formats.
+   */
+  public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0),
 ) : MavMessage<SupportedTunes> {
   public override val instanceMetadata: MavMessage.Metadata<SupportedTunes> = METADATA
 
@@ -53,9 +53,9 @@ public data class SupportedTunes(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       SupportedTunes(
-        format = format,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        format = format,
       )
     }
 

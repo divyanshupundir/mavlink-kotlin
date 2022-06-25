@@ -27,6 +27,15 @@ public data class CameraCaptureStatus(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Current status of image capturing (0: idle, 1: capture in progress, 2: interval set but idle,
+   * 3: interval set and capture in progress)
+   */
+  public val imageStatus: Int = 0,
+  /**
+   * Current status of video capturing (0: idle, 1: capture in progress)
+   */
+  public val videoStatus: Int = 0,
+  /**
    * Image capture interval
    */
   public val imageInterval: Float = 0F,
@@ -39,15 +48,6 @@ public data class CameraCaptureStatus(
    * Available storage capacity.
    */
   public val availableCapacity: Float = 0F,
-  /**
-   * Current status of image capturing (0: idle, 1: capture in progress, 2: interval set but idle,
-   * 3: interval set and capture in progress)
-   */
-  public val imageStatus: Int = 0,
-  /**
-   * Current status of video capturing (0: idle, 1: capture in progress)
-   */
-  public val videoStatus: Int = 0,
   /**
    * Total number of images captured ('forever', or until reset using MAV_CMD_STORAGE_FORMAT).
    */
@@ -83,11 +83,11 @@ public data class CameraCaptureStatus(
       val imageCount = inputBuffer.decodeInt32()
       CameraCaptureStatus(
         timeBootMs = timeBootMs,
+        imageStatus = imageStatus,
+        videoStatus = videoStatus,
         imageInterval = imageInterval,
         recordingTimeMs = recordingTimeMs,
         availableCapacity = availableCapacity,
-        imageStatus = imageStatus,
-        videoStatus = videoStatus,
         imageCount = imageCount,
       )
     }

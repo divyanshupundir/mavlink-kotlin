@@ -21,6 +21,23 @@ import kotlin.Int
  */
 public data class CommandLong(
   /**
+   * System which should execute the command
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component which should execute the command, 0 for all components
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Command ID (of command to send).
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
+   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
+   * command)
+   */
+  public val confirmation: Int = 0,
+  /**
    * Parameter 1 (for the specific command).
    */
   public val param1: Float = 0F,
@@ -48,23 +65,6 @@ public data class CommandLong(
    * Parameter 7 (for the specific command).
    */
   public val param7: Float = 0F,
-  /**
-   * Command ID (of command to send).
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
-   * System which should execute the command
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component which should execute the command, 0 for all components
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
-   * command)
-   */
-  public val confirmation: Int = 0,
 ) : MavMessage<CommandLong> {
   public override val instanceMetadata: MavMessage.Metadata<CommandLong> = METADATA
 
@@ -106,6 +106,10 @@ public data class CommandLong(
       val targetComponent = inputBuffer.decodeUint8()
       val confirmation = inputBuffer.decodeUint8()
       CommandLong(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        command = command,
+        confirmation = confirmation,
         param1 = param1,
         param2 = param2,
         param3 = param3,
@@ -113,10 +117,6 @@ public data class CommandLong(
         param5 = param5,
         param6 = param6,
         param7 = param7,
-        command = command,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        confirmation = confirmation,
       )
     }
 

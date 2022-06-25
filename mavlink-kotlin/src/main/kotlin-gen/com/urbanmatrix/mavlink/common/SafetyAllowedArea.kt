@@ -18,6 +18,11 @@ import kotlin.Int
  */
 public data class SafetyAllowedArea(
   /**
+   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
+   * handed, Z axis down.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
    * x position 1 / Latitude 1
    */
   public val p1x: Float = 0F,
@@ -41,11 +46,6 @@ public data class SafetyAllowedArea(
    * z position 2 / Altitude 2
    */
   public val p2z: Float = 0F,
-  /**
-   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
-   * handed, Z axis down.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<SafetyAllowedArea> {
   public override val instanceMetadata: MavMessage.Metadata<SafetyAllowedArea> = METADATA
 
@@ -79,13 +79,13 @@ public data class SafetyAllowedArea(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       SafetyAllowedArea(
+        frame = frame,
         p1x = p1x,
         p1y = p1y,
         p1z = p1z,
         p2x = p2x,
         p2y = p2y,
         p2z = p2z,
-        frame = frame,
       )
     }
 

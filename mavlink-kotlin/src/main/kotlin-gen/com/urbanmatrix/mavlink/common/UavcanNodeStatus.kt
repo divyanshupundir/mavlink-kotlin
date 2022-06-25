@@ -36,10 +36,6 @@ public data class UavcanNodeStatus(
    */
   public val uptimeSec: Long = 0L,
   /**
-   * Vendor-specific status information.
-   */
-  public val vendorSpecificStatusCode: Int = 0,
-  /**
    * Generalized node health status.
    */
   public val health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0),
@@ -51,6 +47,10 @@ public data class UavcanNodeStatus(
    * Not used currently.
    */
   public val subMode: Int = 0,
+  /**
+   * Vendor-specific status information.
+   */
+  public val vendorSpecificStatusCode: Int = 0,
 ) : MavMessage<UavcanNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<UavcanNodeStatus> = METADATA
 
@@ -87,10 +87,10 @@ public data class UavcanNodeStatus(
       UavcanNodeStatus(
         timeUsec = timeUsec,
         uptimeSec = uptimeSec,
-        vendorSpecificStatusCode = vendorSpecificStatusCode,
         health = health,
         mode = mode,
         subMode = subMode,
+        vendorSpecificStatusCode = vendorSpecificStatusCode,
       )
     }
 

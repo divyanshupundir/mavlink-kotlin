@@ -20,6 +20,14 @@ import kotlin.Int
  */
 public data class MountStatus(
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Pitch.
    */
   public val pointingA: Int = 0,
@@ -31,14 +39,6 @@ public data class MountStatus(
    * Yaw.
    */
   public val pointingC: Int = 0,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
   /**
    * Mount operating mode.
    */
@@ -74,11 +74,11 @@ public data class MountStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MountStatus(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         pointingA = pointingA,
         pointingB = pointingB,
         pointingC = pointingC,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         mountMode = mountMode,
       )
     }

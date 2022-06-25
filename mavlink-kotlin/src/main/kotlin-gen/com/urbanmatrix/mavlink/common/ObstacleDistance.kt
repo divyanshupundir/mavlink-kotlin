@@ -34,12 +34,21 @@ public data class ObstacleDistance(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Class id of the distance sensor type.
+   */
+  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
+  /**
    * Distance of obstacles around the vehicle with index 0 corresponding to north + angle_offset,
    * unless otherwise specified in the frame. A value of 0 is valid and means that the obstacle is
    * practically touching the sensor. A value of max_distance +1 means no obstacle is present. A value
    * of UINT16_MAX for unknown/not used. In a array element, one unit corresponds to 1cm.
    */
   public val distances: List<Int> = emptyList(),
+  /**
+   * Angular width in degrees of each array element. Increment direction is clockwise. This field is
+   * ignored if increment_f is non-zero.
+   */
+  public val increment: Int = 0,
   /**
    * Minimum distance the sensor can measure.
    */
@@ -48,15 +57,6 @@ public data class ObstacleDistance(
    * Maximum distance the sensor can measure.
    */
   public val maxDistance: Int = 0,
-  /**
-   * Class id of the distance sensor type.
-   */
-  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
-  /**
-   * Angular width in degrees of each array element. Increment direction is clockwise. This field is
-   * ignored if increment_f is non-zero.
-   */
-  public val increment: Int = 0,
   /**
    * Angular width in degrees of each array element as a float. If non-zero then this value is used
    * instead of the uint8_t increment field. Positive is clockwise direction, negative is
@@ -115,11 +115,11 @@ public data class ObstacleDistance(
       }
       ObstacleDistance(
         timeUsec = timeUsec,
+        sensorType = sensorType,
         distances = distances,
+        increment = increment,
         minDistance = minDistance,
         maxDistance = maxDistance,
-        sensorType = sensorType,
-        increment = increment,
         incrementF = incrementF,
         angleOffset = angleOffset,
         frame = frame,

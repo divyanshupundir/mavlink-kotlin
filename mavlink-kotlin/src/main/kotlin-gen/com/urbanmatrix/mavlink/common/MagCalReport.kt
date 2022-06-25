@@ -20,6 +20,22 @@ import kotlin.Int
  */
 public data class MagCalReport(
   /**
+   * Compass being calibrated.
+   */
+  public val compassId: Int = 0,
+  /**
+   * Bitmask of compasses being calibrated.
+   */
+  public val calMask: Int = 0,
+  /**
+   * Calibration Status.
+   */
+  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0),
+  /**
+   * 0=requires a MAV_CMD_DO_ACCEPT_MAG_CAL, 1=saved to parameters.
+   */
+  public val autosaved: Int = 0,
+  /**
    * RMS milligauss residuals.
    */
   public val fitness: Float = 0F,
@@ -59,22 +75,6 @@ public data class MagCalReport(
    * Z off-diagonal (matrix 32 and 23).
    */
   public val offdiagZ: Float = 0F,
-  /**
-   * Compass being calibrated.
-   */
-  public val compassId: Int = 0,
-  /**
-   * Bitmask of compasses being calibrated.
-   */
-  public val calMask: Int = 0,
-  /**
-   * Calibration Status.
-   */
-  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0),
-  /**
-   * 0=requires a MAV_CMD_DO_ACCEPT_MAG_CAL, 1=saved to parameters.
-   */
-  public val autosaved: Int = 0,
   /**
    * Confidence in orientation (higher is better).
    */
@@ -152,6 +152,10 @@ public data class MagCalReport(
       }
       val scaleFactor = inputBuffer.decodeFloat()
       MagCalReport(
+        compassId = compassId,
+        calMask = calMask,
+        calStatus = calStatus,
+        autosaved = autosaved,
         fitness = fitness,
         ofsX = ofsX,
         ofsY = ofsY,
@@ -162,10 +166,6 @@ public data class MagCalReport(
         offdiagX = offdiagX,
         offdiagY = offdiagY,
         offdiagZ = offdiagZ,
-        compassId = compassId,
-        calMask = calMask,
-        calStatus = calStatus,
-        autosaved = autosaved,
         orientationConfidence = orientationConfidence,
         oldOrientation = oldOrientation,
         newOrientation = newOrientation,

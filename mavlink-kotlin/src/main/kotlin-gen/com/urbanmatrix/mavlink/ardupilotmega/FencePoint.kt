@@ -18,14 +18,6 @@ import kotlin.Int
  */
 public data class FencePoint(
   /**
-   * Latitude of point.
-   */
-  public val lat: Float = 0F,
-  /**
-   * Longitude of point.
-   */
-  public val lng: Float = 0F,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -41,6 +33,14 @@ public data class FencePoint(
    * Total number of points (for sanity checking).
    */
   public val count: Int = 0,
+  /**
+   * Latitude of point.
+   */
+  public val lat: Float = 0F,
+  /**
+   * Longitude of point.
+   */
+  public val lng: Float = 0F,
 ) : MavMessage<FencePoint> {
   public override val instanceMetadata: MavMessage.Metadata<FencePoint> = METADATA
 
@@ -69,12 +69,12 @@ public data class FencePoint(
       val idx = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
       FencePoint(
-        lat = lat,
-        lng = lng,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idx = idx,
         count = count,
+        lat = lat,
+        lng = lng,
       )
     }
 

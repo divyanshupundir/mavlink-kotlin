@@ -29,6 +29,10 @@ public data class TrajectoryRepresentationWaypoints(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Number of valid points (up-to 5 waypoints are possible)
+   */
+  public val validPoints: Int = 0,
+  /**
    * X-coordinate of waypoint, set to NaN if not being used
    */
   public val posX: List<Float> = emptyList(),
@@ -76,10 +80,6 @@ public data class TrajectoryRepresentationWaypoints(
    * MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
    */
   public val command: List<Int> = emptyList(),
-  /**
-   * Number of valid points (up-to 5 waypoints are possible)
-   */
-  public val validPoints: Int = 0,
 ) : MavMessage<TrajectoryRepresentationWaypoints> {
   public override val instanceMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> =
       METADATA
@@ -127,6 +127,7 @@ public data class TrajectoryRepresentationWaypoints(
       val validPoints = inputBuffer.decodeUint8()
       TrajectoryRepresentationWaypoints(
         timeUsec = timeUsec,
+        validPoints = validPoints,
         posX = posX,
         posY = posY,
         posZ = posZ,
@@ -139,7 +140,6 @@ public data class TrajectoryRepresentationWaypoints(
         posYaw = posYaw,
         velYaw = velYaw,
         command = command,
-        validPoints = validPoints,
       )
     }
 

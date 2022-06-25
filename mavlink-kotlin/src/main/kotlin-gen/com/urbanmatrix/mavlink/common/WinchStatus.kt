@@ -48,13 +48,13 @@ public data class WinchStatus(
    */
   public val current: Float = 0F,
   /**
-   * Status flags
-   */
-  public val status: MavEnumValue<MavWinchStatusFlag> = MavEnumValue.fromValue(0),
-  /**
    * Temperature of the motor. INT16_MAX if unknown
    */
   public val temperature: Int = 0,
+  /**
+   * Status flags
+   */
+  public val status: MavEnumValue<MavWinchStatusFlag> = MavEnumValue.fromValue(0),
 ) : MavMessage<WinchStatus> {
   public override val instanceMetadata: MavMessage.Metadata<WinchStatus> = METADATA
 
@@ -96,8 +96,8 @@ public data class WinchStatus(
         tension = tension,
         voltage = voltage,
         current = current,
-        status = status,
         temperature = temperature,
+        status = status,
       )
     }
 

@@ -20,6 +20,14 @@ import kotlin.Int
  */
 public data class IcarousKinematicBands(
   /**
+   * Number of track bands
+   */
+  public val numbands: Int = 0,
+  /**
+   * See the TRACK_BAND_TYPES enum.
+   */
+  public val type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  /**
    * min angle (degrees)
    */
   public val min1: Float = 0F,
@@ -27,6 +35,10 @@ public data class IcarousKinematicBands(
    * max angle (degrees)
    */
   public val max1: Float = 0F,
+  /**
+   * See the TRACK_BAND_TYPES enum.
+   */
+  public val type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
@@ -36,6 +48,10 @@ public data class IcarousKinematicBands(
    */
   public val max2: Float = 0F,
   /**
+   * See the TRACK_BAND_TYPES enum.
+   */
+  public val type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  /**
    * min angle (degrees)
    */
   public val min3: Float = 0F,
@@ -43,6 +59,10 @@ public data class IcarousKinematicBands(
    * max angle (degrees)
    */
   public val max3: Float = 0F,
+  /**
+   * See the TRACK_BAND_TYPES enum.
+   */
+  public val type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
@@ -52,6 +72,10 @@ public data class IcarousKinematicBands(
    */
   public val max4: Float = 0F,
   /**
+   * See the TRACK_BAND_TYPES enum.
+   */
+  public val type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  /**
    * min angle (degrees)
    */
   public val min5: Float = 0F,
@@ -59,30 +83,6 @@ public data class IcarousKinematicBands(
    * max angle (degrees)
    */
   public val max5: Float = 0F,
-  /**
-   * Number of track bands
-   */
-  public val numbands: Int = 0,
-  /**
-   * See the TRACK_BAND_TYPES enum.
-   */
-  public val type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
-  /**
-   * See the TRACK_BAND_TYPES enum.
-   */
-  public val type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
-  /**
-   * See the TRACK_BAND_TYPES enum.
-   */
-  public val type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
-  /**
-   * See the TRACK_BAND_TYPES enum.
-   */
-  public val type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
-  /**
-   * See the TRACK_BAND_TYPES enum.
-   */
-  public val type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
 ) : MavMessage<IcarousKinematicBands> {
   public override val instanceMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
 
@@ -146,22 +146,22 @@ public data class IcarousKinematicBands(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       IcarousKinematicBands(
-        min1 = min1,
-        max1 = max1,
-        min2 = min2,
-        max2 = max2,
-        min3 = min3,
-        max3 = max3,
-        min4 = min4,
-        max4 = max4,
-        min5 = min5,
-        max5 = max5,
         numbands = numbands,
         type1 = type1,
+        min1 = min1,
+        max1 = max1,
         type2 = type2,
+        min2 = min2,
+        max2 = max2,
         type3 = type3,
+        min3 = min3,
+        max3 = max3,
         type4 = type4,
+        min4 = min4,
+        max4 = max4,
         type5 = type5,
+        min5 = min5,
+        max5 = max5,
       )
     }
 

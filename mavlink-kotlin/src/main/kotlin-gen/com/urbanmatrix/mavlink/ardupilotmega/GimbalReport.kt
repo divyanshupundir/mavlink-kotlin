@@ -17,6 +17,14 @@ import kotlin.Int
  */
 public data class GimbalReport(
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Time since last update.
    */
   public val deltaTime: Float = 0F,
@@ -56,14 +64,6 @@ public data class GimbalReport(
    * Joint AZ.
    */
   public val jointAz: Float = 0F,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
 ) : MavMessage<GimbalReport> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalReport> = METADATA
 
@@ -104,6 +104,8 @@ public data class GimbalReport(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       GimbalReport(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         deltaTime = deltaTime,
         deltaAngleX = deltaAngleX,
         deltaAngleY = deltaAngleY,
@@ -114,8 +116,6 @@ public data class GimbalReport(
         jointRoll = jointRoll,
         jointEl = jointEl,
         jointAz = jointAz,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
       )
     }
 

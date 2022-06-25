@@ -22,6 +22,19 @@ import kotlin.Int
  */
 public data class SafetySetAllowedArea(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
+   * handed, Z axis down.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
    * x position 1 / Latitude 1
    */
   public val p1x: Float = 0F,
@@ -45,19 +58,6 @@ public data class SafetySetAllowedArea(
    * z position 2 / Altitude 2
    */
   public val p2z: Float = 0F,
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
-   * handed, Z axis down.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<SafetySetAllowedArea> {
   public override val instanceMetadata: MavMessage.Metadata<SafetySetAllowedArea> = METADATA
 
@@ -95,15 +95,15 @@ public data class SafetySetAllowedArea(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       SafetySetAllowedArea(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        frame = frame,
         p1x = p1x,
         p1y = p1y,
         p1z = p1z,
         p2x = p2x,
         p2y = p2y,
         p2z = p2z,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        frame = frame,
       )
     }
 

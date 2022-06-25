@@ -22,9 +22,22 @@ import kotlin.Int
  */
 public data class GimbalManagerSetPitchyaw(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
    * High level gimbal manager flags to use.
    */
   public val flags: MavEnumValue<GimbalManagerFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
+   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   */
+  public val gimbalDeviceId: Int = 0,
   /**
    * Pitch angle (positive: up, negative: down, NaN to be ignored).
    */
@@ -41,19 +54,6 @@ public data class GimbalManagerSetPitchyaw(
    * Yaw angular rate (positive: to the right, negative: to the left, NaN to be ignored).
    */
   public val yawRate: Float = 0F,
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
-   */
-  public val gimbalDeviceId: Int = 0,
 ) : MavMessage<GimbalManagerSetPitchyaw> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerSetPitchyaw> = METADATA
 
@@ -89,14 +89,14 @@ public data class GimbalManagerSetPitchyaw(
       val targetComponent = inputBuffer.decodeUint8()
       val gimbalDeviceId = inputBuffer.decodeUint8()
       GimbalManagerSetPitchyaw(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         flags = flags,
+        gimbalDeviceId = gimbalDeviceId,
         pitch = pitch,
         yaw = yaw,
         pitchRate = pitchRate,
         yawRate = yawRate,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        gimbalDeviceId = gimbalDeviceId,
       )
     }
 

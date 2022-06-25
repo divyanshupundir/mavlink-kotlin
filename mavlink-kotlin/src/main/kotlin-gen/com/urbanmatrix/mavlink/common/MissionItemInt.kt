@@ -30,6 +30,35 @@ import kotlin.Int
  */
 public data class MissionItemInt(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no
+   * gaps in the sequence (0,1,2,3,4).
+   */
+  public val seq: Int = 0,
+  /**
+   * The coordinate system of the waypoint.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * The scheduled action for the waypoint.
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
+   * false:0, true:1
+   */
+  public val current: Int = 0,
+  /**
+   * Autocontinue to next waypoint
+   */
+  public val autocontinue: Int = 0,
+  /**
    * PARAM1, see MAV_CMD enum
    */
   public val param1: Float = 0F,
@@ -57,35 +86,6 @@ public data class MissionItemInt(
    * PARAM7 / z position: global: altitude in meters (relative or absolute, depending on frame.
    */
   public val z: Float = 0F,
-  /**
-   * Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no
-   * gaps in the sequence (0,1,2,3,4).
-   */
-  public val seq: Int = 0,
-  /**
-   * The scheduled action for the waypoint.
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * The coordinate system of the waypoint.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * false:0, true:1
-   */
-  public val current: Int = 0,
-  /**
-   * Autocontinue to next waypoint
-   */
-  public val autocontinue: Int = 0,
   /**
    * Mission type.
    */
@@ -145,6 +145,13 @@ public data class MissionItemInt(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionItemInt(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        seq = seq,
+        frame = frame,
+        command = command,
+        current = current,
+        autocontinue = autocontinue,
         param1 = param1,
         param2 = param2,
         param3 = param3,
@@ -152,13 +159,6 @@ public data class MissionItemInt(
         x = x,
         y = y,
         z = z,
-        seq = seq,
-        command = command,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        frame = frame,
-        current = current,
-        autocontinue = autocontinue,
         missionType = missionType,
       )
     }

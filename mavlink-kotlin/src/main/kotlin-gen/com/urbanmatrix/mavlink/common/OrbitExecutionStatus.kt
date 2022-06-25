@@ -34,6 +34,10 @@ public data class OrbitExecutionStatus(
    */
   public val radius: Float = 0F,
   /**
+   * The coordinate system of the fields: x, y, z.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
    * X coordinate of center point. Coordinate system depends on frame field: local = x position in
    * meters * 1e4, global = latitude in degrees * 1e7.
    */
@@ -47,10 +51,6 @@ public data class OrbitExecutionStatus(
    * Altitude of center point. Coordinate system depends on frame field.
    */
   public val z: Float = 0F,
-  /**
-   * The coordinate system of the fields: x, y, z.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<OrbitExecutionStatus> {
   public override val instanceMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
 
@@ -84,10 +84,10 @@ public data class OrbitExecutionStatus(
       OrbitExecutionStatus(
         timeUsec = timeUsec,
         radius = radius,
+        frame = frame,
         x = x,
         y = y,
         z = z,
-        frame = frame,
       )
     }
 

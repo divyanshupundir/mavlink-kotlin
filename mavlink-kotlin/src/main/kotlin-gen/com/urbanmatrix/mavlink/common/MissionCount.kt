@@ -21,10 +21,6 @@ import kotlin.Int
  */
 public data class MissionCount(
   /**
-   * Number of mission items in the sequence
-   */
-  public val count: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -32,6 +28,10 @@ public data class MissionCount(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Number of mission items in the sequence
+   */
+  public val count: Int = 0,
   /**
    * Mission type.
    */
@@ -63,9 +63,9 @@ public data class MissionCount(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionCount(
-        count = count,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        count = count,
         missionType = missionType,
       )
     }

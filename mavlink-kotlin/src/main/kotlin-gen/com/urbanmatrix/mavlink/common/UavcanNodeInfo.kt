@@ -40,10 +40,6 @@ public data class UavcanNodeInfo(
    */
   public val uptimeSec: Long = 0L,
   /**
-   * Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
-   */
-  public val swVcsCommit: Long = 0L,
-  /**
    * Node name string. For example, "sapog.px4.io".
    */
   public val name: String = "",
@@ -67,6 +63,10 @@ public data class UavcanNodeInfo(
    * Software minor version number.
    */
   public val swVersionMinor: Int = 0,
+  /**
+   * Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
+   */
+  public val swVcsCommit: Long = 0L,
 ) : MavMessage<UavcanNodeInfo> {
   public override val instanceMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
 
@@ -103,13 +103,13 @@ public data class UavcanNodeInfo(
       UavcanNodeInfo(
         timeUsec = timeUsec,
         uptimeSec = uptimeSec,
-        swVcsCommit = swVcsCommit,
         name = name,
         hwVersionMajor = hwVersionMajor,
         hwVersionMinor = hwVersionMinor,
         hwUniqueId = hwUniqueId,
         swVersionMajor = swVersionMajor,
         swVersionMinor = swVersionMinor,
+        swVcsCommit = swVcsCommit,
       )
     }
 

@@ -32,6 +32,23 @@ public data class SetPositionTargetGlobalInt(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
+   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
+   */
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
    * X Position in WGS84 frame
    */
   public val latInt: Int = 0,
@@ -75,23 +92,6 @@ public data class SetPositionTargetGlobalInt(
    * yaw rate setpoint
    */
   public val yawRate: Float = 0F,
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
-   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
-   */
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<SetPositionTargetGlobalInt> {
   public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetGlobalInt> = METADATA
 
@@ -148,6 +148,10 @@ public data class SetPositionTargetGlobalInt(
       }
       SetPositionTargetGlobalInt(
         timeBootMs = timeBootMs,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        coordinateFrame = coordinateFrame,
+        typeMask = typeMask,
         latInt = latInt,
         lonInt = lonInt,
         alt = alt,
@@ -159,10 +163,6 @@ public data class SetPositionTargetGlobalInt(
         afz = afz,
         yaw = yaw,
         yawRate = yawRate,
-        typeMask = typeMask,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        coordinateFrame = coordinateFrame,
       )
     }
 

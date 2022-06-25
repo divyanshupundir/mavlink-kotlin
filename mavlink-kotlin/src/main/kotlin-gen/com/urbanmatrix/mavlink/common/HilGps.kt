@@ -30,6 +30,11 @@ public data class HilGps(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field
+   * unless it is at least two, so always correctly fill in the fix.
+   */
+  public val fixType: Int = 0,
+  /**
    * Latitude (WGS84)
    */
   public val lat: Int = 0,
@@ -70,11 +75,6 @@ public data class HilGps(
    * set to: UINT16_MAX
    */
   public val cog: Int = 0,
-  /**
-   * 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field
-   * unless it is at least two, so always correctly fill in the fix.
-   */
-  public val fixType: Int = 0,
   /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
@@ -134,6 +134,7 @@ public data class HilGps(
       val yaw = inputBuffer.decodeUint16()
       HilGps(
         timeUsec = timeUsec,
+        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -144,7 +145,6 @@ public data class HilGps(
         ve = ve,
         vd = vd,
         cog = cog,
-        fixType = fixType,
         satellitesVisible = satellitesVisible,
         id = id,
         yaw = yaw,

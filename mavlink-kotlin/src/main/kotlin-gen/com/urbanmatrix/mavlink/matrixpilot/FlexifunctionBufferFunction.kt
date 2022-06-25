@@ -19,6 +19,14 @@ import kotlin.collections.List
  */
 public data class FlexifunctionBufferFunction(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Function index
    */
   public val funcIndex: Int = 0,
@@ -34,14 +42,6 @@ public data class FlexifunctionBufferFunction(
    * Size of the 
    */
   public val dataSize: Int = 0,
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
   /**
    * Settings data
    */
@@ -77,12 +77,12 @@ public data class FlexifunctionBufferFunction(
       val targetComponent = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeInt8Array(48)
       FlexifunctionBufferFunction(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         funcIndex = funcIndex,
         funcCount = funcCount,
         dataAddress = dataAddress,
         dataSize = dataSize,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         data = data,
       )
     }

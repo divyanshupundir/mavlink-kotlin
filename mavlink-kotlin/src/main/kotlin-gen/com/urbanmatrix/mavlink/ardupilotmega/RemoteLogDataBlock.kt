@@ -20,10 +20,6 @@ import kotlin.collections.List
  */
 public data class RemoteLogDataBlock(
   /**
-   * Log data block sequence number.
-   */
-  public val seqno: MavEnumValue<MavRemoteLogDataBlockCommands> = MavEnumValue.fromValue(0),
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -31,6 +27,10 @@ public data class RemoteLogDataBlock(
    * Component ID.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Log data block sequence number.
+   */
+  public val seqno: MavEnumValue<MavRemoteLogDataBlockCommands> = MavEnumValue.fromValue(0),
   /**
    * Log data block.
    */
@@ -62,9 +62,9 @@ public data class RemoteLogDataBlock(
       val targetComponent = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(200)
       RemoteLogDataBlock(
-        seqno = seqno,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        seqno = seqno,
         data = data,
       )
     }

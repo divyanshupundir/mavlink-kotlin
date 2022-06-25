@@ -18,6 +18,10 @@ import kotlin.Int
  */
 public data class HygrometerSensor(
   /**
+   * Hygrometer ID
+   */
+  public val id: Int = 0,
+  /**
    * Temperature
    */
   public val temperature: Int = 0,
@@ -25,10 +29,6 @@ public data class HygrometerSensor(
    * Humidity
    */
   public val humidity: Int = 0,
-  /**
-   * Hygrometer ID
-   */
-  public val id: Int = 0,
 ) : MavMessage<HygrometerSensor> {
   public override val instanceMetadata: MavMessage.Metadata<HygrometerSensor> = METADATA
 
@@ -51,9 +51,9 @@ public data class HygrometerSensor(
       val humidity = inputBuffer.decodeUint16()
       val id = inputBuffer.decodeUint8()
       HygrometerSensor(
+        id = id,
         temperature = temperature,
         humidity = humidity,
-        id = id,
       )
     }
 

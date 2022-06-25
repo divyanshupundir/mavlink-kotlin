@@ -18,14 +18,6 @@ import kotlin.Int
  */
 public data class LogRequestList(
   /**
-   * First log id (0 for first available)
-   */
-  public val start: Int = 0,
-  /**
-   * Last log id (0xffff for last available)
-   */
-  public val end: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -33,6 +25,14 @@ public data class LogRequestList(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * First log id (0 for first available)
+   */
+  public val start: Int = 0,
+  /**
+   * Last log id (0xffff for last available)
+   */
+  public val end: Int = 0,
 ) : MavMessage<LogRequestList> {
   public override val instanceMetadata: MavMessage.Metadata<LogRequestList> = METADATA
 
@@ -57,10 +57,10 @@ public data class LogRequestList(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       LogRequestList(
-        start = start,
-        end = end,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        start = start,
+        end = end,
       )
     }
 

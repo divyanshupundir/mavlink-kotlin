@@ -21,14 +21,6 @@ import kotlin.Int
  */
 public data class MissionRequestPartialList(
   /**
-   * Start index
-   */
-  public val startIndex: Int = 0,
-  /**
-   * End index, -1 by default (-1: send list to end). Else a valid index of the list
-   */
-  public val endIndex: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -36,6 +28,14 @@ public data class MissionRequestPartialList(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Start index
+   */
+  public val startIndex: Int = 0,
+  /**
+   * End index, -1 by default (-1: send list to end). Else a valid index of the list
+   */
+  public val endIndex: Int = 0,
   /**
    * Mission type.
    */
@@ -70,10 +70,10 @@ public data class MissionRequestPartialList(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionRequestPartialList(
-        startIndex = startIndex,
-        endIndex = endIndex,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        startIndex = startIndex,
+        endIndex = endIndex,
         missionType = missionType,
       )
     }

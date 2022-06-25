@@ -34,13 +34,13 @@ public data class TerrainData(
    */
   public val gridSpacing: Int = 0,
   /**
-   * Terrain data MSL
-   */
-  public val `data`: List<Int> = emptyList(),
-  /**
    * bit within the terrain request mask
    */
   public val gridbit: Int = 0,
+  /**
+   * Terrain data MSL
+   */
+  public val `data`: List<Int> = emptyList(),
 ) : MavMessage<TerrainData> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainData> = METADATA
 
@@ -70,8 +70,8 @@ public data class TerrainData(
         lat = lat,
         lon = lon,
         gridSpacing = gridSpacing,
-        data = data,
         gridbit = gridbit,
+        data = data,
       )
     }
 

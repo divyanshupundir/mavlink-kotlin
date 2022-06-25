@@ -26,22 +26,6 @@ import kotlin.String
  */
 public data class OsdParamConfig(
   /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
-  /**
-   * OSD parameter minimum value.
-   */
-  public val minValue: Float = 0F,
-  /**
-   * OSD parameter maximum value.
-   */
-  public val maxValue: Float = 0F,
-  /**
-   * OSD parameter increment.
-   */
-  public val increment: Float = 0F,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -49,6 +33,10 @@ public data class OsdParamConfig(
    * Component ID.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
   /**
    * OSD parameter screen index.
    */
@@ -67,6 +55,18 @@ public data class OsdParamConfig(
    * Config type.
    */
   public val configType: MavEnumValue<OsdParamConfigType> = MavEnumValue.fromValue(0),
+  /**
+   * OSD parameter minimum value.
+   */
+  public val minValue: Float = 0F,
+  /**
+   * OSD parameter maximum value.
+   */
+  public val maxValue: Float = 0F,
+  /**
+   * OSD parameter increment.
+   */
+  public val increment: Float = 0F,
 ) : MavMessage<OsdParamConfig> {
   public override val instanceMetadata: MavMessage.Metadata<OsdParamConfig> = METADATA
 
@@ -106,16 +106,16 @@ public data class OsdParamConfig(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       OsdParamConfig(
-        requestId = requestId,
-        minValue = minValue,
-        maxValue = maxValue,
-        increment = increment,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        requestId = requestId,
         osdScreen = osdScreen,
         osdIndex = osdIndex,
         paramId = paramId,
         configType = configType,
+        minValue = minValue,
+        maxValue = maxValue,
+        increment = increment,
       )
     }
 

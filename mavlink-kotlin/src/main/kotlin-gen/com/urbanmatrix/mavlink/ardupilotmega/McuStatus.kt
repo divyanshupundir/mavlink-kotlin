@@ -19,6 +19,10 @@ import kotlin.Int
  */
 public data class McuStatus(
   /**
+   * MCU instance
+   */
+  public val id: Int = 0,
+  /**
    * MCU Internal temperature
    */
   public val mcuTemperature: Int = 0,
@@ -34,10 +38,6 @@ public data class McuStatus(
    * MCU voltage maximum
    */
   public val mcuVoltageMax: Int = 0,
-  /**
-   * MCU instance
-   */
-  public val id: Int = 0,
 ) : MavMessage<McuStatus> {
   public override val instanceMetadata: MavMessage.Metadata<McuStatus> = METADATA
 
@@ -64,11 +64,11 @@ public data class McuStatus(
       val mcuVoltageMax = inputBuffer.decodeUint16()
       val id = inputBuffer.decodeUint8()
       McuStatus(
+        id = id,
         mcuTemperature = mcuTemperature,
         mcuVoltage = mcuVoltage,
         mcuVoltageMin = mcuVoltageMin,
         mcuVoltageMax = mcuVoltageMax,
-        id = id,
       )
     }
 

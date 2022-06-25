@@ -19,18 +19,6 @@ import kotlin.Long
  */
 public data class LogRequestData(
   /**
-   * Offset into the log
-   */
-  public val ofs: Long = 0L,
-  /**
-   * Number of bytes
-   */
-  public val count: Long = 0L,
-  /**
-   * Log id (from LOG_ENTRY reply)
-   */
-  public val id: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -38,6 +26,18 @@ public data class LogRequestData(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Log id (from LOG_ENTRY reply)
+   */
+  public val id: Int = 0,
+  /**
+   * Offset into the log
+   */
+  public val ofs: Long = 0L,
+  /**
+   * Number of bytes
+   */
+  public val count: Long = 0L,
 ) : MavMessage<LogRequestData> {
   public override val instanceMetadata: MavMessage.Metadata<LogRequestData> = METADATA
 
@@ -64,11 +64,11 @@ public data class LogRequestData(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       LogRequestData(
-        ofs = ofs,
-        count = count,
-        id = id,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        id = id,
+        ofs = ofs,
+        count = count,
       )
     }
 

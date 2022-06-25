@@ -27,18 +27,6 @@ public data class NavControllerOutput(
    */
   public val navPitch: Float = 0F,
   /**
-   * Current altitude error
-   */
-  public val altError: Float = 0F,
-  /**
-   * Current airspeed error
-   */
-  public val aspdError: Float = 0F,
-  /**
-   * Current crosstrack error on x-y plane
-   */
-  public val xtrackError: Float = 0F,
-  /**
    * Current desired heading
    */
   public val navBearing: Int = 0,
@@ -50,6 +38,18 @@ public data class NavControllerOutput(
    * Distance to active waypoint
    */
   public val wpDist: Int = 0,
+  /**
+   * Current altitude error
+   */
+  public val altError: Float = 0F,
+  /**
+   * Current airspeed error
+   */
+  public val aspdError: Float = 0F,
+  /**
+   * Current crosstrack error on x-y plane
+   */
+  public val xtrackError: Float = 0F,
 ) : MavMessage<NavControllerOutput> {
   public override val instanceMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
 
@@ -84,12 +84,12 @@ public data class NavControllerOutput(
       NavControllerOutput(
         navRoll = navRoll,
         navPitch = navPitch,
-        altError = altError,
-        aspdError = aspdError,
-        xtrackError = xtrackError,
         navBearing = navBearing,
         targetBearing = targetBearing,
         wpDist = wpDist,
+        altError = altError,
+        aspdError = aspdError,
+        xtrackError = xtrackError,
       )
     }
 

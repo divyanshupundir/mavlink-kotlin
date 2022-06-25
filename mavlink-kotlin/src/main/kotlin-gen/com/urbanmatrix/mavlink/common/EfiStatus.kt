@@ -17,6 +17,10 @@ import kotlin.Int
  */
 public data class EfiStatus(
   /**
+   * EFI health status
+   */
+  public val health: Int = 0,
+  /**
    * ECU index
    */
   public val ecuIndex: Float = 0F,
@@ -81,10 +85,6 @@ public data class EfiStatus(
    */
   public val ptCompensation: Float = 0F,
   /**
-   * EFI health status
-   */
-  public val health: Int = 0,
-  /**
    * Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply
    * voltage really is zero volts use 0.0001 instead.
    */
@@ -141,6 +141,7 @@ public data class EfiStatus(
       val health = inputBuffer.decodeUint8()
       val ignitionVoltage = inputBuffer.decodeFloat()
       EfiStatus(
+        health = health,
         ecuIndex = ecuIndex,
         rpm = rpm,
         fuelConsumed = fuelConsumed,
@@ -157,7 +158,6 @@ public data class EfiStatus(
         exhaustGasTemperature = exhaustGasTemperature,
         throttleOut = throttleOut,
         ptCompensation = ptCompensation,
-        health = health,
         ignitionVoltage = ignitionVoltage,
       )
     }

@@ -26,6 +26,14 @@ public data class WaterDepth(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Onboard ID of the sensor
+   */
+  public val id: Int = 0,
+  /**
+   * Sensor data healthy (0=unhealthy, 1=healthy)
+   */
+  public val healthy: Int = 0,
+  /**
    * Latitude
    */
   public val lat: Int = 0,
@@ -57,14 +65,6 @@ public data class WaterDepth(
    * Water temperature
    */
   public val temperature: Float = 0F,
-  /**
-   * Onboard ID of the sensor
-   */
-  public val id: Int = 0,
-  /**
-   * Sensor data healthy (0=unhealthy, 1=healthy)
-   */
-  public val healthy: Int = 0,
 ) : MavMessage<WaterDepth> {
   public override val instanceMetadata: MavMessage.Metadata<WaterDepth> = METADATA
 
@@ -104,6 +104,8 @@ public data class WaterDepth(
       val healthy = inputBuffer.decodeUint8()
       WaterDepth(
         timeBootMs = timeBootMs,
+        id = id,
+        healthy = healthy,
         lat = lat,
         lng = lng,
         alt = alt,
@@ -112,8 +114,6 @@ public data class WaterDepth(
         yaw = yaw,
         distance = distance,
         temperature = temperature,
-        id = id,
-        healthy = healthy,
       )
     }
 

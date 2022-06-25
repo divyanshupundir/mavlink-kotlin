@@ -31,6 +31,14 @@ public data class LandingTarget(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * The ID of the target if multiple targets are present
+   */
+  public val targetNum: Int = 0,
+  /**
+   * Coordinate frame used for following fields.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
    * X-axis angular offset of the target from the center of the image
    */
   public val angleX: Float = 0F,
@@ -50,14 +58,6 @@ public data class LandingTarget(
    * Size of target along y-axis
    */
   public val sizeY: Float = 0F,
-  /**
-   * The ID of the target if multiple targets are present
-   */
-  public val targetNum: Int = 0,
-  /**
-   * Coordinate frame used for following fields.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * X Position of the landing target in MAV_FRAME
    */
@@ -134,13 +134,13 @@ public data class LandingTarget(
       val positionValid = inputBuffer.decodeUint8()
       LandingTarget(
         timeUsec = timeUsec,
+        targetNum = targetNum,
+        frame = frame,
         angleX = angleX,
         angleY = angleY,
         distance = distance,
         sizeX = sizeX,
         sizeY = sizeY,
-        targetNum = targetNum,
-        frame = frame,
         x = x,
         y = y,
         z = z,

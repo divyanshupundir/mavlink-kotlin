@@ -24,6 +24,11 @@ public data class RcChannelsScaled(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
+   * MAIN, 1 = AUX.
+   */
+  public val port: Int = 0,
+  /**
    * RC channel 1 value scaled.
    */
   public val chan1Scaled: Int = 0,
@@ -55,11 +60,6 @@ public data class RcChannelsScaled(
    * RC channel 8 value scaled.
    */
   public val chan8Scaled: Int = 0,
-  /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
-   */
-  public val port: Int = 0,
   /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
@@ -104,6 +104,7 @@ public data class RcChannelsScaled(
       val rssi = inputBuffer.decodeUint8()
       RcChannelsScaled(
         timeBootMs = timeBootMs,
+        port = port,
         chan1Scaled = chan1Scaled,
         chan2Scaled = chan2Scaled,
         chan3Scaled = chan3Scaled,
@@ -112,7 +113,6 @@ public data class RcChannelsScaled(
         chan6Scaled = chan6Scaled,
         chan7Scaled = chan7Scaled,
         chan8Scaled = chan8Scaled,
-        port = port,
         rssi = rssi,
       )
     }

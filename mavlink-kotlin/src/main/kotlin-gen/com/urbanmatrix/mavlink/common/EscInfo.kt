@@ -31,30 +31,18 @@ import kotlin.collections.List
  */
 public data class EscInfo(
   /**
+   * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
+   */
+  public val index: Int = 0,
+  /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Number of reported errors by each ESC since boot.
-   */
-  public val errorCount: List<Long> = emptyList(),
-  /**
    * Counter of data packets received.
    */
   public val counter: Int = 0,
-  /**
-   * Bitmap of ESC failure flags.
-   */
-  public val failureFlags: List<Int> = emptyList(),
-  /**
-   * Temperature of each ESC. INT16_MAX: if data not supplied by ESC.
-   */
-  public val temperature: List<Int> = emptyList(),
-  /**
-   * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
-   */
-  public val index: Int = 0,
   /**
    * Total number of ESCs in all messages of this type. Message fields with an index higher than
    * this should be ignored because they contain invalid data.
@@ -68,6 +56,18 @@ public data class EscInfo(
    * Information regarding online/offline status of each ESC.
    */
   public val info: Int = 0,
+  /**
+   * Bitmap of ESC failure flags.
+   */
+  public val failureFlags: List<Int> = emptyList(),
+  /**
+   * Number of reported errors by each ESC since boot.
+   */
+  public val errorCount: List<Long> = emptyList(),
+  /**
+   * Temperature of each ESC. INT16_MAX: if data not supplied by ESC.
+   */
+  public val temperature: List<Int> = emptyList(),
 ) : MavMessage<EscInfo> {
   public override val instanceMetadata: MavMessage.Metadata<EscInfo> = METADATA
 
@@ -105,15 +105,15 @@ public data class EscInfo(
       }
       val info = inputBuffer.decodeUint8()
       EscInfo(
-        timeUsec = timeUsec,
-        errorCount = errorCount,
-        counter = counter,
-        failureFlags = failureFlags,
-        temperature = temperature,
         index = index,
+        timeUsec = timeUsec,
+        counter = counter,
         count = count,
         connectionType = connectionType,
         info = info,
+        failureFlags = failureFlags,
+        errorCount = errorCount,
+        temperature = temperature,
       )
     }
 

@@ -20,10 +20,6 @@ import kotlin.collections.List
  */
 public data class AsluavStatus(
   /**
-   *  Motor RPM 
-   */
-  public val motorRpm: Float = 0F,
-  /**
    *  Status of the position-indicator LEDs
    */
   public val ledStatus: Int = 0,
@@ -35,6 +31,10 @@ public data class AsluavStatus(
    *  Status vector for up to 8 servos
    */
   public val servoStatus: List<Int> = emptyList(),
+  /**
+   *  Motor RPM 
+   */
+  public val motorRpm: Float = 0F,
 ) : MavMessage<AsluavStatus> {
   public override val instanceMetadata: MavMessage.Metadata<AsluavStatus> = METADATA
 
@@ -59,10 +59,10 @@ public data class AsluavStatus(
       val satcomStatus = inputBuffer.decodeUint8()
       val servoStatus = inputBuffer.decodeUint8Array(8)
       AsluavStatus(
-        motorRpm = motorRpm,
         ledStatus = ledStatus,
         satcomStatus = satcomStatus,
         servoStatus = servoStatus,
+        motorRpm = motorRpm,
       )
     }
 

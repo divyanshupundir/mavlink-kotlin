@@ -34,6 +34,14 @@ public data class SensMppt(
    */
   public val mppt1Amp: Float = 0F,
   /**
+   *  MPPT1 pwm 
+   */
+  public val mppt1Pwm: Int = 0,
+  /**
+   *  MPPT1 status 
+   */
+  public val mppt1Status: Int = 0,
+  /**
    *  MPPT2 voltage 
    */
   public val mppt2Volt: Float = 0F,
@@ -41,6 +49,14 @@ public data class SensMppt(
    *  MPPT2 current 
    */
   public val mppt2Amp: Float = 0F,
+  /**
+   *  MPPT2 pwm 
+   */
+  public val mppt2Pwm: Int = 0,
+  /**
+   *  MPPT2 status 
+   */
+  public val mppt2Status: Int = 0,
   /**
    * MPPT3 voltage 
    */
@@ -50,25 +66,9 @@ public data class SensMppt(
    */
   public val mppt3Amp: Float = 0F,
   /**
-   *  MPPT1 pwm 
-   */
-  public val mppt1Pwm: Int = 0,
-  /**
-   *  MPPT2 pwm 
-   */
-  public val mppt2Pwm: Int = 0,
-  /**
    *  MPPT3 pwm 
    */
   public val mppt3Pwm: Int = 0,
-  /**
-   *  MPPT1 status 
-   */
-  public val mppt1Status: Int = 0,
-  /**
-   *  MPPT2 status 
-   */
-  public val mppt2Status: Int = 0,
   /**
    *  MPPT3 status 
    */
@@ -118,15 +118,15 @@ public data class SensMppt(
         mpptTimestamp = mpptTimestamp,
         mppt1Volt = mppt1Volt,
         mppt1Amp = mppt1Amp,
+        mppt1Pwm = mppt1Pwm,
+        mppt1Status = mppt1Status,
         mppt2Volt = mppt2Volt,
         mppt2Amp = mppt2Amp,
+        mppt2Pwm = mppt2Pwm,
+        mppt2Status = mppt2Status,
         mppt3Volt = mppt3Volt,
         mppt3Amp = mppt3Amp,
-        mppt1Pwm = mppt1Pwm,
-        mppt2Pwm = mppt2Pwm,
         mppt3Pwm = mppt3Pwm,
-        mppt1Status = mppt1Status,
-        mppt2Status = mppt2Status,
         mppt3Status = mppt3Status,
       )
     }

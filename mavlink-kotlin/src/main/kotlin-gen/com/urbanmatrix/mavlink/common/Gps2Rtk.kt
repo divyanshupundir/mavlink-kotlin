@@ -28,9 +28,34 @@ public data class Gps2Rtk(
    */
   public val timeLastBaselineMs: Long = 0L,
   /**
+   * Identification of connected RTK receiver.
+   */
+  public val rtkReceiverId: Int = 0,
+  /**
+   * GPS Week Number of last baseline
+   */
+  public val wn: Int = 0,
+  /**
    * GPS Time of Week of last baseline
    */
   public val tow: Long = 0L,
+  /**
+   * GPS-specific health report for RTK data.
+   */
+  public val rtkHealth: Int = 0,
+  /**
+   * Rate of baseline messages being received by GPS
+   */
+  public val rtkRate: Int = 0,
+  /**
+   * Current number of sats used for RTK calculation.
+   */
+  public val nsats: Int = 0,
+  /**
+   * Coordinate system of baseline
+   */
+  public val baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
+      MavEnumValue.fromValue(0),
   /**
    * Current baseline in ECEF x or NED north component.
    */
@@ -51,31 +76,6 @@ public data class Gps2Rtk(
    * Current number of integer ambiguity hypotheses.
    */
   public val iarNumHypotheses: Int = 0,
-  /**
-   * GPS Week Number of last baseline
-   */
-  public val wn: Int = 0,
-  /**
-   * Identification of connected RTK receiver.
-   */
-  public val rtkReceiverId: Int = 0,
-  /**
-   * GPS-specific health report for RTK data.
-   */
-  public val rtkHealth: Int = 0,
-  /**
-   * Rate of baseline messages being received by GPS
-   */
-  public val rtkRate: Int = 0,
-  /**
-   * Current number of sats used for RTK calculation.
-   */
-  public val nsats: Int = 0,
-  /**
-   * Coordinate system of baseline
-   */
-  public val baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
-      MavEnumValue.fromValue(0),
 ) : MavMessage<Gps2Rtk> {
   public override val instanceMetadata: MavMessage.Metadata<Gps2Rtk> = METADATA
 
@@ -122,18 +122,18 @@ public data class Gps2Rtk(
       }
       Gps2Rtk(
         timeLastBaselineMs = timeLastBaselineMs,
+        rtkReceiverId = rtkReceiverId,
+        wn = wn,
         tow = tow,
+        rtkHealth = rtkHealth,
+        rtkRate = rtkRate,
+        nsats = nsats,
+        baselineCoordsType = baselineCoordsType,
         baselineAMm = baselineAMm,
         baselineBMm = baselineBMm,
         baselineCMm = baselineCMm,
         accuracy = accuracy,
         iarNumHypotheses = iarNumHypotheses,
-        wn = wn,
-        rtkReceiverId = rtkReceiverId,
-        rtkHealth = rtkHealth,
-        rtkRate = rtkRate,
-        nsats = nsats,
-        baselineCoordsType = baselineCoordsType,
       )
     }
 

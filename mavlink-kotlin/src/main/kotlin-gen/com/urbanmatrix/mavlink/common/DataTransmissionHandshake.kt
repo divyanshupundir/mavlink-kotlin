@@ -23,6 +23,10 @@ import kotlin.Long
  */
 public data class DataTransmissionHandshake(
   /**
+   * Type of requested/acknowledged data.
+   */
+  public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0),
+  /**
    * total data size (set on ACK only).
    */
   public val size: Long = 0L,
@@ -38,10 +42,6 @@ public data class DataTransmissionHandshake(
    * Number of packets being sent (set on ACK only).
    */
   public val packets: Int = 0,
-  /**
-   * Type of requested/acknowledged data.
-   */
-  public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0),
   /**
    * Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA)
    * (set on ACK only).
@@ -85,11 +85,11 @@ public data class DataTransmissionHandshake(
       val payload = inputBuffer.decodeUint8()
       val jpgQuality = inputBuffer.decodeUint8()
       DataTransmissionHandshake(
+        type = type,
         size = size,
         width = width,
         height = height,
         packets = packets,
-        type = type,
         payload = payload,
         jpgQuality = jpgQuality,
       )

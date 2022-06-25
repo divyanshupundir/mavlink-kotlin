@@ -30,6 +30,10 @@ public data class AttitudeTarget(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
   public val q: List<Float> = emptyList(),
@@ -49,10 +53,6 @@ public data class AttitudeTarget(
    * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)
    */
   public val thrust: Float = 0F,
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
 ) : MavMessage<AttitudeTarget> {
   public override val instanceMetadata: MavMessage.Metadata<AttitudeTarget> = METADATA
 
@@ -87,12 +87,12 @@ public data class AttitudeTarget(
       }
       AttitudeTarget(
         timeBootMs = timeBootMs,
+        typeMask = typeMask,
         q = q,
         bodyRollRate = bodyRollRate,
         bodyPitchRate = bodyPitchRate,
         bodyYawRate = bodyYawRate,
         thrust = thrust,
-        typeMask = typeMask,
       )
     }
 

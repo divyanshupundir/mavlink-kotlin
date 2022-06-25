@@ -25,15 +25,15 @@ public data class WheelDistance(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Number of wheels reported.
+   */
+  public val count: Int = 0,
+  /**
    * Distance reported by individual wheel encoders. Forward rotations increase values, reverse
    * rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of
    * encoders to wheel positions must be agreed/understood by the endpoints.
    */
   public val distance: List<Double> = emptyList(),
-  /**
-   * Number of wheels reported.
-   */
-  public val count: Int = 0,
 ) : MavMessage<WheelDistance> {
   public override val instanceMetadata: MavMessage.Metadata<WheelDistance> = METADATA
 
@@ -57,8 +57,8 @@ public data class WheelDistance(
       val count = inputBuffer.decodeUint8()
       WheelDistance(
         timeUsec = timeUsec,
-        distance = distance,
         count = count,
+        distance = distance,
       )
     }
 

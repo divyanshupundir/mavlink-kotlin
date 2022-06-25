@@ -53,22 +53,6 @@ public data class AisVessel(
    */
   public val velocity: Int = 0,
   /**
-   * Distance from lat/lon location to bow
-   */
-  public val dimensionBow: Int = 0,
-  /**
-   * Distance from lat/lon location to stern
-   */
-  public val dimensionStern: Int = 0,
-  /**
-   * Time since last communication in seconds
-   */
-  public val tslc: Int = 0,
-  /**
-   * Bitmask to indicate various statuses including valid data fields
-   */
-  public val flags: MavEnumValue<AisFlags> = MavEnumValue.fromValue(0),
-  /**
    * Turn rate
    */
   public val turnRate: Int = 0,
@@ -80,6 +64,14 @@ public data class AisVessel(
    * Type of vessels
    */
   public val type: MavEnumValue<AisType> = MavEnumValue.fromValue(0),
+  /**
+   * Distance from lat/lon location to bow
+   */
+  public val dimensionBow: Int = 0,
+  /**
+   * Distance from lat/lon location to stern
+   */
+  public val dimensionStern: Int = 0,
   /**
    * Distance from lat/lon location to port side
    */
@@ -96,6 +88,14 @@ public data class AisVessel(
    * The vessel name
    */
   public val name: String = "",
+  /**
+   * Time since last communication in seconds
+   */
+  public val tslc: Int = 0,
+  /**
+   * Bitmask to indicate various statuses including valid data fields
+   */
+  public val flags: MavEnumValue<AisFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<AisVessel> {
   public override val instanceMetadata: MavMessage.Metadata<AisVessel> = METADATA
 
@@ -161,17 +161,17 @@ public data class AisVessel(
         cog = cog,
         heading = heading,
         velocity = velocity,
-        dimensionBow = dimensionBow,
-        dimensionStern = dimensionStern,
-        tslc = tslc,
-        flags = flags,
         turnRate = turnRate,
         navigationalStatus = navigationalStatus,
         type = type,
+        dimensionBow = dimensionBow,
+        dimensionStern = dimensionStern,
         dimensionPort = dimensionPort,
         dimensionStarboard = dimensionStarboard,
         callsign = callsign,
         name = name,
+        tslc = tslc,
+        flags = flags,
       )
     }
 

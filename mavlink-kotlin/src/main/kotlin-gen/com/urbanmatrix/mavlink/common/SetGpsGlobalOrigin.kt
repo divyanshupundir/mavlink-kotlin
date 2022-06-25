@@ -22,6 +22,10 @@ import kotlin.Int
  */
 public data class SetGpsGlobalOrigin(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
    * Latitude (WGS84)
    */
   public val latitude: Int = 0,
@@ -33,10 +37,6 @@ public data class SetGpsGlobalOrigin(
    * Altitude (MSL). Positive for up.
    */
   public val altitude: Int = 0,
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
@@ -68,10 +68,10 @@ public data class SetGpsGlobalOrigin(
       val targetSystem = inputBuffer.decodeUint8()
       val timeUsec = inputBuffer.decodeUint64()
       SetGpsGlobalOrigin(
+        targetSystem = targetSystem,
         latitude = latitude,
         longitude = longitude,
         altitude = altitude,
-        targetSystem = targetSystem,
         timeUsec = timeUsec,
       )
     }

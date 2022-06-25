@@ -27,6 +27,15 @@ public data class PositionTargetLocalNed(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
+   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
+   */
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
    * X Position in NED frame
    */
   public val x: Float = 0F,
@@ -70,15 +79,6 @@ public data class PositionTargetLocalNed(
    * yaw rate setpoint
    */
   public val yawRate: Float = 0F,
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
-  /**
-   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
-   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
-   */
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<PositionTargetLocalNed> {
   public override val instanceMetadata: MavMessage.Metadata<PositionTargetLocalNed> = METADATA
 
@@ -130,6 +130,8 @@ public data class PositionTargetLocalNed(
       }
       PositionTargetLocalNed(
         timeBootMs = timeBootMs,
+        coordinateFrame = coordinateFrame,
+        typeMask = typeMask,
         x = x,
         y = y,
         z = z,
@@ -141,8 +143,6 @@ public data class PositionTargetLocalNed(
         afz = afz,
         yaw = yaw,
         yawRate = yawRate,
-        typeMask = typeMask,
-        coordinateFrame = coordinateFrame,
       )
     }
 

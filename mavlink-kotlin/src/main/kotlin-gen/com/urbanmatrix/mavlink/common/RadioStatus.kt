@@ -16,14 +16,6 @@ import kotlin.Int
  */
 public data class RadioStatus(
   /**
-   * Count of radio packet receive errors (since boot).
-   */
-  public val rxerrors: Int = 0,
-  /**
-   * Count of error corrected radio packets (since boot).
-   */
-  public val fixed: Int = 0,
-  /**
    * Local (message sender) recieved signal strength indication in device-dependent units/scale.
    * Values: [0-254], UINT8_MAX: invalid/unknown.
    */
@@ -47,6 +39,14 @@ public data class RadioStatus(
    * SiK radios). Values: [0-254], UINT8_MAX: invalid/unknown.
    */
   public val remnoise: Int = 0,
+  /**
+   * Count of radio packet receive errors (since boot).
+   */
+  public val rxerrors: Int = 0,
+  /**
+   * Count of error corrected radio packets (since boot).
+   */
+  public val fixed: Int = 0,
 ) : MavMessage<RadioStatus> {
   public override val instanceMetadata: MavMessage.Metadata<RadioStatus> = METADATA
 
@@ -77,13 +77,13 @@ public data class RadioStatus(
       val noise = inputBuffer.decodeUint8()
       val remnoise = inputBuffer.decodeUint8()
       RadioStatus(
-        rxerrors = rxerrors,
-        fixed = fixed,
         rssi = rssi,
         remrssi = remrssi,
         txbuf = txbuf,
         noise = noise,
         remnoise = remnoise,
+        rxerrors = rxerrors,
+        fixed = fixed,
       )
     }
 

@@ -25,13 +25,13 @@ public data class Debug(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * DEBUG value
-   */
-  public val `value`: Float = 0F,
-  /**
    * index of debug variable
    */
   public val ind: Int = 0,
+  /**
+   * DEBUG value
+   */
+  public val `value`: Float = 0F,
 ) : MavMessage<Debug> {
   public override val instanceMetadata: MavMessage.Metadata<Debug> = METADATA
 
@@ -55,8 +55,8 @@ public data class Debug(
       val ind = inputBuffer.decodeUint8()
       Debug(
         timeBootMs = timeBootMs,
-        value = value,
         ind = ind,
+        value = value,
       )
     }
 

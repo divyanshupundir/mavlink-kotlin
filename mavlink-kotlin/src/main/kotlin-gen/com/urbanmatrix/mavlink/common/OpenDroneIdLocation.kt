@@ -30,49 +30,6 @@ import kotlin.collections.List
  */
 public data class OpenDroneIdLocation(
   /**
-   * Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
-   */
-  public val latitude: Int = 0,
-  /**
-   * Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
-   */
-  public val longitude: Int = 0,
-  /**
-   * The altitude calculated from the barometric pressue. Reference is against 29.92inHg or
-   * 1013.2mb. If unknown: -1000 m.
-   */
-  public val altitudeBarometric: Float = 0F,
-  /**
-   * The geodetic altitude as defined by WGS84. If unknown: -1000 m.
-   */
-  public val altitudeGeodetic: Float = 0F,
-  /**
-   * The current height of the unmanned aircraft above the take-off location or the ground as
-   * indicated by height_reference. If unknown: -1000 m.
-   */
-  public val height: Float = 0F,
-  /**
-   * Seconds after the full hour with reference to UTC time. Typically the GPS outputs a
-   * time-of-week value in milliseconds. First convert that to UTC and then convert for this field
-   * using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
-   */
-  public val timestamp: Float = 0F,
-  /**
-   * Direction over ground (not heading, but direction of movement) measured clockwise from true
-   * North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
-   */
-  public val direction: Int = 0,
-  /**
-   * Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use
-   * 25425 cm/s.
-   */
-  public val speedHorizontal: Int = 0,
-  /**
-   * The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s,
-   * use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
-   */
-  public val speedVertical: Int = 0,
-  /**
    * System ID (0 for broadcast).
    */
   public val targetSystem: Int = 0,
@@ -90,9 +47,46 @@ public data class OpenDroneIdLocation(
    */
   public val status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0),
   /**
+   * Direction over ground (not heading, but direction of movement) measured clockwise from true
+   * North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
+   */
+  public val direction: Int = 0,
+  /**
+   * Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use
+   * 25425 cm/s.
+   */
+  public val speedHorizontal: Int = 0,
+  /**
+   * The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s,
+   * use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
+   */
+  public val speedVertical: Int = 0,
+  /**
+   * Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
+   */
+  public val latitude: Int = 0,
+  /**
+   * Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
+   */
+  public val longitude: Int = 0,
+  /**
+   * The altitude calculated from the barometric pressue. Reference is against 29.92inHg or
+   * 1013.2mb. If unknown: -1000 m.
+   */
+  public val altitudeBarometric: Float = 0F,
+  /**
+   * The geodetic altitude as defined by WGS84. If unknown: -1000 m.
+   */
+  public val altitudeGeodetic: Float = 0F,
+  /**
    * Indicates the reference point for the height field.
    */
   public val heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0),
+  /**
+   * The current height of the unmanned aircraft above the take-off location or the ground as
+   * indicated by height_reference. If unknown: -1000 m.
+   */
+  public val height: Float = 0F,
   /**
    * The accuracy of the horizontal position.
    */
@@ -109,6 +103,12 @@ public data class OpenDroneIdLocation(
    * The accuracy of the horizontal and vertical speed.
    */
   public val speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0),
+  /**
+   * Seconds after the full hour with reference to UTC time. Typically the GPS outputs a
+   * time-of-week value in milliseconds. First convert that to UTC and then convert for this field
+   * using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
+   */
+  public val timestamp: Float = 0F,
   /**
    * The accuracy of the timestamps.
    */
@@ -188,24 +188,24 @@ public data class OpenDroneIdLocation(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       OpenDroneIdLocation(
-        latitude = latitude,
-        longitude = longitude,
-        altitudeBarometric = altitudeBarometric,
-        altitudeGeodetic = altitudeGeodetic,
-        height = height,
-        timestamp = timestamp,
-        direction = direction,
-        speedHorizontal = speedHorizontal,
-        speedVertical = speedVertical,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idOrMac = idOrMac,
         status = status,
+        direction = direction,
+        speedHorizontal = speedHorizontal,
+        speedVertical = speedVertical,
+        latitude = latitude,
+        longitude = longitude,
+        altitudeBarometric = altitudeBarometric,
+        altitudeGeodetic = altitudeGeodetic,
         heightReference = heightReference,
+        height = height,
         horizontalAccuracy = horizontalAccuracy,
         verticalAccuracy = verticalAccuracy,
         barometerAccuracy = barometerAccuracy,
         speedAccuracy = speedAccuracy,
+        timestamp = timestamp,
         timestampAccuracy = timestampAccuracy,
       )
     }

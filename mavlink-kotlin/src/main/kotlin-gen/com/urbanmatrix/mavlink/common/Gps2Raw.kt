@@ -32,6 +32,10 @@ public data class Gps2Raw(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * GPS fix type.
+   */
+  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
+  /**
    * Latitude (WGS84)
    */
   public val lat: Int = 0,
@@ -43,10 +47,6 @@ public data class Gps2Raw(
    * Altitude (MSL). Positive for up.
    */
   public val alt: Int = 0,
-  /**
-   * Age of DGPS info
-   */
-  public val dgpsAge: Long = 0L,
   /**
    * GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
@@ -65,10 +65,6 @@ public data class Gps2Raw(
    */
   public val cog: Int = 0,
   /**
-   * GPS fix type.
-   */
-  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
-  /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
   public val satellitesVisible: Int = 0,
@@ -76,6 +72,10 @@ public data class Gps2Raw(
    * Number of DGPS satellites
    */
   public val dgpsNumch: Int = 0,
+  /**
+   * Age of DGPS info
+   */
+  public val dgpsAge: Long = 0L,
   /**
    * Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX if this
    * GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
@@ -157,17 +157,17 @@ public data class Gps2Raw(
       val hdgAcc = inputBuffer.decodeUint32()
       Gps2Raw(
         timeUsec = timeUsec,
+        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
-        dgpsAge = dgpsAge,
         eph = eph,
         epv = epv,
         vel = vel,
         cog = cog,
-        fixType = fixType,
         satellitesVisible = satellitesVisible,
         dgpsNumch = dgpsNumch,
+        dgpsAge = dgpsAge,
         yaw = yaw,
         altEllipsoid = altEllipsoid,
         hAcc = hAcc,

@@ -28,18 +28,6 @@ public data class OsdParamShowConfigReply(
    */
   public val requestId: Long = 0L,
   /**
-   * OSD parameter minimum value.
-   */
-  public val minValue: Float = 0F,
-  /**
-   * OSD parameter maximum value.
-   */
-  public val maxValue: Float = 0F,
-  /**
-   * OSD parameter increment.
-   */
-  public val increment: Float = 0F,
-  /**
    * Config error type.
    */
   public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0),
@@ -53,6 +41,18 @@ public data class OsdParamShowConfigReply(
    * Config type.
    */
   public val configType: MavEnumValue<OsdParamConfigType> = MavEnumValue.fromValue(0),
+  /**
+   * OSD parameter minimum value.
+   */
+  public val minValue: Float = 0F,
+  /**
+   * OSD parameter maximum value.
+   */
+  public val maxValue: Float = 0F,
+  /**
+   * OSD parameter increment.
+   */
+  public val increment: Float = 0F,
 ) : MavMessage<OsdParamShowConfigReply> {
   public override val instanceMetadata: MavMessage.Metadata<OsdParamShowConfigReply> = METADATA
 
@@ -90,12 +90,12 @@ public data class OsdParamShowConfigReply(
       }
       OsdParamShowConfigReply(
         requestId = requestId,
-        minValue = minValue,
-        maxValue = maxValue,
-        increment = increment,
         result = result,
         paramId = paramId,
         configType = configType,
+        minValue = minValue,
+        maxValue = maxValue,
+        increment = increment,
       )
     }
 

@@ -26,6 +26,11 @@ public data class ServoOutputRaw(
    */
   public val timeUsec: Long = 0L,
   /**
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
+   * MAIN, 1 = AUX.
+   */
+  public val port: Int = 0,
+  /**
    * Servo output 1 value
    */
   public val servo1Raw: Int = 0,
@@ -57,11 +62,6 @@ public data class ServoOutputRaw(
    * Servo output 8 value
    */
   public val servo8Raw: Int = 0,
-  /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
-   */
-  public val port: Int = 0,
   /**
    * Servo output 9 value
    */
@@ -147,6 +147,7 @@ public data class ServoOutputRaw(
       val servo16Raw = inputBuffer.decodeUint16()
       ServoOutputRaw(
         timeUsec = timeUsec,
+        port = port,
         servo1Raw = servo1Raw,
         servo2Raw = servo2Raw,
         servo3Raw = servo3Raw,
@@ -155,7 +156,6 @@ public data class ServoOutputRaw(
         servo6Raw = servo6Raw,
         servo7Raw = servo7Raw,
         servo8Raw = servo8Raw,
-        port = port,
         servo9Raw = servo9Raw,
         servo10Raw = servo10Raw,
         servo11Raw = servo11Raw,

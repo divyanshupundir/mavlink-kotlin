@@ -25,10 +25,29 @@ import kotlin.Int
 @Deprecated(message = "Suffers from missing airspeed fields and singularities due to Euler angles")
 public data class HilState(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Z acceleration
    */
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val zacc: Int = 0,
+  /**
+   * Y acceleration
+   */
+  public val yacc: Int = 0,
+  /**
+   * X acceleration
+   */
+  public val xacc: Int = 0,
+  /**
+   * Ground Z Speed (Altitude)
+   */
+  public val vz: Int = 0,
+  /**
+   * Ground Y Speed (Longitude)
+   */
+  public val vy: Int = 0,
+  /**
+   * Ground X Speed (Latitude)
+   */
+  public val vx: Int = 0,
   /**
    * Altitude
    */
@@ -66,29 +85,10 @@ public data class HilState(
    */
   public val roll: Float = 0F,
   /**
-   * Z acceleration
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
+   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
-  public val zacc: Int = 0,
-  /**
-   * Y acceleration
-   */
-  public val yacc: Int = 0,
-  /**
-   * X acceleration
-   */
-  public val xacc: Int = 0,
-  /**
-   * Ground Z Speed (Altitude)
-   */
-  public val vz: Int = 0,
-  /**
-   * Ground Y Speed (Longitude)
-   */
-  public val vy: Int = 0,
-  /**
-   * Ground X Speed (Latitude)
-   */
-  public val vx: Int = 0,
+  public val timeUsec: BigInteger = BigInteger.ZERO,
 ) : MavMessage<HilState> {
   public override val instanceMetadata: MavMessage.Metadata<HilState> = METADATA
 
@@ -137,7 +137,12 @@ public data class HilState(
       val vy = inputBuffer.decodeInt16()
       val vx = inputBuffer.decodeInt16()
       HilState(
-        timeUsec = timeUsec,
+        zacc = zacc,
+        yacc = yacc,
+        xacc = xacc,
+        vz = vz,
+        vy = vy,
+        vx = vx,
         alt = alt,
         lon = lon,
         lat = lat,
@@ -147,12 +152,7 @@ public data class HilState(
         yaw = yaw,
         pitch = pitch,
         roll = roll,
-        zacc = zacc,
-        yacc = yacc,
-        xacc = xacc,
-        vz = vz,
-        vy = vy,
-        vx = vx,
+        timeUsec = timeUsec,
       )
     }
 

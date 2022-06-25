@@ -33,6 +33,18 @@ public data class StorageInformation(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Storage ID (1 for first, 2 for second, etc.)
+   */
+  public val storageId: Int = 0,
+  /**
+   * Number of storage devices
+   */
+  public val storageCount: Int = 0,
+  /**
+   * Status of storage
+   */
+  public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0),
+  /**
    * Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
    */
   public val totalCapacity: Float = 0F,
@@ -53,18 +65,6 @@ public data class StorageInformation(
    * Write speed.
    */
   public val writeSpeed: Float = 0F,
-  /**
-   * Storage ID (1 for first, 2 for second, etc.)
-   */
-  public val storageId: Int = 0,
-  /**
-   * Number of storage devices
-   */
-  public val storageCount: Int = 0,
-  /**
-   * Status of storage
-   */
-  public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0),
   /**
    * Type of storage
    */
@@ -134,14 +134,14 @@ public data class StorageInformation(
       }
       StorageInformation(
         timeBootMs = timeBootMs,
+        storageId = storageId,
+        storageCount = storageCount,
+        status = status,
         totalCapacity = totalCapacity,
         usedCapacity = usedCapacity,
         availableCapacity = availableCapacity,
         readSpeed = readSpeed,
         writeSpeed = writeSpeed,
-        storageId = storageId,
-        storageCount = storageCount,
-        status = status,
         type = type,
         name = name,
         storageUsage = storageUsage,

@@ -16,6 +16,10 @@ import kotlin.Int
  */
 public data class SerialUdbExtraF20(
   /**
+   * SUE Number of Input Channels
+   */
+  public val sueNumberOfInputs: Int = 0,
+  /**
    * SUE UDB PWM Trim Value on Input 1
    */
   public val sueTrimValueInput1: Int = 0,
@@ -63,10 +67,6 @@ public data class SerialUdbExtraF20(
    * SUE UDB PWM Trim Value on Input 12
    */
   public val sueTrimValueInput12: Int = 0,
-  /**
-   * SUE Number of Input Channels
-   */
-  public val sueNumberOfInputs: Int = 0,
 ) : MavMessage<SerialUdbExtraF20> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
 
@@ -109,6 +109,7 @@ public data class SerialUdbExtraF20(
       val sueTrimValueInput12 = inputBuffer.decodeInt16()
       val sueNumberOfInputs = inputBuffer.decodeUint8()
       SerialUdbExtraF20(
+        sueNumberOfInputs = sueNumberOfInputs,
         sueTrimValueInput1 = sueTrimValueInput1,
         sueTrimValueInput2 = sueTrimValueInput2,
         sueTrimValueInput3 = sueTrimValueInput3,
@@ -121,7 +122,6 @@ public data class SerialUdbExtraF20(
         sueTrimValueInput10 = sueTrimValueInput10,
         sueTrimValueInput11 = sueTrimValueInput11,
         sueTrimValueInput12 = sueTrimValueInput12,
-        sueNumberOfInputs = sueNumberOfInputs,
       )
     }
 

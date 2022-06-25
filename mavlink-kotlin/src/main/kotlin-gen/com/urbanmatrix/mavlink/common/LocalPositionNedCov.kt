@@ -30,6 +30,10 @@ public data class LocalPositionNedCov(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Class id of the estimator this estimate originated from.
+   */
+  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
+  /**
    * X Position
    */
   public val x: Float = 0F,
@@ -72,10 +76,6 @@ public data class LocalPositionNedCov(
    * in the array.
    */
   public val covariance: List<Float> = emptyList(),
-  /**
-   * Class id of the estimator this estimate originated from.
-   */
-  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
 ) : MavMessage<LocalPositionNedCov> {
   public override val instanceMetadata: MavMessage.Metadata<LocalPositionNedCov> = METADATA
 
@@ -120,6 +120,7 @@ public data class LocalPositionNedCov(
       }
       LocalPositionNedCov(
         timeUsec = timeUsec,
+        estimatorType = estimatorType,
         x = x,
         y = y,
         z = z,
@@ -130,7 +131,6 @@ public data class LocalPositionNedCov(
         ay = ay,
         az = az,
         covariance = covariance,
-        estimatorType = estimatorType,
       )
     }
 

@@ -40,13 +40,17 @@ import kotlin.collections.List
  */
 public data class CameraImageCaptured(
   /**
+   * Timestamp (time since system boot).
+   */
+  public val timeBootMs: Long = 0L,
+  /**
    * Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
    */
   public val timeUtc: BigInteger = BigInteger.ZERO,
   /**
-   * Timestamp (time since system boot).
+   * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
    */
-  public val timeBootMs: Long = 0L,
+  public val cameraId: Int = 0,
   /**
    * Latitude where image was taken
    */
@@ -72,10 +76,6 @@ public data class CameraImageCaptured(
    * count -1)
    */
   public val imageIndex: Int = 0,
-  /**
-   * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
-   */
-  public val cameraId: Int = 0,
   /**
    * Boolean indicating success (1) or failure (0) while capturing this image.
    */
@@ -123,15 +123,15 @@ public data class CameraImageCaptured(
       val captureResult = inputBuffer.decodeInt8()
       val fileUrl = inputBuffer.decodeString(205)
       CameraImageCaptured(
-        timeUtc = timeUtc,
         timeBootMs = timeBootMs,
+        timeUtc = timeUtc,
+        cameraId = cameraId,
         lat = lat,
         lon = lon,
         alt = alt,
         relativeAlt = relativeAlt,
         q = q,
         imageIndex = imageIndex,
-        cameraId = cameraId,
         captureResult = captureResult,
         fileUrl = fileUrl,
       )

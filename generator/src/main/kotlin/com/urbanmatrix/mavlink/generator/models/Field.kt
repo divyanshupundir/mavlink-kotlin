@@ -90,6 +90,8 @@ sealed class FieldModel : Comparable<FieldModel> {
     }
 }
 
+fun List<FieldModel>.sortedByPosition() = sortedBy { it.position }
+
 private fun resolveKotlinPrimitiveSize(rawType: String) = when (rawType) {
     "char" -> 1
     "float" -> 4

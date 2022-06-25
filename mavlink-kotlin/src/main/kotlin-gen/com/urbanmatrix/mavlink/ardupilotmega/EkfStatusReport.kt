@@ -18,6 +18,10 @@ import kotlin.Int
  */
 public data class EkfStatusReport(
   /**
+   * Flags.
+   */
+  public val flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0),
+  /**
    * Velocity variance.
    */
   public val velocityVariance: Float = 0F,
@@ -37,10 +41,6 @@ public data class EkfStatusReport(
    * Terrain Altitude variance.
    */
   public val terrainAltVariance: Float = 0F,
-  /**
-   * Flags.
-   */
-  public val flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0),
   /**
    * Airspeed variance.
    */
@@ -78,12 +78,12 @@ public data class EkfStatusReport(
       }
       val airspeedVariance = inputBuffer.decodeFloat()
       EkfStatusReport(
+        flags = flags,
         velocityVariance = velocityVariance,
         posHorizVariance = posHorizVariance,
         posVertVariance = posVertVariance,
         compassVariance = compassVariance,
         terrainAltVariance = terrainAltVariance,
-        flags = flags,
         airspeedVariance = airspeedVariance,
       )
     }

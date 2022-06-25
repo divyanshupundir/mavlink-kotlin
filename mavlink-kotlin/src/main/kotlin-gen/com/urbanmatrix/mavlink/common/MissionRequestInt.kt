@@ -21,10 +21,6 @@ import kotlin.Int
  */
 public data class MissionRequestInt(
   /**
-   * Sequence
-   */
-  public val seq: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -32,6 +28,10 @@ public data class MissionRequestInt(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Sequence
+   */
+  public val seq: Int = 0,
   /**
    * Mission type.
    */
@@ -63,9 +63,9 @@ public data class MissionRequestInt(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionRequestInt(
-        seq = seq,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        seq = seq,
         missionType = missionType,
       )
     }

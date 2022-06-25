@@ -32,6 +32,14 @@ import kotlin.collections.List
  */
 public data class AutopilotStateForGimbalDevice(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Timestamp (time since system boot).
    */
   public val timeBootUs: BigInteger = BigInteger.ZERO,
@@ -69,14 +77,6 @@ public data class AutopilotStateForGimbalDevice(
    * Bitmap indicating which estimator outputs are valid.
    */
   public val estimatorStatus: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
   /**
    * The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
    */
@@ -129,6 +129,8 @@ public data class AutopilotStateForGimbalDevice(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       AutopilotStateForGimbalDevice(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         timeBootUs = timeBootUs,
         q = q,
         qEstimatedDelayUs = qEstimatedDelayUs,
@@ -138,8 +140,6 @@ public data class AutopilotStateForGimbalDevice(
         vEstimatedDelayUs = vEstimatedDelayUs,
         feedForwardAngularVelocityZ = feedForwardAngularVelocityZ,
         estimatorStatus = estimatorStatus,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         landedState = landedState,
       )
     }

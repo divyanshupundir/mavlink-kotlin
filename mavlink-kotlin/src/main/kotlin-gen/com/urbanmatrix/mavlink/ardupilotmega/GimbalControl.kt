@@ -17,6 +17,14 @@ import kotlin.Int
  */
 public data class GimbalControl(
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Demanded angular rate X.
    */
   public val demandedRateX: Float = 0F,
@@ -28,14 +36,6 @@ public data class GimbalControl(
    * Demanded angular rate Z.
    */
   public val demandedRateZ: Float = 0F,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
 ) : MavMessage<GimbalControl> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalControl> = METADATA
 
@@ -62,11 +62,11 @@ public data class GimbalControl(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       GimbalControl(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         demandedRateX = demandedRateX,
         demandedRateY = demandedRateY,
         demandedRateZ = demandedRateZ,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
       )
     }
 

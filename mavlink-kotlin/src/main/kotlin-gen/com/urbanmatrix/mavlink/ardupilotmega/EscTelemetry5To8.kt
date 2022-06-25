@@ -17,6 +17,10 @@ import kotlin.collections.List
  */
 public data class EscTelemetry5To8(
   /**
+   * Temperature.
+   */
+  public val temperature: List<Int> = emptyList(),
+  /**
    * Voltage.
    */
   public val voltage: List<Int> = emptyList(),
@@ -36,10 +40,6 @@ public data class EscTelemetry5To8(
    * count of telemetry packets received (wraps at 65535).
    */
   public val count: List<Int> = emptyList(),
-  /**
-   * Temperature.
-   */
-  public val temperature: List<Int> = emptyList(),
 ) : MavMessage<EscTelemetry5To8> {
   public override val instanceMetadata: MavMessage.Metadata<EscTelemetry5To8> = METADATA
 
@@ -68,12 +68,12 @@ public data class EscTelemetry5To8(
       val count = inputBuffer.decodeUint16Array(8)
       val temperature = inputBuffer.decodeUint8Array(4)
       EscTelemetry5To8(
+        temperature = temperature,
         voltage = voltage,
         current = current,
         totalcurrent = totalcurrent,
         rpm = rpm,
         count = count,
-        temperature = temperature,
       )
     }
 

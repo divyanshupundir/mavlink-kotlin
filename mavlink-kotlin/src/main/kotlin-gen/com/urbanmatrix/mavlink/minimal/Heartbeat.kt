@@ -23,10 +23,6 @@ import kotlin.Long
  */
 public data class Heartbeat(
   /**
-   * A bitfield for use for autopilot-specific flags
-   */
-  public val customMode: Long = 0L,
-  /**
    * Vehicle or component type. For a flight controller component the vehicle type (quadrotor,
    * helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This
    * should be used in preference to component id for identifying the component type.
@@ -41,6 +37,10 @@ public data class Heartbeat(
    * System mode bitmap.
    */
   public val baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
+  /**
+   * A bitfield for use for autopilot-specific flags
+   */
+  public val customMode: Long = 0L,
   /**
    * System status flag.
    */
@@ -90,10 +90,10 @@ public data class Heartbeat(
       }
       val mavlinkVersion = inputBuffer.decodeUint8()
       Heartbeat(
-        customMode = customMode,
         type = type,
         autopilot = autopilot,
         baseMode = baseMode,
+        customMode = customMode,
         systemStatus = systemStatus,
         mavlinkVersion = mavlinkVersion,
       )

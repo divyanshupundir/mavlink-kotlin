@@ -32,6 +32,10 @@ public data class GimbalManagerInformation(
    */
   public val capFlags: MavEnumValue<GimbalManagerCapFlags> = MavEnumValue.fromValue(0),
   /**
+   * Gimbal device ID that this gimbal manager is responsible for.
+   */
+  public val gimbalDeviceId: Int = 0,
+  /**
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
   public val rollMin: Float = 0F,
@@ -55,10 +59,6 @@ public data class GimbalManagerInformation(
    * Maximum yaw angle (positive: to the right, negative: to the left)
    */
   public val yawMax: Float = 0F,
-  /**
-   * Gimbal device ID that this gimbal manager is responsible for.
-   */
-  public val gimbalDeviceId: Int = 0,
 ) : MavMessage<GimbalManagerInformation> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
 
@@ -98,13 +98,13 @@ public data class GimbalManagerInformation(
       GimbalManagerInformation(
         timeBootMs = timeBootMs,
         capFlags = capFlags,
+        gimbalDeviceId = gimbalDeviceId,
         rollMin = rollMin,
         rollMax = rollMax,
         pitchMin = pitchMin,
         pitchMax = pitchMax,
         yawMin = yawMin,
         yawMax = yawMax,
-        gimbalDeviceId = gimbalDeviceId,
       )
     }
 

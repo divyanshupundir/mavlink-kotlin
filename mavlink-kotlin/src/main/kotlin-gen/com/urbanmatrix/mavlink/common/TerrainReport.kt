@@ -29,6 +29,10 @@ public data class TerrainReport(
    */
   public val lon: Int = 0,
   /**
+   * grid spacing (zero if terrain at this location unavailable)
+   */
+  public val spacing: Int = 0,
+  /**
    * Terrain height MSL
    */
   public val terrainHeight: Float = 0F,
@@ -36,10 +40,6 @@ public data class TerrainReport(
    * Current vehicle height above lat/lon terrain height
    */
   public val currentHeight: Float = 0F,
-  /**
-   * grid spacing (zero if terrain at this location unavailable)
-   */
-  public val spacing: Int = 0,
   /**
    * Number of 4x4 terrain blocks waiting to be received or read from disk
    */
@@ -80,9 +80,9 @@ public data class TerrainReport(
       TerrainReport(
         lat = lat,
         lon = lon,
+        spacing = spacing,
         terrainHeight = terrainHeight,
         currentHeight = currentHeight,
-        spacing = spacing,
         pending = pending,
         loaded = loaded,
       )

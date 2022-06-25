@@ -32,6 +32,14 @@ public data class Odometry(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Coordinate frame of reference for the pose data.
+   */
+  public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * Coordinate frame of reference for the velocity in free space (twist) data.
+   */
+  public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
    * X Position
    */
   public val x: Float = 0F,
@@ -84,14 +92,6 @@ public data class Odometry(
    * array.
    */
   public val velocityCovariance: List<Float> = emptyList(),
-  /**
-   * Coordinate frame of reference for the pose data.
-   */
-  public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * Coordinate frame of reference for the velocity in free space (twist) data.
-   */
-  public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * Estimate reset counter. This should be incremented when the estimate resets in any of the
    * dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an
@@ -162,6 +162,8 @@ public data class Odometry(
       }
       Odometry(
         timeUsec = timeUsec,
+        frameId = frameId,
+        childFrameId = childFrameId,
         x = x,
         y = y,
         z = z,
@@ -174,8 +176,6 @@ public data class Odometry(
         yawspeed = yawspeed,
         poseCovariance = poseCovariance,
         velocityCovariance = velocityCovariance,
-        frameId = frameId,
-        childFrameId = childFrameId,
         resetCounter = resetCounter,
         estimatorType = estimatorType,
       )

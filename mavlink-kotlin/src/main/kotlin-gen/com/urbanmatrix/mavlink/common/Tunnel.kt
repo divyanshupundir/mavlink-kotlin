@@ -23,14 +23,6 @@ import kotlin.collections.List
  */
 public data class Tunnel(
   /**
-   * A code that identifies the content of the payload (0 for unknown, which is the default). If
-   * this code is less than 32768, it is a 'registered' payload type and the corresponding code should
-   * be added to the MAV_TUNNEL_PAYLOAD_TYPE enum. Software creators can register blocks of types as
-   * needed. Codes greater than 32767 are considered local experiments and should not be checked in to
-   * any widely distributed codebase.
-   */
-  public val payloadType: MavEnumValue<MavTunnelPayloadType> = MavEnumValue.fromValue(0),
-  /**
    * System ID (can be 0 for broadcast, but this is discouraged)
    */
   public val targetSystem: Int = 0,
@@ -38,6 +30,14 @@ public data class Tunnel(
    * Component ID (can be 0 for broadcast, but this is discouraged)
    */
   public val targetComponent: Int = 0,
+  /**
+   * A code that identifies the content of the payload (0 for unknown, which is the default). If
+   * this code is less than 32768, it is a 'registered' payload type and the corresponding code should
+   * be added to the MAV_TUNNEL_PAYLOAD_TYPE enum. Software creators can register blocks of types as
+   * needed. Codes greater than 32767 are considered local experiments and should not be checked in to
+   * any widely distributed codebase.
+   */
+  public val payloadType: MavEnumValue<MavTunnelPayloadType> = MavEnumValue.fromValue(0),
   /**
    * Length of the data transported in payload
    */
@@ -76,9 +76,9 @@ public data class Tunnel(
       val payloadLength = inputBuffer.decodeUint8()
       val payload = inputBuffer.decodeUint8Array(128)
       Tunnel(
-        payloadType = payloadType,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        payloadType = payloadType,
         payloadLength = payloadLength,
         payload = payload,
       )

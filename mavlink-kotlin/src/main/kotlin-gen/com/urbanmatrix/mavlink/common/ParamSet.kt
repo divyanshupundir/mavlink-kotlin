@@ -32,10 +32,6 @@ import kotlin.String
  */
 public data class ParamSet(
   /**
-   * Onboard parameter value
-   */
-  public val paramValue: Float = 0F,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -49,6 +45,10 @@ public data class ParamSet(
    * provide 16+1 bytes storage if the ID is stored as string
    */
   public val paramId: String = "",
+  /**
+   * Onboard parameter value
+   */
+  public val paramValue: Float = 0F,
   /**
    * Onboard parameter type.
    */
@@ -82,10 +82,10 @@ public data class ParamSet(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       ParamSet(
-        paramValue = paramValue,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         paramId = paramId,
+        paramValue = paramValue,
         paramType = paramType,
       )
     }

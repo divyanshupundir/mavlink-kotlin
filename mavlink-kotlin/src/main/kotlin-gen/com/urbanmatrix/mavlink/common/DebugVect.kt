@@ -21,6 +21,10 @@ import kotlin.String
  */
 public data class DebugVect(
   /**
+   * Name
+   */
+  public val name: String = "",
+  /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
@@ -37,10 +41,6 @@ public data class DebugVect(
    * z
    */
   public val z: Float = 0F,
-  /**
-   * Name
-   */
-  public val name: String = "",
 ) : MavMessage<DebugVect> {
   public override val instanceMetadata: MavMessage.Metadata<DebugVect> = METADATA
 
@@ -67,11 +67,11 @@ public data class DebugVect(
       val z = inputBuffer.decodeFloat()
       val name = inputBuffer.decodeString(10)
       DebugVect(
+        name = name,
         timeUsec = timeUsec,
         x = x,
         y = y,
         z = z,
-        name = name,
       )
     }
 

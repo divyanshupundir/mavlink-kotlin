@@ -17,14 +17,6 @@ import kotlin.Long
  */
 public data class LogEntry(
   /**
-   * UTC timestamp of log since 1970, or 0 if not available
-   */
-  public val timeUtc: Long = 0L,
-  /**
-   * Size of the log (may be approximate)
-   */
-  public val size: Long = 0L,
-  /**
    * Log id
    */
   public val id: Int = 0,
@@ -36,6 +28,14 @@ public data class LogEntry(
    * High log number
    */
   public val lastLogNum: Int = 0,
+  /**
+   * UTC timestamp of log since 1970, or 0 if not available
+   */
+  public val timeUtc: Long = 0L,
+  /**
+   * Size of the log (may be approximate)
+   */
+  public val size: Long = 0L,
 ) : MavMessage<LogEntry> {
   public override val instanceMetadata: MavMessage.Metadata<LogEntry> = METADATA
 
@@ -62,11 +62,11 @@ public data class LogEntry(
       val numLogs = inputBuffer.decodeUint16()
       val lastLogNum = inputBuffer.decodeUint16()
       LogEntry(
-        timeUtc = timeUtc,
-        size = size,
         id = id,
         numLogs = numLogs,
         lastLogNum = lastLogNum,
+        timeUtc = timeUtc,
+        size = size,
       )
     }
 

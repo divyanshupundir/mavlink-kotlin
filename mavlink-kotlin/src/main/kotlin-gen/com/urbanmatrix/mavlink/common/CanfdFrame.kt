@@ -21,10 +21,6 @@ import kotlin.collections.List
  */
 public data class CanfdFrame(
   /**
-   * Frame ID
-   */
-  public val id: Long = 0L,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -40,6 +36,10 @@ public data class CanfdFrame(
    * Frame length
    */
   public val len: Int = 0,
+  /**
+   * Frame ID
+   */
+  public val id: Long = 0L,
   /**
    * Frame data
    */
@@ -72,11 +72,11 @@ public data class CanfdFrame(
       val len = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(64)
       CanfdFrame(
-        id = id,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         bus = bus,
         len = len,
+        id = id,
         data = data,
       )
     }

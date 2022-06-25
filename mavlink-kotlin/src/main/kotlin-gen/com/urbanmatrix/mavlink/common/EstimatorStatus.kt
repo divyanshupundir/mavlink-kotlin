@@ -34,6 +34,10 @@ public data class EstimatorStatus(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Bitmap indicating which EKF outputs are valid.
+   */
+  public val flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
+  /**
    * Velocity innovation test ratio
    */
   public val velRatio: Float = 0F,
@@ -65,10 +69,6 @@ public data class EstimatorStatus(
    * Vertical position 1-STD accuracy relative to the EKF local origin
    */
   public val posVertAccuracy: Float = 0F,
-  /**
-   * Bitmap indicating which EKF outputs are valid.
-   */
-  public val flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<EstimatorStatus> {
   public override val instanceMetadata: MavMessage.Metadata<EstimatorStatus> = METADATA
 
@@ -109,6 +109,7 @@ public data class EstimatorStatus(
       }
       EstimatorStatus(
         timeUsec = timeUsec,
+        flags = flags,
         velRatio = velRatio,
         posHorizRatio = posHorizRatio,
         posVertRatio = posVertRatio,
@@ -117,7 +118,6 @@ public data class EstimatorStatus(
         tasRatio = tasRatio,
         posHorizAccuracy = posHorizAccuracy,
         posVertAccuracy = posVertAccuracy,
-        flags = flags,
       )
     }
 

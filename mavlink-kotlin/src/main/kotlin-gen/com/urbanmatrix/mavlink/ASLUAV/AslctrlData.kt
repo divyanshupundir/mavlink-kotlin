@@ -24,6 +24,10 @@ public data class AslctrlData(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
+   *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
+   */
+  public val aslctrlMode: Int = 0,
+  /**
    *  See sourcecode for a description of these values... 
    */
   public val h: Float = 0F,
@@ -47,6 +51,7 @@ public data class AslctrlData(
    * Airspeed reference
    */
   public val airspeedref: Float = 0F,
+  public val spoilersengaged: Int = 0,
   /**
    * Yaw angle
    */
@@ -69,11 +74,6 @@ public data class AslctrlData(
   public val rref: Float = 0F,
   public val uail: Float = 0F,
   public val urud: Float = 0F,
-  /**
-   *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
-   */
-  public val aslctrlMode: Int = 0,
-  public val spoilersengaged: Int = 0,
 ) : MavMessage<AslctrlData> {
   public override val instanceMetadata: MavMessage.Metadata<AslctrlData> = METADATA
 
@@ -141,6 +141,7 @@ public data class AslctrlData(
       val spoilersengaged = inputBuffer.decodeUint8()
       AslctrlData(
         timestamp = timestamp,
+        aslctrlMode = aslctrlMode,
         h = h,
         href = href,
         hrefT = hrefT,
@@ -153,6 +154,7 @@ public data class AslctrlData(
         uthrot2 = uthrot2,
         nz = nz,
         airspeedref = airspeedref,
+        spoilersengaged = spoilersengaged,
         yawangle = yawangle,
         yawangleref = yawangleref,
         rollangle = rollangle,
@@ -163,8 +165,6 @@ public data class AslctrlData(
         rref = rref,
         uail = uail,
         urud = urud,
-        aslctrlMode = aslctrlMode,
-        spoilersengaged = spoilersengaged,
       )
     }
 

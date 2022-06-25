@@ -35,6 +35,10 @@ public data class GlobalPositionIntCov(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Class id of the estimator this estimate originated from.
+   */
+  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
+  /**
    * Latitude
    */
   public val lat: Int = 0,
@@ -68,10 +72,6 @@ public data class GlobalPositionIntCov(
    * row, etc.). If unknown, assign NaN value to first element in the array.
    */
   public val covariance: List<Float> = emptyList(),
-  /**
-   * Class id of the estimator this estimate originated from.
-   */
-  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
 ) : MavMessage<GlobalPositionIntCov> {
   public override val instanceMetadata: MavMessage.Metadata<GlobalPositionIntCov> = METADATA
 
@@ -112,6 +112,7 @@ public data class GlobalPositionIntCov(
       }
       GlobalPositionIntCov(
         timeUsec = timeUsec,
+        estimatorType = estimatorType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -120,7 +121,6 @@ public data class GlobalPositionIntCov(
         vy = vy,
         vz = vz,
         covariance = covariance,
-        estimatorType = estimatorType,
       )
     }
 

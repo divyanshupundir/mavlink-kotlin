@@ -29,6 +29,19 @@ public data class ObstacleDistance3d(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Class id of the distance sensor type.
+   */
+  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
+  /**
+   * Coordinate frame of reference.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object
+   * ID is unknown or cannot be determined.
+   */
+  public val obstacleId: Int = 0,
+  /**
    *  X position of the obstacle.
    */
   public val x: Float = 0F,
@@ -48,19 +61,6 @@ public data class ObstacleDistance3d(
    * Maximum distance the sensor can measure.
    */
   public val maxDistance: Float = 0F,
-  /**
-   *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object
-   * ID is unknown or cannot be determined.
-   */
-  public val obstacleId: Int = 0,
-  /**
-   * Class id of the distance sensor type.
-   */
-  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
-  /**
-   * Coordinate frame of reference.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<ObstacleDistance3d> {
   public override val instanceMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
 
@@ -102,14 +102,14 @@ public data class ObstacleDistance3d(
       }
       ObstacleDistance3d(
         timeBootMs = timeBootMs,
+        sensorType = sensorType,
+        frame = frame,
+        obstacleId = obstacleId,
         x = x,
         y = y,
         z = z,
         minDistance = minDistance,
         maxDistance = maxDistance,
-        obstacleId = obstacleId,
-        sensorType = sensorType,
-        frame = frame,
       )
     }
 

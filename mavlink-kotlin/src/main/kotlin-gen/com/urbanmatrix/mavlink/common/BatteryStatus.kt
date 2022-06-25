@@ -27,13 +27,17 @@ import kotlin.collections.List
  */
 public data class BatteryStatus(
   /**
-   * Consumed charge, -1: autopilot does not provide consumption estimate
+   * Battery ID
    */
-  public val currentConsumed: Int = 0,
+  public val id: Int = 0,
   /**
-   * Consumed energy, -1: autopilot does not provide energy consumption estimate
+   * Function of the battery
    */
-  public val energyConsumed: Int = 0,
+  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
+  /**
+   * Type (chemistry) of the battery
+   */
+  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
   /**
    * Temperature of the battery. INT16_MAX for unknown temperature.
    */
@@ -53,17 +57,13 @@ public data class BatteryStatus(
    */
   public val currentBattery: Int = 0,
   /**
-   * Battery ID
+   * Consumed charge, -1: autopilot does not provide consumption estimate
    */
-  public val id: Int = 0,
+  public val currentConsumed: Int = 0,
   /**
-   * Function of the battery
+   * Consumed energy, -1: autopilot does not provide energy consumption estimate
    */
-  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
-  /**
-   * Type (chemistry) of the battery
-   */
-  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
+  public val energyConsumed: Int = 0,
   /**
    * Remaining battery energy. Values: [0-100], -1: autopilot does not estimate the remaining
    * battery.
@@ -154,14 +154,14 @@ public data class BatteryStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       BatteryStatus(
-        currentConsumed = currentConsumed,
-        energyConsumed = energyConsumed,
-        temperature = temperature,
-        voltages = voltages,
-        currentBattery = currentBattery,
         id = id,
         batteryFunction = batteryFunction,
         type = type,
+        temperature = temperature,
+        voltages = voltages,
+        currentBattery = currentBattery,
+        currentConsumed = currentConsumed,
+        energyConsumed = energyConsumed,
         batteryRemaining = batteryRemaining,
         timeRemaining = timeRemaining,
         chargeState = chargeState,

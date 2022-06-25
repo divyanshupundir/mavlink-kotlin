@@ -28,6 +28,23 @@ public data class SetPositionTargetLocalNed(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
+   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
+   */
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
    * X Position in NED frame
    */
   public val x: Float = 0F,
@@ -71,23 +88,6 @@ public data class SetPositionTargetLocalNed(
    * yaw rate setpoint
    */
   public val yawRate: Float = 0F,
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
-   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
-   */
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<SetPositionTargetLocalNed> {
   public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetLocalNed> = METADATA
 
@@ -144,6 +144,10 @@ public data class SetPositionTargetLocalNed(
       }
       SetPositionTargetLocalNed(
         timeBootMs = timeBootMs,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        coordinateFrame = coordinateFrame,
+        typeMask = typeMask,
         x = x,
         y = y,
         z = z,
@@ -155,10 +159,6 @@ public data class SetPositionTargetLocalNed(
         afz = afz,
         yaw = yaw,
         yawRate = yawRate,
-        typeMask = typeMask,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        coordinateFrame = coordinateFrame,
       )
     }
 

@@ -17,10 +17,6 @@ import kotlin.Int
  */
 public data class MissionSetCurrent(
   /**
-   * Sequence
-   */
-  public val seq: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -28,6 +24,10 @@ public data class MissionSetCurrent(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Sequence
+   */
+  public val seq: Int = 0,
 ) : MavMessage<MissionSetCurrent> {
   public override val instanceMetadata: MavMessage.Metadata<MissionSetCurrent> = METADATA
 
@@ -50,9 +50,9 @@ public data class MissionSetCurrent(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       MissionSetCurrent(
-        seq = seq,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        seq = seq,
       )
     }
 

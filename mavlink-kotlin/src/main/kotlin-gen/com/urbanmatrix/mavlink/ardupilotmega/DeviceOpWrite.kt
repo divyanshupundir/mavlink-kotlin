@@ -26,10 +26,6 @@ import kotlin.collections.List
  */
 public data class DeviceOpWrite(
   /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -37,6 +33,10 @@ public data class DeviceOpWrite(
    * Component ID.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
   /**
    * The bus type.
    */
@@ -110,9 +110,9 @@ public data class DeviceOpWrite(
       val data = inputBuffer.decodeUint8Array(128)
       val bank = inputBuffer.decodeUint8()
       DeviceOpWrite(
-        requestId = requestId,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        requestId = requestId,
         bustype = bustype,
         bus = bus,
         address = address,

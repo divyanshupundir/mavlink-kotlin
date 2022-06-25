@@ -25,6 +25,10 @@ import kotlin.collections.List
  */
 public data class EscStatus(
   /**
+   * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
+   */
+  public val index: Int = 0,
+  /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
    */
@@ -41,10 +45,6 @@ public data class EscStatus(
    * Current measured from each ESC.
    */
   public val current: List<Float> = emptyList(),
-  /**
-   * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
-   */
-  public val index: Int = 0,
 ) : MavMessage<EscStatus> {
   public override val instanceMetadata: MavMessage.Metadata<EscStatus> = METADATA
 
@@ -71,11 +71,11 @@ public data class EscStatus(
       val current = inputBuffer.decodeFloatArray(16)
       val index = inputBuffer.decodeUint8()
       EscStatus(
+        index = index,
         timeUsec = timeUsec,
         rpm = rpm,
         voltage = voltage,
         current = current,
-        index = index,
       )
     }
 

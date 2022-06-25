@@ -22,14 +22,6 @@ import kotlin.String
  */
 public data class ParamExtValue(
   /**
-   * Total number of parameters
-   */
-  public val paramCount: Int = 0,
-  /**
-   * Index of this parameter
-   */
-  public val paramIndex: Int = 0,
-  /**
    * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
    * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
    * bytes storage if the ID is stored as string
@@ -43,6 +35,14 @@ public data class ParamExtValue(
    * Parameter type.
    */
   public val paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0),
+  /**
+   * Total number of parameters
+   */
+  public val paramCount: Int = 0,
+  /**
+   * Index of this parameter
+   */
+  public val paramIndex: Int = 0,
 ) : MavMessage<ParamExtValue> {
   public override val instanceMetadata: MavMessage.Metadata<ParamExtValue> = METADATA
 
@@ -72,11 +72,11 @@ public data class ParamExtValue(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       ParamExtValue(
-        paramCount = paramCount,
-        paramIndex = paramIndex,
         paramId = paramId,
         paramValue = paramValue,
         paramType = paramType,
+        paramCount = paramCount,
+        paramIndex = paramIndex,
       )
     }
 

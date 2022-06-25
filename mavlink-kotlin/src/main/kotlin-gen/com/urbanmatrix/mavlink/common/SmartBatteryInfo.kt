@@ -28,6 +28,18 @@ import kotlin.String
  */
 public data class SmartBatteryInfo(
   /**
+   * Battery ID
+   */
+  public val id: Int = 0,
+  /**
+   * Function of the battery
+   */
+  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
+  /**
+   * Type (chemistry) of the battery
+   */
+  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
+  /**
    * Capacity when full according to manufacturer, -1: field not provided.
    */
   public val capacityFullSpecification: Int = 0,
@@ -39,6 +51,15 @@ public data class SmartBatteryInfo(
    * Charge/discharge cycle count. UINT16_MAX: field not provided.
    */
   public val cycleCount: Int = 0,
+  /**
+   * Serial number in ASCII characters, 0 terminated. All 0: field not provided.
+   */
+  public val serialNumber: String = "",
+  /**
+   * Static device name in ASCII characters, 0 terminated. All 0: field not provided. Encode as
+   * manufacturer name then product name separated using an underscore.
+   */
+  public val deviceName: String = "",
   /**
    * Battery weight. 0: field not provided.
    */
@@ -55,27 +76,6 @@ public data class SmartBatteryInfo(
    * Minimum per-cell voltage when resting. If not supplied set to UINT16_MAX value.
    */
   public val restingMinimumVoltage: Int = 0,
-  /**
-   * Battery ID
-   */
-  public val id: Int = 0,
-  /**
-   * Function of the battery
-   */
-  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
-  /**
-   * Type (chemistry) of the battery
-   */
-  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
-  /**
-   * Serial number in ASCII characters, 0 terminated. All 0: field not provided.
-   */
-  public val serialNumber: String = "",
-  /**
-   * Static device name in ASCII characters, 0 terminated. All 0: field not provided. Encode as
-   * manufacturer name then product name separated using an underscore.
-   */
-  public val deviceName: String = "",
   /**
    * Maximum per-cell voltage when charged. 0: field not provided.
    */
@@ -152,18 +152,18 @@ public data class SmartBatteryInfo(
       val dischargeMaximumBurstCurrent = inputBuffer.decodeUint32()
       val manufactureDate = inputBuffer.decodeString(11)
       SmartBatteryInfo(
+        id = id,
+        batteryFunction = batteryFunction,
+        type = type,
         capacityFullSpecification = capacityFullSpecification,
         capacityFull = capacityFull,
         cycleCount = cycleCount,
+        serialNumber = serialNumber,
+        deviceName = deviceName,
         weight = weight,
         dischargeMinimumVoltage = dischargeMinimumVoltage,
         chargingMinimumVoltage = chargingMinimumVoltage,
         restingMinimumVoltage = restingMinimumVoltage,
-        id = id,
-        batteryFunction = batteryFunction,
-        type = type,
-        serialNumber = serialNumber,
-        deviceName = deviceName,
         chargingMaximumVoltage = chargingMaximumVoltage,
         cellsInSeries = cellsInSeries,
         dischargeMaximumCurrent = dischargeMaximumCurrent,

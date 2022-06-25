@@ -25,13 +25,13 @@ public data class NamedValueInt(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Signed integer value
-   */
-  public val `value`: Int = 0,
-  /**
    * Name of the debug variable
    */
   public val name: String = "",
+  /**
+   * Signed integer value
+   */
+  public val `value`: Int = 0,
 ) : MavMessage<NamedValueInt> {
   public override val instanceMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
 
@@ -55,8 +55,8 @@ public data class NamedValueInt(
       val name = inputBuffer.decodeString(10)
       NamedValueInt(
         timeBootMs = timeBootMs,
-        value = value,
         name = name,
+        value = value,
       )
     }
 

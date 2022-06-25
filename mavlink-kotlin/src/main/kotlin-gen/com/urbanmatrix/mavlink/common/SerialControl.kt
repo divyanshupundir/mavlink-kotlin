@@ -28,14 +28,6 @@ import kotlin.collections.List
  */
 public data class SerialControl(
   /**
-   * Baudrate of transfer. Zero means no change.
-   */
-  public val baudrate: Long = 0L,
-  /**
-   * Timeout for reply data
-   */
-  public val timeout: Int = 0,
-  /**
    * Serial control device type.
    */
   public val device: MavEnumValue<SerialControlDev> = MavEnumValue.fromValue(0),
@@ -43,6 +35,14 @@ public data class SerialControl(
    * Bitmap of serial control flags.
    */
   public val flags: MavEnumValue<SerialControlFlag> = MavEnumValue.fromValue(0),
+  /**
+   * Timeout for reply data
+   */
+  public val timeout: Int = 0,
+  /**
+   * Baudrate of transfer. Zero means no change.
+   */
+  public val baudrate: Long = 0L,
   /**
    * how many bytes in this transfer
    */
@@ -97,10 +97,10 @@ public data class SerialControl(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       SerialControl(
-        baudrate = baudrate,
-        timeout = timeout,
         device = device,
         flags = flags,
+        timeout = timeout,
+        baudrate = baudrate,
         count = count,
         data = data,
         targetSystem = targetSystem,

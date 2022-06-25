@@ -20,10 +20,6 @@ import kotlin.Int
  */
 public data class TerrainRequest(
   /**
-   * Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
-   */
-  public val mask: BigInteger = BigInteger.ZERO,
-  /**
    * Latitude of SW corner of first grid
    */
   public val lat: Int = 0,
@@ -35,6 +31,10 @@ public data class TerrainRequest(
    * Grid spacing
    */
   public val gridSpacing: Int = 0,
+  /**
+   * Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
+   */
+  public val mask: BigInteger = BigInteger.ZERO,
 ) : MavMessage<TerrainRequest> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainRequest> = METADATA
 
@@ -59,10 +59,10 @@ public data class TerrainRequest(
       val lon = inputBuffer.decodeInt32()
       val gridSpacing = inputBuffer.decodeUint16()
       TerrainRequest(
-        mask = mask,
         lat = lat,
         lon = lon,
         gridSpacing = gridSpacing,
+        mask = mask,
       )
     }
 

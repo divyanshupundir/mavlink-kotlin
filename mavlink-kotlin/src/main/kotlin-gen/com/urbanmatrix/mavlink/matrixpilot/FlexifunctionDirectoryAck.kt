@@ -16,10 +16,6 @@ import kotlin.Int
  */
 public data class FlexifunctionDirectoryAck(
   /**
-   * result of acknowledge, 0=fail, 1=good
-   */
-  public val result: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -39,6 +35,10 @@ public data class FlexifunctionDirectoryAck(
    * count of directory entries to write
    */
   public val count: Int = 0,
+  /**
+   * result of acknowledge, 0=fail, 1=good
+   */
+  public val result: Int = 0,
 ) : MavMessage<FlexifunctionDirectoryAck> {
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionDirectoryAck> = METADATA
 
@@ -68,12 +68,12 @@ public data class FlexifunctionDirectoryAck(
       val startIndex = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
       FlexifunctionDirectoryAck(
-        result = result,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         directoryType = directoryType,
         startIndex = startIndex,
         count = count,
+        result = result,
       )
     }
 

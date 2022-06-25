@@ -41,6 +41,10 @@ public data class AdsbVehicle(
    */
   public val lon: Int = 0,
   /**
+   * ADSB altitude type.
+   */
+  public val altitudeType: MavEnumValue<AdsbAltitudeType> = MavEnumValue.fromValue(0),
+  /**
    * Altitude(ASL)
    */
   public val altitude: Int = 0,
@@ -57,18 +61,6 @@ public data class AdsbVehicle(
    */
   public val verVelocity: Int = 0,
   /**
-   * Bitmap to indicate various statuses including valid data fields
-   */
-  public val flags: MavEnumValue<AdsbFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Squawk code
-   */
-  public val squawk: Int = 0,
-  /**
-   * ADSB altitude type.
-   */
-  public val altitudeType: MavEnumValue<AdsbAltitudeType> = MavEnumValue.fromValue(0),
-  /**
    * The callsign, 8+null
    */
   public val callsign: String = "",
@@ -80,6 +72,14 @@ public data class AdsbVehicle(
    * Time since last communication in seconds
    */
   public val tslc: Int = 0,
+  /**
+   * Bitmap to indicate various statuses including valid data fields
+   */
+  public val flags: MavEnumValue<AdsbFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Squawk code
+   */
+  public val squawk: Int = 0,
 ) : MavMessage<AdsbVehicle> {
   public override val instanceMetadata: MavMessage.Metadata<AdsbVehicle> = METADATA
 
@@ -134,16 +134,16 @@ public data class AdsbVehicle(
         icaoAddress = icaoAddress,
         lat = lat,
         lon = lon,
+        altitudeType = altitudeType,
         altitude = altitude,
         heading = heading,
         horVelocity = horVelocity,
         verVelocity = verVelocity,
-        flags = flags,
-        squawk = squawk,
-        altitudeType = altitudeType,
         callsign = callsign,
         emitterType = emitterType,
         tslc = tslc,
+        flags = flags,
+        squawk = squawk,
       )
     }
 

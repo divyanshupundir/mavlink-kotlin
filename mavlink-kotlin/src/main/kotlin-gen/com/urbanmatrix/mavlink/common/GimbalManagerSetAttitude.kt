@@ -24,9 +24,22 @@ import kotlin.collections.List
  */
 public data class GimbalManagerSetAttitude(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
    * High level gimbal manager flags to use.
    */
   public val flags: MavEnumValue<GimbalManagerFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
+   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   */
+  public val gimbalDeviceId: Int = 0,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
    * whether the flag GIMBAL_MANAGER_FLAGS_YAW_LOCK is set)
@@ -44,19 +57,6 @@ public data class GimbalManagerSetAttitude(
    * Z component of angular velocity, positive is yawing to the right, NaN to be ignored.
    */
   public val angularVelocityZ: Float = 0F,
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
-   */
-  public val gimbalDeviceId: Int = 0,
 ) : MavMessage<GimbalManagerSetAttitude> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerSetAttitude> = METADATA
 
@@ -92,14 +92,14 @@ public data class GimbalManagerSetAttitude(
       val targetComponent = inputBuffer.decodeUint8()
       val gimbalDeviceId = inputBuffer.decodeUint8()
       GimbalManagerSetAttitude(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         flags = flags,
+        gimbalDeviceId = gimbalDeviceId,
         q = q,
         angularVelocityX = angularVelocityX,
         angularVelocityY = angularVelocityY,
         angularVelocityZ = angularVelocityZ,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        gimbalDeviceId = gimbalDeviceId,
       )
     }
 

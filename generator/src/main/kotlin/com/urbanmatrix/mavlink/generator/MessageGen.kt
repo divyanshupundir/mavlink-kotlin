@@ -6,6 +6,7 @@ import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.generator.models.FieldModel
 import com.urbanmatrix.mavlink.generator.models.MessageModel
+import com.urbanmatrix.mavlink.generator.models.sortedByPosition
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -14,7 +15,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sorted().forEach { addProperty(it.generateProperty(enumResolver)) } }
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description.replace("%", "%%"))
@@ -31,7 +32,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
 
 private fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
     .constructorBuilder()
-    .apply { fields.sorted().forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
+    .apply { fields.sortedByPosition().forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
     .build()
 
 private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
@@ -72,7 +73,7 @@ private fun MessageModel.generateDeserializer(packageName: String) = PropertySpe
 
             addStatement("%T(", getClassName(packageName))
             indent()
-            fields.sorted().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
+            fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
             unindent()
             addStatement(")")
 

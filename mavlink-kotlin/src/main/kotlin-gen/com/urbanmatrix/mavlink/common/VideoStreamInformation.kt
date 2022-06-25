@@ -29,34 +29,6 @@ import kotlin.String
  */
 public data class VideoStreamInformation(
   /**
-   * Frame rate.
-   */
-  public val framerate: Float = 0F,
-  /**
-   * Bit rate.
-   */
-  public val bitrate: Long = 0L,
-  /**
-   * Bitmap of stream status flags.
-   */
-  public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Horizontal resolution.
-   */
-  public val resolutionH: Int = 0,
-  /**
-   * Vertical resolution.
-   */
-  public val resolutionV: Int = 0,
-  /**
-   * Video image rotation clockwise.
-   */
-  public val rotation: Int = 0,
-  /**
-   * Horizontal Field of view.
-   */
-  public val hfov: Int = 0,
-  /**
    * Video Stream ID (1 for first, 2 for second, etc.)
    */
   public val streamId: Int = 0,
@@ -68,6 +40,34 @@ public data class VideoStreamInformation(
    * Type of stream.
    */
   public val type: MavEnumValue<VideoStreamType> = MavEnumValue.fromValue(0),
+  /**
+   * Bitmap of stream status flags.
+   */
+  public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Frame rate.
+   */
+  public val framerate: Float = 0F,
+  /**
+   * Horizontal resolution.
+   */
+  public val resolutionH: Int = 0,
+  /**
+   * Vertical resolution.
+   */
+  public val resolutionV: Int = 0,
+  /**
+   * Bit rate.
+   */
+  public val bitrate: Long = 0L,
+  /**
+   * Video image rotation clockwise.
+   */
+  public val rotation: Int = 0,
+  /**
+   * Horizontal Field of view.
+   */
+  public val hfov: Int = 0,
   /**
    * Stream name.
    */
@@ -123,16 +123,16 @@ public data class VideoStreamInformation(
       val name = inputBuffer.decodeString(32)
       val uri = inputBuffer.decodeString(160)
       VideoStreamInformation(
-        framerate = framerate,
-        bitrate = bitrate,
-        flags = flags,
-        resolutionH = resolutionH,
-        resolutionV = resolutionV,
-        rotation = rotation,
-        hfov = hfov,
         streamId = streamId,
         count = count,
         type = type,
+        flags = flags,
+        framerate = framerate,
+        resolutionH = resolutionH,
+        resolutionV = resolutionV,
+        bitrate = bitrate,
+        rotation = rotation,
+        hfov = hfov,
         name = name,
         uri = uri,
       )

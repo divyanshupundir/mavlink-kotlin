@@ -40,6 +40,45 @@ public data class OnboardComputerStatus(
    */
   public val uptime: Long = 0L,
   /**
+   * Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2:
+   * Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
+   */
+  public val type: Int = 0,
+  /**
+   * CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
+   * unused.
+   */
+  public val cpuCores: List<Int> = emptyList(),
+  /**
+   * Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
+   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
+   * implies the field is unused.
+   */
+  public val cpuCombined: List<Int> = emptyList(),
+  /**
+   * GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
+   * unused.
+   */
+  public val gpuCores: List<Int> = emptyList(),
+  /**
+   * Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
+   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
+   * implies the field is unused.
+   */
+  public val gpuCombined: List<Int> = emptyList(),
+  /**
+   * Temperature of the board. A value of INT8_MAX implies the field is unused.
+   */
+  public val temperatureBoard: Int = 0,
+  /**
+   * Temperature of the CPU core. A value of INT8_MAX implies the field is unused.
+   */
+  public val temperatureCore: List<Int> = emptyList(),
+  /**
+   * Fan speeds. A value of INT16_MAX implies the field is unused.
+   */
+  public val fanSpeed: List<Int> = emptyList(),
+  /**
    * Amount of used RAM on the component system. A value of UINT32_MAX implies the field is unused.
    */
   public val ramUsage: Long = 0L,
@@ -83,45 +122,6 @@ public data class OnboardComputerStatus(
    * Network capacity to the component system. A value of UINT32_MAX implies the field is unused.
    */
   public val linkRxMax: List<Long> = emptyList(),
-  /**
-   * Fan speeds. A value of INT16_MAX implies the field is unused.
-   */
-  public val fanSpeed: List<Int> = emptyList(),
-  /**
-   * Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2:
-   * Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
-   */
-  public val type: Int = 0,
-  /**
-   * CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
-   * unused.
-   */
-  public val cpuCores: List<Int> = emptyList(),
-  /**
-   * Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
-   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
-   * implies the field is unused.
-   */
-  public val cpuCombined: List<Int> = emptyList(),
-  /**
-   * GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
-   * unused.
-   */
-  public val gpuCores: List<Int> = emptyList(),
-  /**
-   * Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
-   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
-   * implies the field is unused.
-   */
-  public val gpuCombined: List<Int> = emptyList(),
-  /**
-   * Temperature of the board. A value of INT8_MAX implies the field is unused.
-   */
-  public val temperatureBoard: Int = 0,
-  /**
-   * Temperature of the CPU core. A value of INT8_MAX implies the field is unused.
-   */
-  public val temperatureCore: List<Int> = emptyList(),
 ) : MavMessage<OnboardComputerStatus> {
   public override val instanceMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
 
@@ -180,6 +180,14 @@ public data class OnboardComputerStatus(
       OnboardComputerStatus(
         timeUsec = timeUsec,
         uptime = uptime,
+        type = type,
+        cpuCores = cpuCores,
+        cpuCombined = cpuCombined,
+        gpuCores = gpuCores,
+        gpuCombined = gpuCombined,
+        temperatureBoard = temperatureBoard,
+        temperatureCore = temperatureCore,
+        fanSpeed = fanSpeed,
         ramUsage = ramUsage,
         ramTotal = ramTotal,
         storageType = storageType,
@@ -190,14 +198,6 @@ public data class OnboardComputerStatus(
         linkRxRate = linkRxRate,
         linkTxMax = linkTxMax,
         linkRxMax = linkRxMax,
-        fanSpeed = fanSpeed,
-        type = type,
-        cpuCores = cpuCores,
-        cpuCombined = cpuCombined,
-        gpuCores = gpuCores,
-        gpuCombined = gpuCombined,
-        temperatureBoard = temperatureBoard,
-        temperatureCore = temperatureCore,
       )
     }
 

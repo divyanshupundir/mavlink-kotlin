@@ -30,6 +30,10 @@ public data class HilOpticalFlow(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Sensor ID
+   */
+  public val sensorId: Int = 0,
+  /**
    * Integration time. Divide integrated_x and integrated_y by the integration time to obtain
    * average flow. The integration time also indicates the.
    */
@@ -57,6 +61,14 @@ public data class HilOpticalFlow(
    */
   public val integratedZgyro: Float = 0F,
   /**
+   * Temperature
+   */
+  public val temperature: Int = 0,
+  /**
+   * Optical flow quality / confidence. 0: no valid flow, 255: maximum quality
+   */
+  public val quality: Int = 0,
+  /**
    * Time since the distance was sampled.
    */
   public val timeDeltaDistanceUs: Long = 0L,
@@ -65,18 +77,6 @@ public data class HilOpticalFlow(
    * Negative value: Unknown distance.
    */
   public val distance: Float = 0F,
-  /**
-   * Temperature
-   */
-  public val temperature: Int = 0,
-  /**
-   * Sensor ID
-   */
-  public val sensorId: Int = 0,
-  /**
-   * Optical flow quality / confidence. 0: no valid flow, 255: maximum quality
-   */
-  public val quality: Int = 0,
 ) : MavMessage<HilOpticalFlow> {
   public override val instanceMetadata: MavMessage.Metadata<HilOpticalFlow> = METADATA
 
@@ -118,17 +118,17 @@ public data class HilOpticalFlow(
       val quality = inputBuffer.decodeUint8()
       HilOpticalFlow(
         timeUsec = timeUsec,
+        sensorId = sensorId,
         integrationTimeUs = integrationTimeUs,
         integratedX = integratedX,
         integratedY = integratedY,
         integratedXgyro = integratedXgyro,
         integratedYgyro = integratedYgyro,
         integratedZgyro = integratedZgyro,
+        temperature = temperature,
+        quality = quality,
         timeDeltaDistanceUs = timeDeltaDistanceUs,
         distance = distance,
-        temperature = temperature,
-        sensorId = sensorId,
-        quality = quality,
       )
     }
 

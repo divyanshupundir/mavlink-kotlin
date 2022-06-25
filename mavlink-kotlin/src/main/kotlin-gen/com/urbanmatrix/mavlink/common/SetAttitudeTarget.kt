@@ -31,6 +31,18 @@ public data class SetAttitudeTarget(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
   public val q: List<Float> = emptyList(),
@@ -50,18 +62,6 @@ public data class SetAttitudeTarget(
    * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)
    */
   public val thrust: Float = 0F,
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
   /**
    * 3D thrust setpoint in the body NED frame, normalized to -1 .. 1
    */
@@ -106,14 +106,14 @@ public data class SetAttitudeTarget(
       val thrustBody = inputBuffer.decodeFloatArray(12)
       SetAttitudeTarget(
         timeBootMs = timeBootMs,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        typeMask = typeMask,
         q = q,
         bodyRollRate = bodyRollRate,
         bodyPitchRate = bodyPitchRate,
         bodyYawRate = bodyYawRate,
         thrust = thrust,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        typeMask = typeMask,
         thrustBody = thrustBody,
       )
     }

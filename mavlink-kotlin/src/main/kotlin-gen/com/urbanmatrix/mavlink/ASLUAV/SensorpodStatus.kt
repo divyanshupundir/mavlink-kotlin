@@ -23,10 +23,6 @@ public data class SensorpodStatus(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
-   * Free space available in recordings directory in [Gb] * 1e2
-   */
-  public val freeSpace: Int = 0,
-  /**
    * Rate of ROS topic 1
    */
   public val visensorRate1: Int = 0,
@@ -50,6 +46,10 @@ public data class SensorpodStatus(
    * Temperature of sensorpod CPU in
    */
   public val cpuTemp: Int = 0,
+  /**
+   * Free space available in recordings directory in [Gb] * 1e2
+   */
+  public val freeSpace: Int = 0,
 ) : MavMessage<SensorpodStatus> {
   public override val instanceMetadata: MavMessage.Metadata<SensorpodStatus> = METADATA
 
@@ -83,13 +83,13 @@ public data class SensorpodStatus(
       val cpuTemp = inputBuffer.decodeUint8()
       SensorpodStatus(
         timestamp = timestamp,
-        freeSpace = freeSpace,
         visensorRate1 = visensorRate1,
         visensorRate2 = visensorRate2,
         visensorRate3 = visensorRate3,
         visensorRate4 = visensorRate4,
         recordingNodesCount = recordingNodesCount,
         cpuTemp = cpuTemp,
+        freeSpace = freeSpace,
       )
     }
 

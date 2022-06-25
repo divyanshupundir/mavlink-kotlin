@@ -26,6 +26,14 @@ public data class LinkNodeStatus(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
+   * Remaining free transmit buffer space
+   */
+  public val txBuf: Int = 0,
+  /**
+   * Remaining free receive buffer space
+   */
+  public val rxBuf: Int = 0,
+  /**
    * Transmit rate
    */
   public val txRate: Long = 0L,
@@ -33,18 +41,6 @@ public data class LinkNodeStatus(
    * Receive rate
    */
   public val rxRate: Long = 0L,
-  /**
-   * Messages sent
-   */
-  public val messagesSent: Long = 0L,
-  /**
-   * Messages received (estimated from counting seq)
-   */
-  public val messagesReceived: Long = 0L,
-  /**
-   * Messages lost (estimated from counting seq)
-   */
-  public val messagesLost: Long = 0L,
   /**
    * Number of bytes that could not be parsed correctly.
    */
@@ -58,13 +54,17 @@ public data class LinkNodeStatus(
    */
   public val rxOverflows: Int = 0,
   /**
-   * Remaining free transmit buffer space
+   * Messages sent
    */
-  public val txBuf: Int = 0,
+  public val messagesSent: Long = 0L,
   /**
-   * Remaining free receive buffer space
+   * Messages received (estimated from counting seq)
    */
-  public val rxBuf: Int = 0,
+  public val messagesReceived: Long = 0L,
+  /**
+   * Messages lost (estimated from counting seq)
+   */
+  public val messagesLost: Long = 0L,
 ) : MavMessage<LinkNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
 
@@ -104,16 +104,16 @@ public data class LinkNodeStatus(
       val rxBuf = inputBuffer.decodeUint8()
       LinkNodeStatus(
         timestamp = timestamp,
+        txBuf = txBuf,
+        rxBuf = rxBuf,
         txRate = txRate,
         rxRate = rxRate,
-        messagesSent = messagesSent,
-        messagesReceived = messagesReceived,
-        messagesLost = messagesLost,
         rxParseErr = rxParseErr,
         txOverflows = txOverflows,
         rxOverflows = rxOverflows,
-        txBuf = txBuf,
-        rxBuf = rxBuf,
+        messagesSent = messagesSent,
+        messagesReceived = messagesReceived,
+        messagesLost = messagesLost,
       )
     }
 

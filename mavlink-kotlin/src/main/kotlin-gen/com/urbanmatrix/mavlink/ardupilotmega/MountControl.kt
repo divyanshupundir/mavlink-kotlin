@@ -16,6 +16,14 @@ import kotlin.Int
  */
 public data class MountControl(
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Pitch (centi-degrees) or lat (degE7), depending on mount mode.
    */
   public val inputA: Int = 0,
@@ -27,14 +35,6 @@ public data class MountControl(
    * Yaw (centi-degrees) or alt (cm) depending on mount mode.
    */
   public val inputC: Int = 0,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
   /**
    * If "1" it will save current trimmed position on EEPROM (just valid for NEUTRAL and LANDING).
    */
@@ -67,11 +67,11 @@ public data class MountControl(
       val targetComponent = inputBuffer.decodeUint8()
       val savePosition = inputBuffer.decodeUint8()
       MountControl(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         inputA = inputA,
         inputB = inputB,
         inputC = inputC,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         savePosition = savePosition,
       )
     }

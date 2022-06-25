@@ -27,6 +27,10 @@ public data class SerialUdbExtraF2A(
    */
   public val sueTime: Long = 0L,
   /**
+   * Serial UDB Extra Status
+   */
+  public val sueStatus: Int = 0,
+  /**
    * Serial UDB Extra Latitude
    */
   public val sueLatitude: Int = 0,
@@ -126,10 +130,6 @@ public data class SerialUdbExtraF2A(
    * Serial UDB Extra GPS Horizontal Dilution of Precision
    */
   public val sueHdop: Int = 0,
-  /**
-   * Serial UDB Extra Status
-   */
-  public val sueStatus: Int = 0,
 ) : MavMessage<SerialUdbExtraF2A> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF2A> = METADATA
 
@@ -201,6 +201,7 @@ public data class SerialUdbExtraF2A(
       val sueStatus = inputBuffer.decodeUint8()
       SerialUdbExtraF2A(
         sueTime = sueTime,
+        sueStatus = sueStatus,
         sueLatitude = sueLatitude,
         sueLongitude = sueLongitude,
         sueAltitude = sueAltitude,
@@ -226,7 +227,6 @@ public data class SerialUdbExtraF2A(
         sueMagfieldearth2 = sueMagfieldearth2,
         sueSvs = sueSvs,
         sueHdop = sueHdop,
-        sueStatus = sueStatus,
       )
     }
 

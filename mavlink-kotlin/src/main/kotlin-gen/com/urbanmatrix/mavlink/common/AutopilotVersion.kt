@@ -31,10 +31,6 @@ public data class AutopilotVersion(
    */
   public val capabilities: MavEnumValue<MavProtocolCapability> = MavEnumValue.fromValue(0),
   /**
-   * UID if provided by hardware (see uid2)
-   */
-  public val uid: BigInteger = BigInteger.ZERO,
-  /**
    * Firmware version number
    */
   public val flightSwVersion: Long = 0L,
@@ -51,14 +47,6 @@ public data class AutopilotVersion(
    * specify https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt
    */
   public val boardVersion: Long = 0L,
-  /**
-   * ID of the board vendor
-   */
-  public val vendorId: Int = 0,
-  /**
-   * ID of the product
-   */
-  public val productId: Int = 0,
   /**
    * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique
    * identifier, but should allow to identify the commit using the main version number even for very
@@ -77,6 +65,18 @@ public data class AutopilotVersion(
    * large code bases.
    */
   public val osCustomVersion: List<Int> = emptyList(),
+  /**
+   * ID of the board vendor
+   */
+  public val vendorId: Int = 0,
+  /**
+   * ID of the product
+   */
+  public val productId: Int = 0,
+  /**
+   * UID if provided by hardware (see uid2)
+   */
+  public val uid: BigInteger = BigInteger.ZERO,
   /**
    * UID if provided by hardware (supersedes the uid field. If this is non-zero, use this field,
    * otherwise use uid)
@@ -126,16 +126,16 @@ public data class AutopilotVersion(
       val uid2 = inputBuffer.decodeUint8Array(18)
       AutopilotVersion(
         capabilities = capabilities,
-        uid = uid,
         flightSwVersion = flightSwVersion,
         middlewareSwVersion = middlewareSwVersion,
         osSwVersion = osSwVersion,
         boardVersion = boardVersion,
-        vendorId = vendorId,
-        productId = productId,
         flightCustomVersion = flightCustomVersion,
         middlewareCustomVersion = middlewareCustomVersion,
         osCustomVersion = osCustomVersion,
+        vendorId = vendorId,
+        productId = productId,
+        uid = uid,
         uid2 = uid2,
       )
     }

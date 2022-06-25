@@ -25,6 +25,11 @@ public data class RcChannelsRaw(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
+   * MAIN, 1 = AUX.
+   */
+  public val port: Int = 0,
+  /**
    * RC channel 1 value.
    */
   public val chan1Raw: Int = 0,
@@ -56,11 +61,6 @@ public data class RcChannelsRaw(
    * RC channel 8 value.
    */
   public val chan8Raw: Int = 0,
-  /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
-   */
-  public val port: Int = 0,
   /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
@@ -105,6 +105,7 @@ public data class RcChannelsRaw(
       val rssi = inputBuffer.decodeUint8()
       RcChannelsRaw(
         timeBootMs = timeBootMs,
+        port = port,
         chan1Raw = chan1Raw,
         chan2Raw = chan2Raw,
         chan3Raw = chan3Raw,
@@ -113,7 +114,6 @@ public data class RcChannelsRaw(
         chan6Raw = chan6Raw,
         chan7Raw = chan7Raw,
         chan8Raw = chan8Raw,
-        port = port,
         rssi = rssi,
       )
     }

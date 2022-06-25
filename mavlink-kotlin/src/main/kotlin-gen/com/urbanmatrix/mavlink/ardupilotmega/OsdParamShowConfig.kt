@@ -17,10 +17,6 @@ import kotlin.Long
  */
 public data class OsdParamShowConfig(
   /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -28,6 +24,10 @@ public data class OsdParamShowConfig(
    * Component ID.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
   /**
    * OSD parameter screen index.
    */
@@ -62,9 +62,9 @@ public data class OsdParamShowConfig(
       val osdScreen = inputBuffer.decodeUint8()
       val osdIndex = inputBuffer.decodeUint8()
       OsdParamShowConfig(
-        requestId = requestId,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        requestId = requestId,
         osdScreen = osdScreen,
         osdIndex = osdIndex,
       )

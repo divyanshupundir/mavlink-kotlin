@@ -22,9 +22,23 @@ import kotlin.String
 @Deprecated(message = "")
 public data class ComponentInformation(
   /**
+   * (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS),
+   * which may be compressed with xz. This contains data about "attached components" such as UAVCAN
+   * nodes. The peripherals are in a separate file because the information must be generated
+   * dynamically at runtime. The string needs to be zero terminated.
+   */
+  public val peripheralsMetadataUri: String = "",
+  /**
    * CRC32 of peripherals metadata file (peripherals_metadata_uri).
    */
   public val peripheralsMetadataFileCrc: Long = 0L,
+  /**
+   * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be
+   * compressed with xz. The file contains general component metadata, and may contain URI links for
+   * additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be
+   * generated at compile time. The string needs to be zero terminated.
+   */
+  public val generalMetadataUri: String = "",
   /**
    * CRC32 of the general metadata file (general_metadata_uri).
    */
@@ -33,20 +47,6 @@ public data class ComponentInformation(
    * Timestamp (time since system boot).
    */
   public val timeBootMs: Long = 0L,
-  /**
-   * (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS),
-   * which may be compressed with xz. This contains data about "attached components" such as UAVCAN
-   * nodes. The peripherals are in a separate file because the information must be generated
-   * dynamically at runtime. The string needs to be zero terminated.
-   */
-  public val peripheralsMetadataUri: String = "",
-  /**
-   * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be
-   * compressed with xz. The file contains general component metadata, and may contain URI links for
-   * additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be
-   * generated at compile time. The string needs to be zero terminated.
-   */
-  public val generalMetadataUri: String = "",
 ) : MavMessage<ComponentInformation> {
   public override val instanceMetadata: MavMessage.Metadata<ComponentInformation> = METADATA
 
@@ -73,11 +73,11 @@ public data class ComponentInformation(
       val peripheralsMetadataUri = inputBuffer.decodeString(100)
       val generalMetadataUri = inputBuffer.decodeString(100)
       ComponentInformation(
+        peripheralsMetadataUri = peripheralsMetadataUri,
         peripheralsMetadataFileCrc = peripheralsMetadataFileCrc,
+        generalMetadataUri = generalMetadataUri,
         generalMetadataFileCrc = generalMetadataFileCrc,
         timeBootMs = timeBootMs,
-        peripheralsMetadataUri = peripheralsMetadataUri,
-        generalMetadataUri = generalMetadataUri,
       )
     }
 

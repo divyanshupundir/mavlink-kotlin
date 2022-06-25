@@ -23,18 +23,6 @@ public data class SerialUdbExtraF2B(
    */
   public val sueTime: Long = 0L,
   /**
-   * Serial UDB Extra Status Flags
-   */
-  public val sueFlags: Long = 0L,
-  /**
-   * SUE barometer pressure
-   */
-  public val sueBaromPress: Int = 0,
-  /**
-   * SUE barometer altitude
-   */
-  public val sueBaromAlt: Int = 0,
-  /**
    * Serial UDB Extra PWM Input Channel 1
    */
   public val suePwmInput1: Int = 0,
@@ -155,6 +143,10 @@ public data class SerialUdbExtraF2B(
    */
   public val sueLocationErrorEarthZ: Int = 0,
   /**
+   * Serial UDB Extra Status Flags
+   */
+  public val sueFlags: Long = 0L,
+  /**
    * Serial UDB Extra Oscillator Failure Count
    */
   public val sueOscFails: Int = 0,
@@ -198,6 +190,14 @@ public data class SerialUdbExtraF2B(
    * SUE barometer temperature
    */
   public val sueBaromTemp: Int = 0,
+  /**
+   * SUE barometer pressure
+   */
+  public val sueBaromPress: Int = 0,
+  /**
+   * SUE barometer altitude
+   */
+  public val sueBaromAlt: Int = 0,
   /**
    * SUE battery voltage
    */
@@ -335,9 +335,6 @@ public data class SerialUdbExtraF2B(
       val sueMemoryStackFree = inputBuffer.decodeInt16()
       SerialUdbExtraF2B(
         sueTime = sueTime,
-        sueFlags = sueFlags,
-        sueBaromPress = sueBaromPress,
-        sueBaromAlt = sueBaromAlt,
         suePwmInput1 = suePwmInput1,
         suePwmInput2 = suePwmInput2,
         suePwmInput3 = suePwmInput3,
@@ -368,6 +365,7 @@ public data class SerialUdbExtraF2B(
         sueLocationErrorEarthX = sueLocationErrorEarthX,
         sueLocationErrorEarthY = sueLocationErrorEarthY,
         sueLocationErrorEarthZ = sueLocationErrorEarthZ,
+        sueFlags = sueFlags,
         sueOscFails = sueOscFails,
         sueImuVelocityX = sueImuVelocityX,
         sueImuVelocityY = sueImuVelocityY,
@@ -379,6 +377,8 @@ public data class SerialUdbExtraF2B(
         sueAeroY = sueAeroY,
         sueAeroZ = sueAeroZ,
         sueBaromTemp = sueBaromTemp,
+        sueBaromPress = sueBaromPress,
+        sueBaromAlt = sueBaromAlt,
         sueBatVolt = sueBatVolt,
         sueBatAmp = sueBatAmp,
         sueBatAmpHours = sueBatAmpHours,

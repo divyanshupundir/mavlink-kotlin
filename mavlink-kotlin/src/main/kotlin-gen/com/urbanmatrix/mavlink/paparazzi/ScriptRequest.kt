@@ -17,10 +17,6 @@ import kotlin.Int
  */
 public data class ScriptRequest(
   /**
-   * Sequence
-   */
-  public val seq: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -28,6 +24,10 @@ public data class ScriptRequest(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Sequence
+   */
+  public val seq: Int = 0,
 ) : MavMessage<ScriptRequest> {
   public override val instanceMetadata: MavMessage.Metadata<ScriptRequest> = METADATA
 
@@ -50,9 +50,9 @@ public data class ScriptRequest(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       ScriptRequest(
-        seq = seq,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        seq = seq,
       )
     }
 

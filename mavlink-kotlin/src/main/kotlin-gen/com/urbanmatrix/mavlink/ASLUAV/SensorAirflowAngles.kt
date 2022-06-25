@@ -28,13 +28,13 @@ public data class SensorAirflowAngles(
    */
   public val angleofattack: Float = 0F,
   /**
-   * Sideslip angle
-   */
-  public val sideslip: Float = 0F,
-  /**
    * Angle of attack measurement valid
    */
   public val angleofattackValid: Int = 0,
+  /**
+   * Sideslip angle
+   */
+  public val sideslip: Float = 0F,
   /**
    * Sideslip angle measurement valid
    */
@@ -67,8 +67,8 @@ public data class SensorAirflowAngles(
       SensorAirflowAngles(
         timestamp = timestamp,
         angleofattack = angleofattack,
-        sideslip = sideslip,
         angleofattackValid = angleofattackValid,
+        sideslip = sideslip,
         sideslipValid = sideslipValid,
       )
     }

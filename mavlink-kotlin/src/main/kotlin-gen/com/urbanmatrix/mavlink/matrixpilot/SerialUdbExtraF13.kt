@@ -16,6 +16,10 @@ import kotlin.Int
  */
 public data class SerialUdbExtraF13(
   /**
+   * Serial UDB Extra GPS Week Number
+   */
+  public val sueWeekNo: Int = 0,
+  /**
    * Serial UDB Extra MP Origin Latitude
    */
   public val sueLatOrigin: Int = 0,
@@ -27,10 +31,6 @@ public data class SerialUdbExtraF13(
    * Serial UDB Extra MP Origin Altitude Above Sea Level
    */
   public val sueAltOrigin: Int = 0,
-  /**
-   * Serial UDB Extra GPS Week Number
-   */
-  public val sueWeekNo: Int = 0,
 ) : MavMessage<SerialUdbExtraF13> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF13> = METADATA
 
@@ -55,10 +55,10 @@ public data class SerialUdbExtraF13(
       val sueAltOrigin = inputBuffer.decodeInt32()
       val sueWeekNo = inputBuffer.decodeInt16()
       SerialUdbExtraF13(
+        sueWeekNo = sueWeekNo,
         sueLatOrigin = sueLatOrigin,
         sueLonOrigin = sueLonOrigin,
         sueAltOrigin = sueAltOrigin,
-        sueWeekNo = sueWeekNo,
       )
     }
 

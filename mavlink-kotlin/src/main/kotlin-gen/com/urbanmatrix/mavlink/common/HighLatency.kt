@@ -31,45 +31,9 @@ import kotlin.Long
 @Deprecated(message = "")
 public data class HighLatency(
   /**
-   * Longitude
-   */
-  public val longitude: Int = 0,
-  /**
-   * Latitude
-   */
-  public val latitude: Int = 0,
-  /**
-   * A bitfield for use for autopilot-specific flags.
-   */
-  public val customMode: Long = 0L,
-  /**
    * distance to target
    */
   public val wpDistance: Int = 0,
-  /**
-   * Altitude setpoint relative to the home position
-   */
-  public val altitudeSp: Int = 0,
-  /**
-   * Altitude above mean sea level
-   */
-  public val altitudeAmsl: Int = 0,
-  /**
-   * heading setpoint
-   */
-  public val headingSp: Int = 0,
-  /**
-   * heading
-   */
-  public val heading: Int = 0,
-  /**
-   * pitch
-   */
-  public val pitch: Int = 0,
-  /**
-   * roll
-   */
-  public val roll: Int = 0,
   /**
    * current waypoint number
    */
@@ -116,13 +80,49 @@ public data class HighLatency(
    */
   public val airspeed: Int = 0,
   /**
+   * Altitude setpoint relative to the home position
+   */
+  public val altitudeSp: Int = 0,
+  /**
+   * Altitude above mean sea level
+   */
+  public val altitudeAmsl: Int = 0,
+  /**
+   * Longitude
+   */
+  public val longitude: Int = 0,
+  /**
+   * Latitude
+   */
+  public val latitude: Int = 0,
+  /**
+   * heading setpoint
+   */
+  public val headingSp: Int = 0,
+  /**
    * throttle (percentage)
    */
   public val throttle: Int = 0,
   /**
+   * heading
+   */
+  public val heading: Int = 0,
+  /**
+   * pitch
+   */
+  public val pitch: Int = 0,
+  /**
+   * roll
+   */
+  public val roll: Int = 0,
+  /**
    * The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
    */
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0),
+  /**
+   * A bitfield for use for autopilot-specific flags.
+   */
+  public val customMode: Long = 0L,
   /**
    * Bitmap of enabled system modes.
    */
@@ -200,16 +200,7 @@ public data class HighLatency(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       HighLatency(
-        longitude = longitude,
-        latitude = latitude,
-        customMode = customMode,
         wpDistance = wpDistance,
-        altitudeSp = altitudeSp,
-        altitudeAmsl = altitudeAmsl,
-        headingSp = headingSp,
-        heading = heading,
-        pitch = pitch,
-        roll = roll,
         wpNum = wpNum,
         failsafe = failsafe,
         temperatureAir = temperatureAir,
@@ -221,8 +212,17 @@ public data class HighLatency(
         groundspeed = groundspeed,
         airspeedSp = airspeedSp,
         airspeed = airspeed,
+        altitudeSp = altitudeSp,
+        altitudeAmsl = altitudeAmsl,
+        longitude = longitude,
+        latitude = latitude,
+        headingSp = headingSp,
         throttle = throttle,
+        heading = heading,
+        pitch = pitch,
+        roll = roll,
         landedState = landedState,
+        customMode = customMode,
         baseMode = baseMode,
       )
     }

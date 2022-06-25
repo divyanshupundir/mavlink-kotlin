@@ -24,6 +24,22 @@ import kotlin.Int
  */
 public data class RallyPoint(
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Point index (first point is 0).
+   */
+  public val idx: Int = 0,
+  /**
+   * Total number of points (for sanity checking).
+   */
+  public val count: Int = 0,
+  /**
    * Latitude of point.
    */
   public val lat: Int = 0,
@@ -43,22 +59,6 @@ public data class RallyPoint(
    * Heading to aim for when landing.
    */
   public val landDir: Int = 0,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Point index (first point is 0).
-   */
-  public val idx: Int = 0,
-  /**
-   * Total number of points (for sanity checking).
-   */
-  public val count: Int = 0,
   /**
    * Configuration flags.
    */
@@ -102,15 +102,15 @@ public data class RallyPoint(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       RallyPoint(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        idx = idx,
+        count = count,
         lat = lat,
         lng = lng,
         alt = alt,
         breakAlt = breakAlt,
         landDir = landDir,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        idx = idx,
-        count = count,
         flags = flags,
       )
     }

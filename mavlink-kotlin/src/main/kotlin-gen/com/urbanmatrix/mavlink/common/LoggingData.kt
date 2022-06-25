@@ -19,10 +19,6 @@ import kotlin.collections.List
  */
 public data class LoggingData(
   /**
-   * sequence number (can wrap)
-   */
-  public val sequence: Int = 0,
-  /**
    * system ID of the target
    */
   public val targetSystem: Int = 0,
@@ -30,6 +26,10 @@ public data class LoggingData(
    * component ID of the target
    */
   public val targetComponent: Int = 0,
+  /**
+   * sequence number (can wrap)
+   */
+  public val sequence: Int = 0,
   /**
    * data length
    */
@@ -71,9 +71,9 @@ public data class LoggingData(
       val firstMessageOffset = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(249)
       LoggingData(
-        sequence = sequence,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        sequence = sequence,
         length = length,
         firstMessageOffset = firstMessageOffset,
         data = data,

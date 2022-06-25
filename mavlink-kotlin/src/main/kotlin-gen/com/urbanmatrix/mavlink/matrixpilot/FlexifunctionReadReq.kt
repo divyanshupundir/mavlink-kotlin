@@ -16,14 +16,6 @@ import kotlin.Int
  */
 public data class FlexifunctionReadReq(
   /**
-   * Type of flexifunction data requested
-   */
-  public val readReqType: Int = 0,
-  /**
-   * index into data where needed
-   */
-  public val dataIndex: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -31,6 +23,14 @@ public data class FlexifunctionReadReq(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Type of flexifunction data requested
+   */
+  public val readReqType: Int = 0,
+  /**
+   * index into data where needed
+   */
+  public val dataIndex: Int = 0,
 ) : MavMessage<FlexifunctionReadReq> {
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionReadReq> = METADATA
 
@@ -55,10 +55,10 @@ public data class FlexifunctionReadReq(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       FlexifunctionReadReq(
-        readReqType = readReqType,
-        dataIndex = dataIndex,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        readReqType = readReqType,
+        dataIndex = dataIndex,
       )
     }
 

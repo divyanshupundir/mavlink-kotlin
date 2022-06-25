@@ -18,6 +18,10 @@ import kotlin.Int
  */
 public data class PidTuning(
   /**
+   * Axis.
+   */
+  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
+  /**
    * Desired rate.
    */
   public val desired: Float = 0F,
@@ -41,10 +45,6 @@ public data class PidTuning(
    * D component.
    */
   public val d: Float = 0F,
-  /**
-   * Axis.
-   */
-  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
   /**
    * Slew rate.
    */
@@ -90,13 +90,13 @@ public data class PidTuning(
       val srate = inputBuffer.decodeFloat()
       val pdmod = inputBuffer.decodeFloat()
       PidTuning(
+        axis = axis,
         desired = desired,
         achieved = achieved,
         ff = ff,
         p = p,
         i = i,
         d = d,
-        axis = axis,
         srate = srate,
         pdmod = pdmod,
       )

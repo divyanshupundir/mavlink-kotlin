@@ -29,9 +29,9 @@ public data class FollowTarget(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
-   * button states or switches of a tracker device
+   * bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
    */
-  public val customState: BigInteger = BigInteger.ZERO,
+  public val estCapabilities: Int = 0,
   /**
    * Latitude (WGS84)
    */
@@ -65,9 +65,9 @@ public data class FollowTarget(
    */
   public val positionCov: List<Float> = emptyList(),
   /**
-   * bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
+   * button states or switches of a tracker device
    */
-  public val estCapabilities: Int = 0,
+  public val customState: BigInteger = BigInteger.ZERO,
 ) : MavMessage<FollowTarget> {
   public override val instanceMetadata: MavMessage.Metadata<FollowTarget> = METADATA
 
@@ -107,7 +107,7 @@ public data class FollowTarget(
       val estCapabilities = inputBuffer.decodeUint8()
       FollowTarget(
         timestamp = timestamp,
-        customState = customState,
+        estCapabilities = estCapabilities,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -116,7 +116,7 @@ public data class FollowTarget(
         attitudeQ = attitudeQ,
         rates = rates,
         positionCov = positionCov,
-        estCapabilities = estCapabilities,
+        customState = customState,
       )
     }
 

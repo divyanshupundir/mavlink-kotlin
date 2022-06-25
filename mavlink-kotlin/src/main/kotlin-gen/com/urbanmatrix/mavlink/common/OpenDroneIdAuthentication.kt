@@ -27,11 +27,6 @@ import kotlin.collections.List
  */
 public data class OpenDroneIdAuthentication(
   /**
-   * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00
-   * 01/01/2019.
-   */
-  public val timestamp: Long = 0L,
-  /**
    * System ID (0 for broadcast).
    */
   public val targetSystem: Int = 0,
@@ -64,6 +59,11 @@ public data class OpenDroneIdAuthentication(
    * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
    */
   public val length: Int = 0,
+  /**
+   * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00
+   * 01/01/2019.
+   */
+  public val timestamp: Long = 0L,
   /**
    * Opaque authentication data. For page 0, the size is only 17 bytes. For other pages, the size is
    * 23 bytes. Shall be filled with nulls in the unused portion of the field.
@@ -107,7 +107,6 @@ public data class OpenDroneIdAuthentication(
       val length = inputBuffer.decodeUint8()
       val authenticationData = inputBuffer.decodeUint8Array(23)
       OpenDroneIdAuthentication(
-        timestamp = timestamp,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idOrMac = idOrMac,
@@ -115,6 +114,7 @@ public data class OpenDroneIdAuthentication(
         dataPage = dataPage,
         lastPageIndex = lastPageIndex,
         length = length,
+        timestamp = timestamp,
         authenticationData = authenticationData,
       )
     }

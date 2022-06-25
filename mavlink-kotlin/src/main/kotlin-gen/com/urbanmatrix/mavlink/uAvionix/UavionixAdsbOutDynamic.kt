@@ -42,6 +42,14 @@ public data class UavionixAdsbOutDynamic(
    */
   public val gpsalt: Int = 0,
   /**
+   * 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
+   */
+  public val gpsfix: MavEnumValue<UavionixAdsbOutDynamicGpsFix> = MavEnumValue.fromValue(0),
+  /**
+   * Number of satellites visible. If unknown set to UINT8_MAX
+   */
+  public val numsats: Int = 0,
+  /**
    * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar
    * corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
    */
@@ -71,6 +79,10 @@ public data class UavionixAdsbOutDynamic(
    */
   public val velew: Int = 0,
   /**
+   * Emergency status
+   */
+  public val emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> = MavEnumValue.fromValue(0),
+  /**
    * ADS-B transponder dynamic input state flags
    */
   public val state: MavEnumValue<UavionixAdsbOutDynamicState> = MavEnumValue.fromValue(0),
@@ -78,18 +90,6 @@ public data class UavionixAdsbOutDynamic(
    * Mode A code (typically 1200 [0x04B0] for VFR)
    */
   public val squawk: Int = 0,
-  /**
-   * 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
-   */
-  public val gpsfix: MavEnumValue<UavionixAdsbOutDynamicGpsFix> = MavEnumValue.fromValue(0),
-  /**
-   * Number of satellites visible. If unknown set to UINT8_MAX
-   */
-  public val numsats: Int = 0,
-  /**
-   * Emergency status
-   */
-  public val emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> = MavEnumValue.fromValue(0),
 ) : MavMessage<UavionixAdsbOutDynamic> {
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
 
@@ -151,6 +151,8 @@ public data class UavionixAdsbOutDynamic(
         gpslat = gpslat,
         gpslon = gpslon,
         gpsalt = gpsalt,
+        gpsfix = gpsfix,
+        numsats = numsats,
         baroaltmsl = baroaltmsl,
         accuracyhor = accuracyhor,
         accuracyvert = accuracyvert,
@@ -158,11 +160,9 @@ public data class UavionixAdsbOutDynamic(
         velvert = velvert,
         velns = velns,
         velew = velew,
+        emergencystatus = emergencystatus,
         state = state,
         squawk = squawk,
-        gpsfix = gpsfix,
-        numsats = numsats,
-        emergencystatus = emergencystatus,
       )
     }
 

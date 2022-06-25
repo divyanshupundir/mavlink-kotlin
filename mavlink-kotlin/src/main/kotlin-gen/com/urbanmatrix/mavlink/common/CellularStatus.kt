@@ -19,18 +19,6 @@ import kotlin.Int
  */
 public data class CellularStatus(
   /**
-   * Mobile country code. If unknown, set to UINT16_MAX
-   */
-  public val mcc: Int = 0,
-  /**
-   * Mobile network code. If unknown, set to UINT16_MAX
-   */
-  public val mnc: Int = 0,
-  /**
-   * Location area code. If unknown, set to 0
-   */
-  public val lac: Int = 0,
-  /**
    * Cellular modem status
    */
   public val status: MavEnumValue<CellularStatusFlag> = MavEnumValue.fromValue(0),
@@ -46,6 +34,18 @@ public data class CellularStatus(
    * Signal quality in percent. If unknown, set to UINT8_MAX
    */
   public val quality: Int = 0,
+  /**
+   * Mobile country code. If unknown, set to UINT16_MAX
+   */
+  public val mcc: Int = 0,
+  /**
+   * Mobile network code. If unknown, set to UINT16_MAX
+   */
+  public val mnc: Int = 0,
+  /**
+   * Location area code. If unknown, set to 0
+   */
+  public val lac: Int = 0,
 ) : MavMessage<CellularStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CellularStatus> = METADATA
 
@@ -85,13 +85,13 @@ public data class CellularStatus(
       }
       val quality = inputBuffer.decodeUint8()
       CellularStatus(
-        mcc = mcc,
-        mnc = mnc,
-        lac = lac,
         status = status,
         failureReason = failureReason,
         type = type,
         quality = quality,
+        mcc = mcc,
+        mnc = mnc,
+        lac = lac,
       )
     }
 

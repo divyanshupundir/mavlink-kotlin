@@ -17,9 +17,17 @@ import kotlin.Int
  */
 public data class CompassmotStatus(
   /**
+   * Throttle.
+   */
+  public val throttle: Int = 0,
+  /**
    * Current.
    */
   public val current: Float = 0F,
+  /**
+   * Interference.
+   */
+  public val interference: Int = 0,
   /**
    * Motor Compensation X.
    */
@@ -32,14 +40,6 @@ public data class CompassmotStatus(
    * Motor Compensation Z.
    */
   public val compensationz: Float = 0F,
-  /**
-   * Throttle.
-   */
-  public val throttle: Int = 0,
-  /**
-   * Interference.
-   */
-  public val interference: Int = 0,
 ) : MavMessage<CompassmotStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
 
@@ -68,12 +68,12 @@ public data class CompassmotStatus(
       val throttle = inputBuffer.decodeUint16()
       val interference = inputBuffer.decodeUint16()
       CompassmotStatus(
+        throttle = throttle,
         current = current,
+        interference = interference,
         compensationx = compensationx,
         compensationy = compensationy,
         compensationz = compensationz,
-        throttle = throttle,
-        interference = interference,
       )
     }
 

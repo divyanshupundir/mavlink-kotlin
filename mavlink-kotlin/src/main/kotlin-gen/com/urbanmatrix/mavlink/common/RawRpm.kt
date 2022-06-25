@@ -17,13 +17,13 @@ import kotlin.Int
  */
 public data class RawRpm(
   /**
-   * Indicated rate
-   */
-  public val frequency: Float = 0F,
-  /**
    * Index of this RPM sensor (0-indexed)
    */
   public val index: Int = 0,
+  /**
+   * Indicated rate
+   */
+  public val frequency: Float = 0F,
 ) : MavMessage<RawRpm> {
   public override val instanceMetadata: MavMessage.Metadata<RawRpm> = METADATA
 
@@ -44,8 +44,8 @@ public data class RawRpm(
       val frequency = inputBuffer.decodeFloat()
       val index = inputBuffer.decodeUint8()
       RawRpm(
-        frequency = frequency,
         index = index,
+        frequency = frequency,
       )
     }
 

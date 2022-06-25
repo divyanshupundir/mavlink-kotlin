@@ -19,14 +19,6 @@ import kotlin.Int
  */
 public data class ResponseEventError(
   /**
-   * Sequence number.
-   */
-  public val sequence: Int = 0,
-  /**
-   * Oldest Sequence number that is still available after the sequence set in REQUEST_EVENT.
-   */
-  public val sequenceOldestAvailable: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -34,6 +26,14 @@ public data class ResponseEventError(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Sequence number.
+   */
+  public val sequence: Int = 0,
+  /**
+   * Oldest Sequence number that is still available after the sequence set in REQUEST_EVENT.
+   */
+  public val sequenceOldestAvailable: Int = 0,
   /**
    * Error reason.
    */
@@ -67,10 +67,10 @@ public data class ResponseEventError(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       ResponseEventError(
-        sequence = sequence,
-        sequenceOldestAvailable = sequenceOldestAvailable,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        sequence = sequence,
+        sequenceOldestAvailable = sequenceOldestAvailable,
         reason = reason,
       )
     }

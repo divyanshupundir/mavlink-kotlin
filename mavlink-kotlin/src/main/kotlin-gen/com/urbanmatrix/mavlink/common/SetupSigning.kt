@@ -21,10 +21,6 @@ import kotlin.collections.List
  */
 public data class SetupSigning(
   /**
-   * initial timestamp
-   */
-  public val initialTimestamp: BigInteger = BigInteger.ZERO,
-  /**
    * system id of the target
    */
   public val targetSystem: Int = 0,
@@ -36,6 +32,10 @@ public data class SetupSigning(
    * signing key
    */
   public val secretKey: List<Int> = emptyList(),
+  /**
+   * initial timestamp
+   */
+  public val initialTimestamp: BigInteger = BigInteger.ZERO,
 ) : MavMessage<SetupSigning> {
   public override val instanceMetadata: MavMessage.Metadata<SetupSigning> = METADATA
 
@@ -60,10 +60,10 @@ public data class SetupSigning(
       val targetComponent = inputBuffer.decodeUint8()
       val secretKey = inputBuffer.decodeUint8Array(32)
       SetupSigning(
-        initialTimestamp = initialTimestamp,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         secretKey = secretKey,
+        initialTimestamp = initialTimestamp,
       )
     }
 

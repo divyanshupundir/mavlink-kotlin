@@ -29,14 +29,6 @@ public data class VfrHud(
    */
   public val groundspeed: Float = 0F,
   /**
-   * Current altitude (MSL).
-   */
-  public val alt: Float = 0F,
-  /**
-   * Current climb rate.
-   */
-  public val climb: Float = 0F,
-  /**
    * Current heading in compass units (0-360, 0=north).
    */
   public val heading: Int = 0,
@@ -44,6 +36,14 @@ public data class VfrHud(
    * Current throttle setting (0 to 100).
    */
   public val throttle: Int = 0,
+  /**
+   * Current altitude (MSL).
+   */
+  public val alt: Float = 0F,
+  /**
+   * Current climb rate.
+   */
+  public val climb: Float = 0F,
 ) : MavMessage<VfrHud> {
   public override val instanceMetadata: MavMessage.Metadata<VfrHud> = METADATA
 
@@ -74,10 +74,10 @@ public data class VfrHud(
       VfrHud(
         airspeed = airspeed,
         groundspeed = groundspeed,
-        alt = alt,
-        climb = climb,
         heading = heading,
         throttle = throttle,
+        alt = alt,
+        climb = climb,
       )
     }
 

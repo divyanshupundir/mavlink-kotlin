@@ -18,6 +18,10 @@ import kotlin.Int
  */
 public data class AdapTuning(
   /**
+   * Axis.
+   */
+  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
+  /**
    * Desired rate.
    */
   public val desired: Float = 0F,
@@ -65,10 +69,6 @@ public data class AdapTuning(
    * u adaptive controlled output command.
    */
   public val u: Float = 0F,
-  /**
-   * Axis.
-   */
-  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
 ) : MavMessage<AdapTuning> {
   public override val instanceMetadata: MavMessage.Metadata<AdapTuning> = METADATA
 
@@ -114,6 +114,7 @@ public data class AdapTuning(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       AdapTuning(
+        axis = axis,
         desired = desired,
         achieved = achieved,
         error = error,
@@ -126,7 +127,6 @@ public data class AdapTuning(
         f = f,
         fDot = fDot,
         u = u,
-        axis = axis,
       )
     }
 

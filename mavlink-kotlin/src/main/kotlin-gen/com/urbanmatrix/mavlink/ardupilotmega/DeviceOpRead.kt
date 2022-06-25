@@ -23,10 +23,6 @@ import kotlin.String
  */
 public data class DeviceOpRead(
   /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -34,6 +30,10 @@ public data class DeviceOpRead(
    * Component ID.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
   /**
    * The bus type.
    */
@@ -101,9 +101,9 @@ public data class DeviceOpRead(
       val count = inputBuffer.decodeUint8()
       val bank = inputBuffer.decodeUint8()
       DeviceOpRead(
-        requestId = requestId,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        requestId = requestId,
         bustype = bustype,
         bus = bus,
         address = address,

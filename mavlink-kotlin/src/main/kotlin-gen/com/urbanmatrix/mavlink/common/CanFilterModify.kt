@@ -23,10 +23,6 @@ import kotlin.collections.List
  */
 public data class CanFilterModify(
   /**
-   * filter IDs, length num_ids
-   */
-  public val ids: List<Int> = emptyList(),
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -46,6 +42,10 @@ public data class CanFilterModify(
    * number of IDs in filter list
    */
   public val numIds: Int = 0,
+  /**
+   * filter IDs, length num_ids
+   */
+  public val ids: List<Int> = emptyList(),
 ) : MavMessage<CanFilterModify> {
   public override val instanceMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
 
@@ -77,12 +77,12 @@ public data class CanFilterModify(
       }
       val numIds = inputBuffer.decodeUint8()
       CanFilterModify(
-        ids = ids,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         bus = bus,
         operation = operation,
         numIds = numIds,
+        ids = ids,
       )
     }
 

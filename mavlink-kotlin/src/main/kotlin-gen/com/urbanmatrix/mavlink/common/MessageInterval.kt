@@ -21,14 +21,14 @@ import kotlin.Int
  */
 public data class MessageInterval(
   /**
+   * The ID of the requested MAVLink message. v1.0 is limited to 254 messages.
+   */
+  public val messageId: Int = 0,
+  /**
    * The interval between two messages. A value of -1 indicates this stream is disabled, 0 indicates
    * it is not available, > 0 indicates the interval at which it is sent.
    */
   public val intervalUs: Int = 0,
-  /**
-   * The ID of the requested MAVLink message. v1.0 is limited to 254 messages.
-   */
-  public val messageId: Int = 0,
 ) : MavMessage<MessageInterval> {
   public override val instanceMetadata: MavMessage.Metadata<MessageInterval> = METADATA
 
@@ -49,8 +49,8 @@ public data class MessageInterval(
       val intervalUs = inputBuffer.decodeInt32()
       val messageId = inputBuffer.decodeUint16()
       MessageInterval(
-        intervalUs = intervalUs,
         messageId = messageId,
+        intervalUs = intervalUs,
       )
     }
 

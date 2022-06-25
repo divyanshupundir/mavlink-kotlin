@@ -18,13 +18,13 @@ import kotlin.Int
 @Deprecated(message = "")
 public data class RequestDataStream(
   /**
-   * The requested message rate
-   */
-  public val reqMessageRate: Int = 0,
-  /**
    * 1 to start sending, 0 to stop sending.
    */
   public val startStop: Int = 0,
+  /**
+   * The requested message rate
+   */
+  public val reqMessageRate: Int = 0,
   /**
    * The ID of the requested data stream
    */
@@ -63,8 +63,8 @@ public data class RequestDataStream(
       val targetComponent = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
       RequestDataStream(
-        reqMessageRate = reqMessageRate,
         startStop = startStop,
+        reqMessageRate = reqMessageRate,
         reqStreamId = reqStreamId,
         targetComponent = targetComponent,
         targetSystem = targetSystem,

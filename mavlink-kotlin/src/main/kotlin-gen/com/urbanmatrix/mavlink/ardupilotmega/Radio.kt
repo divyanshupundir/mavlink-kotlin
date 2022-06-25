@@ -16,14 +16,6 @@ import kotlin.Int
  */
 public data class Radio(
   /**
-   * Receive errors.
-   */
-  public val rxerrors: Int = 0,
-  /**
-   * Count of error corrected packets.
-   */
-  public val fixed: Int = 0,
-  /**
    * Local signal strength.
    */
   public val rssi: Int = 0,
@@ -43,6 +35,14 @@ public data class Radio(
    * Remote background noise level.
    */
   public val remnoise: Int = 0,
+  /**
+   * Receive errors.
+   */
+  public val rxerrors: Int = 0,
+  /**
+   * Count of error corrected packets.
+   */
+  public val fixed: Int = 0,
 ) : MavMessage<Radio> {
   public override val instanceMetadata: MavMessage.Metadata<Radio> = METADATA
 
@@ -73,13 +73,13 @@ public data class Radio(
       val noise = inputBuffer.decodeUint8()
       val remnoise = inputBuffer.decodeUint8()
       Radio(
-        rxerrors = rxerrors,
-        fixed = fixed,
         rssi = rssi,
         remrssi = remrssi,
         txbuf = txbuf,
         noise = noise,
         remnoise = remnoise,
+        rxerrors = rxerrors,
+        fixed = fixed,
       )
     }
 

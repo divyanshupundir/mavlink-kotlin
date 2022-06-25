@@ -20,6 +20,10 @@ import kotlin.Int
  */
 public data class ManualControl(
   /**
+   * The system to be controlled.
+   */
+  public val target: Int = 0,
+  /**
    * X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
    * invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and the
    * pitch of a vehicle.
@@ -49,10 +53,6 @@ public data class ManualControl(
    * released. The lowest bit corresponds to Button 1.
    */
   public val buttons: Int = 0,
-  /**
-   * The system to be controlled.
-   */
-  public val target: Int = 0,
   /**
    * A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for pressed, 0 for
    * released. The lowest bit corresponds to Button 16.
@@ -111,12 +111,12 @@ public data class ManualControl(
       val s = inputBuffer.decodeInt16()
       val t = inputBuffer.decodeInt16()
       ManualControl(
+        target = target,
         x = x,
         y = y,
         z = z,
         r = r,
         buttons = buttons,
-        target = target,
         buttons2 = buttons2,
         enabledExtensions = enabledExtensions,
         s = s,

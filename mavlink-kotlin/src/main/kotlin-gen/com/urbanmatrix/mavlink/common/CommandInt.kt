@@ -25,6 +25,30 @@ import kotlin.Int
  */
 public data class CommandInt(
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * The coordinate system of the COMMAND.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * The scheduled action for the mission item.
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
+   * Not used.
+   */
+  public val current: Int = 0,
+  /**
+   * Not used (set 0).
+   */
+  public val autocontinue: Int = 0,
+  /**
    * PARAM1, see MAV_CMD enum
    */
   public val param1: Float = 0F,
@@ -52,30 +76,6 @@ public data class CommandInt(
    * PARAM7 / z position: global: altitude in meters (relative or absolute, depending on frame).
    */
   public val z: Float = 0F,
-  /**
-   * The scheduled action for the mission item.
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * The coordinate system of the COMMAND.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * Not used.
-   */
-  public val current: Int = 0,
-  /**
-   * Not used (set 0).
-   */
-  public val autocontinue: Int = 0,
 ) : MavMessage<CommandInt> {
   public override val instanceMetadata: MavMessage.Metadata<CommandInt> = METADATA
 
@@ -124,6 +124,12 @@ public data class CommandInt(
       val current = inputBuffer.decodeUint8()
       val autocontinue = inputBuffer.decodeUint8()
       CommandInt(
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        frame = frame,
+        command = command,
+        current = current,
+        autocontinue = autocontinue,
         param1 = param1,
         param2 = param2,
         param3 = param3,
@@ -131,12 +137,6 @@ public data class CommandInt(
         x = x,
         y = y,
         z = z,
-        command = command,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        frame = frame,
-        current = current,
-        autocontinue = autocontinue,
       )
     }
 

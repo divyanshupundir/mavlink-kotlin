@@ -29,10 +29,6 @@ public data class HilActuatorControls(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Flags as bitfield, 1: indicate simulation using lockstep.
-   */
-  public val flags: BigInteger = BigInteger.ZERO,
-  /**
    * Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
    */
   public val controls: List<Float> = emptyList(),
@@ -40,6 +36,10 @@ public data class HilActuatorControls(
    * System mode. Includes arming state.
    */
   public val mode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
+  /**
+   * Flags as bitfield, 1: indicate simulation using lockstep.
+   */
+  public val flags: BigInteger = BigInteger.ZERO,
 ) : MavMessage<HilActuatorControls> {
   public override val instanceMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
 
@@ -68,9 +68,9 @@ public data class HilActuatorControls(
       }
       HilActuatorControls(
         timeUsec = timeUsec,
-        flags = flags,
         controls = controls,
         mode = mode,
+        flags = flags,
       )
     }
 

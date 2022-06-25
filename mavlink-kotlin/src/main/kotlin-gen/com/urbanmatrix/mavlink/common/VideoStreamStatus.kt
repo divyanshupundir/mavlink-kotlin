@@ -26,17 +26,17 @@ import kotlin.Long
  */
 public data class VideoStreamStatus(
   /**
-   * Frame rate
+   * Video Stream ID (1 for first, 2 for second, etc.)
    */
-  public val framerate: Float = 0F,
-  /**
-   * Bit rate
-   */
-  public val bitrate: Long = 0L,
+  public val streamId: Int = 0,
   /**
    * Bitmap of stream status flags
    */
   public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Frame rate
+   */
+  public val framerate: Float = 0F,
   /**
    * Horizontal resolution
    */
@@ -46,6 +46,10 @@ public data class VideoStreamStatus(
    */
   public val resolutionV: Int = 0,
   /**
+   * Bit rate
+   */
+  public val bitrate: Long = 0L,
+  /**
    * Video image rotation clockwise
    */
   public val rotation: Int = 0,
@@ -53,10 +57,6 @@ public data class VideoStreamStatus(
    * Horizontal Field of view
    */
   public val hfov: Int = 0,
-  /**
-   * Video Stream ID (1 for first, 2 for second, etc.)
-   */
-  public val streamId: Int = 0,
 ) : MavMessage<VideoStreamStatus> {
   public override val instanceMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
 
@@ -92,14 +92,14 @@ public data class VideoStreamStatus(
       val hfov = inputBuffer.decodeUint16()
       val streamId = inputBuffer.decodeUint8()
       VideoStreamStatus(
-        framerate = framerate,
-        bitrate = bitrate,
+        streamId = streamId,
         flags = flags,
+        framerate = framerate,
         resolutionH = resolutionH,
         resolutionV = resolutionV,
+        bitrate = bitrate,
         rotation = rotation,
         hfov = hfov,
-        streamId = streamId,
       )
     }
 

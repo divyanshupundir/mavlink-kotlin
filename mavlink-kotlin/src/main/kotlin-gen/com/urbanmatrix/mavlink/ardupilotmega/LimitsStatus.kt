@@ -20,6 +20,10 @@ import kotlin.Long
  */
 public data class LimitsStatus(
   /**
+   * State of AP_Limits.
+   */
+  public val limitsState: MavEnumValue<LimitsState> = MavEnumValue.fromValue(0),
+  /**
    * Time (since boot) of last breach.
    */
   public val lastTrigger: Long = 0L,
@@ -39,10 +43,6 @@ public data class LimitsStatus(
    * Number of fence breaches.
    */
   public val breachCount: Int = 0,
-  /**
-   * State of AP_Limits.
-   */
-  public val limitsState: MavEnumValue<LimitsState> = MavEnumValue.fromValue(0),
   /**
    * AP_Limit_Module bitfield of enabled modules.
    */
@@ -101,12 +101,12 @@ public data class LimitsStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       LimitsStatus(
+        limitsState = limitsState,
         lastTrigger = lastTrigger,
         lastAction = lastAction,
         lastRecovery = lastRecovery,
         lastClear = lastClear,
         breachCount = breachCount,
-        limitsState = limitsState,
         modsEnabled = modsEnabled,
         modsRequired = modsRequired,
         modsTriggered = modsTriggered,

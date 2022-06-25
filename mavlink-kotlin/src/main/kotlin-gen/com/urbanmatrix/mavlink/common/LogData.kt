@@ -22,13 +22,13 @@ import kotlin.collections.List
  */
 public data class LogData(
   /**
-   * Offset into the log
-   */
-  public val ofs: Long = 0L,
-  /**
    * Log id (from LOG_ENTRY reply)
    */
   public val id: Int = 0,
+  /**
+   * Offset into the log
+   */
+  public val ofs: Long = 0L,
   /**
    * Number of bytes (zero for end of log)
    */
@@ -61,8 +61,8 @@ public data class LogData(
       val count = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(90)
       LogData(
-        ofs = ofs,
         id = id,
+        ofs = ofs,
         count = count,
         data = data,
       )

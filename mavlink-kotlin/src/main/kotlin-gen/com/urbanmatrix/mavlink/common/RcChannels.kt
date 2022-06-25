@@ -25,6 +25,12 @@ public data class RcChannels(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Total number of RC channels being received. This can be larger than 18, indicating that more
+   * channels are available but not given in this message. This value should be 0 when no RC channels
+   * are available.
+   */
+  public val chancount: Int = 0,
+  /**
    * RC channel 1 value.
    */
   public val chan1Raw: Int = 0,
@@ -97,12 +103,6 @@ public data class RcChannels(
    */
   public val chan18Raw: Int = 0,
   /**
-   * Total number of RC channels being received. This can be larger than 18, indicating that more
-   * channels are available but not given in this message. This value should be 0 when no RC channels
-   * are available.
-   */
-  public val chancount: Int = 0,
-  /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
    */
@@ -166,6 +166,7 @@ public data class RcChannels(
       val rssi = inputBuffer.decodeUint8()
       RcChannels(
         timeBootMs = timeBootMs,
+        chancount = chancount,
         chan1Raw = chan1Raw,
         chan2Raw = chan2Raw,
         chan3Raw = chan3Raw,
@@ -184,7 +185,6 @@ public data class RcChannels(
         chan16Raw = chan16Raw,
         chan17Raw = chan17Raw,
         chan18Raw = chan18Raw,
-        chancount = chancount,
         rssi = rssi,
       )
     }

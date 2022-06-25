@@ -20,10 +20,6 @@ import kotlin.Long
  */
 public data class RemoteLogBlockStatus(
   /**
-   * Log data block sequence number.
-   */
-  public val seqno: Long = 0L,
-  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -31,6 +27,10 @@ public data class RemoteLogBlockStatus(
    * Component ID.
    */
   public val targetComponent: Int = 0,
+  /**
+   * Log data block sequence number.
+   */
+  public val seqno: Long = 0L,
   /**
    * Log data block status.
    */
@@ -62,9 +62,9 @@ public data class RemoteLogBlockStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       RemoteLogBlockStatus(
-        seqno = seqno,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        seqno = seqno,
         status = status,
       )
     }

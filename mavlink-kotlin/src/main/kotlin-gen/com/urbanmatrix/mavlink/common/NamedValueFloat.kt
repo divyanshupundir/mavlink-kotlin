@@ -26,13 +26,13 @@ public data class NamedValueFloat(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Floating point value
-   */
-  public val `value`: Float = 0F,
-  /**
    * Name of the debug variable
    */
   public val name: String = "",
+  /**
+   * Floating point value
+   */
+  public val `value`: Float = 0F,
 ) : MavMessage<NamedValueFloat> {
   public override val instanceMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
 
@@ -56,8 +56,8 @@ public data class NamedValueFloat(
       val name = inputBuffer.decodeString(10)
       NamedValueFloat(
         timeBootMs = timeBootMs,
-        value = value,
         name = name,
+        value = value,
       )
     }
 

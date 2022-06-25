@@ -24,6 +24,14 @@ public data class SensPowerBoard(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
+   * Power board status register
+   */
+  public val pwrBrdStatus: Int = 0,
+  /**
+   * Power board leds status
+   */
+  public val pwrBrdLedStatus: Int = 0,
+  /**
    * Power board system voltage
    */
   public val pwrBrdSystemVolt: Float = 0F,
@@ -59,14 +67,6 @@ public data class SensPowerBoard(
    * Power board aux current sensor
    */
   public val pwrBrdAuxAmp: Float = 0F,
-  /**
-   * Power board status register
-   */
-  public val pwrBrdStatus: Int = 0,
-  /**
-   * Power board leds status
-   */
-  public val pwrBrdLedStatus: Int = 0,
 ) : MavMessage<SensPowerBoard> {
   public override val instanceMetadata: MavMessage.Metadata<SensPowerBoard> = METADATA
 
@@ -108,6 +108,8 @@ public data class SensPowerBoard(
       val pwrBrdLedStatus = inputBuffer.decodeUint8()
       SensPowerBoard(
         timestamp = timestamp,
+        pwrBrdStatus = pwrBrdStatus,
+        pwrBrdLedStatus = pwrBrdLedStatus,
         pwrBrdSystemVolt = pwrBrdSystemVolt,
         pwrBrdServoVolt = pwrBrdServoVolt,
         pwrBrdDigitalVolt = pwrBrdDigitalVolt,
@@ -117,8 +119,6 @@ public data class SensPowerBoard(
         pwrBrdDigitalAmp = pwrBrdDigitalAmp,
         pwrBrdExtAmp = pwrBrdExtAmp,
         pwrBrdAuxAmp = pwrBrdAuxAmp,
-        pwrBrdStatus = pwrBrdStatus,
-        pwrBrdLedStatus = pwrBrdLedStatus,
       )
     }
 

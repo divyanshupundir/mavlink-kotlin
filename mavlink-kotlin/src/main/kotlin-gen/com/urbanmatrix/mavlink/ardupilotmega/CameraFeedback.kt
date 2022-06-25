@@ -32,6 +32,18 @@ public data class CameraFeedback(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Camera ID.
+   */
+  public val camIdx: Int = 0,
+  /**
+   * Image index.
+   */
+  public val imgIdx: Int = 0,
+  /**
    * Latitude.
    */
   public val lat: Int = 0,
@@ -63,18 +75,6 @@ public data class CameraFeedback(
    * Focal Length.
    */
   public val focLen: Float = 0F,
-  /**
-   * Image index.
-   */
-  public val imgIdx: Int = 0,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Camera ID.
-   */
-  public val camIdx: Int = 0,
   /**
    * Feedback flags.
    */
@@ -131,6 +131,9 @@ public data class CameraFeedback(
       val completedCaptures = inputBuffer.decodeUint16()
       CameraFeedback(
         timeUsec = timeUsec,
+        targetSystem = targetSystem,
+        camIdx = camIdx,
+        imgIdx = imgIdx,
         lat = lat,
         lng = lng,
         altMsl = altMsl,
@@ -139,9 +142,6 @@ public data class CameraFeedback(
         pitch = pitch,
         yaw = yaw,
         focLen = focLen,
-        imgIdx = imgIdx,
-        targetSystem = targetSystem,
-        camIdx = camIdx,
         flags = flags,
         completedCaptures = completedCaptures,
       )

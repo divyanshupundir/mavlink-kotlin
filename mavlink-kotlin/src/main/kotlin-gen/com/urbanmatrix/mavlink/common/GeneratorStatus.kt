@@ -31,6 +31,10 @@ public data class GeneratorStatus(
    */
   public val status: MavEnumValue<MavGeneratorStatusFlag> = MavEnumValue.fromValue(0),
   /**
+   * Speed of electrical generator or alternator. UINT16_MAX: field not provided.
+   */
+  public val generatorSpeed: Int = 0,
+  /**
    * Current into/out of battery. Positive for out. Negative for in. NaN: field not provided.
    */
   public val batteryCurrent: Float = 0F,
@@ -49,9 +53,18 @@ public data class GeneratorStatus(
    */
   public val busVoltage: Float = 0F,
   /**
+   * The temperature of the rectifier or power converter. INT16_MAX: field not provided.
+   */
+  public val rectifierTemperature: Int = 0,
+  /**
    * The target battery current. Positive for out. Negative for in. NaN: field not provided
    */
   public val batCurrentSetpoint: Float = 0F,
+  /**
+   * The temperature of the mechanical motor, fuel cell core or generator. INT16_MAX: field not
+   * provided.
+   */
+  public val generatorTemperature: Int = 0,
   /**
    * Seconds this generator has run since it was rebooted. UINT32_MAX: field not provided.
    */
@@ -61,19 +74,6 @@ public data class GeneratorStatus(
    * past-due. INT32_MAX: field not provided.
    */
   public val timeUntilMaintenance: Int = 0,
-  /**
-   * Speed of electrical generator or alternator. UINT16_MAX: field not provided.
-   */
-  public val generatorSpeed: Int = 0,
-  /**
-   * The temperature of the rectifier or power converter. INT16_MAX: field not provided.
-   */
-  public val rectifierTemperature: Int = 0,
-  /**
-   * The temperature of the mechanical motor, fuel cell core or generator. INT16_MAX: field not
-   * provided.
-   */
-  public val generatorTemperature: Int = 0,
 ) : MavMessage<GeneratorStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
 
@@ -116,16 +116,16 @@ public data class GeneratorStatus(
       val generatorTemperature = inputBuffer.decodeInt16()
       GeneratorStatus(
         status = status,
+        generatorSpeed = generatorSpeed,
         batteryCurrent = batteryCurrent,
         loadCurrent = loadCurrent,
         powerGenerated = powerGenerated,
         busVoltage = busVoltage,
+        rectifierTemperature = rectifierTemperature,
         batCurrentSetpoint = batCurrentSetpoint,
+        generatorTemperature = generatorTemperature,
         runtime = runtime,
         timeUntilMaintenance = timeUntilMaintenance,
-        generatorSpeed = generatorSpeed,
-        rectifierTemperature = rectifierTemperature,
-        generatorTemperature = generatorTemperature,
       )
     }
 

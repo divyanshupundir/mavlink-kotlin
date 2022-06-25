@@ -21,14 +21,6 @@ import kotlin.Int
  */
 public data class MissionWritePartialList(
   /**
-   * Start index. Must be smaller / equal to the largest index of the current onboard list.
-   */
-  public val startIndex: Int = 0,
-  /**
-   * End index, equal or greater than start index.
-   */
-  public val endIndex: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -36,6 +28,14 @@ public data class MissionWritePartialList(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Start index. Must be smaller / equal to the largest index of the current onboard list.
+   */
+  public val startIndex: Int = 0,
+  /**
+   * End index, equal or greater than start index.
+   */
+  public val endIndex: Int = 0,
   /**
    * Mission type.
    */
@@ -69,10 +69,10 @@ public data class MissionWritePartialList(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionWritePartialList(
-        startIndex = startIndex,
-        endIndex = endIndex,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        startIndex = startIndex,
+        endIndex = endIndex,
         missionType = missionType,
       )
     }

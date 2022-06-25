@@ -24,6 +24,14 @@ public data class AslctrlDebug(
    */
   public val i321: Long = 0L,
   /**
+   *  Debug data
+   */
+  public val i81: Int = 0,
+  /**
+   *  Debug data
+   */
+  public val i82: Int = 0,
+  /**
    *  Debug data 
    */
   public val f1: Float = 0F,
@@ -55,14 +63,6 @@ public data class AslctrlDebug(
    *  Debug data
    */
   public val f8: Float = 0F,
-  /**
-   *  Debug data
-   */
-  public val i81: Int = 0,
-  /**
-   *  Debug data
-   */
-  public val i82: Int = 0,
 ) : MavMessage<AslctrlDebug> {
   public override val instanceMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
 
@@ -102,6 +102,8 @@ public data class AslctrlDebug(
       val i82 = inputBuffer.decodeUint8()
       AslctrlDebug(
         i321 = i321,
+        i81 = i81,
+        i82 = i82,
         f1 = f1,
         f2 = f2,
         f3 = f3,
@@ -110,8 +112,6 @@ public data class AslctrlDebug(
         f6 = f6,
         f7 = f7,
         f8 = f8,
-        i81 = i81,
-        i82 = i82,
       )
     }
 

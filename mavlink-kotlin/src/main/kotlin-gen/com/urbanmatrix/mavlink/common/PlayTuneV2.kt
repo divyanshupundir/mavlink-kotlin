@@ -20,10 +20,6 @@ import kotlin.String
  */
 public data class PlayTuneV2(
   /**
-   * Tune format
-   */
-  public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0),
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -31,6 +27,10 @@ public data class PlayTuneV2(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Tune format
+   */
+  public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0),
   /**
    * Tune definition as a NULL-terminated string.
    */
@@ -62,9 +62,9 @@ public data class PlayTuneV2(
       val targetComponent = inputBuffer.decodeUint8()
       val tune = inputBuffer.decodeString(248)
       PlayTuneV2(
-        format = format,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        format = format,
         tune = tune,
       )
     }

@@ -35,6 +35,14 @@ public data class CameraInformation(
    */
   public val timeBootMs: Long = 0L,
   /**
+   * Name of the camera vendor
+   */
+  public val vendorName: List<Int> = emptyList(),
+  /**
+   * Name of the camera model
+   */
+  public val modelName: List<Int> = emptyList(),
+  /**
    * Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff)
    */
@@ -52,10 +60,6 @@ public data class CameraInformation(
    */
   public val sensorSizeV: Float = 0F,
   /**
-   * Bitmap of camera capability flags.
-   */
-  public val flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0),
-  /**
    * Horizontal image resolution
    */
   public val resolutionH: Int = 0,
@@ -64,21 +68,17 @@ public data class CameraInformation(
    */
   public val resolutionV: Int = 0,
   /**
-   * Camera definition version (iteration)
-   */
-  public val camDefinitionVersion: Int = 0,
-  /**
-   * Name of the camera vendor
-   */
-  public val vendorName: List<Int> = emptyList(),
-  /**
-   * Name of the camera model
-   */
-  public val modelName: List<Int> = emptyList(),
-  /**
    * Reserved for a lens ID
    */
   public val lensId: Int = 0,
+  /**
+   * Bitmap of camera capability flags.
+   */
+  public val flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Camera definition version (iteration)
+   */
+  public val camDefinitionVersion: Int = 0,
   /**
    * Camera definition URI (if any, otherwise only basic functions will be available). HTTP-
    * (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported
@@ -133,17 +133,17 @@ public data class CameraInformation(
       val camDefinitionUri = inputBuffer.decodeString(140)
       CameraInformation(
         timeBootMs = timeBootMs,
+        vendorName = vendorName,
+        modelName = modelName,
         firmwareVersion = firmwareVersion,
         focalLength = focalLength,
         sensorSizeH = sensorSizeH,
         sensorSizeV = sensorSizeV,
-        flags = flags,
         resolutionH = resolutionH,
         resolutionV = resolutionV,
-        camDefinitionVersion = camDefinitionVersion,
-        vendorName = vendorName,
-        modelName = modelName,
         lensId = lensId,
+        flags = flags,
+        camDefinitionVersion = camDefinitionVersion,
         camDefinitionUri = camDefinitionUri,
       )
     }

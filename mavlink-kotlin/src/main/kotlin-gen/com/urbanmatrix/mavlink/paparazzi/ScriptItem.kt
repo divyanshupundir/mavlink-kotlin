@@ -20,10 +20,6 @@ import kotlin.String
  */
 public data class ScriptItem(
   /**
-   * Sequence
-   */
-  public val seq: Int = 0,
-  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -31,6 +27,10 @@ public data class ScriptItem(
    * Component ID
    */
   public val targetComponent: Int = 0,
+  /**
+   * Sequence
+   */
+  public val seq: Int = 0,
   /**
    * The name of the mission script, NULL terminated.
    */
@@ -59,9 +59,9 @@ public data class ScriptItem(
       val targetComponent = inputBuffer.decodeUint8()
       val name = inputBuffer.decodeString(50)
       ScriptItem(
-        seq = seq,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
+        seq = seq,
         name = name,
       )
     }

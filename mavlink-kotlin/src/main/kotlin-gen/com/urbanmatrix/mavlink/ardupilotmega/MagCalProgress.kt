@@ -24,18 +24,6 @@ import kotlin.collections.List
  */
 public data class MagCalProgress(
   /**
-   * Body frame direction vector for display.
-   */
-  public val directionX: Float = 0F,
-  /**
-   * Body frame direction vector for display.
-   */
-  public val directionY: Float = 0F,
-  /**
-   * Body frame direction vector for display.
-   */
-  public val directionZ: Float = 0F,
-  /**
    * Compass being calibrated.
    */
   public val compassId: Int = 0,
@@ -59,6 +47,18 @@ public data class MagCalProgress(
    * Bitmask of sphere sections (see http://en.wikipedia.org/wiki/Geodesic_grid).
    */
   public val completionMask: List<Int> = emptyList(),
+  /**
+   * Body frame direction vector for display.
+   */
+  public val directionX: Float = 0F,
+  /**
+   * Body frame direction vector for display.
+   */
+  public val directionY: Float = 0F,
+  /**
+   * Body frame direction vector for display.
+   */
+  public val directionZ: Float = 0F,
 ) : MavMessage<MagCalProgress> {
   public override val instanceMetadata: MavMessage.Metadata<MagCalProgress> = METADATA
 
@@ -96,15 +96,15 @@ public data class MagCalProgress(
       val completionPct = inputBuffer.decodeUint8()
       val completionMask = inputBuffer.decodeUint8Array(10)
       MagCalProgress(
-        directionX = directionX,
-        directionY = directionY,
-        directionZ = directionZ,
         compassId = compassId,
         calMask = calMask,
         calStatus = calStatus,
         attempt = attempt,
         completionPct = completionPct,
         completionMask = completionMask,
+        directionX = directionX,
+        directionY = directionY,
+        directionZ = directionZ,
       )
     }
 

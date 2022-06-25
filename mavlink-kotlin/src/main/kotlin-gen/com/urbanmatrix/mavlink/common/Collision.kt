@@ -21,9 +21,21 @@ import kotlin.Long
  */
 public data class Collision(
   /**
+   * Collision data source
+   */
+  public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0),
+  /**
    * Unique identifier, domain based on src field
    */
   public val id: Long = 0L,
+  /**
+   * Action that is being taken to avoid this collision
+   */
+  public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0),
+  /**
+   * How concerned the aircraft is about this collision
+   */
+  public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0),
   /**
    * Estimated time until collision occurs
    */
@@ -36,18 +48,6 @@ public data class Collision(
    * Closest horizontal distance between vehicle and object
    */
   public val horizontalMinimumDelta: Float = 0F,
-  /**
-   * Collision data source
-   */
-  public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0),
-  /**
-   * Action that is being taken to avoid this collision
-   */
-  public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0),
-  /**
-   * How concerned the aircraft is about this collision
-   */
-  public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0),
 ) : MavMessage<Collision> {
   public override val instanceMetadata: MavMessage.Metadata<Collision> = METADATA
 
@@ -87,13 +87,13 @@ public data class Collision(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       Collision(
+        src = src,
         id = id,
+        action = action,
+        threatLevel = threatLevel,
         timeToMinimumDelta = timeToMinimumDelta,
         altitudeMinimumDelta = altitudeMinimumDelta,
         horizontalMinimumDelta = horizontalMinimumDelta,
-        src = src,
-        action = action,
-        threatLevel = threatLevel,
       )
     }
 

@@ -27,17 +27,9 @@ public data class OpticalFlow(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Flow in x-sensor direction, angular-speed compensated
+   * Sensor ID
    */
-  public val flowCompMX: Float = 0F,
-  /**
-   * Flow in y-sensor direction, angular-speed compensated
-   */
-  public val flowCompMY: Float = 0F,
-  /**
-   * Ground distance. Positive value: distance known. Negative value: Unknown distance
-   */
-  public val groundDistance: Float = 0F,
+  public val sensorId: Int = 0,
   /**
    * Flow in x-sensor direction
    */
@@ -47,13 +39,21 @@ public data class OpticalFlow(
    */
   public val flowY: Int = 0,
   /**
-   * Sensor ID
+   * Flow in x-sensor direction, angular-speed compensated
    */
-  public val sensorId: Int = 0,
+  public val flowCompMX: Float = 0F,
+  /**
+   * Flow in y-sensor direction, angular-speed compensated
+   */
+  public val flowCompMY: Float = 0F,
   /**
    * Optical flow quality / confidence. 0: bad, 255: maximum quality
    */
   public val quality: Int = 0,
+  /**
+   * Ground distance. Positive value: distance known. Negative value: Unknown distance
+   */
+  public val groundDistance: Float = 0F,
   /**
    * Flow rate about X axis
    */
@@ -99,13 +99,13 @@ public data class OpticalFlow(
       val flowRateY = inputBuffer.decodeFloat()
       OpticalFlow(
         timeUsec = timeUsec,
-        flowCompMX = flowCompMX,
-        flowCompMY = flowCompMY,
-        groundDistance = groundDistance,
+        sensorId = sensorId,
         flowX = flowX,
         flowY = flowY,
-        sensorId = sensorId,
+        flowCompMX = flowCompMX,
+        flowCompMY = flowCompMY,
         quality = quality,
+        groundDistance = groundDistance,
         flowRateX = flowRateX,
         flowRateY = flowRateY,
       )

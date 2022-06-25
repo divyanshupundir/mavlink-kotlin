@@ -19,22 +19,6 @@ import kotlin.Long
  */
 public data class SerialUdbExtraF14(
   /**
-   * Serial UDB Extra Type Program Address of Last Trap
-   */
-  public val sueTrapSource: Long = 0L,
-  /**
-   * Serial UDB Extra Reboot Register of DSPIC
-   */
-  public val sueRcon: Int = 0,
-  /**
-   * Serial UDB Extra  Last dspic Trap Flags
-   */
-  public val sueTrapFlags: Int = 0,
-  /**
-   * Serial UDB Extra Number of Ocillator Failures
-   */
-  public val sueOscFailCount: Int = 0,
-  /**
    * Serial UDB Extra Wind Estimation Enabled
    */
   public val sueWindEstimation: Int = 0,
@@ -54,6 +38,22 @@ public data class SerialUdbExtraF14(
    * Serial UDB Extra Type of Airframe
    */
   public val sueAirframe: Int = 0,
+  /**
+   * Serial UDB Extra Reboot Register of DSPIC
+   */
+  public val sueRcon: Int = 0,
+  /**
+   * Serial UDB Extra  Last dspic Trap Flags
+   */
+  public val sueTrapFlags: Int = 0,
+  /**
+   * Serial UDB Extra Type Program Address of Last Trap
+   */
+  public val sueTrapSource: Long = 0L,
+  /**
+   * Serial UDB Extra Number of Ocillator Failures
+   */
+  public val sueOscFailCount: Int = 0,
   /**
    * Serial UDB Extra UDB Internal Clock Configuration
    */
@@ -100,15 +100,15 @@ public data class SerialUdbExtraF14(
       val sueClockConfig = inputBuffer.decodeUint8()
       val sueFlightPlanType = inputBuffer.decodeUint8()
       SerialUdbExtraF14(
-        sueTrapSource = sueTrapSource,
-        sueRcon = sueRcon,
-        sueTrapFlags = sueTrapFlags,
-        sueOscFailCount = sueOscFailCount,
         sueWindEstimation = sueWindEstimation,
         sueGpsType = sueGpsType,
         sueDr = sueDr,
         sueBoardType = sueBoardType,
         sueAirframe = sueAirframe,
+        sueRcon = sueRcon,
+        sueTrapFlags = sueTrapFlags,
+        sueTrapSource = sueTrapSource,
+        sueOscFailCount = sueOscFailCount,
         sueClockConfig = sueClockConfig,
         sueFlightPlanType = sueFlightPlanType,
       )

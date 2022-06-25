@@ -24,15 +24,6 @@ import kotlin.Long
 @Deprecated(message = "to be removed / merged with SYSTEM_TIME")
 public data class Ping(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
-   */
-  public val timeUsec: BigInteger = BigInteger.ZERO,
-  /**
-   * PING sequence
-   */
-  public val seq: Long = 0L,
-  /**
    * 0: request ping from all receiving components. If greater than 0: message is a ping response
    * and number is the component id of the requesting component.
    */
@@ -42,6 +33,15 @@ public data class Ping(
    * number is the system id of the requesting system
    */
   public val targetSystem: Int = 0,
+  /**
+   * PING sequence
+   */
+  public val seq: Long = 0L,
+  /**
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
+   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   */
+  public val timeUsec: BigInteger = BigInteger.ZERO,
 ) : MavMessage<Ping> {
   public override val instanceMetadata: MavMessage.Metadata<Ping> = METADATA
 
@@ -66,10 +66,10 @@ public data class Ping(
       val targetComponent = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
       Ping(
-        timeUsec = timeUsec,
-        seq = seq,
         targetComponent = targetComponent,
         targetSystem = targetSystem,
+        seq = seq,
+        timeUsec = timeUsec,
       )
     }
 

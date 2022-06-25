@@ -34,6 +34,10 @@ public data class GpsRawInt(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * GPS fix type.
+   */
+  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
+  /**
    * Latitude (WGS84, EGM96 ellipsoid)
    */
   public val lat: Int = 0,
@@ -63,10 +67,6 @@ public data class GpsRawInt(
    * degrees. If unknown, set to: UINT16_MAX
    */
   public val cog: Int = 0,
-  /**
-   * GPS fix type.
-   */
-  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
   /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
@@ -148,6 +148,7 @@ public data class GpsRawInt(
       val yaw = inputBuffer.decodeUint16()
       GpsRawInt(
         timeUsec = timeUsec,
+        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -155,7 +156,6 @@ public data class GpsRawInt(
         epv = epv,
         vel = vel,
         cog = cog,
-        fixType = fixType,
         satellitesVisible = satellitesVisible,
         altEllipsoid = altEllipsoid,
         hAcc = hAcc,
