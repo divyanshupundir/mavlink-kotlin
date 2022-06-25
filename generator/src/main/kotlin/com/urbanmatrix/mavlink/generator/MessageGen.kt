@@ -6,7 +6,6 @@ import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.generator.models.FieldModel
 import com.urbanmatrix.mavlink.generator.models.MessageModel
-import com.urbanmatrix.mavlink.serialization.CrcX25
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

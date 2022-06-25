@@ -74,12 +74,16 @@ sealed class FieldModel : Comparable<FieldModel> {
     }
 
     override fun compareTo(other: FieldModel): Int {
-        if (this.extension && !other.extension) return 1
+        if (this.extension && !other.extension) {
+            return 1
+        }
 
-        if (!this.extension && other.extension) return -1
+        if (!this.extension && other.extension) {
+            return -1
+        }
 
         if (!this.extension && this.unitSize != other.unitSize) {
-            other.unitSize - this.unitSize
+            return other.unitSize - this.unitSize
         }
 
         return this.position - other.position
@@ -126,7 +130,7 @@ data class FieldXml(
     @JacksonXmlText
     var content: String? = null
 
-    var position: Int = -1
+    var position: Int = 0
 
     var extension: Boolean = false
 
