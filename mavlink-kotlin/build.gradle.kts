@@ -7,6 +7,7 @@ buildscript {
 plugins {
     kotlin("jvm")
     id("${Specs.group}.generator") version Specs.Plugin.releaseVersion
+    idea
 }
 
 tasks.getByName<Test>("test") {
@@ -30,8 +31,11 @@ tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("
     generatedSourcesDir = file("src/main/kotlin-gen")
 }
 
-sourceSets.main.configure {
-    java.srcDirs += file("src/main/kotlin-gen")
+idea {
+    module {
+        sourceDirs.plusAssign(file("src/main/kotlin-gen"))
+        generatedSourceDirs.plusAssign(file("src/main/kotlin-gen"))
+    }
 }
 
 dependencies {
