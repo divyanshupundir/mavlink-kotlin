@@ -67,15 +67,17 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
                 .generateDialectFile(BASE_PACKAGE)
                 .writeTo(generatedSourcesDir)
 
+            val packageName = "$BASE_PACKAGE.${model.name.lowercase()}"
+
             for (enum in model.enums) {
                 enum
-                    .generateEnumFile("$BASE_PACKAGE.${model.name}")
+                    .generateEnumFile(packageName)
                     .writeTo(generatedSourcesDir)
             }
 
             for (message in model.messages) {
                 message
-                    .generateMessageFile("$BASE_PACKAGE.${model.name}", enumResolver)
+                    .generateMessageFile(packageName, enumResolver)
                     .writeTo(generatedSourcesDir)
             }
         }

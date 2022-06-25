@@ -7,7 +7,7 @@ object Specs {
     }
 
     object Plugin {
-        const val releaseVersion = "0.0.15"
-        const val devlopmentVersion = "0.0.16"
+        const val releaseVersion = "0.0.18"
+        const val devlopmentVersion = "0.0.19"
     }
 }
