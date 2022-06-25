@@ -16,14 +16,6 @@ import kotlin.Int
  */
 public data class FlexifunctionBufferFunctionAck(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Function index
    */
   public val funcIndex: Int = 0,
@@ -31,36 +23,44 @@ public data class FlexifunctionBufferFunctionAck(
    * result of acknowledge, 0=fail, 1=good
    */
   public val result: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
 ) : MavMessage<FlexifunctionBufferFunctionAck> {
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionBufferFunctionAck> =
       METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint16(funcIndex)
     outputBuffer.encodeUint16(result)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 153
 
-    private const val CRC: Int = 110
+    private const val CRC: Int = 109
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunctionAck> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val funcIndex = inputBuffer.decodeUint16()
       val result = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       FlexifunctionBufferFunctionAck(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         funcIndex = funcIndex,
         result = result,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
       )
     }
 

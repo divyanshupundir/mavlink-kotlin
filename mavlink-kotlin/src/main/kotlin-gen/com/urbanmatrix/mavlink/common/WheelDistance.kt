@@ -25,40 +25,40 @@ public data class WheelDistance(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Number of wheels reported.
-   */
-  public val count: Int = 0,
-  /**
    * Distance reported by individual wheel encoders. Forward rotations increase values, reverse
    * rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of
    * encoders to wheel positions must be agreed/understood by the endpoints.
    */
   public val distance: List<Double> = emptyList(),
+  /**
+   * Number of wheels reported.
+   */
+  public val count: Int = 0,
 ) : MavMessage<WheelDistance> {
   public override val instanceMetadata: MavMessage.Metadata<WheelDistance> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(137).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(count)
     outputBuffer.encodeDoubleArray(distance, 128)
+    outputBuffer.encodeUint8(count)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 9000
 
-    private const val CRC: Int = 143
+    private const val CRC: Int = 254
 
     private val DESERIALIZER: MavDeserializer<WheelDistance> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val count = inputBuffer.decodeUint8()
       val distance = inputBuffer.decodeDoubleArray(128)
+      val count = inputBuffer.decodeUint8()
       WheelDistance(
         timeUsec = timeUsec,
-        count = count,
         distance = distance,
+        count = count,
       )
     }
 

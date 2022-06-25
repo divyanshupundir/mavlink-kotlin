@@ -21,6 +21,10 @@ import kotlin.collections.List
  */
 public data class CanfdFrame(
   /**
+   * Frame ID
+   */
+  public val id: Long = 0L,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -37,10 +41,6 @@ public data class CanfdFrame(
    */
   public val len: Int = 0,
   /**
-   * Frame ID
-   */
-  public val id: Long = 0L,
-  /**
    * Frame data
    */
   public val `data`: List<Int> = emptyList(),
@@ -49,11 +49,11 @@ public data class CanfdFrame(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(72).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(id)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(bus)
     outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint32(id)
     outputBuffer.encodeUint8Array(data, 64)
     return outputBuffer.array()
   }
@@ -61,22 +61,22 @@ public data class CanfdFrame(
   public companion object {
     private const val ID: Int = 387
 
-    private const val CRC: Int = 232
+    private const val CRC: Int = 141
 
     private val DESERIALIZER: MavDeserializer<CanfdFrame> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val id = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val bus = inputBuffer.decodeUint8()
       val len = inputBuffer.decodeUint8()
-      val id = inputBuffer.decodeUint32()
       val data = inputBuffer.decodeUint8Array(64)
       CanfdFrame(
+        id = id,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         bus = bus,
         len = len,
-        id = id,
         data = data,
       )
     }

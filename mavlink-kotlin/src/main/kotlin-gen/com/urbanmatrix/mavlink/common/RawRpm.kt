@@ -17,35 +17,35 @@ import kotlin.Int
  */
 public data class RawRpm(
   /**
-   * Index of this RPM sensor (0-indexed)
-   */
-  public val index: Int = 0,
-  /**
    * Indicated rate
    */
   public val frequency: Float = 0F,
+  /**
+   * Index of this RPM sensor (0-indexed)
+   */
+  public val index: Int = 0,
 ) : MavMessage<RawRpm> {
   public override val instanceMetadata: MavMessage.Metadata<RawRpm> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(index)
     outputBuffer.encodeFloat(frequency)
+    outputBuffer.encodeUint8(index)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 339
 
-    private const val CRC: Int = 62
+    private const val CRC: Int = 199
 
     private val DESERIALIZER: MavDeserializer<RawRpm> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val index = inputBuffer.decodeUint8()
       val frequency = inputBuffer.decodeFloat()
+      val index = inputBuffer.decodeUint8()
       RawRpm(
-        index = index,
         frequency = frequency,
+        index = index,
       )
     }
 

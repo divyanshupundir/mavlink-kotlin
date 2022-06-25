@@ -27,18 +27,6 @@ public data class NavControllerOutput(
    */
   public val navPitch: Float = 0F,
   /**
-   * Current desired heading
-   */
-  public val navBearing: Int = 0,
-  /**
-   * Bearing to current waypoint/target
-   */
-  public val targetBearing: Int = 0,
-  /**
-   * Distance to active waypoint
-   */
-  public val wpDist: Int = 0,
-  /**
    * Current altitude error
    */
   public val altError: Float = 0F,
@@ -50,6 +38,18 @@ public data class NavControllerOutput(
    * Current crosstrack error on x-y plane
    */
   public val xtrackError: Float = 0F,
+  /**
+   * Current desired heading
+   */
+  public val navBearing: Int = 0,
+  /**
+   * Bearing to current waypoint/target
+   */
+  public val targetBearing: Int = 0,
+  /**
+   * Distance to active waypoint
+   */
+  public val wpDist: Int = 0,
 ) : MavMessage<NavControllerOutput> {
   public override val instanceMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
 
@@ -57,39 +57,39 @@ public data class NavControllerOutput(
     val outputBuffer = ByteBuffer.allocate(26).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(navRoll)
     outputBuffer.encodeFloat(navPitch)
-    outputBuffer.encodeInt16(navBearing)
-    outputBuffer.encodeInt16(targetBearing)
-    outputBuffer.encodeUint16(wpDist)
     outputBuffer.encodeFloat(altError)
     outputBuffer.encodeFloat(aspdError)
     outputBuffer.encodeFloat(xtrackError)
+    outputBuffer.encodeInt16(navBearing)
+    outputBuffer.encodeInt16(targetBearing)
+    outputBuffer.encodeUint16(wpDist)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 62
 
-    private const val CRC: Int = 57
+    private const val CRC: Int = 183
 
     private val DESERIALIZER: MavDeserializer<NavControllerOutput> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val navRoll = inputBuffer.decodeFloat()
       val navPitch = inputBuffer.decodeFloat()
-      val navBearing = inputBuffer.decodeInt16()
-      val targetBearing = inputBuffer.decodeInt16()
-      val wpDist = inputBuffer.decodeUint16()
       val altError = inputBuffer.decodeFloat()
       val aspdError = inputBuffer.decodeFloat()
       val xtrackError = inputBuffer.decodeFloat()
+      val navBearing = inputBuffer.decodeInt16()
+      val targetBearing = inputBuffer.decodeInt16()
+      val wpDist = inputBuffer.decodeUint16()
       NavControllerOutput(
         navRoll = navRoll,
         navPitch = navPitch,
-        navBearing = navBearing,
-        targetBearing = targetBearing,
-        wpDist = wpDist,
         altError = altError,
         aspdError = aspdError,
         xtrackError = xtrackError,
+        navBearing = navBearing,
+        targetBearing = targetBearing,
+        wpDist = wpDist,
       )
     }
 

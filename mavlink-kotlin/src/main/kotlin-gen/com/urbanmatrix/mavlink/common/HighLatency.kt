@@ -31,9 +31,45 @@ import kotlin.Long
 @Deprecated(message = "")
 public data class HighLatency(
   /**
+   * Longitude
+   */
+  public val longitude: Int = 0,
+  /**
+   * Latitude
+   */
+  public val latitude: Int = 0,
+  /**
+   * A bitfield for use for autopilot-specific flags.
+   */
+  public val customMode: Long = 0L,
+  /**
    * distance to target
    */
   public val wpDistance: Int = 0,
+  /**
+   * Altitude setpoint relative to the home position
+   */
+  public val altitudeSp: Int = 0,
+  /**
+   * Altitude above mean sea level
+   */
+  public val altitudeAmsl: Int = 0,
+  /**
+   * heading setpoint
+   */
+  public val headingSp: Int = 0,
+  /**
+   * heading
+   */
+  public val heading: Int = 0,
+  /**
+   * pitch
+   */
+  public val pitch: Int = 0,
+  /**
+   * roll
+   */
+  public val roll: Int = 0,
   /**
    * current waypoint number
    */
@@ -80,49 +116,13 @@ public data class HighLatency(
    */
   public val airspeed: Int = 0,
   /**
-   * Altitude setpoint relative to the home position
-   */
-  public val altitudeSp: Int = 0,
-  /**
-   * Altitude above mean sea level
-   */
-  public val altitudeAmsl: Int = 0,
-  /**
-   * Longitude
-   */
-  public val longitude: Int = 0,
-  /**
-   * Latitude
-   */
-  public val latitude: Int = 0,
-  /**
-   * heading setpoint
-   */
-  public val headingSp: Int = 0,
-  /**
    * throttle (percentage)
    */
   public val throttle: Int = 0,
   /**
-   * heading
-   */
-  public val heading: Int = 0,
-  /**
-   * pitch
-   */
-  public val pitch: Int = 0,
-  /**
-   * roll
-   */
-  public val roll: Int = 0,
-  /**
    * The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
    */
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0),
-  /**
-   * A bitfield for use for autopilot-specific flags.
-   */
-  public val customMode: Long = 0L,
   /**
    * Bitmap of enabled system modes.
    */
@@ -132,7 +132,16 @@ public data class HighLatency(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(40).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(longitude)
+    outputBuffer.encodeInt32(latitude)
+    outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeUint16(wpDistance)
+    outputBuffer.encodeInt16(altitudeSp)
+    outputBuffer.encodeInt16(altitudeAmsl)
+    outputBuffer.encodeInt16(headingSp)
+    outputBuffer.encodeUint16(heading)
+    outputBuffer.encodeInt16(pitch)
+    outputBuffer.encodeInt16(roll)
     outputBuffer.encodeUint8(wpNum)
     outputBuffer.encodeUint8(failsafe)
     outputBuffer.encodeInt8(temperatureAir)
@@ -144,17 +153,8 @@ public data class HighLatency(
     outputBuffer.encodeUint8(groundspeed)
     outputBuffer.encodeUint8(airspeedSp)
     outputBuffer.encodeUint8(airspeed)
-    outputBuffer.encodeInt16(altitudeSp)
-    outputBuffer.encodeInt16(altitudeAmsl)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt16(headingSp)
     outputBuffer.encodeInt8(throttle)
-    outputBuffer.encodeUint16(heading)
-    outputBuffer.encodeInt16(pitch)
-    outputBuffer.encodeInt16(roll)
     outputBuffer.encodeEnumValue(landedState.value, 1)
-    outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(baseMode.value, 1)
     return outputBuffer.array()
   }
@@ -162,11 +162,20 @@ public data class HighLatency(
   public companion object {
     private const val ID: Int = 234
 
-    private const val CRC: Int = 187
+    private const val CRC: Int = 225
 
     private val DESERIALIZER: MavDeserializer<HighLatency> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val longitude = inputBuffer.decodeInt32()
+      val latitude = inputBuffer.decodeInt32()
+      val customMode = inputBuffer.decodeUint32()
       val wpDistance = inputBuffer.decodeUint16()
+      val altitudeSp = inputBuffer.decodeInt16()
+      val altitudeAmsl = inputBuffer.decodeInt16()
+      val headingSp = inputBuffer.decodeInt16()
+      val heading = inputBuffer.decodeUint16()
+      val pitch = inputBuffer.decodeInt16()
+      val roll = inputBuffer.decodeInt16()
       val wpNum = inputBuffer.decodeUint8()
       val failsafe = inputBuffer.decodeUint8()
       val temperatureAir = inputBuffer.decodeInt8()
@@ -181,26 +190,26 @@ public data class HighLatency(
       val groundspeed = inputBuffer.decodeUint8()
       val airspeedSp = inputBuffer.decodeUint8()
       val airspeed = inputBuffer.decodeUint8()
-      val altitudeSp = inputBuffer.decodeInt16()
-      val altitudeAmsl = inputBuffer.decodeInt16()
-      val longitude = inputBuffer.decodeInt32()
-      val latitude = inputBuffer.decodeInt32()
-      val headingSp = inputBuffer.decodeInt16()
       val throttle = inputBuffer.decodeInt8()
-      val heading = inputBuffer.decodeUint16()
-      val pitch = inputBuffer.decodeInt16()
-      val roll = inputBuffer.decodeInt16()
       val landedState = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val customMode = inputBuffer.decodeUint32()
       val baseMode = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavModeFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       HighLatency(
+        longitude = longitude,
+        latitude = latitude,
+        customMode = customMode,
         wpDistance = wpDistance,
+        altitudeSp = altitudeSp,
+        altitudeAmsl = altitudeAmsl,
+        headingSp = headingSp,
+        heading = heading,
+        pitch = pitch,
+        roll = roll,
         wpNum = wpNum,
         failsafe = failsafe,
         temperatureAir = temperatureAir,
@@ -212,17 +221,8 @@ public data class HighLatency(
         groundspeed = groundspeed,
         airspeedSp = airspeedSp,
         airspeed = airspeed,
-        altitudeSp = altitudeSp,
-        altitudeAmsl = altitudeAmsl,
-        longitude = longitude,
-        latitude = latitude,
-        headingSp = headingSp,
         throttle = throttle,
-        heading = heading,
-        pitch = pitch,
-        roll = roll,
         landedState = landedState,
-        customMode = customMode,
         baseMode = baseMode,
       )
     }

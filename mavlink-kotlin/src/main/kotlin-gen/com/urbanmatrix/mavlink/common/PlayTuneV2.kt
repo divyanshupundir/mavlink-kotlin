@@ -20,6 +20,10 @@ import kotlin.String
  */
 public data class PlayTuneV2(
   /**
+   * Tune format
+   */
+  public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0),
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -27,10 +31,6 @@ public data class PlayTuneV2(
    * Component ID
    */
   public val targetComponent: Int = 0,
-  /**
-   * Tune format
-   */
-  public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0),
   /**
    * Tune definition as a NULL-terminated string.
    */
@@ -40,9 +40,9 @@ public data class PlayTuneV2(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(254).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(format.value, 4)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(format.value, 4)
     outputBuffer.encodeString(tune, 248)
     return outputBuffer.array()
   }
@@ -50,21 +50,21 @@ public data class PlayTuneV2(
   public companion object {
     private const val ID: Int = 400
 
-    private const val CRC: Int = 163
+    private const val CRC: Int = 216
 
     private val DESERIALIZER: MavDeserializer<PlayTuneV2> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val format = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = TuneFormat.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val tune = inputBuffer.decodeString(248)
       PlayTuneV2(
+        format = format,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        format = format,
         tune = tune,
       )
     }

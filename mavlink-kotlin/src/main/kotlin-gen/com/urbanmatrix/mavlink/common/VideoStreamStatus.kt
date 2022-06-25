@@ -26,17 +26,17 @@ import kotlin.Long
  */
 public data class VideoStreamStatus(
   /**
-   * Video Stream ID (1 for first, 2 for second, etc.)
+   * Frame rate
    */
-  public val streamId: Int = 0,
+  public val framerate: Float = 0F,
+  /**
+   * Bit rate
+   */
+  public val bitrate: Long = 0L,
   /**
    * Bitmap of stream status flags
    */
   public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Frame rate
-   */
-  public val framerate: Float = 0F,
   /**
    * Horizontal resolution
    */
@@ -46,10 +46,6 @@ public data class VideoStreamStatus(
    */
   public val resolutionV: Int = 0,
   /**
-   * Bit rate
-   */
-  public val bitrate: Long = 0L,
-  /**
    * Video image rotation clockwise
    */
   public val rotation: Int = 0,
@@ -57,49 +53,53 @@ public data class VideoStreamStatus(
    * Horizontal Field of view
    */
   public val hfov: Int = 0,
+  /**
+   * Video Stream ID (1 for first, 2 for second, etc.)
+   */
+  public val streamId: Int = 0,
 ) : MavMessage<VideoStreamStatus> {
   public override val instanceMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(19).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(streamId)
-    outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeFloat(framerate)
+    outputBuffer.encodeUint32(bitrate)
+    outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeUint16(resolutionH)
     outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint32(bitrate)
     outputBuffer.encodeUint16(rotation)
     outputBuffer.encodeUint16(hfov)
+    outputBuffer.encodeUint8(streamId)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 270
 
-    private const val CRC: Int = 205
+    private const val CRC: Int = 59
 
     private val DESERIALIZER: MavDeserializer<VideoStreamStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val streamId = inputBuffer.decodeUint8()
+      val framerate = inputBuffer.decodeFloat()
+      val bitrate = inputBuffer.decodeUint32()
       val flags = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = VideoStreamStatusFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val framerate = inputBuffer.decodeFloat()
       val resolutionH = inputBuffer.decodeUint16()
       val resolutionV = inputBuffer.decodeUint16()
-      val bitrate = inputBuffer.decodeUint32()
       val rotation = inputBuffer.decodeUint16()
       val hfov = inputBuffer.decodeUint16()
+      val streamId = inputBuffer.decodeUint8()
       VideoStreamStatus(
-        streamId = streamId,
-        flags = flags,
         framerate = framerate,
+        bitrate = bitrate,
+        flags = flags,
         resolutionH = resolutionH,
         resolutionV = resolutionV,
-        bitrate = bitrate,
         rotation = rotation,
         hfov = hfov,
+        streamId = streamId,
       )
     }
 

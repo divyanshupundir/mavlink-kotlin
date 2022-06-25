@@ -22,21 +22,21 @@ import kotlin.Long
  */
 public data class FenceStatus(
   /**
-   * Breach status (0 if currently inside fence, 1 if outside).
+   * Time (since boot) of last breach.
    */
-  public val breachStatus: Int = 0,
+  public val breachTime: Long = 0L,
   /**
    * Number of fence breaches.
    */
   public val breachCount: Int = 0,
   /**
+   * Breach status (0 if currently inside fence, 1 if outside).
+   */
+  public val breachStatus: Int = 0,
+  /**
    * Last breach type.
    */
   public val breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0),
-  /**
-   * Time (since boot) of last breach.
-   */
-  public val breachTime: Long = 0L,
   /**
    * Active action to prevent fence breach
    */
@@ -46,10 +46,10 @@ public data class FenceStatus(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(breachStatus)
-    outputBuffer.encodeUint16(breachCount)
-    outputBuffer.encodeEnumValue(breachType.value, 1)
     outputBuffer.encodeUint32(breachTime)
+    outputBuffer.encodeUint16(breachCount)
+    outputBuffer.encodeUint8(breachStatus)
+    outputBuffer.encodeEnumValue(breachType.value, 1)
     outputBuffer.encodeEnumValue(breachMitigation.value, 1)
     return outputBuffer.array()
   }
@@ -57,26 +57,26 @@ public data class FenceStatus(
   public companion object {
     private const val ID: Int = 162
 
-    private const val CRC: Int = 136
+    private const val CRC: Int = 189
 
     private val DESERIALIZER: MavDeserializer<FenceStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val breachStatus = inputBuffer.decodeUint8()
+      val breachTime = inputBuffer.decodeUint32()
       val breachCount = inputBuffer.decodeUint16()
+      val breachStatus = inputBuffer.decodeUint8()
       val breachType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = FenceBreach.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val breachTime = inputBuffer.decodeUint32()
       val breachMitigation = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = FenceMitigate.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       FenceStatus(
-        breachStatus = breachStatus,
-        breachCount = breachCount,
-        breachType = breachType,
         breachTime = breachTime,
+        breachCount = breachCount,
+        breachStatus = breachStatus,
+        breachType = breachType,
         breachMitigation = breachMitigation,
       )
     }

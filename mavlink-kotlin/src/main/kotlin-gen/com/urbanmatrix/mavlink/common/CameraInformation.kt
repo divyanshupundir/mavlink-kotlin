@@ -35,14 +35,6 @@ public data class CameraInformation(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Name of the camera vendor
-   */
-  public val vendorName: List<Int> = emptyList(),
-  /**
-   * Name of the camera model
-   */
-  public val modelName: List<Int> = emptyList(),
-  /**
    * Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff)
    */
@@ -60,6 +52,10 @@ public data class CameraInformation(
    */
   public val sensorSizeV: Float = 0F,
   /**
+   * Bitmap of camera capability flags.
+   */
+  public val flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0),
+  /**
    * Horizontal image resolution
    */
   public val resolutionH: Int = 0,
@@ -68,17 +64,21 @@ public data class CameraInformation(
    */
   public val resolutionV: Int = 0,
   /**
-   * Reserved for a lens ID
-   */
-  public val lensId: Int = 0,
-  /**
-   * Bitmap of camera capability flags.
-   */
-  public val flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0),
-  /**
    * Camera definition version (iteration)
    */
   public val camDefinitionVersion: Int = 0,
+  /**
+   * Name of the camera vendor
+   */
+  public val vendorName: List<Int> = emptyList(),
+  /**
+   * Name of the camera model
+   */
+  public val modelName: List<Int> = emptyList(),
+  /**
+   * Reserved for a lens ID
+   */
+  public val lensId: Int = 0,
   /**
    * Camera definition URI (if any, otherwise only basic functions will be available). HTTP-
    * (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported
@@ -93,17 +93,17 @@ public data class CameraInformation(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(235).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8Array(vendorName, 32)
-    outputBuffer.encodeUint8Array(modelName, 32)
     outputBuffer.encodeUint32(firmwareVersion)
     outputBuffer.encodeFloat(focalLength)
     outputBuffer.encodeFloat(sensorSizeH)
     outputBuffer.encodeFloat(sensorSizeV)
+    outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeUint16(resolutionH)
     outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint8(lensId)
-    outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeUint16(camDefinitionVersion)
+    outputBuffer.encodeUint8Array(vendorName, 32)
+    outputBuffer.encodeUint8Array(modelName, 32)
+    outputBuffer.encodeUint8(lensId)
     outputBuffer.encodeString(camDefinitionUri, 140)
     return outputBuffer.array()
   }
@@ -111,39 +111,39 @@ public data class CameraInformation(
   public companion object {
     private const val ID: Int = 259
 
-    private const val CRC: Int = 120
+    private const val CRC: Int = 10
 
     private val DESERIALIZER: MavDeserializer<CameraInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val vendorName = inputBuffer.decodeUint8Array(32)
-      val modelName = inputBuffer.decodeUint8Array(32)
       val firmwareVersion = inputBuffer.decodeUint32()
       val focalLength = inputBuffer.decodeFloat()
       val sensorSizeH = inputBuffer.decodeFloat()
       val sensorSizeV = inputBuffer.decodeFloat()
-      val resolutionH = inputBuffer.decodeUint16()
-      val resolutionV = inputBuffer.decodeUint16()
-      val lensId = inputBuffer.decodeUint8()
       val flags = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = CameraCapFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val resolutionH = inputBuffer.decodeUint16()
+      val resolutionV = inputBuffer.decodeUint16()
       val camDefinitionVersion = inputBuffer.decodeUint16()
+      val vendorName = inputBuffer.decodeUint8Array(32)
+      val modelName = inputBuffer.decodeUint8Array(32)
+      val lensId = inputBuffer.decodeUint8()
       val camDefinitionUri = inputBuffer.decodeString(140)
       CameraInformation(
         timeBootMs = timeBootMs,
-        vendorName = vendorName,
-        modelName = modelName,
         firmwareVersion = firmwareVersion,
         focalLength = focalLength,
         sensorSizeH = sensorSizeH,
         sensorSizeV = sensorSizeV,
+        flags = flags,
         resolutionH = resolutionH,
         resolutionV = resolutionV,
-        lensId = lensId,
-        flags = flags,
         camDefinitionVersion = camDefinitionVersion,
+        vendorName = vendorName,
+        modelName = modelName,
+        lensId = lensId,
         camDefinitionUri = camDefinitionUri,
       )
     }

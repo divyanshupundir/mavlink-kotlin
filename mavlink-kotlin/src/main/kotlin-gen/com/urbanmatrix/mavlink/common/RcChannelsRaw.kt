@@ -25,11 +25,6 @@ public data class RcChannelsRaw(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
-   */
-  public val port: Int = 0,
-  /**
    * RC channel 1 value.
    */
   public val chan1Raw: Int = 0,
@@ -62,6 +57,11 @@ public data class RcChannelsRaw(
    */
   public val chan8Raw: Int = 0,
   /**
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
+   * MAIN, 1 = AUX.
+   */
+  public val port: Int = 0,
+  /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
    */
@@ -72,7 +72,6 @@ public data class RcChannelsRaw(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(22).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(port)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
     outputBuffer.encodeUint16(chan3Raw)
@@ -81,6 +80,7 @@ public data class RcChannelsRaw(
     outputBuffer.encodeUint16(chan6Raw)
     outputBuffer.encodeUint16(chan7Raw)
     outputBuffer.encodeUint16(chan8Raw)
+    outputBuffer.encodeUint8(port)
     outputBuffer.encodeUint8(rssi)
     return outputBuffer.array()
   }
@@ -88,12 +88,11 @@ public data class RcChannelsRaw(
   public companion object {
     private const val ID: Int = 35
 
-    private const val CRC: Int = 131
+    private const val CRC: Int = 244
 
     private val DESERIALIZER: MavDeserializer<RcChannelsRaw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val port = inputBuffer.decodeUint8()
       val chan1Raw = inputBuffer.decodeUint16()
       val chan2Raw = inputBuffer.decodeUint16()
       val chan3Raw = inputBuffer.decodeUint16()
@@ -102,10 +101,10 @@ public data class RcChannelsRaw(
       val chan6Raw = inputBuffer.decodeUint16()
       val chan7Raw = inputBuffer.decodeUint16()
       val chan8Raw = inputBuffer.decodeUint16()
+      val port = inputBuffer.decodeUint8()
       val rssi = inputBuffer.decodeUint8()
       RcChannelsRaw(
         timeBootMs = timeBootMs,
-        port = port,
         chan1Raw = chan1Raw,
         chan2Raw = chan2Raw,
         chan3Raw = chan3Raw,
@@ -114,6 +113,7 @@ public data class RcChannelsRaw(
         chan6Raw = chan6Raw,
         chan7Raw = chan7Raw,
         chan8Raw = chan8Raw,
+        port = port,
         rssi = rssi,
       )
     }

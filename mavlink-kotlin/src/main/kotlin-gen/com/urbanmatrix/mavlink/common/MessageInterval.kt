@@ -21,36 +21,36 @@ import kotlin.Int
  */
 public data class MessageInterval(
   /**
-   * The ID of the requested MAVLink message. v1.0 is limited to 254 messages.
-   */
-  public val messageId: Int = 0,
-  /**
    * The interval between two messages. A value of -1 indicates this stream is disabled, 0 indicates
    * it is not available, > 0 indicates the interval at which it is sent.
    */
   public val intervalUs: Int = 0,
+  /**
+   * The ID of the requested MAVLink message. v1.0 is limited to 254 messages.
+   */
+  public val messageId: Int = 0,
 ) : MavMessage<MessageInterval> {
   public override val instanceMetadata: MavMessage.Metadata<MessageInterval> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(messageId)
     outputBuffer.encodeInt32(intervalUs)
+    outputBuffer.encodeUint16(messageId)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 244
 
-    private const val CRC: Int = 153
+    private const val CRC: Int = 95
 
     private val DESERIALIZER: MavDeserializer<MessageInterval> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val messageId = inputBuffer.decodeUint16()
       val intervalUs = inputBuffer.decodeInt32()
+      val messageId = inputBuffer.decodeUint16()
       MessageInterval(
-        messageId = messageId,
         intervalUs = intervalUs,
+        messageId = messageId,
       )
     }
 

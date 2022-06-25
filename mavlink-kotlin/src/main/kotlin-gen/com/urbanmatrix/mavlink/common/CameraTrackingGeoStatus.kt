@@ -21,10 +21,6 @@ import kotlin.Int
  */
 public data class CameraTrackingGeoStatus(
   /**
-   * Current tracking status
-   */
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
-  /**
    * Latitude of tracked object
    */
   public val lat: Int = 0,
@@ -72,12 +68,15 @@ public data class CameraTrackingGeoStatus(
    * Accuracy of heading, in NED. NAN if unknown
    */
   public val hdgAcc: Float = 0F,
+  /**
+   * Current tracking status
+   */
+  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<CameraTrackingGeoStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CameraTrackingGeoStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(49).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -90,20 +89,17 @@ public data class CameraTrackingGeoStatus(
     outputBuffer.encodeFloat(dist)
     outputBuffer.encodeFloat(hdg)
     outputBuffer.encodeFloat(hdgAcc)
+    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 276
 
-    private const val CRC: Int = 63
+    private const val CRC: Int = 18
 
     private val DESERIALIZER: MavDeserializer<CameraTrackingGeoStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val trackingStatus = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -116,8 +112,11 @@ public data class CameraTrackingGeoStatus(
       val dist = inputBuffer.decodeFloat()
       val hdg = inputBuffer.decodeFloat()
       val hdgAcc = inputBuffer.decodeFloat()
+      val trackingStatus = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       CameraTrackingGeoStatus(
-        trackingStatus = trackingStatus,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -130,6 +129,7 @@ public data class CameraTrackingGeoStatus(
         dist = dist,
         hdg = hdg,
         hdgAcc = hdgAcc,
+        trackingStatus = trackingStatus,
       )
     }
 

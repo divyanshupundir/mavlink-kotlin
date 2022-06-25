@@ -24,10 +24,6 @@ public data class AslctrlData(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
-   *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
-   */
-  public val aslctrlMode: Int = 0,
-  /**
    *  See sourcecode for a description of these values... 
    */
   public val h: Float = 0F,
@@ -51,7 +47,6 @@ public data class AslctrlData(
    * Airspeed reference
    */
   public val airspeedref: Float = 0F,
-  public val spoilersengaged: Int = 0,
   /**
    * Yaw angle
    */
@@ -74,13 +69,17 @@ public data class AslctrlData(
   public val rref: Float = 0F,
   public val uail: Float = 0F,
   public val urud: Float = 0F,
+  /**
+   *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
+   */
+  public val aslctrlMode: Int = 0,
+  public val spoilersengaged: Int = 0,
 ) : MavMessage<AslctrlData> {
   public override val instanceMetadata: MavMessage.Metadata<AslctrlData> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(98).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint8(aslctrlMode)
     outputBuffer.encodeFloat(h)
     outputBuffer.encodeFloat(href)
     outputBuffer.encodeFloat(hrefT)
@@ -93,7 +92,6 @@ public data class AslctrlData(
     outputBuffer.encodeFloat(uthrot2)
     outputBuffer.encodeFloat(nz)
     outputBuffer.encodeFloat(airspeedref)
-    outputBuffer.encodeUint8(spoilersengaged)
     outputBuffer.encodeFloat(yawangle)
     outputBuffer.encodeFloat(yawangleref)
     outputBuffer.encodeFloat(rollangle)
@@ -104,18 +102,19 @@ public data class AslctrlData(
     outputBuffer.encodeFloat(rref)
     outputBuffer.encodeFloat(uail)
     outputBuffer.encodeFloat(urud)
+    outputBuffer.encodeUint8(aslctrlMode)
+    outputBuffer.encodeUint8(spoilersengaged)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 8004
 
-    private const val CRC: Int = 255
+    private const val CRC: Int = 172
 
     private val DESERIALIZER: MavDeserializer<AslctrlData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
-      val aslctrlMode = inputBuffer.decodeUint8()
       val h = inputBuffer.decodeFloat()
       val href = inputBuffer.decodeFloat()
       val hrefT = inputBuffer.decodeFloat()
@@ -128,7 +127,6 @@ public data class AslctrlData(
       val uthrot2 = inputBuffer.decodeFloat()
       val nz = inputBuffer.decodeFloat()
       val airspeedref = inputBuffer.decodeFloat()
-      val spoilersengaged = inputBuffer.decodeUint8()
       val yawangle = inputBuffer.decodeFloat()
       val yawangleref = inputBuffer.decodeFloat()
       val rollangle = inputBuffer.decodeFloat()
@@ -139,9 +137,10 @@ public data class AslctrlData(
       val rref = inputBuffer.decodeFloat()
       val uail = inputBuffer.decodeFloat()
       val urud = inputBuffer.decodeFloat()
+      val aslctrlMode = inputBuffer.decodeUint8()
+      val spoilersengaged = inputBuffer.decodeUint8()
       AslctrlData(
         timestamp = timestamp,
-        aslctrlMode = aslctrlMode,
         h = h,
         href = href,
         hrefT = hrefT,
@@ -154,7 +153,6 @@ public data class AslctrlData(
         uthrot2 = uthrot2,
         nz = nz,
         airspeedref = airspeedref,
-        spoilersengaged = spoilersengaged,
         yawangle = yawangle,
         yawangleref = yawangleref,
         rollangle = rollangle,
@@ -165,6 +163,8 @@ public data class AslctrlData(
         rref = rref,
         uail = uail,
         urud = urud,
+        aslctrlMode = aslctrlMode,
+        spoilersengaged = spoilersengaged,
       )
     }
 

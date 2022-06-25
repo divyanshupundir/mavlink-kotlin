@@ -23,6 +23,10 @@ import kotlin.collections.List
  */
 public data class CanFilterModify(
   /**
+   * filter IDs, length num_ids
+   */
+  public val ids: List<Int> = emptyList(),
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -42,31 +46,28 @@ public data class CanFilterModify(
    * number of IDs in filter list
    */
   public val numIds: Int = 0,
-  /**
-   * filter IDs, length num_ids
-   */
-  public val ids: List<Int> = emptyList(),
 ) : MavMessage<CanFilterModify> {
   public override val instanceMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(37).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16Array(ids, 32)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(bus)
     outputBuffer.encodeEnumValue(operation.value, 1)
     outputBuffer.encodeUint8(numIds)
-    outputBuffer.encodeUint16Array(ids, 32)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 388
 
-    private const val CRC: Int = 29
+    private const val CRC: Int = 135
 
     private val DESERIALIZER: MavDeserializer<CanFilterModify> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val ids = inputBuffer.decodeUint16Array(32)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val bus = inputBuffer.decodeUint8()
@@ -75,14 +76,13 @@ public data class CanFilterModify(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val numIds = inputBuffer.decodeUint8()
-      val ids = inputBuffer.decodeUint16Array(32)
       CanFilterModify(
+        ids = ids,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         bus = bus,
         operation = operation,
         numIds = numIds,
-        ids = ids,
       )
     }
 

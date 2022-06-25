@@ -31,14 +31,6 @@ public data class LandingTarget(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * The ID of the target if multiple targets are present
-   */
-  public val targetNum: Int = 0,
-  /**
-   * Coordinate frame used for following fields.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
    * X-axis angular offset of the target from the center of the image
    */
   public val angleX: Float = 0F,
@@ -58,6 +50,14 @@ public data class LandingTarget(
    * Size of target along y-axis
    */
   public val sizeY: Float = 0F,
+  /**
+   * The ID of the target if multiple targets are present
+   */
+  public val targetNum: Int = 0,
+  /**
+   * Coordinate frame used for following fields.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * X Position of the landing target in MAV_FRAME
    */
@@ -89,13 +89,13 @@ public data class LandingTarget(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(60).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(targetNum)
-    outputBuffer.encodeEnumValue(frame.value, 1)
     outputBuffer.encodeFloat(angleX)
     outputBuffer.encodeFloat(angleY)
     outputBuffer.encodeFloat(distance)
     outputBuffer.encodeFloat(sizeX)
     outputBuffer.encodeFloat(sizeY)
+    outputBuffer.encodeUint8(targetNum)
+    outputBuffer.encodeEnumValue(frame.value, 1)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -108,21 +108,21 @@ public data class LandingTarget(
   public companion object {
     private const val ID: Int = 149
 
-    private const val CRC: Int = 31
+    private const val CRC: Int = 200
 
     private val DESERIALIZER: MavDeserializer<LandingTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val targetNum = inputBuffer.decodeUint8()
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavFrame.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val angleX = inputBuffer.decodeFloat()
       val angleY = inputBuffer.decodeFloat()
       val distance = inputBuffer.decodeFloat()
       val sizeX = inputBuffer.decodeFloat()
       val sizeY = inputBuffer.decodeFloat()
+      val targetNum = inputBuffer.decodeUint8()
+      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavFrame.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -134,13 +134,13 @@ public data class LandingTarget(
       val positionValid = inputBuffer.decodeUint8()
       LandingTarget(
         timeUsec = timeUsec,
-        targetNum = targetNum,
-        frame = frame,
         angleX = angleX,
         angleY = angleY,
         distance = distance,
         sizeX = sizeX,
         sizeY = sizeY,
+        targetNum = targetNum,
+        frame = frame,
         x = x,
         y = y,
         z = z,

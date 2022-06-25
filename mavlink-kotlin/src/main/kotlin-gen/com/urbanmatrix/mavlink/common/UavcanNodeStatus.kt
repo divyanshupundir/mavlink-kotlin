@@ -36,6 +36,10 @@ public data class UavcanNodeStatus(
    */
   public val uptimeSec: Long = 0L,
   /**
+   * Vendor-specific status information.
+   */
+  public val vendorSpecificStatusCode: Int = 0,
+  /**
    * Generalized node health status.
    */
   public val health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0),
@@ -47,10 +51,6 @@ public data class UavcanNodeStatus(
    * Not used currently.
    */
   public val subMode: Int = 0,
-  /**
-   * Vendor-specific status information.
-   */
-  public val vendorSpecificStatusCode: Int = 0,
 ) : MavMessage<UavcanNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<UavcanNodeStatus> = METADATA
 
@@ -58,22 +58,23 @@ public data class UavcanNodeStatus(
     val outputBuffer = ByteBuffer.allocate(17).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(uptimeSec)
+    outputBuffer.encodeUint16(vendorSpecificStatusCode)
     outputBuffer.encodeEnumValue(health.value, 1)
     outputBuffer.encodeEnumValue(mode.value, 1)
     outputBuffer.encodeUint8(subMode)
-    outputBuffer.encodeUint16(vendorSpecificStatusCode)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 310
 
-    private const val CRC: Int = 1
+    private const val CRC: Int = 28
 
     private val DESERIALIZER: MavDeserializer<UavcanNodeStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val uptimeSec = inputBuffer.decodeUint32()
+      val vendorSpecificStatusCode = inputBuffer.decodeUint16()
       val health = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = UavcanNodeHealth.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -83,14 +84,13 @@ public data class UavcanNodeStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val subMode = inputBuffer.decodeUint8()
-      val vendorSpecificStatusCode = inputBuffer.decodeUint16()
       UavcanNodeStatus(
         timeUsec = timeUsec,
         uptimeSec = uptimeSec,
+        vendorSpecificStatusCode = vendorSpecificStatusCode,
         health = health,
         mode = mode,
         subMode = subMode,
-        vendorSpecificStatusCode = vendorSpecificStatusCode,
       )
     }
 

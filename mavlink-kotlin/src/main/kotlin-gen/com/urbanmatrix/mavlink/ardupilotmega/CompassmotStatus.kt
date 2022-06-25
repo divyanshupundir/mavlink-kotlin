@@ -17,17 +17,9 @@ import kotlin.Int
  */
 public data class CompassmotStatus(
   /**
-   * Throttle.
-   */
-  public val throttle: Int = 0,
-  /**
    * Current.
    */
   public val current: Float = 0F,
-  /**
-   * Interference.
-   */
-  public val interference: Int = 0,
   /**
    * Motor Compensation X.
    */
@@ -40,40 +32,48 @@ public data class CompassmotStatus(
    * Motor Compensation Z.
    */
   public val compensationz: Float = 0F,
+  /**
+   * Throttle.
+   */
+  public val throttle: Int = 0,
+  /**
+   * Interference.
+   */
+  public val interference: Int = 0,
 ) : MavMessage<CompassmotStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(throttle)
     outputBuffer.encodeFloat(current)
-    outputBuffer.encodeUint16(interference)
     outputBuffer.encodeFloat(compensationx)
     outputBuffer.encodeFloat(compensationy)
     outputBuffer.encodeFloat(compensationz)
+    outputBuffer.encodeUint16(throttle)
+    outputBuffer.encodeUint16(interference)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 177
 
-    private const val CRC: Int = 78
+    private const val CRC: Int = 240
 
     private val DESERIALIZER: MavDeserializer<CompassmotStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val throttle = inputBuffer.decodeUint16()
       val current = inputBuffer.decodeFloat()
-      val interference = inputBuffer.decodeUint16()
       val compensationx = inputBuffer.decodeFloat()
       val compensationy = inputBuffer.decodeFloat()
       val compensationz = inputBuffer.decodeFloat()
+      val throttle = inputBuffer.decodeUint16()
+      val interference = inputBuffer.decodeUint16()
       CompassmotStatus(
-        throttle = throttle,
         current = current,
-        interference = interference,
         compensationx = compensationx,
         compensationy = compensationy,
         compensationz = compensationz,
+        throttle = throttle,
+        interference = interference,
       )
     }
 

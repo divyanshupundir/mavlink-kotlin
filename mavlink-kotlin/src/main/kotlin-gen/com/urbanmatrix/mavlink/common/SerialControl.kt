@@ -28,6 +28,14 @@ import kotlin.collections.List
  */
 public data class SerialControl(
   /**
+   * Baudrate of transfer. Zero means no change.
+   */
+  public val baudrate: Long = 0L,
+  /**
+   * Timeout for reply data
+   */
+  public val timeout: Int = 0,
+  /**
    * Serial control device type.
    */
   public val device: MavEnumValue<SerialControlDev> = MavEnumValue.fromValue(0),
@@ -35,14 +43,6 @@ public data class SerialControl(
    * Bitmap of serial control flags.
    */
   public val flags: MavEnumValue<SerialControlFlag> = MavEnumValue.fromValue(0),
-  /**
-   * Timeout for reply data
-   */
-  public val timeout: Int = 0,
-  /**
-   * Baudrate of transfer. Zero means no change.
-   */
-  public val baudrate: Long = 0L,
   /**
    * how many bytes in this transfer
    */
@@ -64,10 +64,10 @@ public data class SerialControl(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(81).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(baudrate)
+    outputBuffer.encodeUint16(timeout)
     outputBuffer.encodeEnumValue(device.value, 1)
     outputBuffer.encodeEnumValue(flags.value, 1)
-    outputBuffer.encodeUint16(timeout)
-    outputBuffer.encodeUint32(baudrate)
     outputBuffer.encodeUint8(count)
     outputBuffer.encodeUint8Array(data, 70)
     outputBuffer.encodeUint8(targetSystem)
@@ -78,10 +78,12 @@ public data class SerialControl(
   public companion object {
     private const val ID: Int = 126
 
-    private const val CRC: Int = 209
+    private const val CRC: Int = 20
 
     private val DESERIALIZER: MavDeserializer<SerialControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val baudrate = inputBuffer.decodeUint32()
+      val timeout = inputBuffer.decodeUint16()
       val device = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = SerialControlDev.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -90,17 +92,15 @@ public data class SerialControl(
         val entry = SerialControlFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val timeout = inputBuffer.decodeUint16()
-      val baudrate = inputBuffer.decodeUint32()
       val count = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(70)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       SerialControl(
+        baudrate = baudrate,
+        timeout = timeout,
         device = device,
         flags = flags,
-        timeout = timeout,
-        baudrate = baudrate,
         count = count,
         data = data,
         targetSystem = targetSystem,

@@ -25,21 +25,21 @@ public data class NamedValueInt(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Name of the debug variable
-   */
-  public val name: String = "",
-  /**
    * Signed integer value
    */
   public val `value`: Int = 0,
+  /**
+   * Name of the debug variable
+   */
+  public val name: String = "",
 ) : MavMessage<NamedValueInt> {
   public override val instanceMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeString(name, 10)
     outputBuffer.encodeInt32(value)
+    outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
   }
 
@@ -51,12 +51,12 @@ public data class NamedValueInt(
     private val DESERIALIZER: MavDeserializer<NamedValueInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val name = inputBuffer.decodeString(10)
       val value = inputBuffer.decodeInt32()
+      val name = inputBuffer.decodeString(10)
       NamedValueInt(
         timeBootMs = timeBootMs,
-        name = name,
         value = value,
+        name = name,
       )
     }
 

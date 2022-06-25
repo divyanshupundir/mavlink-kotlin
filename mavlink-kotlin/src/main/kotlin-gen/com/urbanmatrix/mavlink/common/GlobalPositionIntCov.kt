@@ -35,10 +35,6 @@ public data class GlobalPositionIntCov(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Class id of the estimator this estimate originated from.
-   */
-  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
-  /**
    * Latitude
    */
   public val lat: Int = 0,
@@ -72,13 +68,16 @@ public data class GlobalPositionIntCov(
    * row, etc.). If unknown, assign NaN value to first element in the array.
    */
   public val covariance: List<Float> = emptyList(),
+  /**
+   * Class id of the estimator this estimate originated from.
+   */
+  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
 ) : MavMessage<GlobalPositionIntCov> {
   public override val instanceMetadata: MavMessage.Metadata<GlobalPositionIntCov> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(181).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(estimatorType.value, 1)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
@@ -87,21 +86,18 @@ public data class GlobalPositionIntCov(
     outputBuffer.encodeFloat(vy)
     outputBuffer.encodeFloat(vz)
     outputBuffer.encodeFloatArray(covariance, 144)
+    outputBuffer.encodeEnumValue(estimatorType.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 63
 
-    private const val CRC: Int = 219
+    private const val CRC: Int = 189
 
     private val DESERIALIZER: MavDeserializer<GlobalPositionIntCov> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val estimatorType = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavEstimatorType.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
@@ -110,9 +106,12 @@ public data class GlobalPositionIntCov(
       val vy = inputBuffer.decodeFloat()
       val vz = inputBuffer.decodeFloat()
       val covariance = inputBuffer.decodeFloatArray(144)
+      val estimatorType = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavEstimatorType.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       GlobalPositionIntCov(
         timeUsec = timeUsec,
-        estimatorType = estimatorType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -121,6 +120,7 @@ public data class GlobalPositionIntCov(
         vy = vy,
         vz = vz,
         covariance = covariance,
+        estimatorType = estimatorType,
       )
     }
 

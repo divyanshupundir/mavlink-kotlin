@@ -19,6 +19,18 @@ import kotlin.Int
  */
 public data class CellularStatus(
   /**
+   * Mobile country code. If unknown, set to UINT16_MAX
+   */
+  public val mcc: Int = 0,
+  /**
+   * Mobile network code. If unknown, set to UINT16_MAX
+   */
+  public val mnc: Int = 0,
+  /**
+   * Location area code. If unknown, set to 0
+   */
+  public val lac: Int = 0,
+  /**
    * Cellular modem status
    */
   public val status: MavEnumValue<CellularStatusFlag> = MavEnumValue.fromValue(0),
@@ -34,40 +46,31 @@ public data class CellularStatus(
    * Signal quality in percent. If unknown, set to UINT8_MAX
    */
   public val quality: Int = 0,
-  /**
-   * Mobile country code. If unknown, set to UINT16_MAX
-   */
-  public val mcc: Int = 0,
-  /**
-   * Mobile network code. If unknown, set to UINT16_MAX
-   */
-  public val mnc: Int = 0,
-  /**
-   * Location area code. If unknown, set to 0
-   */
-  public val lac: Int = 0,
 ) : MavMessage<CellularStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CellularStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(mcc)
+    outputBuffer.encodeUint16(mnc)
+    outputBuffer.encodeUint16(lac)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(failureReason.value, 1)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeUint8(quality)
-    outputBuffer.encodeUint16(mcc)
-    outputBuffer.encodeUint16(mnc)
-    outputBuffer.encodeUint16(lac)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 334
 
-    private const val CRC: Int = 132
+    private const val CRC: Int = 72
 
     private val DESERIALIZER: MavDeserializer<CellularStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val mcc = inputBuffer.decodeUint16()
+      val mnc = inputBuffer.decodeUint16()
+      val lac = inputBuffer.decodeUint16()
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = CellularStatusFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -81,17 +84,14 @@ public data class CellularStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val quality = inputBuffer.decodeUint8()
-      val mcc = inputBuffer.decodeUint16()
-      val mnc = inputBuffer.decodeUint16()
-      val lac = inputBuffer.decodeUint16()
       CellularStatus(
+        mcc = mcc,
+        mnc = mnc,
+        lac = lac,
         status = status,
         failureReason = failureReason,
         type = type,
         quality = quality,
-        mcc = mcc,
-        mnc = mnc,
-        lac = lac,
       )
     }
 

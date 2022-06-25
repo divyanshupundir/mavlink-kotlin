@@ -29,6 +29,34 @@ import kotlin.String
  */
 public data class VideoStreamInformation(
   /**
+   * Frame rate.
+   */
+  public val framerate: Float = 0F,
+  /**
+   * Bit rate.
+   */
+  public val bitrate: Long = 0L,
+  /**
+   * Bitmap of stream status flags.
+   */
+  public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Horizontal resolution.
+   */
+  public val resolutionH: Int = 0,
+  /**
+   * Vertical resolution.
+   */
+  public val resolutionV: Int = 0,
+  /**
+   * Video image rotation clockwise.
+   */
+  public val rotation: Int = 0,
+  /**
+   * Horizontal Field of view.
+   */
+  public val hfov: Int = 0,
+  /**
    * Video Stream ID (1 for first, 2 for second, etc.)
    */
   public val streamId: Int = 0,
@@ -40,34 +68,6 @@ public data class VideoStreamInformation(
    * Type of stream.
    */
   public val type: MavEnumValue<VideoStreamType> = MavEnumValue.fromValue(0),
-  /**
-   * Bitmap of stream status flags.
-   */
-  public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Frame rate.
-   */
-  public val framerate: Float = 0F,
-  /**
-   * Horizontal resolution.
-   */
-  public val resolutionH: Int = 0,
-  /**
-   * Vertical resolution.
-   */
-  public val resolutionV: Int = 0,
-  /**
-   * Bit rate.
-   */
-  public val bitrate: Long = 0L,
-  /**
-   * Video image rotation clockwise.
-   */
-  public val rotation: Int = 0,
-  /**
-   * Horizontal Field of view.
-   */
-  public val hfov: Int = 0,
   /**
    * Stream name.
    */
@@ -82,16 +82,16 @@ public data class VideoStreamInformation(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(213).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(framerate)
+    outputBuffer.encodeUint32(bitrate)
+    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeUint16(resolutionH)
+    outputBuffer.encodeUint16(resolutionV)
+    outputBuffer.encodeUint16(rotation)
+    outputBuffer.encodeUint16(hfov)
     outputBuffer.encodeUint8(streamId)
     outputBuffer.encodeUint8(count)
     outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 2)
-    outputBuffer.encodeFloat(framerate)
-    outputBuffer.encodeUint16(resolutionH)
-    outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint32(bitrate)
-    outputBuffer.encodeUint16(rotation)
-    outputBuffer.encodeUint16(hfov)
     outputBuffer.encodeString(name, 32)
     outputBuffer.encodeString(uri, 160)
     return outputBuffer.array()
@@ -100,39 +100,39 @@ public data class VideoStreamInformation(
   public companion object {
     private const val ID: Int = 269
 
-    private const val CRC: Int = 185
+    private const val CRC: Int = 76
 
     private val DESERIALIZER: MavDeserializer<VideoStreamInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val framerate = inputBuffer.decodeFloat()
+      val bitrate = inputBuffer.decodeUint32()
+      val flags = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = VideoStreamStatusFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val resolutionH = inputBuffer.decodeUint16()
+      val resolutionV = inputBuffer.decodeUint16()
+      val rotation = inputBuffer.decodeUint16()
+      val hfov = inputBuffer.decodeUint16()
       val streamId = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = VideoStreamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = VideoStreamStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val framerate = inputBuffer.decodeFloat()
-      val resolutionH = inputBuffer.decodeUint16()
-      val resolutionV = inputBuffer.decodeUint16()
-      val bitrate = inputBuffer.decodeUint32()
-      val rotation = inputBuffer.decodeUint16()
-      val hfov = inputBuffer.decodeUint16()
       val name = inputBuffer.decodeString(32)
       val uri = inputBuffer.decodeString(160)
       VideoStreamInformation(
+        framerate = framerate,
+        bitrate = bitrate,
+        flags = flags,
+        resolutionH = resolutionH,
+        resolutionV = resolutionV,
+        rotation = rotation,
+        hfov = hfov,
         streamId = streamId,
         count = count,
         type = type,
-        flags = flags,
-        framerate = framerate,
-        resolutionH = resolutionH,
-        resolutionV = resolutionV,
-        bitrate = bitrate,
-        rotation = rotation,
-        hfov = hfov,
         name = name,
         uri = uri,
       )

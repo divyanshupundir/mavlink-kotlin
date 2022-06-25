@@ -30,11 +30,6 @@ public data class HilGps(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field
-   * unless it is at least two, so always correctly fill in the fix.
-   */
-  public val fixType: Int = 0,
-  /**
    * Latitude (WGS84)
    */
   public val lat: Int = 0,
@@ -76,6 +71,11 @@ public data class HilGps(
    */
   public val cog: Int = 0,
   /**
+   * 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field
+   * unless it is at least two, so always correctly fill in the fix.
+   */
+  public val fixType: Int = 0,
+  /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
   public val satellitesVisible: Int = 0,
@@ -93,7 +93,6 @@ public data class HilGps(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(39).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(fixType)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
@@ -104,6 +103,7 @@ public data class HilGps(
     outputBuffer.encodeInt16(ve)
     outputBuffer.encodeInt16(vd)
     outputBuffer.encodeUint16(cog)
+    outputBuffer.encodeUint8(fixType)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeUint8(id)
     outputBuffer.encodeUint16(yaw)
@@ -113,12 +113,11 @@ public data class HilGps(
   public companion object {
     private const val ID: Int = 113
 
-    private const val CRC: Int = 55
+    private const val CRC: Int = 124
 
     private val DESERIALIZER: MavDeserializer<HilGps> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val fixType = inputBuffer.decodeUint8()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
@@ -129,12 +128,12 @@ public data class HilGps(
       val ve = inputBuffer.decodeInt16()
       val vd = inputBuffer.decodeInt16()
       val cog = inputBuffer.decodeUint16()
+      val fixType = inputBuffer.decodeUint8()
       val satellitesVisible = inputBuffer.decodeUint8()
       val id = inputBuffer.decodeUint8()
       val yaw = inputBuffer.decodeUint16()
       HilGps(
         timeUsec = timeUsec,
-        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -145,6 +144,7 @@ public data class HilGps(
         ve = ve,
         vd = vd,
         cog = cog,
+        fixType = fixType,
         satellitesVisible = satellitesVisible,
         id = id,
         yaw = yaw,

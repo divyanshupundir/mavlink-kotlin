@@ -31,18 +31,6 @@ public data class SetAttitudeTarget(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
-  /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
   public val q: List<Float> = emptyList(),
@@ -63,6 +51,18 @@ public data class SetAttitudeTarget(
    */
   public val thrust: Float = 0F,
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
    * 3D thrust setpoint in the body NED frame, normalized to -1 .. 1
    */
   public val thrustBody: List<Float> = emptyList(),
@@ -72,14 +72,14 @@ public data class SetAttitudeTarget(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(51).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(typeMask.value, 1)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(bodyRollRate)
     outputBuffer.encodeFloat(bodyPitchRate)
     outputBuffer.encodeFloat(bodyYawRate)
     outputBuffer.encodeFloat(thrust)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(typeMask.value, 1)
     outputBuffer.encodeFloatArray(thrustBody, 12)
     return outputBuffer.array()
   }
@@ -87,33 +87,33 @@ public data class SetAttitudeTarget(
   public companion object {
     private const val ID: Int = 82
 
-    private const val CRC: Int = 190
+    private const val CRC: Int = 166
 
     private val DESERIALIZER: MavDeserializer<SetAttitudeTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
+      val q = inputBuffer.decodeFloatArray(16)
+      val bodyRollRate = inputBuffer.decodeFloat()
+      val bodyPitchRate = inputBuffer.decodeFloat()
+      val bodyYawRate = inputBuffer.decodeFloat()
+      val thrust = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val typeMask = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = AttitudeTargetTypemask.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val q = inputBuffer.decodeFloatArray(16)
-      val bodyRollRate = inputBuffer.decodeFloat()
-      val bodyPitchRate = inputBuffer.decodeFloat()
-      val bodyYawRate = inputBuffer.decodeFloat()
-      val thrust = inputBuffer.decodeFloat()
       val thrustBody = inputBuffer.decodeFloatArray(12)
       SetAttitudeTarget(
         timeBootMs = timeBootMs,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        typeMask = typeMask,
         q = q,
         bodyRollRate = bodyRollRate,
         bodyPitchRate = bodyPitchRate,
         bodyYawRate = bodyYawRate,
         thrust = thrust,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        typeMask = typeMask,
         thrustBody = thrustBody,
       )
     }

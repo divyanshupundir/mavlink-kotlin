@@ -26,6 +26,10 @@ import kotlin.collections.List
  */
 public data class DeviceOpWrite(
   /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -33,10 +37,6 @@ public data class DeviceOpWrite(
    * Component ID.
    */
   public val targetComponent: Int = 0,
-  /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
   /**
    * The bus type.
    */
@@ -74,9 +74,9 @@ public data class DeviceOpWrite(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(180).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeEnumValue(bustype.value, 1)
     outputBuffer.encodeUint8(bus)
     outputBuffer.encodeUint8(address)
@@ -91,13 +91,13 @@ public data class DeviceOpWrite(
   public companion object {
     private const val ID: Int = 11002
 
-    private const val CRC: Int = 59
+    private const val CRC: Int = 107
 
     private val DESERIALIZER: MavDeserializer<DeviceOpWrite> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val requestId = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val requestId = inputBuffer.decodeUint32()
       val bustype = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = DeviceOpBustype.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -110,9 +110,9 @@ public data class DeviceOpWrite(
       val data = inputBuffer.decodeUint8Array(128)
       val bank = inputBuffer.decodeUint8()
       DeviceOpWrite(
+        requestId = requestId,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        requestId = requestId,
         bustype = bustype,
         bus = bus,
         address = address,

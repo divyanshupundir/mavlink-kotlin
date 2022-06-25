@@ -32,6 +32,10 @@ import kotlin.String
  */
 public data class ParamSet(
   /**
+   * Onboard parameter value
+   */
+  public val paramValue: Float = 0F,
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -46,10 +50,6 @@ public data class ParamSet(
    */
   public val paramId: String = "",
   /**
-   * Onboard parameter value
-   */
-  public val paramValue: Float = 0F,
-  /**
    * Onboard parameter type.
    */
   public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0),
@@ -58,10 +58,10 @@ public data class ParamSet(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(23).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(paramValue)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeFloat(paramValue)
     outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array()
   }
@@ -69,23 +69,23 @@ public data class ParamSet(
   public companion object {
     private const val ID: Int = 23
 
-    private const val CRC: Int = 187
+    private const val CRC: Int = 101
 
     private val DESERIALIZER: MavDeserializer<ParamSet> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val paramValue = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val paramId = inputBuffer.decodeString(16)
-      val paramValue = inputBuffer.decodeFloat()
       val paramType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavParamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       ParamSet(
+        paramValue = paramValue,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         paramId = paramId,
-        paramValue = paramValue,
         paramType = paramType,
       )
     }

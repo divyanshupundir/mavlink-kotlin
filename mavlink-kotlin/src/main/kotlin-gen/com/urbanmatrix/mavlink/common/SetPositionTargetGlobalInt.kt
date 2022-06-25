@@ -32,23 +32,6 @@ public data class SetPositionTargetGlobalInt(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
-   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
-   */
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
-  /**
    * X Position in WGS84 frame
    */
   public val latInt: Int = 0,
@@ -92,16 +75,29 @@ public data class SetPositionTargetGlobalInt(
    * yaw rate setpoint
    */
   public val yawRate: Float = 0F,
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
+   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
+   */
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<SetPositionTargetGlobalInt> {
   public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetGlobalInt> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(53).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
-    outputBuffer.encodeEnumValue(typeMask.value, 2)
     outputBuffer.encodeInt32(latInt)
     outputBuffer.encodeInt32(lonInt)
     outputBuffer.encodeFloat(alt)
@@ -113,28 +109,22 @@ public data class SetPositionTargetGlobalInt(
     outputBuffer.encodeFloat(afz)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(yawRate)
+    outputBuffer.encodeEnumValue(typeMask.value, 2)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 86
 
-    private const val CRC: Int = 219
+    private const val CRC: Int = 5
 
     private val DESERIALIZER: MavDeserializer<SetPositionTargetGlobalInt> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val coordinateFrame = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavFrame.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val typeMask = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = PositionTargetTypemask.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val latInt = inputBuffer.decodeInt32()
       val lonInt = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -146,12 +136,18 @@ public data class SetPositionTargetGlobalInt(
       val afz = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
       val yawRate = inputBuffer.decodeFloat()
+      val typeMask = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = PositionTargetTypemask.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
+      val coordinateFrame = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavFrame.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       SetPositionTargetGlobalInt(
         timeBootMs = timeBootMs,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        coordinateFrame = coordinateFrame,
-        typeMask = typeMask,
         latInt = latInt,
         lonInt = lonInt,
         alt = alt,
@@ -163,6 +159,10 @@ public data class SetPositionTargetGlobalInt(
         afz = afz,
         yaw = yaw,
         yawRate = yawRate,
+        typeMask = typeMask,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        coordinateFrame = coordinateFrame,
       )
     }
 

@@ -27,17 +27,13 @@ import kotlin.collections.List
  */
 public data class BatteryStatus(
   /**
-   * Battery ID
+   * Consumed charge, -1: autopilot does not provide consumption estimate
    */
-  public val id: Int = 0,
+  public val currentConsumed: Int = 0,
   /**
-   * Function of the battery
+   * Consumed energy, -1: autopilot does not provide energy consumption estimate
    */
-  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
-  /**
-   * Type (chemistry) of the battery
-   */
-  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
+  public val energyConsumed: Int = 0,
   /**
    * Temperature of the battery. INT16_MAX for unknown temperature.
    */
@@ -57,13 +53,17 @@ public data class BatteryStatus(
    */
   public val currentBattery: Int = 0,
   /**
-   * Consumed charge, -1: autopilot does not provide consumption estimate
+   * Battery ID
    */
-  public val currentConsumed: Int = 0,
+  public val id: Int = 0,
   /**
-   * Consumed energy, -1: autopilot does not provide energy consumption estimate
+   * Function of the battery
    */
-  public val energyConsumed: Int = 0,
+  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
+  /**
+   * Type (chemistry) of the battery
+   */
+  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
   /**
    * Remaining battery energy. Values: [0-100], -1: autopilot does not estimate the remaining
    * battery.
@@ -100,14 +100,14 @@ public data class BatteryStatus(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(54).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(id)
-    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
+    outputBuffer.encodeInt32(currentConsumed)
+    outputBuffer.encodeInt32(energyConsumed)
     outputBuffer.encodeInt16(temperature)
     outputBuffer.encodeUint16Array(voltages, 20)
     outputBuffer.encodeInt16(currentBattery)
-    outputBuffer.encodeInt32(currentConsumed)
-    outputBuffer.encodeInt32(energyConsumed)
+    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
+    outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeInt8(batteryRemaining)
     outputBuffer.encodeInt32(timeRemaining)
     outputBuffer.encodeEnumValue(chargeState.value, 1)
@@ -120,10 +120,15 @@ public data class BatteryStatus(
   public companion object {
     private const val ID: Int = 147
 
-    private const val CRC: Int = 16
+    private const val CRC: Int = 1
 
     private val DESERIALIZER: MavDeserializer<BatteryStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val currentConsumed = inputBuffer.decodeInt32()
+      val energyConsumed = inputBuffer.decodeInt32()
+      val temperature = inputBuffer.decodeInt16()
+      val voltages = inputBuffer.decodeUint16Array(20)
+      val currentBattery = inputBuffer.decodeInt16()
       val id = inputBuffer.decodeUint8()
       val batteryFunction = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavBatteryFunction.getEntryFromValueOrNull(value)
@@ -133,11 +138,6 @@ public data class BatteryStatus(
         val entry = MavBatteryType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val temperature = inputBuffer.decodeInt16()
-      val voltages = inputBuffer.decodeUint16Array(20)
-      val currentBattery = inputBuffer.decodeInt16()
-      val currentConsumed = inputBuffer.decodeInt32()
-      val energyConsumed = inputBuffer.decodeInt32()
       val batteryRemaining = inputBuffer.decodeInt8()
       val timeRemaining = inputBuffer.decodeInt32()
       val chargeState = inputBuffer.decodeEnumValue(1).let { value ->
@@ -154,14 +154,14 @@ public data class BatteryStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       BatteryStatus(
-        id = id,
-        batteryFunction = batteryFunction,
-        type = type,
+        currentConsumed = currentConsumed,
+        energyConsumed = energyConsumed,
         temperature = temperature,
         voltages = voltages,
         currentBattery = currentBattery,
-        currentConsumed = currentConsumed,
-        energyConsumed = energyConsumed,
+        id = id,
+        batteryFunction = batteryFunction,
+        type = type,
         batteryRemaining = batteryRemaining,
         timeRemaining = timeRemaining,
         chargeState = chargeState,

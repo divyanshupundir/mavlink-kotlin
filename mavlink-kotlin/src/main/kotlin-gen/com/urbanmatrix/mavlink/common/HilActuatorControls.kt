@@ -29,6 +29,10 @@ public data class HilActuatorControls(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Flags as bitfield, 1: indicate simulation using lockstep.
+   */
+  public val flags: BigInteger = BigInteger.ZERO,
+  /**
    * Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
    */
   public val controls: List<Float> = emptyList(),
@@ -36,41 +40,37 @@ public data class HilActuatorControls(
    * System mode. Includes arming state.
    */
   public val mode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
-  /**
-   * Flags as bitfield, 1: indicate simulation using lockstep.
-   */
-  public val flags: BigInteger = BigInteger.ZERO,
 ) : MavMessage<HilActuatorControls> {
   public override val instanceMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(81).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUint64(flags)
     outputBuffer.encodeFloatArray(controls, 64)
     outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUint64(flags)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 93
 
-    private const val CRC: Int = 6
+    private const val CRC: Int = 222
 
     private val DESERIALIZER: MavDeserializer<HilActuatorControls> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
+      val flags = inputBuffer.decodeUint64()
       val controls = inputBuffer.decodeFloatArray(64)
       val mode = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavModeFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeUint64()
       HilActuatorControls(
         timeUsec = timeUsec,
+        flags = flags,
         controls = controls,
         mode = mode,
-        flags = flags,
       )
     }
 

@@ -28,34 +28,9 @@ public data class Gps2Rtk(
    */
   public val timeLastBaselineMs: Long = 0L,
   /**
-   * Identification of connected RTK receiver.
-   */
-  public val rtkReceiverId: Int = 0,
-  /**
-   * GPS Week Number of last baseline
-   */
-  public val wn: Int = 0,
-  /**
    * GPS Time of Week of last baseline
    */
   public val tow: Long = 0L,
-  /**
-   * GPS-specific health report for RTK data.
-   */
-  public val rtkHealth: Int = 0,
-  /**
-   * Rate of baseline messages being received by GPS
-   */
-  public val rtkRate: Int = 0,
-  /**
-   * Current number of sats used for RTK calculation.
-   */
-  public val nsats: Int = 0,
-  /**
-   * Coordinate system of baseline
-   */
-  public val baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
-      MavEnumValue.fromValue(0),
   /**
    * Current baseline in ECEF x or NED north component.
    */
@@ -76,38 +51,68 @@ public data class Gps2Rtk(
    * Current number of integer ambiguity hypotheses.
    */
   public val iarNumHypotheses: Int = 0,
+  /**
+   * GPS Week Number of last baseline
+   */
+  public val wn: Int = 0,
+  /**
+   * Identification of connected RTK receiver.
+   */
+  public val rtkReceiverId: Int = 0,
+  /**
+   * GPS-specific health report for RTK data.
+   */
+  public val rtkHealth: Int = 0,
+  /**
+   * Rate of baseline messages being received by GPS
+   */
+  public val rtkRate: Int = 0,
+  /**
+   * Current number of sats used for RTK calculation.
+   */
+  public val nsats: Int = 0,
+  /**
+   * Coordinate system of baseline
+   */
+  public val baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
+      MavEnumValue.fromValue(0),
 ) : MavMessage<Gps2Rtk> {
   public override val instanceMetadata: MavMessage.Metadata<Gps2Rtk> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(35).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeLastBaselineMs)
-    outputBuffer.encodeUint8(rtkReceiverId)
-    outputBuffer.encodeUint16(wn)
     outputBuffer.encodeUint32(tow)
-    outputBuffer.encodeUint8(rtkHealth)
-    outputBuffer.encodeUint8(rtkRate)
-    outputBuffer.encodeUint8(nsats)
-    outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
     outputBuffer.encodeInt32(baselineAMm)
     outputBuffer.encodeInt32(baselineBMm)
     outputBuffer.encodeInt32(baselineCMm)
     outputBuffer.encodeUint32(accuracy)
     outputBuffer.encodeInt32(iarNumHypotheses)
+    outputBuffer.encodeUint16(wn)
+    outputBuffer.encodeUint8(rtkReceiverId)
+    outputBuffer.encodeUint8(rtkHealth)
+    outputBuffer.encodeUint8(rtkRate)
+    outputBuffer.encodeUint8(nsats)
+    outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 128
 
-    private const val CRC: Int = 40
+    private const val CRC: Int = 226
 
     private val DESERIALIZER: MavDeserializer<Gps2Rtk> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeLastBaselineMs = inputBuffer.decodeUint32()
-      val rtkReceiverId = inputBuffer.decodeUint8()
-      val wn = inputBuffer.decodeUint16()
       val tow = inputBuffer.decodeUint32()
+      val baselineAMm = inputBuffer.decodeInt32()
+      val baselineBMm = inputBuffer.decodeInt32()
+      val baselineCMm = inputBuffer.decodeInt32()
+      val accuracy = inputBuffer.decodeUint32()
+      val iarNumHypotheses = inputBuffer.decodeInt32()
+      val wn = inputBuffer.decodeUint16()
+      val rtkReceiverId = inputBuffer.decodeUint8()
       val rtkHealth = inputBuffer.decodeUint8()
       val rtkRate = inputBuffer.decodeUint8()
       val nsats = inputBuffer.decodeUint8()
@@ -115,25 +120,20 @@ public data class Gps2Rtk(
         val entry = RtkBaselineCoordinateSystem.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val baselineAMm = inputBuffer.decodeInt32()
-      val baselineBMm = inputBuffer.decodeInt32()
-      val baselineCMm = inputBuffer.decodeInt32()
-      val accuracy = inputBuffer.decodeUint32()
-      val iarNumHypotheses = inputBuffer.decodeInt32()
       Gps2Rtk(
         timeLastBaselineMs = timeLastBaselineMs,
-        rtkReceiverId = rtkReceiverId,
-        wn = wn,
         tow = tow,
-        rtkHealth = rtkHealth,
-        rtkRate = rtkRate,
-        nsats = nsats,
-        baselineCoordsType = baselineCoordsType,
         baselineAMm = baselineAMm,
         baselineBMm = baselineBMm,
         baselineCMm = baselineCMm,
         accuracy = accuracy,
         iarNumHypotheses = iarNumHypotheses,
+        wn = wn,
+        rtkReceiverId = rtkReceiverId,
+        rtkHealth = rtkHealth,
+        rtkRate = rtkRate,
+        nsats = nsats,
+        baselineCoordsType = baselineCoordsType,
       )
     }
 

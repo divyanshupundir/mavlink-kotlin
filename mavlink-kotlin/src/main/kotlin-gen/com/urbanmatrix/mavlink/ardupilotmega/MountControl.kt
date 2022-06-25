@@ -16,14 +16,6 @@ import kotlin.Int
  */
 public data class MountControl(
   /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Pitch (centi-degrees) or lat (degE7), depending on mount mode.
    */
   public val inputA: Int = 0,
@@ -36,6 +28,14 @@ public data class MountControl(
    */
   public val inputC: Int = 0,
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
    * If "1" it will save current trimmed position on EEPROM (just valid for NEUTRAL and LANDING).
    */
   public val savePosition: Int = 0,
@@ -44,11 +44,11 @@ public data class MountControl(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(15).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeInt32(inputA)
     outputBuffer.encodeInt32(inputB)
     outputBuffer.encodeInt32(inputC)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(savePosition)
     return outputBuffer.array()
   }
@@ -56,22 +56,22 @@ public data class MountControl(
   public companion object {
     private const val ID: Int = 157
 
-    private const val CRC: Int = 97
+    private const val CRC: Int = 21
 
     private val DESERIALIZER: MavDeserializer<MountControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val inputA = inputBuffer.decodeInt32()
       val inputB = inputBuffer.decodeInt32()
       val inputC = inputBuffer.decodeInt32()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val savePosition = inputBuffer.decodeUint8()
       MountControl(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         inputA = inputA,
         inputB = inputB,
         inputC = inputC,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         savePosition = savePosition,
       )
     }

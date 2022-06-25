@@ -26,6 +26,22 @@ import kotlin.String
  */
 public data class OsdParamConfig(
   /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
+  /**
+   * OSD parameter minimum value.
+   */
+  public val minValue: Float = 0F,
+  /**
+   * OSD parameter maximum value.
+   */
+  public val maxValue: Float = 0F,
+  /**
+   * OSD parameter increment.
+   */
+  public val increment: Float = 0F,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -33,10 +49,6 @@ public data class OsdParamConfig(
    * Component ID.
    */
   public val targetComponent: Int = 0,
-  /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
   /**
    * OSD parameter screen index.
    */
@@ -55,46 +67,37 @@ public data class OsdParamConfig(
    * Config type.
    */
   public val configType: MavEnumValue<OsdParamConfigType> = MavEnumValue.fromValue(0),
-  /**
-   * OSD parameter minimum value.
-   */
-  public val minValue: Float = 0F,
-  /**
-   * OSD parameter maximum value.
-   */
-  public val maxValue: Float = 0F,
-  /**
-   * OSD parameter increment.
-   */
-  public val increment: Float = 0F,
 ) : MavMessage<OsdParamConfig> {
   public override val instanceMetadata: MavMessage.Metadata<OsdParamConfig> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(37).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(requestId)
+    outputBuffer.encodeFloat(minValue)
+    outputBuffer.encodeFloat(maxValue)
+    outputBuffer.encodeFloat(increment)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(osdScreen)
     outputBuffer.encodeUint8(osdIndex)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeEnumValue(configType.value, 1)
-    outputBuffer.encodeFloat(minValue)
-    outputBuffer.encodeFloat(maxValue)
-    outputBuffer.encodeFloat(increment)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 11033
 
-    private const val CRC: Int = 117
+    private const val CRC: Int = 161
 
     private val DESERIALIZER: MavDeserializer<OsdParamConfig> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val requestId = inputBuffer.decodeUint32()
+      val minValue = inputBuffer.decodeFloat()
+      val maxValue = inputBuffer.decodeFloat()
+      val increment = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val requestId = inputBuffer.decodeUint32()
       val osdScreen = inputBuffer.decodeUint8()
       val osdIndex = inputBuffer.decodeUint8()
       val paramId = inputBuffer.decodeString(16)
@@ -102,20 +105,17 @@ public data class OsdParamConfig(
         val entry = OsdParamConfigType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val minValue = inputBuffer.decodeFloat()
-      val maxValue = inputBuffer.decodeFloat()
-      val increment = inputBuffer.decodeFloat()
       OsdParamConfig(
+        requestId = requestId,
+        minValue = minValue,
+        maxValue = maxValue,
+        increment = increment,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        requestId = requestId,
         osdScreen = osdScreen,
         osdIndex = osdIndex,
         paramId = paramId,
         configType = configType,
-        minValue = minValue,
-        maxValue = maxValue,
-        increment = increment,
       )
     }
 

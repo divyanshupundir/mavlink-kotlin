@@ -17,14 +17,6 @@ import kotlin.Int
  */
 public data class GimbalControl(
   /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Demanded angular rate X.
    */
   public val demandedRateX: Float = 0F,
@@ -36,37 +28,45 @@ public data class GimbalControl(
    * Demanded angular rate Z.
    */
   public val demandedRateZ: Float = 0F,
+  /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
 ) : MavMessage<GimbalControl> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalControl> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(14).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeFloat(demandedRateX)
     outputBuffer.encodeFloat(demandedRateY)
     outputBuffer.encodeFloat(demandedRateZ)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 201
 
-    private const val CRC: Int = 84
+    private const val CRC: Int = 205
 
     private val DESERIALIZER: MavDeserializer<GimbalControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val demandedRateX = inputBuffer.decodeFloat()
       val demandedRateY = inputBuffer.decodeFloat()
       val demandedRateZ = inputBuffer.decodeFloat()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       GimbalControl(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         demandedRateX = demandedRateX,
         demandedRateY = demandedRateY,
         demandedRateZ = demandedRateZ,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
       )
     }
 

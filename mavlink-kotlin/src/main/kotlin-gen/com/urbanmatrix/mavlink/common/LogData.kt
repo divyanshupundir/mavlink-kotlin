@@ -22,13 +22,13 @@ import kotlin.collections.List
  */
 public data class LogData(
   /**
-   * Log id (from LOG_ENTRY reply)
-   */
-  public val id: Int = 0,
-  /**
    * Offset into the log
    */
   public val ofs: Long = 0L,
+  /**
+   * Log id (from LOG_ENTRY reply)
+   */
+  public val id: Int = 0,
   /**
    * Number of bytes (zero for end of log)
    */
@@ -42,8 +42,8 @@ public data class LogData(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(97).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(id)
     outputBuffer.encodeUint32(ofs)
+    outputBuffer.encodeUint16(id)
     outputBuffer.encodeUint8(count)
     outputBuffer.encodeUint8Array(data, 90)
     return outputBuffer.array()
@@ -52,17 +52,17 @@ public data class LogData(
   public companion object {
     private const val ID: Int = 120
 
-    private const val CRC: Int = 138
+    private const val CRC: Int = 94
 
     private val DESERIALIZER: MavDeserializer<LogData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val id = inputBuffer.decodeUint16()
       val ofs = inputBuffer.decodeUint32()
+      val id = inputBuffer.decodeUint16()
       val count = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(90)
       LogData(
-        id = id,
         ofs = ofs,
+        id = id,
         count = count,
         data = data,
       )

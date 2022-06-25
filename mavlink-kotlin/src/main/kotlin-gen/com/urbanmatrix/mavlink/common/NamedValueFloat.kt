@@ -26,38 +26,38 @@ public data class NamedValueFloat(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Name of the debug variable
-   */
-  public val name: String = "",
-  /**
    * Floating point value
    */
   public val `value`: Float = 0F,
+  /**
+   * Name of the debug variable
+   */
+  public val name: String = "",
 ) : MavMessage<NamedValueFloat> {
   public override val instanceMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeString(name, 10)
     outputBuffer.encodeFloat(value)
+    outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 251
 
-    private const val CRC: Int = 109
+    private const val CRC: Int = 94
 
     private val DESERIALIZER: MavDeserializer<NamedValueFloat> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val name = inputBuffer.decodeString(10)
       val value = inputBuffer.decodeFloat()
+      val name = inputBuffer.decodeString(10)
       NamedValueFloat(
         timeBootMs = timeBootMs,
-        name = name,
         value = value,
+        name = name,
       )
     }
 

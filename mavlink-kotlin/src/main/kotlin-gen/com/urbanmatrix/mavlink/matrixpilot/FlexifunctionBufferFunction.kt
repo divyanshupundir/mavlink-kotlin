@@ -19,14 +19,6 @@ import kotlin.collections.List
  */
 public data class FlexifunctionBufferFunction(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Function index
    */
   public val funcIndex: Int = 0,
@@ -43,6 +35,14 @@ public data class FlexifunctionBufferFunction(
    */
   public val dataSize: Int = 0,
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Settings data
    */
   public val `data`: List<Int> = emptyList(),
@@ -51,12 +51,12 @@ public data class FlexifunctionBufferFunction(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(58).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint16(funcIndex)
     outputBuffer.encodeUint16(funcCount)
     outputBuffer.encodeUint16(dataAddress)
     outputBuffer.encodeUint16(dataSize)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeInt8Array(data, 48)
     return outputBuffer.array()
   }
@@ -64,25 +64,25 @@ public data class FlexifunctionBufferFunction(
   public companion object {
     private const val ID: Int = 152
 
-    private const val CRC: Int = 126
+    private const val CRC: Int = 105
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunction> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val funcIndex = inputBuffer.decodeUint16()
       val funcCount = inputBuffer.decodeUint16()
       val dataAddress = inputBuffer.decodeUint16()
       val dataSize = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeInt8Array(48)
       FlexifunctionBufferFunction(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         funcIndex = funcIndex,
         funcCount = funcCount,
         dataAddress = dataAddress,
         dataSize = dataSize,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         data = data,
       )
     }

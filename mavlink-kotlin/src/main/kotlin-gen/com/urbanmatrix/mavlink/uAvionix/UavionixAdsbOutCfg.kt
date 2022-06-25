@@ -29,6 +29,10 @@ public data class UavionixAdsbOutCfg(
    */
   public val icao: Long = 0L,
   /**
+   * Aircraft stall speed in cm/s
+   */
+  public val stallspeed: Int = 0,
+  /**
    * Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9, " " only)
    */
   public val callsign: String = "",
@@ -50,10 +54,6 @@ public data class UavionixAdsbOutCfg(
    */
   public val gpsoffsetlon: MavEnumValue<UavionixAdsbOutCfgGpsOffsetLon> = MavEnumValue.fromValue(0),
   /**
-   * Aircraft stall speed in cm/s
-   */
-  public val stallspeed: Int = 0,
-  /**
    * ADS-B transponder reciever and transmit enable flags
    */
   public val rfselect: MavEnumValue<UavionixAdsbOutRfSelect> = MavEnumValue.fromValue(0),
@@ -63,12 +63,12 @@ public data class UavionixAdsbOutCfg(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(icao)
+    outputBuffer.encodeUint16(stallspeed)
     outputBuffer.encodeString(callsign, 9)
     outputBuffer.encodeEnumValue(emittertype.value, 1)
     outputBuffer.encodeEnumValue(aircraftsize.value, 1)
     outputBuffer.encodeEnumValue(gpsoffsetlat.value, 1)
     outputBuffer.encodeEnumValue(gpsoffsetlon.value, 1)
-    outputBuffer.encodeUint16(stallspeed)
     outputBuffer.encodeEnumValue(rfselect.value, 1)
     return outputBuffer.array()
   }
@@ -76,11 +76,12 @@ public data class UavionixAdsbOutCfg(
   public companion object {
     private const val ID: Int = 10001
 
-    private const val CRC: Int = 57
+    private const val CRC: Int = 204
 
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutCfg> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val icao = inputBuffer.decodeUint32()
+      val stallspeed = inputBuffer.decodeUint16()
       val callsign = inputBuffer.decodeString(9)
       val emittertype = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = AdsbEmitterType.getEntryFromValueOrNull(value)
@@ -98,19 +99,18 @@ public data class UavionixAdsbOutCfg(
         val entry = UavionixAdsbOutCfgGpsOffsetLon.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val stallspeed = inputBuffer.decodeUint16()
       val rfselect = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbOutRfSelect.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       UavionixAdsbOutCfg(
         icao = icao,
+        stallspeed = stallspeed,
         callsign = callsign,
         emittertype = emittertype,
         aircraftsize = aircraftsize,
         gpsoffsetlat = gpsoffsetlat,
         gpsoffsetlon = gpsoffsetlon,
-        stallspeed = stallspeed,
         rfselect = rfselect,
       )
     }

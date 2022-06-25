@@ -40,6 +40,10 @@ public data class UavcanNodeInfo(
    */
   public val uptimeSec: Long = 0L,
   /**
+   * Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
+   */
+  public val swVcsCommit: Long = 0L,
+  /**
    * Node name string. For example, "sapog.px4.io".
    */
   public val name: String = "",
@@ -63,10 +67,6 @@ public data class UavcanNodeInfo(
    * Software minor version number.
    */
   public val swVersionMinor: Int = 0,
-  /**
-   * Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
-   */
-  public val swVcsCommit: Long = 0L,
 ) : MavMessage<UavcanNodeInfo> {
   public override val instanceMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
 
@@ -74,42 +74,42 @@ public data class UavcanNodeInfo(
     val outputBuffer = ByteBuffer.allocate(116).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(uptimeSec)
+    outputBuffer.encodeUint32(swVcsCommit)
     outputBuffer.encodeString(name, 80)
     outputBuffer.encodeUint8(hwVersionMajor)
     outputBuffer.encodeUint8(hwVersionMinor)
     outputBuffer.encodeUint8Array(hwUniqueId, 16)
     outputBuffer.encodeUint8(swVersionMajor)
     outputBuffer.encodeUint8(swVersionMinor)
-    outputBuffer.encodeUint32(swVcsCommit)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 311
 
-    private const val CRC: Int = 237
+    private const val CRC: Int = 216
 
     private val DESERIALIZER: MavDeserializer<UavcanNodeInfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val uptimeSec = inputBuffer.decodeUint32()
+      val swVcsCommit = inputBuffer.decodeUint32()
       val name = inputBuffer.decodeString(80)
       val hwVersionMajor = inputBuffer.decodeUint8()
       val hwVersionMinor = inputBuffer.decodeUint8()
       val hwUniqueId = inputBuffer.decodeUint8Array(16)
       val swVersionMajor = inputBuffer.decodeUint8()
       val swVersionMinor = inputBuffer.decodeUint8()
-      val swVcsCommit = inputBuffer.decodeUint32()
       UavcanNodeInfo(
         timeUsec = timeUsec,
         uptimeSec = uptimeSec,
+        swVcsCommit = swVcsCommit,
         name = name,
         hwVersionMajor = hwVersionMajor,
         hwVersionMinor = hwVersionMinor,
         hwUniqueId = hwUniqueId,
         swVersionMajor = swVersionMajor,
         swVersionMinor = swVersionMinor,
-        swVcsCommit = swVcsCommit,
       )
     }
 

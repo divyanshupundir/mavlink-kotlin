@@ -25,14 +25,6 @@ import kotlin.collections.List
  */
 public data class Event(
   /**
-   * Component ID
-   */
-  public val destinationComponent: Int = 0,
-  /**
-   * System ID
-   */
-  public val destinationSystem: Int = 0,
-  /**
    * Event ID (as defined in the component metadata)
    */
   public val id: Long = 0L,
@@ -44,6 +36,14 @@ public data class Event(
    * Sequence number.
    */
   public val sequence: Int = 0,
+  /**
+   * Component ID
+   */
+  public val destinationComponent: Int = 0,
+  /**
+   * System ID
+   */
+  public val destinationSystem: Int = 0,
   /**
    * Log levels: 4 bits MSB: internal (for logging purposes), 4 bits LSB: external. Levels:
    * Emergency = 0, Alert = 1, Critical = 2, Error = 3, Warning = 4, Notice = 5, Info = 6, Debug = 7,
@@ -59,11 +59,11 @@ public data class Event(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(53).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(destinationComponent)
-    outputBuffer.encodeUint8(destinationSystem)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeUint32(eventTimeBootMs)
     outputBuffer.encodeUint16(sequence)
+    outputBuffer.encodeUint8(destinationComponent)
+    outputBuffer.encodeUint8(destinationSystem)
     outputBuffer.encodeUint8(logLevels)
     outputBuffer.encodeUint8Array(arguments, 40)
     return outputBuffer.array()
@@ -72,23 +72,23 @@ public data class Event(
   public companion object {
     private const val ID: Int = 410
 
-    private const val CRC: Int = 229
+    private const val CRC: Int = 38
 
     private val DESERIALIZER: MavDeserializer<Event> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val destinationComponent = inputBuffer.decodeUint8()
-      val destinationSystem = inputBuffer.decodeUint8()
       val id = inputBuffer.decodeUint32()
       val eventTimeBootMs = inputBuffer.decodeUint32()
       val sequence = inputBuffer.decodeUint16()
+      val destinationComponent = inputBuffer.decodeUint8()
+      val destinationSystem = inputBuffer.decodeUint8()
       val logLevels = inputBuffer.decodeUint8()
       val arguments = inputBuffer.decodeUint8Array(40)
       Event(
-        destinationComponent = destinationComponent,
-        destinationSystem = destinationSystem,
         id = id,
         eventTimeBootMs = eventTimeBootMs,
         sequence = sequence,
+        destinationComponent = destinationComponent,
+        destinationSystem = destinationSystem,
         logLevels = logLevels,
         arguments = arguments,
       )

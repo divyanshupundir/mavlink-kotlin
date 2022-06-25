@@ -24,6 +24,11 @@ import kotlin.String
  */
 public data class ParamRequestRead(
   /**
+   * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be
+   * ignored)
+   */
+  public val paramIndex: Int = 0,
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -37,39 +42,34 @@ public data class ParamRequestRead(
    * provide 16+1 bytes storage if the ID is stored as string
    */
   public val paramId: String = "",
-  /**
-   * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be
-   * ignored)
-   */
-  public val paramIndex: Int = 0,
 ) : MavMessage<ParamRequestRead> {
   public override val instanceMetadata: MavMessage.Metadata<ParamRequestRead> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt16(paramIndex)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeInt16(paramIndex)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 20
 
-    private const val CRC: Int = 51
+    private const val CRC: Int = 63
 
     private val DESERIALIZER: MavDeserializer<ParamRequestRead> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val paramIndex = inputBuffer.decodeInt16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val paramId = inputBuffer.decodeString(16)
-      val paramIndex = inputBuffer.decodeInt16()
       ParamRequestRead(
+        paramIndex = paramIndex,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         paramId = paramId,
-        paramIndex = paramIndex,
       )
     }
 

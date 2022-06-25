@@ -23,6 +23,10 @@ import kotlin.String
  */
 public data class DeviceOpRead(
   /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -30,10 +34,6 @@ public data class DeviceOpRead(
    * Component ID.
    */
   public val targetComponent: Int = 0,
-  /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
   /**
    * The bus type.
    */
@@ -67,9 +67,9 @@ public data class DeviceOpRead(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeEnumValue(bustype.value, 1)
     outputBuffer.encodeUint8(bus)
     outputBuffer.encodeUint8(address)
@@ -83,13 +83,13 @@ public data class DeviceOpRead(
   public companion object {
     private const val ID: Int = 11000
 
-    private const val CRC: Int = 92
+    private const val CRC: Int = 180
 
     private val DESERIALIZER: MavDeserializer<DeviceOpRead> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val requestId = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val requestId = inputBuffer.decodeUint32()
       val bustype = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = DeviceOpBustype.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -101,9 +101,9 @@ public data class DeviceOpRead(
       val count = inputBuffer.decodeUint8()
       val bank = inputBuffer.decodeUint8()
       DeviceOpRead(
+        requestId = requestId,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        requestId = requestId,
         bustype = bustype,
         bus = bus,
         address = address,

@@ -18,10 +18,6 @@ import kotlin.Int
  */
 public data class EkfStatusReport(
   /**
-   * Flags.
-   */
-  public val flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0),
-  /**
    * Velocity variance.
    */
   public val velocityVariance: Float = 0F,
@@ -42,6 +38,10 @@ public data class EkfStatusReport(
    */
   public val terrainAltVariance: Float = 0F,
   /**
+   * Flags.
+   */
+  public val flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0),
+  /**
    * Airspeed variance.
    */
   public val airspeedVariance: Float = 0F,
@@ -50,12 +50,12 @@ public data class EkfStatusReport(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(26).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeFloat(velocityVariance)
     outputBuffer.encodeFloat(posHorizVariance)
     outputBuffer.encodeFloat(posVertVariance)
     outputBuffer.encodeFloat(compassVariance)
     outputBuffer.encodeFloat(terrainAltVariance)
+    outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeFloat(airspeedVariance)
     return outputBuffer.array()
   }
@@ -63,27 +63,27 @@ public data class EkfStatusReport(
   public companion object {
     private const val ID: Int = 193
 
-    private const val CRC: Int = 215
+    private const val CRC: Int = 71
 
     private val DESERIALIZER: MavDeserializer<EkfStatusReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = EkfStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val velocityVariance = inputBuffer.decodeFloat()
       val posHorizVariance = inputBuffer.decodeFloat()
       val posVertVariance = inputBuffer.decodeFloat()
       val compassVariance = inputBuffer.decodeFloat()
       val terrainAltVariance = inputBuffer.decodeFloat()
+      val flags = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = EkfStatusFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val airspeedVariance = inputBuffer.decodeFloat()
       EkfStatusReport(
-        flags = flags,
         velocityVariance = velocityVariance,
         posHorizVariance = posHorizVariance,
         posVertVariance = posVertVariance,
         compassVariance = compassVariance,
         terrainAltVariance = terrainAltVariance,
+        flags = flags,
         airspeedVariance = airspeedVariance,
       )
     }

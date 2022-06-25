@@ -27,15 +27,6 @@ public data class CameraCaptureStatus(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Current status of image capturing (0: idle, 1: capture in progress, 2: interval set but idle,
-   * 3: interval set and capture in progress)
-   */
-  public val imageStatus: Int = 0,
-  /**
-   * Current status of video capturing (0: idle, 1: capture in progress)
-   */
-  public val videoStatus: Int = 0,
-  /**
    * Image capture interval
    */
   public val imageInterval: Float = 0F,
@@ -49,6 +40,15 @@ public data class CameraCaptureStatus(
    */
   public val availableCapacity: Float = 0F,
   /**
+   * Current status of image capturing (0: idle, 1: capture in progress, 2: interval set but idle,
+   * 3: interval set and capture in progress)
+   */
+  public val imageStatus: Int = 0,
+  /**
+   * Current status of video capturing (0: idle, 1: capture in progress)
+   */
+  public val videoStatus: Int = 0,
+  /**
    * Total number of images captured ('forever', or until reset using MAV_CMD_STORAGE_FORMAT).
    */
   public val imageCount: Int = 0,
@@ -58,11 +58,11 @@ public data class CameraCaptureStatus(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(22).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(imageStatus)
-    outputBuffer.encodeUint8(videoStatus)
     outputBuffer.encodeFloat(imageInterval)
     outputBuffer.encodeUint32(recordingTimeMs)
     outputBuffer.encodeFloat(availableCapacity)
+    outputBuffer.encodeUint8(imageStatus)
+    outputBuffer.encodeUint8(videoStatus)
     outputBuffer.encodeInt32(imageCount)
     return outputBuffer.array()
   }
@@ -70,24 +70,24 @@ public data class CameraCaptureStatus(
   public companion object {
     private const val ID: Int = 262
 
-    private const val CRC: Int = 72
+    private const val CRC: Int = 12
 
     private val DESERIALIZER: MavDeserializer<CameraCaptureStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val imageStatus = inputBuffer.decodeUint8()
-      val videoStatus = inputBuffer.decodeUint8()
       val imageInterval = inputBuffer.decodeFloat()
       val recordingTimeMs = inputBuffer.decodeUint32()
       val availableCapacity = inputBuffer.decodeFloat()
+      val imageStatus = inputBuffer.decodeUint8()
+      val videoStatus = inputBuffer.decodeUint8()
       val imageCount = inputBuffer.decodeInt32()
       CameraCaptureStatus(
         timeBootMs = timeBootMs,
-        imageStatus = imageStatus,
-        videoStatus = videoStatus,
         imageInterval = imageInterval,
         recordingTimeMs = recordingTimeMs,
         availableCapacity = availableCapacity,
+        imageStatus = imageStatus,
+        videoStatus = videoStatus,
         imageCount = imageCount,
       )
     }

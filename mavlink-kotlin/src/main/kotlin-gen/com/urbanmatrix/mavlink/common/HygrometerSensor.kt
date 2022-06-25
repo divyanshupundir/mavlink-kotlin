@@ -18,10 +18,6 @@ import kotlin.Int
  */
 public data class HygrometerSensor(
   /**
-   * Hygrometer ID
-   */
-  public val id: Int = 0,
-  /**
    * Temperature
    */
   public val temperature: Int = 0,
@@ -29,31 +25,35 @@ public data class HygrometerSensor(
    * Humidity
    */
   public val humidity: Int = 0,
+  /**
+   * Hygrometer ID
+   */
+  public val id: Int = 0,
 ) : MavMessage<HygrometerSensor> {
   public override val instanceMetadata: MavMessage.Metadata<HygrometerSensor> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(id)
     outputBuffer.encodeInt16(temperature)
     outputBuffer.encodeUint16(humidity)
+    outputBuffer.encodeUint8(id)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 12920
 
-    private const val CRC: Int = 48
+    private const val CRC: Int = 20
 
     private val DESERIALIZER: MavDeserializer<HygrometerSensor> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val id = inputBuffer.decodeUint8()
       val temperature = inputBuffer.decodeInt16()
       val humidity = inputBuffer.decodeUint16()
+      val id = inputBuffer.decodeUint8()
       HygrometerSensor(
-        id = id,
         temperature = temperature,
         humidity = humidity,
+        id = id,
       )
     }
 

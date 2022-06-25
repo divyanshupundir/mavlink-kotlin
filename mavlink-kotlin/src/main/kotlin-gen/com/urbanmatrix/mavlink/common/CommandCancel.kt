@@ -21,6 +21,10 @@ import kotlin.Int
  */
 public data class CommandCancel(
   /**
+   * Command ID (of command to cancel).
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
    * System executing long running command. Should not be broadcast (0).
    */
   public val targetSystem: Int = 0,
@@ -28,38 +32,34 @@ public data class CommandCancel(
    * Component executing long running command.
    */
   public val targetComponent: Int = 0,
-  /**
-   * Command ID (of command to cancel).
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
 ) : MavMessage<CommandCancel> {
   public override val instanceMetadata: MavMessage.Metadata<CommandCancel> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(command.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(command.value, 2)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 80
 
-    private const val CRC: Int = 87
+    private const val CRC: Int = 14
 
     private val DESERIALIZER: MavDeserializer<CommandCancel> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val command = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       CommandCancel(
+        command = command,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        command = command,
       )
     }
 

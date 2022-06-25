@@ -34,10 +34,6 @@ public data class GpsRawInt(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * GPS fix type.
-   */
-  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
-  /**
    * Latitude (WGS84, EGM96 ellipsoid)
    */
   public val lat: Int = 0,
@@ -67,6 +63,10 @@ public data class GpsRawInt(
    * degrees. If unknown, set to: UINT16_MAX
    */
   public val cog: Int = 0,
+  /**
+   * GPS fix type.
+   */
+  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
   /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
@@ -102,7 +102,6 @@ public data class GpsRawInt(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(fixType.value, 1)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
@@ -110,6 +109,7 @@ public data class GpsRawInt(
     outputBuffer.encodeUint16(epv)
     outputBuffer.encodeUint16(vel)
     outputBuffer.encodeUint16(cog)
+    outputBuffer.encodeEnumValue(fixType.value, 1)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeInt32(altEllipsoid)
     outputBuffer.encodeUint32(hAcc)
@@ -123,15 +123,11 @@ public data class GpsRawInt(
   public companion object {
     private const val ID: Int = 24
 
-    private const val CRC: Int = 175
+    private const val CRC: Int = 24
 
     private val DESERIALIZER: MavDeserializer<GpsRawInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val fixType = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = GpsFixType.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
@@ -139,6 +135,10 @@ public data class GpsRawInt(
       val epv = inputBuffer.decodeUint16()
       val vel = inputBuffer.decodeUint16()
       val cog = inputBuffer.decodeUint16()
+      val fixType = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = GpsFixType.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val satellitesVisible = inputBuffer.decodeUint8()
       val altEllipsoid = inputBuffer.decodeInt32()
       val hAcc = inputBuffer.decodeUint32()
@@ -148,7 +148,6 @@ public data class GpsRawInt(
       val yaw = inputBuffer.decodeUint16()
       GpsRawInt(
         timeUsec = timeUsec,
-        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -156,6 +155,7 @@ public data class GpsRawInt(
         epv = epv,
         vel = vel,
         cog = cog,
+        fixType = fixType,
         satellitesVisible = satellitesVisible,
         altEllipsoid = altEllipsoid,
         hAcc = hAcc,

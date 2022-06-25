@@ -20,22 +20,6 @@ import kotlin.Int
  */
 public data class MagCalReport(
   /**
-   * Compass being calibrated.
-   */
-  public val compassId: Int = 0,
-  /**
-   * Bitmask of compasses being calibrated.
-   */
-  public val calMask: Int = 0,
-  /**
-   * Calibration Status.
-   */
-  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0),
-  /**
-   * 0=requires a MAV_CMD_DO_ACCEPT_MAG_CAL, 1=saved to parameters.
-   */
-  public val autosaved: Int = 0,
-  /**
    * RMS milligauss residuals.
    */
   public val fitness: Float = 0F,
@@ -76,6 +60,22 @@ public data class MagCalReport(
    */
   public val offdiagZ: Float = 0F,
   /**
+   * Compass being calibrated.
+   */
+  public val compassId: Int = 0,
+  /**
+   * Bitmask of compasses being calibrated.
+   */
+  public val calMask: Int = 0,
+  /**
+   * Calibration Status.
+   */
+  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0),
+  /**
+   * 0=requires a MAV_CMD_DO_ACCEPT_MAG_CAL, 1=saved to parameters.
+   */
+  public val autosaved: Int = 0,
+  /**
    * Confidence in orientation (higher is better).
    */
   public val orientationConfidence: Float = 0F,
@@ -96,10 +96,6 @@ public data class MagCalReport(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(54).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(compassId)
-    outputBuffer.encodeUint8(calMask)
-    outputBuffer.encodeEnumValue(calStatus.value, 1)
-    outputBuffer.encodeUint8(autosaved)
     outputBuffer.encodeFloat(fitness)
     outputBuffer.encodeFloat(ofsX)
     outputBuffer.encodeFloat(ofsY)
@@ -110,6 +106,10 @@ public data class MagCalReport(
     outputBuffer.encodeFloat(offdiagX)
     outputBuffer.encodeFloat(offdiagY)
     outputBuffer.encodeFloat(offdiagZ)
+    outputBuffer.encodeUint8(compassId)
+    outputBuffer.encodeUint8(calMask)
+    outputBuffer.encodeEnumValue(calStatus.value, 1)
+    outputBuffer.encodeUint8(autosaved)
     outputBuffer.encodeFloat(orientationConfidence)
     outputBuffer.encodeEnumValue(oldOrientation.value, 1)
     outputBuffer.encodeEnumValue(newOrientation.value, 1)
@@ -120,17 +120,10 @@ public data class MagCalReport(
   public companion object {
     private const val ID: Int = 192
 
-    private const val CRC: Int = 99
+    private const val CRC: Int = 36
 
     private val DESERIALIZER: MavDeserializer<MagCalReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val compassId = inputBuffer.decodeUint8()
-      val calMask = inputBuffer.decodeUint8()
-      val calStatus = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MagCalStatus.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val autosaved = inputBuffer.decodeUint8()
       val fitness = inputBuffer.decodeFloat()
       val ofsX = inputBuffer.decodeFloat()
       val ofsY = inputBuffer.decodeFloat()
@@ -141,6 +134,13 @@ public data class MagCalReport(
       val offdiagX = inputBuffer.decodeFloat()
       val offdiagY = inputBuffer.decodeFloat()
       val offdiagZ = inputBuffer.decodeFloat()
+      val compassId = inputBuffer.decodeUint8()
+      val calMask = inputBuffer.decodeUint8()
+      val calStatus = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MagCalStatus.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val autosaved = inputBuffer.decodeUint8()
       val orientationConfidence = inputBuffer.decodeFloat()
       val oldOrientation = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavSensorOrientation.getEntryFromValueOrNull(value)
@@ -152,10 +152,6 @@ public data class MagCalReport(
       }
       val scaleFactor = inputBuffer.decodeFloat()
       MagCalReport(
-        compassId = compassId,
-        calMask = calMask,
-        calStatus = calStatus,
-        autosaved = autosaved,
         fitness = fitness,
         ofsX = ofsX,
         ofsY = ofsY,
@@ -166,6 +162,10 @@ public data class MagCalReport(
         offdiagX = offdiagX,
         offdiagY = offdiagY,
         offdiagZ = offdiagZ,
+        compassId = compassId,
+        calMask = calMask,
+        calStatus = calStatus,
+        autosaved = autosaved,
         orientationConfidence = orientationConfidence,
         oldOrientation = oldOrientation,
         newOrientation = newOrientation,

@@ -29,10 +29,6 @@ public data class TrajectoryRepresentationWaypoints(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Number of valid points (up-to 5 waypoints are possible)
-   */
-  public val validPoints: Int = 0,
-  /**
    * X-coordinate of waypoint, set to NaN if not being used
    */
   public val posX: List<Float> = emptyList(),
@@ -80,6 +76,10 @@ public data class TrajectoryRepresentationWaypoints(
    * MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
    */
   public val command: List<Int> = emptyList(),
+  /**
+   * Number of valid points (up-to 5 waypoints are possible)
+   */
+  public val validPoints: Int = 0,
 ) : MavMessage<TrajectoryRepresentationWaypoints> {
   public override val instanceMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> =
       METADATA
@@ -87,7 +87,6 @@ public data class TrajectoryRepresentationWaypoints(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(239).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(validPoints)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
     outputBuffer.encodeFloatArray(posZ, 20)
@@ -100,19 +99,19 @@ public data class TrajectoryRepresentationWaypoints(
     outputBuffer.encodeFloatArray(posYaw, 20)
     outputBuffer.encodeFloatArray(velYaw, 20)
     outputBuffer.encodeUint16Array(command, 10)
+    outputBuffer.encodeUint8(validPoints)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 332
 
-    private const val CRC: Int = 74
+    private const val CRC: Int = 133
 
     private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationWaypoints> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val validPoints = inputBuffer.decodeUint8()
       val posX = inputBuffer.decodeFloatArray(20)
       val posY = inputBuffer.decodeFloatArray(20)
       val posZ = inputBuffer.decodeFloatArray(20)
@@ -125,9 +124,9 @@ public data class TrajectoryRepresentationWaypoints(
       val posYaw = inputBuffer.decodeFloatArray(20)
       val velYaw = inputBuffer.decodeFloatArray(20)
       val command = inputBuffer.decodeUint16Array(10)
+      val validPoints = inputBuffer.decodeUint8()
       TrajectoryRepresentationWaypoints(
         timeUsec = timeUsec,
-        validPoints = validPoints,
         posX = posX,
         posY = posY,
         posZ = posZ,
@@ -140,6 +139,7 @@ public data class TrajectoryRepresentationWaypoints(
         posYaw = posYaw,
         velYaw = velYaw,
         command = command,
+        validPoints = validPoints,
       )
     }
 

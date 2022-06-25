@@ -29,14 +29,6 @@ public data class VfrHud(
    */
   public val groundspeed: Float = 0F,
   /**
-   * Current heading in compass units (0-360, 0=north).
-   */
-  public val heading: Int = 0,
-  /**
-   * Current throttle setting (0 to 100).
-   */
-  public val throttle: Int = 0,
-  /**
    * Current altitude (MSL).
    */
   public val alt: Float = 0F,
@@ -44,6 +36,14 @@ public data class VfrHud(
    * Current climb rate.
    */
   public val climb: Float = 0F,
+  /**
+   * Current heading in compass units (0-360, 0=north).
+   */
+  public val heading: Int = 0,
+  /**
+   * Current throttle setting (0 to 100).
+   */
+  public val throttle: Int = 0,
 ) : MavMessage<VfrHud> {
   public override val instanceMetadata: MavMessage.Metadata<VfrHud> = METADATA
 
@@ -51,33 +51,33 @@ public data class VfrHud(
     val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(airspeed)
     outputBuffer.encodeFloat(groundspeed)
-    outputBuffer.encodeInt16(heading)
-    outputBuffer.encodeUint16(throttle)
     outputBuffer.encodeFloat(alt)
     outputBuffer.encodeFloat(climb)
+    outputBuffer.encodeInt16(heading)
+    outputBuffer.encodeUint16(throttle)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 74
 
-    private const val CRC: Int = 123
+    private const val CRC: Int = 20
 
     private val DESERIALIZER: MavDeserializer<VfrHud> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val airspeed = inputBuffer.decodeFloat()
       val groundspeed = inputBuffer.decodeFloat()
-      val heading = inputBuffer.decodeInt16()
-      val throttle = inputBuffer.decodeUint16()
       val alt = inputBuffer.decodeFloat()
       val climb = inputBuffer.decodeFloat()
+      val heading = inputBuffer.decodeInt16()
+      val throttle = inputBuffer.decodeUint16()
       VfrHud(
         airspeed = airspeed,
         groundspeed = groundspeed,
-        heading = heading,
-        throttle = throttle,
         alt = alt,
         climb = climb,
+        heading = heading,
+        throttle = throttle,
       )
     }
 

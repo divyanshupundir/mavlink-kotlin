@@ -23,10 +23,6 @@ import kotlin.Long
  */
 public data class DataTransmissionHandshake(
   /**
-   * Type of requested/acknowledged data.
-   */
-  public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0),
-  /**
    * total data size (set on ACK only).
    */
   public val size: Long = 0L,
@@ -43,6 +39,10 @@ public data class DataTransmissionHandshake(
    */
   public val packets: Int = 0,
   /**
+   * Type of requested/acknowledged data.
+   */
+  public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0),
+  /**
    * Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA)
    * (set on ACK only).
    */
@@ -56,11 +56,11 @@ public data class DataTransmissionHandshake(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeUint32(size)
     outputBuffer.encodeUint16(width)
     outputBuffer.encodeUint16(height)
     outputBuffer.encodeUint16(packets)
+    outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeUint8(payload)
     outputBuffer.encodeUint8(jpgQuality)
     return outputBuffer.array()
@@ -69,27 +69,27 @@ public data class DataTransmissionHandshake(
   public companion object {
     private const val ID: Int = 130
 
-    private const val CRC: Int = 163
+    private const val CRC: Int = 29
 
     private val DESERIALIZER: MavDeserializer<DataTransmissionHandshake> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavlinkDataStreamType.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val size = inputBuffer.decodeUint32()
       val width = inputBuffer.decodeUint16()
       val height = inputBuffer.decodeUint16()
       val packets = inputBuffer.decodeUint16()
+      val type = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavlinkDataStreamType.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val payload = inputBuffer.decodeUint8()
       val jpgQuality = inputBuffer.decodeUint8()
       DataTransmissionHandshake(
-        type = type,
         size = size,
         width = width,
         height = height,
         packets = packets,
+        type = type,
         payload = payload,
         jpgQuality = jpgQuality,
       )

@@ -26,14 +26,6 @@ public data class LinkNodeStatus(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
-   * Remaining free transmit buffer space
-   */
-  public val txBuf: Int = 0,
-  /**
-   * Remaining free receive buffer space
-   */
-  public val rxBuf: Int = 0,
-  /**
    * Transmit rate
    */
   public val txRate: Long = 0L,
@@ -41,6 +33,18 @@ public data class LinkNodeStatus(
    * Receive rate
    */
   public val rxRate: Long = 0L,
+  /**
+   * Messages sent
+   */
+  public val messagesSent: Long = 0L,
+  /**
+   * Messages received (estimated from counting seq)
+   */
+  public val messagesReceived: Long = 0L,
+  /**
+   * Messages lost (estimated from counting seq)
+   */
+  public val messagesLost: Long = 0L,
   /**
    * Number of bytes that could not be parsed correctly.
    */
@@ -54,66 +58,62 @@ public data class LinkNodeStatus(
    */
   public val rxOverflows: Int = 0,
   /**
-   * Messages sent
+   * Remaining free transmit buffer space
    */
-  public val messagesSent: Long = 0L,
+  public val txBuf: Int = 0,
   /**
-   * Messages received (estimated from counting seq)
+   * Remaining free receive buffer space
    */
-  public val messagesReceived: Long = 0L,
-  /**
-   * Messages lost (estimated from counting seq)
-   */
-  public val messagesLost: Long = 0L,
+  public val rxBuf: Int = 0,
 ) : MavMessage<LinkNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(36).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint8(txBuf)
-    outputBuffer.encodeUint8(rxBuf)
     outputBuffer.encodeUint32(txRate)
     outputBuffer.encodeUint32(rxRate)
-    outputBuffer.encodeUint16(rxParseErr)
-    outputBuffer.encodeUint16(txOverflows)
-    outputBuffer.encodeUint16(rxOverflows)
     outputBuffer.encodeUint32(messagesSent)
     outputBuffer.encodeUint32(messagesReceived)
     outputBuffer.encodeUint32(messagesLost)
+    outputBuffer.encodeUint16(rxParseErr)
+    outputBuffer.encodeUint16(txOverflows)
+    outputBuffer.encodeUint16(rxOverflows)
+    outputBuffer.encodeUint8(txBuf)
+    outputBuffer.encodeUint8(rxBuf)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 8
 
-    private const val CRC: Int = 14
+    private const val CRC: Int = 117
 
     private val DESERIALIZER: MavDeserializer<LinkNodeStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
-      val txBuf = inputBuffer.decodeUint8()
-      val rxBuf = inputBuffer.decodeUint8()
       val txRate = inputBuffer.decodeUint32()
       val rxRate = inputBuffer.decodeUint32()
-      val rxParseErr = inputBuffer.decodeUint16()
-      val txOverflows = inputBuffer.decodeUint16()
-      val rxOverflows = inputBuffer.decodeUint16()
       val messagesSent = inputBuffer.decodeUint32()
       val messagesReceived = inputBuffer.decodeUint32()
       val messagesLost = inputBuffer.decodeUint32()
+      val rxParseErr = inputBuffer.decodeUint16()
+      val txOverflows = inputBuffer.decodeUint16()
+      val rxOverflows = inputBuffer.decodeUint16()
+      val txBuf = inputBuffer.decodeUint8()
+      val rxBuf = inputBuffer.decodeUint8()
       LinkNodeStatus(
         timestamp = timestamp,
-        txBuf = txBuf,
-        rxBuf = rxBuf,
         txRate = txRate,
         rxRate = rxRate,
-        rxParseErr = rxParseErr,
-        txOverflows = txOverflows,
-        rxOverflows = rxOverflows,
         messagesSent = messagesSent,
         messagesReceived = messagesReceived,
         messagesLost = messagesLost,
+        rxParseErr = rxParseErr,
+        txOverflows = txOverflows,
+        rxOverflows = rxOverflows,
+        txBuf = txBuf,
+        rxBuf = rxBuf,
       )
     }
 

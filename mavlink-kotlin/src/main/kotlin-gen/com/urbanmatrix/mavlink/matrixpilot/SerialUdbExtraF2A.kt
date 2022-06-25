@@ -27,10 +27,6 @@ public data class SerialUdbExtraF2A(
    */
   public val sueTime: Long = 0L,
   /**
-   * Serial UDB Extra Status
-   */
-  public val sueStatus: Int = 0,
-  /**
    * Serial UDB Extra Latitude
    */
   public val sueLatitude: Int = 0,
@@ -130,13 +126,16 @@ public data class SerialUdbExtraF2A(
    * Serial UDB Extra GPS Horizontal Dilution of Precision
    */
   public val sueHdop: Int = 0,
+  /**
+   * Serial UDB Extra Status
+   */
+  public val sueStatus: Int = 0,
 ) : MavMessage<SerialUdbExtraF2A> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF2A> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(61).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(sueTime)
-    outputBuffer.encodeUint8(sueStatus)
     outputBuffer.encodeInt32(sueLatitude)
     outputBuffer.encodeInt32(sueLongitude)
     outputBuffer.encodeInt32(sueAltitude)
@@ -162,18 +161,18 @@ public data class SerialUdbExtraF2A(
     outputBuffer.encodeInt16(sueMagfieldearth2)
     outputBuffer.encodeInt16(sueSvs)
     outputBuffer.encodeInt16(sueHdop)
+    outputBuffer.encodeUint8(sueStatus)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 170
 
-    private const val CRC: Int = 143
+    private const val CRC: Int = 103
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF2A> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueTime = inputBuffer.decodeUint32()
-      val sueStatus = inputBuffer.decodeUint8()
       val sueLatitude = inputBuffer.decodeInt32()
       val sueLongitude = inputBuffer.decodeInt32()
       val sueAltitude = inputBuffer.decodeInt32()
@@ -199,9 +198,9 @@ public data class SerialUdbExtraF2A(
       val sueMagfieldearth2 = inputBuffer.decodeInt16()
       val sueSvs = inputBuffer.decodeInt16()
       val sueHdop = inputBuffer.decodeInt16()
+      val sueStatus = inputBuffer.decodeUint8()
       SerialUdbExtraF2A(
         sueTime = sueTime,
-        sueStatus = sueStatus,
         sueLatitude = sueLatitude,
         sueLongitude = sueLongitude,
         sueAltitude = sueAltitude,
@@ -227,6 +226,7 @@ public data class SerialUdbExtraF2A(
         sueMagfieldearth2 = sueMagfieldearth2,
         sueSvs = sueSvs,
         sueHdop = sueHdop,
+        sueStatus = sueStatus,
       )
     }
 

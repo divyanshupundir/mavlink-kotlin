@@ -23,6 +23,18 @@ public data class SerialUdbExtraF2B(
    */
   public val sueTime: Long = 0L,
   /**
+   * Serial UDB Extra Status Flags
+   */
+  public val sueFlags: Long = 0L,
+  /**
+   * SUE barometer pressure
+   */
+  public val sueBaromPress: Int = 0,
+  /**
+   * SUE barometer altitude
+   */
+  public val sueBaromAlt: Int = 0,
+  /**
    * Serial UDB Extra PWM Input Channel 1
    */
   public val suePwmInput1: Int = 0,
@@ -143,10 +155,6 @@ public data class SerialUdbExtraF2B(
    */
   public val sueLocationErrorEarthZ: Int = 0,
   /**
-   * Serial UDB Extra Status Flags
-   */
-  public val sueFlags: Long = 0L,
-  /**
    * Serial UDB Extra Oscillator Failure Count
    */
   public val sueOscFails: Int = 0,
@@ -191,14 +199,6 @@ public data class SerialUdbExtraF2B(
    */
   public val sueBaromTemp: Int = 0,
   /**
-   * SUE barometer pressure
-   */
-  public val sueBaromPress: Int = 0,
-  /**
-   * SUE barometer altitude
-   */
-  public val sueBaromAlt: Int = 0,
-  /**
    * SUE battery voltage
    */
   public val sueBatVolt: Int = 0,
@@ -224,6 +224,9 @@ public data class SerialUdbExtraF2B(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(108).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(sueTime)
+    outputBuffer.encodeUint32(sueFlags)
+    outputBuffer.encodeInt32(sueBaromPress)
+    outputBuffer.encodeInt32(sueBaromAlt)
     outputBuffer.encodeInt16(suePwmInput1)
     outputBuffer.encodeInt16(suePwmInput2)
     outputBuffer.encodeInt16(suePwmInput3)
@@ -254,7 +257,6 @@ public data class SerialUdbExtraF2B(
     outputBuffer.encodeInt16(sueLocationErrorEarthX)
     outputBuffer.encodeInt16(sueLocationErrorEarthY)
     outputBuffer.encodeInt16(sueLocationErrorEarthZ)
-    outputBuffer.encodeUint32(sueFlags)
     outputBuffer.encodeInt16(sueOscFails)
     outputBuffer.encodeInt16(sueImuVelocityX)
     outputBuffer.encodeInt16(sueImuVelocityY)
@@ -266,8 +268,6 @@ public data class SerialUdbExtraF2B(
     outputBuffer.encodeInt16(sueAeroY)
     outputBuffer.encodeInt16(sueAeroZ)
     outputBuffer.encodeInt16(sueBaromTemp)
-    outputBuffer.encodeInt32(sueBaromPress)
-    outputBuffer.encodeInt32(sueBaromAlt)
     outputBuffer.encodeInt16(sueBatVolt)
     outputBuffer.encodeInt16(sueBatAmp)
     outputBuffer.encodeInt16(sueBatAmpHours)
@@ -279,11 +279,14 @@ public data class SerialUdbExtraF2B(
   public companion object {
     private const val ID: Int = 171
 
-    private const val CRC: Int = 45
+    private const val CRC: Int = 245
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF2B> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueTime = inputBuffer.decodeUint32()
+      val sueFlags = inputBuffer.decodeUint32()
+      val sueBaromPress = inputBuffer.decodeInt32()
+      val sueBaromAlt = inputBuffer.decodeInt32()
       val suePwmInput1 = inputBuffer.decodeInt16()
       val suePwmInput2 = inputBuffer.decodeInt16()
       val suePwmInput3 = inputBuffer.decodeInt16()
@@ -314,7 +317,6 @@ public data class SerialUdbExtraF2B(
       val sueLocationErrorEarthX = inputBuffer.decodeInt16()
       val sueLocationErrorEarthY = inputBuffer.decodeInt16()
       val sueLocationErrorEarthZ = inputBuffer.decodeInt16()
-      val sueFlags = inputBuffer.decodeUint32()
       val sueOscFails = inputBuffer.decodeInt16()
       val sueImuVelocityX = inputBuffer.decodeInt16()
       val sueImuVelocityY = inputBuffer.decodeInt16()
@@ -326,8 +328,6 @@ public data class SerialUdbExtraF2B(
       val sueAeroY = inputBuffer.decodeInt16()
       val sueAeroZ = inputBuffer.decodeInt16()
       val sueBaromTemp = inputBuffer.decodeInt16()
-      val sueBaromPress = inputBuffer.decodeInt32()
-      val sueBaromAlt = inputBuffer.decodeInt32()
       val sueBatVolt = inputBuffer.decodeInt16()
       val sueBatAmp = inputBuffer.decodeInt16()
       val sueBatAmpHours = inputBuffer.decodeInt16()
@@ -335,6 +335,9 @@ public data class SerialUdbExtraF2B(
       val sueMemoryStackFree = inputBuffer.decodeInt16()
       SerialUdbExtraF2B(
         sueTime = sueTime,
+        sueFlags = sueFlags,
+        sueBaromPress = sueBaromPress,
+        sueBaromAlt = sueBaromAlt,
         suePwmInput1 = suePwmInput1,
         suePwmInput2 = suePwmInput2,
         suePwmInput3 = suePwmInput3,
@@ -365,7 +368,6 @@ public data class SerialUdbExtraF2B(
         sueLocationErrorEarthX = sueLocationErrorEarthX,
         sueLocationErrorEarthY = sueLocationErrorEarthY,
         sueLocationErrorEarthZ = sueLocationErrorEarthZ,
-        sueFlags = sueFlags,
         sueOscFails = sueOscFails,
         sueImuVelocityX = sueImuVelocityX,
         sueImuVelocityY = sueImuVelocityY,
@@ -377,8 +379,6 @@ public data class SerialUdbExtraF2B(
         sueAeroY = sueAeroY,
         sueAeroZ = sueAeroZ,
         sueBaromTemp = sueBaromTemp,
-        sueBaromPress = sueBaromPress,
-        sueBaromAlt = sueBaromAlt,
         sueBatVolt = sueBatVolt,
         sueBatAmp = sueBatAmp,
         sueBatAmpHours = sueBatAmpHours,

@@ -42,14 +42,6 @@ public data class UavionixAdsbOutDynamic(
    */
   public val gpsalt: Int = 0,
   /**
-   * 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
-   */
-  public val gpsfix: MavEnumValue<UavionixAdsbOutDynamicGpsFix> = MavEnumValue.fromValue(0),
-  /**
-   * Number of satellites visible. If unknown set to UINT8_MAX
-   */
-  public val numsats: Int = 0,
-  /**
    * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar
    * corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
    */
@@ -79,10 +71,6 @@ public data class UavionixAdsbOutDynamic(
    */
   public val velew: Int = 0,
   /**
-   * Emergency status
-   */
-  public val emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> = MavEnumValue.fromValue(0),
-  /**
    * ADS-B transponder dynamic input state flags
    */
   public val state: MavEnumValue<UavionixAdsbOutDynamicState> = MavEnumValue.fromValue(0),
@@ -90,6 +78,18 @@ public data class UavionixAdsbOutDynamic(
    * Mode A code (typically 1200 [0x04B0] for VFR)
    */
   public val squawk: Int = 0,
+  /**
+   * 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
+   */
+  public val gpsfix: MavEnumValue<UavionixAdsbOutDynamicGpsFix> = MavEnumValue.fromValue(0),
+  /**
+   * Number of satellites visible. If unknown set to UINT8_MAX
+   */
+  public val numsats: Int = 0,
+  /**
+   * Emergency status
+   */
+  public val emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> = MavEnumValue.fromValue(0),
 ) : MavMessage<UavionixAdsbOutDynamic> {
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
 
@@ -99,8 +99,6 @@ public data class UavionixAdsbOutDynamic(
     outputBuffer.encodeInt32(gpslat)
     outputBuffer.encodeInt32(gpslon)
     outputBuffer.encodeInt32(gpsalt)
-    outputBuffer.encodeEnumValue(gpsfix.value, 1)
-    outputBuffer.encodeUint8(numsats)
     outputBuffer.encodeInt32(baroaltmsl)
     outputBuffer.encodeUint32(accuracyhor)
     outputBuffer.encodeUint16(accuracyvert)
@@ -108,16 +106,18 @@ public data class UavionixAdsbOutDynamic(
     outputBuffer.encodeInt16(velvert)
     outputBuffer.encodeInt16(velns)
     outputBuffer.encodeInt16(velew)
-    outputBuffer.encodeEnumValue(emergencystatus.value, 1)
     outputBuffer.encodeEnumValue(state.value, 2)
     outputBuffer.encodeUint16(squawk)
+    outputBuffer.encodeEnumValue(gpsfix.value, 1)
+    outputBuffer.encodeUint8(numsats)
+    outputBuffer.encodeEnumValue(emergencystatus.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 10002
 
-    private const val CRC: Int = 31
+    private const val CRC: Int = 186
 
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutDynamic> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
@@ -125,11 +125,6 @@ public data class UavionixAdsbOutDynamic(
       val gpslat = inputBuffer.decodeInt32()
       val gpslon = inputBuffer.decodeInt32()
       val gpsalt = inputBuffer.decodeInt32()
-      val gpsfix = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbOutDynamicGpsFix.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val numsats = inputBuffer.decodeUint8()
       val baroaltmsl = inputBuffer.decodeInt32()
       val accuracyhor = inputBuffer.decodeUint32()
       val accuracyvert = inputBuffer.decodeUint16()
@@ -137,22 +132,25 @@ public data class UavionixAdsbOutDynamic(
       val velvert = inputBuffer.decodeInt16()
       val velns = inputBuffer.decodeInt16()
       val velew = inputBuffer.decodeInt16()
-      val emergencystatus = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbEmergencyStatus.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val state = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = UavionixAdsbOutDynamicState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val squawk = inputBuffer.decodeUint16()
+      val gpsfix = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = UavionixAdsbOutDynamicGpsFix.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val numsats = inputBuffer.decodeUint8()
+      val emergencystatus = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = UavionixAdsbEmergencyStatus.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       UavionixAdsbOutDynamic(
         utctime = utctime,
         gpslat = gpslat,
         gpslon = gpslon,
         gpsalt = gpsalt,
-        gpsfix = gpsfix,
-        numsats = numsats,
         baroaltmsl = baroaltmsl,
         accuracyhor = accuracyhor,
         accuracyvert = accuracyvert,
@@ -160,9 +158,11 @@ public data class UavionixAdsbOutDynamic(
         velvert = velvert,
         velns = velns,
         velew = velew,
-        emergencystatus = emergencystatus,
         state = state,
         squawk = squawk,
+        gpsfix = gpsfix,
+        numsats = numsats,
+        emergencystatus = emergencystatus,
       )
     }
 

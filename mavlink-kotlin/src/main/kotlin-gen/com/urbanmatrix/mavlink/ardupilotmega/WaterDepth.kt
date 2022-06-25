@@ -26,14 +26,6 @@ public data class WaterDepth(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Onboard ID of the sensor
-   */
-  public val id: Int = 0,
-  /**
-   * Sensor data healthy (0=unhealthy, 1=healthy)
-   */
-  public val healthy: Int = 0,
-  /**
    * Latitude
    */
   public val lat: Int = 0,
@@ -65,14 +57,20 @@ public data class WaterDepth(
    * Water temperature
    */
   public val temperature: Float = 0F,
+  /**
+   * Onboard ID of the sensor
+   */
+  public val id: Int = 0,
+  /**
+   * Sensor data healthy (0=unhealthy, 1=healthy)
+   */
+  public val healthy: Int = 0,
 ) : MavMessage<WaterDepth> {
   public override val instanceMetadata: MavMessage.Metadata<WaterDepth> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(id)
-    outputBuffer.encodeUint8(healthy)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeFloat(alt)
@@ -81,19 +79,19 @@ public data class WaterDepth(
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(distance)
     outputBuffer.encodeFloat(temperature)
+    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeUint8(healthy)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 11038
 
-    private const val CRC: Int = 87
+    private const val CRC: Int = 47
 
     private val DESERIALIZER: MavDeserializer<WaterDepth> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val id = inputBuffer.decodeUint8()
-      val healthy = inputBuffer.decodeUint8()
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -102,10 +100,10 @@ public data class WaterDepth(
       val yaw = inputBuffer.decodeFloat()
       val distance = inputBuffer.decodeFloat()
       val temperature = inputBuffer.decodeFloat()
+      val id = inputBuffer.decodeUint8()
+      val healthy = inputBuffer.decodeUint8()
       WaterDepth(
         timeBootMs = timeBootMs,
-        id = id,
-        healthy = healthy,
         lat = lat,
         lng = lng,
         alt = alt,
@@ -114,6 +112,8 @@ public data class WaterDepth(
         yaw = yaw,
         distance = distance,
         temperature = temperature,
+        id = id,
+        healthy = healthy,
       )
     }
 

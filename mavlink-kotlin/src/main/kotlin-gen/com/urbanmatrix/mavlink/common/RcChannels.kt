@@ -25,12 +25,6 @@ public data class RcChannels(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Total number of RC channels being received. This can be larger than 18, indicating that more
-   * channels are available but not given in this message. This value should be 0 when no RC channels
-   * are available.
-   */
-  public val chancount: Int = 0,
-  /**
    * RC channel 1 value.
    */
   public val chan1Raw: Int = 0,
@@ -103,6 +97,12 @@ public data class RcChannels(
    */
   public val chan18Raw: Int = 0,
   /**
+   * Total number of RC channels being received. This can be larger than 18, indicating that more
+   * channels are available but not given in this message. This value should be 0 when no RC channels
+   * are available.
+   */
+  public val chancount: Int = 0,
+  /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
    */
@@ -113,7 +113,6 @@ public data class RcChannels(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(chancount)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
     outputBuffer.encodeUint16(chan3Raw)
@@ -132,6 +131,7 @@ public data class RcChannels(
     outputBuffer.encodeUint16(chan16Raw)
     outputBuffer.encodeUint16(chan17Raw)
     outputBuffer.encodeUint16(chan18Raw)
+    outputBuffer.encodeUint8(chancount)
     outputBuffer.encodeUint8(rssi)
     return outputBuffer.array()
   }
@@ -139,12 +139,11 @@ public data class RcChannels(
   public companion object {
     private const val ID: Int = 65
 
-    private const val CRC: Int = 244
+    private const val CRC: Int = 118
 
     private val DESERIALIZER: MavDeserializer<RcChannels> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val chancount = inputBuffer.decodeUint8()
       val chan1Raw = inputBuffer.decodeUint16()
       val chan2Raw = inputBuffer.decodeUint16()
       val chan3Raw = inputBuffer.decodeUint16()
@@ -163,10 +162,10 @@ public data class RcChannels(
       val chan16Raw = inputBuffer.decodeUint16()
       val chan17Raw = inputBuffer.decodeUint16()
       val chan18Raw = inputBuffer.decodeUint16()
+      val chancount = inputBuffer.decodeUint8()
       val rssi = inputBuffer.decodeUint8()
       RcChannels(
         timeBootMs = timeBootMs,
-        chancount = chancount,
         chan1Raw = chan1Raw,
         chan2Raw = chan2Raw,
         chan3Raw = chan3Raw,
@@ -185,6 +184,7 @@ public data class RcChannels(
         chan16Raw = chan16Raw,
         chan17Raw = chan17Raw,
         chan18Raw = chan18Raw,
+        chancount = chancount,
         rssi = rssi,
       )
     }

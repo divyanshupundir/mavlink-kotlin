@@ -32,10 +32,6 @@ public data class Gps2Raw(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * GPS fix type.
-   */
-  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
-  /**
    * Latitude (WGS84)
    */
   public val lat: Int = 0,
@@ -47,6 +43,10 @@ public data class Gps2Raw(
    * Altitude (MSL). Positive for up.
    */
   public val alt: Int = 0,
+  /**
+   * Age of DGPS info
+   */
+  public val dgpsAge: Long = 0L,
   /**
    * GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
@@ -65,6 +65,10 @@ public data class Gps2Raw(
    */
   public val cog: Int = 0,
   /**
+   * GPS fix type.
+   */
+  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
+  /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
   public val satellitesVisible: Int = 0,
@@ -72,10 +76,6 @@ public data class Gps2Raw(
    * Number of DGPS satellites
    */
   public val dgpsNumch: Int = 0,
-  /**
-   * Age of DGPS info
-   */
-  public val dgpsAge: Long = 0L,
   /**
    * Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX if this
    * GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
@@ -107,17 +107,17 @@ public data class Gps2Raw(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(57).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(fixType.value, 1)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
+    outputBuffer.encodeUint32(dgpsAge)
     outputBuffer.encodeUint16(eph)
     outputBuffer.encodeUint16(epv)
     outputBuffer.encodeUint16(vel)
     outputBuffer.encodeUint16(cog)
+    outputBuffer.encodeEnumValue(fixType.value, 1)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeUint8(dgpsNumch)
-    outputBuffer.encodeUint32(dgpsAge)
     outputBuffer.encodeUint16(yaw)
     outputBuffer.encodeInt32(altEllipsoid)
     outputBuffer.encodeUint32(hAcc)
@@ -130,25 +130,25 @@ public data class Gps2Raw(
   public companion object {
     private const val ID: Int = 124
 
-    private const val CRC: Int = 157
+    private const val CRC: Int = 87
 
     private val DESERIALIZER: MavDeserializer<Gps2Raw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val fixType = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = GpsFixType.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
+      val dgpsAge = inputBuffer.decodeUint32()
       val eph = inputBuffer.decodeUint16()
       val epv = inputBuffer.decodeUint16()
       val vel = inputBuffer.decodeUint16()
       val cog = inputBuffer.decodeUint16()
+      val fixType = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = GpsFixType.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val satellitesVisible = inputBuffer.decodeUint8()
       val dgpsNumch = inputBuffer.decodeUint8()
-      val dgpsAge = inputBuffer.decodeUint32()
       val yaw = inputBuffer.decodeUint16()
       val altEllipsoid = inputBuffer.decodeInt32()
       val hAcc = inputBuffer.decodeUint32()
@@ -157,17 +157,17 @@ public data class Gps2Raw(
       val hdgAcc = inputBuffer.decodeUint32()
       Gps2Raw(
         timeUsec = timeUsec,
-        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
+        dgpsAge = dgpsAge,
         eph = eph,
         epv = epv,
         vel = vel,
         cog = cog,
+        fixType = fixType,
         satellitesVisible = satellitesVisible,
         dgpsNumch = dgpsNumch,
-        dgpsAge = dgpsAge,
         yaw = yaw,
         altEllipsoid = altEllipsoid,
         hAcc = hAcc,

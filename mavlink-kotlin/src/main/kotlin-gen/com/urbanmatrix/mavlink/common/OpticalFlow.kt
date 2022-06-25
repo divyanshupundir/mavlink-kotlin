@@ -27,9 +27,17 @@ public data class OpticalFlow(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Sensor ID
+   * Flow in x-sensor direction, angular-speed compensated
    */
-  public val sensorId: Int = 0,
+  public val flowCompMX: Float = 0F,
+  /**
+   * Flow in y-sensor direction, angular-speed compensated
+   */
+  public val flowCompMY: Float = 0F,
+  /**
+   * Ground distance. Positive value: distance known. Negative value: Unknown distance
+   */
+  public val groundDistance: Float = 0F,
   /**
    * Flow in x-sensor direction
    */
@@ -39,21 +47,13 @@ public data class OpticalFlow(
    */
   public val flowY: Int = 0,
   /**
-   * Flow in x-sensor direction, angular-speed compensated
+   * Sensor ID
    */
-  public val flowCompMX: Float = 0F,
-  /**
-   * Flow in y-sensor direction, angular-speed compensated
-   */
-  public val flowCompMY: Float = 0F,
+  public val sensorId: Int = 0,
   /**
    * Optical flow quality / confidence. 0: bad, 255: maximum quality
    */
   public val quality: Int = 0,
-  /**
-   * Ground distance. Positive value: distance known. Negative value: Unknown distance
-   */
-  public val groundDistance: Float = 0F,
   /**
    * Flow rate about X axis
    */
@@ -68,13 +68,13 @@ public data class OpticalFlow(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(34).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(sensorId)
-    outputBuffer.encodeInt16(flowX)
-    outputBuffer.encodeInt16(flowY)
     outputBuffer.encodeFloat(flowCompMX)
     outputBuffer.encodeFloat(flowCompMY)
-    outputBuffer.encodeUint8(quality)
     outputBuffer.encodeFloat(groundDistance)
+    outputBuffer.encodeInt16(flowX)
+    outputBuffer.encodeInt16(flowY)
+    outputBuffer.encodeUint8(sensorId)
+    outputBuffer.encodeUint8(quality)
     outputBuffer.encodeFloat(flowRateX)
     outputBuffer.encodeFloat(flowRateY)
     return outputBuffer.array()
@@ -83,29 +83,29 @@ public data class OpticalFlow(
   public companion object {
     private const val ID: Int = 100
 
-    private const val CRC: Int = 46
+    private const val CRC: Int = 175
 
     private val DESERIALIZER: MavDeserializer<OpticalFlow> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val sensorId = inputBuffer.decodeUint8()
-      val flowX = inputBuffer.decodeInt16()
-      val flowY = inputBuffer.decodeInt16()
       val flowCompMX = inputBuffer.decodeFloat()
       val flowCompMY = inputBuffer.decodeFloat()
-      val quality = inputBuffer.decodeUint8()
       val groundDistance = inputBuffer.decodeFloat()
+      val flowX = inputBuffer.decodeInt16()
+      val flowY = inputBuffer.decodeInt16()
+      val sensorId = inputBuffer.decodeUint8()
+      val quality = inputBuffer.decodeUint8()
       val flowRateX = inputBuffer.decodeFloat()
       val flowRateY = inputBuffer.decodeFloat()
       OpticalFlow(
         timeUsec = timeUsec,
-        sensorId = sensorId,
-        flowX = flowX,
-        flowY = flowY,
         flowCompMX = flowCompMX,
         flowCompMY = flowCompMY,
-        quality = quality,
         groundDistance = groundDistance,
+        flowX = flowX,
+        flowY = flowY,
+        sensorId = sensorId,
+        quality = quality,
         flowRateX = flowRateX,
         flowRateY = flowRateY,
       )

@@ -32,10 +32,6 @@ public data class GimbalManagerInformation(
    */
   public val capFlags: MavEnumValue<GimbalManagerCapFlags> = MavEnumValue.fromValue(0),
   /**
-   * Gimbal device ID that this gimbal manager is responsible for.
-   */
-  public val gimbalDeviceId: Int = 0,
-  /**
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
   public val rollMin: Float = 0F,
@@ -59,6 +55,10 @@ public data class GimbalManagerInformation(
    * Maximum yaw angle (positive: to the right, negative: to the left)
    */
   public val yawMax: Float = 0F,
+  /**
+   * Gimbal device ID that this gimbal manager is responsible for.
+   */
+  public val gimbalDeviceId: Int = 0,
 ) : MavMessage<GimbalManagerInformation> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
 
@@ -66,20 +66,20 @@ public data class GimbalManagerInformation(
     val outputBuffer = ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(capFlags.value, 4)
-    outputBuffer.encodeUint8(gimbalDeviceId)
     outputBuffer.encodeFloat(rollMin)
     outputBuffer.encodeFloat(rollMax)
     outputBuffer.encodeFloat(pitchMin)
     outputBuffer.encodeFloat(pitchMax)
     outputBuffer.encodeFloat(yawMin)
     outputBuffer.encodeFloat(yawMax)
+    outputBuffer.encodeUint8(gimbalDeviceId)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 280
 
-    private const val CRC: Int = 152
+    private const val CRC: Int = 70
 
     private val DESERIALIZER: MavDeserializer<GimbalManagerInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
@@ -88,23 +88,23 @@ public data class GimbalManagerInformation(
         val entry = GimbalManagerCapFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val gimbalDeviceId = inputBuffer.decodeUint8()
       val rollMin = inputBuffer.decodeFloat()
       val rollMax = inputBuffer.decodeFloat()
       val pitchMin = inputBuffer.decodeFloat()
       val pitchMax = inputBuffer.decodeFloat()
       val yawMin = inputBuffer.decodeFloat()
       val yawMax = inputBuffer.decodeFloat()
+      val gimbalDeviceId = inputBuffer.decodeUint8()
       GimbalManagerInformation(
         timeBootMs = timeBootMs,
         capFlags = capFlags,
-        gimbalDeviceId = gimbalDeviceId,
         rollMin = rollMin,
         rollMax = rollMax,
         pitchMin = pitchMin,
         pitchMax = pitchMax,
         yawMin = yawMin,
         yawMax = yawMax,
+        gimbalDeviceId = gimbalDeviceId,
       )
     }
 

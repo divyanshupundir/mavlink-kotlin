@@ -19,6 +19,22 @@ import kotlin.Long
  */
 public data class SerialUdbExtraF14(
   /**
+   * Serial UDB Extra Type Program Address of Last Trap
+   */
+  public val sueTrapSource: Long = 0L,
+  /**
+   * Serial UDB Extra Reboot Register of DSPIC
+   */
+  public val sueRcon: Int = 0,
+  /**
+   * Serial UDB Extra  Last dspic Trap Flags
+   */
+  public val sueTrapFlags: Int = 0,
+  /**
+   * Serial UDB Extra Number of Ocillator Failures
+   */
+  public val sueOscFailCount: Int = 0,
+  /**
    * Serial UDB Extra Wind Estimation Enabled
    */
   public val sueWindEstimation: Int = 0,
@@ -39,22 +55,6 @@ public data class SerialUdbExtraF14(
    */
   public val sueAirframe: Int = 0,
   /**
-   * Serial UDB Extra Reboot Register of DSPIC
-   */
-  public val sueRcon: Int = 0,
-  /**
-   * Serial UDB Extra  Last dspic Trap Flags
-   */
-  public val sueTrapFlags: Int = 0,
-  /**
-   * Serial UDB Extra Type Program Address of Last Trap
-   */
-  public val sueTrapSource: Long = 0L,
-  /**
-   * Serial UDB Extra Number of Ocillator Failures
-   */
-  public val sueOscFailCount: Int = 0,
-  /**
    * Serial UDB Extra UDB Internal Clock Configuration
    */
   public val sueClockConfig: Int = 0,
@@ -67,15 +67,15 @@ public data class SerialUdbExtraF14(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(17).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(sueTrapSource)
+    outputBuffer.encodeInt16(sueRcon)
+    outputBuffer.encodeInt16(sueTrapFlags)
+    outputBuffer.encodeInt16(sueOscFailCount)
     outputBuffer.encodeUint8(sueWindEstimation)
     outputBuffer.encodeUint8(sueGpsType)
     outputBuffer.encodeUint8(sueDr)
     outputBuffer.encodeUint8(sueBoardType)
     outputBuffer.encodeUint8(sueAirframe)
-    outputBuffer.encodeInt16(sueRcon)
-    outputBuffer.encodeInt16(sueTrapFlags)
-    outputBuffer.encodeUint32(sueTrapSource)
-    outputBuffer.encodeInt16(sueOscFailCount)
     outputBuffer.encodeUint8(sueClockConfig)
     outputBuffer.encodeUint8(sueFlightPlanType)
     return outputBuffer.array()
@@ -84,31 +84,31 @@ public data class SerialUdbExtraF14(
   public companion object {
     private const val ID: Int = 178
 
-    private const val CRC: Int = 201
+    private const val CRC: Int = 123
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF14> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val sueTrapSource = inputBuffer.decodeUint32()
+      val sueRcon = inputBuffer.decodeInt16()
+      val sueTrapFlags = inputBuffer.decodeInt16()
+      val sueOscFailCount = inputBuffer.decodeInt16()
       val sueWindEstimation = inputBuffer.decodeUint8()
       val sueGpsType = inputBuffer.decodeUint8()
       val sueDr = inputBuffer.decodeUint8()
       val sueBoardType = inputBuffer.decodeUint8()
       val sueAirframe = inputBuffer.decodeUint8()
-      val sueRcon = inputBuffer.decodeInt16()
-      val sueTrapFlags = inputBuffer.decodeInt16()
-      val sueTrapSource = inputBuffer.decodeUint32()
-      val sueOscFailCount = inputBuffer.decodeInt16()
       val sueClockConfig = inputBuffer.decodeUint8()
       val sueFlightPlanType = inputBuffer.decodeUint8()
       SerialUdbExtraF14(
+        sueTrapSource = sueTrapSource,
+        sueRcon = sueRcon,
+        sueTrapFlags = sueTrapFlags,
+        sueOscFailCount = sueOscFailCount,
         sueWindEstimation = sueWindEstimation,
         sueGpsType = sueGpsType,
         sueDr = sueDr,
         sueBoardType = sueBoardType,
         sueAirframe = sueAirframe,
-        sueRcon = sueRcon,
-        sueTrapFlags = sueTrapFlags,
-        sueTrapSource = sueTrapSource,
-        sueOscFailCount = sueOscFailCount,
         sueClockConfig = sueClockConfig,
         sueFlightPlanType = sueFlightPlanType,
       )

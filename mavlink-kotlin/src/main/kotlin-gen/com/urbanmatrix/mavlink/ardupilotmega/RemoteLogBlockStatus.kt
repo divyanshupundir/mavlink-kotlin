@@ -20,6 +20,10 @@ import kotlin.Long
  */
 public data class RemoteLogBlockStatus(
   /**
+   * Log data block sequence number.
+   */
+  public val seqno: Long = 0L,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -27,10 +31,6 @@ public data class RemoteLogBlockStatus(
    * Component ID.
    */
   public val targetComponent: Int = 0,
-  /**
-   * Log data block sequence number.
-   */
-  public val seqno: Long = 0L,
   /**
    * Log data block status.
    */
@@ -40,9 +40,9 @@ public data class RemoteLogBlockStatus(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(7).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(seqno)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint32(seqno)
     outputBuffer.encodeEnumValue(status.value, 1)
     return outputBuffer.array()
   }
@@ -50,21 +50,21 @@ public data class RemoteLogBlockStatus(
   public companion object {
     private const val ID: Int = 185
 
-    private const val CRC: Int = 131
+    private const val CRC: Int = 186
 
     private val DESERIALIZER: MavDeserializer<RemoteLogBlockStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val seqno = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val seqno = inputBuffer.decodeUint32()
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavRemoteLogDataBlockStatuses.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       RemoteLogBlockStatus(
+        seqno = seqno,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        seqno = seqno,
         status = status,
       )
     }

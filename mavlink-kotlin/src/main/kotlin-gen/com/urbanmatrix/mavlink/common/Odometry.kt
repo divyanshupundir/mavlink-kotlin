@@ -32,14 +32,6 @@ public data class Odometry(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Coordinate frame of reference for the pose data.
-   */
-  public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * Coordinate frame of reference for the velocity in free space (twist) data.
-   */
-  public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
    * X Position
    */
   public val x: Float = 0F,
@@ -93,6 +85,14 @@ public data class Odometry(
    */
   public val velocityCovariance: List<Float> = emptyList(),
   /**
+   * Coordinate frame of reference for the pose data.
+   */
+  public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
+   * Coordinate frame of reference for the velocity in free space (twist) data.
+   */
+  public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  /**
    * Estimate reset counter. This should be incremented when the estimate resets in any of the
    * dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an
    * external SLAM system detects a loop-closure and the estimate jumps.
@@ -108,8 +108,6 @@ public data class Odometry(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(232).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(frameId.value, 1)
-    outputBuffer.encodeEnumValue(childFrameId.value, 1)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -122,6 +120,8 @@ public data class Odometry(
     outputBuffer.encodeFloat(yawspeed)
     outputBuffer.encodeFloatArray(poseCovariance, 84)
     outputBuffer.encodeFloatArray(velocityCovariance, 84)
+    outputBuffer.encodeEnumValue(frameId.value, 1)
+    outputBuffer.encodeEnumValue(childFrameId.value, 1)
     outputBuffer.encodeUint8(resetCounter)
     outputBuffer.encodeEnumValue(estimatorType.value, 1)
     return outputBuffer.array()
@@ -130,19 +130,11 @@ public data class Odometry(
   public companion object {
     private const val ID: Int = 331
 
-    private const val CRC: Int = 232
+    private const val CRC: Int = 129
 
     private val DESERIALIZER: MavDeserializer<Odometry> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val frameId = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavFrame.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val childFrameId = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavFrame.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -155,6 +147,14 @@ public data class Odometry(
       val yawspeed = inputBuffer.decodeFloat()
       val poseCovariance = inputBuffer.decodeFloatArray(84)
       val velocityCovariance = inputBuffer.decodeFloatArray(84)
+      val frameId = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavFrame.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val childFrameId = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavFrame.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val resetCounter = inputBuffer.decodeUint8()
       val estimatorType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavEstimatorType.getEntryFromValueOrNull(value)
@@ -162,8 +162,6 @@ public data class Odometry(
       }
       Odometry(
         timeUsec = timeUsec,
-        frameId = frameId,
-        childFrameId = childFrameId,
         x = x,
         y = y,
         z = z,
@@ -176,6 +174,8 @@ public data class Odometry(
         yawspeed = yawspeed,
         poseCovariance = poseCovariance,
         velocityCovariance = velocityCovariance,
+        frameId = frameId,
+        childFrameId = childFrameId,
         resetCounter = resetCounter,
         estimatorType = estimatorType,
       )

@@ -18,10 +18,6 @@ import kotlin.Int
  */
 public data class PidTuning(
   /**
-   * Axis.
-   */
-  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
-  /**
    * Desired rate.
    */
   public val desired: Float = 0F,
@@ -46,6 +42,10 @@ public data class PidTuning(
    */
   public val d: Float = 0F,
   /**
+   * Axis.
+   */
+  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
+  /**
    * Slew rate.
    */
   public val srate: Float = 0F,
@@ -58,13 +58,13 @@ public data class PidTuning(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(axis.value, 1)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(ff)
     outputBuffer.encodeFloat(p)
     outputBuffer.encodeFloat(i)
     outputBuffer.encodeFloat(d)
+    outputBuffer.encodeEnumValue(axis.value, 1)
     outputBuffer.encodeFloat(srate)
     outputBuffer.encodeFloat(pdmod)
     return outputBuffer.array()
@@ -73,30 +73,30 @@ public data class PidTuning(
   public companion object {
     private const val ID: Int = 194
 
-    private const val CRC: Int = 182
+    private const val CRC: Int = 98
 
     private val DESERIALIZER: MavDeserializer<PidTuning> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val axis = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = PidTuningAxis.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val desired = inputBuffer.decodeFloat()
       val achieved = inputBuffer.decodeFloat()
       val ff = inputBuffer.decodeFloat()
       val p = inputBuffer.decodeFloat()
       val i = inputBuffer.decodeFloat()
       val d = inputBuffer.decodeFloat()
+      val axis = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = PidTuningAxis.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val srate = inputBuffer.decodeFloat()
       val pdmod = inputBuffer.decodeFloat()
       PidTuning(
-        axis = axis,
         desired = desired,
         achieved = achieved,
         ff = ff,
         p = p,
         i = i,
         d = d,
+        axis = axis,
         srate = srate,
         pdmod = pdmod,
       )

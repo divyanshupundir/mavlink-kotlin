@@ -20,10 +20,6 @@ import kotlin.Long
  */
 public data class FlightInformation(
   /**
-   * Timestamp (time since system boot).
-   */
-  public val timeBootMs: Long = 0L,
-  /**
    * Timestamp at arming (time since UNIX epoch) in UTC, 0 for unknown
    */
   public val armingTimeUtc: BigInteger = BigInteger.ZERO,
@@ -35,34 +31,38 @@ public data class FlightInformation(
    * Universally unique identifier (UUID) of flight, should correspond to name of log files
    */
   public val flightUuid: BigInteger = BigInteger.ZERO,
+  /**
+   * Timestamp (time since system boot).
+   */
+  public val timeBootMs: Long = 0L,
 ) : MavMessage<FlightInformation> {
   public override val instanceMetadata: MavMessage.Metadata<FlightInformation> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint64(armingTimeUtc)
     outputBuffer.encodeUint64(takeoffTimeUtc)
     outputBuffer.encodeUint64(flightUuid)
+    outputBuffer.encodeUint32(timeBootMs)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 264
 
-    private const val CRC: Int = 248
+    private const val CRC: Int = 49
 
     private val DESERIALIZER: MavDeserializer<FlightInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
       val armingTimeUtc = inputBuffer.decodeUint64()
       val takeoffTimeUtc = inputBuffer.decodeUint64()
       val flightUuid = inputBuffer.decodeUint64()
+      val timeBootMs = inputBuffer.decodeUint32()
       FlightInformation(
-        timeBootMs = timeBootMs,
         armingTimeUtc = armingTimeUtc,
         takeoffTimeUtc = takeoffTimeUtc,
         flightUuid = flightUuid,
+        timeBootMs = timeBootMs,
       )
     }
 

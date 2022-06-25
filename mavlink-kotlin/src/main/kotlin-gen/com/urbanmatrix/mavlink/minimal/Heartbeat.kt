@@ -23,6 +23,10 @@ import kotlin.Long
  */
 public data class Heartbeat(
   /**
+   * A bitfield for use for autopilot-specific flags
+   */
+  public val customMode: Long = 0L,
+  /**
    * Vehicle or component type. For a flight controller component the vehicle type (quadrotor,
    * helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This
    * should be used in preference to component id for identifying the component type.
@@ -38,10 +42,6 @@ public data class Heartbeat(
    */
   public val baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
   /**
-   * A bitfield for use for autopilot-specific flags
-   */
-  public val customMode: Long = 0L,
-  /**
    * System status flag.
    */
   public val systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0),
@@ -55,10 +55,10 @@ public data class Heartbeat(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
     outputBuffer.encodeEnumValue(baseMode.value, 1)
-    outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(systemStatus.value, 1)
     outputBuffer.encodeUint8(mavlinkVersion)
     return outputBuffer.array()
@@ -67,10 +67,11 @@ public data class Heartbeat(
   public companion object {
     private const val ID: Int = 0
 
-    private const val CRC: Int = 176
+    private const val CRC: Int = 239
 
     private val DESERIALIZER: MavDeserializer<Heartbeat> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val customMode = inputBuffer.decodeUint32()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -83,17 +84,16 @@ public data class Heartbeat(
         val entry = MavModeFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val customMode = inputBuffer.decodeUint32()
       val systemStatus = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val mavlinkVersion = inputBuffer.decodeUint8()
       Heartbeat(
+        customMode = customMode,
         type = type,
         autopilot = autopilot,
         baseMode = baseMode,
-        customMode = customMode,
         systemStatus = systemStatus,
         mavlinkVersion = mavlinkVersion,
       )

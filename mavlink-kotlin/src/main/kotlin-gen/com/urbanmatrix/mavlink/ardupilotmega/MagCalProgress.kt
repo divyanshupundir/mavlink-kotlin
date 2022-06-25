@@ -24,6 +24,18 @@ import kotlin.collections.List
  */
 public data class MagCalProgress(
   /**
+   * Body frame direction vector for display.
+   */
+  public val directionX: Float = 0F,
+  /**
+   * Body frame direction vector for display.
+   */
+  public val directionY: Float = 0F,
+  /**
+   * Body frame direction vector for display.
+   */
+  public val directionZ: Float = 0F,
+  /**
    * Compass being calibrated.
    */
   public val compassId: Int = 0,
@@ -47,42 +59,33 @@ public data class MagCalProgress(
    * Bitmask of sphere sections (see http://en.wikipedia.org/wiki/Geodesic_grid).
    */
   public val completionMask: List<Int> = emptyList(),
-  /**
-   * Body frame direction vector for display.
-   */
-  public val directionX: Float = 0F,
-  /**
-   * Body frame direction vector for display.
-   */
-  public val directionY: Float = 0F,
-  /**
-   * Body frame direction vector for display.
-   */
-  public val directionZ: Float = 0F,
 ) : MavMessage<MagCalProgress> {
   public override val instanceMetadata: MavMessage.Metadata<MagCalProgress> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(27).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(directionX)
+    outputBuffer.encodeFloat(directionY)
+    outputBuffer.encodeFloat(directionZ)
     outputBuffer.encodeUint8(compassId)
     outputBuffer.encodeUint8(calMask)
     outputBuffer.encodeEnumValue(calStatus.value, 1)
     outputBuffer.encodeUint8(attempt)
     outputBuffer.encodeUint8(completionPct)
     outputBuffer.encodeUint8Array(completionMask, 10)
-    outputBuffer.encodeFloat(directionX)
-    outputBuffer.encodeFloat(directionY)
-    outputBuffer.encodeFloat(directionZ)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 191
 
-    private const val CRC: Int = 104
+    private const val CRC: Int = 143
 
     private val DESERIALIZER: MavDeserializer<MagCalProgress> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val directionX = inputBuffer.decodeFloat()
+      val directionY = inputBuffer.decodeFloat()
+      val directionZ = inputBuffer.decodeFloat()
       val compassId = inputBuffer.decodeUint8()
       val calMask = inputBuffer.decodeUint8()
       val calStatus = inputBuffer.decodeEnumValue(1).let { value ->
@@ -92,19 +95,16 @@ public data class MagCalProgress(
       val attempt = inputBuffer.decodeUint8()
       val completionPct = inputBuffer.decodeUint8()
       val completionMask = inputBuffer.decodeUint8Array(10)
-      val directionX = inputBuffer.decodeFloat()
-      val directionY = inputBuffer.decodeFloat()
-      val directionZ = inputBuffer.decodeFloat()
       MagCalProgress(
+        directionX = directionX,
+        directionY = directionY,
+        directionZ = directionZ,
         compassId = compassId,
         calMask = calMask,
         calStatus = calStatus,
         attempt = attempt,
         completionPct = completionPct,
         completionMask = completionMask,
-        directionX = directionX,
-        directionY = directionY,
-        directionZ = directionZ,
       )
     }
 

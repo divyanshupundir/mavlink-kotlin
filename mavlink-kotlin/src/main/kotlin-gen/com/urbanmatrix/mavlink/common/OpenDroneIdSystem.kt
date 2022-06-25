@@ -32,6 +32,38 @@ import kotlin.collections.List
  */
 public data class OpenDroneIdSystem(
   /**
+   * Latitude of the operator. If unknown: 0 (both Lat/Lon).
+   */
+  public val operatorLatitude: Int = 0,
+  /**
+   * Longitude of the operator. If unknown: 0 (both Lat/Lon).
+   */
+  public val operatorLongitude: Int = 0,
+  /**
+   * Area Operations Ceiling relative to WGS84. If unknown: -1000 m.
+   */
+  public val areaCeiling: Float = 0F,
+  /**
+   * Area Operations Floor relative to WGS84. If unknown: -1000 m.
+   */
+  public val areaFloor: Float = 0F,
+  /**
+   * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
+   */
+  public val operatorAltitudeGeo: Float = 0F,
+  /**
+   * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
+   */
+  public val timestamp: Long = 0L,
+  /**
+   * Number of aircraft in the area, group or formation (default 1).
+   */
+  public val areaCount: Int = 0,
+  /**
+   * Radius of the cylindrical area of the group or formation (default 0).
+   */
+  public val areaRadius: Int = 0,
+  /**
    * System ID (0 for broadcast).
    */
   public val targetSystem: Int = 0,
@@ -55,30 +87,6 @@ public data class OpenDroneIdSystem(
   public val classificationType: MavEnumValue<MavOdidClassificationType> =
       MavEnumValue.fromValue(0),
   /**
-   * Latitude of the operator. If unknown: 0 (both Lat/Lon).
-   */
-  public val operatorLatitude: Int = 0,
-  /**
-   * Longitude of the operator. If unknown: 0 (both Lat/Lon).
-   */
-  public val operatorLongitude: Int = 0,
-  /**
-   * Number of aircraft in the area, group or formation (default 1).
-   */
-  public val areaCount: Int = 0,
-  /**
-   * Radius of the cylindrical area of the group or formation (default 0).
-   */
-  public val areaRadius: Int = 0,
-  /**
-   * Area Operations Ceiling relative to WGS84. If unknown: -1000 m.
-   */
-  public val areaCeiling: Float = 0F,
-  /**
-   * Area Operations Floor relative to WGS84. If unknown: -1000 m.
-   */
-  public val areaFloor: Float = 0F,
-  /**
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the category of the UA.
    */
   public val categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0),
@@ -86,44 +94,44 @@ public data class OpenDroneIdSystem(
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class of the UA.
    */
   public val classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0),
-  /**
-   * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
-   */
-  public val operatorAltitudeGeo: Float = 0F,
-  /**
-   * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
-   */
-  public val timestamp: Long = 0L,
 ) : MavMessage<OpenDroneIdSystem> {
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdSystem> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(54).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(operatorLatitude)
+    outputBuffer.encodeInt32(operatorLongitude)
+    outputBuffer.encodeFloat(areaCeiling)
+    outputBuffer.encodeFloat(areaFloor)
+    outputBuffer.encodeFloat(operatorAltitudeGeo)
+    outputBuffer.encodeUint32(timestamp)
+    outputBuffer.encodeUint16(areaCount)
+    outputBuffer.encodeUint16(areaRadius)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(operatorLocationType.value, 1)
     outputBuffer.encodeEnumValue(classificationType.value, 1)
-    outputBuffer.encodeInt32(operatorLatitude)
-    outputBuffer.encodeInt32(operatorLongitude)
-    outputBuffer.encodeUint16(areaCount)
-    outputBuffer.encodeUint16(areaRadius)
-    outputBuffer.encodeFloat(areaCeiling)
-    outputBuffer.encodeFloat(areaFloor)
     outputBuffer.encodeEnumValue(categoryEu.value, 1)
     outputBuffer.encodeEnumValue(classEu.value, 1)
-    outputBuffer.encodeFloat(operatorAltitudeGeo)
-    outputBuffer.encodeUint32(timestamp)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 12904
 
-    private const val CRC: Int = 32
+    private const val CRC: Int = 13
 
     private val DESERIALIZER: MavDeserializer<OpenDroneIdSystem> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val operatorLatitude = inputBuffer.decodeInt32()
+      val operatorLongitude = inputBuffer.decodeInt32()
+      val areaCeiling = inputBuffer.decodeFloat()
+      val areaFloor = inputBuffer.decodeFloat()
+      val operatorAltitudeGeo = inputBuffer.decodeFloat()
+      val timestamp = inputBuffer.decodeUint32()
+      val areaCount = inputBuffer.decodeUint16()
+      val areaRadius = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val idOrMac = inputBuffer.decodeUint8Array(20)
@@ -135,12 +143,6 @@ public data class OpenDroneIdSystem(
         val entry = MavOdidClassificationType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val operatorLatitude = inputBuffer.decodeInt32()
-      val operatorLongitude = inputBuffer.decodeInt32()
-      val areaCount = inputBuffer.decodeUint16()
-      val areaRadius = inputBuffer.decodeUint16()
-      val areaCeiling = inputBuffer.decodeFloat()
-      val areaFloor = inputBuffer.decodeFloat()
       val categoryEu = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidCategoryEu.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -149,24 +151,22 @@ public data class OpenDroneIdSystem(
         val entry = MavOdidClassEu.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val operatorAltitudeGeo = inputBuffer.decodeFloat()
-      val timestamp = inputBuffer.decodeUint32()
       OpenDroneIdSystem(
+        operatorLatitude = operatorLatitude,
+        operatorLongitude = operatorLongitude,
+        areaCeiling = areaCeiling,
+        areaFloor = areaFloor,
+        operatorAltitudeGeo = operatorAltitudeGeo,
+        timestamp = timestamp,
+        areaCount = areaCount,
+        areaRadius = areaRadius,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idOrMac = idOrMac,
         operatorLocationType = operatorLocationType,
         classificationType = classificationType,
-        operatorLatitude = operatorLatitude,
-        operatorLongitude = operatorLongitude,
-        areaCount = areaCount,
-        areaRadius = areaRadius,
-        areaCeiling = areaCeiling,
-        areaFloor = areaFloor,
         categoryEu = categoryEu,
         classEu = classEu,
-        operatorAltitudeGeo = operatorAltitudeGeo,
-        timestamp = timestamp,
       )
     }
 

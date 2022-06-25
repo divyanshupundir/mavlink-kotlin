@@ -20,10 +20,6 @@ import kotlin.Int
  */
 public data class ManualControl(
   /**
-   * The system to be controlled.
-   */
-  public val target: Int = 0,
-  /**
    * X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
    * invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and the
    * pitch of a vehicle.
@@ -54,6 +50,10 @@ public data class ManualControl(
    */
   public val buttons: Int = 0,
   /**
+   * The system to be controlled.
+   */
+  public val target: Int = 0,
+  /**
    * A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for pressed, 0 for
    * released. The lowest bit corresponds to Button 16.
    */
@@ -80,12 +80,12 @@ public data class ManualControl(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(target)
     outputBuffer.encodeInt16(x)
     outputBuffer.encodeInt16(y)
     outputBuffer.encodeInt16(z)
     outputBuffer.encodeInt16(r)
     outputBuffer.encodeUint16(buttons)
+    outputBuffer.encodeUint8(target)
     outputBuffer.encodeUint16(buttons2)
     outputBuffer.encodeUint8(enabledExtensions)
     outputBuffer.encodeInt16(s)
@@ -96,27 +96,27 @@ public data class ManualControl(
   public companion object {
     private const val ID: Int = 69
 
-    private const val CRC: Int = 202
+    private const val CRC: Int = 243
 
     private val DESERIALIZER: MavDeserializer<ManualControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val target = inputBuffer.decodeUint8()
       val x = inputBuffer.decodeInt16()
       val y = inputBuffer.decodeInt16()
       val z = inputBuffer.decodeInt16()
       val r = inputBuffer.decodeInt16()
       val buttons = inputBuffer.decodeUint16()
+      val target = inputBuffer.decodeUint8()
       val buttons2 = inputBuffer.decodeUint16()
       val enabledExtensions = inputBuffer.decodeUint8()
       val s = inputBuffer.decodeInt16()
       val t = inputBuffer.decodeInt16()
       ManualControl(
-        target = target,
         x = x,
         y = y,
         z = z,
         r = r,
         buttons = buttons,
+        target = target,
         buttons2 = buttons2,
         enabledExtensions = enabledExtensions,
         s = s,

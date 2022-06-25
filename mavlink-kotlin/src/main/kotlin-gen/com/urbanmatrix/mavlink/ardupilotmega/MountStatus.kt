@@ -20,14 +20,6 @@ import kotlin.Int
  */
 public data class MountStatus(
   /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Pitch.
    */
   public val pointingA: Int = 0,
@@ -40,6 +32,14 @@ public data class MountStatus(
    */
   public val pointingC: Int = 0,
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
    * Mount operating mode.
    */
   public val mountMode: MavEnumValue<MavMountMode> = MavEnumValue.fromValue(0),
@@ -48,11 +48,11 @@ public data class MountStatus(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(15).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeInt32(pointingA)
     outputBuffer.encodeInt32(pointingB)
     outputBuffer.encodeInt32(pointingC)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(mountMode.value, 1)
     return outputBuffer.array()
   }
@@ -60,25 +60,25 @@ public data class MountStatus(
   public companion object {
     private const val ID: Int = 158
 
-    private const val CRC: Int = 233
+    private const val CRC: Int = 134
 
     private val DESERIALIZER: MavDeserializer<MountStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val pointingA = inputBuffer.decodeInt32()
       val pointingB = inputBuffer.decodeInt32()
       val pointingC = inputBuffer.decodeInt32()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val mountMode = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMountMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MountStatus(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         pointingA = pointingA,
         pointingB = pointingB,
         pointingC = pointingC,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         mountMode = mountMode,
       )
     }

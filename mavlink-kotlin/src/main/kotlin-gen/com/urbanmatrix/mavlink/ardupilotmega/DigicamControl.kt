@@ -19,6 +19,10 @@ import kotlin.Int
  */
 public data class DigicamControl(
   /**
+   * Correspondent value to given extra_param.
+   */
+  public val extraValue: Float = 0F,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -55,15 +59,12 @@ public data class DigicamControl(
    * Extra parameters enumeration (0 means ignore).
    */
   public val extraParam: Int = 0,
-  /**
-   * Correspondent value to given extra_param.
-   */
-  public val extraValue: Float = 0F,
 ) : MavMessage<DigicamControl> {
   public override val instanceMetadata: MavMessage.Metadata<DigicamControl> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(extraValue)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(session)
@@ -73,17 +74,17 @@ public data class DigicamControl(
     outputBuffer.encodeUint8(shot)
     outputBuffer.encodeUint8(commandId)
     outputBuffer.encodeUint8(extraParam)
-    outputBuffer.encodeFloat(extraValue)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 155
 
-    private const val CRC: Int = 242
+    private const val CRC: Int = 22
 
     private val DESERIALIZER: MavDeserializer<DigicamControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val extraValue = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val session = inputBuffer.decodeUint8()
@@ -93,8 +94,8 @@ public data class DigicamControl(
       val shot = inputBuffer.decodeUint8()
       val commandId = inputBuffer.decodeUint8()
       val extraParam = inputBuffer.decodeUint8()
-      val extraValue = inputBuffer.decodeFloat()
       DigicamControl(
+        extraValue = extraValue,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         session = session,
@@ -104,7 +105,6 @@ public data class DigicamControl(
         shot = shot,
         commandId = commandId,
         extraParam = extraParam,
-        extraValue = extraValue,
       )
     }
 

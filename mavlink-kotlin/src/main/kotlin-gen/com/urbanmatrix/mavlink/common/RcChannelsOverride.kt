@@ -19,14 +19,6 @@ import kotlin.Int
  */
 public data class RcChannelsOverride(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * RC channel 1 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
    */
@@ -66,6 +58,14 @@ public data class RcChannelsOverride(
    * release this channel back to the RC radio.
    */
   public val chan8Raw: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
   /**
    * RC channel 9 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
@@ -121,8 +121,6 @@ public data class RcChannelsOverride(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
     outputBuffer.encodeUint16(chan3Raw)
@@ -131,6 +129,8 @@ public data class RcChannelsOverride(
     outputBuffer.encodeUint16(chan6Raw)
     outputBuffer.encodeUint16(chan7Raw)
     outputBuffer.encodeUint16(chan8Raw)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint16(chan9Raw)
     outputBuffer.encodeUint16(chan10Raw)
     outputBuffer.encodeUint16(chan11Raw)
@@ -147,12 +147,10 @@ public data class RcChannelsOverride(
   public companion object {
     private const val ID: Int = 70
 
-    private const val CRC: Int = 143
+    private const val CRC: Int = 124
 
     private val DESERIALIZER: MavDeserializer<RcChannelsOverride> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val chan1Raw = inputBuffer.decodeUint16()
       val chan2Raw = inputBuffer.decodeUint16()
       val chan3Raw = inputBuffer.decodeUint16()
@@ -161,6 +159,8 @@ public data class RcChannelsOverride(
       val chan6Raw = inputBuffer.decodeUint16()
       val chan7Raw = inputBuffer.decodeUint16()
       val chan8Raw = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val chan9Raw = inputBuffer.decodeUint16()
       val chan10Raw = inputBuffer.decodeUint16()
       val chan11Raw = inputBuffer.decodeUint16()
@@ -172,8 +172,6 @@ public data class RcChannelsOverride(
       val chan17Raw = inputBuffer.decodeUint16()
       val chan18Raw = inputBuffer.decodeUint16()
       RcChannelsOverride(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         chan1Raw = chan1Raw,
         chan2Raw = chan2Raw,
         chan3Raw = chan3Raw,
@@ -182,6 +180,8 @@ public data class RcChannelsOverride(
         chan6Raw = chan6Raw,
         chan7Raw = chan7Raw,
         chan8Raw = chan8Raw,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         chan9Raw = chan9Raw,
         chan10Raw = chan10Raw,
         chan11Raw = chan11Raw,

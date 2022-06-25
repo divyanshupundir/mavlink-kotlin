@@ -60,10 +60,6 @@ public data class SysStatus(
    */
   public val currentBattery: Int = 0,
   /**
-   * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
-   */
-  public val batteryRemaining: Int = 0,
-  /**
    * Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
    * corrupted on reception on the MAV)
    */
@@ -89,6 +85,10 @@ public data class SysStatus(
    * Autopilot-specific errors
    */
   public val errorsCount4: Int = 0,
+  /**
+   * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
+   */
+  public val batteryRemaining: Int = 0,
   /**
    * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.
    * Value of 1: present.
@@ -118,13 +118,13 @@ public data class SysStatus(
     outputBuffer.encodeUint16(load)
     outputBuffer.encodeUint16(voltageBattery)
     outputBuffer.encodeInt16(currentBattery)
-    outputBuffer.encodeInt8(batteryRemaining)
     outputBuffer.encodeUint16(dropRateComm)
     outputBuffer.encodeUint16(errorsComm)
     outputBuffer.encodeUint16(errorsCount1)
     outputBuffer.encodeUint16(errorsCount2)
     outputBuffer.encodeUint16(errorsCount3)
     outputBuffer.encodeUint16(errorsCount4)
+    outputBuffer.encodeInt8(batteryRemaining)
     outputBuffer.encodeEnumValue(onboardControlSensorsPresentExtended.value, 4)
     outputBuffer.encodeEnumValue(onboardControlSensorsEnabledExtended.value, 4)
     outputBuffer.encodeEnumValue(onboardControlSensorsHealthExtended.value, 4)
@@ -134,7 +134,7 @@ public data class SysStatus(
   public companion object {
     private const val ID: Int = 1
 
-    private const val CRC: Int = 31
+    private const val CRC: Int = 124
 
     private val DESERIALIZER: MavDeserializer<SysStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
@@ -153,13 +153,13 @@ public data class SysStatus(
       val load = inputBuffer.decodeUint16()
       val voltageBattery = inputBuffer.decodeUint16()
       val currentBattery = inputBuffer.decodeInt16()
-      val batteryRemaining = inputBuffer.decodeInt8()
       val dropRateComm = inputBuffer.decodeUint16()
       val errorsComm = inputBuffer.decodeUint16()
       val errorsCount1 = inputBuffer.decodeUint16()
       val errorsCount2 = inputBuffer.decodeUint16()
       val errorsCount3 = inputBuffer.decodeUint16()
       val errorsCount4 = inputBuffer.decodeUint16()
+      val batteryRemaining = inputBuffer.decodeInt8()
       val onboardControlSensorsPresentExtended = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = MavSysStatusSensorExtended.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -179,13 +179,13 @@ public data class SysStatus(
         load = load,
         voltageBattery = voltageBattery,
         currentBattery = currentBattery,
-        batteryRemaining = batteryRemaining,
         dropRateComm = dropRateComm,
         errorsComm = errorsComm,
         errorsCount1 = errorsCount1,
         errorsCount2 = errorsCount2,
         errorsCount3 = errorsCount3,
         errorsCount4 = errorsCount4,
+        batteryRemaining = batteryRemaining,
         onboardControlSensorsPresentExtended = onboardControlSensorsPresentExtended,
         onboardControlSensorsEnabledExtended = onboardControlSensorsEnabledExtended,
         onboardControlSensorsHealthExtended = onboardControlSensorsHealthExtended,

@@ -29,19 +29,6 @@ public data class ObstacleDistance3d(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Class id of the distance sensor type.
-   */
-  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
-  /**
-   * Coordinate frame of reference.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object
-   * ID is unknown or cannot be determined.
-   */
-  public val obstacleId: Int = 0,
-  /**
    *  X position of the obstacle.
    */
   public val x: Float = 0F,
@@ -61,31 +48,50 @@ public data class ObstacleDistance3d(
    * Maximum distance the sensor can measure.
    */
   public val maxDistance: Float = 0F,
+  /**
+   *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object
+   * ID is unknown or cannot be determined.
+   */
+  public val obstacleId: Int = 0,
+  /**
+   * Class id of the distance sensor type.
+   */
+  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
+  /**
+   * Coordinate frame of reference.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<ObstacleDistance3d> {
   public override val instanceMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeEnumValue(sensorType.value, 1)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    outputBuffer.encodeUint16(obstacleId)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeFloat(minDistance)
     outputBuffer.encodeFloat(maxDistance)
+    outputBuffer.encodeUint16(obstacleId)
+    outputBuffer.encodeEnumValue(sensorType.value, 1)
+    outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 11037
 
-    private const val CRC: Int = 46
+    private const val CRC: Int = 130
 
     private val DESERIALIZER: MavDeserializer<ObstacleDistance3d> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
+      val x = inputBuffer.decodeFloat()
+      val y = inputBuffer.decodeFloat()
+      val z = inputBuffer.decodeFloat()
+      val minDistance = inputBuffer.decodeFloat()
+      val maxDistance = inputBuffer.decodeFloat()
+      val obstacleId = inputBuffer.decodeUint16()
       val sensorType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -94,22 +100,16 @@ public data class ObstacleDistance3d(
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val obstacleId = inputBuffer.decodeUint16()
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val minDistance = inputBuffer.decodeFloat()
-      val maxDistance = inputBuffer.decodeFloat()
       ObstacleDistance3d(
         timeBootMs = timeBootMs,
-        sensorType = sensorType,
-        frame = frame,
-        obstacleId = obstacleId,
         x = x,
         y = y,
         z = z,
         minDistance = minDistance,
         maxDistance = maxDistance,
+        obstacleId = obstacleId,
+        sensorType = sensorType,
+        frame = frame,
       )
     }
 

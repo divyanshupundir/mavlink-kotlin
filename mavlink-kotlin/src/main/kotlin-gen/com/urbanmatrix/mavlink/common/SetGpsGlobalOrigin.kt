@@ -22,10 +22,6 @@ import kotlin.Int
  */
 public data class SetGpsGlobalOrigin(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
    * Latitude (WGS84)
    */
   public val latitude: Int = 0,
@@ -38,6 +34,10 @@ public data class SetGpsGlobalOrigin(
    */
   public val altitude: Int = 0,
   /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
@@ -47,10 +47,10 @@ public data class SetGpsGlobalOrigin(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(21).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
+    outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint64(timeUsec)
     return outputBuffer.array()
   }
@@ -58,20 +58,20 @@ public data class SetGpsGlobalOrigin(
   public companion object {
     private const val ID: Int = 48
 
-    private const val CRC: Int = 220
+    private const val CRC: Int = 41
 
     private val DESERIALIZER: MavDeserializer<SetGpsGlobalOrigin> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
       val altitude = inputBuffer.decodeInt32()
+      val targetSystem = inputBuffer.decodeUint8()
       val timeUsec = inputBuffer.decodeUint64()
       SetGpsGlobalOrigin(
-        targetSystem = targetSystem,
         latitude = latitude,
         longitude = longitude,
         altitude = altitude,
+        targetSystem = targetSystem,
         timeUsec = timeUsec,
       )
     }

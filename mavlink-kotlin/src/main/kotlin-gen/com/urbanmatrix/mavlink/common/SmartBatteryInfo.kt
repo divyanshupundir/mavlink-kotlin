@@ -28,18 +28,6 @@ import kotlin.String
  */
 public data class SmartBatteryInfo(
   /**
-   * Battery ID
-   */
-  public val id: Int = 0,
-  /**
-   * Function of the battery
-   */
-  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
-  /**
-   * Type (chemistry) of the battery
-   */
-  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
-  /**
    * Capacity when full according to manufacturer, -1: field not provided.
    */
   public val capacityFullSpecification: Int = 0,
@@ -51,15 +39,6 @@ public data class SmartBatteryInfo(
    * Charge/discharge cycle count. UINT16_MAX: field not provided.
    */
   public val cycleCount: Int = 0,
-  /**
-   * Serial number in ASCII characters, 0 terminated. All 0: field not provided.
-   */
-  public val serialNumber: String = "",
-  /**
-   * Static device name in ASCII characters, 0 terminated. All 0: field not provided. Encode as
-   * manufacturer name then product name separated using an underscore.
-   */
-  public val deviceName: String = "",
   /**
    * Battery weight. 0: field not provided.
    */
@@ -76,6 +55,27 @@ public data class SmartBatteryInfo(
    * Minimum per-cell voltage when resting. If not supplied set to UINT16_MAX value.
    */
   public val restingMinimumVoltage: Int = 0,
+  /**
+   * Battery ID
+   */
+  public val id: Int = 0,
+  /**
+   * Function of the battery
+   */
+  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
+  /**
+   * Type (chemistry) of the battery
+   */
+  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
+  /**
+   * Serial number in ASCII characters, 0 terminated. All 0: field not provided.
+   */
+  public val serialNumber: String = "",
+  /**
+   * Static device name in ASCII characters, 0 terminated. All 0: field not provided. Encode as
+   * manufacturer name then product name separated using an underscore.
+   */
+  public val deviceName: String = "",
   /**
    * Maximum per-cell voltage when charged. 0: field not provided.
    */
@@ -101,18 +101,18 @@ public data class SmartBatteryInfo(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(109).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(id)
-    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeInt32(capacityFullSpecification)
     outputBuffer.encodeInt32(capacityFull)
     outputBuffer.encodeUint16(cycleCount)
-    outputBuffer.encodeString(serialNumber, 16)
-    outputBuffer.encodeString(deviceName, 50)
     outputBuffer.encodeUint16(weight)
     outputBuffer.encodeUint16(dischargeMinimumVoltage)
     outputBuffer.encodeUint16(chargingMinimumVoltage)
     outputBuffer.encodeUint16(restingMinimumVoltage)
+    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
+    outputBuffer.encodeEnumValue(type.value, 1)
+    outputBuffer.encodeString(serialNumber, 16)
+    outputBuffer.encodeString(deviceName, 50)
     outputBuffer.encodeUint16(chargingMaximumVoltage)
     outputBuffer.encodeUint8(cellsInSeries)
     outputBuffer.encodeUint32(dischargeMaximumCurrent)
@@ -124,10 +124,17 @@ public data class SmartBatteryInfo(
   public companion object {
     private const val ID: Int = 370
 
-    private const val CRC: Int = 37
+    private const val CRC: Int = 91
 
     private val DESERIALIZER: MavDeserializer<SmartBatteryInfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val capacityFullSpecification = inputBuffer.decodeInt32()
+      val capacityFull = inputBuffer.decodeInt32()
+      val cycleCount = inputBuffer.decodeUint16()
+      val weight = inputBuffer.decodeUint16()
+      val dischargeMinimumVoltage = inputBuffer.decodeUint16()
+      val chargingMinimumVoltage = inputBuffer.decodeUint16()
+      val restingMinimumVoltage = inputBuffer.decodeUint16()
       val id = inputBuffer.decodeUint8()
       val batteryFunction = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavBatteryFunction.getEntryFromValueOrNull(value)
@@ -137,33 +144,26 @@ public data class SmartBatteryInfo(
         val entry = MavBatteryType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val capacityFullSpecification = inputBuffer.decodeInt32()
-      val capacityFull = inputBuffer.decodeInt32()
-      val cycleCount = inputBuffer.decodeUint16()
       val serialNumber = inputBuffer.decodeString(16)
       val deviceName = inputBuffer.decodeString(50)
-      val weight = inputBuffer.decodeUint16()
-      val dischargeMinimumVoltage = inputBuffer.decodeUint16()
-      val chargingMinimumVoltage = inputBuffer.decodeUint16()
-      val restingMinimumVoltage = inputBuffer.decodeUint16()
       val chargingMaximumVoltage = inputBuffer.decodeUint16()
       val cellsInSeries = inputBuffer.decodeUint8()
       val dischargeMaximumCurrent = inputBuffer.decodeUint32()
       val dischargeMaximumBurstCurrent = inputBuffer.decodeUint32()
       val manufactureDate = inputBuffer.decodeString(11)
       SmartBatteryInfo(
-        id = id,
-        batteryFunction = batteryFunction,
-        type = type,
         capacityFullSpecification = capacityFullSpecification,
         capacityFull = capacityFull,
         cycleCount = cycleCount,
-        serialNumber = serialNumber,
-        deviceName = deviceName,
         weight = weight,
         dischargeMinimumVoltage = dischargeMinimumVoltage,
         chargingMinimumVoltage = chargingMinimumVoltage,
         restingMinimumVoltage = restingMinimumVoltage,
+        id = id,
+        batteryFunction = batteryFunction,
+        type = type,
+        serialNumber = serialNumber,
+        deviceName = deviceName,
         chargingMaximumVoltage = chargingMaximumVoltage,
         cellsInSeries = cellsInSeries,
         dischargeMaximumCurrent = dischargeMaximumCurrent,

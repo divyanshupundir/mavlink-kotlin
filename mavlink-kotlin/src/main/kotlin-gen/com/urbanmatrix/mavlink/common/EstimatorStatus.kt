@@ -34,10 +34,6 @@ public data class EstimatorStatus(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Bitmap indicating which EKF outputs are valid.
-   */
-  public val flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
-  /**
    * Velocity innovation test ratio
    */
   public val velRatio: Float = 0F,
@@ -69,13 +65,16 @@ public data class EstimatorStatus(
    * Vertical position 1-STD accuracy relative to the EKF local origin
    */
   public val posVertAccuracy: Float = 0F,
+  /**
+   * Bitmap indicating which EKF outputs are valid.
+   */
+  public val flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<EstimatorStatus> {
   public override val instanceMetadata: MavMessage.Metadata<EstimatorStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeFloat(velRatio)
     outputBuffer.encodeFloat(posHorizRatio)
     outputBuffer.encodeFloat(posVertRatio)
@@ -84,21 +83,18 @@ public data class EstimatorStatus(
     outputBuffer.encodeFloat(tasRatio)
     outputBuffer.encodeFloat(posHorizAccuracy)
     outputBuffer.encodeFloat(posVertAccuracy)
+    outputBuffer.encodeEnumValue(flags.value, 2)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 230
 
-    private const val CRC: Int = 123
+    private const val CRC: Int = 163
 
     private val DESERIALIZER: MavDeserializer<EstimatorStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = EstimatorStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val velRatio = inputBuffer.decodeFloat()
       val posHorizRatio = inputBuffer.decodeFloat()
       val posVertRatio = inputBuffer.decodeFloat()
@@ -107,9 +103,12 @@ public data class EstimatorStatus(
       val tasRatio = inputBuffer.decodeFloat()
       val posHorizAccuracy = inputBuffer.decodeFloat()
       val posVertAccuracy = inputBuffer.decodeFloat()
+      val flags = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = EstimatorStatusFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       EstimatorStatus(
         timeUsec = timeUsec,
-        flags = flags,
         velRatio = velRatio,
         posHorizRatio = posHorizRatio,
         posVertRatio = posVertRatio,
@@ -118,6 +117,7 @@ public data class EstimatorStatus(
         tasRatio = tasRatio,
         posHorizAccuracy = posHorizAccuracy,
         posVertAccuracy = posVertAccuracy,
+        flags = flags,
       )
     }
 

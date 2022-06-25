@@ -26,11 +26,6 @@ public data class ServoOutputRaw(
    */
   public val timeUsec: Long = 0L,
   /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
-   */
-  public val port: Int = 0,
-  /**
    * Servo output 1 value
    */
   public val servo1Raw: Int = 0,
@@ -62,6 +57,11 @@ public data class ServoOutputRaw(
    * Servo output 8 value
    */
   public val servo8Raw: Int = 0,
+  /**
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
+   * MAIN, 1 = AUX.
+   */
+  public val port: Int = 0,
   /**
    * Servo output 9 value
    */
@@ -100,7 +100,6 @@ public data class ServoOutputRaw(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(37).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeUsec)
-    outputBuffer.encodeUint8(port)
     outputBuffer.encodeUint16(servo1Raw)
     outputBuffer.encodeUint16(servo2Raw)
     outputBuffer.encodeUint16(servo3Raw)
@@ -109,6 +108,7 @@ public data class ServoOutputRaw(
     outputBuffer.encodeUint16(servo6Raw)
     outputBuffer.encodeUint16(servo7Raw)
     outputBuffer.encodeUint16(servo8Raw)
+    outputBuffer.encodeUint8(port)
     outputBuffer.encodeUint16(servo9Raw)
     outputBuffer.encodeUint16(servo10Raw)
     outputBuffer.encodeUint16(servo11Raw)
@@ -123,12 +123,11 @@ public data class ServoOutputRaw(
   public companion object {
     private const val ID: Int = 36
 
-    private const val CRC: Int = 119
+    private const val CRC: Int = 222
 
     private val DESERIALIZER: MavDeserializer<ServoOutputRaw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint32()
-      val port = inputBuffer.decodeUint8()
       val servo1Raw = inputBuffer.decodeUint16()
       val servo2Raw = inputBuffer.decodeUint16()
       val servo3Raw = inputBuffer.decodeUint16()
@@ -137,6 +136,7 @@ public data class ServoOutputRaw(
       val servo6Raw = inputBuffer.decodeUint16()
       val servo7Raw = inputBuffer.decodeUint16()
       val servo8Raw = inputBuffer.decodeUint16()
+      val port = inputBuffer.decodeUint8()
       val servo9Raw = inputBuffer.decodeUint16()
       val servo10Raw = inputBuffer.decodeUint16()
       val servo11Raw = inputBuffer.decodeUint16()
@@ -147,7 +147,6 @@ public data class ServoOutputRaw(
       val servo16Raw = inputBuffer.decodeUint16()
       ServoOutputRaw(
         timeUsec = timeUsec,
-        port = port,
         servo1Raw = servo1Raw,
         servo2Raw = servo2Raw,
         servo3Raw = servo3Raw,
@@ -156,6 +155,7 @@ public data class ServoOutputRaw(
         servo6Raw = servo6Raw,
         servo7Raw = servo7Raw,
         servo8Raw = servo8Raw,
+        port = port,
         servo9Raw = servo9Raw,
         servo10Raw = servo10Raw,
         servo11Raw = servo11Raw,

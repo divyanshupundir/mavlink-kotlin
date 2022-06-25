@@ -25,38 +25,38 @@ public data class Debug(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * index of debug variable
-   */
-  public val ind: Int = 0,
-  /**
    * DEBUG value
    */
   public val `value`: Float = 0F,
+  /**
+   * index of debug variable
+   */
+  public val ind: Int = 0,
 ) : MavMessage<Debug> {
   public override val instanceMetadata: MavMessage.Metadata<Debug> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(ind)
     outputBuffer.encodeFloat(value)
+    outputBuffer.encodeUint8(ind)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 254
 
-    private const val CRC: Int = 86
+    private const val CRC: Int = 46
 
     private val DESERIALIZER: MavDeserializer<Debug> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val ind = inputBuffer.decodeUint8()
       val value = inputBuffer.decodeFloat()
+      val ind = inputBuffer.decodeUint8()
       Debug(
         timeBootMs = timeBootMs,
-        ind = ind,
         value = value,
+        ind = ind,
       )
     }
 

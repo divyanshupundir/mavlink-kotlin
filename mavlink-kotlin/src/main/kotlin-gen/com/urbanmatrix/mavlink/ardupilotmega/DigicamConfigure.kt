@@ -19,6 +19,14 @@ import kotlin.Int
  */
 public data class DigicamConfigure(
   /**
+   * Correspondent value to given extra_param.
+   */
+  public val extraValue: Float = 0F,
+  /**
+   * Divisor number //e.g. 1000 means 1/1000 (0 means ignore).
+   */
+  public val shutterSpeed: Int = 0,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -30,10 +38,6 @@ public data class DigicamConfigure(
    * Mode enumeration from 1 to N //P, TV, AV, M, etc. (0 means ignore).
    */
   public val mode: Int = 0,
-  /**
-   * Divisor number //e.g. 1000 means 1/1000 (0 means ignore).
-   */
-  public val shutterSpeed: Int = 0,
   /**
    * F stop number x 10 //e.g. 28 means 2.8 (0 means ignore).
    */
@@ -59,59 +63,55 @@ public data class DigicamConfigure(
    * Extra parameters enumeration (0 means ignore).
    */
   public val extraParam: Int = 0,
-  /**
-   * Correspondent value to given extra_param.
-   */
-  public val extraValue: Float = 0F,
 ) : MavMessage<DigicamConfigure> {
   public override val instanceMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(15).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(extraValue)
+    outputBuffer.encodeUint16(shutterSpeed)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(mode)
-    outputBuffer.encodeUint16(shutterSpeed)
     outputBuffer.encodeUint8(aperture)
     outputBuffer.encodeUint8(iso)
     outputBuffer.encodeUint8(exposureType)
     outputBuffer.encodeUint8(commandId)
     outputBuffer.encodeUint8(engineCutOff)
     outputBuffer.encodeUint8(extraParam)
-    outputBuffer.encodeFloat(extraValue)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 154
 
-    private const val CRC: Int = 118
+    private const val CRC: Int = 84
 
     private val DESERIALIZER: MavDeserializer<DigicamConfigure> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val extraValue = inputBuffer.decodeFloat()
+      val shutterSpeed = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val mode = inputBuffer.decodeUint8()
-      val shutterSpeed = inputBuffer.decodeUint16()
       val aperture = inputBuffer.decodeUint8()
       val iso = inputBuffer.decodeUint8()
       val exposureType = inputBuffer.decodeUint8()
       val commandId = inputBuffer.decodeUint8()
       val engineCutOff = inputBuffer.decodeUint8()
       val extraParam = inputBuffer.decodeUint8()
-      val extraValue = inputBuffer.decodeFloat()
       DigicamConfigure(
+        extraValue = extraValue,
+        shutterSpeed = shutterSpeed,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         mode = mode,
-        shutterSpeed = shutterSpeed,
         aperture = aperture,
         iso = iso,
         exposureType = exposureType,
         commandId = commandId,
         engineCutOff = engineCutOff,
         extraParam = extraParam,
-        extraValue = extraValue,
       )
     }
 

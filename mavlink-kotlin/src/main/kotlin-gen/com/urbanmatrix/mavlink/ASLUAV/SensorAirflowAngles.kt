@@ -28,13 +28,13 @@ public data class SensorAirflowAngles(
    */
   public val angleofattack: Float = 0F,
   /**
-   * Angle of attack measurement valid
-   */
-  public val angleofattackValid: Int = 0,
-  /**
    * Sideslip angle
    */
   public val sideslip: Float = 0F,
+  /**
+   * Angle of attack measurement valid
+   */
+  public val angleofattackValid: Int = 0,
   /**
    * Sideslip angle measurement valid
    */
@@ -46,8 +46,8 @@ public data class SensorAirflowAngles(
     val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(angleofattack)
-    outputBuffer.encodeUint8(angleofattackValid)
     outputBuffer.encodeFloat(sideslip)
+    outputBuffer.encodeUint8(angleofattackValid)
     outputBuffer.encodeUint8(sideslipValid)
     return outputBuffer.array()
   }
@@ -55,20 +55,20 @@ public data class SensorAirflowAngles(
   public companion object {
     private const val ID: Int = 8016
 
-    private const val CRC: Int = 80
+    private const val CRC: Int = 149
 
     private val DESERIALIZER: MavDeserializer<SensorAirflowAngles> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val angleofattack = inputBuffer.decodeFloat()
-      val angleofattackValid = inputBuffer.decodeUint8()
       val sideslip = inputBuffer.decodeFloat()
+      val angleofattackValid = inputBuffer.decodeUint8()
       val sideslipValid = inputBuffer.decodeUint8()
       SensorAirflowAngles(
         timestamp = timestamp,
         angleofattack = angleofattack,
-        angleofattackValid = angleofattackValid,
         sideslip = sideslip,
+        angleofattackValid = angleofattackValid,
         sideslipValid = sideslipValid,
       )
     }

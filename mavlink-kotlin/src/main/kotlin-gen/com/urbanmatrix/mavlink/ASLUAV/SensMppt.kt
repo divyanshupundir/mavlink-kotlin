@@ -34,14 +34,6 @@ public data class SensMppt(
    */
   public val mppt1Amp: Float = 0F,
   /**
-   *  MPPT1 pwm 
-   */
-  public val mppt1Pwm: Int = 0,
-  /**
-   *  MPPT1 status 
-   */
-  public val mppt1Status: Int = 0,
-  /**
    *  MPPT2 voltage 
    */
   public val mppt2Volt: Float = 0F,
@@ -49,14 +41,6 @@ public data class SensMppt(
    *  MPPT2 current 
    */
   public val mppt2Amp: Float = 0F,
-  /**
-   *  MPPT2 pwm 
-   */
-  public val mppt2Pwm: Int = 0,
-  /**
-   *  MPPT2 status 
-   */
-  public val mppt2Status: Int = 0,
   /**
    * MPPT3 voltage 
    */
@@ -66,9 +50,25 @@ public data class SensMppt(
    */
   public val mppt3Amp: Float = 0F,
   /**
+   *  MPPT1 pwm 
+   */
+  public val mppt1Pwm: Int = 0,
+  /**
+   *  MPPT2 pwm 
+   */
+  public val mppt2Pwm: Int = 0,
+  /**
    *  MPPT3 pwm 
    */
   public val mppt3Pwm: Int = 0,
+  /**
+   *  MPPT1 status 
+   */
+  public val mppt1Status: Int = 0,
+  /**
+   *  MPPT2 status 
+   */
+  public val mppt2Status: Int = 0,
   /**
    *  MPPT3 status 
    */
@@ -81,15 +81,15 @@ public data class SensMppt(
     outputBuffer.encodeUint64(mpptTimestamp)
     outputBuffer.encodeFloat(mppt1Volt)
     outputBuffer.encodeFloat(mppt1Amp)
-    outputBuffer.encodeUint16(mppt1Pwm)
-    outputBuffer.encodeUint8(mppt1Status)
     outputBuffer.encodeFloat(mppt2Volt)
     outputBuffer.encodeFloat(mppt2Amp)
-    outputBuffer.encodeUint16(mppt2Pwm)
-    outputBuffer.encodeUint8(mppt2Status)
     outputBuffer.encodeFloat(mppt3Volt)
     outputBuffer.encodeFloat(mppt3Amp)
+    outputBuffer.encodeUint16(mppt1Pwm)
+    outputBuffer.encodeUint16(mppt2Pwm)
     outputBuffer.encodeUint16(mppt3Pwm)
+    outputBuffer.encodeUint8(mppt1Status)
+    outputBuffer.encodeUint8(mppt2Status)
     outputBuffer.encodeUint8(mppt3Status)
     return outputBuffer.array()
   }
@@ -97,36 +97,36 @@ public data class SensMppt(
   public companion object {
     private const val ID: Int = 8003
 
-    private const val CRC: Int = 33
+    private const val CRC: Int = 231
 
     private val DESERIALIZER: MavDeserializer<SensMppt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mpptTimestamp = inputBuffer.decodeUint64()
       val mppt1Volt = inputBuffer.decodeFloat()
       val mppt1Amp = inputBuffer.decodeFloat()
-      val mppt1Pwm = inputBuffer.decodeUint16()
-      val mppt1Status = inputBuffer.decodeUint8()
       val mppt2Volt = inputBuffer.decodeFloat()
       val mppt2Amp = inputBuffer.decodeFloat()
-      val mppt2Pwm = inputBuffer.decodeUint16()
-      val mppt2Status = inputBuffer.decodeUint8()
       val mppt3Volt = inputBuffer.decodeFloat()
       val mppt3Amp = inputBuffer.decodeFloat()
+      val mppt1Pwm = inputBuffer.decodeUint16()
+      val mppt2Pwm = inputBuffer.decodeUint16()
       val mppt3Pwm = inputBuffer.decodeUint16()
+      val mppt1Status = inputBuffer.decodeUint8()
+      val mppt2Status = inputBuffer.decodeUint8()
       val mppt3Status = inputBuffer.decodeUint8()
       SensMppt(
         mpptTimestamp = mpptTimestamp,
         mppt1Volt = mppt1Volt,
         mppt1Amp = mppt1Amp,
-        mppt1Pwm = mppt1Pwm,
-        mppt1Status = mppt1Status,
         mppt2Volt = mppt2Volt,
         mppt2Amp = mppt2Amp,
-        mppt2Pwm = mppt2Pwm,
-        mppt2Status = mppt2Status,
         mppt3Volt = mppt3Volt,
         mppt3Amp = mppt3Amp,
+        mppt1Pwm = mppt1Pwm,
+        mppt2Pwm = mppt2Pwm,
         mppt3Pwm = mppt3Pwm,
+        mppt1Status = mppt1Status,
+        mppt2Status = mppt2Status,
         mppt3Status = mppt3Status,
       )
     }

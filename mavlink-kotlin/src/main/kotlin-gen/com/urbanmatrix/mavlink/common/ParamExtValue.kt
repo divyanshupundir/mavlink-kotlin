@@ -22,6 +22,14 @@ import kotlin.String
  */
 public data class ParamExtValue(
   /**
+   * Total number of parameters
+   */
+  public val paramCount: Int = 0,
+  /**
+   * Index of this parameter
+   */
+  public val paramIndex: Int = 0,
+  /**
    * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
    * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
    * bytes storage if the ID is stored as string
@@ -35,48 +43,40 @@ public data class ParamExtValue(
    * Parameter type.
    */
   public val paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0),
-  /**
-   * Total number of parameters
-   */
-  public val paramCount: Int = 0,
-  /**
-   * Index of this parameter
-   */
-  public val paramIndex: Int = 0,
 ) : MavMessage<ParamExtValue> {
   public override val instanceMetadata: MavMessage.Metadata<ParamExtValue> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(149).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(paramCount)
+    outputBuffer.encodeUint16(paramIndex)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeString(paramValue, 128)
     outputBuffer.encodeEnumValue(paramType.value, 1)
-    outputBuffer.encodeUint16(paramCount)
-    outputBuffer.encodeUint16(paramIndex)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 322
 
-    private const val CRC: Int = 153
+    private const val CRC: Int = 189
 
     private val DESERIALIZER: MavDeserializer<ParamExtValue> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val paramCount = inputBuffer.decodeUint16()
+      val paramIndex = inputBuffer.decodeUint16()
       val paramId = inputBuffer.decodeString(16)
       val paramValue = inputBuffer.decodeString(128)
       val paramType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavParamExtType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val paramCount = inputBuffer.decodeUint16()
-      val paramIndex = inputBuffer.decodeUint16()
       ParamExtValue(
+        paramCount = paramCount,
+        paramIndex = paramIndex,
         paramId = paramId,
         paramValue = paramValue,
         paramType = paramType,
-        paramCount = paramCount,
-        paramIndex = paramIndex,
       )
     }
 

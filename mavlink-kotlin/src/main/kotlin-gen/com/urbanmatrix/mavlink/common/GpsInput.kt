@@ -36,25 +36,9 @@ public data class GpsInput(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * ID of the GPS for multiple GPS inputs
-   */
-  public val gpsId: Int = 0,
-  /**
-   * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
-   */
-  public val ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0),
-  /**
    * GPS time (from start of GPS week)
    */
   public val timeWeekMs: Long = 0L,
-  /**
-   * GPS week number
-   */
-  public val timeWeek: Int = 0,
-  /**
-   * 0-1: no fix, 2: 2D fix, 3: 3D fix. 4: 3D with DGPS. 5: 3D with RTK
-   */
-  public val fixType: Int = 0,
   /**
    * Latitude (WGS84)
    */
@@ -100,6 +84,22 @@ public data class GpsInput(
    */
   public val vertAccuracy: Float = 0F,
   /**
+   * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
+   */
+  public val ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0),
+  /**
+   * GPS week number
+   */
+  public val timeWeek: Int = 0,
+  /**
+   * ID of the GPS for multiple GPS inputs
+   */
+  public val gpsId: Int = 0,
+  /**
+   * 0-1: no fix, 2: 2D fix, 3: 3D fix. 4: 3D with DGPS. 5: 3D with RTK
+   */
+  public val fixType: Int = 0,
+  /**
    * Number of satellites visible.
    */
   public val satellitesVisible: Int = 0,
@@ -113,11 +113,7 @@ public data class GpsInput(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(65).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(gpsId)
-    outputBuffer.encodeEnumValue(ignoreFlags.value, 2)
     outputBuffer.encodeUint32(timeWeekMs)
-    outputBuffer.encodeUint16(timeWeek)
-    outputBuffer.encodeUint8(fixType)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -129,6 +125,10 @@ public data class GpsInput(
     outputBuffer.encodeFloat(speedAccuracy)
     outputBuffer.encodeFloat(horizAccuracy)
     outputBuffer.encodeFloat(vertAccuracy)
+    outputBuffer.encodeEnumValue(ignoreFlags.value, 2)
+    outputBuffer.encodeUint16(timeWeek)
+    outputBuffer.encodeUint8(gpsId)
+    outputBuffer.encodeUint8(fixType)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeUint16(yaw)
     return outputBuffer.array()
@@ -137,19 +137,12 @@ public data class GpsInput(
   public companion object {
     private const val ID: Int = 232
 
-    private const val CRC: Int = 191
+    private const val CRC: Int = 151
 
     private val DESERIALIZER: MavDeserializer<GpsInput> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val gpsId = inputBuffer.decodeUint8()
-      val ignoreFlags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = GpsInputIgnoreFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val timeWeekMs = inputBuffer.decodeUint32()
-      val timeWeek = inputBuffer.decodeUint16()
-      val fixType = inputBuffer.decodeUint8()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -161,15 +154,18 @@ public data class GpsInput(
       val speedAccuracy = inputBuffer.decodeFloat()
       val horizAccuracy = inputBuffer.decodeFloat()
       val vertAccuracy = inputBuffer.decodeFloat()
+      val ignoreFlags = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = GpsInputIgnoreFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val timeWeek = inputBuffer.decodeUint16()
+      val gpsId = inputBuffer.decodeUint8()
+      val fixType = inputBuffer.decodeUint8()
       val satellitesVisible = inputBuffer.decodeUint8()
       val yaw = inputBuffer.decodeUint16()
       GpsInput(
         timeUsec = timeUsec,
-        gpsId = gpsId,
-        ignoreFlags = ignoreFlags,
         timeWeekMs = timeWeekMs,
-        timeWeek = timeWeek,
-        fixType = fixType,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -181,6 +177,10 @@ public data class GpsInput(
         speedAccuracy = speedAccuracy,
         horizAccuracy = horizAccuracy,
         vertAccuracy = vertAccuracy,
+        ignoreFlags = ignoreFlags,
+        timeWeek = timeWeek,
+        gpsId = gpsId,
+        fixType = fixType,
         satellitesVisible = satellitesVisible,
         yaw = yaw,
       )

@@ -19,18 +19,6 @@ import kotlin.Long
  */
 public data class LogRequestData(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Log id (from LOG_ENTRY reply)
-   */
-  public val id: Int = 0,
-  /**
    * Offset into the log
    */
   public val ofs: Long = 0L,
@@ -38,37 +26,49 @@ public data class LogRequestData(
    * Number of bytes
    */
   public val count: Long = 0L,
+  /**
+   * Log id (from LOG_ENTRY reply)
+   */
+  public val id: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
 ) : MavMessage<LogRequestData> {
   public override val instanceMetadata: MavMessage.Metadata<LogRequestData> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint16(id)
     outputBuffer.encodeUint32(ofs)
     outputBuffer.encodeUint32(count)
+    outputBuffer.encodeUint16(id)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 119
 
-    private const val CRC: Int = 114
+    private const val CRC: Int = 116
 
     private val DESERIALIZER: MavDeserializer<LogRequestData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val id = inputBuffer.decodeUint16()
       val ofs = inputBuffer.decodeUint32()
       val count = inputBuffer.decodeUint32()
+      val id = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       LogRequestData(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        id = id,
         ofs = ofs,
         count = count,
+        id = id,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
       )
     }
 

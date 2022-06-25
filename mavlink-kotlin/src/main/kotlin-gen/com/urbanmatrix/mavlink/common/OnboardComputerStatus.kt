@@ -40,45 +40,6 @@ public data class OnboardComputerStatus(
    */
   public val uptime: Long = 0L,
   /**
-   * Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2:
-   * Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
-   */
-  public val type: Int = 0,
-  /**
-   * CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
-   * unused.
-   */
-  public val cpuCores: List<Int> = emptyList(),
-  /**
-   * Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
-   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
-   * implies the field is unused.
-   */
-  public val cpuCombined: List<Int> = emptyList(),
-  /**
-   * GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
-   * unused.
-   */
-  public val gpuCores: List<Int> = emptyList(),
-  /**
-   * Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
-   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
-   * implies the field is unused.
-   */
-  public val gpuCombined: List<Int> = emptyList(),
-  /**
-   * Temperature of the board. A value of INT8_MAX implies the field is unused.
-   */
-  public val temperatureBoard: Int = 0,
-  /**
-   * Temperature of the CPU core. A value of INT8_MAX implies the field is unused.
-   */
-  public val temperatureCore: List<Int> = emptyList(),
-  /**
-   * Fan speeds. A value of INT16_MAX implies the field is unused.
-   */
-  public val fanSpeed: List<Int> = emptyList(),
-  /**
    * Amount of used RAM on the component system. A value of UINT32_MAX implies the field is unused.
    */
   public val ramUsage: Long = 0L,
@@ -122,6 +83,45 @@ public data class OnboardComputerStatus(
    * Network capacity to the component system. A value of UINT32_MAX implies the field is unused.
    */
   public val linkRxMax: List<Long> = emptyList(),
+  /**
+   * Fan speeds. A value of INT16_MAX implies the field is unused.
+   */
+  public val fanSpeed: List<Int> = emptyList(),
+  /**
+   * Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2:
+   * Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
+   */
+  public val type: Int = 0,
+  /**
+   * CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
+   * unused.
+   */
+  public val cpuCores: List<Int> = emptyList(),
+  /**
+   * Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
+   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
+   * implies the field is unused.
+   */
+  public val cpuCombined: List<Int> = emptyList(),
+  /**
+   * GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
+   * unused.
+   */
+  public val gpuCores: List<Int> = emptyList(),
+  /**
+   * Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
+   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
+   * implies the field is unused.
+   */
+  public val gpuCombined: List<Int> = emptyList(),
+  /**
+   * Temperature of the board. A value of INT8_MAX implies the field is unused.
+   */
+  public val temperatureBoard: Int = 0,
+  /**
+   * Temperature of the CPU core. A value of INT8_MAX implies the field is unused.
+   */
+  public val temperatureCore: List<Int> = emptyList(),
 ) : MavMessage<OnboardComputerStatus> {
   public override val instanceMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
 
@@ -129,14 +129,6 @@ public data class OnboardComputerStatus(
     val outputBuffer = ByteBuffer.allocate(238).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(uptime)
-    outputBuffer.encodeUint8(type)
-    outputBuffer.encodeUint8Array(cpuCores, 8)
-    outputBuffer.encodeUint8Array(cpuCombined, 10)
-    outputBuffer.encodeUint8Array(gpuCores, 4)
-    outputBuffer.encodeUint8Array(gpuCombined, 10)
-    outputBuffer.encodeInt8(temperatureBoard)
-    outputBuffer.encodeInt8Array(temperatureCore, 8)
-    outputBuffer.encodeInt16Array(fanSpeed, 8)
     outputBuffer.encodeUint32(ramUsage)
     outputBuffer.encodeUint32(ramTotal)
     outputBuffer.encodeUint32Array(storageType, 16)
@@ -147,26 +139,26 @@ public data class OnboardComputerStatus(
     outputBuffer.encodeUint32Array(linkRxRate, 24)
     outputBuffer.encodeUint32Array(linkTxMax, 24)
     outputBuffer.encodeUint32Array(linkRxMax, 24)
+    outputBuffer.encodeInt16Array(fanSpeed, 8)
+    outputBuffer.encodeUint8(type)
+    outputBuffer.encodeUint8Array(cpuCores, 8)
+    outputBuffer.encodeUint8Array(cpuCombined, 10)
+    outputBuffer.encodeUint8Array(gpuCores, 4)
+    outputBuffer.encodeUint8Array(gpuCombined, 10)
+    outputBuffer.encodeInt8(temperatureBoard)
+    outputBuffer.encodeInt8Array(temperatureCore, 8)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 390
 
-    private const val CRC: Int = 4
+    private const val CRC: Int = 234
 
     private val DESERIALIZER: MavDeserializer<OnboardComputerStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val uptime = inputBuffer.decodeUint32()
-      val type = inputBuffer.decodeUint8()
-      val cpuCores = inputBuffer.decodeUint8Array(8)
-      val cpuCombined = inputBuffer.decodeUint8Array(10)
-      val gpuCores = inputBuffer.decodeUint8Array(4)
-      val gpuCombined = inputBuffer.decodeUint8Array(10)
-      val temperatureBoard = inputBuffer.decodeInt8()
-      val temperatureCore = inputBuffer.decodeInt8Array(8)
-      val fanSpeed = inputBuffer.decodeInt16Array(8)
       val ramUsage = inputBuffer.decodeUint32()
       val ramTotal = inputBuffer.decodeUint32()
       val storageType = inputBuffer.decodeUint32Array(16)
@@ -177,17 +169,17 @@ public data class OnboardComputerStatus(
       val linkRxRate = inputBuffer.decodeUint32Array(24)
       val linkTxMax = inputBuffer.decodeUint32Array(24)
       val linkRxMax = inputBuffer.decodeUint32Array(24)
+      val fanSpeed = inputBuffer.decodeInt16Array(8)
+      val type = inputBuffer.decodeUint8()
+      val cpuCores = inputBuffer.decodeUint8Array(8)
+      val cpuCombined = inputBuffer.decodeUint8Array(10)
+      val gpuCores = inputBuffer.decodeUint8Array(4)
+      val gpuCombined = inputBuffer.decodeUint8Array(10)
+      val temperatureBoard = inputBuffer.decodeInt8()
+      val temperatureCore = inputBuffer.decodeInt8Array(8)
       OnboardComputerStatus(
         timeUsec = timeUsec,
         uptime = uptime,
-        type = type,
-        cpuCores = cpuCores,
-        cpuCombined = cpuCombined,
-        gpuCores = gpuCores,
-        gpuCombined = gpuCombined,
-        temperatureBoard = temperatureBoard,
-        temperatureCore = temperatureCore,
-        fanSpeed = fanSpeed,
         ramUsage = ramUsage,
         ramTotal = ramTotal,
         storageType = storageType,
@@ -198,6 +190,14 @@ public data class OnboardComputerStatus(
         linkRxRate = linkRxRate,
         linkTxMax = linkTxMax,
         linkRxMax = linkRxMax,
+        fanSpeed = fanSpeed,
+        type = type,
+        cpuCores = cpuCores,
+        cpuCombined = cpuCombined,
+        gpuCores = gpuCores,
+        gpuCombined = gpuCombined,
+        temperatureBoard = temperatureBoard,
+        temperatureCore = temperatureCore,
       )
     }
 

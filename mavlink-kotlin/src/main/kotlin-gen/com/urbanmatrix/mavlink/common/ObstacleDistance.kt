@@ -34,21 +34,12 @@ public data class ObstacleDistance(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Class id of the distance sensor type.
-   */
-  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
-  /**
    * Distance of obstacles around the vehicle with index 0 corresponding to north + angle_offset,
    * unless otherwise specified in the frame. A value of 0 is valid and means that the obstacle is
    * practically touching the sensor. A value of max_distance +1 means no obstacle is present. A value
    * of UINT16_MAX for unknown/not used. In a array element, one unit corresponds to 1cm.
    */
   public val distances: List<Int> = emptyList(),
-  /**
-   * Angular width in degrees of each array element. Increment direction is clockwise. This field is
-   * ignored if increment_f is non-zero.
-   */
-  public val increment: Int = 0,
   /**
    * Minimum distance the sensor can measure.
    */
@@ -57,6 +48,15 @@ public data class ObstacleDistance(
    * Maximum distance the sensor can measure.
    */
   public val maxDistance: Int = 0,
+  /**
+   * Class id of the distance sensor type.
+   */
+  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
+  /**
+   * Angular width in degrees of each array element. Increment direction is clockwise. This field is
+   * ignored if increment_f is non-zero.
+   */
+  public val increment: Int = 0,
   /**
    * Angular width in degrees of each array element as a float. If non-zero then this value is used
    * instead of the uint8_t increment field. Positive is clockwise direction, negative is
@@ -80,11 +80,11 @@ public data class ObstacleDistance(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(167).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(sensorType.value, 1)
     outputBuffer.encodeUint16Array(distances, 144)
-    outputBuffer.encodeUint8(increment)
     outputBuffer.encodeUint16(minDistance)
     outputBuffer.encodeUint16(maxDistance)
+    outputBuffer.encodeEnumValue(sensorType.value, 1)
+    outputBuffer.encodeUint8(increment)
     outputBuffer.encodeFloat(incrementF)
     outputBuffer.encodeFloat(angleOffset)
     outputBuffer.encodeEnumValue(frame.value, 1)
@@ -94,19 +94,19 @@ public data class ObstacleDistance(
   public companion object {
     private const val ID: Int = 330
 
-    private const val CRC: Int = 101
+    private const val CRC: Int = 108
 
     private val DESERIALIZER: MavDeserializer<ObstacleDistance> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
+      val distances = inputBuffer.decodeUint16Array(144)
+      val minDistance = inputBuffer.decodeUint16()
+      val maxDistance = inputBuffer.decodeUint16()
       val sensorType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val distances = inputBuffer.decodeUint16Array(144)
       val increment = inputBuffer.decodeUint8()
-      val minDistance = inputBuffer.decodeUint16()
-      val maxDistance = inputBuffer.decodeUint16()
       val incrementF = inputBuffer.decodeFloat()
       val angleOffset = inputBuffer.decodeFloat()
       val frame = inputBuffer.decodeEnumValue(1).let { value ->
@@ -115,11 +115,11 @@ public data class ObstacleDistance(
       }
       ObstacleDistance(
         timeUsec = timeUsec,
-        sensorType = sensorType,
         distances = distances,
-        increment = increment,
         minDistance = minDistance,
         maxDistance = maxDistance,
+        sensorType = sensorType,
+        increment = increment,
         incrementF = incrementF,
         angleOffset = angleOffset,
         frame = frame,

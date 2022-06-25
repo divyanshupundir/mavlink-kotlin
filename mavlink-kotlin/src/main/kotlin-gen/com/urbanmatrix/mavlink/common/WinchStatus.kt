@@ -48,13 +48,13 @@ public data class WinchStatus(
    */
   public val current: Float = 0F,
   /**
-   * Temperature of the motor. INT16_MAX if unknown
-   */
-  public val temperature: Int = 0,
-  /**
    * Status flags
    */
   public val status: MavEnumValue<MavWinchStatusFlag> = MavEnumValue.fromValue(0),
+  /**
+   * Temperature of the motor. INT16_MAX if unknown
+   */
+  public val temperature: Int = 0,
 ) : MavMessage<WinchStatus> {
   public override val instanceMetadata: MavMessage.Metadata<WinchStatus> = METADATA
 
@@ -66,15 +66,15 @@ public data class WinchStatus(
     outputBuffer.encodeFloat(tension)
     outputBuffer.encodeFloat(voltage)
     outputBuffer.encodeFloat(current)
-    outputBuffer.encodeInt16(temperature)
     outputBuffer.encodeEnumValue(status.value, 4)
+    outputBuffer.encodeInt16(temperature)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 9005
 
-    private const val CRC: Int = 7
+    private const val CRC: Int = 117
 
     private val DESERIALIZER: MavDeserializer<WinchStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
@@ -84,11 +84,11 @@ public data class WinchStatus(
       val tension = inputBuffer.decodeFloat()
       val voltage = inputBuffer.decodeFloat()
       val current = inputBuffer.decodeFloat()
-      val temperature = inputBuffer.decodeInt16()
       val status = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = MavWinchStatusFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val temperature = inputBuffer.decodeInt16()
       WinchStatus(
         timeUsec = timeUsec,
         lineLength = lineLength,
@@ -96,8 +96,8 @@ public data class WinchStatus(
         tension = tension,
         voltage = voltage,
         current = current,
-        temperature = temperature,
         status = status,
+        temperature = temperature,
       )
     }
 

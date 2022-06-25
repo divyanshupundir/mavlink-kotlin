@@ -16,6 +16,14 @@ import kotlin.Int
  */
 public data class RadioStatus(
   /**
+   * Count of radio packet receive errors (since boot).
+   */
+  public val rxerrors: Int = 0,
+  /**
+   * Count of error corrected radio packets (since boot).
+   */
+  public val fixed: Int = 0,
+  /**
    * Local (message sender) recieved signal strength indication in device-dependent units/scale.
    * Values: [0-254], UINT8_MAX: invalid/unknown.
    */
@@ -39,51 +47,43 @@ public data class RadioStatus(
    * SiK radios). Values: [0-254], UINT8_MAX: invalid/unknown.
    */
   public val remnoise: Int = 0,
-  /**
-   * Count of radio packet receive errors (since boot).
-   */
-  public val rxerrors: Int = 0,
-  /**
-   * Count of error corrected radio packets (since boot).
-   */
-  public val fixed: Int = 0,
 ) : MavMessage<RadioStatus> {
   public override val instanceMetadata: MavMessage.Metadata<RadioStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(rxerrors)
+    outputBuffer.encodeUint16(fixed)
     outputBuffer.encodeUint8(rssi)
     outputBuffer.encodeUint8(remrssi)
     outputBuffer.encodeUint8(txbuf)
     outputBuffer.encodeUint8(noise)
     outputBuffer.encodeUint8(remnoise)
-    outputBuffer.encodeUint16(rxerrors)
-    outputBuffer.encodeUint16(fixed)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 109
 
-    private const val CRC: Int = 241
+    private const val CRC: Int = 185
 
     private val DESERIALIZER: MavDeserializer<RadioStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val rxerrors = inputBuffer.decodeUint16()
+      val fixed = inputBuffer.decodeUint16()
       val rssi = inputBuffer.decodeUint8()
       val remrssi = inputBuffer.decodeUint8()
       val txbuf = inputBuffer.decodeUint8()
       val noise = inputBuffer.decodeUint8()
       val remnoise = inputBuffer.decodeUint8()
-      val rxerrors = inputBuffer.decodeUint16()
-      val fixed = inputBuffer.decodeUint16()
       RadioStatus(
+        rxerrors = rxerrors,
+        fixed = fixed,
         rssi = rssi,
         remrssi = remrssi,
         txbuf = txbuf,
         noise = noise,
         remnoise = remnoise,
-        rxerrors = rxerrors,
-        fixed = fixed,
       )
     }
 

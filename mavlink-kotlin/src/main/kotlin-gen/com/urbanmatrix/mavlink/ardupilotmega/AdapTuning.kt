@@ -18,10 +18,6 @@ import kotlin.Int
  */
 public data class AdapTuning(
   /**
-   * Axis.
-   */
-  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
-  /**
    * Desired rate.
    */
   public val desired: Float = 0F,
@@ -69,12 +65,15 @@ public data class AdapTuning(
    * u adaptive controlled output command.
    */
   public val u: Float = 0F,
+  /**
+   * Axis.
+   */
+  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
 ) : MavMessage<AdapTuning> {
   public override val instanceMetadata: MavMessage.Metadata<AdapTuning> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(49).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(axis.value, 1)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(error)
@@ -87,20 +86,17 @@ public data class AdapTuning(
     outputBuffer.encodeFloat(f)
     outputBuffer.encodeFloat(fDot)
     outputBuffer.encodeFloat(u)
+    outputBuffer.encodeEnumValue(axis.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 11010
 
-    private const val CRC: Int = 57
+    private const val CRC: Int = 46
 
     private val DESERIALIZER: MavDeserializer<AdapTuning> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val axis = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = PidTuningAxis.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val desired = inputBuffer.decodeFloat()
       val achieved = inputBuffer.decodeFloat()
       val error = inputBuffer.decodeFloat()
@@ -113,8 +109,11 @@ public data class AdapTuning(
       val f = inputBuffer.decodeFloat()
       val fDot = inputBuffer.decodeFloat()
       val u = inputBuffer.decodeFloat()
+      val axis = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = PidTuningAxis.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       AdapTuning(
-        axis = axis,
         desired = desired,
         achieved = achieved,
         error = error,
@@ -127,6 +126,7 @@ public data class AdapTuning(
         f = f,
         fDot = fDot,
         u = u,
+        axis = axis,
       )
     }
 

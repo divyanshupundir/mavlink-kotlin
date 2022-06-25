@@ -24,14 +24,6 @@ public data class AslctrlDebug(
    */
   public val i321: Long = 0L,
   /**
-   *  Debug data
-   */
-  public val i81: Int = 0,
-  /**
-   *  Debug data
-   */
-  public val i82: Int = 0,
-  /**
    *  Debug data 
    */
   public val f1: Float = 0F,
@@ -63,14 +55,20 @@ public data class AslctrlDebug(
    *  Debug data
    */
   public val f8: Float = 0F,
+  /**
+   *  Debug data
+   */
+  public val i81: Int = 0,
+  /**
+   *  Debug data
+   */
+  public val i82: Int = 0,
 ) : MavMessage<AslctrlDebug> {
   public override val instanceMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(i321)
-    outputBuffer.encodeUint8(i81)
-    outputBuffer.encodeUint8(i82)
     outputBuffer.encodeFloat(f1)
     outputBuffer.encodeFloat(f2)
     outputBuffer.encodeFloat(f3)
@@ -79,19 +77,19 @@ public data class AslctrlDebug(
     outputBuffer.encodeFloat(f6)
     outputBuffer.encodeFloat(f7)
     outputBuffer.encodeFloat(f8)
+    outputBuffer.encodeUint8(i81)
+    outputBuffer.encodeUint8(i82)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 8005
 
-    private const val CRC: Int = 182
+    private const val CRC: Int = 251
 
     private val DESERIALIZER: MavDeserializer<AslctrlDebug> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val i321 = inputBuffer.decodeUint32()
-      val i81 = inputBuffer.decodeUint8()
-      val i82 = inputBuffer.decodeUint8()
       val f1 = inputBuffer.decodeFloat()
       val f2 = inputBuffer.decodeFloat()
       val f3 = inputBuffer.decodeFloat()
@@ -100,10 +98,10 @@ public data class AslctrlDebug(
       val f6 = inputBuffer.decodeFloat()
       val f7 = inputBuffer.decodeFloat()
       val f8 = inputBuffer.decodeFloat()
+      val i81 = inputBuffer.decodeUint8()
+      val i82 = inputBuffer.decodeUint8()
       AslctrlDebug(
         i321 = i321,
-        i81 = i81,
-        i82 = i82,
         f1 = f1,
         f2 = f2,
         f3 = f3,
@@ -112,6 +110,8 @@ public data class AslctrlDebug(
         f6 = f6,
         f7 = f7,
         f8 = f8,
+        i81 = i81,
+        i82 = i82,
       )
     }
 

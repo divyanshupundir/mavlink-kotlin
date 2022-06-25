@@ -20,6 +20,10 @@ import kotlin.String
  */
 public data class ScriptItem(
   /**
+   * Sequence
+   */
+  public val seq: Int = 0,
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -27,10 +31,6 @@ public data class ScriptItem(
    * Component ID
    */
   public val targetComponent: Int = 0,
-  /**
-   * Sequence
-   */
-  public val seq: Int = 0,
   /**
    * The name of the mission script, NULL terminated.
    */
@@ -40,9 +40,9 @@ public data class ScriptItem(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(54).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(seq)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint16(seq)
     outputBuffer.encodeString(name, 50)
     return outputBuffer.array()
   }
@@ -50,18 +50,18 @@ public data class ScriptItem(
   public companion object {
     private const val ID: Int = 180
 
-    private const val CRC: Int = 159
+    private const val CRC: Int = 130
 
     private val DESERIALIZER: MavDeserializer<ScriptItem> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val seq = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val seq = inputBuffer.decodeUint16()
       val name = inputBuffer.decodeString(50)
       ScriptItem(
+        seq = seq,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        seq = seq,
         name = name,
       )
     }

@@ -26,6 +26,13 @@ public data class SetActuatorControlTarget(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
+   * Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for single rotation
+   * direction motors is 0..1, negative range for reverse direction. Standard mapping for attitude
+   * controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes, landing
+   * gear. Load a pass-through mixer to repurpose them as generic outputs.
+   */
+  public val controls: List<Float> = emptyList(),
+  /**
    * Actuator group. The "_mlx" indicates this is a multi-instance message and a MAVLink parser
    * should use this field to difference between instances.
    */
@@ -38,44 +45,37 @@ public data class SetActuatorControlTarget(
    * Component ID
    */
   public val targetComponent: Int = 0,
-  /**
-   * Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for single rotation
-   * direction motors is 0..1, negative range for reverse direction. Standard mapping for attitude
-   * controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes, landing
-   * gear. Load a pass-through mixer to repurpose them as generic outputs.
-   */
-  public val controls: List<Float> = emptyList(),
 ) : MavMessage<SetActuatorControlTarget> {
   public override val instanceMetadata: MavMessage.Metadata<SetActuatorControlTarget> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(43).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloatArray(controls, 32)
     outputBuffer.encodeUint8(groupMlx)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeFloatArray(controls, 32)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 139
 
-    private const val CRC: Int = 226
+    private const val CRC: Int = 9
 
     private val DESERIALIZER: MavDeserializer<SetActuatorControlTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
+      val controls = inputBuffer.decodeFloatArray(32)
       val groupMlx = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val controls = inputBuffer.decodeFloatArray(32)
       SetActuatorControlTarget(
         timeUsec = timeUsec,
+        controls = controls,
         groupMlx = groupMlx,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        controls = controls,
       )
     }
 

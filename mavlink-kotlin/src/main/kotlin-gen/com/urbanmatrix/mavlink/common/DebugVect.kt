@@ -21,10 +21,6 @@ import kotlin.String
  */
 public data class DebugVect(
   /**
-   * Name
-   */
-  public val name: String = "",
-  /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
@@ -41,37 +37,41 @@ public data class DebugVect(
    * z
    */
   public val z: Float = 0F,
+  /**
+   * Name
+   */
+  public val name: String = "",
 ) : MavMessage<DebugVect> {
   public override val instanceMetadata: MavMessage.Metadata<DebugVect> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(30).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeString(name, 10)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
+    outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 250
 
-    private const val CRC: Int = 175
+    private const val CRC: Int = 245
 
     private val DESERIALIZER: MavDeserializer<DebugVect> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val name = inputBuffer.decodeString(10)
       val timeUsec = inputBuffer.decodeUint64()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
+      val name = inputBuffer.decodeString(10)
       DebugVect(
-        name = name,
         timeUsec = timeUsec,
         x = x,
         y = y,
         z = z,
+        name = name,
       )
     }
 

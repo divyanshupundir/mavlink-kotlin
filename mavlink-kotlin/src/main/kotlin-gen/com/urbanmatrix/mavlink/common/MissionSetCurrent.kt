@@ -17,6 +17,10 @@ import kotlin.Int
  */
 public data class MissionSetCurrent(
   /**
+   * Sequence
+   */
+  public val seq: Int = 0,
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -24,35 +28,31 @@ public data class MissionSetCurrent(
    * Component ID
    */
   public val targetComponent: Int = 0,
-  /**
-   * Sequence
-   */
-  public val seq: Int = 0,
 ) : MavMessage<MissionSetCurrent> {
   public override val instanceMetadata: MavMessage.Metadata<MissionSetCurrent> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(seq)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint16(seq)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 41
 
-    private const val CRC: Int = 38
+    private const val CRC: Int = 28
 
     private val DESERIALIZER: MavDeserializer<MissionSetCurrent> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val seq = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val seq = inputBuffer.decodeUint16()
       MissionSetCurrent(
+        seq = seq,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        seq = seq,
       )
     }
 

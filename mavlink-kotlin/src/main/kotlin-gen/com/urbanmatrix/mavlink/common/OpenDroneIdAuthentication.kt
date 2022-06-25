@@ -27,6 +27,11 @@ import kotlin.collections.List
  */
 public data class OpenDroneIdAuthentication(
   /**
+   * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00
+   * 01/01/2019.
+   */
+  public val timestamp: Long = 0L,
+  /**
    * System ID (0 for broadcast).
    */
   public val targetSystem: Int = 0,
@@ -60,11 +65,6 @@ public data class OpenDroneIdAuthentication(
    */
   public val length: Int = 0,
   /**
-   * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00
-   * 01/01/2019.
-   */
-  public val timestamp: Long = 0L,
-  /**
    * Opaque authentication data. For page 0, the size is only 17 bytes. For other pages, the size is
    * 23 bytes. Shall be filled with nulls in the unused portion of the field.
    */
@@ -74,6 +74,7 @@ public data class OpenDroneIdAuthentication(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(53).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timestamp)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(idOrMac, 20)
@@ -81,7 +82,6 @@ public data class OpenDroneIdAuthentication(
     outputBuffer.encodeUint8(dataPage)
     outputBuffer.encodeUint8(lastPageIndex)
     outputBuffer.encodeUint8(length)
-    outputBuffer.encodeUint32(timestamp)
     outputBuffer.encodeUint8Array(authenticationData, 23)
     return outputBuffer.array()
   }
@@ -89,11 +89,12 @@ public data class OpenDroneIdAuthentication(
   public companion object {
     private const val ID: Int = 12902
 
-    private const val CRC: Int = 131
+    private const val CRC: Int = 61
 
     private val DESERIALIZER: MavDeserializer<OpenDroneIdAuthentication> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val timestamp = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val idOrMac = inputBuffer.decodeUint8Array(20)
@@ -104,9 +105,9 @@ public data class OpenDroneIdAuthentication(
       val dataPage = inputBuffer.decodeUint8()
       val lastPageIndex = inputBuffer.decodeUint8()
       val length = inputBuffer.decodeUint8()
-      val timestamp = inputBuffer.decodeUint32()
       val authenticationData = inputBuffer.decodeUint8Array(23)
       OpenDroneIdAuthentication(
+        timestamp = timestamp,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idOrMac = idOrMac,
@@ -114,7 +115,6 @@ public data class OpenDroneIdAuthentication(
         dataPage = dataPage,
         lastPageIndex = lastPageIndex,
         length = length,
-        timestamp = timestamp,
         authenticationData = authenticationData,
       )
     }

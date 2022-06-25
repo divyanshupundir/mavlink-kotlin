@@ -24,11 +24,6 @@ public data class RcChannelsScaled(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
-   */
-  public val port: Int = 0,
-  /**
    * RC channel 1 value scaled.
    */
   public val chan1Scaled: Int = 0,
@@ -61,6 +56,11 @@ public data class RcChannelsScaled(
    */
   public val chan8Scaled: Int = 0,
   /**
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
+   * MAIN, 1 = AUX.
+   */
+  public val port: Int = 0,
+  /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
    */
@@ -71,7 +71,6 @@ public data class RcChannelsScaled(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(22).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(port)
     outputBuffer.encodeInt16(chan1Scaled)
     outputBuffer.encodeInt16(chan2Scaled)
     outputBuffer.encodeInt16(chan3Scaled)
@@ -80,6 +79,7 @@ public data class RcChannelsScaled(
     outputBuffer.encodeInt16(chan6Scaled)
     outputBuffer.encodeInt16(chan7Scaled)
     outputBuffer.encodeInt16(chan8Scaled)
+    outputBuffer.encodeUint8(port)
     outputBuffer.encodeUint8(rssi)
     return outputBuffer.array()
   }
@@ -87,12 +87,11 @@ public data class RcChannelsScaled(
   public companion object {
     private const val ID: Int = 34
 
-    private const val CRC: Int = 92
+    private const val CRC: Int = 237
 
     private val DESERIALIZER: MavDeserializer<RcChannelsScaled> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val port = inputBuffer.decodeUint8()
       val chan1Scaled = inputBuffer.decodeInt16()
       val chan2Scaled = inputBuffer.decodeInt16()
       val chan3Scaled = inputBuffer.decodeInt16()
@@ -101,10 +100,10 @@ public data class RcChannelsScaled(
       val chan6Scaled = inputBuffer.decodeInt16()
       val chan7Scaled = inputBuffer.decodeInt16()
       val chan8Scaled = inputBuffer.decodeInt16()
+      val port = inputBuffer.decodeUint8()
       val rssi = inputBuffer.decodeUint8()
       RcChannelsScaled(
         timeBootMs = timeBootMs,
-        port = port,
         chan1Scaled = chan1Scaled,
         chan2Scaled = chan2Scaled,
         chan3Scaled = chan3Scaled,
@@ -113,6 +112,7 @@ public data class RcChannelsScaled(
         chan6Scaled = chan6Scaled,
         chan7Scaled = chan7Scaled,
         chan8Scaled = chan8Scaled,
+        port = port,
         rssi = rssi,
       )
     }

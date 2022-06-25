@@ -19,18 +19,6 @@ import kotlin.Int
  */
 public data class CameraTrackingImageStatus(
   /**
-   * Current tracking status
-   */
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
-  /**
-   * Current tracking mode
-   */
-  public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0),
-  /**
-   * Defines location of target data
-   */
-  public val targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0),
-  /**
    * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is
    * right), NAN if unknown
    */
@@ -65,14 +53,23 @@ public data class CameraTrackingImageStatus(
    * is top, 1 is bottom), NAN if unknown
    */
   public val recBottomY: Float = 0F,
+  /**
+   * Current tracking status
+   */
+  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
+  /**
+   * Current tracking mode
+   */
+  public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0),
+  /**
+   * Defines location of target data
+   */
+  public val targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0),
 ) : MavMessage<CameraTrackingImageStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(31).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
-    outputBuffer.encodeEnumValue(trackingMode.value, 1)
-    outputBuffer.encodeEnumValue(targetData.value, 1)
     outputBuffer.encodeFloat(pointX)
     outputBuffer.encodeFloat(pointY)
     outputBuffer.encodeFloat(radius)
@@ -80,17 +77,27 @@ public data class CameraTrackingImageStatus(
     outputBuffer.encodeFloat(recTopY)
     outputBuffer.encodeFloat(recBottomX)
     outputBuffer.encodeFloat(recBottomY)
+    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
+    outputBuffer.encodeEnumValue(trackingMode.value, 1)
+    outputBuffer.encodeEnumValue(targetData.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 275
 
-    private const val CRC: Int = 147
+    private const val CRC: Int = 126
 
     private val DESERIALIZER: MavDeserializer<CameraTrackingImageStatus> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val pointX = inputBuffer.decodeFloat()
+      val pointY = inputBuffer.decodeFloat()
+      val radius = inputBuffer.decodeFloat()
+      val recTopX = inputBuffer.decodeFloat()
+      val recTopY = inputBuffer.decodeFloat()
+      val recBottomX = inputBuffer.decodeFloat()
+      val recBottomY = inputBuffer.decodeFloat()
       val trackingStatus = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -103,17 +110,7 @@ public data class CameraTrackingImageStatus(
         val entry = CameraTrackingTargetData.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val pointX = inputBuffer.decodeFloat()
-      val pointY = inputBuffer.decodeFloat()
-      val radius = inputBuffer.decodeFloat()
-      val recTopX = inputBuffer.decodeFloat()
-      val recTopY = inputBuffer.decodeFloat()
-      val recBottomX = inputBuffer.decodeFloat()
-      val recBottomY = inputBuffer.decodeFloat()
       CameraTrackingImageStatus(
-        trackingStatus = trackingStatus,
-        trackingMode = trackingMode,
-        targetData = targetData,
         pointX = pointX,
         pointY = pointY,
         radius = radius,
@@ -121,6 +118,9 @@ public data class CameraTrackingImageStatus(
         recTopY = recTopY,
         recBottomX = recBottomX,
         recBottomY = recBottomY,
+        trackingStatus = trackingStatus,
+        trackingMode = trackingMode,
+        targetData = targetData,
       )
     }
 

@@ -30,10 +30,6 @@ public data class LocalPositionNedCov(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Class id of the estimator this estimate originated from.
-   */
-  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
-  /**
    * X Position
    */
   public val x: Float = 0F,
@@ -76,13 +72,16 @@ public data class LocalPositionNedCov(
    * in the array.
    */
   public val covariance: List<Float> = emptyList(),
+  /**
+   * Class id of the estimator this estimate originated from.
+   */
+  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
 ) : MavMessage<LocalPositionNedCov> {
   public override val instanceMetadata: MavMessage.Metadata<LocalPositionNedCov> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(225).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeEnumValue(estimatorType.value, 1)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -93,21 +92,18 @@ public data class LocalPositionNedCov(
     outputBuffer.encodeFloat(ay)
     outputBuffer.encodeFloat(az)
     outputBuffer.encodeFloatArray(covariance, 180)
+    outputBuffer.encodeEnumValue(estimatorType.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 64
 
-    private const val CRC: Int = 114
+    private const val CRC: Int = 153
 
     private val DESERIALIZER: MavDeserializer<LocalPositionNedCov> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val estimatorType = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavEstimatorType.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -118,9 +114,12 @@ public data class LocalPositionNedCov(
       val ay = inputBuffer.decodeFloat()
       val az = inputBuffer.decodeFloat()
       val covariance = inputBuffer.decodeFloatArray(180)
+      val estimatorType = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavEstimatorType.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       LocalPositionNedCov(
         timeUsec = timeUsec,
-        estimatorType = estimatorType,
         x = x,
         y = y,
         z = z,
@@ -131,6 +130,7 @@ public data class LocalPositionNedCov(
         ay = ay,
         az = az,
         covariance = covariance,
+        estimatorType = estimatorType,
       )
     }
 

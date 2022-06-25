@@ -28,6 +28,18 @@ public data class OsdParamShowConfigReply(
    */
   public val requestId: Long = 0L,
   /**
+   * OSD parameter minimum value.
+   */
+  public val minValue: Float = 0F,
+  /**
+   * OSD parameter maximum value.
+   */
+  public val maxValue: Float = 0F,
+  /**
+   * OSD parameter increment.
+   */
+  public val increment: Float = 0F,
+  /**
    * Config error type.
    */
   public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0),
@@ -41,41 +53,32 @@ public data class OsdParamShowConfigReply(
    * Config type.
    */
   public val configType: MavEnumValue<OsdParamConfigType> = MavEnumValue.fromValue(0),
-  /**
-   * OSD parameter minimum value.
-   */
-  public val minValue: Float = 0F,
-  /**
-   * OSD parameter maximum value.
-   */
-  public val maxValue: Float = 0F,
-  /**
-   * OSD parameter increment.
-   */
-  public val increment: Float = 0F,
 ) : MavMessage<OsdParamShowConfigReply> {
   public override val instanceMetadata: MavMessage.Metadata<OsdParamShowConfigReply> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(34).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
-    outputBuffer.encodeEnumValue(result.value, 1)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(configType.value, 1)
     outputBuffer.encodeFloat(minValue)
     outputBuffer.encodeFloat(maxValue)
     outputBuffer.encodeFloat(increment)
+    outputBuffer.encodeEnumValue(result.value, 1)
+    outputBuffer.encodeString(paramId, 16)
+    outputBuffer.encodeEnumValue(configType.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 11036
 
-    private const val CRC: Int = 1
+    private const val CRC: Int = 73
 
     private val DESERIALIZER: MavDeserializer<OsdParamShowConfigReply> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUint32()
+      val minValue = inputBuffer.decodeFloat()
+      val maxValue = inputBuffer.decodeFloat()
+      val increment = inputBuffer.decodeFloat()
       val result = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = OsdParamConfigError.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -85,17 +88,14 @@ public data class OsdParamShowConfigReply(
         val entry = OsdParamConfigType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val minValue = inputBuffer.decodeFloat()
-      val maxValue = inputBuffer.decodeFloat()
-      val increment = inputBuffer.decodeFloat()
       OsdParamShowConfigReply(
         requestId = requestId,
-        result = result,
-        paramId = paramId,
-        configType = configType,
         minValue = minValue,
         maxValue = maxValue,
         increment = increment,
+        result = result,
+        paramId = paramId,
+        configType = configType,
       )
     }
 

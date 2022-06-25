@@ -20,6 +20,10 @@ import kotlin.Int
  */
 public data class TerrainRequest(
   /**
+   * Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
+   */
+  public val mask: BigInteger = BigInteger.ZERO,
+  /**
    * Latitude of SW corner of first grid
    */
   public val lat: Int = 0,
@@ -31,38 +35,34 @@ public data class TerrainRequest(
    * Grid spacing
    */
   public val gridSpacing: Int = 0,
-  /**
-   * Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
-   */
-  public val mask: BigInteger = BigInteger.ZERO,
 ) : MavMessage<TerrainRequest> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainRequest> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(mask)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeUint16(gridSpacing)
-    outputBuffer.encodeUint64(mask)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 133
 
-    private const val CRC: Int = 142
+    private const val CRC: Int = 6
 
     private val DESERIALIZER: MavDeserializer<TerrainRequest> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val mask = inputBuffer.decodeUint64()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val gridSpacing = inputBuffer.decodeUint16()
-      val mask = inputBuffer.decodeUint64()
       TerrainRequest(
+        mask = mask,
         lat = lat,
         lon = lon,
         gridSpacing = gridSpacing,
-        mask = mask,
       )
     }
 

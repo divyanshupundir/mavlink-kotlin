@@ -34,10 +34,6 @@ public data class OrbitExecutionStatus(
    */
   public val radius: Float = 0F,
   /**
-   * The coordinate system of the fields: x, y, z.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
    * X coordinate of center point. Coordinate system depends on frame field: local = x position in
    * meters * 1e4, global = latitude in degrees * 1e7.
    */
@@ -51,6 +47,10 @@ public data class OrbitExecutionStatus(
    * Altitude of center point. Coordinate system depends on frame field.
    */
   public val z: Float = 0F,
+  /**
+   * The coordinate system of the fields: x, y, z.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<OrbitExecutionStatus> {
   public override val instanceMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
 
@@ -58,36 +58,36 @@ public data class OrbitExecutionStatus(
     val outputBuffer = ByteBuffer.allocate(25).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(radius)
-    outputBuffer.encodeEnumValue(frame.value, 1)
     outputBuffer.encodeInt32(x)
     outputBuffer.encodeInt32(y)
     outputBuffer.encodeFloat(z)
+    outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 360
 
-    private const val CRC: Int = 251
+    private const val CRC: Int = 11
 
     private val DESERIALIZER: MavDeserializer<OrbitExecutionStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val radius = inputBuffer.decodeFloat()
+      val x = inputBuffer.decodeInt32()
+      val y = inputBuffer.decodeInt32()
+      val z = inputBuffer.decodeFloat()
       val frame = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val x = inputBuffer.decodeInt32()
-      val y = inputBuffer.decodeInt32()
-      val z = inputBuffer.decodeFloat()
       OrbitExecutionStatus(
         timeUsec = timeUsec,
         radius = radius,
-        frame = frame,
         x = x,
         y = y,
         z = z,
+        frame = frame,
       )
     }
 

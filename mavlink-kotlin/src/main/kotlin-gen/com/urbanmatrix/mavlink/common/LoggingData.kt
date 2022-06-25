@@ -19,6 +19,10 @@ import kotlin.collections.List
  */
 public data class LoggingData(
   /**
+   * sequence number (can wrap)
+   */
+  public val sequence: Int = 0,
+  /**
    * system ID of the target
    */
   public val targetSystem: Int = 0,
@@ -26,10 +30,6 @@ public data class LoggingData(
    * component ID of the target
    */
   public val targetComponent: Int = 0,
-  /**
-   * sequence number (can wrap)
-   */
-  public val sequence: Int = 0,
   /**
    * data length
    */
@@ -48,9 +48,9 @@ public data class LoggingData(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(255).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeUint8(length)
     outputBuffer.encodeUint8(firstMessageOffset)
     outputBuffer.encodeUint8Array(data, 249)
@@ -60,20 +60,20 @@ public data class LoggingData(
   public companion object {
     private const val ID: Int = 266
 
-    private const val CRC: Int = 185
+    private const val CRC: Int = 242
 
     private val DESERIALIZER: MavDeserializer<LoggingData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val sequence = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val sequence = inputBuffer.decodeUint16()
       val length = inputBuffer.decodeUint8()
       val firstMessageOffset = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(249)
       LoggingData(
+        sequence = sequence,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        sequence = sequence,
         length = length,
         firstMessageOffset = firstMessageOffset,
         data = data,

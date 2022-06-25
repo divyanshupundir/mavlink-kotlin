@@ -40,17 +40,13 @@ import kotlin.collections.List
  */
 public data class CameraImageCaptured(
   /**
-   * Timestamp (time since system boot).
-   */
-  public val timeBootMs: Long = 0L,
-  /**
    * Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
    */
   public val timeUtc: BigInteger = BigInteger.ZERO,
   /**
-   * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
+   * Timestamp (time since system boot).
    */
-  public val cameraId: Int = 0,
+  public val timeBootMs: Long = 0L,
   /**
    * Latitude where image was taken
    */
@@ -77,6 +73,10 @@ public data class CameraImageCaptured(
    */
   public val imageIndex: Int = 0,
   /**
+   * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
+   */
+  public val cameraId: Int = 0,
+  /**
    * Boolean indicating success (1) or failure (0) while capturing this image.
    */
   public val captureResult: Int = 0,
@@ -90,15 +90,15 @@ public data class CameraImageCaptured(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(255).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint64(timeUtc)
-    outputBuffer.encodeUint8(cameraId)
+    outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
     outputBuffer.encodeInt32(relativeAlt)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeInt32(imageIndex)
+    outputBuffer.encodeUint8(cameraId)
     outputBuffer.encodeInt8(captureResult)
     outputBuffer.encodeString(fileUrl, 205)
     return outputBuffer.array()
@@ -107,31 +107,31 @@ public data class CameraImageCaptured(
   public companion object {
     private const val ID: Int = 263
 
-    private const val CRC: Int = 7
+    private const val CRC: Int = 32
 
     private val DESERIALIZER: MavDeserializer<CameraImageCaptured> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
       val timeUtc = inputBuffer.decodeUint64()
-      val cameraId = inputBuffer.decodeUint8()
+      val timeBootMs = inputBuffer.decodeUint32()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
       val relativeAlt = inputBuffer.decodeInt32()
       val q = inputBuffer.decodeFloatArray(16)
       val imageIndex = inputBuffer.decodeInt32()
+      val cameraId = inputBuffer.decodeUint8()
       val captureResult = inputBuffer.decodeInt8()
       val fileUrl = inputBuffer.decodeString(205)
       CameraImageCaptured(
-        timeBootMs = timeBootMs,
         timeUtc = timeUtc,
-        cameraId = cameraId,
+        timeBootMs = timeBootMs,
         lat = lat,
         lon = lon,
         alt = alt,
         relativeAlt = relativeAlt,
         q = q,
         imageIndex = imageIndex,
+        cameraId = cameraId,
         captureResult = captureResult,
         fileUrl = fileUrl,
       )

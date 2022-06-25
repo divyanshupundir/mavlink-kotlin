@@ -34,19 +34,6 @@ public data class HighLatency2(
    */
   public val timestamp: Long = 0L,
   /**
-   * Type of the MAV (quadrotor, helicopter, etc.)
-   */
-  public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0),
-  /**
-   * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight
-   * controllers.
-   */
-  public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0),
-  /**
-   * A bitfield for use for autopilot-specific flags (2 byte version).
-   */
-  public val customMode: Int = 0,
-  /**
    * Latitude
    */
   public val latitude: Int = 0,
@@ -54,6 +41,10 @@ public data class HighLatency2(
    * Longitude
    */
   public val longitude: Int = 0,
+  /**
+   * A bitfield for use for autopilot-specific flags (2 byte version).
+   */
+  public val customMode: Int = 0,
   /**
    * Altitude above mean sea level
    */
@@ -63,6 +54,27 @@ public data class HighLatency2(
    */
   public val targetAltitude: Int = 0,
   /**
+   * Distance to target waypoint or position
+   */
+  public val targetDistance: Int = 0,
+  /**
+   * Current waypoint number
+   */
+  public val wpNum: Int = 0,
+  /**
+   * Bitmap of failure flags.
+   */
+  public val failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0),
+  /**
+   * Type of the MAV (quadrotor, helicopter, etc.)
+   */
+  public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0),
+  /**
+   * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight
+   * controllers.
+   */
+  public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0),
+  /**
    * Heading
    */
   public val heading: Int = 0,
@@ -70,10 +82,6 @@ public data class HighLatency2(
    * Heading setpoint
    */
   public val targetHeading: Int = 0,
-  /**
-   * Distance to target waypoint or position
-   */
-  public val targetDistance: Int = 0,
   /**
    * Throttle
    */
@@ -119,14 +127,6 @@ public data class HighLatency2(
    */
   public val battery: Int = 0,
   /**
-   * Current waypoint number
-   */
-  public val wpNum: Int = 0,
-  /**
-   * Bitmap of failure flags.
-   */
-  public val failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0),
-  /**
    * Field for custom payload.
    */
   public val custom0: Int = 0,
@@ -144,16 +144,18 @@ public data class HighLatency2(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timestamp)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeUint16(customMode)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
+    outputBuffer.encodeUint16(customMode)
     outputBuffer.encodeInt16(altitude)
     outputBuffer.encodeInt16(targetAltitude)
+    outputBuffer.encodeUint16(targetDistance)
+    outputBuffer.encodeUint16(wpNum)
+    outputBuffer.encodeEnumValue(failureFlags.value, 2)
+    outputBuffer.encodeEnumValue(type.value, 1)
+    outputBuffer.encodeEnumValue(autopilot.value, 1)
     outputBuffer.encodeUint8(heading)
     outputBuffer.encodeUint8(targetHeading)
-    outputBuffer.encodeUint16(targetDistance)
     outputBuffer.encodeUint8(throttle)
     outputBuffer.encodeUint8(airspeed)
     outputBuffer.encodeUint8(airspeedSp)
@@ -165,8 +167,6 @@ public data class HighLatency2(
     outputBuffer.encodeInt8(temperatureAir)
     outputBuffer.encodeInt8(climbRate)
     outputBuffer.encodeInt8(battery)
-    outputBuffer.encodeUint16(wpNum)
-    outputBuffer.encodeEnumValue(failureFlags.value, 2)
     outputBuffer.encodeInt8(custom0)
     outputBuffer.encodeInt8(custom1)
     outputBuffer.encodeInt8(custom2)
@@ -176,11 +176,22 @@ public data class HighLatency2(
   public companion object {
     private const val ID: Int = 235
 
-    private const val CRC: Int = 31
+    private const val CRC: Int = 179
 
     private val DESERIALIZER: MavDeserializer<HighLatency2> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint32()
+      val latitude = inputBuffer.decodeInt32()
+      val longitude = inputBuffer.decodeInt32()
+      val customMode = inputBuffer.decodeUint16()
+      val altitude = inputBuffer.decodeInt16()
+      val targetAltitude = inputBuffer.decodeInt16()
+      val targetDistance = inputBuffer.decodeUint16()
+      val wpNum = inputBuffer.decodeUint16()
+      val failureFlags = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = HlFailureFlag.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -189,14 +200,8 @@ public data class HighLatency2(
         val entry = MavAutopilot.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val customMode = inputBuffer.decodeUint16()
-      val latitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val altitude = inputBuffer.decodeInt16()
-      val targetAltitude = inputBuffer.decodeInt16()
       val heading = inputBuffer.decodeUint8()
       val targetHeading = inputBuffer.decodeUint8()
-      val targetDistance = inputBuffer.decodeUint16()
       val throttle = inputBuffer.decodeUint8()
       val airspeed = inputBuffer.decodeUint8()
       val airspeedSp = inputBuffer.decodeUint8()
@@ -208,26 +213,23 @@ public data class HighLatency2(
       val temperatureAir = inputBuffer.decodeInt8()
       val climbRate = inputBuffer.decodeInt8()
       val battery = inputBuffer.decodeInt8()
-      val wpNum = inputBuffer.decodeUint16()
-      val failureFlags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = HlFailureFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val custom0 = inputBuffer.decodeInt8()
       val custom1 = inputBuffer.decodeInt8()
       val custom2 = inputBuffer.decodeInt8()
       HighLatency2(
         timestamp = timestamp,
-        type = type,
-        autopilot = autopilot,
-        customMode = customMode,
         latitude = latitude,
         longitude = longitude,
+        customMode = customMode,
         altitude = altitude,
         targetAltitude = targetAltitude,
+        targetDistance = targetDistance,
+        wpNum = wpNum,
+        failureFlags = failureFlags,
+        type = type,
+        autopilot = autopilot,
         heading = heading,
         targetHeading = targetHeading,
-        targetDistance = targetDistance,
         throttle = throttle,
         airspeed = airspeed,
         airspeedSp = airspeedSp,
@@ -239,8 +241,6 @@ public data class HighLatency2(
         temperatureAir = temperatureAir,
         climbRate = climbRate,
         battery = battery,
-        wpNum = wpNum,
-        failureFlags = failureFlags,
         custom0 = custom0,
         custom1 = custom1,
         custom2 = custom2,

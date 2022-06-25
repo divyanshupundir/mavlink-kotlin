@@ -16,14 +16,6 @@ import kotlin.Int
  */
 public data class FlexifunctionReadReq(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Type of flexifunction data requested
    */
   public val readReqType: Int = 0,
@@ -31,34 +23,42 @@ public data class FlexifunctionReadReq(
    * index into data where needed
    */
   public val dataIndex: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
 ) : MavMessage<FlexifunctionReadReq> {
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionReadReq> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeInt16(readReqType)
     outputBuffer.encodeInt16(dataIndex)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 151
 
-    private const val CRC: Int = 7
+    private const val CRC: Int = 26
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionReadReq> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val readReqType = inputBuffer.decodeInt16()
       val dataIndex = inputBuffer.decodeInt16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       FlexifunctionReadReq(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         readReqType = readReqType,
         dataIndex = dataIndex,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
       )
     }
 

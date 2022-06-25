@@ -27,30 +27,13 @@ import kotlin.Long
  */
 public data class CommandLongStamped(
   /**
-   * UTC time, seconds elapsed since 01.01.1970
-   */
-  public val utcTime: Long = 0L,
-  /**
    * Microseconds elapsed since vehicle boot
    */
   public val vehicleTimestamp: BigInteger = BigInteger.ZERO,
   /**
-   * System which should execute the command
+   * UTC time, seconds elapsed since 01.01.1970
    */
-  public val targetSystem: Int = 0,
-  /**
-   * Component which should execute the command, 0 for all components
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Command ID, as defined by MAV_CMD enum.
-   */
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
-  /**
-   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
-   * command)
-   */
-  public val confirmation: Int = 0,
+  public val utcTime: Long = 0L,
   /**
    * Parameter 1, as defined by MAV_CMD enum.
    */
@@ -79,17 +62,30 @@ public data class CommandLongStamped(
    * Parameter 7, as defined by MAV_CMD enum.
    */
   public val param7: Float = 0F,
+  /**
+   * Command ID, as defined by MAV_CMD enum.
+   */
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  /**
+   * System which should execute the command
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component which should execute the command, 0 for all components
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
+   * command)
+   */
+  public val confirmation: Int = 0,
 ) : MavMessage<CommandLongStamped> {
   public override val instanceMetadata: MavMessage.Metadata<CommandLongStamped> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(45).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(utcTime)
     outputBuffer.encodeUint64(vehicleTimestamp)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(confirmation)
+    outputBuffer.encodeUint32(utcTime)
     outputBuffer.encodeFloat(param1)
     outputBuffer.encodeFloat(param2)
     outputBuffer.encodeFloat(param3)
@@ -97,25 +93,22 @@ public data class CommandLongStamped(
     outputBuffer.encodeFloat(param5)
     outputBuffer.encodeFloat(param6)
     outputBuffer.encodeFloat(param7)
+    outputBuffer.encodeEnumValue(command.value, 2)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUint8(confirmation)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 224
 
-    private const val CRC: Int = 142
+    private const val CRC: Int = 102
 
     private val DESERIALIZER: MavDeserializer<CommandLongStamped> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val utcTime = inputBuffer.decodeUint32()
       val vehicleTimestamp = inputBuffer.decodeUint64()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val command = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = MavCmd.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val confirmation = inputBuffer.decodeUint8()
+      val utcTime = inputBuffer.decodeUint32()
       val param1 = inputBuffer.decodeFloat()
       val param2 = inputBuffer.decodeFloat()
       val param3 = inputBuffer.decodeFloat()
@@ -123,13 +116,16 @@ public data class CommandLongStamped(
       val param5 = inputBuffer.decodeFloat()
       val param6 = inputBuffer.decodeFloat()
       val param7 = inputBuffer.decodeFloat()
+      val command = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = MavCmd.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
+      val confirmation = inputBuffer.decodeUint8()
       CommandLongStamped(
-        utcTime = utcTime,
         vehicleTimestamp = vehicleTimestamp,
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        command = command,
-        confirmation = confirmation,
+        utcTime = utcTime,
         param1 = param1,
         param2 = param2,
         param3 = param3,
@@ -137,6 +133,10 @@ public data class CommandLongStamped(
         param5 = param5,
         param6 = param6,
         param7 = param7,
+        command = command,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        confirmation = confirmation,
       )
     }
 

@@ -24,22 +24,6 @@ import kotlin.Int
  */
 public data class RallyPoint(
   /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID.
-   */
-  public val targetComponent: Int = 0,
-  /**
-   * Point index (first point is 0).
-   */
-  public val idx: Int = 0,
-  /**
-   * Total number of points (for sanity checking).
-   */
-  public val count: Int = 0,
-  /**
    * Latitude of point.
    */
   public val lat: Int = 0,
@@ -60,6 +44,22 @@ public data class RallyPoint(
    */
   public val landDir: Int = 0,
   /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID.
+   */
+  public val targetComponent: Int = 0,
+  /**
+   * Point index (first point is 0).
+   */
+  public val idx: Int = 0,
+  /**
+   * Total number of points (for sanity checking).
+   */
+  public val count: Int = 0,
+  /**
    * Configuration flags.
    */
   public val flags: MavEnumValue<RallyFlags> = MavEnumValue.fromValue(0),
@@ -68,15 +68,15 @@ public data class RallyPoint(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(19).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(idx)
-    outputBuffer.encodeUint8(count)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeInt16(alt)
     outputBuffer.encodeInt16(breakAlt)
     outputBuffer.encodeUint16(landDir)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUint8(idx)
+    outputBuffer.encodeUint8(count)
     outputBuffer.encodeEnumValue(flags.value, 1)
     return outputBuffer.array()
   }
@@ -84,33 +84,33 @@ public data class RallyPoint(
   public companion object {
     private const val ID: Int = 175
 
-    private const val CRC: Int = 61
+    private const val CRC: Int = 138
 
     private val DESERIALIZER: MavDeserializer<RallyPoint> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val idx = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint8()
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt16()
       val breakAlt = inputBuffer.decodeInt16()
       val landDir = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
+      val idx = inputBuffer.decodeUint8()
+      val count = inputBuffer.decodeUint8()
       val flags = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = RallyFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       RallyPoint(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
-        idx = idx,
-        count = count,
         lat = lat,
         lng = lng,
         alt = alt,
         breakAlt = breakAlt,
         landDir = landDir,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        idx = idx,
+        count = count,
         flags = flags,
       )
     }

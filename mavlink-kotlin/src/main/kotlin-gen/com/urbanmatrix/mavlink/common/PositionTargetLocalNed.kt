@@ -27,15 +27,6 @@ public data class PositionTargetLocalNed(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
-   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
-   */
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
-   * Bitmap to indicate which dimensions should be ignored by the vehicle.
-   */
-  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
-  /**
    * X Position in NED frame
    */
   public val x: Float = 0F,
@@ -79,14 +70,21 @@ public data class PositionTargetLocalNed(
    * yaw rate setpoint
    */
   public val yawRate: Float = 0F,
+  /**
+   * Bitmap to indicate which dimensions should be ignored by the vehicle.
+   */
+  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
+  /**
+   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
+   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
+   */
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<PositionTargetLocalNed> {
   public override val instanceMetadata: MavMessage.Metadata<PositionTargetLocalNed> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(51).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
-    outputBuffer.encodeEnumValue(typeMask.value, 2)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -98,25 +96,19 @@ public data class PositionTargetLocalNed(
     outputBuffer.encodeFloat(afz)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(yawRate)
+    outputBuffer.encodeEnumValue(typeMask.value, 2)
+    outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 85
 
-    private const val CRC: Int = 220
+    private const val CRC: Int = 140
 
     private val DESERIALIZER: MavDeserializer<PositionTargetLocalNed> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val coordinateFrame = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavFrame.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
-      val typeMask = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = PositionTargetTypemask.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -128,10 +120,16 @@ public data class PositionTargetLocalNed(
       val afz = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
       val yawRate = inputBuffer.decodeFloat()
+      val typeMask = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = PositionTargetTypemask.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
+      val coordinateFrame = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavFrame.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       PositionTargetLocalNed(
         timeBootMs = timeBootMs,
-        coordinateFrame = coordinateFrame,
-        typeMask = typeMask,
         x = x,
         y = y,
         z = z,
@@ -143,6 +141,8 @@ public data class PositionTargetLocalNed(
         afz = afz,
         yaw = yaw,
         yawRate = yawRate,
+        typeMask = typeMask,
+        coordinateFrame = coordinateFrame,
       )
     }
 

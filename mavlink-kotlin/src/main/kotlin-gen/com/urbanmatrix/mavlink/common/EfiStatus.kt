@@ -17,10 +17,6 @@ import kotlin.Int
  */
 public data class EfiStatus(
   /**
-   * EFI health status
-   */
-  public val health: Int = 0,
-  /**
    * ECU index
    */
   public val ecuIndex: Float = 0F,
@@ -85,6 +81,10 @@ public data class EfiStatus(
    */
   public val ptCompensation: Float = 0F,
   /**
+   * EFI health status
+   */
+  public val health: Int = 0,
+  /**
    * Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply
    * voltage really is zero volts use 0.0001 instead.
    */
@@ -94,7 +94,6 @@ public data class EfiStatus(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(69).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(health)
     outputBuffer.encodeFloat(ecuIndex)
     outputBuffer.encodeFloat(rpm)
     outputBuffer.encodeFloat(fuelConsumed)
@@ -111,6 +110,7 @@ public data class EfiStatus(
     outputBuffer.encodeFloat(exhaustGasTemperature)
     outputBuffer.encodeFloat(throttleOut)
     outputBuffer.encodeFloat(ptCompensation)
+    outputBuffer.encodeUint8(health)
     outputBuffer.encodeFloat(ignitionVoltage)
     return outputBuffer.array()
   }
@@ -118,11 +118,10 @@ public data class EfiStatus(
   public companion object {
     private const val ID: Int = 225
 
-    private const val CRC: Int = 203
+    private const val CRC: Int = 208
 
     private val DESERIALIZER: MavDeserializer<EfiStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val health = inputBuffer.decodeUint8()
       val ecuIndex = inputBuffer.decodeFloat()
       val rpm = inputBuffer.decodeFloat()
       val fuelConsumed = inputBuffer.decodeFloat()
@@ -139,9 +138,9 @@ public data class EfiStatus(
       val exhaustGasTemperature = inputBuffer.decodeFloat()
       val throttleOut = inputBuffer.decodeFloat()
       val ptCompensation = inputBuffer.decodeFloat()
+      val health = inputBuffer.decodeUint8()
       val ignitionVoltage = inputBuffer.decodeFloat()
       EfiStatus(
-        health = health,
         ecuIndex = ecuIndex,
         rpm = rpm,
         fuelConsumed = fuelConsumed,
@@ -158,6 +157,7 @@ public data class EfiStatus(
         exhaustGasTemperature = exhaustGasTemperature,
         throttleOut = throttleOut,
         ptCompensation = ptCompensation,
+        health = health,
         ignitionVoltage = ignitionVoltage,
       )
     }

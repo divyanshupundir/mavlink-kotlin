@@ -18,14 +18,6 @@ import kotlin.Int
  */
 public data class LogRequestList(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * First log id (0 for first available)
    */
   public val start: Int = 0,
@@ -33,34 +25,42 @@ public data class LogRequestList(
    * Last log id (0xffff for last available)
    */
   public val end: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
 ) : MavMessage<LogRequestList> {
   public override val instanceMetadata: MavMessage.Metadata<LogRequestList> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint16(start)
     outputBuffer.encodeUint16(end)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 117
 
-    private const val CRC: Int = 88
+    private const val CRC: Int = 128
 
     private val DESERIALIZER: MavDeserializer<LogRequestList> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val start = inputBuffer.decodeUint16()
       val end = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       LogRequestList(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         start = start,
         end = end,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
       )
     }
 

@@ -27,10 +27,6 @@ public data class TrajectoryRepresentationBezier(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * Number of valid control points (up-to 5 points are possible)
-   */
-  public val validPoints: Int = 0,
-  /**
    * X-coordinate of bezier control points. Set to NaN if not being used
    */
   public val posX: List<Float> = emptyList(),
@@ -50,6 +46,10 @@ public data class TrajectoryRepresentationBezier(
    * Yaw. Set to NaN for unchanged
    */
   public val posYaw: List<Float> = emptyList(),
+  /**
+   * Number of valid control points (up-to 5 points are possible)
+   */
+  public val validPoints: Int = 0,
 ) : MavMessage<TrajectoryRepresentationBezier> {
   public override val instanceMetadata: MavMessage.Metadata<TrajectoryRepresentationBezier> =
       METADATA
@@ -57,38 +57,38 @@ public data class TrajectoryRepresentationBezier(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(109).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(validPoints)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
     outputBuffer.encodeFloatArray(posZ, 20)
     outputBuffer.encodeFloatArray(delta, 20)
     outputBuffer.encodeFloatArray(posYaw, 20)
+    outputBuffer.encodeUint8(validPoints)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 333
 
-    private const val CRC: Int = 240
+    private const val CRC: Int = 139
 
     private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationBezier> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val validPoints = inputBuffer.decodeUint8()
       val posX = inputBuffer.decodeFloatArray(20)
       val posY = inputBuffer.decodeFloatArray(20)
       val posZ = inputBuffer.decodeFloatArray(20)
       val delta = inputBuffer.decodeFloatArray(20)
       val posYaw = inputBuffer.decodeFloatArray(20)
+      val validPoints = inputBuffer.decodeUint8()
       TrajectoryRepresentationBezier(
         timeUsec = timeUsec,
-        validPoints = validPoints,
         posX = posX,
         posY = posY,
         posZ = posZ,
         delta = delta,
         posYaw = posYaw,
+        validPoints = validPoints,
       )
     }
 

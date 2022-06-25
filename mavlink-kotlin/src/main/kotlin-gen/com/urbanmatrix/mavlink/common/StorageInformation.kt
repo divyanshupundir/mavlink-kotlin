@@ -33,18 +33,6 @@ public data class StorageInformation(
    */
   public val timeBootMs: Long = 0L,
   /**
-   * Storage ID (1 for first, 2 for second, etc.)
-   */
-  public val storageId: Int = 0,
-  /**
-   * Number of storage devices
-   */
-  public val storageCount: Int = 0,
-  /**
-   * Status of storage
-   */
-  public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0),
-  /**
    * Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
    */
   public val totalCapacity: Float = 0F,
@@ -65,6 +53,18 @@ public data class StorageInformation(
    * Write speed.
    */
   public val writeSpeed: Float = 0F,
+  /**
+   * Storage ID (1 for first, 2 for second, etc.)
+   */
+  public val storageId: Int = 0,
+  /**
+   * Number of storage devices
+   */
+  public val storageCount: Int = 0,
+  /**
+   * Status of storage
+   */
+  public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0),
   /**
    * Type of storage
    */
@@ -90,14 +90,14 @@ public data class StorageInformation(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(61).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint8(storageId)
-    outputBuffer.encodeUint8(storageCount)
-    outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeFloat(totalCapacity)
     outputBuffer.encodeFloat(usedCapacity)
     outputBuffer.encodeFloat(availableCapacity)
     outputBuffer.encodeFloat(readSpeed)
     outputBuffer.encodeFloat(writeSpeed)
+    outputBuffer.encodeUint8(storageId)
+    outputBuffer.encodeUint8(storageCount)
+    outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeString(name, 32)
     outputBuffer.encodeEnumValue(storageUsage.value, 1)
@@ -107,22 +107,22 @@ public data class StorageInformation(
   public companion object {
     private const val ID: Int = 261
 
-    private const val CRC: Int = 233
+    private const val CRC: Int = 179
 
     private val DESERIALIZER: MavDeserializer<StorageInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
+      val totalCapacity = inputBuffer.decodeFloat()
+      val usedCapacity = inputBuffer.decodeFloat()
+      val availableCapacity = inputBuffer.decodeFloat()
+      val readSpeed = inputBuffer.decodeFloat()
+      val writeSpeed = inputBuffer.decodeFloat()
       val storageId = inputBuffer.decodeUint8()
       val storageCount = inputBuffer.decodeUint8()
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = StorageStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val totalCapacity = inputBuffer.decodeFloat()
-      val usedCapacity = inputBuffer.decodeFloat()
-      val availableCapacity = inputBuffer.decodeFloat()
-      val readSpeed = inputBuffer.decodeFloat()
-      val writeSpeed = inputBuffer.decodeFloat()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = StorageType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -134,14 +134,14 @@ public data class StorageInformation(
       }
       StorageInformation(
         timeBootMs = timeBootMs,
-        storageId = storageId,
-        storageCount = storageCount,
-        status = status,
         totalCapacity = totalCapacity,
         usedCapacity = usedCapacity,
         availableCapacity = availableCapacity,
         readSpeed = readSpeed,
         writeSpeed = writeSpeed,
+        storageId = storageId,
+        storageCount = storageCount,
+        status = status,
         type = type,
         name = name,
         storageUsage = storageUsage,

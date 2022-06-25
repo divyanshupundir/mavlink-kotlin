@@ -21,6 +21,10 @@ import kotlin.collections.List
  */
 public data class SetupSigning(
   /**
+   * initial timestamp
+   */
+  public val initialTimestamp: BigInteger = BigInteger.ZERO,
+  /**
    * system id of the target
    */
   public val targetSystem: Int = 0,
@@ -32,38 +36,34 @@ public data class SetupSigning(
    * signing key
    */
   public val secretKey: List<Int> = emptyList(),
-  /**
-   * initial timestamp
-   */
-  public val initialTimestamp: BigInteger = BigInteger.ZERO,
 ) : MavMessage<SetupSigning> {
   public override val instanceMetadata: MavMessage.Metadata<SetupSigning> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(initialTimestamp)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(secretKey, 32)
-    outputBuffer.encodeUint64(initialTimestamp)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 256
 
-    private const val CRC: Int = 97
+    private const val CRC: Int = 91
 
     private val DESERIALIZER: MavDeserializer<SetupSigning> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val initialTimestamp = inputBuffer.decodeUint64()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val secretKey = inputBuffer.decodeUint8Array(32)
-      val initialTimestamp = inputBuffer.decodeUint64()
       SetupSigning(
+        initialTimestamp = initialTimestamp,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         secretKey = secretKey,
-        initialTimestamp = initialTimestamp,
       )
     }
 

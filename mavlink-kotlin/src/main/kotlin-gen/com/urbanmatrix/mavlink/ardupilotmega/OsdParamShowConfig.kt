@@ -17,6 +17,10 @@ import kotlin.Long
  */
 public data class OsdParamShowConfig(
   /**
+   * Request ID - copied to reply.
+   */
+  public val requestId: Long = 0L,
+  /**
    * System ID.
    */
   public val targetSystem: Int = 0,
@@ -24,10 +28,6 @@ public data class OsdParamShowConfig(
    * Component ID.
    */
   public val targetComponent: Int = 0,
-  /**
-   * Request ID - copied to reply.
-   */
-  public val requestId: Long = 0L,
   /**
    * OSD parameter screen index.
    */
@@ -41,9 +41,9 @@ public data class OsdParamShowConfig(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(osdScreen)
     outputBuffer.encodeUint8(osdIndex)
     return outputBuffer.array()
@@ -52,19 +52,19 @@ public data class OsdParamShowConfig(
   public companion object {
     private const val ID: Int = 11035
 
-    private const val CRC: Int = 247
+    private const val CRC: Int = 128
 
     private val DESERIALIZER: MavDeserializer<OsdParamShowConfig> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val requestId = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val requestId = inputBuffer.decodeUint32()
       val osdScreen = inputBuffer.decodeUint8()
       val osdIndex = inputBuffer.decodeUint8()
       OsdParamShowConfig(
+        requestId = requestId,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        requestId = requestId,
         osdScreen = osdScreen,
         osdIndex = osdIndex,
       )

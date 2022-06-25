@@ -20,18 +20,6 @@ import kotlin.Int
  */
 public data class SensorOffsets(
   /**
-   * Magnetometer X offset.
-   */
-  public val magOfsX: Int = 0,
-  /**
-   * Magnetometer Y offset.
-   */
-  public val magOfsY: Int = 0,
-  /**
-   * Magnetometer Z offset.
-   */
-  public val magOfsZ: Int = 0,
-  /**
    * Magnetic declination.
    */
   public val magDeclination: Float = 0F,
@@ -67,14 +55,23 @@ public data class SensorOffsets(
    * Accel Z calibration.
    */
   public val accelCalZ: Float = 0F,
+  /**
+   * Magnetometer X offset.
+   */
+  public val magOfsX: Int = 0,
+  /**
+   * Magnetometer Y offset.
+   */
+  public val magOfsY: Int = 0,
+  /**
+   * Magnetometer Z offset.
+   */
+  public val magOfsZ: Int = 0,
 ) : MavMessage<SensorOffsets> {
   public override val instanceMetadata: MavMessage.Metadata<SensorOffsets> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(magOfsX)
-    outputBuffer.encodeInt16(magOfsY)
-    outputBuffer.encodeInt16(magOfsZ)
     outputBuffer.encodeFloat(magDeclination)
     outputBuffer.encodeInt32(rawPress)
     outputBuffer.encodeInt32(rawTemp)
@@ -84,19 +81,19 @@ public data class SensorOffsets(
     outputBuffer.encodeFloat(accelCalX)
     outputBuffer.encodeFloat(accelCalY)
     outputBuffer.encodeFloat(accelCalZ)
+    outputBuffer.encodeInt16(magOfsX)
+    outputBuffer.encodeInt16(magOfsY)
+    outputBuffer.encodeInt16(magOfsZ)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 150
 
-    private const val CRC: Int = 143
+    private const val CRC: Int = 134
 
     private val DESERIALIZER: MavDeserializer<SensorOffsets> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val magOfsX = inputBuffer.decodeInt16()
-      val magOfsY = inputBuffer.decodeInt16()
-      val magOfsZ = inputBuffer.decodeInt16()
       val magDeclination = inputBuffer.decodeFloat()
       val rawPress = inputBuffer.decodeInt32()
       val rawTemp = inputBuffer.decodeInt32()
@@ -106,10 +103,10 @@ public data class SensorOffsets(
       val accelCalX = inputBuffer.decodeFloat()
       val accelCalY = inputBuffer.decodeFloat()
       val accelCalZ = inputBuffer.decodeFloat()
+      val magOfsX = inputBuffer.decodeInt16()
+      val magOfsY = inputBuffer.decodeInt16()
+      val magOfsZ = inputBuffer.decodeInt16()
       SensorOffsets(
-        magOfsX = magOfsX,
-        magOfsY = magOfsY,
-        magOfsZ = magOfsZ,
         magDeclination = magDeclination,
         rawPress = rawPress,
         rawTemp = rawTemp,
@@ -119,6 +116,9 @@ public data class SensorOffsets(
         accelCalX = accelCalX,
         accelCalY = accelCalY,
         accelCalZ = accelCalZ,
+        magOfsX = magOfsX,
+        magOfsY = magOfsY,
+        magOfsZ = magOfsZ,
       )
     }
 

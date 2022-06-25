@@ -18,11 +18,6 @@ import kotlin.Int
  */
 public data class SafetyAllowedArea(
   /**
-   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
-   * handed, Z axis down.
-   */
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
-  /**
    * x position 1 / Latitude 1
    */
   public val p1x: Float = 0F,
@@ -46,46 +41,51 @@ public data class SafetyAllowedArea(
    * z position 2 / Altitude 2
    */
   public val p2z: Float = 0F,
+  /**
+   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
+   * handed, Z axis down.
+   */
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
 ) : MavMessage<SafetyAllowedArea> {
   public override val instanceMetadata: MavMessage.Metadata<SafetyAllowedArea> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(25).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(frame.value, 1)
     outputBuffer.encodeFloat(p1x)
     outputBuffer.encodeFloat(p1y)
     outputBuffer.encodeFloat(p1z)
     outputBuffer.encodeFloat(p2x)
     outputBuffer.encodeFloat(p2y)
     outputBuffer.encodeFloat(p2z)
+    outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 55
 
-    private const val CRC: Int = 108
+    private const val CRC: Int = 3
 
     private val DESERIALIZER: MavDeserializer<SafetyAllowedArea> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavFrame.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       val p1x = inputBuffer.decodeFloat()
       val p1y = inputBuffer.decodeFloat()
       val p1z = inputBuffer.decodeFloat()
       val p2x = inputBuffer.decodeFloat()
       val p2y = inputBuffer.decodeFloat()
       val p2z = inputBuffer.decodeFloat()
+      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+        val entry = MavFrame.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       SafetyAllowedArea(
-        frame = frame,
         p1x = p1x,
         p1y = p1y,
         p1z = p1z,
         p2x = p2x,
         p2y = p2y,
         p2z = p2z,
+        frame = frame,
       )
     }
 

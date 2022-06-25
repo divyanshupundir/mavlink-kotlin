@@ -29,9 +29,9 @@ public data class FollowTarget(
    */
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
-   * bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
+   * button states or switches of a tracker device
    */
-  public val estCapabilities: Int = 0,
+  public val customState: BigInteger = BigInteger.ZERO,
   /**
    * Latitude (WGS84)
    */
@@ -65,16 +65,16 @@ public data class FollowTarget(
    */
   public val positionCov: List<Float> = emptyList(),
   /**
-   * button states or switches of a tracker device
+   * bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
    */
-  public val customState: BigInteger = BigInteger.ZERO,
+  public val estCapabilities: Int = 0,
 ) : MavMessage<FollowTarget> {
   public override val instanceMetadata: MavMessage.Metadata<FollowTarget> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(93).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint8(estCapabilities)
+    outputBuffer.encodeUint64(customState)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -83,19 +83,19 @@ public data class FollowTarget(
     outputBuffer.encodeFloatArray(attitudeQ, 16)
     outputBuffer.encodeFloatArray(rates, 12)
     outputBuffer.encodeFloatArray(positionCov, 12)
-    outputBuffer.encodeUint64(customState)
+    outputBuffer.encodeUint8(estCapabilities)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 144
 
-    private const val CRC: Int = 132
+    private const val CRC: Int = 71
 
     private val DESERIALIZER: MavDeserializer<FollowTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
-      val estCapabilities = inputBuffer.decodeUint8()
+      val customState = inputBuffer.decodeUint64()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -104,10 +104,10 @@ public data class FollowTarget(
       val attitudeQ = inputBuffer.decodeFloatArray(16)
       val rates = inputBuffer.decodeFloatArray(12)
       val positionCov = inputBuffer.decodeFloatArray(12)
-      val customState = inputBuffer.decodeUint64()
+      val estCapabilities = inputBuffer.decodeUint8()
       FollowTarget(
         timestamp = timestamp,
-        estCapabilities = estCapabilities,
+        customState = customState,
         lat = lat,
         lon = lon,
         alt = alt,
@@ -116,7 +116,7 @@ public data class FollowTarget(
         attitudeQ = attitudeQ,
         rates = rates,
         positionCov = positionCov,
-        customState = customState,
+        estCapabilities = estCapabilities,
       )
     }
 

@@ -21,21 +21,9 @@ import kotlin.Long
  */
 public data class Collision(
   /**
-   * Collision data source
-   */
-  public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0),
-  /**
    * Unique identifier, domain based on src field
    */
   public val id: Long = 0L,
-  /**
-   * Action that is being taken to avoid this collision
-   */
-  public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0),
-  /**
-   * How concerned the aircraft is about this collision
-   */
-  public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0),
   /**
    * Estimated time until collision occurs
    */
@@ -48,33 +36,48 @@ public data class Collision(
    * Closest horizontal distance between vehicle and object
    */
   public val horizontalMinimumDelta: Float = 0F,
+  /**
+   * Collision data source
+   */
+  public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0),
+  /**
+   * Action that is being taken to avoid this collision
+   */
+  public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0),
+  /**
+   * How concerned the aircraft is about this collision
+   */
+  public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0),
 ) : MavMessage<Collision> {
   public override val instanceMetadata: MavMessage.Metadata<Collision> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(19).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(src.value, 1)
     outputBuffer.encodeUint32(id)
-    outputBuffer.encodeEnumValue(action.value, 1)
-    outputBuffer.encodeEnumValue(threatLevel.value, 1)
     outputBuffer.encodeFloat(timeToMinimumDelta)
     outputBuffer.encodeFloat(altitudeMinimumDelta)
     outputBuffer.encodeFloat(horizontalMinimumDelta)
+    outputBuffer.encodeEnumValue(src.value, 1)
+    outputBuffer.encodeEnumValue(action.value, 1)
+    outputBuffer.encodeEnumValue(threatLevel.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 247
 
-    private const val CRC: Int = 122
+    private const val CRC: Int = 81
 
     private val DESERIALIZER: MavDeserializer<Collision> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val id = inputBuffer.decodeUint32()
+      val timeToMinimumDelta = inputBuffer.decodeFloat()
+      val altitudeMinimumDelta = inputBuffer.decodeFloat()
+      val horizontalMinimumDelta = inputBuffer.decodeFloat()
       val src = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavCollisionSrc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val id = inputBuffer.decodeUint32()
       val action = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavCollisionAction.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -83,17 +86,14 @@ public data class Collision(
         val entry = MavCollisionThreatLevel.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val timeToMinimumDelta = inputBuffer.decodeFloat()
-      val altitudeMinimumDelta = inputBuffer.decodeFloat()
-      val horizontalMinimumDelta = inputBuffer.decodeFloat()
       Collision(
-        src = src,
         id = id,
-        action = action,
-        threatLevel = threatLevel,
         timeToMinimumDelta = timeToMinimumDelta,
         altitudeMinimumDelta = altitudeMinimumDelta,
         horizontalMinimumDelta = horizontalMinimumDelta,
+        src = src,
+        action = action,
+        threatLevel = threatLevel,
       )
     }
 

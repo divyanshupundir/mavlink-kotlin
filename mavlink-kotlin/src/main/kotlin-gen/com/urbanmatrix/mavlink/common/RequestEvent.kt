@@ -18,14 +18,6 @@ import kotlin.Int
  */
 public data class RequestEvent(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * First sequence number of the requested event.
    */
   public val firstSequence: Int = 0,
@@ -33,34 +25,42 @@ public data class RequestEvent(
    * Last sequence number of the requested event.
    */
   public val lastSequence: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
 ) : MavMessage<RequestEvent> {
   public override val instanceMetadata: MavMessage.Metadata<RequestEvent> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint16(firstSequence)
     outputBuffer.encodeUint16(lastSequence)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 412
 
-    private const val CRC: Int = 156
+    private const val CRC: Int = 33
 
     private val DESERIALIZER: MavDeserializer<RequestEvent> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val firstSequence = inputBuffer.decodeUint16()
       val lastSequence = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       RequestEvent(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         firstSequence = firstSequence,
         lastSequence = lastSequence,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
       )
     }
 

@@ -21,6 +21,10 @@ import kotlin.Int
  */
 public data class MissionCount(
   /**
+   * Number of mission items in the sequence
+   */
+  public val count: Int = 0,
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -28,10 +32,6 @@ public data class MissionCount(
    * Component ID
    */
   public val targetComponent: Int = 0,
-  /**
-   * Number of mission items in the sequence
-   */
-  public val count: Int = 0,
   /**
    * Mission type.
    */
@@ -41,9 +41,9 @@ public data class MissionCount(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(count)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint16(count)
     outputBuffer.encodeEnumValue(missionType.value, 1)
     return outputBuffer.array()
   }
@@ -51,21 +51,21 @@ public data class MissionCount(
   public companion object {
     private const val ID: Int = 44
 
-    private const val CRC: Int = 209
+    private const val CRC: Int = 221
 
     private val DESERIALIZER: MavDeserializer<MissionCount> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val count = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint16()
       val missionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionCount(
+        count = count,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        count = count,
         missionType = missionType,
       )
     }

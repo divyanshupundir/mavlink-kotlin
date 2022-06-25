@@ -16,6 +16,10 @@ import kotlin.Int
  */
 public data class FlexifunctionDirectoryAck(
   /**
+   * result of acknowledge, 0=fail, 1=good
+   */
+  public val result: Int = 0,
+  /**
    * System ID
    */
   public val targetSystem: Int = 0,
@@ -35,45 +39,41 @@ public data class FlexifunctionDirectoryAck(
    * count of directory entries to write
    */
   public val count: Int = 0,
-  /**
-   * result of acknowledge, 0=fail, 1=good
-   */
-  public val result: Int = 0,
 ) : MavMessage<FlexifunctionDirectoryAck> {
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionDirectoryAck> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(7).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(result)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(directoryType)
     outputBuffer.encodeUint8(startIndex)
     outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint16(result)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 156
 
-    private const val CRC: Int = 69
+    private const val CRC: Int = 218
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionDirectoryAck> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val result = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val directoryType = inputBuffer.decodeUint8()
       val startIndex = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
-      val result = inputBuffer.decodeUint16()
       FlexifunctionDirectoryAck(
+        result = result,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         directoryType = directoryType,
         startIndex = startIndex,
         count = count,
-        result = result,
       )
     }
 

@@ -53,6 +53,22 @@ public data class AisVessel(
    */
   public val velocity: Int = 0,
   /**
+   * Distance from lat/lon location to bow
+   */
+  public val dimensionBow: Int = 0,
+  /**
+   * Distance from lat/lon location to stern
+   */
+  public val dimensionStern: Int = 0,
+  /**
+   * Time since last communication in seconds
+   */
+  public val tslc: Int = 0,
+  /**
+   * Bitmask to indicate various statuses including valid data fields
+   */
+  public val flags: MavEnumValue<AisFlags> = MavEnumValue.fromValue(0),
+  /**
    * Turn rate
    */
   public val turnRate: Int = 0,
@@ -64,14 +80,6 @@ public data class AisVessel(
    * Type of vessels
    */
   public val type: MavEnumValue<AisType> = MavEnumValue.fromValue(0),
-  /**
-   * Distance from lat/lon location to bow
-   */
-  public val dimensionBow: Int = 0,
-  /**
-   * Distance from lat/lon location to stern
-   */
-  public val dimensionStern: Int = 0,
   /**
    * Distance from lat/lon location to port side
    */
@@ -88,14 +96,6 @@ public data class AisVessel(
    * The vessel name
    */
   public val name: String = "",
-  /**
-   * Time since last communication in seconds
-   */
-  public val tslc: Int = 0,
-  /**
-   * Bitmask to indicate various statuses including valid data fields
-   */
-  public val flags: MavEnumValue<AisFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<AisVessel> {
   public override val instanceMetadata: MavMessage.Metadata<AisVessel> = METADATA
 
@@ -107,24 +107,24 @@ public data class AisVessel(
     outputBuffer.encodeUint16(cog)
     outputBuffer.encodeUint16(heading)
     outputBuffer.encodeUint16(velocity)
+    outputBuffer.encodeUint16(dimensionBow)
+    outputBuffer.encodeUint16(dimensionStern)
+    outputBuffer.encodeUint16(tslc)
+    outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeInt8(turnRate)
     outputBuffer.encodeEnumValue(navigationalStatus.value, 1)
     outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUint16(dimensionBow)
-    outputBuffer.encodeUint16(dimensionStern)
     outputBuffer.encodeUint8(dimensionPort)
     outputBuffer.encodeUint8(dimensionStarboard)
     outputBuffer.encodeString(callsign, 7)
     outputBuffer.encodeString(name, 20)
-    outputBuffer.encodeUint16(tslc)
-    outputBuffer.encodeEnumValue(flags.value, 2)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 301
 
-    private const val CRC: Int = 165
+    private const val CRC: Int = 95
 
     private val DESERIALIZER: MavDeserializer<AisVessel> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
@@ -134,6 +134,13 @@ public data class AisVessel(
       val cog = inputBuffer.decodeUint16()
       val heading = inputBuffer.decodeUint16()
       val velocity = inputBuffer.decodeUint16()
+      val dimensionBow = inputBuffer.decodeUint16()
+      val dimensionStern = inputBuffer.decodeUint16()
+      val tslc = inputBuffer.decodeUint16()
+      val flags = inputBuffer.decodeEnumValue(2).let { value ->
+        val entry = AisFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val turnRate = inputBuffer.decodeInt8()
       val navigationalStatus = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = AisNavStatus.getEntryFromValueOrNull(value)
@@ -143,17 +150,10 @@ public data class AisVessel(
         val entry = AisType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val dimensionBow = inputBuffer.decodeUint16()
-      val dimensionStern = inputBuffer.decodeUint16()
       val dimensionPort = inputBuffer.decodeUint8()
       val dimensionStarboard = inputBuffer.decodeUint8()
       val callsign = inputBuffer.decodeString(7)
       val name = inputBuffer.decodeString(20)
-      val tslc = inputBuffer.decodeUint16()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = AisFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
-      }
       AisVessel(
         mmsi = mmsi,
         lat = lat,
@@ -161,17 +161,17 @@ public data class AisVessel(
         cog = cog,
         heading = heading,
         velocity = velocity,
+        dimensionBow = dimensionBow,
+        dimensionStern = dimensionStern,
+        tslc = tslc,
+        flags = flags,
         turnRate = turnRate,
         navigationalStatus = navigationalStatus,
         type = type,
-        dimensionBow = dimensionBow,
-        dimensionStern = dimensionStern,
         dimensionPort = dimensionPort,
         dimensionStarboard = dimensionStarboard,
         callsign = callsign,
         name = name,
-        tslc = tslc,
-        flags = flags,
       )
     }
 

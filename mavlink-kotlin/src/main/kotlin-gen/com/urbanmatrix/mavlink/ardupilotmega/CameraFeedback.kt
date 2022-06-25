@@ -32,18 +32,6 @@ public data class CameraFeedback(
    */
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Camera ID.
-   */
-  public val camIdx: Int = 0,
-  /**
-   * Image index.
-   */
-  public val imgIdx: Int = 0,
-  /**
    * Latitude.
    */
   public val lat: Int = 0,
@@ -76,6 +64,18 @@ public data class CameraFeedback(
    */
   public val focLen: Float = 0F,
   /**
+   * Image index.
+   */
+  public val imgIdx: Int = 0,
+  /**
+   * System ID.
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Camera ID.
+   */
+  public val camIdx: Int = 0,
+  /**
    * Feedback flags.
    */
   public val flags: MavEnumValue<CameraFeedbackFlags> = MavEnumValue.fromValue(0),
@@ -89,9 +89,6 @@ public data class CameraFeedback(
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(47).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(camIdx)
-    outputBuffer.encodeUint16(imgIdx)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeFloat(altMsl)
@@ -100,6 +97,9 @@ public data class CameraFeedback(
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(focLen)
+    outputBuffer.encodeUint16(imgIdx)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(camIdx)
     outputBuffer.encodeEnumValue(flags.value, 1)
     outputBuffer.encodeUint16(completedCaptures)
     return outputBuffer.array()
@@ -108,14 +108,11 @@ public data class CameraFeedback(
   public companion object {
     private const val ID: Int = 180
 
-    private const val CRC: Int = 173
+    private const val CRC: Int = 52
 
     private val DESERIALIZER: MavDeserializer<CameraFeedback> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val targetSystem = inputBuffer.decodeUint8()
-      val camIdx = inputBuffer.decodeUint8()
-      val imgIdx = inputBuffer.decodeUint16()
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
       val altMsl = inputBuffer.decodeFloat()
@@ -124,6 +121,9 @@ public data class CameraFeedback(
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
       val focLen = inputBuffer.decodeFloat()
+      val imgIdx = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val camIdx = inputBuffer.decodeUint8()
       val flags = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = CameraFeedbackFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -131,9 +131,6 @@ public data class CameraFeedback(
       val completedCaptures = inputBuffer.decodeUint16()
       CameraFeedback(
         timeUsec = timeUsec,
-        targetSystem = targetSystem,
-        camIdx = camIdx,
-        imgIdx = imgIdx,
         lat = lat,
         lng = lng,
         altMsl = altMsl,
@@ -142,6 +139,9 @@ public data class CameraFeedback(
         pitch = pitch,
         yaw = yaw,
         focLen = focLen,
+        imgIdx = imgIdx,
+        targetSystem = targetSystem,
+        camIdx = camIdx,
         flags = flags,
         completedCaptures = completedCaptures,
       )

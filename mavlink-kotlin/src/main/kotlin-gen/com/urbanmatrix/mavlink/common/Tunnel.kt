@@ -23,14 +23,6 @@ import kotlin.collections.List
  */
 public data class Tunnel(
   /**
-   * System ID (can be 0 for broadcast, but this is discouraged)
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID (can be 0 for broadcast, but this is discouraged)
-   */
-  public val targetComponent: Int = 0,
-  /**
    * A code that identifies the content of the payload (0 for unknown, which is the default). If
    * this code is less than 32768, it is a 'registered' payload type and the corresponding code should
    * be added to the MAV_TUNNEL_PAYLOAD_TYPE enum. Software creators can register blocks of types as
@@ -38,6 +30,14 @@ public data class Tunnel(
    * any widely distributed codebase.
    */
   public val payloadType: MavEnumValue<MavTunnelPayloadType> = MavEnumValue.fromValue(0),
+  /**
+   * System ID (can be 0 for broadcast, but this is discouraged)
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID (can be 0 for broadcast, but this is discouraged)
+   */
+  public val targetComponent: Int = 0,
   /**
    * Length of the data transported in payload
    */
@@ -52,9 +52,9 @@ public data class Tunnel(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(133).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(payloadType.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(payloadType.value, 2)
     outputBuffer.encodeUint8(payloadLength)
     outputBuffer.encodeUint8Array(payload, 128)
     return outputBuffer.array()
@@ -63,22 +63,22 @@ public data class Tunnel(
   public companion object {
     private const val ID: Int = 385
 
-    private const val CRC: Int = 21
+    private const val CRC: Int = 62
 
     private val DESERIALIZER: MavDeserializer<Tunnel> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val payloadType = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavTunnelPayloadType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val payloadLength = inputBuffer.decodeUint8()
       val payload = inputBuffer.decodeUint8Array(128)
       Tunnel(
+        payloadType = payloadType,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
-        payloadType = payloadType,
         payloadLength = payloadLength,
         payload = payload,
       )

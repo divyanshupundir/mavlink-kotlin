@@ -26,19 +26,9 @@ import kotlin.String
  */
 public data class ParamValue(
   /**
-   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
-   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
-   * provide 16+1 bytes storage if the ID is stored as string
-   */
-  public val paramId: String = "",
-  /**
    * Onboard parameter value
    */
   public val paramValue: Float = 0F,
-  /**
-   * Onboard parameter type.
-   */
-  public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0),
   /**
    * Total number of onboard parameters
    */
@@ -47,40 +37,50 @@ public data class ParamValue(
    * Index of this onboard parameter
    */
   public val paramIndex: Int = 0,
+  /**
+   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
+   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
+   * provide 16+1 bytes storage if the ID is stored as string
+   */
+  public val paramId: String = "",
+  /**
+   * Onboard parameter type.
+   */
+  public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0),
 ) : MavMessage<ParamValue> {
   public override val instanceMetadata: MavMessage.Metadata<ParamValue> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(25).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeEnumValue(paramType.value, 1)
     outputBuffer.encodeUint16(paramCount)
     outputBuffer.encodeUint16(paramIndex)
+    outputBuffer.encodeString(paramId, 16)
+    outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array()
   }
 
   public companion object {
     private const val ID: Int = 22
 
-    private const val CRC: Int = 150
+    private const val CRC: Int = 132
 
     private val DESERIALIZER: MavDeserializer<ParamValue> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val paramId = inputBuffer.decodeString(16)
       val paramValue = inputBuffer.decodeFloat()
+      val paramCount = inputBuffer.decodeUint16()
+      val paramIndex = inputBuffer.decodeUint16()
+      val paramId = inputBuffer.decodeString(16)
       val paramType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavParamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val paramCount = inputBuffer.decodeUint16()
-      val paramIndex = inputBuffer.decodeUint16()
       ParamValue(
-        paramId = paramId,
         paramValue = paramValue,
-        paramType = paramType,
         paramCount = paramCount,
         paramIndex = paramIndex,
+        paramId = paramId,
+        paramType = paramType,
       )
     }
 

@@ -21,14 +21,6 @@ import kotlin.Int
  */
 public data class MissionRequestPartialList(
   /**
-   * System ID
-   */
-  public val targetSystem: Int = 0,
-  /**
-   * Component ID
-   */
-  public val targetComponent: Int = 0,
-  /**
    * Start index
    */
   public val startIndex: Int = 0,
@@ -36,6 +28,14 @@ public data class MissionRequestPartialList(
    * End index, -1 by default (-1: send list to end). Else a valid index of the list
    */
   public val endIndex: Int = 0,
+  /**
+   * System ID
+   */
+  public val targetSystem: Int = 0,
+  /**
+   * Component ID
+   */
+  public val targetComponent: Int = 0,
   /**
    * Mission type.
    */
@@ -45,10 +45,10 @@ public data class MissionRequestPartialList(
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(7).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeInt16(startIndex)
     outputBuffer.encodeInt16(endIndex)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(missionType.value, 1)
     return outputBuffer.array()
   }
@@ -56,24 +56,24 @@ public data class MissionRequestPartialList(
   public companion object {
     private const val ID: Int = 37
 
-    private const val CRC: Int = 166
+    private const val CRC: Int = 212
 
     private val DESERIALIZER: MavDeserializer<MissionRequestPartialList> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
       val startIndex = inputBuffer.decodeInt16()
       val endIndex = inputBuffer.decodeInt16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val missionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       MissionRequestPartialList(
-        targetSystem = targetSystem,
-        targetComponent = targetComponent,
         startIndex = startIndex,
         endIndex = endIndex,
+        targetSystem = targetSystem,
+        targetComponent = targetComponent,
         missionType = missionType,
       )
     }

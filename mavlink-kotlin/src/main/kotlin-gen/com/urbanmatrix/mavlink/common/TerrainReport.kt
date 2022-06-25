@@ -29,10 +29,6 @@ public data class TerrainReport(
    */
   public val lon: Int = 0,
   /**
-   * grid spacing (zero if terrain at this location unavailable)
-   */
-  public val spacing: Int = 0,
-  /**
    * Terrain height MSL
    */
   public val terrainHeight: Float = 0F,
@@ -40,6 +36,10 @@ public data class TerrainReport(
    * Current vehicle height above lat/lon terrain height
    */
   public val currentHeight: Float = 0F,
+  /**
+   * grid spacing (zero if terrain at this location unavailable)
+   */
+  public val spacing: Int = 0,
   /**
    * Number of 4x4 terrain blocks waiting to be received or read from disk
    */
@@ -55,9 +55,9 @@ public data class TerrainReport(
     val outputBuffer = ByteBuffer.allocate(22).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUint16(spacing)
     outputBuffer.encodeFloat(terrainHeight)
     outputBuffer.encodeFloat(currentHeight)
+    outputBuffer.encodeUint16(spacing)
     outputBuffer.encodeUint16(pending)
     outputBuffer.encodeUint16(loaded)
     return outputBuffer.array()
@@ -66,23 +66,23 @@ public data class TerrainReport(
   public companion object {
     private const val ID: Int = 136
 
-    private const val CRC: Int = 69
+    private const val CRC: Int = 1
 
     private val DESERIALIZER: MavDeserializer<TerrainReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
-      val spacing = inputBuffer.decodeUint16()
       val terrainHeight = inputBuffer.decodeFloat()
       val currentHeight = inputBuffer.decodeFloat()
+      val spacing = inputBuffer.decodeUint16()
       val pending = inputBuffer.decodeUint16()
       val loaded = inputBuffer.decodeUint16()
       TerrainReport(
         lat = lat,
         lon = lon,
-        spacing = spacing,
         terrainHeight = terrainHeight,
         currentHeight = currentHeight,
+        spacing = spacing,
         pending = pending,
         loaded = loaded,
       )
