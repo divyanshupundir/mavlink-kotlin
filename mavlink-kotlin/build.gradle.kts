@@ -14,7 +14,24 @@ tasks.getByName<Test>("test") {
 }
 
 tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
-    generatedSourcesDir = file("build/mavlink")
+    include(file("mavlink/message_definitions/v1.0/minimal.xml"))
+    include(file("mavlink/message_definitions/v1.0/common.xml"))
+    include(file("mavlink/message_definitions/v1.0/ardupilotmega.xml"))
+    include(file("mavlink/message_definitions/v1.0/ASLUAV.xml"))
+    include(file("mavlink/message_definitions/v1.0/AVSSUAS.xml"))
+    include(file("mavlink/message_definitions/v1.0/icarous.xml"))
+    include(file("mavlink/message_definitions/v1.0/matrixpilot.xml"))
+    include(file("mavlink/message_definitions/v1.0/paparazzi.xml"))
+    include(file("mavlink/message_definitions/v1.0/standard.xml"))
+    include(file("mavlink/message_definitions/v1.0/ualberta.xml"))
+    include(file("mavlink/message_definitions/v1.0/uAvionix.xml"))
+
+
+    generatedSourcesDir = file("src/main/kotlin-gen")
+}
+
+sourceSets.main.configure {
+    java.srcDirs += file("src/main/kotlin-gen")
 }
 
 dependencies {

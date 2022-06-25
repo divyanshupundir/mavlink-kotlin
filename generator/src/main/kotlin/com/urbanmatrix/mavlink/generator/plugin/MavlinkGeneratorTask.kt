@@ -1,5 +1,9 @@
 package com.urbanmatrix.mavlink.generator.plugin
 
+import com.urbanmatrix.mavlink.generator.EnumResolver
+import com.urbanmatrix.mavlink.generator.generateDialectFile
+import com.urbanmatrix.mavlink.generator.generateEnumFile
+import com.urbanmatrix.mavlink.generator.generateMessageFile
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -53,6 +57,26 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
                 MavlinkDefinitionParser.parse(it)
             } catch (e: IOException) {
                 throw IllegalArgumentException("Invalid mavlink schema: $it")
+            }
+        }
+
+        val enumResolver = EnumResolver(BASE_PACKAGE, mavlinkModels)
+
+        for (model in mavlinkModels) {
+            model
+                .generateDialectFile(BASE_PACKAGE)
+                .writeTo(generatedSourcesDir)
+
+            for (enum in model.enums) {
+                enum
+                    .generateEnumFile("$BASE_PACKAGE.${model.name}")
+                    .writeTo(generatedSourcesDir)
+            }
+
+            for (message in model.messages) {
+                message
+                    .generateMessageFile("$BASE_PACKAGE.${model.name}", enumResolver)
+                    .writeTo(generatedSourcesDir)
             }
         }
     }

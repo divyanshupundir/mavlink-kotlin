@@ -1,0 +1,3 @@
+[submodule "mavlink-kotlin/mavlink"]
+	path = mavlink-kotlin/mavlink
+	url = git@github.com:mavlink/mavlink.git
