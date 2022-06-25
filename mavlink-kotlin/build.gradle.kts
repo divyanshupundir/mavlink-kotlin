@@ -27,7 +27,6 @@ tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("
     include(file("mavlink/message_definitions/v1.0/ualberta.xml"))
     include(file("mavlink/message_definitions/v1.0/uAvionix.xml"))
 
-
     generatedSourcesDir = file("src/main/kotlin-gen")
 }
 
