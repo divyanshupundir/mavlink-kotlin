@@ -180,7 +180,7 @@ data class MavlinkRawFrame(
                 val seq = decodeUint8()
                 val systemId = decodeUint8()
                 val componentId = decodeUint8()
-                val messageId = decodeUnsignedIntegerValue(3).toInt()
+                val messageId = decodeUint8()
                 val payload = ByteArray(len).also { get(it) }
                 val checksum = decodeUint16()
 
