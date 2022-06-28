@@ -1,9 +1,11 @@
 package com.urbanmatrix.mavlink.raw
 
 import com.urbanmatrix.mavlink.serialization.CrcX25
+import com.urbanmatrix.mavlink.serialization.decodeUnsignedIntegerValue
 import com.urbanmatrix.mavlink.serialization.encodeIntegerValue
 import java.io.IOException
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.security.MessageDigest
 
 data class MavlinkRawFrame(
@@ -19,6 +21,39 @@ data class MavlinkRawFrame(
     val signature: ByteArray,
     val rawBytes: ByteArray
 ) {
+    val isSigned: Boolean
+        get() = (incompatFlags and INCOMPAT_FLAG_SIGNED) != 0
+
+    val signatureLinkId: Int
+        get() = if (isSigned) {
+            signature.first().toInt() and 0xFF
+        } else {
+            -1
+        }
+
+    val signatureTimestamp: Long
+        get() = if (isSigned) {
+            ByteBuffer
+                .wrap(signature)
+                .order(ByteOrder.LITTLE_ENDIAN)
+                .position(SIZE_SIGNATURE_LINK_ID)
+                .decodeUnsignedIntegerValue(SIZE_SIGNATURE_TIMESTAMP)
+        } else {
+            -1
+        }
+
+    fun validateCrc(crcExtra: Int): Boolean =
+        rawBytes.generateCrc(crcExtra) == checksum
+
+    fun validateSignature(secretKey: ByteArray): Boolean =
+        isSigned && signature.contentEquals(
+            rawBytes.generateSignature(
+                signatureLinkId,
+                signatureTimestamp,
+                secretKey
+            )
+        )
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -64,14 +99,18 @@ data class MavlinkRawFrame(
         private const val SIZE_SEQ = 1
         private const val SIZE_SYS_ID = 1
         private const val SIZE_COMP_ID = 1
+
         private const val SIZE_MSG_ID_V1 = 1
         private const val SIZE_MSG_ID_V2 = 3
+
         private const val SIZE_CHECKSUM = 2
-        private const val SIZE_SIGNATURE = 13
 
         private const val SIZE_SIGNATURE_LINK_ID = 1
         private const val SIZE_SIGNATURE_TIMESTAMP = 6
         private const val SIZE_SIGNATURE_DATA = 6
+
+        private const val SIZE_SIGNATURE = SIZE_SIGNATURE_LINK_ID +
+            SIZE_SIGNATURE_TIMESTAMP + SIZE_SIGNATURE_DATA
 
         private const val INCOMPAT_FLAG_SIGNED = 0x01
 

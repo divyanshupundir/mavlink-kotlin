@@ -100,10 +100,10 @@ fun ByteBuffer.decodeDoubleArray(dataSize: Int): List<Double> = decodeArray(
 
 fun ByteBuffer.decodeEnumValue(dataSize: Int): Long = decodeUnsignedIntegerValue(dataSize)
 
-private inline fun <T : Any> ByteBuffer.decodeArray(elementCount: Int, decode: ByteBuffer.() -> T): List<T> =
+inline fun <T : Any> ByteBuffer.decodeArray(elementCount: Int, decode: ByteBuffer.() -> T): List<T> =
     List(elementCount) { this.decode() }
 
-private fun ByteBuffer.decodeUnsignedIntegerValue(dataSize: Int): Long {
+fun ByteBuffer.decodeUnsignedIntegerValue(dataSize: Int): Long {
     val data = ByteArray(dataSize) { if (this.hasRemaining()) this.get() else 0.toByte() }
 
     if (this.order() == ByteOrder.BIG_ENDIAN) data.reverse()
@@ -115,7 +115,7 @@ private fun ByteBuffer.decodeUnsignedIntegerValue(dataSize: Int): Long {
     return value
 }
 
-private fun ByteBuffer.decodeSignedIntegerValue(dataSize: Int): Long {
+fun ByteBuffer.decodeSignedIntegerValue(dataSize: Int): Long {
     var value = decodeUnsignedIntegerValue(dataSize)
     val signBitIndex = dataSize * Byte.SIZE_BITS - 1
     if ((value shr signBitIndex) == 1L) {
