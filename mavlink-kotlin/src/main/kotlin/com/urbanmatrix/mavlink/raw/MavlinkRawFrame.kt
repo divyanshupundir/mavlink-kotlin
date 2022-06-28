@@ -1,15 +1,14 @@
 package com.urbanmatrix.mavlink.raw
 
-import com.urbanmatrix.mavlink.serialization.CrcX25
-import com.urbanmatrix.mavlink.serialization.decodeUnsignedIntegerValue
-import com.urbanmatrix.mavlink.serialization.encodeIntegerValue
+import com.urbanmatrix.mavlink.serialization.*
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
 
 data class MavlinkRawFrame(
-    val frameType: MavlinkFrameType,
+    val stx: Int,
+    val len: Int,
     val incompatFlags: Int,
     val compatFlags: Int,
     val seq: Int,
@@ -60,7 +59,8 @@ data class MavlinkRawFrame(
 
         other as MavlinkRawFrame
 
-        if (frameType != other.frameType) return false
+        if (stx != other.stx) return false
+        if (len != other.len) return false
         if (incompatFlags != other.incompatFlags) return false
         if (compatFlags != other.compatFlags) return false
         if (seq != other.seq) return false
@@ -76,7 +76,8 @@ data class MavlinkRawFrame(
     }
 
     override fun hashCode(): Int {
-        var result = frameType.hashCode()
+        var result = stx
+        result = 31 * result + len
         result = 31 * result + incompatFlags
         result = 31 * result + compatFlags
         result = 31 * result + seq
@@ -171,5 +172,32 @@ data class MavlinkRawFrame(
             signatureBuffer.put(hash, 0, SIZE_SIGNATURE_DATA)
             return signatureBuffer.array()
         }
+
+        fun fromV1Bytes(rawBytes: ByteArray): MavlinkRawFrame =
+            with(ByteBuffer.wrap(rawBytes).order(ByteOrder.LITTLE_ENDIAN)) {
+                val stx = decodeUint8()
+                val len = decodeUint8()
+                val seq = decodeUint8()
+                val systemId = decodeUint8()
+                val componentId = decodeUint8()
+                val messageId = decodeUnsignedIntegerValue(3).toInt()
+                val payload = ByteArray(len).also { get(it) }
+                val checksum = decodeUint16()
+
+                MavlinkRawFrame(
+                    stx = stx,
+                    len = len,
+                    incompatFlags = -1,
+                    compatFlags = -1,
+                    seq = seq,
+                    systemId = systemId,
+                    componentId = componentId,
+                    messageId = messageId,
+                    payload = payload,
+                    checksum = checksum,
+                    signature = ByteArray(0),
+                    rawBytes = rawBytes
+                )
+            }
     }
 }
