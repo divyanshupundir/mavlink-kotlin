@@ -119,7 +119,7 @@ fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int) = encodeArray
 
 fun ByteBuffer.encodeEnumValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
 
-private inline fun <T : Any> ByteBuffer.encodeArray(
+inline fun <T : Any> ByteBuffer.encodeArray(
     arr: List<T>,
     elementCount: Int,
     defaultValue: T,
@@ -128,7 +128,7 @@ private inline fun <T : Any> ByteBuffer.encodeArray(
     for (i in 0 until elementCount) this.encode(if (i < arr.size) arr[i] else defaultValue)
 }
 
-private fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
+fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
     for (shift in 0 until dataSize) {
         if (this.hasRemaining()) this.put(((value shr (shift * 8)) and 0xFF).toByte())
     }

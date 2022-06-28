@@ -1,5 +1,11 @@
 package com.urbanmatrix.mavlink.raw
 
+import com.urbanmatrix.mavlink.serialization.CrcX25
+import com.urbanmatrix.mavlink.serialization.encodeIntegerValue
+import java.io.IOException
+import java.nio.ByteBuffer
+import java.security.MessageDigest
+
 data class MavlinkRawFrame(
     val frameType: MavlinkFrameType,
     val incompatFlags: Int,
@@ -47,5 +53,84 @@ data class MavlinkRawFrame(
         result = 31 * result + signature.contentHashCode()
         result = 31 * result + rawBytes.contentHashCode()
         return result
+    }
+
+    companion object {
+
+        private const val SIZE_STX = 1
+        private const val SIZE_LEN = 1
+        private const val SIZE_INCOMPAT_FLAGS = 1
+        private const val SIZE_COMPAT_FLAGS = 1
+        private const val SIZE_SEQ = 1
+        private const val SIZE_SYS_ID = 1
+        private const val SIZE_COMP_ID = 1
+        private const val SIZE_MSG_ID_V1 = 1
+        private const val SIZE_MSG_ID_V2 = 3
+        private const val SIZE_CHECKSUM = 2
+        private const val SIZE_SIGNATURE = 13
+
+        private const val SIZE_SIGNATURE_LINK_ID = 1
+        private const val SIZE_SIGNATURE_TIMESTAMP = 6
+        private const val SIZE_SIGNATURE_DATA = 6
+
+        private const val INCOMPAT_FLAG_SIGNED = 0x01
+
+        @Throws(Exception::class)
+        private fun ByteArray.generateCrc(crcExtra: Int): Int {
+            val frameSizeTillMsgId: Int = when (this.first().toInt() and 0xFF) {
+                MavlinkFrameType.V1.magic -> SIZE_STX + SIZE_LEN +
+                    SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V1
+
+                MavlinkFrameType.V2.magic -> SIZE_STX + SIZE_LEN +
+                    SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
+                    SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2
+
+                else -> throw IllegalArgumentException("Not a MAVLink frame")
+            }
+
+            val payloadSize: Int = this[1].toInt() and 0xFF
+
+            val frameSizeTillPayload = frameSizeTillMsgId + payloadSize
+
+            return with(CrcX25()) {
+                accumulate(this@generateCrc, 1, frameSizeTillPayload)
+                accumulate(crcExtra)
+                get()
+            }
+        }
+
+        @Throws(IOException::class)
+        private fun ByteArray.generateSignature(
+            linkId: Int,
+            timestamp: Long,
+            secretKey: ByteArray
+        ): ByteArray {
+            if (this[0].toInt() and MavlinkFrameType.V2.magic != MavlinkFrameType.V2.magic ||
+                this[2].toInt() and INCOMPAT_FLAG_SIGNED == 0
+            ) {
+                return ByteArray(0)
+            }
+
+            val payloadLength: Int = this[1].toInt() and 0xFF
+
+            val frameSizeTillCrc = SIZE_STX + SIZE_LEN +
+                SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
+                SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
+                payloadLength + SIZE_CHECKSUM
+
+            val signatureBuffer = ByteBuffer.allocate(SIZE_SIGNATURE)
+            signatureBuffer.encodeIntegerValue(linkId.toLong(), SIZE_SIGNATURE_LINK_ID)
+            signatureBuffer.encodeIntegerValue(timestamp, SIZE_SIGNATURE_TIMESTAMP)
+
+            val hash = with(MessageDigest.getInstance("SHA-256")) {
+                update(secretKey)
+                update(this@generateSignature, 0, frameSizeTillCrc)
+                update(signatureBuffer.array(), 0, SIZE_SIGNATURE_LINK_ID + SIZE_SIGNATURE_TIMESTAMP)
+                digest()
+            }
+
+            signatureBuffer.put(hash, 0, SIZE_SIGNATURE_DATA)
+            return signatureBuffer.array()
+        }
     }
 }
