@@ -173,6 +173,7 @@ data class MavlinkRawFrame(
             return signatureBuffer.array()
         }
 
+        @Throws(Exception::class)
         fun fromV1Bytes(rawBytes: ByteArray): MavlinkRawFrame =
             with(ByteBuffer.wrap(rawBytes).order(ByteOrder.LITTLE_ENDIAN)) {
                 val stx = decodeUint8()
@@ -200,6 +201,7 @@ data class MavlinkRawFrame(
                 )
             }
 
+        @Throws(Exception::class)
         fun fromV2Bytes(rawBytes: ByteArray): MavlinkRawFrame =
             with(ByteBuffer.wrap(rawBytes).order(ByteOrder.LITTLE_ENDIAN)) {
                 val stx = decodeUint8()
