@@ -199,5 +199,39 @@ data class MavlinkRawFrame(
                     rawBytes = rawBytes
                 )
             }
+
+        fun fromV2Bytes(rawBytes: ByteArray): MavlinkRawFrame =
+            with(ByteBuffer.wrap(rawBytes).order(ByteOrder.LITTLE_ENDIAN)) {
+                val stx = decodeUint8()
+                val len = decodeUint8()
+                val incompatFlags = decodeUint8()
+                val compatFlags = decodeUint8()
+                val seq = decodeUint8()
+                val systemId = decodeUint8()
+                val componentId = decodeUint8()
+                val messageId = decodeUnsignedIntegerValue(SIZE_MSG_ID_V2).toInt()
+                val payload = ByteArray(len).also { get(it) }
+                val checksum = decodeUint16()
+                val signature = if (incompatFlags and INCOMPAT_FLAG_SIGNED != 0) {
+                    ByteArray(SIZE_SIGNATURE).also { get(it) }
+                } else {
+                    ByteArray(0)
+                }
+
+                MavlinkRawFrame(
+                    stx = stx,
+                    len = len,
+                    incompatFlags = incompatFlags,
+                    compatFlags = compatFlags,
+                    seq = seq,
+                    systemId = systemId,
+                    componentId = componentId,
+                    messageId = messageId,
+                    payload = payload,
+                    checksum = checksum,
+                    signature = signature,
+                    rawBytes = rawBytes
+                )
+            }
     }
 }
