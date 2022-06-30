@@ -283,11 +283,11 @@ data class MavlinkRawFrame(
             componentId: Int,
             messageId: Int,
             payload: ByteArray,
-            crcExtra: Int,
+            crcExtra: Int
         ): MavlinkRawFrame {
             val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                 SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
-                payload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
+                payload.size + SIZE_CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUint8(MavlinkFrameType.V2.magic)
