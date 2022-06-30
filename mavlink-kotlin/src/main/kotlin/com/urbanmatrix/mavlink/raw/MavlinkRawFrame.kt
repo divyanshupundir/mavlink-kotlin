@@ -305,7 +305,7 @@ data class MavlinkRawFrame(
             rawBuffer.encodeUint16(checksum)
 
             return MavlinkRawFrame(
-                stx = MavlinkFrameType.V1.magic,
+                stx = MavlinkFrameType.V2.magic,
                 len = payload.size,
                 incompatFlags = 0,
                 compatFlags = 0,
@@ -316,6 +316,55 @@ data class MavlinkRawFrame(
                 payload = payload,
                 checksum = checksum,
                 signature = ByteArray(0),
+                rawBytes = rawBuffer.array()
+            )
+        }
+
+        fun newSignedMavlinkRawFrameV2(
+            seq: Int,
+            systemId: Int,
+            componentId: Int,
+            messageId: Int,
+            payload: ByteArray,
+            crcExtra: Int,
+            linkId: Int,
+            timestamp: Long,
+            secretKey: ByteArray
+        ): MavlinkRawFrame {
+            val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
+                SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
+                payload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
+
+            val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
+                encodeUint8(MavlinkFrameType.V2.magic)
+                encodeUint8(payload.size)
+                encodeUint8(INCOMPAT_FLAG_SIGNED)
+                encodeUint8(0)
+                encodeUint8(seq)
+                encodeUint8(systemId)
+                encodeUint8(componentId)
+                encodeIntegerValue(messageId.toLong(), SIZE_MSG_ID_V2)
+                put(payload)
+            }
+
+            val checksum = rawBuffer.array().generateCrc(crcExtra)
+            rawBuffer.encodeUint16(checksum)
+
+            val signature = rawBuffer.array().generateSignature(linkId, timestamp, secretKey)
+            rawBuffer.put(signature)
+
+            return MavlinkRawFrame(
+                stx = MavlinkFrameType.V2.magic,
+                len = payload.size,
+                incompatFlags = INCOMPAT_FLAG_SIGNED,
+                compatFlags = 0,
+                seq = seq,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = messageId,
+                payload = payload,
+                checksum = checksum,
+                signature = signature,
                 rawBytes = rawBuffer.array()
             )
         }
