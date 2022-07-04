@@ -11,21 +11,23 @@ class TransactionalInputStream(
     inputStream,
     bufferSize
 ) {
-    private val buffer = ByteArray(bufferSize)
     private var position = 0
+
+    private val _buffer = ByteArray(bufferSize)
+    val buffer get() = _buffer.copyOf(position)
 
     @Throws(IOException::class)
     override fun read(): Int {
         val data = super.read()
         if (data != -1) {
-            buffer[position++] = data.toByte()
+            _buffer[position++] = data.toByte()
         }
         return data
     }
 
     @Throws(IOException::class)
     fun rollback() {
-        super.unread(buffer, 0, position)
+        super.unread(_buffer, 0, position)
     }
 
     @Throws(IOException::class)

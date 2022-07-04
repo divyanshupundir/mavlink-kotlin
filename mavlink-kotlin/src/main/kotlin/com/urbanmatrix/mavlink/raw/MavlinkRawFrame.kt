@@ -93,27 +93,27 @@ data class MavlinkRawFrame(
 
     companion object {
 
-        private const val SIZE_STX = 1
-        private const val SIZE_LEN = 1
-        private const val SIZE_INCOMPAT_FLAGS = 1
-        private const val SIZE_COMPAT_FLAGS = 1
-        private const val SIZE_SEQ = 1
-        private const val SIZE_SYS_ID = 1
-        private const val SIZE_COMP_ID = 1
+        const val SIZE_STX = 1
+        const val SIZE_LEN = 1
+        const val SIZE_INCOMPAT_FLAGS = 1
+        const val SIZE_COMPAT_FLAGS = 1
+        const val SIZE_SEQ = 1
+        const val SIZE_SYS_ID = 1
+        const val SIZE_COMP_ID = 1
 
-        private const val SIZE_MSG_ID_V1 = 1
-        private const val SIZE_MSG_ID_V2 = 3
+        const val SIZE_MSG_ID_V1 = 1
+        const val SIZE_MSG_ID_V2 = 3
 
-        private const val SIZE_CHECKSUM = 2
+        const val SIZE_CHECKSUM = 2
 
-        private const val SIZE_SIGNATURE_LINK_ID = 1
-        private const val SIZE_SIGNATURE_TIMESTAMP = 6
-        private const val SIZE_SIGNATURE_DATA = 6
+        const val SIZE_SIGNATURE_LINK_ID = 1
+        const val SIZE_SIGNATURE_TIMESTAMP = 6
+        const val SIZE_SIGNATURE_DATA = 6
 
-        private const val SIZE_SIGNATURE = SIZE_SIGNATURE_LINK_ID +
+        const val SIZE_SIGNATURE = SIZE_SIGNATURE_LINK_ID +
             SIZE_SIGNATURE_TIMESTAMP + SIZE_SIGNATURE_DATA
 
-        private const val INCOMPAT_FLAG_SIGNED = 0x01
+        const val INCOMPAT_FLAG_SIGNED = 0x01
 
         @Throws(Exception::class)
         private fun ByteArray.generateCrc(crcExtra: Int): Int {
