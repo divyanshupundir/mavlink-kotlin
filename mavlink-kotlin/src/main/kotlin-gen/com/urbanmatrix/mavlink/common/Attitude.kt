@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -49,7 +50,7 @@ public data class Attitude(
   public override val instanceMetadata: MavMessage.Metadata<Attitude> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
@@ -65,7 +66,15 @@ public data class Attitude(
 
     private const val CRC: Int = 39
 
+    private const val SIZE: Int = 28
+
     private val DESERIALIZER: MavDeserializer<Attitude> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Attitude: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val roll = inputBuffer.decodeFloat()
@@ -74,6 +83,7 @@ public data class Attitude(
       val rollspeed = inputBuffer.decodeFloat()
       val pitchspeed = inputBuffer.decodeFloat()
       val yawspeed = inputBuffer.decodeFloat()
+
       Attitude(
         timeBootMs = timeBootMs,
         roll = roll,

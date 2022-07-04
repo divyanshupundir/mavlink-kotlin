@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -48,7 +49,7 @@ public data class Altitudes(
   public override val instanceMetadata: MavMessage.Metadata<Altitudes> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(altGps)
     outputBuffer.encodeInt32(altImu)
@@ -64,7 +65,15 @@ public data class Altitudes(
 
     private const val CRC: Int = 55
 
+    private const val SIZE: Int = 28
+
     private val DESERIALIZER: MavDeserializer<Altitudes> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Altitudes: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val altGps = inputBuffer.decodeInt32()
@@ -73,6 +82,7 @@ public data class Altitudes(
       val altOpticalFlow = inputBuffer.decodeInt32()
       val altRangeFinder = inputBuffer.decodeInt32()
       val altExtra = inputBuffer.decodeInt32()
+
       Altitudes(
         timeBootMs = timeBootMs,
         altGps = altGps,

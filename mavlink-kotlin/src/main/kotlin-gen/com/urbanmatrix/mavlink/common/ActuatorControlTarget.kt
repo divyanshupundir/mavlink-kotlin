@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -41,7 +42,7 @@ public data class ActuatorControlTarget(
   public override val instanceMetadata: MavMessage.Metadata<ActuatorControlTarget> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(41).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(controls, 32)
     outputBuffer.encodeUint8(groupMlx)
@@ -53,11 +54,20 @@ public data class ActuatorControlTarget(
 
     private const val CRC: Int = 101
 
+    private const val SIZE: Int = 41
+
     private val DESERIALIZER: MavDeserializer<ActuatorControlTarget> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ActuatorControlTarget: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val controls = inputBuffer.decodeFloatArray(32)
       val groupMlx = inputBuffer.decodeUint8()
+
       ActuatorControlTarget(
         timeUsec = timeUsec,
         groupMlx = groupMlx,

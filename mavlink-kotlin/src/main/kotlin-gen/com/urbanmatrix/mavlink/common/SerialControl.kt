@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -63,7 +64,7 @@ public data class SerialControl(
   public override val instanceMetadata: MavMessage.Metadata<SerialControl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(81).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(baudrate)
     outputBuffer.encodeUint16(timeout)
     outputBuffer.encodeEnumValue(device.value, 1)
@@ -80,7 +81,15 @@ public data class SerialControl(
 
     private const val CRC: Int = 20
 
+    private const val SIZE: Int = 81
+
     private val DESERIALIZER: MavDeserializer<SerialControl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialControl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val baudrate = inputBuffer.decodeUint32()
       val timeout = inputBuffer.decodeUint16()
@@ -96,6 +105,7 @@ public data class SerialControl(
       val data = inputBuffer.decodeUint8Array(70)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
+
       SerialControl(
         device = device,
         flags = flags,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -87,7 +88,7 @@ public data class DistanceSensor(
   public override val instanceMetadata: MavMessage.Metadata<DistanceSensor> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(39).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint16(minDistance)
     outputBuffer.encodeUint16(maxDistance)
@@ -108,7 +109,15 @@ public data class DistanceSensor(
 
     private const val CRC: Int = 85
 
+    private const val SIZE: Int = 39
+
     private val DESERIALIZER: MavDeserializer<DistanceSensor> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for DistanceSensor: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val minDistance = inputBuffer.decodeUint16()
@@ -128,6 +137,7 @@ public data class DistanceSensor(
       val verticalFov = inputBuffer.decodeFloat()
       val quaternion = inputBuffer.decodeFloatArray(16)
       val signalQuality = inputBuffer.decodeUint8()
+
       DistanceSensor(
         timeBootMs = timeBootMs,
         minDistance = minDistance,

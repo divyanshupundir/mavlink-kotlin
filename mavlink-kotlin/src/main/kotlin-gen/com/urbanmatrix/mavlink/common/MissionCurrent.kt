@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -22,7 +23,7 @@ public data class MissionCurrent(
   public override val instanceMetadata: MavMessage.Metadata<MissionCurrent> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(2).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(seq)
     return outputBuffer.array()
   }
@@ -32,9 +33,18 @@ public data class MissionCurrent(
 
     private const val CRC: Int = 28
 
+    private const val SIZE: Int = 2
+
     private val DESERIALIZER: MavDeserializer<MissionCurrent> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MissionCurrent: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seq = inputBuffer.decodeUint16()
+
       MissionCurrent(
         seq = seq,
       )

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt8Array
@@ -40,7 +41,7 @@ public data class MemoryVect(
   public override val instanceMetadata: MavMessage.Metadata<MemoryVect> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(36).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(address)
     outputBuffer.encodeUint8(ver)
     outputBuffer.encodeUint8(type)
@@ -53,12 +54,21 @@ public data class MemoryVect(
 
     private const val CRC: Int = 52
 
+    private const val SIZE: Int = 36
+
     private val DESERIALIZER: MavDeserializer<MemoryVect> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MemoryVect: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val address = inputBuffer.decodeUint16()
       val ver = inputBuffer.decodeUint8()
       val type = inputBuffer.decodeUint8()
       val value = inputBuffer.decodeInt8Array(32)
+
       MemoryVect(
         address = address,
         ver = ver,

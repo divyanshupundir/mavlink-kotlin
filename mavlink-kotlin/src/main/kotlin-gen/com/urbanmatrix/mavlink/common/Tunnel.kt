@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -51,7 +52,7 @@ public data class Tunnel(
   public override val instanceMetadata: MavMessage.Metadata<Tunnel> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(133).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(payloadType.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -65,7 +66,15 @@ public data class Tunnel(
 
     private const val CRC: Int = 62
 
+    private const val SIZE: Int = 133
+
     private val DESERIALIZER: MavDeserializer<Tunnel> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Tunnel: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val payloadType = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavTunnelPayloadType.getEntryFromValueOrNull(value)
@@ -75,6 +84,7 @@ public data class Tunnel(
       val targetComponent = inputBuffer.decodeUint8()
       val payloadLength = inputBuffer.decodeUint8()
       val payload = inputBuffer.decodeUint8Array(128)
+
       Tunnel(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

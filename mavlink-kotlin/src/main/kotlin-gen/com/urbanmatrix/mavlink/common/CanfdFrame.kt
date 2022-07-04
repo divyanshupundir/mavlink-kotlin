@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -48,7 +49,7 @@ public data class CanfdFrame(
   public override val instanceMetadata: MavMessage.Metadata<CanfdFrame> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(72).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -63,7 +64,15 @@ public data class CanfdFrame(
 
     private const val CRC: Int = 141
 
+    private const val SIZE: Int = 72
+
     private val DESERIALIZER: MavDeserializer<CanfdFrame> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CanfdFrame: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val id = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
@@ -71,6 +80,7 @@ public data class CanfdFrame(
       val bus = inputBuffer.decodeUint8()
       val len = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(64)
+
       CanfdFrame(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

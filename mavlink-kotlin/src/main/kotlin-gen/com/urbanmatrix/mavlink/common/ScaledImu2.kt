@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -66,7 +67,7 @@ public data class ScaledImu2(
   public override val instanceMetadata: MavMessage.Metadata<ScaledImu2> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(24).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
@@ -86,7 +87,15 @@ public data class ScaledImu2(
 
     private const val CRC: Int = 76
 
+    private const val SIZE: Int = 24
+
     private val DESERIALIZER: MavDeserializer<ScaledImu2> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ScaledImu2: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val xacc = inputBuffer.decodeInt16()
@@ -99,6 +108,7 @@ public data class ScaledImu2(
       val ymag = inputBuffer.decodeInt16()
       val zmag = inputBuffer.decodeInt16()
       val temperature = inputBuffer.decodeInt16()
+
       ScaledImu2(
         timeBootMs = timeBootMs,
         xacc = xacc,

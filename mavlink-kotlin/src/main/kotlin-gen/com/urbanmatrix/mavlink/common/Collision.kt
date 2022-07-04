@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -52,7 +53,7 @@ public data class Collision(
   public override val instanceMetadata: MavMessage.Metadata<Collision> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(19).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeFloat(timeToMinimumDelta)
     outputBuffer.encodeFloat(altitudeMinimumDelta)
@@ -68,7 +69,15 @@ public data class Collision(
 
     private const val CRC: Int = 81
 
+    private const val SIZE: Int = 19
+
     private val DESERIALIZER: MavDeserializer<Collision> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Collision: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val id = inputBuffer.decodeUint32()
       val timeToMinimumDelta = inputBuffer.decodeFloat()
@@ -86,6 +95,7 @@ public data class Collision(
         val entry = MavCollisionThreatLevel.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       Collision(
         src = src,
         id = id,

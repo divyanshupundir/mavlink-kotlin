@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -52,7 +53,7 @@ public data class LocalPositionNedSystemGlobalOffset(
       METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -68,8 +69,16 @@ public data class LocalPositionNedSystemGlobalOffset(
 
     private const val CRC: Int = 231
 
+    private const val SIZE: Int = 28
+
     private val DESERIALIZER: MavDeserializer<LocalPositionNedSystemGlobalOffset> = MavDeserializer
         { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for LocalPositionNedSystemGlobalOffset: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val x = inputBuffer.decodeFloat()
@@ -78,6 +87,7 @@ public data class LocalPositionNedSystemGlobalOffset(
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
+
       LocalPositionNedSystemGlobalOffset(
         timeBootMs = timeBootMs,
         x = x,

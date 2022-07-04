@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -32,7 +33,7 @@ public data class Data64(
   public override val instanceMetadata: MavMessage.Metadata<Data64> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(66).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(type)
     outputBuffer.encodeUint8(len)
     outputBuffer.encodeUint8Array(data, 64)
@@ -44,11 +45,20 @@ public data class Data64(
 
     private const val CRC: Int = 165
 
+    private const val SIZE: Int = 66
+
     private val DESERIALIZER: MavDeserializer<Data64> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Data64: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val type = inputBuffer.decodeUint8()
       val len = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(64)
+
       Data64(
         type = type,
         len = len,

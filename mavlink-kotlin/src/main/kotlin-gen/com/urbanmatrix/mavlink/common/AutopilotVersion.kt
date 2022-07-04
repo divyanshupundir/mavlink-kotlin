@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -86,7 +87,7 @@ public data class AutopilotVersion(
   public override val instanceMetadata: MavMessage.Metadata<AutopilotVersion> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(78).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(capabilities.value, 8)
     outputBuffer.encodeUint64(uid)
     outputBuffer.encodeUint32(flightSwVersion)
@@ -107,7 +108,15 @@ public data class AutopilotVersion(
 
     private const val CRC: Int = 224
 
+    private const val SIZE: Int = 78
+
     private val DESERIALIZER: MavDeserializer<AutopilotVersion> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AutopilotVersion: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val capabilities = inputBuffer.decodeEnumValue(8).let { value ->
         val entry = MavProtocolCapability.getEntryFromValueOrNull(value)
@@ -124,6 +133,7 @@ public data class AutopilotVersion(
       val middlewareCustomVersion = inputBuffer.decodeUint8Array(8)
       val osCustomVersion = inputBuffer.decodeUint8Array(8)
       val uid2 = inputBuffer.decodeUint8Array(18)
+
       AutopilotVersion(
         capabilities = capabilities,
         flightSwVersion = flightSwVersion,

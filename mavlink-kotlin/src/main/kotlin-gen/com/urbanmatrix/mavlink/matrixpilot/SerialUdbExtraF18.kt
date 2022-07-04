@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -38,7 +39,7 @@ public data class SerialUdbExtraF18(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF18> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(angleOfAttackNormal)
     outputBuffer.encodeFloat(angleOfAttackInverted)
     outputBuffer.encodeFloat(elevatorTrimNormal)
@@ -52,13 +53,22 @@ public data class SerialUdbExtraF18(
 
     private const val CRC: Int = 41
 
+    private const val SIZE: Int = 20
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF18> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF18: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val angleOfAttackNormal = inputBuffer.decodeFloat()
       val angleOfAttackInverted = inputBuffer.decodeFloat()
       val elevatorTrimNormal = inputBuffer.decodeFloat()
       val elevatorTrimInverted = inputBuffer.decodeFloat()
       val referenceSpeed = inputBuffer.decodeFloat()
+
       SerialUdbExtraF18(
         angleOfAttackNormal = angleOfAttackNormal,
         angleOfAttackInverted = angleOfAttackInverted,

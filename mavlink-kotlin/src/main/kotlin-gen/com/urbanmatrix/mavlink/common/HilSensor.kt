@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -91,7 +92,7 @@ public data class HilSensor(
   public override val instanceMetadata: MavMessage.Metadata<HilSensor> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(65).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(xacc)
     outputBuffer.encodeFloat(yacc)
@@ -116,7 +117,15 @@ public data class HilSensor(
 
     private const val CRC: Int = 108
 
+    private const val SIZE: Int = 65
+
     private val DESERIALIZER: MavDeserializer<HilSensor> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for HilSensor: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val xacc = inputBuffer.decodeFloat()
@@ -137,6 +146,7 @@ public data class HilSensor(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val id = inputBuffer.decodeUint8()
+
       HilSensor(
         timeUsec = timeUsec,
         xacc = xacc,

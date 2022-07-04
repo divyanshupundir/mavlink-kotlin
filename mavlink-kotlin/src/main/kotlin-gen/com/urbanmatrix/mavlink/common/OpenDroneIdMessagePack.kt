@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -50,7 +51,7 @@ public data class OpenDroneIdMessagePack(
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdMessagePack> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(249).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(idOrMac, 20)
@@ -65,7 +66,15 @@ public data class OpenDroneIdMessagePack(
 
     private const val CRC: Int = 184
 
+    private const val SIZE: Int = 249
+
     private val DESERIALIZER: MavDeserializer<OpenDroneIdMessagePack> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for OpenDroneIdMessagePack: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -73,6 +82,7 @@ public data class OpenDroneIdMessagePack(
       val singleMessageSize = inputBuffer.decodeUint8()
       val msgPackSize = inputBuffer.decodeUint8()
       val messages = inputBuffer.decodeUint8Array(225)
+
       OpenDroneIdMessagePack(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

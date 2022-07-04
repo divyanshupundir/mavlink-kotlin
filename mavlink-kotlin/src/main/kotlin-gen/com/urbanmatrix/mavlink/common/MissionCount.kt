@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -40,7 +41,7 @@ public data class MissionCount(
   public override val instanceMetadata: MavMessage.Metadata<MissionCount> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(count)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -53,7 +54,15 @@ public data class MissionCount(
 
     private const val CRC: Int = 221
 
+    private const val SIZE: Int = 5
+
     private val DESERIALIZER: MavDeserializer<MissionCount> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MissionCount: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val count = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
@@ -62,6 +71,7 @@ public data class MissionCount(
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       MissionCount(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

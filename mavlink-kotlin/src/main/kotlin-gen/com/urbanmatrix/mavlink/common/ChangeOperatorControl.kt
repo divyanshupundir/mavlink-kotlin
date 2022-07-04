@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -39,7 +40,7 @@ public data class ChangeOperatorControl(
   public override val instanceMetadata: MavMessage.Metadata<ChangeOperatorControl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(controlRequest)
     outputBuffer.encodeUint8(version)
@@ -52,12 +53,21 @@ public data class ChangeOperatorControl(
 
     private const val CRC: Int = 5
 
+    private const val SIZE: Int = 28
+
     private val DESERIALIZER: MavDeserializer<ChangeOperatorControl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ChangeOperatorControl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUint8()
       val controlRequest = inputBuffer.decodeUint8()
       val version = inputBuffer.decodeUint8()
       val passkey = inputBuffer.decodeString(25)
+
       ChangeOperatorControl(
         targetSystem = targetSystem,
         controlRequest = controlRequest,

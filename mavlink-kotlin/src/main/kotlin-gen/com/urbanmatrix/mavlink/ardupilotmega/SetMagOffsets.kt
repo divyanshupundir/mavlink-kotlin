@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -41,7 +42,7 @@ public data class SetMagOffsets(
   public override val instanceMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(magOfsZ)
     outputBuffer.encodeInt16(magOfsY)
     outputBuffer.encodeInt16(magOfsX)
@@ -55,13 +56,22 @@ public data class SetMagOffsets(
 
     private const val CRC: Int = 163
 
+    private const val SIZE: Int = 8
+
     private val DESERIALIZER: MavDeserializer<SetMagOffsets> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SetMagOffsets: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val magOfsZ = inputBuffer.decodeInt16()
       val magOfsY = inputBuffer.decodeInt16()
       val magOfsX = inputBuffer.decodeInt16()
       val targetComponent = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
+
       SetMagOffsets(
         magOfsZ = magOfsZ,
         magOfsY = magOfsY,

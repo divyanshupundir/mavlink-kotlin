@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -73,7 +74,7 @@ public data class OpenDroneIdAuthentication(
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdAuthentication> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(53).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timestamp)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -91,8 +92,16 @@ public data class OpenDroneIdAuthentication(
 
     private const val CRC: Int = 61
 
+    private const val SIZE: Int = 53
+
     private val DESERIALIZER: MavDeserializer<OpenDroneIdAuthentication> = MavDeserializer {
         bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for OpenDroneIdAuthentication: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
@@ -106,6 +115,7 @@ public data class OpenDroneIdAuthentication(
       val lastPageIndex = inputBuffer.decodeUint8()
       val length = inputBuffer.decodeUint8()
       val authenticationData = inputBuffer.decodeUint8Array(23)
+
       OpenDroneIdAuthentication(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

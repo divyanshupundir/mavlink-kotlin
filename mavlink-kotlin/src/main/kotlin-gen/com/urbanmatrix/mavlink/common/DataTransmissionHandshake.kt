@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -55,7 +56,7 @@ public data class DataTransmissionHandshake(
   public override val instanceMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(size)
     outputBuffer.encodeUint16(width)
     outputBuffer.encodeUint16(height)
@@ -71,8 +72,16 @@ public data class DataTransmissionHandshake(
 
     private const val CRC: Int = 29
 
+    private const val SIZE: Int = 13
+
     private val DESERIALIZER: MavDeserializer<DataTransmissionHandshake> = MavDeserializer {
         bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for DataTransmissionHandshake: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val size = inputBuffer.decodeUint32()
       val width = inputBuffer.decodeUint16()
@@ -84,6 +93,7 @@ public data class DataTransmissionHandshake(
       }
       val payload = inputBuffer.decodeUint8()
       val jpgQuality = inputBuffer.decodeUint8()
+
       DataTransmissionHandshake(
         type = type,
         size = size,

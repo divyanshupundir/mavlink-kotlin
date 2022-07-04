@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -50,7 +51,7 @@ public data class SafetyAllowedArea(
   public override val instanceMetadata: MavMessage.Metadata<SafetyAllowedArea> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(25).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(p1x)
     outputBuffer.encodeFloat(p1y)
     outputBuffer.encodeFloat(p1z)
@@ -66,7 +67,15 @@ public data class SafetyAllowedArea(
 
     private const val CRC: Int = 3
 
+    private const val SIZE: Int = 25
+
     private val DESERIALIZER: MavDeserializer<SafetyAllowedArea> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SafetyAllowedArea: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val p1x = inputBuffer.decodeFloat()
       val p1y = inputBuffer.decodeFloat()
@@ -78,6 +87,7 @@ public data class SafetyAllowedArea(
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       SafetyAllowedArea(
         frame = frame,
         p1x = p1x,

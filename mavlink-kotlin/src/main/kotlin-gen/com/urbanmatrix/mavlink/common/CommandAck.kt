@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -52,7 +53,7 @@ public data class CommandAck(
   public override val instanceMetadata: MavMessage.Metadata<CommandAck> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(command.value, 2)
     outputBuffer.encodeEnumValue(result.value, 1)
     outputBuffer.encodeUint8(progress)
@@ -67,7 +68,15 @@ public data class CommandAck(
 
     private const val CRC: Int = 143
 
+    private const val SIZE: Int = 10
+
     private val DESERIALIZER: MavDeserializer<CommandAck> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CommandAck: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val command = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
@@ -81,6 +90,7 @@ public data class CommandAck(
       val resultParam2 = inputBuffer.decodeInt32()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
+
       CommandAck(
         command = command,
         result = result,

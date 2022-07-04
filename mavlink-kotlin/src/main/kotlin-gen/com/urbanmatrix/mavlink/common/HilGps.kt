@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -91,7 +92,7 @@ public data class HilGps(
   public override val instanceMetadata: MavMessage.Metadata<HilGps> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(39).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -115,7 +116,15 @@ public data class HilGps(
 
     private const val CRC: Int = 124
 
+    private const val SIZE: Int = 39
+
     private val DESERIALIZER: MavDeserializer<HilGps> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for HilGps: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val lat = inputBuffer.decodeInt32()
@@ -132,6 +141,7 @@ public data class HilGps(
       val satellitesVisible = inputBuffer.decodeUint8()
       val id = inputBuffer.decodeUint8()
       val yaw = inputBuffer.decodeUint16()
+
       HilGps(
         timeUsec = timeUsec,
         fixType = fixType,

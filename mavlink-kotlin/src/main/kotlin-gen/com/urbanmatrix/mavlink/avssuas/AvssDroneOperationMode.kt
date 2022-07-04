@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.avssuas
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -32,7 +33,7 @@ public data class AvssDroneOperationMode(
   public override val instanceMetadata: MavMessage.Metadata<AvssDroneOperationMode> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint8(m300OperationMode)
     outputBuffer.encodeUint8(horseflyOperationMode)
@@ -44,11 +45,20 @@ public data class AvssDroneOperationMode(
 
     private const val CRC: Int = 45
 
+    private const val SIZE: Int = 6
+
     private val DESERIALIZER: MavDeserializer<AvssDroneOperationMode> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AvssDroneOperationMode: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val m300OperationMode = inputBuffer.decodeUint8()
       val horseflyOperationMode = inputBuffer.decodeUint8()
+
       AvssDroneOperationMode(
         timeBootMs = timeBootMs,
         m300OperationMode = m300OperationMode,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -41,7 +42,7 @@ public data class SerialUdbExtraF21(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF21> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(sueAccelXOffset)
     outputBuffer.encodeInt16(sueAccelYOffset)
     outputBuffer.encodeInt16(sueAccelZOffset)
@@ -56,7 +57,15 @@ public data class SerialUdbExtraF21(
 
     private const val CRC: Int = 134
 
+    private const val SIZE: Int = 12
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF21> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF21: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueAccelXOffset = inputBuffer.decodeInt16()
       val sueAccelYOffset = inputBuffer.decodeInt16()
@@ -64,6 +73,7 @@ public data class SerialUdbExtraF21(
       val sueGyroXOffset = inputBuffer.decodeInt16()
       val sueGyroYOffset = inputBuffer.decodeInt16()
       val sueGyroZOffset = inputBuffer.decodeInt16()
+
       SerialUdbExtraF21(
         sueAccelXOffset = sueAccelXOffset,
         sueAccelYOffset = sueAccelYOffset,

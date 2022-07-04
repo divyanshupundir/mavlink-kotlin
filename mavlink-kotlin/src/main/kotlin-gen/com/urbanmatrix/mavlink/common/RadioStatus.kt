@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -51,7 +52,7 @@ public data class RadioStatus(
   public override val instanceMetadata: MavMessage.Metadata<RadioStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(rxerrors)
     outputBuffer.encodeUint16(fixed)
     outputBuffer.encodeUint8(rssi)
@@ -67,7 +68,15 @@ public data class RadioStatus(
 
     private const val CRC: Int = 185
 
+    private const val SIZE: Int = 9
+
     private val DESERIALIZER: MavDeserializer<RadioStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for RadioStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val rxerrors = inputBuffer.decodeUint16()
       val fixed = inputBuffer.decodeUint16()
@@ -76,6 +85,7 @@ public data class RadioStatus(
       val txbuf = inputBuffer.decodeUint8()
       val noise = inputBuffer.decodeUint8()
       val remnoise = inputBuffer.decodeUint8()
+
       RadioStatus(
         rssi = rssi,
         remrssi = remrssi,

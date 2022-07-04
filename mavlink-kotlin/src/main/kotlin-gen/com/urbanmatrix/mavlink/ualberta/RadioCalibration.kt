@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ualberta
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16Array
@@ -42,7 +43,7 @@ public data class RadioCalibration(
   public override val instanceMetadata: MavMessage.Metadata<RadioCalibration> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16Array(aileron, 6)
     outputBuffer.encodeUint16Array(elevator, 6)
     outputBuffer.encodeUint16Array(rudder, 6)
@@ -57,7 +58,15 @@ public data class RadioCalibration(
 
     private const val CRC: Int = 230
 
+    private const val SIZE: Int = 42
+
     private val DESERIALIZER: MavDeserializer<RadioCalibration> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for RadioCalibration: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val aileron = inputBuffer.decodeUint16Array(6)
       val elevator = inputBuffer.decodeUint16Array(6)
@@ -65,6 +74,7 @@ public data class RadioCalibration(
       val gyro = inputBuffer.decodeUint16Array(4)
       val pitch = inputBuffer.decodeUint16Array(10)
       val throttle = inputBuffer.decodeUint16Array(10)
+
       RadioCalibration(
         aileron = aileron,
         elevator = elevator,

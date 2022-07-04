@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -35,7 +36,7 @@ public data class SerialUdbExtraF13(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF13> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(14).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(sueLatOrigin)
     outputBuffer.encodeInt32(sueLonOrigin)
     outputBuffer.encodeInt32(sueAltOrigin)
@@ -48,12 +49,21 @@ public data class SerialUdbExtraF13(
 
     private const val CRC: Int = 249
 
+    private const val SIZE: Int = 14
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF13> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF13: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueLatOrigin = inputBuffer.decodeInt32()
       val sueLonOrigin = inputBuffer.decodeInt32()
       val sueAltOrigin = inputBuffer.decodeInt32()
       val sueWeekNo = inputBuffer.decodeInt16()
+
       SerialUdbExtraF13(
         sueWeekNo = sueWeekNo,
         sueLatOrigin = sueLatOrigin,

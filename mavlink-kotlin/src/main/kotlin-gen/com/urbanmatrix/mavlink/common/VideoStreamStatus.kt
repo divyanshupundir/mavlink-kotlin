@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -61,7 +62,7 @@ public data class VideoStreamStatus(
   public override val instanceMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(19).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(framerate)
     outputBuffer.encodeUint32(bitrate)
     outputBuffer.encodeEnumValue(flags.value, 2)
@@ -78,7 +79,15 @@ public data class VideoStreamStatus(
 
     private const val CRC: Int = 59
 
+    private const val SIZE: Int = 19
+
     private val DESERIALIZER: MavDeserializer<VideoStreamStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for VideoStreamStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val framerate = inputBuffer.decodeFloat()
       val bitrate = inputBuffer.decodeUint32()
@@ -91,6 +100,7 @@ public data class VideoStreamStatus(
       val rotation = inputBuffer.decodeUint16()
       val hfov = inputBuffer.decodeUint16()
       val streamId = inputBuffer.decodeUint8()
+
       VideoStreamStatus(
         streamId = streamId,
         flags = flags,

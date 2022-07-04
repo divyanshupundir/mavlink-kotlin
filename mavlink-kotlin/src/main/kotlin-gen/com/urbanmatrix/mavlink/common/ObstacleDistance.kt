@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -78,7 +79,7 @@ public data class ObstacleDistance(
   public override val instanceMetadata: MavMessage.Metadata<ObstacleDistance> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(167).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16Array(distances, 144)
     outputBuffer.encodeUint16(minDistance)
@@ -96,7 +97,15 @@ public data class ObstacleDistance(
 
     private const val CRC: Int = 108
 
+    private const val SIZE: Int = 167
+
     private val DESERIALIZER: MavDeserializer<ObstacleDistance> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ObstacleDistance: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val distances = inputBuffer.decodeUint16Array(144)
@@ -113,6 +122,7 @@ public data class ObstacleDistance(
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       ObstacleDistance(
         timeUsec = timeUsec,
         sensorType = sensorType,

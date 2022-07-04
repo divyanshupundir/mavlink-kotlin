@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -71,7 +72,7 @@ public data class SensPowerBoard(
   public override val instanceMetadata: MavMessage.Metadata<SensPowerBoard> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(46).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(pwrBrdSystemVolt)
     outputBuffer.encodeFloat(pwrBrdServoVolt)
@@ -92,7 +93,15 @@ public data class SensPowerBoard(
 
     private const val CRC: Int = 222
 
+    private const val SIZE: Int = 46
+
     private val DESERIALIZER: MavDeserializer<SensPowerBoard> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SensPowerBoard: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val pwrBrdSystemVolt = inputBuffer.decodeFloat()
@@ -106,6 +115,7 @@ public data class SensPowerBoard(
       val pwrBrdAuxAmp = inputBuffer.decodeFloat()
       val pwrBrdStatus = inputBuffer.decodeUint8()
       val pwrBrdLedStatus = inputBuffer.decodeUint8()
+
       SensPowerBoard(
         timestamp = timestamp,
         pwrBrdStatus = pwrBrdStatus,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -59,7 +60,7 @@ public data class WindCov(
   public override val instanceMetadata: MavMessage.Metadata<WindCov> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(40).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(windX)
     outputBuffer.encodeFloat(windY)
@@ -77,7 +78,15 @@ public data class WindCov(
 
     private const val CRC: Int = 105
 
+    private const val SIZE: Int = 40
+
     private val DESERIALIZER: MavDeserializer<WindCov> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for WindCov: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val windX = inputBuffer.decodeFloat()
@@ -88,6 +97,7 @@ public data class WindCov(
       val windAlt = inputBuffer.decodeFloat()
       val horizAccuracy = inputBuffer.decodeFloat()
       val vertAccuracy = inputBuffer.decodeFloat()
+
       WindCov(
         timeUsec = timeUsec,
         windX = windX,

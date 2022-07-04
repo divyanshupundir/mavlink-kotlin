@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -37,7 +38,7 @@ public data class NamedValueFloat(
   public override val instanceMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(value)
     outputBuffer.encodeString(name, 10)
@@ -49,11 +50,20 @@ public data class NamedValueFloat(
 
     private const val CRC: Int = 94
 
+    private const val SIZE: Int = 18
+
     private val DESERIALIZER: MavDeserializer<NamedValueFloat> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for NamedValueFloat: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val value = inputBuffer.decodeFloat()
       val name = inputBuffer.decodeString(10)
+
       NamedValueFloat(
         timeBootMs = timeBootMs,
         name = name,

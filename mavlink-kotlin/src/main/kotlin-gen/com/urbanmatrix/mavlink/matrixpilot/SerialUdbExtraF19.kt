@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -49,7 +50,7 @@ public data class SerialUdbExtraF19(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF19> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(sueAileronOutputChannel)
     outputBuffer.encodeUint8(sueAileronReversed)
     outputBuffer.encodeUint8(sueElevatorOutputChannel)
@@ -66,7 +67,15 @@ public data class SerialUdbExtraF19(
 
     private const val CRC: Int = 87
 
+    private const val SIZE: Int = 8
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF19> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF19: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueAileronOutputChannel = inputBuffer.decodeUint8()
       val sueAileronReversed = inputBuffer.decodeUint8()
@@ -76,6 +85,7 @@ public data class SerialUdbExtraF19(
       val sueThrottleReversed = inputBuffer.decodeUint8()
       val sueRudderOutputChannel = inputBuffer.decodeUint8()
       val sueRudderReversed = inputBuffer.decodeUint8()
+
       SerialUdbExtraF19(
         sueAileronOutputChannel = sueAileronOutputChannel,
         sueAileronReversed = sueAileronReversed,

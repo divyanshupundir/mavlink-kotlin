@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -41,7 +42,7 @@ public data class LogData(
   public override val instanceMetadata: MavMessage.Metadata<LogData> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(97).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(ofs)
     outputBuffer.encodeUint16(id)
     outputBuffer.encodeUint8(count)
@@ -54,12 +55,21 @@ public data class LogData(
 
     private const val CRC: Int = 94
 
+    private const val SIZE: Int = 97
+
     private val DESERIALIZER: MavDeserializer<LogData> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for LogData: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val ofs = inputBuffer.decodeUint32()
       val id = inputBuffer.decodeUint16()
       val count = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(90)
+
       LogData(
         id = id,
         ofs = ofs,

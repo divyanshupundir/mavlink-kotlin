@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -82,7 +83,7 @@ public data class HilRcInputsRaw(
   public override val instanceMetadata: MavMessage.Metadata<HilRcInputsRaw> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -105,7 +106,15 @@ public data class HilRcInputsRaw(
 
     private const val CRC: Int = 54
 
+    private const val SIZE: Int = 33
+
     private val DESERIALIZER: MavDeserializer<HilRcInputsRaw> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for HilRcInputsRaw: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val chan1Raw = inputBuffer.decodeUint16()
@@ -121,6 +130,7 @@ public data class HilRcInputsRaw(
       val chan11Raw = inputBuffer.decodeUint16()
       val chan12Raw = inputBuffer.decodeUint16()
       val rssi = inputBuffer.decodeUint8()
+
       HilRcInputsRaw(
         timeUsec = timeUsec,
         chan1Raw = chan1Raw,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt8Array
@@ -44,7 +45,7 @@ public data class FlexifunctionDirectory(
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionDirectory> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(53).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(directoryType)
@@ -59,7 +60,15 @@ public data class FlexifunctionDirectory(
 
     private const val CRC: Int = 163
 
+    private const val SIZE: Int = 53
+
     private val DESERIALIZER: MavDeserializer<FlexifunctionDirectory> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FlexifunctionDirectory: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -67,6 +76,7 @@ public data class FlexifunctionDirectory(
       val startIndex = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
       val directoryData = inputBuffer.decodeInt8Array(48)
+
       FlexifunctionDirectory(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

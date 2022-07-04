@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -40,7 +41,7 @@ public data class CameraSettings(
   public override val instanceMetadata: MavMessage.Metadata<CameraSettings> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(modeId.value, 1)
     outputBuffer.encodeFloat(zoomlevel)
@@ -53,7 +54,15 @@ public data class CameraSettings(
 
     private const val CRC: Int = 146
 
+    private const val SIZE: Int = 13
+
     private val DESERIALIZER: MavDeserializer<CameraSettings> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraSettings: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val modeId = inputBuffer.decodeEnumValue(1).let { value ->
@@ -62,6 +71,7 @@ public data class CameraSettings(
       }
       val zoomlevel = inputBuffer.decodeFloat()
       val focuslevel = inputBuffer.decodeFloat()
+
       CameraSettings(
         timeBootMs = timeBootMs,
         modeId = modeId,

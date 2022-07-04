@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -45,7 +46,7 @@ public data class FenceStatus(
   public override val instanceMetadata: MavMessage.Metadata<FenceStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(breachTime)
     outputBuffer.encodeUint16(breachCount)
     outputBuffer.encodeUint8(breachStatus)
@@ -59,7 +60,15 @@ public data class FenceStatus(
 
     private const val CRC: Int = 189
 
+    private const val SIZE: Int = 9
+
     private val DESERIALIZER: MavDeserializer<FenceStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FenceStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val breachTime = inputBuffer.decodeUint32()
       val breachCount = inputBuffer.decodeUint16()
@@ -72,6 +81,7 @@ public data class FenceStatus(
         val entry = FenceMitigate.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       FenceStatus(
         breachStatus = breachStatus,
         breachCount = breachCount,

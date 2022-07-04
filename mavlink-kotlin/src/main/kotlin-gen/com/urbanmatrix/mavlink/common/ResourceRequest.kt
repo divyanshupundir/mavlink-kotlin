@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -42,7 +43,7 @@ public data class ResourceRequest(
   public override val instanceMetadata: MavMessage.Metadata<ResourceRequest> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(243).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(requestId)
     outputBuffer.encodeUint8(uriType)
     outputBuffer.encodeUint8Array(uri, 120)
@@ -56,13 +57,22 @@ public data class ResourceRequest(
 
     private const val CRC: Int = 102
 
+    private const val SIZE: Int = 243
+
     private val DESERIALIZER: MavDeserializer<ResourceRequest> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ResourceRequest: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUint8()
       val uriType = inputBuffer.decodeUint8()
       val uri = inputBuffer.decodeUint8Array(120)
       val transferType = inputBuffer.decodeUint8()
       val storage = inputBuffer.decodeUint8Array(120)
+
       ResourceRequest(
         requestId = requestId,
         uriType = uriType,

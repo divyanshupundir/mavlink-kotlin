@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -103,7 +104,7 @@ public data class SetHomePosition(
   public override val instanceMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(61).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(approachZ)
     outputBuffer.encodeFloat(approachY)
@@ -124,7 +125,15 @@ public data class SetHomePosition(
 
     private const val CRC: Int = 108
 
+    private const val SIZE: Int = 61
+
     private val DESERIALIZER: MavDeserializer<SetHomePosition> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SetHomePosition: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val approachZ = inputBuffer.decodeFloat()
@@ -138,6 +147,7 @@ public data class SetHomePosition(
       val longitude = inputBuffer.decodeInt32()
       val latitude = inputBuffer.decodeInt32()
       val targetSystem = inputBuffer.decodeUint8()
+
       SetHomePosition(
         timeUsec = timeUsec,
         approachZ = approachZ,

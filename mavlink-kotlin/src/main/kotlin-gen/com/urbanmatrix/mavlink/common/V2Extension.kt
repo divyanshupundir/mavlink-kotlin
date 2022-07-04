@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -53,7 +54,7 @@ public data class V2Extension(
   public override val instanceMetadata: MavMessage.Metadata<V2Extension> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(254).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(messageType)
     outputBuffer.encodeUint8(targetNetwork)
     outputBuffer.encodeUint8(targetSystem)
@@ -67,13 +68,22 @@ public data class V2Extension(
 
     private const val CRC: Int = 248
 
+    private const val SIZE: Int = 254
+
     private val DESERIALIZER: MavDeserializer<V2Extension> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for V2Extension: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val messageType = inputBuffer.decodeUint16()
       val targetNetwork = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val payload = inputBuffer.decodeUint8Array(249)
+
       V2Extension(
         targetNetwork = targetNetwork,
         targetSystem = targetSystem,

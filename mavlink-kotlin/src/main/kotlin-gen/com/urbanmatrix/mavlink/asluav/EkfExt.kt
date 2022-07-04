@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -49,7 +50,7 @@ public data class EkfExt(
   public override val instanceMetadata: MavMessage.Metadata<EkfExt> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(32).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(windspeed)
     outputBuffer.encodeFloat(winddir)
@@ -65,7 +66,15 @@ public data class EkfExt(
 
     private const val CRC: Int = 64
 
+    private const val SIZE: Int = 32
+
     private val DESERIALIZER: MavDeserializer<EkfExt> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for EkfExt: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val windspeed = inputBuffer.decodeFloat()
@@ -74,6 +83,7 @@ public data class EkfExt(
       val airspeed = inputBuffer.decodeFloat()
       val beta = inputBuffer.decodeFloat()
       val alpha = inputBuffer.decodeFloat()
+
       EkfExt(
         timestamp = timestamp,
         windspeed = windspeed,

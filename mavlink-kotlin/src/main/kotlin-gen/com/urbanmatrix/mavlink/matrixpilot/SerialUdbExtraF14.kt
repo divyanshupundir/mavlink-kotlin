@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -66,7 +67,7 @@ public data class SerialUdbExtraF14(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF14> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(17).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(sueTrapSource)
     outputBuffer.encodeInt16(sueRcon)
     outputBuffer.encodeInt16(sueTrapFlags)
@@ -86,7 +87,15 @@ public data class SerialUdbExtraF14(
 
     private const val CRC: Int = 123
 
+    private const val SIZE: Int = 17
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF14> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF14: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueTrapSource = inputBuffer.decodeUint32()
       val sueRcon = inputBuffer.decodeInt16()
@@ -99,6 +108,7 @@ public data class SerialUdbExtraF14(
       val sueAirframe = inputBuffer.decodeUint8()
       val sueClockConfig = inputBuffer.decodeUint8()
       val sueFlightPlanType = inputBuffer.decodeUint8()
+
       SerialUdbExtraF14(
         sueWindEstimation = sueWindEstimation,
         sueGpsType = sueGpsType,

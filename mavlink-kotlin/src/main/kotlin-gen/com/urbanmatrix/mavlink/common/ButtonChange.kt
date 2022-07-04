@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -32,7 +33,7 @@ public data class ButtonChange(
   public override val instanceMetadata: MavMessage.Metadata<ButtonChange> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(lastChangeMs)
     outputBuffer.encodeUint8(state)
@@ -44,11 +45,20 @@ public data class ButtonChange(
 
     private const val CRC: Int = 131
 
+    private const val SIZE: Int = 9
+
     private val DESERIALIZER: MavDeserializer<ButtonChange> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ButtonChange: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val lastChangeMs = inputBuffer.decodeUint32()
       val state = inputBuffer.decodeUint8()
+
       ButtonChange(
         timeBootMs = timeBootMs,
         lastChangeMs = lastChangeMs,

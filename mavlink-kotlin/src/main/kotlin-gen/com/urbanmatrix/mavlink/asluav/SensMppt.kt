@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -77,7 +78,7 @@ public data class SensMppt(
   public override val instanceMetadata: MavMessage.Metadata<SensMppt> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(41).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(mpptTimestamp)
     outputBuffer.encodeFloat(mppt1Volt)
     outputBuffer.encodeFloat(mppt1Amp)
@@ -99,7 +100,15 @@ public data class SensMppt(
 
     private const val CRC: Int = 231
 
+    private const val SIZE: Int = 41
+
     private val DESERIALIZER: MavDeserializer<SensMppt> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SensMppt: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mpptTimestamp = inputBuffer.decodeUint64()
       val mppt1Volt = inputBuffer.decodeFloat()
@@ -114,6 +123,7 @@ public data class SensMppt(
       val mppt1Status = inputBuffer.decodeUint8()
       val mppt2Status = inputBuffer.decodeUint8()
       val mppt3Status = inputBuffer.decodeUint8()
+
       SensMppt(
         mpptTimestamp = mpptTimestamp,
         mppt1Volt = mppt1Volt,

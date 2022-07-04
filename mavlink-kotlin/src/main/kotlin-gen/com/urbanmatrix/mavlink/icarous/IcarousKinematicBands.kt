@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.icarous
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -87,7 +88,7 @@ public data class IcarousKinematicBands(
   public override val instanceMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(46).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(min1)
     outputBuffer.encodeFloat(max1)
     outputBuffer.encodeFloat(min2)
@@ -112,7 +113,15 @@ public data class IcarousKinematicBands(
 
     private const val CRC: Int = 239
 
+    private const val SIZE: Int = 46
+
     private val DESERIALIZER: MavDeserializer<IcarousKinematicBands> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for IcarousKinematicBands: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val min1 = inputBuffer.decodeFloat()
       val max1 = inputBuffer.decodeFloat()
@@ -145,6 +154,7 @@ public data class IcarousKinematicBands(
         val entry = IcarousTrackBandTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       IcarousKinematicBands(
         numbands = numbands,
         type1 = type1,

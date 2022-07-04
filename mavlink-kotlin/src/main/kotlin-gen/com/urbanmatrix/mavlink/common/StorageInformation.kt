@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -88,7 +89,7 @@ public data class StorageInformation(
   public override val instanceMetadata: MavMessage.Metadata<StorageInformation> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(61).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(totalCapacity)
     outputBuffer.encodeFloat(usedCapacity)
@@ -109,7 +110,15 @@ public data class StorageInformation(
 
     private const val CRC: Int = 179
 
+    private const val SIZE: Int = 61
+
     private val DESERIALIZER: MavDeserializer<StorageInformation> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for StorageInformation: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val totalCapacity = inputBuffer.decodeFloat()
@@ -132,6 +141,7 @@ public data class StorageInformation(
         val entry = StorageUsageFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       StorageInformation(
         timeBootMs = timeBootMs,
         storageId = storageId,

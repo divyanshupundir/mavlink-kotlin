@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.minimal
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -54,7 +55,7 @@ public data class Heartbeat(
   public override val instanceMetadata: MavMessage.Metadata<Heartbeat> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
@@ -69,7 +70,15 @@ public data class Heartbeat(
 
     private const val CRC: Int = 239
 
+    private const val SIZE: Int = 9
+
     private val DESERIALIZER: MavDeserializer<Heartbeat> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Heartbeat: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val customMode = inputBuffer.decodeUint32()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
@@ -89,6 +98,7 @@ public data class Heartbeat(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val mavlinkVersion = inputBuffer.decodeUint8()
+
       Heartbeat(
         type = type,
         autopilot = autopilot,

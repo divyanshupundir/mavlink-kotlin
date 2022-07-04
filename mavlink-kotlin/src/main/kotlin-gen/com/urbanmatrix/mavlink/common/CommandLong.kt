@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -69,7 +70,7 @@ public data class CommandLong(
   public override val instanceMetadata: MavMessage.Metadata<CommandLong> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(param1)
     outputBuffer.encodeFloat(param2)
     outputBuffer.encodeFloat(param3)
@@ -89,7 +90,15 @@ public data class CommandLong(
 
     private const val CRC: Int = 152
 
+    private const val SIZE: Int = 33
+
     private val DESERIALIZER: MavDeserializer<CommandLong> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CommandLong: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val param1 = inputBuffer.decodeFloat()
       val param2 = inputBuffer.decodeFloat()
@@ -105,6 +114,7 @@ public data class CommandLong(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val confirmation = inputBuffer.decodeUint8()
+
       CommandLong(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

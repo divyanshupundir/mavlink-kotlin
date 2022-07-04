@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -117,7 +118,7 @@ public data class OpenDroneIdLocation(
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdLocation> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(59).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeFloat(altitudeBarometric)
@@ -145,7 +146,15 @@ public data class OpenDroneIdLocation(
 
     private const val CRC: Int = 23
 
+    private const val SIZE: Int = 59
+
     private val DESERIALIZER: MavDeserializer<OpenDroneIdLocation> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for OpenDroneIdLocation: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
@@ -187,6 +196,7 @@ public data class OpenDroneIdLocation(
         val entry = MavOdidTimeAcc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       OpenDroneIdLocation(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

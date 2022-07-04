@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -45,7 +46,7 @@ public data class FencePoint(
   public override val instanceMetadata: MavMessage.Metadata<FencePoint> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(lat)
     outputBuffer.encodeFloat(lng)
     outputBuffer.encodeUint8(targetSystem)
@@ -60,7 +61,15 @@ public data class FencePoint(
 
     private const val CRC: Int = 78
 
+    private const val SIZE: Int = 12
+
     private val DESERIALIZER: MavDeserializer<FencePoint> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FencePoint: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeFloat()
       val lng = inputBuffer.decodeFloat()
@@ -68,6 +77,7 @@ public data class FencePoint(
       val targetComponent = inputBuffer.decodeUint8()
       val idx = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
+
       FencePoint(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

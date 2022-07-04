@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -64,7 +65,7 @@ public data class CameraStatus(
   public override val instanceMetadata: MavMessage.Metadata<CameraStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(29).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(p1)
     outputBuffer.encodeFloat(p2)
@@ -82,7 +83,15 @@ public data class CameraStatus(
 
     private const val CRC: Int = 189
 
+    private const val SIZE: Int = 29
+
     private val DESERIALIZER: MavDeserializer<CameraStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val p1 = inputBuffer.decodeFloat()
@@ -96,6 +105,7 @@ public data class CameraStatus(
         val entry = CameraStatusTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       CameraStatus(
         timeUsec = timeUsec,
         targetSystem = targetSystem,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -78,7 +79,7 @@ public data class GeneratorStatus(
   public override val instanceMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 8)
     outputBuffer.encodeFloat(batteryCurrent)
     outputBuffer.encodeFloat(loadCurrent)
@@ -98,7 +99,15 @@ public data class GeneratorStatus(
 
     private const val CRC: Int = 117
 
+    private const val SIZE: Int = 42
+
     private val DESERIALIZER: MavDeserializer<GeneratorStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GeneratorStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(8).let { value ->
         val entry = MavGeneratorStatusFlag.getEntryFromValueOrNull(value)
@@ -114,6 +123,7 @@ public data class GeneratorStatus(
       val generatorSpeed = inputBuffer.decodeUint16()
       val rectifierTemperature = inputBuffer.decodeInt16()
       val generatorTemperature = inputBuffer.decodeInt16()
+
       GeneratorStatus(
         status = status,
         generatorSpeed = generatorSpeed,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -47,7 +48,7 @@ public data class MountStatus(
   public override val instanceMetadata: MavMessage.Metadata<MountStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(15).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(pointingA)
     outputBuffer.encodeInt32(pointingB)
     outputBuffer.encodeInt32(pointingC)
@@ -62,7 +63,15 @@ public data class MountStatus(
 
     private const val CRC: Int = 134
 
+    private const val SIZE: Int = 15
+
     private val DESERIALIZER: MavDeserializer<MountStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MountStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val pointingA = inputBuffer.decodeInt32()
       val pointingB = inputBuffer.decodeInt32()
@@ -73,6 +82,7 @@ public data class MountStatus(
         val entry = MavMountMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       MountStatus(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

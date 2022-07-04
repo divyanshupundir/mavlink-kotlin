@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -92,7 +93,7 @@ public data class MissionItem(
   public override val instanceMetadata: MavMessage.Metadata<MissionItem> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(missionType.value, 1)
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeFloat(y)
@@ -116,7 +117,15 @@ public data class MissionItem(
 
     private const val CRC: Int = 48
 
+    private const val SIZE: Int = 38
+
     private val DESERIALIZER: MavDeserializer<MissionItem> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MissionItem: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val missionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
@@ -142,6 +151,7 @@ public data class MissionItem(
       val seq = inputBuffer.decodeUint16()
       val targetComponent = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
+
       MissionItem(
         missionType = missionType,
         z = z,

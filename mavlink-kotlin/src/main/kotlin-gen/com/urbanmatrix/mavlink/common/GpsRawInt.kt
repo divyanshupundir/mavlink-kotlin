@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -100,7 +101,7 @@ public data class GpsRawInt(
   public override val instanceMetadata: MavMessage.Metadata<GpsRawInt> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -125,7 +126,15 @@ public data class GpsRawInt(
 
     private const val CRC: Int = 24
 
+    private const val SIZE: Int = 52
+
     private val DESERIALIZER: MavDeserializer<GpsRawInt> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GpsRawInt: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val lat = inputBuffer.decodeInt32()
@@ -146,6 +155,7 @@ public data class GpsRawInt(
       val velAcc = inputBuffer.decodeUint32()
       val hdgAcc = inputBuffer.decodeUint32()
       val yaw = inputBuffer.decodeUint16()
+
       GpsRawInt(
         timeUsec = timeUsec,
         fixType = fixType,

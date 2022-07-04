@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -36,7 +37,7 @@ public data class FlexifunctionBufferFunctionAck(
       METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(funcIndex)
     outputBuffer.encodeUint16(result)
     outputBuffer.encodeUint8(targetSystem)
@@ -49,13 +50,22 @@ public data class FlexifunctionBufferFunctionAck(
 
     private const val CRC: Int = 109
 
+    private const val SIZE: Int = 6
+
     private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunctionAck> = MavDeserializer {
         bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FlexifunctionBufferFunctionAck: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val funcIndex = inputBuffer.decodeUint16()
       val result = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
+
       FlexifunctionBufferFunctionAck(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

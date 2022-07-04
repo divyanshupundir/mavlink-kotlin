@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -92,7 +93,7 @@ public data class SetPositionTargetLocalNed(
   public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetLocalNed> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(53).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -117,8 +118,16 @@ public data class SetPositionTargetLocalNed(
 
     private const val CRC: Int = 143
 
+    private const val SIZE: Int = 53
+
     private val DESERIALIZER: MavDeserializer<SetPositionTargetLocalNed> = MavDeserializer {
         bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SetPositionTargetLocalNed: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val x = inputBuffer.decodeFloat()
@@ -142,6 +151,7 @@ public data class SetPositionTargetLocalNed(
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       SetPositionTargetLocalNed(
         timeBootMs = timeBootMs,
         targetSystem = targetSystem,

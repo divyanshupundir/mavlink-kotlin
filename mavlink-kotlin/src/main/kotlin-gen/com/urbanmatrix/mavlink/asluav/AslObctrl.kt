@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -55,7 +56,7 @@ public data class AslObctrl(
   public override val instanceMetadata: MavMessage.Metadata<AslObctrl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(uelev)
     outputBuffer.encodeFloat(uthrot)
@@ -72,7 +73,15 @@ public data class AslObctrl(
 
     private const val CRC: Int = 234
 
+    private const val SIZE: Int = 33
+
     private val DESERIALIZER: MavDeserializer<AslObctrl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AslObctrl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val uelev = inputBuffer.decodeFloat()
@@ -82,6 +91,7 @@ public data class AslObctrl(
       val uailr = inputBuffer.decodeFloat()
       val urud = inputBuffer.decodeFloat()
       val obctrlStatus = inputBuffer.decodeUint8()
+
       AslObctrl(
         timestamp = timestamp,
         uelev = uelev,

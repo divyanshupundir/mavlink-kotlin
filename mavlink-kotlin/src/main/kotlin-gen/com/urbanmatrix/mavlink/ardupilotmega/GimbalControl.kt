@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -40,7 +41,7 @@ public data class GimbalControl(
   public override val instanceMetadata: MavMessage.Metadata<GimbalControl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(14).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(demandedRateX)
     outputBuffer.encodeFloat(demandedRateY)
     outputBuffer.encodeFloat(demandedRateZ)
@@ -54,13 +55,22 @@ public data class GimbalControl(
 
     private const val CRC: Int = 205
 
+    private const val SIZE: Int = 14
+
     private val DESERIALIZER: MavDeserializer<GimbalControl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GimbalControl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val demandedRateX = inputBuffer.decodeFloat()
       val demandedRateY = inputBuffer.decodeFloat()
       val demandedRateZ = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
+
       GimbalControl(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

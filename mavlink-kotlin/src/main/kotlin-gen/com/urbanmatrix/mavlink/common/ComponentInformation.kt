@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -51,7 +52,7 @@ public data class ComponentInformation(
   public override val instanceMetadata: MavMessage.Metadata<ComponentInformation> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(212).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(peripheralsMetadataFileCrc)
     outputBuffer.encodeUint32(generalMetadataFileCrc)
     outputBuffer.encodeUint32(timeBootMs)
@@ -65,13 +66,22 @@ public data class ComponentInformation(
 
     private const val CRC: Int = 39
 
+    private const val SIZE: Int = 212
+
     private val DESERIALIZER: MavDeserializer<ComponentInformation> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ComponentInformation: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val peripheralsMetadataFileCrc = inputBuffer.decodeUint32()
       val generalMetadataFileCrc = inputBuffer.decodeUint32()
       val timeBootMs = inputBuffer.decodeUint32()
       val peripheralsMetadataUri = inputBuffer.decodeString(100)
       val generalMetadataUri = inputBuffer.decodeString(100)
+
       ComponentInformation(
         peripheralsMetadataUri = peripheralsMetadataUri,
         peripheralsMetadataFileCrc = peripheralsMetadataFileCrc,

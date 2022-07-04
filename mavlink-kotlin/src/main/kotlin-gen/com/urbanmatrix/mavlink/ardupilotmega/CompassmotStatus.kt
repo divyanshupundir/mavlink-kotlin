@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -44,7 +45,7 @@ public data class CompassmotStatus(
   public override val instanceMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(current)
     outputBuffer.encodeFloat(compensationx)
     outputBuffer.encodeFloat(compensationy)
@@ -59,7 +60,15 @@ public data class CompassmotStatus(
 
     private const val CRC: Int = 240
 
+    private const val SIZE: Int = 20
+
     private val DESERIALIZER: MavDeserializer<CompassmotStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CompassmotStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val current = inputBuffer.decodeFloat()
       val compensationx = inputBuffer.decodeFloat()
@@ -67,6 +76,7 @@ public data class CompassmotStatus(
       val compensationz = inputBuffer.decodeFloat()
       val throttle = inputBuffer.decodeUint16()
       val interference = inputBuffer.decodeUint16()
+
       CompassmotStatus(
         throttle = throttle,
         current = current,

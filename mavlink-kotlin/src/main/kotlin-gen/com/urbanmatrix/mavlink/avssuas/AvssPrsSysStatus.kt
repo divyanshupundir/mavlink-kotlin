@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.avssuas
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -40,7 +41,7 @@ public data class AvssPrsSysStatus(
   public override val instanceMetadata: MavMessage.Metadata<AvssPrsSysStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(14).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(errorStatus)
     outputBuffer.encodeUint32(batteryStatus)
@@ -54,13 +55,22 @@ public data class AvssPrsSysStatus(
 
     private const val CRC: Int = 220
 
+    private const val SIZE: Int = 14
+
     private val DESERIALIZER: MavDeserializer<AvssPrsSysStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AvssPrsSysStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val errorStatus = inputBuffer.decodeUint32()
       val batteryStatus = inputBuffer.decodeUint32()
       val armStatus = inputBuffer.decodeUint8()
       val chargeStatus = inputBuffer.decodeUint8()
+
       AvssPrsSysStatus(
         timeBootMs = timeBootMs,
         errorStatus = errorStatus,

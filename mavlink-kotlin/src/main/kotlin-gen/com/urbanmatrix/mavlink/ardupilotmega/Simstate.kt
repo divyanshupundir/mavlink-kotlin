@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -64,7 +65,7 @@ public data class Simstate(
   public override val instanceMetadata: MavMessage.Metadata<Simstate> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(44).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -84,7 +85,15 @@ public data class Simstate(
 
     private const val CRC: Int = 154
 
+    private const val SIZE: Int = 44
+
     private val DESERIALIZER: MavDeserializer<Simstate> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Simstate: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
@@ -97,6 +106,7 @@ public data class Simstate(
       val zgyro = inputBuffer.decodeFloat()
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
+
       Simstate(
         roll = roll,
         pitch = pitch,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -32,7 +33,7 @@ public data class PowerStatus(
   public override val instanceMetadata: MavMessage.Metadata<PowerStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint16(vservo)
     outputBuffer.encodeEnumValue(flags.value, 2)
@@ -44,7 +45,15 @@ public data class PowerStatus(
 
     private const val CRC: Int = 203
 
+    private const val SIZE: Int = 6
+
     private val DESERIALIZER: MavDeserializer<PowerStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for PowerStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vcc = inputBuffer.decodeUint16()
       val vservo = inputBuffer.decodeUint16()
@@ -52,6 +61,7 @@ public data class PowerStatus(
         val entry = MavPowerStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       PowerStatus(
         vcc = vcc,
         vservo = vservo,

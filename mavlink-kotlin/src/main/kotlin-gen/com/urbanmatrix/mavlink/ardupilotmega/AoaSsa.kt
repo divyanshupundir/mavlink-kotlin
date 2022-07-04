@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -33,7 +34,7 @@ public data class AoaSsa(
   public override val instanceMetadata: MavMessage.Metadata<AoaSsa> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(aoa)
     outputBuffer.encodeFloat(ssa)
@@ -45,11 +46,20 @@ public data class AoaSsa(
 
     private const val CRC: Int = 205
 
+    private const val SIZE: Int = 16
+
     private val DESERIALIZER: MavDeserializer<AoaSsa> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AoaSsa: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val aoa = inputBuffer.decodeFloat()
       val ssa = inputBuffer.decodeFloat()
+
       AoaSsa(
         timeUsec = timeUsec,
         aoa = aoa,

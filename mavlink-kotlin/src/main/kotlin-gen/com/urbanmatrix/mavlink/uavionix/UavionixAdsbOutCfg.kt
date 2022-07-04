@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.uavionix
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -65,7 +66,7 @@ public data class UavionixAdsbOutCfg(
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(icao)
     outputBuffer.encodeUint16(stallspeed)
     outputBuffer.encodeString(callsign, 9)
@@ -82,7 +83,15 @@ public data class UavionixAdsbOutCfg(
 
     private const val CRC: Int = 204
 
+    private const val SIZE: Int = 20
+
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutCfg> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for UavionixAdsbOutCfg: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val icao = inputBuffer.decodeUint32()
       val stallspeed = inputBuffer.decodeUint16()
@@ -107,6 +116,7 @@ public data class UavionixAdsbOutCfg(
         val entry = UavionixAdsbOutRfSelect.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       UavionixAdsbOutCfg(
         icao = icao,
         callsign = callsign,

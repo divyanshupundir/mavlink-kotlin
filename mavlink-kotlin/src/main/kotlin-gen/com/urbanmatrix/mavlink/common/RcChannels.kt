@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -111,7 +112,7 @@ public data class RcChannels(
   public override val instanceMetadata: MavMessage.Metadata<RcChannels> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(42).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -141,7 +142,15 @@ public data class RcChannels(
 
     private const val CRC: Int = 118
 
+    private const val SIZE: Int = 42
+
     private val DESERIALIZER: MavDeserializer<RcChannels> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for RcChannels: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val chan1Raw = inputBuffer.decodeUint16()
@@ -164,6 +173,7 @@ public data class RcChannels(
       val chan18Raw = inputBuffer.decodeUint16()
       val chancount = inputBuffer.decodeUint8()
       val rssi = inputBuffer.decodeUint8()
+
       RcChannels(
         timeBootMs = timeBootMs,
         chancount = chancount,

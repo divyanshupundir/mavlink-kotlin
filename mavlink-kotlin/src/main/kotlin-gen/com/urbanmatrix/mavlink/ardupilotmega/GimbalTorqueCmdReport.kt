@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -39,7 +40,7 @@ public data class GimbalTorqueCmdReport(
   public override val instanceMetadata: MavMessage.Metadata<GimbalTorqueCmdReport> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(rlTorqueCmd)
     outputBuffer.encodeInt16(elTorqueCmd)
     outputBuffer.encodeInt16(azTorqueCmd)
@@ -53,13 +54,22 @@ public data class GimbalTorqueCmdReport(
 
     private const val CRC: Int = 69
 
+    private const val SIZE: Int = 8
+
     private val DESERIALIZER: MavDeserializer<GimbalTorqueCmdReport> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GimbalTorqueCmdReport: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val rlTorqueCmd = inputBuffer.decodeInt16()
       val elTorqueCmd = inputBuffer.decodeInt16()
       val azTorqueCmd = inputBuffer.decodeInt16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
+
       GimbalTorqueCmdReport(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

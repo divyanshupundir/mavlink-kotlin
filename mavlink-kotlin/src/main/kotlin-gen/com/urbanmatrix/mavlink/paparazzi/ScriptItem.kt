@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.paparazzi
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -39,7 +40,7 @@ public data class ScriptItem(
   public override val instanceMetadata: MavMessage.Metadata<ScriptItem> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(54).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(seq)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -52,12 +53,21 @@ public data class ScriptItem(
 
     private const val CRC: Int = 130
 
+    private const val SIZE: Int = 54
+
     private val DESERIALIZER: MavDeserializer<ScriptItem> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ScriptItem: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seq = inputBuffer.decodeUint16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val name = inputBuffer.decodeString(50)
+
       ScriptItem(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

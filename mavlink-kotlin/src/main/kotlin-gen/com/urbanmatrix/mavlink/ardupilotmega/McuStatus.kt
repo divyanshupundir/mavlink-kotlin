@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -42,7 +43,7 @@ public data class McuStatus(
   public override val instanceMetadata: MavMessage.Metadata<McuStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(mcuTemperature)
     outputBuffer.encodeUint16(mcuVoltage)
     outputBuffer.encodeUint16(mcuVoltageMin)
@@ -56,13 +57,22 @@ public data class McuStatus(
 
     private const val CRC: Int = 142
 
+    private const val SIZE: Int = 9
+
     private val DESERIALIZER: MavDeserializer<McuStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for McuStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mcuTemperature = inputBuffer.decodeInt16()
       val mcuVoltage = inputBuffer.decodeUint16()
       val mcuVoltageMin = inputBuffer.decodeUint16()
       val mcuVoltageMax = inputBuffer.decodeUint16()
       val id = inputBuffer.decodeUint8()
+
       McuStatus(
         id = id,
         mcuTemperature = mcuTemperature,

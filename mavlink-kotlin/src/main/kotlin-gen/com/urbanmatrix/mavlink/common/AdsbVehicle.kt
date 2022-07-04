@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -84,7 +85,7 @@ public data class AdsbVehicle(
   public override val instanceMetadata: MavMessage.Metadata<AdsbVehicle> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(icaoAddress)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -106,7 +107,15 @@ public data class AdsbVehicle(
 
     private const val CRC: Int = 92
 
+    private const val SIZE: Int = 38
+
     private val DESERIALIZER: MavDeserializer<AdsbVehicle> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AdsbVehicle: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val icaoAddress = inputBuffer.decodeUint32()
       val lat = inputBuffer.decodeInt32()
@@ -130,6 +139,7 @@ public data class AdsbVehicle(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val tslc = inputBuffer.decodeUint8()
+
       AdsbVehicle(
         icaoAddress = icaoAddress,
         lat = lat,

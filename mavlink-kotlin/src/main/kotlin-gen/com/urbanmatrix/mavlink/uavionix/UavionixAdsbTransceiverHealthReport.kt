@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.uavionix
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,7 +25,7 @@ public data class UavionixAdsbTransceiverHealthReport(
       METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(1).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(rfhealth.value, 1)
     return outputBuffer.array()
   }
@@ -34,13 +35,22 @@ public data class UavionixAdsbTransceiverHealthReport(
 
     private const val CRC: Int = 4
 
+    private const val SIZE: Int = 1
+
     private val DESERIALIZER: MavDeserializer<UavionixAdsbTransceiverHealthReport> = MavDeserializer
         { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for UavionixAdsbTransceiverHealthReport: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val rfhealth = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbRfHealth.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       UavionixAdsbTransceiverHealthReport(
         rfhealth = rfhealth,
       )

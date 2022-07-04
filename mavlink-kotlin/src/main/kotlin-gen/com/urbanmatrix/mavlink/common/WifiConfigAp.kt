@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -39,7 +40,7 @@ public data class WifiConfigAp(
   public override val instanceMetadata: MavMessage.Metadata<WifiConfigAp> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(98).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeString(ssid, 32)
     outputBuffer.encodeString(password, 64)
     outputBuffer.encodeEnumValue(mode.value, 1)
@@ -52,7 +53,15 @@ public data class WifiConfigAp(
 
     private const val CRC: Int = 186
 
+    private const val SIZE: Int = 98
+
     private val DESERIALIZER: MavDeserializer<WifiConfigAp> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for WifiConfigAp: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val ssid = inputBuffer.decodeString(32)
       val password = inputBuffer.decodeString(64)
@@ -64,6 +73,7 @@ public data class WifiConfigAp(
         val entry = WifiConfigApResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       WifiConfigAp(
         ssid = ssid,
         password = password,

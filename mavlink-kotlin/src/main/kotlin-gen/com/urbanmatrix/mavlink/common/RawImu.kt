@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -75,7 +76,7 @@ public data class RawImu(
   public override val instanceMetadata: MavMessage.Metadata<RawImu> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(29).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
@@ -96,7 +97,15 @@ public data class RawImu(
 
     private const val CRC: Int = 144
 
+    private const val SIZE: Int = 29
+
     private val DESERIALIZER: MavDeserializer<RawImu> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for RawImu: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val xacc = inputBuffer.decodeInt16()
@@ -110,6 +119,7 @@ public data class RawImu(
       val zmag = inputBuffer.decodeInt16()
       val id = inputBuffer.decodeUint8()
       val temperature = inputBuffer.decodeInt16()
+
       RawImu(
         timeUsec = timeUsec,
         xacc = xacc,

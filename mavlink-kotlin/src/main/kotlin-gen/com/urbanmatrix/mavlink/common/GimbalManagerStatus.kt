@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -52,7 +53,7 @@ public data class GimbalManagerStatus(
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeUint8(gimbalDeviceId)
@@ -68,7 +69,15 @@ public data class GimbalManagerStatus(
 
     private const val CRC: Int = 48
 
+    private const val SIZE: Int = 13
+
     private val DESERIALIZER: MavDeserializer<GimbalManagerStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GimbalManagerStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val flags = inputBuffer.decodeEnumValue(4).let { value ->
@@ -80,6 +89,7 @@ public data class GimbalManagerStatus(
       val primaryControlCompid = inputBuffer.decodeUint8()
       val secondaryControlSysid = inputBuffer.decodeUint8()
       val secondaryControlCompid = inputBuffer.decodeUint8()
+
       GimbalManagerStatus(
         timeBootMs = timeBootMs,
         flags = flags,

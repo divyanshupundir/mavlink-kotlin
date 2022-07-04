@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -46,7 +47,7 @@ public data class SerialUdbExtraF8(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF8> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(sueHeightTargetMax)
     outputBuffer.encodeFloat(sueHeightTargetMin)
     outputBuffer.encodeFloat(sueAltHoldThrottleMin)
@@ -62,7 +63,15 @@ public data class SerialUdbExtraF8(
 
     private const val CRC: Int = 142
 
+    private const val SIZE: Int = 28
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF8> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF8: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueHeightTargetMax = inputBuffer.decodeFloat()
       val sueHeightTargetMin = inputBuffer.decodeFloat()
@@ -71,6 +80,7 @@ public data class SerialUdbExtraF8(
       val sueAltHoldPitchMin = inputBuffer.decodeFloat()
       val sueAltHoldPitchMax = inputBuffer.decodeFloat()
       val sueAltHoldPitchHigh = inputBuffer.decodeFloat()
+
       SerialUdbExtraF8(
         sueHeightTargetMax = sueHeightTargetMax,
         sueHeightTargetMin = sueHeightTargetMin,

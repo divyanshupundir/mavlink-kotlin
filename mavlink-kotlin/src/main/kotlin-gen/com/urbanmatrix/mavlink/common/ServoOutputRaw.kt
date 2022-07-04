@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -98,7 +99,7 @@ public data class ServoOutputRaw(
   public override val instanceMetadata: MavMessage.Metadata<ServoOutputRaw> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(37).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeUsec)
     outputBuffer.encodeUint16(servo1Raw)
     outputBuffer.encodeUint16(servo2Raw)
@@ -125,7 +126,15 @@ public data class ServoOutputRaw(
 
     private const val CRC: Int = 222
 
+    private const val SIZE: Int = 37
+
     private val DESERIALIZER: MavDeserializer<ServoOutputRaw> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ServoOutputRaw: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint32()
       val servo1Raw = inputBuffer.decodeUint16()
@@ -145,6 +154,7 @@ public data class ServoOutputRaw(
       val servo14Raw = inputBuffer.decodeUint16()
       val servo15Raw = inputBuffer.decodeUint16()
       val servo16Raw = inputBuffer.decodeUint16()
+
       ServoOutputRaw(
         timeUsec = timeUsec,
         port = port,

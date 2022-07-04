@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -80,7 +81,7 @@ public data class CommandInt(
   public override val instanceMetadata: MavMessage.Metadata<CommandInt> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(35).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(param1)
     outputBuffer.encodeFloat(param2)
     outputBuffer.encodeFloat(param3)
@@ -102,7 +103,15 @@ public data class CommandInt(
 
     private const val CRC: Int = 158
 
+    private const val SIZE: Int = 35
+
     private val DESERIALIZER: MavDeserializer<CommandInt> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CommandInt: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val param1 = inputBuffer.decodeFloat()
       val param2 = inputBuffer.decodeFloat()
@@ -123,6 +132,7 @@ public data class CommandInt(
       }
       val current = inputBuffer.decodeUint8()
       val autocontinue = inputBuffer.decodeUint8()
+
       CommandInt(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

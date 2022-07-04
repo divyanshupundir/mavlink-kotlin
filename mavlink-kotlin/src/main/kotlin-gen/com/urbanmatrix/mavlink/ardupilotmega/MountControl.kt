@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -43,7 +44,7 @@ public data class MountControl(
   public override val instanceMetadata: MavMessage.Metadata<MountControl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(15).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(inputA)
     outputBuffer.encodeInt32(inputB)
     outputBuffer.encodeInt32(inputC)
@@ -58,7 +59,15 @@ public data class MountControl(
 
     private const val CRC: Int = 21
 
+    private const val SIZE: Int = 15
+
     private val DESERIALIZER: MavDeserializer<MountControl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MountControl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val inputA = inputBuffer.decodeInt32()
       val inputB = inputBuffer.decodeInt32()
@@ -66,6 +75,7 @@ public data class MountControl(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val savePosition = inputBuffer.decodeUint8()
+
       MountControl(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

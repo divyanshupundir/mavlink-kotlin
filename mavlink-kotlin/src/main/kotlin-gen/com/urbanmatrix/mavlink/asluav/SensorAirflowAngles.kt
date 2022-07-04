@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -43,7 +44,7 @@ public data class SensorAirflowAngles(
   public override val instanceMetadata: MavMessage.Metadata<SensorAirflowAngles> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(angleofattack)
     outputBuffer.encodeFloat(sideslip)
@@ -57,13 +58,22 @@ public data class SensorAirflowAngles(
 
     private const val CRC: Int = 149
 
+    private const val SIZE: Int = 18
+
     private val DESERIALIZER: MavDeserializer<SensorAirflowAngles> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SensorAirflowAngles: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val angleofattack = inputBuffer.decodeFloat()
       val sideslip = inputBuffer.decodeFloat()
       val angleofattackValid = inputBuffer.decodeUint8()
       val sideslipValid = inputBuffer.decodeUint8()
+
       SensorAirflowAngles(
         timestamp = timestamp,
         angleofattack = angleofattack,

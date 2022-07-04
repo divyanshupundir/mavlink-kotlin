@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -97,7 +98,7 @@ public data class HilStateQuaternion(
   public override val instanceMetadata: MavMessage.Metadata<HilStateQuaternion> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(64).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(attitudeQuaternion, 16)
     outputBuffer.encodeFloat(rollspeed)
@@ -122,7 +123,15 @@ public data class HilStateQuaternion(
 
     private const val CRC: Int = 237
 
+    private const val SIZE: Int = 64
+
     private val DESERIALIZER: MavDeserializer<HilStateQuaternion> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for HilStateQuaternion: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val attitudeQuaternion = inputBuffer.decodeFloatArray(16)
@@ -140,6 +149,7 @@ public data class HilStateQuaternion(
       val xacc = inputBuffer.decodeInt16()
       val yacc = inputBuffer.decodeInt16()
       val zacc = inputBuffer.decodeInt16()
+
       HilStateQuaternion(
         timeUsec = timeUsec,
         attitudeQuaternion = attitudeQuaternion,

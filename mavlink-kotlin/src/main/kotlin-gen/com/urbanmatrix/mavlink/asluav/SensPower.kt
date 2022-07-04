@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -34,7 +35,7 @@ public data class SensPower(
   public override val instanceMetadata: MavMessage.Metadata<SensPower> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(adc121VspbVolt)
     outputBuffer.encodeFloat(adc121CspbAmp)
     outputBuffer.encodeFloat(adc121Cs1Amp)
@@ -47,12 +48,21 @@ public data class SensPower(
 
     private const val CRC: Int = 218
 
+    private const val SIZE: Int = 16
+
     private val DESERIALIZER: MavDeserializer<SensPower> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SensPower: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val adc121VspbVolt = inputBuffer.decodeFloat()
       val adc121CspbAmp = inputBuffer.decodeFloat()
       val adc121Cs1Amp = inputBuffer.decodeFloat()
       val adc121Cs2Amp = inputBuffer.decodeFloat()
+
       SensPower(
         adc121VspbVolt = adc121VspbVolt,
         adc121CspbAmp = adc121CspbAmp,

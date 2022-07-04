@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16Array
@@ -45,7 +46,7 @@ public data class TerrainData(
   public override val instanceMetadata: MavMessage.Metadata<TerrainData> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(43).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeUint16(gridSpacing)
@@ -59,13 +60,22 @@ public data class TerrainData(
 
     private const val CRC: Int = 5
 
+    private const val SIZE: Int = 43
+
     private val DESERIALIZER: MavDeserializer<TerrainData> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for TerrainData: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val gridSpacing = inputBuffer.decodeUint16()
       val data = inputBuffer.decodeInt16Array(32)
       val gridbit = inputBuffer.decodeUint8()
+
       TerrainData(
         lat = lat,
         lon = lon,

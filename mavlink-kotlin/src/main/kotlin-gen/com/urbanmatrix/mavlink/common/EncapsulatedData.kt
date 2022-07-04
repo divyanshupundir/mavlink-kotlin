@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -29,7 +30,7 @@ public data class EncapsulatedData(
   public override val instanceMetadata: MavMessage.Metadata<EncapsulatedData> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(255).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(seqnr)
     outputBuffer.encodeUint8Array(data, 253)
     return outputBuffer.array()
@@ -40,10 +41,19 @@ public data class EncapsulatedData(
 
     private const val CRC: Int = 30
 
+    private const val SIZE: Int = 255
+
     private val DESERIALIZER: MavDeserializer<EncapsulatedData> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for EncapsulatedData: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seqnr = inputBuffer.decodeUint16()
       val data = inputBuffer.decodeUint8Array(253)
+
       EncapsulatedData(
         seqnr = seqnr,
         data = data,

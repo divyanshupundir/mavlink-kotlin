@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -26,7 +27,7 @@ public data class Rpm(
   public override val instanceMetadata: MavMessage.Metadata<Rpm> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(rpm1)
     outputBuffer.encodeFloat(rpm2)
     return outputBuffer.array()
@@ -37,10 +38,19 @@ public data class Rpm(
 
     private const val CRC: Int = 207
 
+    private const val SIZE: Int = 8
+
     private val DESERIALIZER: MavDeserializer<Rpm> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Rpm: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val rpm1 = inputBuffer.decodeFloat()
       val rpm2 = inputBuffer.decodeFloat()
+
       Rpm(
         rpm1 = rpm1,
         rpm2 = rpm2,

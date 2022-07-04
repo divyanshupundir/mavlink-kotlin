@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -93,7 +94,7 @@ public data class ControlSystemState(
   public override val instanceMetadata: MavMessage.Metadata<ControlSystemState> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(100).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(xAcc)
     outputBuffer.encodeFloat(yAcc)
@@ -119,7 +120,15 @@ public data class ControlSystemState(
 
     private const val CRC: Int = 187
 
+    private const val SIZE: Int = 100
+
     private val DESERIALIZER: MavDeserializer<ControlSystemState> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ControlSystemState: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val xAcc = inputBuffer.decodeFloat()
@@ -138,6 +147,7 @@ public data class ControlSystemState(
       val rollRate = inputBuffer.decodeFloat()
       val pitchRate = inputBuffer.decodeFloat()
       val yawRate = inputBuffer.decodeFloat()
+
       ControlSystemState(
         timeUsec = timeUsec,
         xAcc = xAcc,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -63,7 +64,7 @@ public data class Deepstall(
   public override val instanceMetadata: MavMessage.Metadata<Deepstall> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(37).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(landingLat)
     outputBuffer.encodeInt32(landingLon)
     outputBuffer.encodeInt32(pathLat)
@@ -82,7 +83,15 @@ public data class Deepstall(
 
     private const val CRC: Int = 120
 
+    private const val SIZE: Int = 37
+
     private val DESERIALIZER: MavDeserializer<Deepstall> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Deepstall: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val landingLat = inputBuffer.decodeInt32()
       val landingLon = inputBuffer.decodeInt32()
@@ -97,6 +106,7 @@ public data class Deepstall(
         val entry = DeepstallStage.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       Deepstall(
         landingLat = landingLat,
         landingLon = landingLon,

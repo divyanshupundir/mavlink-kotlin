@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -41,7 +42,7 @@ public data class SerialUdbExtraF22(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF22> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(sueAccelXAtCalibration)
     outputBuffer.encodeInt16(sueAccelYAtCalibration)
     outputBuffer.encodeInt16(sueAccelZAtCalibration)
@@ -56,7 +57,15 @@ public data class SerialUdbExtraF22(
 
     private const val CRC: Int = 91
 
+    private const val SIZE: Int = 12
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF22> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF22: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueAccelXAtCalibration = inputBuffer.decodeInt16()
       val sueAccelYAtCalibration = inputBuffer.decodeInt16()
@@ -64,6 +73,7 @@ public data class SerialUdbExtraF22(
       val sueGyroXAtCalibration = inputBuffer.decodeInt16()
       val sueGyroYAtCalibration = inputBuffer.decodeInt16()
       val sueGyroZAtCalibration = inputBuffer.decodeInt16()
+
       SerialUdbExtraF22(
         sueAccelXAtCalibration = sueAccelXAtCalibration,
         sueAccelYAtCalibration = sueAccelYAtCalibration,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -45,7 +46,7 @@ public data class MountConfigure(
   public override val instanceMetadata: MavMessage.Metadata<MountConfigure> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(mountMode.value, 1)
@@ -60,7 +61,15 @@ public data class MountConfigure(
 
     private const val CRC: Int = 19
 
+    private const val SIZE: Int = 6
+
     private val DESERIALIZER: MavDeserializer<MountConfigure> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for MountConfigure: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -71,6 +80,7 @@ public data class MountConfigure(
       val stabRoll = inputBuffer.decodeUint8()
       val stabPitch = inputBuffer.decodeUint8()
       val stabYaw = inputBuffer.decodeUint8()
+
       MountConfigure(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

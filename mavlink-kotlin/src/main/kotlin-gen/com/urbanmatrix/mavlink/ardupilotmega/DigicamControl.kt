@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -63,7 +64,7 @@ public data class DigicamControl(
   public override val instanceMetadata: MavMessage.Metadata<DigicamControl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(extraValue)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -82,7 +83,15 @@ public data class DigicamControl(
 
     private const val CRC: Int = 22
 
+    private const val SIZE: Int = 13
+
     private val DESERIALIZER: MavDeserializer<DigicamControl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for DigicamControl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val extraValue = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
@@ -94,6 +103,7 @@ public data class DigicamControl(
       val shot = inputBuffer.decodeUint8()
       val commandId = inputBuffer.decodeUint8()
       val extraParam = inputBuffer.decodeUint8()
+
       DigicamControl(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

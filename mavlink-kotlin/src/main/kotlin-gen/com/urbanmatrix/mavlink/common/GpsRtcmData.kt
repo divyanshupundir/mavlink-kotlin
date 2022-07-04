@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -39,7 +40,7 @@ public data class GpsRtcmData(
   public override val instanceMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(182).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(flags)
     outputBuffer.encodeUint8(len)
     outputBuffer.encodeUint8Array(data, 180)
@@ -51,11 +52,20 @@ public data class GpsRtcmData(
 
     private const val CRC: Int = 140
 
+    private const val SIZE: Int = 182
+
     private val DESERIALIZER: MavDeserializer<GpsRtcmData> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GpsRtcmData: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val flags = inputBuffer.decodeUint8()
       val len = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(180)
+
       GpsRtcmData(
         flags = flags,
         len = len,

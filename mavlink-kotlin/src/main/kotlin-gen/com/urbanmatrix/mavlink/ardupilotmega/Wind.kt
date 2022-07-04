@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -30,7 +31,7 @@ public data class Wind(
   public override val instanceMetadata: MavMessage.Metadata<Wind> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(direction)
     outputBuffer.encodeFloat(speed)
     outputBuffer.encodeFloat(speedZ)
@@ -42,11 +43,20 @@ public data class Wind(
 
     private const val CRC: Int = 1
 
+    private const val SIZE: Int = 12
+
     private val DESERIALIZER: MavDeserializer<Wind> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Wind: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val direction = inputBuffer.decodeFloat()
       val speed = inputBuffer.decodeFloat()
       val speedZ = inputBuffer.decodeFloat()
+
       Wind(
         direction = direction,
         speed = speed,

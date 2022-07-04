@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -31,7 +32,7 @@ public data class CameraTrigger(
   public override val instanceMetadata: MavMessage.Metadata<CameraTrigger> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(seq)
     return outputBuffer.array()
@@ -42,10 +43,19 @@ public data class CameraTrigger(
 
     private const val CRC: Int = 174
 
+    private const val SIZE: Int = 12
+
     private val DESERIALIZER: MavDeserializer<CameraTrigger> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraTrigger: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val seq = inputBuffer.decodeUint32()
+
       CameraTrigger(
         timeUsec = timeUsec,
         seq = seq,

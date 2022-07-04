@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -85,7 +86,7 @@ public data class TrajectoryRepresentationWaypoints(
       METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(239).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
@@ -108,8 +109,16 @@ public data class TrajectoryRepresentationWaypoints(
 
     private const val CRC: Int = 133
 
+    private const val SIZE: Int = 239
+
     private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationWaypoints> = MavDeserializer {
         bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for TrajectoryRepresentationWaypoints: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val posX = inputBuffer.decodeFloatArray(20)
@@ -125,6 +134,7 @@ public data class TrajectoryRepresentationWaypoints(
       val velYaw = inputBuffer.decodeFloatArray(20)
       val command = inputBuffer.decodeUint16Array(10)
       val validPoints = inputBuffer.decodeUint8()
+
       TrajectoryRepresentationWaypoints(
         timeUsec = timeUsec,
         validPoints = validPoints,

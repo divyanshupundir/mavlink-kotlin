@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -123,7 +124,7 @@ public data class FwSoaringData(
   public override val instanceMetadata: MavMessage.Metadata<FwSoaringData> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(102).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(timestampmodechanged)
     outputBuffer.encodeFloat(xw)
@@ -157,7 +158,15 @@ public data class FwSoaringData(
 
     private const val CRC: Int = 20
 
+    private const val SIZE: Int = 102
+
     private val DESERIALIZER: MavDeserializer<FwSoaringData> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FwSoaringData: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val timestampmodechanged = inputBuffer.decodeUint64()
@@ -184,6 +193,7 @@ public data class FwSoaringData(
       val debugvar2 = inputBuffer.decodeFloat()
       val controlmode = inputBuffer.decodeUint8()
       val valid = inputBuffer.decodeUint8()
+
       FwSoaringData(
         timestamp = timestamp,
         timestampmodechanged = timestampmodechanged,

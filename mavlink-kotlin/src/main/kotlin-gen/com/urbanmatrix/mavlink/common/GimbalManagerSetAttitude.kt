@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -61,7 +62,7 @@ public data class GimbalManagerSetAttitude(
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerSetAttitude> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(35).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(angularVelocityX)
@@ -78,7 +79,15 @@ public data class GimbalManagerSetAttitude(
 
     private const val CRC: Int = 88
 
+    private const val SIZE: Int = 35
+
     private val DESERIALIZER: MavDeserializer<GimbalManagerSetAttitude> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GimbalManagerSetAttitude: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val flags = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = GimbalManagerFlags.getEntryFromValueOrNull(value)
@@ -91,6 +100,7 @@ public data class GimbalManagerSetAttitude(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val gimbalDeviceId = inputBuffer.decodeUint8()
+
       GimbalManagerSetAttitude(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

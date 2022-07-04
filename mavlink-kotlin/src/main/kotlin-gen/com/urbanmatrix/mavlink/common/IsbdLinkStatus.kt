@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -57,7 +58,7 @@ public data class IsbdLinkStatus(
   public override val instanceMetadata: MavMessage.Metadata<IsbdLinkStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(24).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(lastHeartbeat)
     outputBuffer.encodeUint16(failedSessions)
@@ -74,7 +75,15 @@ public data class IsbdLinkStatus(
 
     private const val CRC: Int = 225
 
+    private const val SIZE: Int = 24
+
     private val DESERIALIZER: MavDeserializer<IsbdLinkStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for IsbdLinkStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val lastHeartbeat = inputBuffer.decodeUint64()
@@ -84,6 +93,7 @@ public data class IsbdLinkStatus(
       val ringPending = inputBuffer.decodeUint8()
       val txSessionPending = inputBuffer.decodeUint8()
       val rxSessionPending = inputBuffer.decodeUint8()
+
       IsbdLinkStatus(
         timestamp = timestamp,
         lastHeartbeat = lastHeartbeat,

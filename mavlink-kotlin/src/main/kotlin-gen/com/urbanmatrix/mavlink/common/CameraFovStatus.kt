@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -70,7 +71,7 @@ public data class CameraFovStatus(
   public override val instanceMetadata: MavMessage.Metadata<CameraFovStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(latCamera)
     outputBuffer.encodeInt32(lonCamera)
@@ -89,7 +90,15 @@ public data class CameraFovStatus(
 
     private const val CRC: Int = 195
 
+    private const val SIZE: Int = 52
+
     private val DESERIALIZER: MavDeserializer<CameraFovStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraFovStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val latCamera = inputBuffer.decodeInt32()
@@ -101,6 +110,7 @@ public data class CameraFovStatus(
       val q = inputBuffer.decodeFloatArray(16)
       val hfov = inputBuffer.decodeFloat()
       val vfov = inputBuffer.decodeFloat()
+
       CameraFovStatus(
         timeBootMs = timeBootMs,
         latCamera = latCamera,

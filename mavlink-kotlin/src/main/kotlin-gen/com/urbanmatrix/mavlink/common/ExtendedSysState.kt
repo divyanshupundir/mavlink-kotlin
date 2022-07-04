@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,7 +28,7 @@ public data class ExtendedSysState(
   public override val instanceMetadata: MavMessage.Metadata<ExtendedSysState> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(2).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(vtolState.value, 1)
     outputBuffer.encodeEnumValue(landedState.value, 1)
     return outputBuffer.array()
@@ -38,7 +39,15 @@ public data class ExtendedSysState(
 
     private const val CRC: Int = 130
 
+    private const val SIZE: Int = 2
+
     private val DESERIALIZER: MavDeserializer<ExtendedSysState> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ExtendedSysState: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vtolState = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavVtolState.getEntryFromValueOrNull(value)
@@ -48,6 +57,7 @@ public data class ExtendedSysState(
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       ExtendedSysState(
         vtolState = vtolState,
         landedState = landedState,

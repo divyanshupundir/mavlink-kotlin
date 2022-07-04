@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -46,7 +47,7 @@ public data class SetGpsGlobalOrigin(
   public override val instanceMetadata: MavMessage.Metadata<SetGpsGlobalOrigin> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(21).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
@@ -60,13 +61,22 @@ public data class SetGpsGlobalOrigin(
 
     private const val CRC: Int = 41
 
+    private const val SIZE: Int = 21
+
     private val DESERIALIZER: MavDeserializer<SetGpsGlobalOrigin> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SetGpsGlobalOrigin: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
       val altitude = inputBuffer.decodeInt32()
       val targetSystem = inputBuffer.decodeUint8()
       val timeUsec = inputBuffer.decodeUint64()
+
       SetGpsGlobalOrigin(
         targetSystem = targetSystem,
         latitude = latitude,

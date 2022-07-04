@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -67,7 +68,7 @@ public data class ParamMapRc(
   public override val instanceMetadata: MavMessage.Metadata<ParamMapRc> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(37).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(paramValue0)
     outputBuffer.encodeFloat(scale)
     outputBuffer.encodeFloat(paramValueMin)
@@ -85,7 +86,15 @@ public data class ParamMapRc(
 
     private const val CRC: Int = 121
 
+    private const val SIZE: Int = 37
+
     private val DESERIALIZER: MavDeserializer<ParamMapRc> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ParamMapRc: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val paramValue0 = inputBuffer.decodeFloat()
       val scale = inputBuffer.decodeFloat()
@@ -96,6 +105,7 @@ public data class ParamMapRc(
       val targetComponent = inputBuffer.decodeUint8()
       val paramId = inputBuffer.decodeString(16)
       val parameterRcChannelIndex = inputBuffer.decodeUint8()
+
       ParamMapRc(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

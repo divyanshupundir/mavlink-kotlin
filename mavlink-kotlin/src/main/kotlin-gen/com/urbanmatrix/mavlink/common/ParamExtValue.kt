@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -47,7 +48,7 @@ public data class ParamExtValue(
   public override val instanceMetadata: MavMessage.Metadata<ParamExtValue> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(149).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(paramCount)
     outputBuffer.encodeUint16(paramIndex)
     outputBuffer.encodeString(paramId, 16)
@@ -61,7 +62,15 @@ public data class ParamExtValue(
 
     private const val CRC: Int = 189
 
+    private const val SIZE: Int = 149
+
     private val DESERIALIZER: MavDeserializer<ParamExtValue> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ParamExtValue: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val paramCount = inputBuffer.decodeUint16()
       val paramIndex = inputBuffer.decodeUint16()
@@ -71,6 +80,7 @@ public data class ParamExtValue(
         val entry = MavParamExtType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       ParamExtValue(
         paramId = paramId,
         paramValue = paramValue,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -35,7 +36,7 @@ public data class FlexifunctionReadReq(
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionReadReq> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(readReqType)
     outputBuffer.encodeInt16(dataIndex)
     outputBuffer.encodeUint8(targetSystem)
@@ -48,12 +49,21 @@ public data class FlexifunctionReadReq(
 
     private const val CRC: Int = 26
 
+    private const val SIZE: Int = 6
+
     private val DESERIALIZER: MavDeserializer<FlexifunctionReadReq> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FlexifunctionReadReq: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val readReqType = inputBuffer.decodeInt16()
       val dataIndex = inputBuffer.decodeInt16()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
+
       FlexifunctionReadReq(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -90,7 +91,7 @@ public data class SensBatmon(
   public override val instanceMetadata: MavMessage.Metadata<SensBatmon> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(41).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(batmonTimestamp)
     outputBuffer.encodeFloat(temperature)
     outputBuffer.encodeUint32(safetystatus)
@@ -114,7 +115,15 @@ public data class SensBatmon(
 
     private const val CRC: Int = 155
 
+    private const val SIZE: Int = 41
+
     private val DESERIALIZER: MavDeserializer<SensBatmon> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SensBatmon: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val batmonTimestamp = inputBuffer.decodeUint64()
       val temperature = inputBuffer.decodeFloat()
@@ -131,6 +140,7 @@ public data class SensBatmon(
       val cellvoltage5 = inputBuffer.decodeUint16()
       val cellvoltage6 = inputBuffer.decodeUint16()
       val soc = inputBuffer.decodeUint8()
+
       SensBatmon(
         batmonTimestamp = batmonTimestamp,
         temperature = temperature,

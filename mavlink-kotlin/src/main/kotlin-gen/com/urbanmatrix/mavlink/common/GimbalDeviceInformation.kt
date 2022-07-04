@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -97,7 +98,7 @@ public data class GimbalDeviceInformation(
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceInformation> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(144).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(uid)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(firmwareVersion)
@@ -121,7 +122,15 @@ public data class GimbalDeviceInformation(
 
     private const val CRC: Int = 231
 
+    private const val SIZE: Int = 144
+
     private val DESERIALIZER: MavDeserializer<GimbalDeviceInformation> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GimbalDeviceInformation: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val uid = inputBuffer.decodeUint64()
       val timeBootMs = inputBuffer.decodeUint32()
@@ -141,6 +150,7 @@ public data class GimbalDeviceInformation(
       val vendorName = inputBuffer.decodeString(32)
       val modelName = inputBuffer.decodeString(32)
       val customName = inputBuffer.decodeString(32)
+
       GimbalDeviceInformation(
         timeBootMs = timeBootMs,
         vendorName = vendorName,

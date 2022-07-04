@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -69,7 +70,7 @@ public data class CameraTrackingImageStatus(
   public override val instanceMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(31).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(pointX)
     outputBuffer.encodeFloat(pointY)
     outputBuffer.encodeFloat(radius)
@@ -88,8 +89,16 @@ public data class CameraTrackingImageStatus(
 
     private const val CRC: Int = 126
 
+    private const val SIZE: Int = 31
+
     private val DESERIALIZER: MavDeserializer<CameraTrackingImageStatus> = MavDeserializer {
         bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraTrackingImageStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val pointX = inputBuffer.decodeFloat()
       val pointY = inputBuffer.decodeFloat()
@@ -110,6 +119,7 @@ public data class CameraTrackingImageStatus(
         val entry = CameraTrackingTargetData.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       CameraTrackingImageStatus(
         trackingStatus = trackingStatus,
         trackingMode = trackingMode,

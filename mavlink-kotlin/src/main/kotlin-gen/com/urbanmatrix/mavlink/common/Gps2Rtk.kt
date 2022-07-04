@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -80,7 +81,7 @@ public data class Gps2Rtk(
   public override val instanceMetadata: MavMessage.Metadata<Gps2Rtk> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(35).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeLastBaselineMs)
     outputBuffer.encodeUint32(tow)
     outputBuffer.encodeInt32(baselineAMm)
@@ -102,7 +103,15 @@ public data class Gps2Rtk(
 
     private const val CRC: Int = 226
 
+    private const val SIZE: Int = 35
+
     private val DESERIALIZER: MavDeserializer<Gps2Rtk> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Gps2Rtk: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeLastBaselineMs = inputBuffer.decodeUint32()
       val tow = inputBuffer.decodeUint32()
@@ -120,6 +129,7 @@ public data class Gps2Rtk(
         val entry = RtkBaselineCoordinateSystem.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       Gps2Rtk(
         timeLastBaselineMs = timeLastBaselineMs,
         rtkReceiverId = rtkReceiverId,

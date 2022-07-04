@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -57,7 +58,7 @@ public data class OsdParamShowConfigReply(
   public override val instanceMetadata: MavMessage.Metadata<OsdParamShowConfigReply> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(34).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeFloat(minValue)
     outputBuffer.encodeFloat(maxValue)
@@ -73,7 +74,15 @@ public data class OsdParamShowConfigReply(
 
     private const val CRC: Int = 73
 
+    private const val SIZE: Int = 34
+
     private val DESERIALIZER: MavDeserializer<OsdParamShowConfigReply> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for OsdParamShowConfigReply: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUint32()
       val minValue = inputBuffer.decodeFloat()
@@ -88,6 +97,7 @@ public data class OsdParamShowConfigReply(
         val entry = OsdParamConfigType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       OsdParamShowConfigReply(
         requestId = requestId,
         result = result,

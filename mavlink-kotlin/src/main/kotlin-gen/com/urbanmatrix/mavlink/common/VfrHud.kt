@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -48,7 +49,7 @@ public data class VfrHud(
   public override val instanceMetadata: MavMessage.Metadata<VfrHud> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(airspeed)
     outputBuffer.encodeFloat(groundspeed)
     outputBuffer.encodeFloat(alt)
@@ -63,7 +64,15 @@ public data class VfrHud(
 
     private const val CRC: Int = 20
 
+    private const val SIZE: Int = 20
+
     private val DESERIALIZER: MavDeserializer<VfrHud> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for VfrHud: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val airspeed = inputBuffer.decodeFloat()
       val groundspeed = inputBuffer.decodeFloat()
@@ -71,6 +80,7 @@ public data class VfrHud(
       val climb = inputBuffer.decodeFloat()
       val heading = inputBuffer.decodeInt16()
       val throttle = inputBuffer.decodeUint16()
+
       VfrHud(
         airspeed = airspeed,
         groundspeed = groundspeed,

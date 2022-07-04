@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -66,7 +67,7 @@ public data class DeviceOpRead(
   public override val instanceMetadata: MavMessage.Metadata<DeviceOpRead> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(52).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -85,7 +86,15 @@ public data class DeviceOpRead(
 
     private const val CRC: Int = 180
 
+    private const val SIZE: Int = 52
+
     private val DESERIALIZER: MavDeserializer<DeviceOpRead> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for DeviceOpRead: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUint32()
       val targetSystem = inputBuffer.decodeUint8()
@@ -100,6 +109,7 @@ public data class DeviceOpRead(
       val regstart = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
       val bank = inputBuffer.decodeUint8()
+
       DeviceOpRead(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ualberta
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -49,7 +50,7 @@ public data class NavFilterBias(
   public override val instanceMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(32).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(usec)
     outputBuffer.encodeFloat(accel0)
     outputBuffer.encodeFloat(accel1)
@@ -65,7 +66,15 @@ public data class NavFilterBias(
 
     private const val CRC: Int = 34
 
+    private const val SIZE: Int = 32
+
     private val DESERIALIZER: MavDeserializer<NavFilterBias> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for NavFilterBias: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val usec = inputBuffer.decodeUint64()
       val accel0 = inputBuffer.decodeFloat()
@@ -74,6 +83,7 @@ public data class NavFilterBias(
       val gyro0 = inputBuffer.decodeFloat()
       val gyro1 = inputBuffer.decodeFloat()
       val gyro2 = inputBuffer.decodeFloat()
+
       NavFilterBias(
         usec = usec,
         accel0 = accel0,

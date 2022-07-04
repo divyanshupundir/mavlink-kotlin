@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -57,7 +58,7 @@ public data class SerialUdbExtraF4(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF4> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(sueRollStabilizationAilerons)
     outputBuffer.encodeUint8(sueRollStabilizationRudder)
     outputBuffer.encodeUint8(suePitchStabilization)
@@ -76,7 +77,15 @@ public data class SerialUdbExtraF4(
 
     private const val CRC: Int = 191
 
+    private const val SIZE: Int = 10
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF4> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF4: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueRollStabilizationAilerons = inputBuffer.decodeUint8()
       val sueRollStabilizationRudder = inputBuffer.decodeUint8()
@@ -88,6 +97,7 @@ public data class SerialUdbExtraF4(
       val sueAltitudeholdStabilized = inputBuffer.decodeUint8()
       val sueAltitudeholdWaypoint = inputBuffer.decodeUint8()
       val sueRacingMode = inputBuffer.decodeUint8()
+
       SerialUdbExtraF4(
         sueRollStabilizationAilerons = sueRollStabilizationAilerons,
         sueRollStabilizationRudder = sueRollStabilizationRudder,

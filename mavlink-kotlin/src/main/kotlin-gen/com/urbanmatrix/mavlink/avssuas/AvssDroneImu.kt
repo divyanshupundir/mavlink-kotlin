@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.avssuas
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -66,7 +67,7 @@ public data class AvssDroneImu(
   public override val instanceMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(44).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
@@ -86,7 +87,15 @@ public data class AvssDroneImu(
 
     private const val CRC: Int = 101
 
+    private const val SIZE: Int = 44
+
     private val DESERIALIZER: MavDeserializer<AvssDroneImu> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AvssDroneImu: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val q1 = inputBuffer.decodeFloat()
@@ -99,6 +108,7 @@ public data class AvssDroneImu(
       val xgyro = inputBuffer.decodeFloat()
       val ygyro = inputBuffer.decodeFloat()
       val zgyro = inputBuffer.decodeFloat()
+
       AvssDroneImu(
         timeBootMs = timeBootMs,
         q1 = q1,

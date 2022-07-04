@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -46,7 +47,7 @@ public data class Ahrs(
   public override val instanceMetadata: MavMessage.Metadata<Ahrs> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(28).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(omegaix)
     outputBuffer.encodeFloat(omegaiy)
     outputBuffer.encodeFloat(omegaiz)
@@ -62,7 +63,15 @@ public data class Ahrs(
 
     private const val CRC: Int = 127
 
+    private const val SIZE: Int = 28
+
     private val DESERIALIZER: MavDeserializer<Ahrs> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Ahrs: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val omegaix = inputBuffer.decodeFloat()
       val omegaiy = inputBuffer.decodeFloat()
@@ -71,6 +80,7 @@ public data class Ahrs(
       val renormVal = inputBuffer.decodeFloat()
       val errorRp = inputBuffer.decodeFloat()
       val errorYaw = inputBuffer.decodeFloat()
+
       Ahrs(
         omegaix = omegaix,
         omegaiy = omegaiy,

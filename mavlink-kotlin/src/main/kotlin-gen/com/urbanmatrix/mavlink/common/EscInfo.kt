@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -72,7 +73,7 @@ public data class EscInfo(
   public override val instanceMetadata: MavMessage.Metadata<EscInfo> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(46).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32Array(errorCount, 16)
     outputBuffer.encodeUint16(counter)
@@ -90,7 +91,15 @@ public data class EscInfo(
 
     private const val CRC: Int = 212
 
+    private const val SIZE: Int = 46
+
     private val DESERIALIZER: MavDeserializer<EscInfo> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for EscInfo: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val errorCount = inputBuffer.decodeUint32Array(16)
@@ -104,6 +113,7 @@ public data class EscInfo(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val info = inputBuffer.decodeUint8()
+
       EscInfo(
         index = index,
         timeUsec = timeUsec,

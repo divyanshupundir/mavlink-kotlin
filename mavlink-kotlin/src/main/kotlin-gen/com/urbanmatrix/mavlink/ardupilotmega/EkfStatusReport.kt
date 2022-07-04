@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -49,7 +50,7 @@ public data class EkfStatusReport(
   public override val instanceMetadata: MavMessage.Metadata<EkfStatusReport> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(26).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(velocityVariance)
     outputBuffer.encodeFloat(posHorizVariance)
     outputBuffer.encodeFloat(posVertVariance)
@@ -65,7 +66,15 @@ public data class EkfStatusReport(
 
     private const val CRC: Int = 71
 
+    private const val SIZE: Int = 26
+
     private val DESERIALIZER: MavDeserializer<EkfStatusReport> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for EkfStatusReport: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val velocityVariance = inputBuffer.decodeFloat()
       val posHorizVariance = inputBuffer.decodeFloat()
@@ -77,6 +86,7 @@ public data class EkfStatusReport(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val airspeedVariance = inputBuffer.decodeFloat()
+
       EkfStatusReport(
         flags = flags,
         velocityVariance = velocityVariance,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -64,7 +65,7 @@ public data class CellularConfig(
   public override val instanceMetadata: MavMessage.Metadata<CellularConfig> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(84).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(enableLte)
     outputBuffer.encodeUint8(enablePin)
     outputBuffer.encodeString(pin, 16)
@@ -81,7 +82,15 @@ public data class CellularConfig(
 
     private const val CRC: Int = 228
 
+    private const val SIZE: Int = 84
+
     private val DESERIALIZER: MavDeserializer<CellularConfig> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CellularConfig: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val enableLte = inputBuffer.decodeUint8()
       val enablePin = inputBuffer.decodeUint8()
@@ -94,6 +103,7 @@ public data class CellularConfig(
         val entry = CellularConfigResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       CellularConfig(
         enableLte = enableLte,
         enablePin = enablePin,

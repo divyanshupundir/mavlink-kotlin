@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -72,7 +73,7 @@ public data class FollowTarget(
   public override val instanceMetadata: MavMessage.Metadata<FollowTarget> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(93).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(customState)
     outputBuffer.encodeInt32(lat)
@@ -92,7 +93,15 @@ public data class FollowTarget(
 
     private const val CRC: Int = 71
 
+    private const val SIZE: Int = 93
+
     private val DESERIALIZER: MavDeserializer<FollowTarget> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for FollowTarget: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val customState = inputBuffer.decodeUint64()
@@ -105,6 +114,7 @@ public data class FollowTarget(
       val rates = inputBuffer.decodeFloatArray(12)
       val positionCov = inputBuffer.decodeFloatArray(12)
       val estCapabilities = inputBuffer.decodeUint8()
+
       FollowTarget(
         timestamp = timestamp,
         estCapabilities = estCapabilities,

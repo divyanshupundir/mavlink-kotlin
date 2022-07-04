@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.minimal
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -44,7 +45,7 @@ public data class ProtocolVersion(
   public override val instanceMetadata: MavMessage.Metadata<ProtocolVersion> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(22).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(version)
     outputBuffer.encodeUint16(minVersion)
     outputBuffer.encodeUint16(maxVersion)
@@ -58,13 +59,22 @@ public data class ProtocolVersion(
 
     private const val CRC: Int = 233
 
+    private const val SIZE: Int = 22
+
     private val DESERIALIZER: MavDeserializer<ProtocolVersion> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ProtocolVersion: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val version = inputBuffer.decodeUint16()
       val minVersion = inputBuffer.decodeUint16()
       val maxVersion = inputBuffer.decodeUint16()
       val specVersionHash = inputBuffer.decodeUint8Array(8)
       val libraryVersionHash = inputBuffer.decodeUint8Array(8)
+
       ProtocolVersion(
         version = version,
         minVersion = minVersion,

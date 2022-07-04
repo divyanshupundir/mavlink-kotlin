@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -102,7 +103,7 @@ public data class SimState(
   public override val instanceMetadata: MavMessage.Metadata<SimState> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(84).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
     outputBuffer.encodeFloat(q3)
@@ -132,7 +133,15 @@ public data class SimState(
 
     private const val CRC: Int = 32
 
+    private const val SIZE: Int = 84
+
     private val DESERIALIZER: MavDeserializer<SimState> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SimState: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val q1 = inputBuffer.decodeFloat()
       val q2 = inputBuffer.decodeFloat()
@@ -155,6 +164,7 @@ public data class SimState(
       val vn = inputBuffer.decodeFloat()
       val ve = inputBuffer.decodeFloat()
       val vd = inputBuffer.decodeFloat()
+
       SimState(
         q1 = q1,
         q2 = q2,

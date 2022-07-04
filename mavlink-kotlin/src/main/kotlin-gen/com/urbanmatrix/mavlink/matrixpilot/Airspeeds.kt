@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -48,7 +49,7 @@ public data class Airspeeds(
   public override val instanceMetadata: MavMessage.Metadata<Airspeeds> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt16(airspeedImu)
     outputBuffer.encodeInt16(airspeedPitot)
@@ -64,7 +65,15 @@ public data class Airspeeds(
 
     private const val CRC: Int = 154
 
+    private const val SIZE: Int = 16
+
     private val DESERIALIZER: MavDeserializer<Airspeeds> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Airspeeds: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val airspeedImu = inputBuffer.decodeInt16()
@@ -73,6 +82,7 @@ public data class Airspeeds(
       val airspeedUltrasonic = inputBuffer.decodeInt16()
       val aoa = inputBuffer.decodeInt16()
       val aoy = inputBuffer.decodeInt16()
+
       Airspeeds(
         timeBootMs = timeBootMs,
         airspeedImu = airspeedImu,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -67,7 +68,7 @@ public data class AslctrlDebug(
   public override val instanceMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(i321)
     outputBuffer.encodeFloat(f1)
     outputBuffer.encodeFloat(f2)
@@ -87,7 +88,15 @@ public data class AslctrlDebug(
 
     private const val CRC: Int = 251
 
+    private const val SIZE: Int = 38
+
     private val DESERIALIZER: MavDeserializer<AslctrlDebug> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AslctrlDebug: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val i321 = inputBuffer.decodeUint32()
       val f1 = inputBuffer.decodeFloat()
@@ -100,6 +109,7 @@ public data class AslctrlDebug(
       val f8 = inputBuffer.decodeFloat()
       val i81 = inputBuffer.decodeUint8()
       val i82 = inputBuffer.decodeUint8()
+
       AslctrlDebug(
         i321 = i321,
         i81 = i81,

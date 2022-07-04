@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -52,7 +53,7 @@ public data class AttitudeQuaternionCov(
   public override val instanceMetadata: MavMessage.Metadata<AttitudeQuaternionCov> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(72).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(rollspeed)
@@ -67,7 +68,15 @@ public data class AttitudeQuaternionCov(
 
     private const val CRC: Int = 250
 
+    private const val SIZE: Int = 72
+
     private val DESERIALIZER: MavDeserializer<AttitudeQuaternionCov> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AttitudeQuaternionCov: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val q = inputBuffer.decodeFloatArray(16)
@@ -75,6 +84,7 @@ public data class AttitudeQuaternionCov(
       val pitchspeed = inputBuffer.decodeFloat()
       val yawspeed = inputBuffer.decodeFloat()
       val covariance = inputBuffer.decodeFloatArray(36)
+
       AttitudeQuaternionCov(
         timeUsec = timeUsec,
         q = q,

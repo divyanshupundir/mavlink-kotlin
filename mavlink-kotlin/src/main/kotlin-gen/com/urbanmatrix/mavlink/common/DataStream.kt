@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -33,7 +34,7 @@ public data class DataStream(
   public override val instanceMetadata: MavMessage.Metadata<DataStream> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(messageRate)
     outputBuffer.encodeUint8(onOff)
     outputBuffer.encodeUint8(streamId)
@@ -45,11 +46,20 @@ public data class DataStream(
 
     private const val CRC: Int = 193
 
+    private const val SIZE: Int = 4
+
     private val DESERIALIZER: MavDeserializer<DataStream> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for DataStream: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val messageRate = inputBuffer.decodeUint16()
       val onOff = inputBuffer.decodeUint8()
       val streamId = inputBuffer.decodeUint8()
+
       DataStream(
         onOff = onOff,
         messageRate = messageRate,

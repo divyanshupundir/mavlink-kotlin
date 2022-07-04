@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -30,7 +31,7 @@ public data class SystemTime(
   public override val instanceMetadata: MavMessage.Metadata<SystemTime> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(12).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUnixUsec)
     outputBuffer.encodeUint32(timeBootMs)
     return outputBuffer.array()
@@ -41,10 +42,19 @@ public data class SystemTime(
 
     private const val CRC: Int = 137
 
+    private const val SIZE: Int = 12
+
     private val DESERIALIZER: MavDeserializer<SystemTime> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SystemTime: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUnixUsec = inputBuffer.decodeUint64()
       val timeBootMs = inputBuffer.decodeUint32()
+
       SystemTime(
         timeUnixUsec = timeUnixUsec,
         timeBootMs = timeBootMs,

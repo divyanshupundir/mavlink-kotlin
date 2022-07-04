@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -38,7 +39,7 @@ public data class SetMode(
   public override val instanceMetadata: MavMessage.Metadata<SetMode> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(6).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(baseMode.value, 1)
     outputBuffer.encodeUint8(targetSystem)
@@ -50,7 +51,15 @@ public data class SetMode(
 
     private const val CRC: Int = 130
 
+    private const val SIZE: Int = 6
+
     private val DESERIALIZER: MavDeserializer<SetMode> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SetMode: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val customMode = inputBuffer.decodeUint32()
       val baseMode = inputBuffer.decodeEnumValue(1).let { value ->
@@ -58,6 +67,7 @@ public data class SetMode(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val targetSystem = inputBuffer.decodeUint8()
+
       SetMode(
         customMode = customMode,
         baseMode = baseMode,

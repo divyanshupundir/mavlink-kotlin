@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.icarous
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -22,7 +23,7 @@ public data class IcarousHeartbeat(
   public override val instanceMetadata: MavMessage.Metadata<IcarousHeartbeat> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(1).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 1)
     return outputBuffer.array()
   }
@@ -32,12 +33,21 @@ public data class IcarousHeartbeat(
 
     private const val CRC: Int = 227
 
+    private const val SIZE: Int = 1
+
     private val DESERIALIZER: MavDeserializer<IcarousHeartbeat> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for IcarousHeartbeat: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = IcarousFmsState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       IcarousHeartbeat(
         status = status,
       )

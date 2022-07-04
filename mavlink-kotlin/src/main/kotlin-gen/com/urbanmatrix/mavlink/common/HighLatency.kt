@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -131,7 +132,7 @@ public data class HighLatency(
   public override val instanceMetadata: MavMessage.Metadata<HighLatency> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(40).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeUint32(customMode)
@@ -164,7 +165,15 @@ public data class HighLatency(
 
     private const val CRC: Int = 225
 
+    private const val SIZE: Int = 40
+
     private val DESERIALIZER: MavDeserializer<HighLatency> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for HighLatency: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val longitude = inputBuffer.decodeInt32()
       val latitude = inputBuffer.decodeInt32()
@@ -199,6 +208,7 @@ public data class HighLatency(
         val entry = MavModeFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       HighLatency(
         wpDistance = wpDistance,
         wpNum = wpNum,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -91,7 +92,7 @@ public data class CameraInformation(
   public override val instanceMetadata: MavMessage.Metadata<CameraInformation> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(235).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(firmwareVersion)
     outputBuffer.encodeFloat(focalLength)
@@ -113,7 +114,15 @@ public data class CameraInformation(
 
     private const val CRC: Int = 10
 
+    private const val SIZE: Int = 235
+
     private val DESERIALIZER: MavDeserializer<CameraInformation> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraInformation: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val firmwareVersion = inputBuffer.decodeUint32()
@@ -131,6 +140,7 @@ public data class CameraInformation(
       val modelName = inputBuffer.decodeUint8Array(32)
       val lensId = inputBuffer.decodeUint8()
       val camDefinitionUri = inputBuffer.decodeString(140)
+
       CameraInformation(
         timeBootMs = timeBootMs,
         vendorName = vendorName,

@@ -2,6 +2,7 @@ package com.urbanmatrix.mavlink.asluav
 
 import com.urbanmatrix.mavlink.ASLUAV.GsmLinkType
 import com.urbanmatrix.mavlink.ASLUAV.GsmModemType
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -53,7 +54,7 @@ public data class GsmLinkStatus(
   public override val instanceMetadata: MavMessage.Metadata<GsmLinkStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(14).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeEnumValue(gsmModemType.value, 1)
     outputBuffer.encodeEnumValue(gsmLinkType.value, 1)
@@ -69,7 +70,15 @@ public data class GsmLinkStatus(
 
     private const val CRC: Int = 200
 
+    private const val SIZE: Int = 14
+
     private val DESERIALIZER: MavDeserializer<GsmLinkStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GsmLinkStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val gsmModemType = inputBuffer.decodeEnumValue(1).let { value ->
@@ -84,6 +93,7 @@ public data class GsmLinkStatus(
       val rsrpRscp = inputBuffer.decodeUint8()
       val sinrEcio = inputBuffer.decodeUint8()
       val rsrq = inputBuffer.decodeUint8()
+
       GsmLinkStatus(
         timestamp = timestamp,
         gsmModemType = gsmModemType,

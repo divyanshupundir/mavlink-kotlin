@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -44,7 +45,7 @@ public data class TimeEstimateToTarget(
   public override val instanceMetadata: MavMessage.Metadata<TimeEstimateToTarget> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(safeReturn)
     outputBuffer.encodeInt32(land)
     outputBuffer.encodeInt32(missionNextItem)
@@ -58,13 +59,22 @@ public data class TimeEstimateToTarget(
 
     private const val CRC: Int = 232
 
+    private const val SIZE: Int = 20
+
     private val DESERIALIZER: MavDeserializer<TimeEstimateToTarget> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for TimeEstimateToTarget: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val safeReturn = inputBuffer.decodeInt32()
       val land = inputBuffer.decodeInt32()
       val missionNextItem = inputBuffer.decodeInt32()
       val missionEnd = inputBuffer.decodeInt32()
       val commandedAction = inputBuffer.decodeInt32()
+
       TimeEstimateToTarget(
         safeReturn = safeReturn,
         land = land,

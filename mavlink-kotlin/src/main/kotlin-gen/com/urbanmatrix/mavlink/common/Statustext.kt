@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -47,7 +48,7 @@ public data class Statustext(
   public override val instanceMetadata: MavMessage.Metadata<Statustext> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(54).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(severity.value, 1)
     outputBuffer.encodeString(text, 50)
     outputBuffer.encodeUint16(id)
@@ -60,7 +61,15 @@ public data class Statustext(
 
     private const val CRC: Int = 86
 
+    private const val SIZE: Int = 54
+
     private val DESERIALIZER: MavDeserializer<Statustext> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Statustext: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val severity = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavSeverity.getEntryFromValueOrNull(value)
@@ -69,6 +78,7 @@ public data class Statustext(
       val text = inputBuffer.decodeString(50)
       val id = inputBuffer.decodeUint16()
       val chunkSeq = inputBuffer.decodeUint8()
+
       Statustext(
         severity = severity,
         text = text,

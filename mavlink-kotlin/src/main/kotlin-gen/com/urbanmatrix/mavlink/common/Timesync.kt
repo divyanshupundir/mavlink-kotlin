@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt64
@@ -26,7 +27,7 @@ public data class Timesync(
   public override val instanceMetadata: MavMessage.Metadata<Timesync> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt64(tc1)
     outputBuffer.encodeInt64(ts1)
     return outputBuffer.array()
@@ -37,10 +38,19 @@ public data class Timesync(
 
     private const val CRC: Int = 34
 
+    private const val SIZE: Int = 16
+
     private val DESERIALIZER: MavDeserializer<Timesync> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Timesync: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val tc1 = inputBuffer.decodeInt64()
       val ts1 = inputBuffer.decodeInt64()
+
       Timesync(
         tc1 = tc1,
         ts1 = ts1,

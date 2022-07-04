@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -100,7 +101,7 @@ public data class AisVessel(
   public override val instanceMetadata: MavMessage.Metadata<AisVessel> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(58).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(mmsi)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -126,7 +127,15 @@ public data class AisVessel(
 
     private const val CRC: Int = 95
 
+    private const val SIZE: Int = 58
+
     private val DESERIALIZER: MavDeserializer<AisVessel> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AisVessel: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mmsi = inputBuffer.decodeUint32()
       val lat = inputBuffer.decodeInt32()
@@ -154,6 +163,7 @@ public data class AisVessel(
       val dimensionStarboard = inputBuffer.decodeUint8()
       val callsign = inputBuffer.decodeString(7)
       val name = inputBuffer.decodeString(20)
+
       AisVessel(
         mmsi = mmsi,
         lat = lat,

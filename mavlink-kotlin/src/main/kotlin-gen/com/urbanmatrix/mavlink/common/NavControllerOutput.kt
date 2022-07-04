@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -54,7 +55,7 @@ public data class NavControllerOutput(
   public override val instanceMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(26).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(navRoll)
     outputBuffer.encodeFloat(navPitch)
     outputBuffer.encodeFloat(altError)
@@ -71,7 +72,15 @@ public data class NavControllerOutput(
 
     private const val CRC: Int = 183
 
+    private const val SIZE: Int = 26
+
     private val DESERIALIZER: MavDeserializer<NavControllerOutput> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for NavControllerOutput: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val navRoll = inputBuffer.decodeFloat()
       val navPitch = inputBuffer.decodeFloat()
@@ -81,6 +90,7 @@ public data class NavControllerOutput(
       val navBearing = inputBuffer.decodeInt16()
       val targetBearing = inputBuffer.decodeInt16()
       val wpDist = inputBuffer.decodeUint16()
+
       NavControllerOutput(
         navRoll = navRoll,
         navPitch = navPitch,

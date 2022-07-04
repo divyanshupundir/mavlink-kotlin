@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -34,7 +35,7 @@ public data class SerialUdbExtraF5(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF5> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(sueYawkpAileron)
     outputBuffer.encodeFloat(sueYawkdAileron)
     outputBuffer.encodeFloat(sueRollkp)
@@ -47,12 +48,21 @@ public data class SerialUdbExtraF5(
 
     private const val CRC: Int = 54
 
+    private const val SIZE: Int = 16
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF5> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF5: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueYawkpAileron = inputBuffer.decodeFloat()
       val sueYawkdAileron = inputBuffer.decodeFloat()
       val sueRollkp = inputBuffer.decodeFloat()
       val sueRollkd = inputBuffer.decodeFloat()
+
       SerialUdbExtraF5(
         sueYawkpAileron = sueYawkpAileron,
         sueYawkdAileron = sueYawkdAileron,

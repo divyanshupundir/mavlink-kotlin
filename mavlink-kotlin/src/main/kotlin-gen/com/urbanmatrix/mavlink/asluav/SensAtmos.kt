@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -33,7 +34,7 @@ public data class SensAtmos(
   public override val instanceMetadata: MavMessage.Metadata<SensAtmos> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(tempambient)
     outputBuffer.encodeFloat(humidity)
@@ -45,11 +46,20 @@ public data class SensAtmos(
 
     private const val CRC: Int = 144
 
+    private const val SIZE: Int = 16
+
     private val DESERIALIZER: MavDeserializer<SensAtmos> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SensAtmos: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val tempambient = inputBuffer.decodeFloat()
       val humidity = inputBuffer.decodeFloat()
+
       SensAtmos(
         timestamp = timestamp,
         tempambient = tempambient,

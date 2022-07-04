@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -79,7 +80,7 @@ public data class ManualControl(
   public override val instanceMetadata: MavMessage.Metadata<ManualControl> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(x)
     outputBuffer.encodeInt16(y)
     outputBuffer.encodeInt16(z)
@@ -98,7 +99,15 @@ public data class ManualControl(
 
     private const val CRC: Int = 243
 
+    private const val SIZE: Int = 18
+
     private val DESERIALIZER: MavDeserializer<ManualControl> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ManualControl: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val x = inputBuffer.decodeInt16()
       val y = inputBuffer.decodeInt16()
@@ -110,6 +119,7 @@ public data class ManualControl(
       val enabledExtensions = inputBuffer.decodeUint8()
       val s = inputBuffer.decodeInt16()
       val t = inputBuffer.decodeInt16()
+
       ManualControl(
         target = target,
         x = x,

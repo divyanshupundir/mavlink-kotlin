@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -30,7 +31,7 @@ public data class GoproHeartbeat(
   public override val instanceMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(3).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(captureMode.value, 1)
     outputBuffer.encodeEnumValue(flags.value, 1)
@@ -42,7 +43,15 @@ public data class GoproHeartbeat(
 
     private const val CRC: Int = 101
 
+    private const val SIZE: Int = 3
+
     private val DESERIALIZER: MavDeserializer<GoproHeartbeat> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GoproHeartbeat: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = GoproHeartbeatStatus.getEntryFromValueOrNull(value)
@@ -56,6 +65,7 @@ public data class GoproHeartbeat(
         val entry = GoproHeartbeatFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       GoproHeartbeat(
         status = status,
         captureMode = captureMode,

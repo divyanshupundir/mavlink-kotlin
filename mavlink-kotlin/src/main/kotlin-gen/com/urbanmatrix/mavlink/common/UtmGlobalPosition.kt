@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -102,7 +103,7 @@ public data class UtmGlobalPosition(
   public override val instanceMetadata: MavMessage.Metadata<UtmGlobalPosition> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(70).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(time)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -129,7 +130,15 @@ public data class UtmGlobalPosition(
 
     private const val CRC: Int = 72
 
+    private const val SIZE: Int = 70
+
     private val DESERIALIZER: MavDeserializer<UtmGlobalPosition> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for UtmGlobalPosition: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val time = inputBuffer.decodeUint64()
       val lat = inputBuffer.decodeInt32()
@@ -155,6 +164,7 @@ public data class UtmGlobalPosition(
         val entry = UtmDataAvailFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       UtmGlobalPosition(
         time = time,
         uasId = uasId,

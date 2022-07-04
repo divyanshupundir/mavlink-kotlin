@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -38,7 +39,7 @@ public data class ActuatorOutputStatus(
   public override val instanceMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(140).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(active)
     outputBuffer.encodeFloatArray(actuator, 128)
@@ -50,11 +51,20 @@ public data class ActuatorOutputStatus(
 
     private const val CRC: Int = 210
 
+    private const val SIZE: Int = 140
+
     private val DESERIALIZER: MavDeserializer<ActuatorOutputStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for ActuatorOutputStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val active = inputBuffer.decodeUint32()
       val actuator = inputBuffer.decodeFloatArray(128)
+
       ActuatorOutputStatus(
         timeUsec = timeUsec,
         active = active,

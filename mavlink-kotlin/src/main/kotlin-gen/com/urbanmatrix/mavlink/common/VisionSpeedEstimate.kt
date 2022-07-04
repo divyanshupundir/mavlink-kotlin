@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -53,7 +54,7 @@ public data class VisionSpeedEstimate(
   public override val instanceMetadata: MavMessage.Metadata<VisionSpeedEstimate> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(57).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -68,7 +69,15 @@ public data class VisionSpeedEstimate(
 
     private const val CRC: Int = 208
 
+    private const val SIZE: Int = 57
+
     private val DESERIALIZER: MavDeserializer<VisionSpeedEstimate> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for VisionSpeedEstimate: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val usec = inputBuffer.decodeUint64()
       val x = inputBuffer.decodeFloat()
@@ -76,6 +85,7 @@ public data class VisionSpeedEstimate(
       val z = inputBuffer.decodeFloat()
       val covariance = inputBuffer.decodeFloatArray(36)
       val resetCounter = inputBuffer.decodeUint8()
+
       VisionSpeedEstimate(
         usec = usec,
         x = x,

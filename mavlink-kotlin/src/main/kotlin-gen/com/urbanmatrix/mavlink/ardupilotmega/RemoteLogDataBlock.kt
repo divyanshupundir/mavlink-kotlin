@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -39,7 +40,7 @@ public data class RemoteLogDataBlock(
   public override val instanceMetadata: MavMessage.Metadata<RemoteLogDataBlock> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(206).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(seqno.value, 4)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -52,7 +53,15 @@ public data class RemoteLogDataBlock(
 
     private const val CRC: Int = 161
 
+    private const val SIZE: Int = 206
+
     private val DESERIALIZER: MavDeserializer<RemoteLogDataBlock> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for RemoteLogDataBlock: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seqno = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = MavRemoteLogDataBlockCommands.getEntryFromValueOrNull(value)
@@ -61,6 +70,7 @@ public data class RemoteLogDataBlock(
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(200)
+
       RemoteLogDataBlock(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

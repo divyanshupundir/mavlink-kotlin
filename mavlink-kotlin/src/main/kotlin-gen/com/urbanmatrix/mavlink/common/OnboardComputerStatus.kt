@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16Array
@@ -126,7 +127,7 @@ public data class OnboardComputerStatus(
   public override val instanceMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(238).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(uptime)
     outputBuffer.encodeUint32(ramUsage)
@@ -155,7 +156,15 @@ public data class OnboardComputerStatus(
 
     private const val CRC: Int = 234
 
+    private const val SIZE: Int = 238
+
     private val DESERIALIZER: MavDeserializer<OnboardComputerStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for OnboardComputerStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val uptime = inputBuffer.decodeUint32()
@@ -177,6 +186,7 @@ public data class OnboardComputerStatus(
       val gpuCombined = inputBuffer.decodeUint8Array(10)
       val temperatureBoard = inputBuffer.decodeInt8()
       val temperatureCore = inputBuffer.decodeInt8Array(8)
+
       OnboardComputerStatus(
         timeUsec = timeUsec,
         uptime = uptime,

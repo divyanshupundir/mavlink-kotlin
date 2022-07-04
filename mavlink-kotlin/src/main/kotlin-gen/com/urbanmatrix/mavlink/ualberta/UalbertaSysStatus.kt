@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ualberta
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -29,7 +30,7 @@ public data class UalbertaSysStatus(
   public override val instanceMetadata: MavMessage.Metadata<UalbertaSysStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(3).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(mode)
     outputBuffer.encodeUint8(navMode)
     outputBuffer.encodeUint8(pilot)
@@ -41,11 +42,20 @@ public data class UalbertaSysStatus(
 
     private const val CRC: Int = 15
 
+    private const val SIZE: Int = 3
+
     private val DESERIALIZER: MavDeserializer<UalbertaSysStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for UalbertaSysStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mode = inputBuffer.decodeUint8()
       val navMode = inputBuffer.decodeUint8()
       val pilot = inputBuffer.decodeUint8()
+
       UalbertaSysStatus(
         mode = mode,
         navMode = navMode,

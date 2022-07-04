@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.uavionix
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -97,7 +98,7 @@ public data class UavionixAdsbOutDynamic(
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(41).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(utctime)
     outputBuffer.encodeInt32(gpslat)
     outputBuffer.encodeInt32(gpslon)
@@ -122,7 +123,15 @@ public data class UavionixAdsbOutDynamic(
 
     private const val CRC: Int = 186
 
+    private const val SIZE: Int = 41
+
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutDynamic> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for UavionixAdsbOutDynamic: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val utctime = inputBuffer.decodeUint32()
       val gpslat = inputBuffer.decodeInt32()
@@ -149,6 +158,7 @@ public data class UavionixAdsbOutDynamic(
         val entry = UavionixAdsbEmergencyStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       UavionixAdsbOutDynamic(
         utctime = utctime,
         gpslat = gpslat,

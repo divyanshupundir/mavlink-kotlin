@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -69,7 +70,7 @@ public data class WaterDepth(
   public override val instanceMetadata: MavMessage.Metadata<WaterDepth> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(38).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
@@ -89,7 +90,15 @@ public data class WaterDepth(
 
     private const val CRC: Int = 47
 
+    private const val SIZE: Int = 38
+
     private val DESERIALIZER: MavDeserializer<WaterDepth> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for WaterDepth: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val lat = inputBuffer.decodeInt32()
@@ -102,6 +111,7 @@ public data class WaterDepth(
       val temperature = inputBuffer.decodeFloat()
       val id = inputBuffer.decodeUint8()
       val healthy = inputBuffer.decodeUint8()
+
       WaterDepth(
         timeBootMs = timeBootMs,
         id = id,

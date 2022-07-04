@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -93,7 +94,7 @@ public data class HilState(
   public override val instanceMetadata: MavMessage.Metadata<HilState> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(56).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(alt)
     outputBuffer.encodeInt32(lon)
@@ -118,7 +119,15 @@ public data class HilState(
 
     private const val CRC: Int = 135
 
+    private const val SIZE: Int = 56
+
     private val DESERIALIZER: MavDeserializer<HilState> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for HilState: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val alt = inputBuffer.decodeInt32()
@@ -136,6 +145,7 @@ public data class HilState(
       val vz = inputBuffer.decodeInt16()
       val vy = inputBuffer.decodeInt16()
       val vx = inputBuffer.decodeInt16()
+
       HilState(
         zacc = zacc,
         yacc = yacc,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -46,7 +47,7 @@ public data class GpsStatus(
   public override val instanceMetadata: MavMessage.Metadata<GpsStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(101).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeUint8Array(satellitePrn, 20)
     outputBuffer.encodeUint8Array(satelliteUsed, 20)
@@ -61,7 +62,15 @@ public data class GpsStatus(
 
     private const val CRC: Int = 193
 
+    private const val SIZE: Int = 101
+
     private val DESERIALIZER: MavDeserializer<GpsStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GpsStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val satellitesVisible = inputBuffer.decodeUint8()
       val satellitePrn = inputBuffer.decodeUint8Array(20)
@@ -69,6 +78,7 @@ public data class GpsStatus(
       val satelliteElevation = inputBuffer.decodeUint8Array(20)
       val satelliteAzimuth = inputBuffer.decodeUint8Array(20)
       val satelliteSnr = inputBuffer.decodeUint8Array(20)
+
       GpsStatus(
         satellitesVisible = satellitesVisible,
         satellitePrn = satellitePrn,

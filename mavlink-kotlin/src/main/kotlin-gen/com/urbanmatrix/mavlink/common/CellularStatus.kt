@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -50,7 +51,7 @@ public data class CellularStatus(
   public override val instanceMetadata: MavMessage.Metadata<CellularStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(mcc)
     outputBuffer.encodeUint16(mnc)
     outputBuffer.encodeUint16(lac)
@@ -66,7 +67,15 @@ public data class CellularStatus(
 
     private const val CRC: Int = 72
 
+    private const val SIZE: Int = 10
+
     private val DESERIALIZER: MavDeserializer<CellularStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CellularStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mcc = inputBuffer.decodeUint16()
       val mnc = inputBuffer.decodeUint16()
@@ -84,6 +93,7 @@ public data class CellularStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val quality = inputBuffer.decodeUint8()
+
       CellularStatus(
         status = status,
         failureReason = failureReason,

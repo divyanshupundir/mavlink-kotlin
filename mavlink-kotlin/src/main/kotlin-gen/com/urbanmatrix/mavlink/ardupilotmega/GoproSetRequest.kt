@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -39,7 +40,7 @@ public data class GoproSetRequest(
   public override val instanceMetadata: MavMessage.Metadata<GoproSetRequest> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(7).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(cmdId.value, 1)
@@ -52,7 +53,15 @@ public data class GoproSetRequest(
 
     private const val CRC: Int = 97
 
+    private const val SIZE: Int = 7
+
     private val DESERIALIZER: MavDeserializer<GoproSetRequest> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for GoproSetRequest: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -61,6 +70,7 @@ public data class GoproSetRequest(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val value = inputBuffer.decodeUint8Array(4)
+
       GoproSetRequest(
         targetSystem = targetSystem,
         targetComponent = targetComponent,

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -29,7 +30,7 @@ public data class CurrentEventSequence(
   public override val instanceMetadata: MavMessage.Metadata<CurrentEventSequence> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(3).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeEnumValue(flags.value, 1)
     return outputBuffer.array()
@@ -40,13 +41,22 @@ public data class CurrentEventSequence(
 
     private const val CRC: Int = 106
 
+    private const val SIZE: Int = 3
+
     private val DESERIALIZER: MavDeserializer<CurrentEventSequence> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CurrentEventSequence: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sequence = inputBuffer.decodeUint16()
       val flags = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavEventCurrentSequenceFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       CurrentEventSequence(
         sequence = sequence,
         flags = flags,

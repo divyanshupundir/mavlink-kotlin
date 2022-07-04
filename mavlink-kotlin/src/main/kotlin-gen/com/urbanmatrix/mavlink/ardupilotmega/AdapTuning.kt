@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -73,7 +74,7 @@ public data class AdapTuning(
   public override val instanceMetadata: MavMessage.Metadata<AdapTuning> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(49).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(error)
@@ -95,7 +96,15 @@ public data class AdapTuning(
 
     private const val CRC: Int = 46
 
+    private const val SIZE: Int = 49
+
     private val DESERIALIZER: MavDeserializer<AdapTuning> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for AdapTuning: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val desired = inputBuffer.decodeFloat()
       val achieved = inputBuffer.decodeFloat()
@@ -113,6 +122,7 @@ public data class AdapTuning(
         val entry = PidTuningAxis.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+
       AdapTuning(
         axis = axis,
         desired = desired,

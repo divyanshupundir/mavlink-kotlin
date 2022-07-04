@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -26,7 +27,7 @@ public data class Rangefinder(
   public override val instanceMetadata: MavMessage.Metadata<Rangefinder> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(distance)
     outputBuffer.encodeFloat(voltage)
     return outputBuffer.array()
@@ -37,10 +38,19 @@ public data class Rangefinder(
 
     private const val CRC: Int = 83
 
+    private const val SIZE: Int = 8
+
     private val DESERIALIZER: MavDeserializer<Rangefinder> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for Rangefinder: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val distance = inputBuffer.decodeFloat()
       val voltage = inputBuffer.decodeFloat()
+
       Rangefinder(
         distance = distance,
         voltage = voltage,

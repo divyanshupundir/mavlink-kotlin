@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.asluav
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -95,7 +96,7 @@ public data class CommandIntStamped(
   public override val instanceMetadata: MavMessage.Metadata<CommandIntStamped> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(47).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(vehicleTimestamp)
     outputBuffer.encodeUint32(utcTime)
     outputBuffer.encodeFloat(param1)
@@ -119,7 +120,15 @@ public data class CommandIntStamped(
 
     private const val CRC: Int = 119
 
+    private const val SIZE: Int = 47
+
     private val DESERIALIZER: MavDeserializer<CommandIntStamped> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CommandIntStamped: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vehicleTimestamp = inputBuffer.decodeUint64()
       val utcTime = inputBuffer.decodeUint32()
@@ -142,6 +151,7 @@ public data class CommandIntStamped(
       }
       val current = inputBuffer.decodeUint8()
       val autocontinue = inputBuffer.decodeUint8()
+
       CommandIntStamped(
         utcTime = utcTime,
         vehicleTimestamp = vehicleTimestamp,

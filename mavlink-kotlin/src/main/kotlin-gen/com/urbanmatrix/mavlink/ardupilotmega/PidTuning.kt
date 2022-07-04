@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -57,7 +58,7 @@ public data class PidTuning(
   public override val instanceMetadata: MavMessage.Metadata<PidTuning> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(ff)
@@ -75,7 +76,15 @@ public data class PidTuning(
 
     private const val CRC: Int = 98
 
+    private const val SIZE: Int = 33
+
     private val DESERIALIZER: MavDeserializer<PidTuning> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for PidTuning: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val desired = inputBuffer.decodeFloat()
       val achieved = inputBuffer.decodeFloat()
@@ -89,6 +98,7 @@ public data class PidTuning(
       }
       val srate = inputBuffer.decodeFloat()
       val pdmod = inputBuffer.decodeFloat()
+
       PidTuning(
         axis = axis,
         desired = desired,

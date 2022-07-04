@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -56,7 +57,7 @@ public data class CameraCaptureStatus(
   public override val instanceMetadata: MavMessage.Metadata<CameraCaptureStatus> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(22).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(imageInterval)
     outputBuffer.encodeUint32(recordingTimeMs)
@@ -72,7 +73,15 @@ public data class CameraCaptureStatus(
 
     private const val CRC: Int = 12
 
+    private const val SIZE: Int = 22
+
     private val DESERIALIZER: MavDeserializer<CameraCaptureStatus> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for CameraCaptureStatus: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val imageInterval = inputBuffer.decodeFloat()
@@ -81,6 +90,7 @@ public data class CameraCaptureStatus(
       val imageStatus = inputBuffer.decodeUint8()
       val videoStatus = inputBuffer.decodeUint8()
       val imageCount = inputBuffer.decodeInt32()
+
       CameraCaptureStatus(
         timeBootMs = timeBootMs,
         imageStatus = imageStatus,

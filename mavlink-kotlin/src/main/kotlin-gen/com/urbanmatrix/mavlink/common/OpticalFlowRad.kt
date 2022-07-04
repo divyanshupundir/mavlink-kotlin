@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.common
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -81,7 +82,7 @@ public data class OpticalFlowRad(
   public override val instanceMetadata: MavMessage.Metadata<OpticalFlowRad> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(44).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(integrationTimeUs)
     outputBuffer.encodeFloat(integratedX)
@@ -102,7 +103,15 @@ public data class OpticalFlowRad(
 
     private const val CRC: Int = 138
 
+    private const val SIZE: Int = 44
+
     private val DESERIALIZER: MavDeserializer<OpticalFlowRad> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for OpticalFlowRad: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val integrationTimeUs = inputBuffer.decodeUint32()
@@ -116,6 +125,7 @@ public data class OpticalFlowRad(
       val temperature = inputBuffer.decodeInt16()
       val sensorId = inputBuffer.decodeUint8()
       val quality = inputBuffer.decodeUint8()
+
       OpticalFlowRad(
         timeUsec = timeUsec,
         sensorId = sensorId,

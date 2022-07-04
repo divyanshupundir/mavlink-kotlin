@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.matrixpilot
 
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -71,7 +72,7 @@ public data class SerialUdbExtraF20(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
 
   public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(25).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(sueTrimValueInput1)
     outputBuffer.encodeInt16(sueTrimValueInput2)
     outputBuffer.encodeInt16(sueTrimValueInput3)
@@ -93,7 +94,15 @@ public data class SerialUdbExtraF20(
 
     private const val CRC: Int = 144
 
+    private const val SIZE: Int = 25
+
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF20> = MavDeserializer { bytes ->
+      if (bytes.size != SIZE) {
+        throw MavDeserializationException(
+          """Invalid ByteArray size for SerialUdbExtraF20: Expected=$SIZE Actual=${bytes.size}"""
+        )
+      }
+
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueTrimValueInput1 = inputBuffer.decodeInt16()
       val sueTrimValueInput2 = inputBuffer.decodeInt16()
@@ -108,6 +117,7 @@ public data class SerialUdbExtraF20(
       val sueTrimValueInput11 = inputBuffer.decodeInt16()
       val sueTrimValueInput12 = inputBuffer.decodeInt16()
       val sueNumberOfInputs = inputBuffer.decodeUint8()
+
       SerialUdbExtraF20(
         sueNumberOfInputs = sueNumberOfInputs,
         sueTrimValueInput1 = sueTrimValueInput1,
