@@ -39,6 +39,7 @@ private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
+    .addProperty(generateSizeProperty())
     .addProperty(generateDeserializer(packageName))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
@@ -52,6 +53,11 @@ private fun MessageModel.generateIdProperty() = PropertySpec
 private fun MessageModel.generateCrcProperty() = PropertySpec
     .builder("CRC", Int::class, KModifier.PRIVATE, KModifier.CONST)
     .initializer("%L", crc)
+    .build()
+
+private fun MessageModel.generateSizeProperty() = PropertySpec
+    .builder("SIZE", Int::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%L", size)
     .build()
 
 private fun MessageModel.generateDeserializer(packageName: String) = PropertySpec
