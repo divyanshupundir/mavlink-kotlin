@@ -2,6 +2,7 @@ package com.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.generator.models.FieldModel
@@ -70,12 +71,24 @@ private fun MessageModel.generateDeserializer(packageName: String) = PropertySpe
         buildCodeBlock {
             beginControlFlow("%T { bytes ->", MavDeserializer::class)
 
+            beginControlFlow("if (bytes.size != SIZE) {")
+            addStatement("throw %T(", MavDeserializationException::class)
+            indent()
+            addStatement("%P", "Invalid ByteArray size for $formattedName: Expected=\$SIZE Actual=\${bytes.size}")
+            unindent()
+            addStatement(")")
+            endControlFlow()
+
+            addStatement("")
+
             addStatement(
                 "val inputBuffer = %T.wrap(bytes).order(%T.LITTLE_ENDIAN)",
                 ByteBuffer::class,
                 ByteOrder::class
             )
             fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer")) }
+
+            addStatement("")
 
             addStatement("%T(", getClassName(packageName))
             indent()
