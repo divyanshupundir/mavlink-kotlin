@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
 
-data class MavlinkRawFrame(
+data class MavRawFrame(
     val stx: Int,
     val len: Int,
     val incompatFlags: Int,
@@ -57,7 +57,7 @@ data class MavlinkRawFrame(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as MavlinkRawFrame
+        other as MavRawFrame
 
         if (stx != other.stx) return false
         if (len != other.len) return false
@@ -118,10 +118,10 @@ data class MavlinkRawFrame(
         @Throws(Exception::class)
         private fun ByteArray.generateCrc(crcExtra: Int): Int {
             val frameSizeTillMsgId: Int = when (this.first().toInt() and 0xFF) {
-                MavlinkFrameType.V1.magic -> SIZE_STX + SIZE_LEN +
+                MavFrameType.V1.magic -> SIZE_STX + SIZE_LEN +
                     SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V1
 
-                MavlinkFrameType.V2.magic -> SIZE_STX + SIZE_LEN +
+                MavFrameType.V2.magic -> SIZE_STX + SIZE_LEN +
                     SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                     SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2
 
@@ -145,7 +145,7 @@ data class MavlinkRawFrame(
             timestamp: Long,
             secretKey: ByteArray
         ): ByteArray {
-            if (this[0].toInt() and MavlinkFrameType.V2.magic != MavlinkFrameType.V2.magic ||
+            if (this[0].toInt() and MavFrameType.V2.magic != MavFrameType.V2.magic ||
                 this[2].toInt() and INCOMPAT_FLAG_SIGNED == 0
             ) {
                 return ByteArray(0)
@@ -174,7 +174,7 @@ data class MavlinkRawFrame(
         }
 
         @Throws(Exception::class)
-        fun fromV1Bytes(rawBytes: ByteArray): MavlinkRawFrame =
+        fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame =
             with(ByteBuffer.wrap(rawBytes).order(ByteOrder.LITTLE_ENDIAN)) {
                 val stx = decodeUint8()
                 val len = decodeUint8()
@@ -185,7 +185,7 @@ data class MavlinkRawFrame(
                 val payload = ByteArray(len).also { get(it) }
                 val checksum = decodeUint16()
 
-                MavlinkRawFrame(
+                MavRawFrame(
                     stx = stx,
                     len = len,
                     incompatFlags = -1,
@@ -202,7 +202,7 @@ data class MavlinkRawFrame(
             }
 
         @Throws(Exception::class)
-        fun fromV2Bytes(rawBytes: ByteArray): MavlinkRawFrame =
+        fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame =
             with(ByteBuffer.wrap(rawBytes).order(ByteOrder.LITTLE_ENDIAN)) {
                 val stx = decodeUint8()
                 val len = decodeUint8()
@@ -220,7 +220,7 @@ data class MavlinkRawFrame(
                     ByteArray(0)
                 }
 
-                MavlinkRawFrame(
+                MavRawFrame(
                     stx = stx,
                     len = len,
                     incompatFlags = incompatFlags,
@@ -243,13 +243,13 @@ data class MavlinkRawFrame(
             messageId: Int,
             payload: ByteArray,
             crcExtra: Int
-        ): MavlinkRawFrame {
+        ): MavRawFrame {
             val frameLength = SIZE_STX + SIZE_LEN + SIZE_SEQ +
                 SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V1 +
                 payload.size + SIZE_CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
-                encodeUint8(MavlinkFrameType.V1.magic)
+                encodeUint8(MavFrameType.V1.magic)
                 encodeUint8(payload.size)
                 encodeUint8(seq)
                 encodeUint8(systemId)
@@ -261,8 +261,8 @@ data class MavlinkRawFrame(
             val checksum = rawBuffer.array().generateCrc(crcExtra)
             rawBuffer.encodeUint16(checksum)
 
-            return MavlinkRawFrame(
-                stx = MavlinkFrameType.V1.magic,
+            return MavRawFrame(
+                stx = MavFrameType.V1.magic,
                 len = payload.size,
                 incompatFlags = -1,
                 compatFlags = -1,
@@ -284,13 +284,13 @@ data class MavlinkRawFrame(
             messageId: Int,
             payload: ByteArray,
             crcExtra: Int
-        ): MavlinkRawFrame {
+        ): MavRawFrame {
             val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                 SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
                 payload.size + SIZE_CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
-                encodeUint8(MavlinkFrameType.V2.magic)
+                encodeUint8(MavFrameType.V2.magic)
                 encodeUint8(payload.size)
                 encodeUint8(0)
                 encodeUint8(0)
@@ -304,8 +304,8 @@ data class MavlinkRawFrame(
             val checksum = rawBuffer.array().generateCrc(crcExtra)
             rawBuffer.encodeUint16(checksum)
 
-            return MavlinkRawFrame(
-                stx = MavlinkFrameType.V2.magic,
+            return MavRawFrame(
+                stx = MavFrameType.V2.magic,
                 len = payload.size,
                 incompatFlags = 0,
                 compatFlags = 0,
@@ -330,13 +330,13 @@ data class MavlinkRawFrame(
             linkId: Int,
             timestamp: Long,
             secretKey: ByteArray
-        ): MavlinkRawFrame {
+        ): MavRawFrame {
             val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                 SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
                 payload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
-                encodeUint8(MavlinkFrameType.V2.magic)
+                encodeUint8(MavFrameType.V2.magic)
                 encodeUint8(payload.size)
                 encodeUint8(INCOMPAT_FLAG_SIGNED)
                 encodeUint8(0)
@@ -353,8 +353,8 @@ data class MavlinkRawFrame(
             val signature = rawBuffer.array().generateSignature(linkId, timestamp, secretKey)
             rawBuffer.put(signature)
 
-            return MavlinkRawFrame(
-                stx = MavlinkFrameType.V2.magic,
+            return MavRawFrame(
+                stx = MavFrameType.V2.magic,
                 len = payload.size,
                 incompatFlags = INCOMPAT_FLAG_SIGNED,
                 compatFlags = 0,

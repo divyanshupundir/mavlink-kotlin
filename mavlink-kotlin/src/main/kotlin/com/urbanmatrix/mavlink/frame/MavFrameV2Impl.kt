@@ -1,11 +1,11 @@
-package com.urbanmatrix.mavlink.connection
+package com.urbanmatrix.mavlink.frame
 
 import com.urbanmatrix.mavlink.api.MavFrameV2
 import com.urbanmatrix.mavlink.api.MavMessage
-import com.urbanmatrix.mavlink.raw.MavlinkRawFrame
+import com.urbanmatrix.mavlink.raw.MavRawFrame
 
 data class MavFrameV2Impl<T : MavMessage<T>>(
-    private val rawFrame: MavlinkRawFrame,
+    private val rawFrame: MavRawFrame,
     override val message: T
 ) : MavFrameV2<T> {
 
