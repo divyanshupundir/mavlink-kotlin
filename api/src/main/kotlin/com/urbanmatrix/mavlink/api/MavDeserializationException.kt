@@ -2,4 +2,7 @@ package com.urbanmatrix.mavlink.api
 
 import java.io.IOException
 
-class MavDeserializationException(message: String) : IOException(message)
+class MavDeserializationException(
+    override val message: String? = null,
+    override val cause: Throwable? = null,
+) : IOException(message, cause)
