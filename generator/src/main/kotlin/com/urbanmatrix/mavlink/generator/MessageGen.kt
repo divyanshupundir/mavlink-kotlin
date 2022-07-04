@@ -121,7 +121,7 @@ private fun MessageModel.generateSerialize() = FunSpec
     .addCode(
         buildCodeBlock {
             addStatement(
-                "val outputBuffer = %T.allocate($size).order(%T.LITTLE_ENDIAN)",
+                "val outputBuffer = %T.allocate(SIZE).order(%T.LITTLE_ENDIAN)",
                 ByteBuffer::class,
                 ByteOrder::class
             )
