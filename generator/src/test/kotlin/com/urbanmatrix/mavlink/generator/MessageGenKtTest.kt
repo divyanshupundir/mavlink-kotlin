@@ -17,13 +17,13 @@ class MessageGenKtTest {
 
             for (enum in model.enums) {
                 enum
-                    .generateEnumFile("$BASE_PACKAGE.${model.name}")
+                    .generateEnumFile("$BASE_PACKAGE.${model.subPackageName}")
                     .writeTo(File(GENERATED_SOURCES_DIR))
             }
 
             for (message in model.messages) {
                 message
-                    .generateMessageFile("$BASE_PACKAGE.${model.name}", enumResolver)
+                    .generateMessageFile("$BASE_PACKAGE.${model.subPackageName}", enumResolver)
                     .writeTo(File(GENERATED_SOURCES_DIR))
             }
         }

@@ -69,7 +69,7 @@ private fun MessageModel.generateDeserializer(packageName: String) = PropertySpe
     )
     .initializer(
         buildCodeBlock {
-            beginControlFlow("%T { bytes ->", MavDeserializer::class)
+            beginControlFlow("%T·{ bytes ->", MavDeserializer::class)
 
             beginControlFlow("if (bytes.size != SIZE) {")
             addStatement("throw %T(", MavDeserializationException::class)

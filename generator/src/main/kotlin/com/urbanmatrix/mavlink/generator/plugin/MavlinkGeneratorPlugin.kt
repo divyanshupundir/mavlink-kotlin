@@ -12,6 +12,10 @@ class MavlinkGeneratorPlugin : Plugin<Project> {
         )
 
         target.tasks
+            .getByName("compileKotlin")
+            .dependsOn("generateMavlink")
+
+        target.tasks
             .getByName("compileJava")
             .dependsOn("generateMavlink")
     }

@@ -13,7 +13,7 @@ import java.io.IOException
 abstract class MavlinkGeneratorTask : DefaultTask() {
 
     companion object {
-        private const val BASE_PACKAGE = "com.urbanmatrix.mavlink"
+        private const val BASE_PACKAGE = "com.urbanmatrix.mavlink.definitions"
     }
 
     @OutputDirectory
@@ -67,7 +67,7 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
                 .generateDialectFile(BASE_PACKAGE)
                 .writeTo(generatedSourcesDir)
 
-            val packageName = "$BASE_PACKAGE.${model.name.lowercase()}"
+            val packageName = "$BASE_PACKAGE.${model.subPackageName}"
 
             for (enum in model.enums) {
                 enum

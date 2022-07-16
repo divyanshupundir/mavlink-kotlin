@@ -12,7 +12,7 @@ class EnumResolver(
             for (enumModel in mavlinkModel.enums) {
                 if (enumModel.name == enumType) {
                     return ClassName(
-                        "$basePackage.${mavlinkModel.name}",
+                        "$basePackage.${mavlinkModel.subPackageName}",
                         enumModel.formattedName
                     )
                 }

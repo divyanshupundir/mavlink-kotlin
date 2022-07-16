@@ -8,14 +8,14 @@ import com.urbanmatrix.mavlink.api.AbstractMavDialect
 import com.urbanmatrix.mavlink.generator.models.MavlinkModel
 
 fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
-    val packageName = "$basePackageName.${name.lowercase()}"
-    val dialect = TypeSpec.objectBuilder(formattedName)
+    val packageName = "$basePackageName.$subPackageName"
+    val dialect = TypeSpec.objectBuilder(dialectObjectName)
         .superclass(AbstractMavDialect::class)
         .addSuperclassConstructorParameter(generateDependencies(basePackageName))
         .addSuperclassConstructorParameter(generateMessages(basePackageName))
         .build()
 
-    return FileSpec.builder(packageName, formattedName)
+    return FileSpec.builder(packageName, dialectObjectName)
         .addType(dialect)
         .build()
 }
@@ -36,11 +36,11 @@ private fun MavlinkModel.generateDependencies(basePackageName: String) = buildCo
         .map { it.removeSuffix(".xml") }
         .map {
             ClassName(
-                "$basePackageName.$it",
+                "$basePackageName.${it.lowercase()}",
                 "${CaseFormat.fromSnake(it).toUpperCamel()}Dialect"
             )
         }
-        .forEach { addStatement("%T", it) }
+        .forEach { addStatement("%T,", it) }
     unindent()
     add(")")
 
@@ -62,7 +62,7 @@ private fun MavlinkModel.generateMessages(basePackageName: String) = buildCodeBl
     messages
         .map {
             ClassName(
-                "$basePackageName.$name",
+                "$basePackageName.$subPackageName",
                 it.formattedName
             )
         }

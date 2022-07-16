@@ -15,7 +15,8 @@ data class MavlinkModel(
     val enums: List<EnumModel>,
     val messages: List<MessageModel>
 ) {
-    val formattedName: String = "${CaseFormat.fromSnake(name).toUpperCamel()}Dialect"
+    val dialectObjectName: String = "${CaseFormat.fromSnake(name).toUpperCamel()}Dialect"
+    val subPackageName: String = name.lowercase()
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
