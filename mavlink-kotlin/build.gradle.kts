@@ -9,6 +9,7 @@ tasks.getByName<Test>("test") {
 dependencies {
     implementation(Deps.mavlinkKotlinApi)
     implementation(Deps.mavlinkKotlinSerialization)
+    implementation(Deps.mavlinkKotlinDefinitions)
 
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)

@@ -5,6 +5,7 @@ object Deps {
     const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
     const val mavlinkKotlinApi = "com.urbanmatrix.mavlink:api:${Specs.Lib.releaseVersion}"
     const val mavlinkKotlinSerialization = "com.urbanmatrix.mavlink:serialization:${Specs.Lib.releaseVersion}"
+    const val mavlinkKotlinDefinitions = "com.urbanmatrix.mavlink:definitions:${Specs.Lib.releaseVersion}"
 }
 
 object TestDeps {
