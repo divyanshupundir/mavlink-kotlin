@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -65,12 +64,6 @@ public data class GpsStatus(
     private const val SIZE: Int = 101
 
     private val DESERIALIZER: MavDeserializer<GpsStatus> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for GpsStatus: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val satellitesVisible = inputBuffer.decodeUint8()
       val satellitePrn = inputBuffer.decodeUint8Array(20)

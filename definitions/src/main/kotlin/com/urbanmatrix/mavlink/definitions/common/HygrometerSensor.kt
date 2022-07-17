@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -49,12 +48,6 @@ public data class HygrometerSensor(
     private const val SIZE: Int = 5
 
     private val DESERIALIZER: MavDeserializer<HygrometerSensor> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for HygrometerSensor: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val temperature = inputBuffer.decodeInt16()
       val humidity = inputBuffer.decodeUint16()

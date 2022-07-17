@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -88,12 +87,6 @@ public data class Simstate(
     private const val SIZE: Int = 44
 
     private val DESERIALIZER: MavDeserializer<Simstate> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for Simstate: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()

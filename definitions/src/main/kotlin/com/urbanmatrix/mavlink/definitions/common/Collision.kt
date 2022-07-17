@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -72,12 +71,6 @@ public data class Collision(
     private const val SIZE: Int = 19
 
     private val DESERIALIZER: MavDeserializer<Collision> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for Collision: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val id = inputBuffer.decodeUint32()
       val timeToMinimumDelta = inputBuffer.decodeFloat()

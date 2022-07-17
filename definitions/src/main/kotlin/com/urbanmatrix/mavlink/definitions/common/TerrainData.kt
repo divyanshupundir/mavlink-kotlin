@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16Array
@@ -63,12 +62,6 @@ public data class TerrainData(
     private const val SIZE: Int = 43
 
     private val DESERIALIZER: MavDeserializer<TerrainData> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for TerrainData: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()

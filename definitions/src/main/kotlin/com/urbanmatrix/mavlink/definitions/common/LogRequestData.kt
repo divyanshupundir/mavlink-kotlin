@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -60,12 +59,6 @@ public data class LogRequestData(
     private const val SIZE: Int = 12
 
     private val DESERIALIZER: MavDeserializer<LogRequestData> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for LogRequestData: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val ofs = inputBuffer.decodeUint32()
       val count = inputBuffer.decodeUint32()

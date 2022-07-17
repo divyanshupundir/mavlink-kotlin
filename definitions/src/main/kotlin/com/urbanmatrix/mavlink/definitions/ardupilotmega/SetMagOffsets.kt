@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -59,12 +58,6 @@ public data class SetMagOffsets(
     private const val SIZE: Int = 8
 
     private val DESERIALIZER: MavDeserializer<SetMagOffsets> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for SetMagOffsets: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val magOfsZ = inputBuffer.decodeInt16()
       val magOfsY = inputBuffer.decodeInt16()

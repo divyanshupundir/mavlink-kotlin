@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -84,12 +83,6 @@ public data class SafetySetAllowedArea(
     private const val SIZE: Int = 27
 
     private val DESERIALIZER: MavDeserializer<SafetySetAllowedArea> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for SafetySetAllowedArea: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val p1x = inputBuffer.decodeFloat()
       val p1y = inputBuffer.decodeFloat()

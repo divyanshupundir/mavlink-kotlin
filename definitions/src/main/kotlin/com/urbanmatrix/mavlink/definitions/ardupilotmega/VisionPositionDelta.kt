@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -64,12 +63,6 @@ public data class VisionPositionDelta(
     private const val SIZE: Int = 44
 
     private val DESERIALIZER: MavDeserializer<VisionPositionDelta> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for VisionPositionDelta: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val timeDeltaUsec = inputBuffer.decodeUint64()

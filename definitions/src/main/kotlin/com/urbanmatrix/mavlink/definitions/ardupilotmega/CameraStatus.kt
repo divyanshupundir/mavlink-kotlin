@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -86,12 +85,6 @@ public data class CameraStatus(
     private const val SIZE: Int = 29
 
     private val DESERIALIZER: MavDeserializer<CameraStatus> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for CameraStatus: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
       val p1 = inputBuffer.decodeFloat()

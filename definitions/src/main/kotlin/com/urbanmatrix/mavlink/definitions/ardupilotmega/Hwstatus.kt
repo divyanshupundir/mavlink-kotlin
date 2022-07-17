@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -42,12 +41,6 @@ public data class Hwstatus(
     private const val SIZE: Int = 3
 
     private val DESERIALIZER: MavDeserializer<Hwstatus> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for Hwstatus: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vcc = inputBuffer.decodeUint16()
       val i2cerr = inputBuffer.decodeUint8()

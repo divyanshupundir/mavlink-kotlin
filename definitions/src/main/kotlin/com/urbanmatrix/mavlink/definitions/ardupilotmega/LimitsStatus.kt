@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -81,12 +80,6 @@ public data class LimitsStatus(
     private const val SIZE: Int = 22
 
     private val DESERIALIZER: MavDeserializer<LimitsStatus> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for LimitsStatus: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lastTrigger = inputBuffer.decodeUint32()
       val lastAction = inputBuffer.decodeUint32()

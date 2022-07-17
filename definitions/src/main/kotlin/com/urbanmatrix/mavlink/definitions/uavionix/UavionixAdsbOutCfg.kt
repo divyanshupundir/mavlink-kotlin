@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -82,12 +81,6 @@ public data class UavionixAdsbOutCfg(
     private const val SIZE: Int = 20
 
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutCfg> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for UavionixAdsbOutCfg: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val icao = inputBuffer.decodeUint32()
       val stallspeed = inputBuffer.decodeUint16()

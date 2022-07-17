@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -153,12 +152,6 @@ public data class RcChannelsOverride(
     private const val SIZE: Int = 38
 
     private val DESERIALIZER: MavDeserializer<RcChannelsOverride> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for RcChannelsOverride: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val chan1Raw = inputBuffer.decodeUint16()
       val chan2Raw = inputBuffer.decodeUint16()

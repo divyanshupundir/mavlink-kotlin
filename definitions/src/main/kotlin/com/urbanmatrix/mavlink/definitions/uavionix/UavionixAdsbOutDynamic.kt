@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -123,12 +122,6 @@ public data class UavionixAdsbOutDynamic(
     private const val SIZE: Int = 41
 
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutDynamic> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for UavionixAdsbOutDynamic: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val utctime = inputBuffer.decodeUint32()
       val gpslat = inputBuffer.decodeInt32()

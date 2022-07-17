@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -79,12 +78,6 @@ public data class ViconPositionEstimate(
     private const val SIZE: Int = 116
 
     private val DESERIALIZER: MavDeserializer<ViconPositionEstimate> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for ViconPositionEstimate: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val usec = inputBuffer.decodeUint64()
       val x = inputBuffer.decodeFloat()

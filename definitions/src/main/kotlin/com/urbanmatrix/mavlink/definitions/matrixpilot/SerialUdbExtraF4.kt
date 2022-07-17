@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -80,12 +79,6 @@ public data class SerialUdbExtraF4(
     private const val SIZE: Int = 10
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF4> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for SerialUdbExtraF4: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueRollStabilizationAilerons = inputBuffer.decodeUint8()
       val sueRollStabilizationRudder = inputBuffer.decodeUint8()

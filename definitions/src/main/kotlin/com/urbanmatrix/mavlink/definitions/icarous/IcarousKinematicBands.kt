@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.icarous
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -116,12 +115,6 @@ public data class IcarousKinematicBands(
     private const val SIZE: Int = 46
 
     private val DESERIALIZER: MavDeserializer<IcarousKinematicBands> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for IcarousKinematicBands: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val min1 = inputBuffer.decodeFloat()
       val max1 = inputBuffer.decodeFloat()

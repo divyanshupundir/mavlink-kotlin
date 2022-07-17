@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -55,12 +54,6 @@ public data class FileTransferProtocol(
     private const val SIZE: Int = 254
 
     private val DESERIALIZER: MavDeserializer<FileTransferProtocol> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for FileTransferProtocol: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetNetwork = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()

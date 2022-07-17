@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -68,12 +67,6 @@ public data class Altitudes(
     private const val SIZE: Int = 28
 
     private val DESERIALIZER: MavDeserializer<Altitudes> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for Altitudes: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val altGps = inputBuffer.decodeInt32()

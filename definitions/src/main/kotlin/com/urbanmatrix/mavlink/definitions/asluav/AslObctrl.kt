@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -76,12 +75,6 @@ public data class AslObctrl(
     private const val SIZE: Int = 33
 
     private val DESERIALIZER: MavDeserializer<AslObctrl> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for AslObctrl: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val uelev = inputBuffer.decodeFloat()

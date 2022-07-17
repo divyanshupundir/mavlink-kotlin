@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -113,12 +112,6 @@ public data class CameraImageCaptured(
     private const val SIZE: Int = 255
 
     private val DESERIALIZER: MavDeserializer<CameraImageCaptured> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for CameraImageCaptured: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUtc = inputBuffer.decodeUint64()
       val timeBootMs = inputBuffer.decodeUint32()

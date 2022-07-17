@@ -30,7 +30,9 @@ class MavRawFrameReader(
                             MavRawFrame.SIZE_COMP_ID + MavRawFrame.SIZE_MSG_ID_V1 +
                             payloadLength + MavRawFrame.SIZE_CHECKSUM
                     )
-                    if (!success) continue
+                    if (!success) {
+                        continue
+                    }
 
                     return MavRawFrame.fromV1Bytes(inputStream.buffer)
                 }
@@ -51,12 +53,16 @@ class MavRawFrameReader(
                             MavRawFrame.SIZE_MSG_ID_V2 + payloadLength +
                             MavRawFrame.SIZE_CHECKSUM + signatureSize
                     )
-                    if (!success) continue
+                    if (!success) {
+                        continue
+                    }
 
                     return MavRawFrame.fromV2Bytes(inputStream.buffer)
                 }
 
-                else -> drop()
+                else -> {
+                    drop()
+                }
             }
         }
 
@@ -68,6 +74,7 @@ class MavRawFrameReader(
         inputStream.run {
             rollback()
             skip(1)
+            commit()
         }
     }
 }

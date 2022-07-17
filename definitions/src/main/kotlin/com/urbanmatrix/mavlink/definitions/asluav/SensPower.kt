@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -51,12 +50,6 @@ public data class SensPower(
     private const val SIZE: Int = 16
 
     private val DESERIALIZER: MavDeserializer<SensPower> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for SensPower: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val adc121VspbVolt = inputBuffer.decodeFloat()
       val adc121CspbAmp = inputBuffer.decodeFloat()

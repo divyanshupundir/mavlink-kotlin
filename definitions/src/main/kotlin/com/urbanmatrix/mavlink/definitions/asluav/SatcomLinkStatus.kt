@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -75,12 +74,6 @@ public data class SatcomLinkStatus(
     private const val SIZE: Int = 24
 
     private val DESERIALIZER: MavDeserializer<SatcomLinkStatus> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for SatcomLinkStatus: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUint64()
       val lastHeartbeat = inputBuffer.decodeUint64()

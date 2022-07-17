@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt8Array
@@ -71,12 +70,6 @@ public data class FlexifunctionBufferFunction(
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunction> = MavDeserializer {
         bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for FlexifunctionBufferFunction: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val funcIndex = inputBuffer.decodeUint16()
       val funcCount = inputBuffer.decodeUint16()

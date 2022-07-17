@@ -43,15 +43,15 @@ open class MavConnection(
 
                 val payload = try {
                     metadata.deserializer.deserialize(rawFrame.payload)
-                } catch (e: MavDeserializationException) {
+                } catch (e: Exception) {
                     e.printStackTrace()
                     reader.drop()
                     continue
                 }
 
                 return when (rawFrame.stx) {
-                    MavFrameType.V1.magic -> MavFrameV2Impl<MavMessage<*>>(rawFrame, payload)
-                    MavFrameType.V2.magic -> MavFrameV1Impl<MavMessage<*>>(rawFrame, payload)
+                    MavFrameType.V1.magic -> MavFrameV1Impl<MavMessage<*>>(rawFrame, payload)
+                    MavFrameType.V2.magic -> MavFrameV2Impl<MavMessage<*>>(rawFrame, payload)
                     else -> continue
                 }
             }

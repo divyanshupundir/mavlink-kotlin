@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.icarous
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -36,12 +35,6 @@ public data class IcarousHeartbeat(
     private const val SIZE: Int = 1
 
     private val DESERIALIZER: MavDeserializer<IcarousHeartbeat> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for IcarousHeartbeat: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = IcarousFmsState.getEntryFromValueOrNull(value)

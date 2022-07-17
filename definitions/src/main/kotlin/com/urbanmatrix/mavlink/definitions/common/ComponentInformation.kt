@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -69,12 +68,6 @@ public data class ComponentInformation(
     private const val SIZE: Int = 212
 
     private val DESERIALIZER: MavDeserializer<ComponentInformation> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for ComponentInformation: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val peripheralsMetadataFileCrc = inputBuffer.decodeUint32()
       val generalMetadataFileCrc = inputBuffer.decodeUint32()

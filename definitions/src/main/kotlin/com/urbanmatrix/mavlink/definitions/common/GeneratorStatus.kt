@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -102,12 +101,6 @@ public data class GeneratorStatus(
     private const val SIZE: Int = 42
 
     private val DESERIALIZER: MavDeserializer<GeneratorStatus> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for GeneratorStatus: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(8).let { value ->
         val entry = MavGeneratorStatusFlag.getEntryFromValueOrNull(value)

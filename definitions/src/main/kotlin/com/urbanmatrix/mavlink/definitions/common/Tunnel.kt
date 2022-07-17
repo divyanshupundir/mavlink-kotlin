@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -69,12 +68,6 @@ public data class Tunnel(
     private const val SIZE: Int = 133
 
     private val DESERIALIZER: MavDeserializer<Tunnel> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for Tunnel: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val payloadType = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavTunnelPayloadType.getEntryFromValueOrNull(value)

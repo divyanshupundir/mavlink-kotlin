@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.common
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -56,12 +55,6 @@ public data class PlayTuneV2(
     private const val SIZE: Int = 254
 
     private val DESERIALIZER: MavDeserializer<PlayTuneV2> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for PlayTuneV2: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val format = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = TuneFormat.getEntryFromValueOrNull(value)

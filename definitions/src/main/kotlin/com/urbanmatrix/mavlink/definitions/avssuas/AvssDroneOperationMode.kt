@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.avssuas
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -48,12 +47,6 @@ public data class AvssDroneOperationMode(
     private const val SIZE: Int = 6
 
     private val DESERIALIZER: MavDeserializer<AvssDroneOperationMode> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for AvssDroneOperationMode: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
       val m300OperationMode = inputBuffer.decodeUint8()

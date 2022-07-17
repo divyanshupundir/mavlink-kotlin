@@ -215,7 +215,11 @@ data class MavRawFrame(
                 val payload = ByteArray(len).also { get(it) }
                 val checksum = decodeUint16()
                 val signature = if (incompatFlags and INCOMPAT_FLAG_SIGNED != 0) {
-                    ByteArray(SIZE_SIGNATURE).also { get(it) }
+                    if (remaining() < SIZE_SIGNATURE) {
+                        ByteArray(0)
+                    } else {
+                        ByteArray(SIZE_SIGNATURE).also { get(it) }
+                    }
                 } else {
                     ByteArray(0)
                 }

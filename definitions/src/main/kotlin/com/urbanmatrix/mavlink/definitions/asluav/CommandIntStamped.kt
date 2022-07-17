@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -123,12 +122,6 @@ public data class CommandIntStamped(
     private const val SIZE: Int = 47
 
     private val DESERIALIZER: MavDeserializer<CommandIntStamped> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for CommandIntStamped: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vehicleTimestamp = inputBuffer.decodeUint64()
       val utcTime = inputBuffer.decodeUint32()

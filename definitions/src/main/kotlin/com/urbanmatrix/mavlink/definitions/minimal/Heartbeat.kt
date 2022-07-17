@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -73,12 +72,6 @@ public data class Heartbeat(
     private const val SIZE: Int = 9
 
     private val DESERIALIZER: MavDeserializer<Heartbeat> = MavDeserializer { bytes ->
-      if (bytes.size != SIZE) {
-        throw MavDeserializationException(
-          """Invalid ByteArray size for Heartbeat: Expected=$SIZE Actual=${bytes.size}"""
-        )
-      }
-
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val customMode = inputBuffer.decodeUint32()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
