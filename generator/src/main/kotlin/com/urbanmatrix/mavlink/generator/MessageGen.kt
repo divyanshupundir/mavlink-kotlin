@@ -149,7 +149,7 @@ val MessageModel.crc: Int
             .asSequence()
             .sorted()
             .filter { !it.extension }
-            .onEach { crc.accumulate(it.type + " ") }
+            .onEach { crc.accumulate(it.type.substringBeforeLast("_mavlink_version") + " ") }
             .onEach { crc.accumulate(it.name + " ") }
             .filterIsInstance<FieldModel.PrimitiveArray>()
             .forEach { crc.accumulate(it.arrayLength) }
