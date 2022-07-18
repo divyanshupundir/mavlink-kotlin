@@ -49,7 +49,7 @@ public data class PlayTune(
   public companion object {
     private const val ID: Int = 258
 
-    private const val CRC: Int = 185
+    private const val CRC: Int = 240
 
     private const val SIZE: Int = 232
 

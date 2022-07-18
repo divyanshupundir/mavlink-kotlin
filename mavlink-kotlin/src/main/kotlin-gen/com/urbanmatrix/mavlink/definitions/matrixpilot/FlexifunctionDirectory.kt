@@ -57,7 +57,7 @@ public data class FlexifunctionDirectory(
   public companion object {
     private const val ID: Int = 155
 
-    private const val CRC: Int = 163
+    private const val CRC: Int = 12
 
     private const val SIZE: Int = 53
 

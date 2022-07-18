@@ -124,7 +124,7 @@ public data class SmartBatteryInfo(
   public companion object {
     private const val ID: Int = 370
 
-    private const val CRC: Int = 91
+    private const val CRC: Int = 75
 
     private const val SIZE: Int = 109
 

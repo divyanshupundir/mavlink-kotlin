@@ -56,7 +56,7 @@ public data class ProtocolVersion(
   public companion object {
     private const val ID: Int = 300
 
-    private const val CRC: Int = 233
+    private const val CRC: Int = 217
 
     private const val SIZE: Int = 22
 

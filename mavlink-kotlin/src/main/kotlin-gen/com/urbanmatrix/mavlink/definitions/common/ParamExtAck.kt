@@ -50,7 +50,7 @@ public data class ParamExtAck(
   public companion object {
     private const val ID: Int = 324
 
-    private const val CRC: Int = 23
+    private const val CRC: Int = 132
 
     private const val SIZE: Int = 146
 

@@ -57,7 +57,7 @@ public data class DebugVect(
   public companion object {
     private const val ID: Int = 250
 
-    private const val CRC: Int = 245
+    private const val CRC: Int = 49
 
     private const val SIZE: Int = 30
 

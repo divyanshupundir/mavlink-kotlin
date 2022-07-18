@@ -48,7 +48,7 @@ public data class WheelDistance(
   public companion object {
     private const val ID: Int = 9000
 
-    private const val CRC: Int = 254
+    private const val CRC: Int = 113
 
     private const val SIZE: Int = 137
 

@@ -51,7 +51,7 @@ public data class SetupSigning(
   public companion object {
     private const val ID: Int = 256
 
-    private const val CRC: Int = 91
+    private const val CRC: Int = 71
 
     private const val SIZE: Int = 42
 

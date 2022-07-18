@@ -69,7 +69,7 @@ public data class ParamSet(
   public companion object {
     private const val ID: Int = 23
 
-    private const val CRC: Int = 101
+    private const val CRC: Int = 168
 
     private const val SIZE: Int = 23
 

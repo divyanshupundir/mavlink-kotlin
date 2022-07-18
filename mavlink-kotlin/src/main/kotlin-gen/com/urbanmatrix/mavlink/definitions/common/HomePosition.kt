@@ -112,7 +112,7 @@ public data class HomePosition(
   public companion object {
     private const val ID: Int = 242
 
-    private const val CRC: Int = 53
+    private const val CRC: Int = 104
 
     private const val SIZE: Int = 60
 

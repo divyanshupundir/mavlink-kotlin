@@ -120,7 +120,7 @@ public data class HilStateQuaternion(
   public companion object {
     private const val ID: Int = 115
 
-    private const val CRC: Int = 237
+    private const val CRC: Int = 4
 
     private const val SIZE: Int = 64
 

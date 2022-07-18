@@ -42,7 +42,7 @@ public data class Data64(
   public companion object {
     private const val ID: Int = 171
 
-    private const val CRC: Int = 165
+    private const val CRC: Int = 181
 
     private const val SIZE: Int = 66
 

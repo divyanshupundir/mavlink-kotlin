@@ -105,7 +105,7 @@ public data class AutopilotVersion(
   public companion object {
     private const val ID: Int = 148
 
-    private const val CRC: Int = 224
+    private const val CRC: Int = 178
 
     private const val SIZE: Int = 78
 

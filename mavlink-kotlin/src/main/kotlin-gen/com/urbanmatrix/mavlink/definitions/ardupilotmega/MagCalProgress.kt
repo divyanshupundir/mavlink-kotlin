@@ -79,7 +79,7 @@ public data class MagCalProgress(
   public companion object {
     private const val ID: Int = 191
 
-    private const val CRC: Int = 143
+    private const val CRC: Int = 92
 
     private const val SIZE: Int = 27
 

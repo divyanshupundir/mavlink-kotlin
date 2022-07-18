@@ -60,7 +60,7 @@ public data class LoggingData(
   public companion object {
     private const val ID: Int = 266
 
-    private const val CRC: Int = 242
+    private const val CRC: Int = 193
 
     private const val SIZE: Int = 255
 

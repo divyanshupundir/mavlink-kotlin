@@ -107,7 +107,7 @@ public data class CameraImageCaptured(
   public companion object {
     private const val ID: Int = 263
 
-    private const val CRC: Int = 32
+    private const val CRC: Int = 133
 
     private const val SIZE: Int = 255
 

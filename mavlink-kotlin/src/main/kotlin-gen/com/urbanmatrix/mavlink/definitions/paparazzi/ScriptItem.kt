@@ -50,7 +50,7 @@ public data class ScriptItem(
   public companion object {
     private const val ID: Int = 180
 
-    private const val CRC: Int = 130
+    private const val CRC: Int = 231
 
     private const val SIZE: Int = 54
 

@@ -99,7 +99,7 @@ public data class LocalPositionNedCov(
   public companion object {
     private const val ID: Int = 64
 
-    private const val CRC: Int = 153
+    private const val CRC: Int = 191
 
     private const val SIZE: Int = 225
 

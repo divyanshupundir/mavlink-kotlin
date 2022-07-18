@@ -79,7 +79,7 @@ public data class CellularConfig(
   public companion object {
     private const val ID: Int = 336
 
-    private const val CRC: Int = 228
+    private const val CRC: Int = 245
 
     private const val SIZE: Int = 84
 

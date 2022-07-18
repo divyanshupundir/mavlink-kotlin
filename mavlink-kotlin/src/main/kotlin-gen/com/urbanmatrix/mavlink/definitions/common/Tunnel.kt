@@ -63,7 +63,7 @@ public data class Tunnel(
   public companion object {
     private const val ID: Int = 385
 
-    private const val CRC: Int = 62
+    private const val CRC: Int = 147
 
     private const val SIZE: Int = 133
 

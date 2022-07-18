@@ -104,7 +104,7 @@ public data class AdsbVehicle(
   public companion object {
     private const val ID: Int = 246
 
-    private const val CRC: Int = 92
+    private const val CRC: Int = 184
 
     private const val SIZE: Int = 38
 

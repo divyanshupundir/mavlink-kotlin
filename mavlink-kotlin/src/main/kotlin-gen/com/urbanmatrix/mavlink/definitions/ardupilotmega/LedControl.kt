@@ -57,7 +57,7 @@ public data class LedControl(
   public companion object {
     private const val ID: Int = 186
 
-    private const val CRC: Int = 141
+    private const val CRC: Int = 72
 
     private const val SIZE: Int = 29
 

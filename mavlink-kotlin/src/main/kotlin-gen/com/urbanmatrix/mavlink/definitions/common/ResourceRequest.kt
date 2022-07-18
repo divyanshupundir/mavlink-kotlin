@@ -54,7 +54,7 @@ public data class ResourceRequest(
   public companion object {
     private const val ID: Int = 142
 
-    private const val CRC: Int = 102
+    private const val CRC: Int = 72
 
     private const val SIZE: Int = 243
 

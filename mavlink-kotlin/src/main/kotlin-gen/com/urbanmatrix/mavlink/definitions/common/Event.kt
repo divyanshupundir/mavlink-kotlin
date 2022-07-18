@@ -72,7 +72,7 @@ public data class Event(
   public companion object {
     private const val ID: Int = 410
 
-    private const val CRC: Int = 38
+    private const val CRC: Int = 160
 
     private const val SIZE: Int = 53
 

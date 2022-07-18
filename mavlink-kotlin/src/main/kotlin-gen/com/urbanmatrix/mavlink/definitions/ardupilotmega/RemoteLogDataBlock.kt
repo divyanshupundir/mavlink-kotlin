@@ -50,7 +50,7 @@ public data class RemoteLogDataBlock(
   public companion object {
     private const val ID: Int = 184
 
-    private const val CRC: Int = 161
+    private const val CRC: Int = 159
 
     private const val SIZE: Int = 206
 

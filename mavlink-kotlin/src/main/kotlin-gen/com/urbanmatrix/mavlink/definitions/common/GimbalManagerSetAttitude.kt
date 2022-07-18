@@ -76,7 +76,7 @@ public data class GimbalManagerSetAttitude(
   public companion object {
     private const val ID: Int = 282
 
-    private const val CRC: Int = 88
+    private const val CRC: Int = 123
 
     private const val SIZE: Int = 35
 

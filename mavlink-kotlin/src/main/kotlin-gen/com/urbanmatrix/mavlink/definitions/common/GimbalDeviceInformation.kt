@@ -119,7 +119,7 @@ public data class GimbalDeviceInformation(
   public companion object {
     private const val ID: Int = 283
 
-    private const val CRC: Int = 231
+    private const val CRC: Int = 74
 
     private const val SIZE: Int = 144
 

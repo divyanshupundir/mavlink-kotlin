@@ -87,7 +87,7 @@ public data class SetAttitudeTarget(
   public companion object {
     private const val ID: Int = 82
 
-    private const val CRC: Int = 166
+    private const val CRC: Int = 49
 
     private const val SIZE: Int = 51
 

@@ -76,7 +76,7 @@ public data class UavionixAdsbOutCfg(
   public companion object {
     private const val ID: Int = 10001
 
-    private const val CRC: Int = 204
+    private const val CRC: Int = 209
 
     private const val SIZE: Int = 20
 

@@ -51,7 +51,7 @@ public data class MemoryVect(
   public companion object {
     private const val ID: Int = 249
 
-    private const val CRC: Int = 52
+    private const val CRC: Int = 204
 
     private const val SIZE: Int = 36
 

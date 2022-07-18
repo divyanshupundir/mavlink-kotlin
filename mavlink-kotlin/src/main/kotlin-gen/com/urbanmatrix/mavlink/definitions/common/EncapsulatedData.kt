@@ -38,7 +38,7 @@ public data class EncapsulatedData(
   public companion object {
     private const val ID: Int = 131
 
-    private const val CRC: Int = 30
+    private const val CRC: Int = 223
 
     private const val SIZE: Int = 255
 

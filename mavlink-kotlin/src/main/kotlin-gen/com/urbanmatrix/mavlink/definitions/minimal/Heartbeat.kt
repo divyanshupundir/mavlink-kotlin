@@ -67,7 +67,7 @@ public data class Heartbeat(
   public companion object {
     private const val ID: Int = 0
 
-    private const val CRC: Int = 239
+    private const val CRC: Int = 50
 
     private const val SIZE: Int = 9
 

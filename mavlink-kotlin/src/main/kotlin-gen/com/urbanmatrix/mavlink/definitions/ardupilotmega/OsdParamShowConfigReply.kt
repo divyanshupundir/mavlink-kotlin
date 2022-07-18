@@ -71,7 +71,7 @@ public data class OsdParamShowConfigReply(
   public companion object {
     private const val ID: Int = 11036
 
-    private const val CRC: Int = 73
+    private const val CRC: Int = 177
 
     private const val SIZE: Int = 34
 

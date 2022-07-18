@@ -86,7 +86,7 @@ public data class GimbalDeviceAttitudeStatus(
   public companion object {
     private const val ID: Int = 285
 
-    private const val CRC: Int = 72
+    private const val CRC: Int = 137
 
     private const val SIZE: Int = 40
 

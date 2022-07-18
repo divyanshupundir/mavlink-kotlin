@@ -83,7 +83,7 @@ public data class ParamMapRc(
   public companion object {
     private const val ID: Int = 50
 
-    private const val CRC: Int = 121
+    private const val CRC: Int = 78
 
     private const val SIZE: Int = 37
 

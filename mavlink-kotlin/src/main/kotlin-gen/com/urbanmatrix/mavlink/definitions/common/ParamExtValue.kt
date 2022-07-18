@@ -59,7 +59,7 @@ public data class ParamExtValue(
   public companion object {
     private const val ID: Int = 322
 
-    private const val CRC: Int = 189
+    private const val CRC: Int = 243
 
     private const val SIZE: Int = 149
 

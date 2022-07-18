@@ -91,7 +91,7 @@ public data class DeviceOpWrite(
   public companion object {
     private const val ID: Int = 11002
 
-    private const val CRC: Int = 107
+    private const val CRC: Int = 234
 
     private const val SIZE: Int = 180
 

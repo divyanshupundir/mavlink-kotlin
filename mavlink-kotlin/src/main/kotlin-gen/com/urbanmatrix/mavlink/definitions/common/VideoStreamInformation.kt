@@ -100,7 +100,7 @@ public data class VideoStreamInformation(
   public companion object {
     private const val ID: Int = 269
 
-    private const val CRC: Int = 76
+    private const val CRC: Int = 109
 
     private const val SIZE: Int = 213
 

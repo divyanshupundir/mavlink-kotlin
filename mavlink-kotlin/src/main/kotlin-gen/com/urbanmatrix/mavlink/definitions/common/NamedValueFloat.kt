@@ -47,7 +47,7 @@ public data class NamedValueFloat(
   public companion object {
     private const val ID: Int = 251
 
-    private const val CRC: Int = 94
+    private const val CRC: Int = 170
 
     private const val SIZE: Int = 18
 

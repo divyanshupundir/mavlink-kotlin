@@ -35,7 +35,7 @@ public data class SerialUdbExtraF15(
   public companion object {
     private const val ID: Int = 179
 
-    private const val CRC: Int = 188
+    private const val CRC: Int = 7
 
     private const val SIZE: Int = 60
 

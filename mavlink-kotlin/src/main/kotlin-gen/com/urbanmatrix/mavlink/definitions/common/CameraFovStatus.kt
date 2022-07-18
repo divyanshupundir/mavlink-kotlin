@@ -87,7 +87,7 @@ public data class CameraFovStatus(
   public companion object {
     private const val ID: Int = 271
 
-    private const val CRC: Int = 195
+    private const val CRC: Int = 22
 
     private const val SIZE: Int = 52
 

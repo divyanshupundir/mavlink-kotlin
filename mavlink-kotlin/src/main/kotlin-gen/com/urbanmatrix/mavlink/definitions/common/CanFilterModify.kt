@@ -63,7 +63,7 @@ public data class CanFilterModify(
   public companion object {
     private const val ID: Int = 388
 
-    private const val CRC: Int = 135
+    private const val CRC: Int = 8
 
     private const val SIZE: Int = 37
 

@@ -60,7 +60,7 @@ public data class CanFrame(
   public companion object {
     private const val ID: Int = 386
 
-    private const val CRC: Int = 76
+    private const val CRC: Int = 132
 
     private const val SIZE: Int = 16
 

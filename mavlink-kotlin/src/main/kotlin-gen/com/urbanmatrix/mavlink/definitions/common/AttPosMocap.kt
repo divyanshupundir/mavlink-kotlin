@@ -64,7 +64,7 @@ public data class AttPosMocap(
   public companion object {
     private const val ID: Int = 138
 
-    private const val CRC: Int = 119
+    private const val CRC: Int = 109
 
     private const val SIZE: Int = 120
 

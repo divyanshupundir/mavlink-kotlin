@@ -153,7 +153,7 @@ public data class OnboardComputerStatus(
   public companion object {
     private const val ID: Int = 390
 
-    private const val CRC: Int = 234
+    private const val CRC: Int = 156
 
     private const val SIZE: Int = 238
 

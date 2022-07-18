@@ -87,7 +87,7 @@ public data class UavcanNodeInfo(
   public companion object {
     private const val ID: Int = 311
 
-    private const val CRC: Int = 216
+    private const val CRC: Int = 95
 
     private const val SIZE: Int = 116
 

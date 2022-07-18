@@ -64,7 +64,7 @@ public data class OpenDroneIdSelfId(
   public companion object {
     private const val ID: Int = 12903
 
-    private const val CRC: Int = 53
+    private const val CRC: Int = 249
 
     private const val SIZE: Int = 46
 

@@ -50,7 +50,7 @@ public data class ChangeOperatorControl(
   public companion object {
     private const val ID: Int = 5
 
-    private const val CRC: Int = 5
+    private const val CRC: Int = 217
 
     private const val SIZE: Int = 28
 

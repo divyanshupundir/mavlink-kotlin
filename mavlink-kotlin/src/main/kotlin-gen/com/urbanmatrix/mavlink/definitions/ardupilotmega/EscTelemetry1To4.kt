@@ -57,7 +57,7 @@ public data class EscTelemetry1To4(
   public companion object {
     private const val ID: Int = 11030
 
-    private const val CRC: Int = 5
+    private const val CRC: Int = 144
 
     private const val SIZE: Int = 44
 

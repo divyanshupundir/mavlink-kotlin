@@ -42,7 +42,7 @@ public data class Data32(
   public companion object {
     private const val ID: Int = 170
 
-    private const val CRC: Int = 12
+    private const val CRC: Int = 73
 
     private const val SIZE: Int = 34
 

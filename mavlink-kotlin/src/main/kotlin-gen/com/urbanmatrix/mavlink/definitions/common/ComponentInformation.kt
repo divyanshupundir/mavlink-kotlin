@@ -63,7 +63,7 @@ public data class ComponentInformation(
   public companion object {
     private const val ID: Int = 395
 
-    private const val CRC: Int = 39
+    private const val CRC: Int = 170
 
     private const val SIZE: Int = 212
 

@@ -57,7 +57,7 @@ public data class DebugFloatArray(
   public companion object {
     private const val ID: Int = 350
 
-    private const val CRC: Int = 176
+    private const val CRC: Int = 232
 
     private const val SIZE: Int = 252
 

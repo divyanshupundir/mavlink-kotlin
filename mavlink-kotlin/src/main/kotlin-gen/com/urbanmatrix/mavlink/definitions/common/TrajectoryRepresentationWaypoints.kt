@@ -106,7 +106,7 @@ public data class TrajectoryRepresentationWaypoints(
   public companion object {
     private const val ID: Int = 332
 
-    private const val CRC: Int = 133
+    private const val CRC: Int = 236
 
     private const val SIZE: Int = 239
 

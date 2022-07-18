@@ -31,7 +31,7 @@ public data class AuthKey(
   public companion object {
     private const val ID: Int = 7
 
-    private const val CRC: Int = 152
+    private const val CRC: Int = 119
 
     private const val SIZE: Int = 32
 

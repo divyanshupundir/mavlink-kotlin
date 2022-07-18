@@ -59,7 +59,7 @@ public data class ComponentMetadata(
   public companion object {
     private const val ID: Int = 397
 
-    private const val CRC: Int = 125
+    private const val CRC: Int = 182
 
     private const val SIZE: Int = 108
 

@@ -120,7 +120,7 @@ public data class BatteryStatus(
   public companion object {
     private const val ID: Int = 147
 
-    private const val CRC: Int = 1
+    private const val CRC: Int = 154
 
     private const val SIZE: Int = 54
 

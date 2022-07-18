@@ -69,7 +69,7 @@ public data class TrajectoryRepresentationBezier(
   public companion object {
     private const val ID: Int = 333
 
-    private const val CRC: Int = 139
+    private const val CRC: Int = 231
 
     private const val SIZE: Int = 109
 

@@ -61,7 +61,7 @@ public data class EscStatus(
   public companion object {
     private const val ID: Int = 291
 
-    private const val CRC: Int = 158
+    private const val CRC: Int = 10
 
     private const val SIZE: Int = 57
 

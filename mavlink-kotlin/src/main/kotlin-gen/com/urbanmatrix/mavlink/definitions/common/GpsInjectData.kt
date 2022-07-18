@@ -49,7 +49,7 @@ public data class GpsInjectData(
   public companion object {
     private const val ID: Int = 123
 
-    private const val CRC: Int = 75
+    private const val CRC: Int = 195
 
     private const val SIZE: Int = 113
 

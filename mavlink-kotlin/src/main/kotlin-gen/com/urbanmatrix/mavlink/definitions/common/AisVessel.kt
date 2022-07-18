@@ -124,7 +124,7 @@ public data class AisVessel(
   public companion object {
     private const val ID: Int = 301
 
-    private const val CRC: Int = 95
+    private const val CRC: Int = 243
 
     private const val SIZE: Int = 58
 

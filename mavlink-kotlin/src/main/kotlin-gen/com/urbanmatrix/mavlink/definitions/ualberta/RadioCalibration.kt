@@ -55,7 +55,7 @@ public data class RadioCalibration(
   public companion object {
     private const val ID: Int = 221
 
-    private const val CRC: Int = 230
+    private const val CRC: Int = 71
 
     private const val SIZE: Int = 42
 

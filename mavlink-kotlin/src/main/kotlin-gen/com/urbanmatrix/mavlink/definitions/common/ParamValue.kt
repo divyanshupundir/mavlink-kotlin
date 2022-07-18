@@ -63,7 +63,7 @@ public data class ParamValue(
   public companion object {
     private const val ID: Int = 22
 
-    private const val CRC: Int = 132
+    private const val CRC: Int = 220
 
     private const val SIZE: Int = 25
 

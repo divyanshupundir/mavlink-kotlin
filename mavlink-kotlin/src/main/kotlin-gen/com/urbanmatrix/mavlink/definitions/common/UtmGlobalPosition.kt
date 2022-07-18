@@ -127,7 +127,7 @@ public data class UtmGlobalPosition(
   public companion object {
     private const val ID: Int = 340
 
-    private const val CRC: Int = 72
+    private const val CRC: Int = 99
 
     private const val SIZE: Int = 70
 

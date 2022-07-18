@@ -130,7 +130,7 @@ public data class Odometry(
   public companion object {
     private const val ID: Int = 331
 
-    private const val CRC: Int = 129
+    private const val CRC: Int = 91
 
     private const val SIZE: Int = 232
 

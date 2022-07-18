@@ -55,7 +55,7 @@ public data class HilActuatorControls(
   public companion object {
     private const val ID: Int = 93
 
-    private const val CRC: Int = 222
+    private const val CRC: Int = 47
 
     private const val SIZE: Int = 81
 

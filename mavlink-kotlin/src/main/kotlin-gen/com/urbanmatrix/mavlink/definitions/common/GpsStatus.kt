@@ -59,7 +59,7 @@ public data class GpsStatus(
   public companion object {
     private const val ID: Int = 25
 
-    private const val CRC: Int = 193
+    private const val CRC: Int = 23
 
     private const val SIZE: Int = 101
 

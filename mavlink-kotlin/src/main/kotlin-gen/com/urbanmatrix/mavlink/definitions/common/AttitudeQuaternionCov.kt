@@ -65,7 +65,7 @@ public data class AttitudeQuaternionCov(
   public companion object {
     private const val ID: Int = 61
 
-    private const val CRC: Int = 250
+    private const val CRC: Int = 167
 
     private const val SIZE: Int = 72
 

@@ -48,7 +48,7 @@ public data class ActuatorOutputStatus(
   public companion object {
     private const val ID: Int = 375
 
-    private const val CRC: Int = 210
+    private const val CRC: Int = 251
 
     private const val SIZE: Int = 140
 

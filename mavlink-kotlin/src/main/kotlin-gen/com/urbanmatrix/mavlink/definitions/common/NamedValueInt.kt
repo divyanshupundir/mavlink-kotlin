@@ -46,7 +46,7 @@ public data class NamedValueInt(
   public companion object {
     private const val ID: Int = 252
 
-    private const val CRC: Int = 99
+    private const val CRC: Int = 44
 
     private const val SIZE: Int = 18
 

@@ -43,7 +43,7 @@ public data class GoproGetResponse(
   public companion object {
     private const val ID: Int = 217
 
-    private const val CRC: Int = 244
+    private const val CRC: Int = 202
 
     private const val SIZE: Int = 6
 

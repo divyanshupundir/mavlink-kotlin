@@ -50,7 +50,7 @@ public data class WifiConfigAp(
   public companion object {
     private const val ID: Int = 299
 
-    private const val CRC: Int = 186
+    private const val CRC: Int = 19
 
     private const val SIZE: Int = 98
 

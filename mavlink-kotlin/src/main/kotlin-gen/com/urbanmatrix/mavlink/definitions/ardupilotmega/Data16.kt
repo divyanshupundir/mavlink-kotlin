@@ -42,7 +42,7 @@ public data class Data16(
   public companion object {
     private const val ID: Int = 169
 
-    private const val CRC: Int = 141
+    private const val CRC: Int = 234
 
     private const val SIZE: Int = 18
 

@@ -78,7 +78,7 @@ public data class SerialControl(
   public companion object {
     private const val ID: Int = 126
 
-    private const val CRC: Int = 20
+    private const val CRC: Int = 220
 
     private const val SIZE: Int = 81
 

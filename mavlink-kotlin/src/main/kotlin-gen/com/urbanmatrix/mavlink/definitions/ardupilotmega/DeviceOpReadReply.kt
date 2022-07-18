@@ -60,7 +60,7 @@ public data class DeviceOpReadReply(
   public companion object {
     private const val ID: Int = 11001
 
-    private const val CRC: Int = 91
+    private const val CRC: Int = 15
 
     private const val SIZE: Int = 136
 

@@ -60,7 +60,7 @@ public data class LoggingDataAcked(
   public companion object {
     private const val ID: Int = 267
 
-    private const val CRC: Int = 11
+    private const val CRC: Int = 35
 
     private const val SIZE: Int = 255
 

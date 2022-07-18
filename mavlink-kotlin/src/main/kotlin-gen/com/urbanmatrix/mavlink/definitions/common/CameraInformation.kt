@@ -111,7 +111,7 @@ public data class CameraInformation(
   public companion object {
     private const val ID: Int = 259
 
-    private const val CRC: Int = 10
+    private const val CRC: Int = 92
 
     private const val SIZE: Int = 235
 

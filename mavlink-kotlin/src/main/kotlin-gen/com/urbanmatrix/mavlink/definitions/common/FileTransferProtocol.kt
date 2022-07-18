@@ -49,7 +49,7 @@ public data class FileTransferProtocol(
   public companion object {
     private const val ID: Int = 110
 
-    private const val CRC: Int = 145
+    private const val CRC: Int = 84
 
     private const val SIZE: Int = 254
 

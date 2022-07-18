@@ -88,7 +88,7 @@ public data class EscInfo(
   public companion object {
     private const val ID: Int = 290
 
-    private const val CRC: Int = 212
+    private const val CRC: Int = 251
 
     private const val SIZE: Int = 46
 

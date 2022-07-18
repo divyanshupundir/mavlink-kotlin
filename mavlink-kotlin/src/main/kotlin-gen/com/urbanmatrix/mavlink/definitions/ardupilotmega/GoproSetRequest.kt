@@ -50,7 +50,7 @@ public data class GoproSetRequest(
   public companion object {
     private const val ID: Int = 218
 
-    private const val CRC: Int = 97
+    private const val CRC: Int = 17
 
     private const val SIZE: Int = 7
 

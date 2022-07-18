@@ -94,7 +94,7 @@ public data class ObstacleDistance(
   public companion object {
     private const val ID: Int = 330
 
-    private const val CRC: Int = 108
+    private const val CRC: Int = 23
 
     private const val SIZE: Int = 167
 

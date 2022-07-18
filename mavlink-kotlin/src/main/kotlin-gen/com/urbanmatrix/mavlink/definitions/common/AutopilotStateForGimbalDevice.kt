@@ -105,7 +105,7 @@ public data class AutopilotStateForGimbalDevice(
   public companion object {
     private const val ID: Int = 286
 
-    private const val CRC: Int = 148
+    private const val CRC: Int = 210
 
     private const val SIZE: Int = 53
 

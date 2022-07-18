@@ -93,7 +93,7 @@ public data class GlobalPositionIntCov(
   public companion object {
     private const val ID: Int = 63
 
-    private const val CRC: Int = 189
+    private const val CRC: Int = 119
 
     private const val SIZE: Int = 181
 

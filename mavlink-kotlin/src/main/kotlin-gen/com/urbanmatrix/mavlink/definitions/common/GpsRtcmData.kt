@@ -49,7 +49,7 @@ public data class GpsRtcmData(
   public companion object {
     private const val ID: Int = 233
 
-    private const val CRC: Int = 140
+    private const val CRC: Int = 35
 
     private const val SIZE: Int = 182
 

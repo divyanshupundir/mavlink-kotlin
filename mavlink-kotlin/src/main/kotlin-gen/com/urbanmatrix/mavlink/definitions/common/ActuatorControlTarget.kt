@@ -51,7 +51,7 @@ public data class ActuatorControlTarget(
   public companion object {
     private const val ID: Int = 140
 
-    private const val CRC: Int = 101
+    private const val CRC: Int = 181
 
     private const val SIZE: Int = 41
 

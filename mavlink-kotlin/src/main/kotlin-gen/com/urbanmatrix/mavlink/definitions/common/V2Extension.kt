@@ -65,7 +65,7 @@ public data class V2Extension(
   public companion object {
     private const val ID: Int = 248
 
-    private const val CRC: Int = 248
+    private const val CRC: Int = 8
 
     private const val SIZE: Int = 254
 

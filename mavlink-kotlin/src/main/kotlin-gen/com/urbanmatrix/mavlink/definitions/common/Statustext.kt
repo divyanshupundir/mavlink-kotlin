@@ -58,7 +58,7 @@ public data class Statustext(
   public companion object {
     private const val ID: Int = 253
 
-    private const val CRC: Int = 86
+    private const val CRC: Int = 83
 
     private const val SIZE: Int = 54
 

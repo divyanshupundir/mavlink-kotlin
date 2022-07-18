@@ -57,7 +57,7 @@ public data class TerrainData(
   public companion object {
     private const val ID: Int = 134
 
-    private const val CRC: Int = 5
+    private const val CRC: Int = 229
 
     private const val SIZE: Int = 43
 

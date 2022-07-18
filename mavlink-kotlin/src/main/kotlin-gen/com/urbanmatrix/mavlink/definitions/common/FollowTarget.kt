@@ -90,7 +90,7 @@ public data class FollowTarget(
   public companion object {
     private const val ID: Int = 144
 
-    private const val CRC: Int = 71
+    private const val CRC: Int = 127
 
     private const val SIZE: Int = 93
 

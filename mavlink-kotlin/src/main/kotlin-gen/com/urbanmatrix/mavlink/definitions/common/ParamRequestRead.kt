@@ -57,7 +57,7 @@ public data class ParamRequestRead(
   public companion object {
     private const val ID: Int = 20
 
-    private const val CRC: Int = 63
+    private const val CRC: Int = 214
 
     private const val SIZE: Int = 20
 

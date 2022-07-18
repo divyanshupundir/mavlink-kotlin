@@ -58,7 +58,7 @@ public data class VisionPositionDelta(
   public companion object {
     private const val ID: Int = 11011
 
-    private const val CRC: Int = 169
+    private const val CRC: Int = 106
 
     private const val SIZE: Int = 44
 

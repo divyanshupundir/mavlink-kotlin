@@ -50,7 +50,7 @@ public data class AsluavStatus(
   public companion object {
     private const val ID: Int = 8006
 
-    private const val CRC: Int = 165
+    private const val CRC: Int = 97
 
     private const val SIZE: Int = 14
 
