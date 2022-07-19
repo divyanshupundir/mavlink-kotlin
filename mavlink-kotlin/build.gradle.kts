@@ -8,7 +8,6 @@ plugins {
     kotlin("jvm")
     id("${Specs.group}.generator") version Specs.Plugin.releaseVersion
     idea
-    java
 }
 
 tasks.getByName<Test>("test") {
