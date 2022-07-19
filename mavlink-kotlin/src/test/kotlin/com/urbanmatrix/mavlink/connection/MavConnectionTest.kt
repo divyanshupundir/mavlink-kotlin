@@ -18,7 +18,7 @@ class MavConnectionTest {
             CommonDialect
         )
 
-        while (true) {
+        repeat(1000) {
             println(connection.next())
         }
     }
