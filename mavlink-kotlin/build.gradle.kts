@@ -8,6 +8,7 @@ plugins {
     kotlin("jvm")
     id("${Specs.group}.generator") version Specs.Plugin.releaseVersion
     idea
+    java
 }
 
 tasks.getByName<Test>("test") {
@@ -32,17 +33,13 @@ tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("
     generatedSourcesDir = genSrcDir
 }
 
-idea {
-    module {
-        sourceDirs.plus(genSrcDir)
-        generatedSourceDirs.plus(genSrcDir)
-    }
+sourceSets.getByName("main") {
+    java.srcDir(genSrcDir)
 }
 
 dependencies {
     implementation(Deps.mavlinkKotlinApi)
     implementation(Deps.mavlinkKotlinSerialization)
-    implementation(Deps.mavlinkKotlinDefinitions)
 
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)

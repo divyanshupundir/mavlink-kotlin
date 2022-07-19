@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.raw
 
+import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
 
@@ -14,14 +15,14 @@ class MavRawFrameReader(
 
     @Throws(IOException::class)
     fun next(): MavRawFrame {
-        inputStream.commit()
-
         while (!Thread.currentThread().isInterrupted) {
+            inputStream.commit()
+
             val versionMarker = inputStream.read()
-            if (versionMarker == -1) continue
+            if (versionMarker == -1) throw EOFException()
 
             val payloadLength = inputStream.read()
-            if (payloadLength == -1) continue
+            if (payloadLength == -1) throw EOFException()
 
             when (versionMarker) {
                 MavFrameType.V1.magic -> {
@@ -31,6 +32,7 @@ class MavRawFrameReader(
                             payloadLength + MavRawFrame.SIZE_CHECKSUM
                     )
                     if (!success) {
+                        drop()
                         continue
                     }
 
@@ -39,7 +41,7 @@ class MavRawFrameReader(
 
                 MavFrameType.V2.magic -> {
                     val incompatibleFlags = inputStream.read()
-                    if (incompatibleFlags == -1) continue
+                    if (incompatibleFlags == -1) throw EOFException()
 
                     val signatureSize = if (incompatibleFlags == MavRawFrame.INCOMPAT_FLAG_SIGNED) {
                         MavRawFrame.SIZE_SIGNATURE
@@ -54,6 +56,7 @@ class MavRawFrameReader(
                             MavRawFrame.SIZE_CHECKSUM + signatureSize
                     )
                     if (!success) {
+                        drop()
                         continue
                     }
 

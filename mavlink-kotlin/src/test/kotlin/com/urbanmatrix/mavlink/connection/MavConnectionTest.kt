@@ -1,7 +1,6 @@
 package com.urbanmatrix.mavlink.connection
 
 import com.urbanmatrix.mavlink.definitions.common.CommonDialect
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.net.InetSocketAddress
 import java.net.Socket

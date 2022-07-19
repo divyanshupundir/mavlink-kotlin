@@ -52,7 +52,7 @@ open class MavConnection(
                 return when (rawFrame.stx) {
                     MavFrameType.V1.magic -> MavFrameV1Impl<MavMessage<*>>(rawFrame, payload)
                     MavFrameType.V2.magic -> MavFrameV2Impl<MavMessage<*>>(rawFrame, payload)
-                    else -> continue
+                    else -> throw IllegalStateException()
                 }
             }
         } finally {
