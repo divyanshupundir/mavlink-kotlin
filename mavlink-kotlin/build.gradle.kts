@@ -37,8 +37,8 @@ sourceSets.getByName("main") {
 }
 
 dependencies {
-    implementation(Deps.mavlinkKotlinApi)
-    implementation(Deps.mavlinkKotlinSerialization)
+    api(Deps.mavlinkKotlinApi)
+    api(Deps.mavlinkKotlinSerialization)
 
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
