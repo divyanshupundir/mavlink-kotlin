@@ -30,8 +30,7 @@ open class MavConnection(
     @Suppress("TYPE_MISMATCH_WARNING", "UPPER_BOUND_VIOLATED_WARNING")
     @Throws(IOException::class)
     fun next(): MavFrame<out MavMessage<*>> {
-        readLock.lock()
-        try {
+        readLock.withLock {
             while (true) {
                 val rawFrame = reader.next()
 
@@ -55,8 +54,6 @@ open class MavConnection(
                     else -> throw IllegalStateException()
                 }
             }
-        } finally {
-            readLock.unlock()
         }
     }
 
