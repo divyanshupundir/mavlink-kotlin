@@ -1,6 +1,5 @@
 package com.urbanmatrix.mavlink.connection
 
-import com.urbanmatrix.mavlink.api.MavDeserializationException
 import com.urbanmatrix.mavlink.api.MavDialect
 import com.urbanmatrix.mavlink.api.MavFrame
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +13,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 open class MavConnection(
     inputStream: InputStream,
@@ -29,7 +29,7 @@ open class MavConnection(
 
     @Suppress("TYPE_MISMATCH_WARNING", "UPPER_BOUND_VIOLATED_WARNING")
     @Throws(IOException::class)
-    operator fun next(): MavFrame<out MavMessage<*>> {
+    fun next(): MavFrame<out MavMessage<*>> {
         readLock.lock()
         try {
             while (true) {
@@ -66,5 +66,79 @@ open class MavConnection(
         val metadata = dialect.resolveMetadataOrNull(rawFrame.messageId) ?: return null
         if (!rawFrame.validateCrc(metadata.crc)) return null
         return metadata
+    }
+
+    @Throws(IOException::class)
+    fun <T : MavMessage<T>> sendV1(
+        systemId: Int,
+        componentId: Int,
+        payload: T
+    ) {
+        val payloadBytes = payload.serialize()
+        writeLock.withLock {
+            send(
+                MavRawFrame.createV1(
+                    sequence++,
+                    systemId,
+                    componentId,
+                    payload.instanceMetadata.id,
+                    payloadBytes,
+                    payload.instanceMetadata.crc,
+                )
+            )
+        }
+    }
+
+    @Throws(IOException::class)
+    fun <T : MavMessage<T>> sendV2(
+        systemId: Int,
+        componentId: Int,
+        payload: T
+    ) {
+        val payloadBytes = payload.serialize()
+        writeLock.withLock {
+            send(
+                MavRawFrame.createUnsignedV2(
+                    sequence++,
+                    systemId,
+                    componentId,
+                    payload.instanceMetadata.id,
+                    payloadBytes,
+                    payload.instanceMetadata.crc,
+                )
+            )
+        }
+    }
+
+    @Throws(IOException::class)
+    fun <T : MavMessage<T>> sendV2(
+        systemId: Int,
+        componentId: Int,
+        payload: T,
+        linkId: Int,
+        timestamp: Long,
+        secretKey: ByteArray
+    ) {
+        val payloadBytes = payload.serialize()
+        writeLock.withLock {
+            send(
+                MavRawFrame.createSignedV2(
+                    sequence++,
+                    systemId,
+                    componentId,
+                    payload.instanceMetadata.id,
+                    payloadBytes,
+                    payload.instanceMetadata.crc,
+                    linkId,
+                    timestamp,
+                    secretKey
+                )
+            )
+        }
+    }
+
+    private fun send(rawFrame: MavRawFrame) {
+        outputStream.write(rawFrame.rawBytes)
+        outputStream.flush()
     }
 }

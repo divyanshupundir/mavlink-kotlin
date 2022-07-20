@@ -240,7 +240,7 @@ data class MavRawFrame(
                 )
             }
 
-        fun newMavlinkRawFrameV1(
+        fun createV1(
             seq: Int,
             systemId: Int,
             componentId: Int,
@@ -281,7 +281,7 @@ data class MavRawFrame(
             )
         }
 
-        fun newUnsignedMavlinkRawFrameV2(
+        fun createUnsignedV2(
             seq: Int,
             systemId: Int,
             componentId: Int,
@@ -324,7 +324,7 @@ data class MavRawFrame(
             )
         }
 
-        fun newSignedMavlinkRawFrameV2(
+        fun createSignedV2(
             seq: Int,
             systemId: Int,
             componentId: Int,
