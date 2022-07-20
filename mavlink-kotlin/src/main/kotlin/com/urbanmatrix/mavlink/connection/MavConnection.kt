@@ -87,7 +87,7 @@ open class MavConnection(
     }
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendV2(
+    fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
@@ -108,7 +108,7 @@ open class MavConnection(
     }
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendV2(
+    fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
         payload: T,
