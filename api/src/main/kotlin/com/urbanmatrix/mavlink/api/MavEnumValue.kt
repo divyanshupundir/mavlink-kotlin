@@ -8,7 +8,7 @@ class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: Lo
     companion object {
 
         @JvmStatic
-        fun <E : MavEnum> of(entry: E) = MavEnumValue<E>(entry, entry.value)
+        fun <E : MavEnum> of(entry: E) = MavEnumValue(entry, entry.value)
 
         @JvmStatic
         fun <E : MavEnum> fromValue(value: Long) = MavEnumValue<E>(null, value)

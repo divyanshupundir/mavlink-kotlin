@@ -6,6 +6,7 @@ import com.urbanmatrix.mavlink.definitions.minimal.Heartbeat
 import com.urbanmatrix.mavlink.definitions.minimal.MavAutopilot
 import com.urbanmatrix.mavlink.definitions.minimal.MavState
 import com.urbanmatrix.mavlink.definitions.minimal.MavType
+import com.urbanmatrix.mavlink.extensions.wrap
 import org.junit.jupiter.api.Test
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -42,11 +43,11 @@ class MavConnectionTest {
 
         repeat(20) {
             val heartbeat = Heartbeat(
-                MavEnumValue.of(MavType.MAV_TYPE_FIXED_WING),
-                MavEnumValue.of(MavAutopilot.MAV_AUTOPILOT_PX4),
+                MavType.MAV_TYPE_FIXED_WING.wrap(),
+                MavAutopilot.MAV_AUTOPILOT_PX4.wrap(),
                 MavEnumValue.fromValue(200),
                 52202,
-                MavEnumValue.of(MavState.MAV_STATE_ACTIVE),
+                MavState.MAV_STATE_ACTIVE.wrap(),
                 2
             )
             connection.sendV1(250, 1, heartbeat)
