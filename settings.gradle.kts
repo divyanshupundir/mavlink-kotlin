@@ -19,7 +19,9 @@ pluginManagement {
 
 rootProject.name = "mavlink-kotlin-root"
 
-include("api")
-include("serialization")
-include("generator")
-include("mavlink-kotlin")
+include(":api")
+include(":serialization")
+include(":generator")
+include(":mavlink-kotlin")
+
+include(":adapters:rxjava2")
