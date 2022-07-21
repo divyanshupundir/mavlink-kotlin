@@ -5,56 +5,40 @@ import com.urbanmatrix.mavlink.api.MavMessage
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.annotations.CheckReturnValue
-import java.lang.Exception
+import java.io.InputStream
+import java.io.OutputStream
 
 interface Rx2MavConnection {
 
-    @Throws(Exception::class)
-    fun blockingConnect()
-
-    @Throws(Exception::class)
-    fun blockingClose()
-
-    @Throws(Exception::class)
-    fun <T : MavMessage<T>> blockingSendV2(systemId: Int, componentId: Int, payload: T)
-
-    @Throws(Exception::class)
-    fun <T : MavMessage<T>> blockingSendV2(message: MavFrame<T>)
-
-    @CheckReturnValue
-    fun connect(): Completable
-
-    @CheckReturnValue
-    fun close(): Completable
-
-    @CheckReturnValue
-    fun <T : MavMessage<T>> sendV2(systemId: Int, componentId: Int, payload: T): Completable
-
-    @CheckReturnValue
-    fun <T : MavMessage<T>> sendV2(message: MavFrame<T>): Completable
-
     @get:CheckReturnValue
-    val mavlinkFrame: Flowable<MavFrame<out MavMessage<*>>>
+    val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
 
-    val state: State
+    @CheckReturnValue
+    fun <T : MavMessage<T>> sendV1(
+        systemId: Int,
+        componentId: Int,
+        payload: T
+    ): Completable
 
-    enum class State {
-        /** Object has been created. The MavLink connection is `null`.  */
-        INITIALIZED,
+    @CheckReturnValue
+    fun <T : MavMessage<T>> sendUnsignedV2(
+        systemId: Int,
+        componentId: Int,
+        payload: T
+    ): Completable
 
-        /** Attempting to connect. The MavLink connection is still `null`.  */
-        CONNECTING,
+    @CheckReturnValue
+    fun <T : MavMessage<T>> sendSignedV2(
+        systemId: Int,
+        componentId: Int,
+        payload: T,
+        linkId: Int,
+        timestamp: Long,
+        secretKey: ByteArray
+    ): Completable
 
-        /** Connection is open. The Mavlink connection is not `null` and will stay the same.  */
-        OPEN,
-
-        /** Attempting to close the connection.  */
-        CLOSING,
-
-        /** Connection has been closed. The same connection cannot be reopened.  */
-        CLOSED,
-
-        /** Connection has faced an error. Procession is stopped and will not resume again.  */
-        ERROR
-    }
+    fun swapStreams(
+        inputStream: InputStream?,
+        outputStream: OutputStream?
+    )
 }
