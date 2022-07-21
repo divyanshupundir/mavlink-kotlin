@@ -5,6 +5,7 @@ import com.urbanmatrix.mavlink.api.MavFrame
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.frame.MavFrameV1Impl
 import com.urbanmatrix.mavlink.frame.MavFrameV2Impl
+import com.urbanmatrix.mavlink.mavRawFrameReader
 import com.urbanmatrix.mavlink.raw.MavFrameType
 import com.urbanmatrix.mavlink.raw.MavRawFrame
 import com.urbanmatrix.mavlink.raw.MavRawFrameReader
@@ -15,12 +16,12 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-open class MavConnection(
-    inputStream: InputStream,
-    private val outputStream: OutputStream,
+class MavConnection(
+    inputStream: InputStream?,
+    private var outputStream: OutputStream?,
     private val dialect: MavDialect,
 ) {
-    private val reader = MavRawFrameReader(inputStream)
+    private var reader: MavRawFrameReader? = inputStream?.mavRawFrameReader()
 
     private val readLock: Lock = ReentrantLock()
     private val writeLock: Lock = ReentrantLock()
@@ -32,19 +33,21 @@ open class MavConnection(
     fun next(): MavFrame<out MavMessage<*>> {
         readLock.withLock {
             while (true) {
-                val rawFrame = reader.next()
+                val r = reader ?: throw IOException("InputStream is null")
+
+                val rawFrame = r.next()
 
                 val metadata = getMessageMetadataOrNull(rawFrame)
                 if (metadata == null) {
-                    reader.drop()
+                    r.drop()
                     continue
                 }
 
                 val payload = try {
                     metadata.deserializer.deserialize(rawFrame.payload)
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    reader.drop()
+                    System.err.println("Error deserializing MAVLink message. rawFrame=$rawFrame metadata=$metadata")
+                    r.drop()
                     continue
                 }
 
@@ -134,8 +137,15 @@ open class MavConnection(
         }
     }
 
+    @Throws(IOException::class)
     private fun send(rawFrame: MavRawFrame) {
-        outputStream.write(rawFrame.rawBytes)
-        outputStream.flush()
+        val o = outputStream ?: throw IOException("OutputStream is null")
+        o.write(rawFrame.rawBytes)
+        o.flush()
+    }
+
+    fun swapStreams(inputStream: InputStream?, outputStream: OutputStream?) {
+        this.reader = inputStream?.mavRawFrameReader()
+        this.outputStream = outputStream
     }
 }

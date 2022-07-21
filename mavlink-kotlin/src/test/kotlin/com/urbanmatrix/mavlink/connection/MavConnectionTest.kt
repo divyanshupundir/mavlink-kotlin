@@ -6,7 +6,7 @@ import com.urbanmatrix.mavlink.definitions.minimal.Heartbeat
 import com.urbanmatrix.mavlink.definitions.minimal.MavAutopilot
 import com.urbanmatrix.mavlink.definitions.minimal.MavState
 import com.urbanmatrix.mavlink.definitions.minimal.MavType
-import com.urbanmatrix.mavlink.extensions.wrap
+import com.urbanmatrix.mavlink.wrap
 import org.junit.jupiter.api.Test
 import java.net.InetSocketAddress
 import java.net.ServerSocket
