@@ -16,9 +16,10 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class AbstractMavConnection(
+open class SimpleMavConnection(
     private val dialect: MavDialect,
-) {
+) : MavConnection {
+
     private var reader: MavRawFrameReader? = null
     private var outputStream: OutputStream? = null
 
@@ -27,14 +28,14 @@ class AbstractMavConnection(
 
     private var sequence = 0
 
-    fun connect(inputStream: InputStream, outputStream: OutputStream) {
+    override fun connect(inputStream: InputStream, outputStream: OutputStream) {
         this.reader = inputStream.mavRawFrameReader()
         this.outputStream = outputStream
     }
 
     @Suppress("TYPE_MISMATCH_WARNING", "UPPER_BOUND_VIOLATED_WARNING")
     @Throws(IOException::class)
-    fun next(): MavFrame<out MavMessage<*>> {
+    override fun next(): MavFrame<out MavMessage<*>> {
         readLock.withLock {
             while (true) {
                 val r = reader ?: throw IOException("InputStream is null")
@@ -73,7 +74,7 @@ class AbstractMavConnection(
     }
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendV1(
+    override fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
@@ -94,7 +95,7 @@ class AbstractMavConnection(
     }
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendUnsignedV2(
+    override fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
@@ -115,7 +116,7 @@ class AbstractMavConnection(
     }
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendSignedV2(
+    override fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
         payload: T,
