@@ -16,17 +16,21 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class MavConnection(
-    inputStream: InputStream?,
-    private var outputStream: OutputStream?,
+class AbstractMavConnection(
     private val dialect: MavDialect,
 ) {
-    private var reader: MavRawFrameReader? = inputStream?.mavRawFrameReader()
+    private var reader: MavRawFrameReader? = null
+    private var outputStream: OutputStream? = null
 
     private val readLock: Lock = ReentrantLock()
     private val writeLock: Lock = ReentrantLock()
 
     private var sequence = 0
+
+    fun connect(inputStream: InputStream, outputStream: OutputStream) {
+        this.reader = inputStream.mavRawFrameReader()
+        this.outputStream = outputStream
+    }
 
     @Suppress("TYPE_MISMATCH_WARNING", "UPPER_BOUND_VIOLATED_WARNING")
     @Throws(IOException::class)
@@ -142,10 +146,5 @@ class MavConnection(
         val o = outputStream ?: throw IOException("OutputStream is null")
         o.write(rawFrame.rawBytes)
         o.flush()
-    }
-
-    fun swapStreams(inputStream: InputStream?, outputStream: OutputStream?) {
-        this.reader = inputStream?.mavRawFrameReader()
-        this.outputStream = outputStream
     }
 }

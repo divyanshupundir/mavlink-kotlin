@@ -12,18 +12,16 @@ import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class MavConnectionTest {
+class AbstractMavConnectionTest {
 
     @Test
     fun read() {
         val socket = Socket()
         socket.connect(InetSocketAddress("127.0.0.1", 5760))
 
-        val connection = MavConnection(
-            socket.getInputStream(),
-            socket.getOutputStream(),
-            CommonDialect
-        )
+        val connection = AbstractMavConnection(CommonDialect).apply {
+            connect(socket.getInputStream(), socket.getOutputStream())
+        }
 
         repeat(20) {
             println(connection.next())
@@ -32,14 +30,13 @@ class MavConnectionTest {
 
     @Test
     fun write() {
+
         val server = ServerSocket(5760)
         val socket = server.accept()
 
-        val connection = MavConnection(
-            socket.getInputStream(),
-            socket.getOutputStream(),
-            CommonDialect
-        )
+        val connection = AbstractMavConnection(CommonDialect).apply {
+            connect(socket.getInputStream(), socket.getOutputStream())
+        }
 
         repeat(20) {
             val heartbeat = Heartbeat(
