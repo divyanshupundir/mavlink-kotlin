@@ -29,8 +29,8 @@ open class SimpleMavConnection(
     private var sequence = 0
 
     override fun connect(inputStream: InputStream, outputStream: OutputStream) {
-        this.reader = inputStream.mavRawFrameReader()
-        this.outputStream = outputStream
+        readLock.withLock { this.reader = inputStream.mavRawFrameReader() }
+        writeLock.withLock { this.outputStream = outputStream }
     }
 
     @Suppress("TYPE_MISMATCH_WARNING", "UPPER_BOUND_VIOLATED_WARNING")
@@ -80,18 +80,16 @@ open class SimpleMavConnection(
         payload: T
     ) {
         val payloadBytes = payload.serialize()
-        writeLock.withLock {
-            send(
-                MavRawFrame.createV1(
-                    sequence++,
-                    systemId,
-                    componentId,
-                    payload.instanceMetadata.id,
-                    payloadBytes,
-                    payload.instanceMetadata.crc,
-                )
+        send(
+            MavRawFrame.createV1(
+                sequence++,
+                systemId,
+                componentId,
+                payload.instanceMetadata.id,
+                payloadBytes,
+                payload.instanceMetadata.crc,
             )
-        }
+        )
     }
 
     @Throws(IOException::class)
@@ -101,18 +99,16 @@ open class SimpleMavConnection(
         payload: T
     ) {
         val payloadBytes = payload.serialize()
-        writeLock.withLock {
-            send(
-                MavRawFrame.createUnsignedV2(
-                    sequence++,
-                    systemId,
-                    componentId,
-                    payload.instanceMetadata.id,
-                    payloadBytes,
-                    payload.instanceMetadata.crc,
-                )
+        send(
+            MavRawFrame.createUnsignedV2(
+                sequence++,
+                systemId,
+                componentId,
+                payload.instanceMetadata.id,
+                payloadBytes,
+                payload.instanceMetadata.crc,
             )
-        }
+        )
     }
 
     @Throws(IOException::class)
@@ -125,27 +121,27 @@ open class SimpleMavConnection(
         secretKey: ByteArray
     ) {
         val payloadBytes = payload.serialize()
-        writeLock.withLock {
-            send(
-                MavRawFrame.createSignedV2(
-                    sequence++,
-                    systemId,
-                    componentId,
-                    payload.instanceMetadata.id,
-                    payloadBytes,
-                    payload.instanceMetadata.crc,
-                    linkId,
-                    timestamp,
-                    secretKey
-                )
+        send(
+            MavRawFrame.createSignedV2(
+                sequence++,
+                systemId,
+                componentId,
+                payload.instanceMetadata.id,
+                payloadBytes,
+                payload.instanceMetadata.crc,
+                linkId,
+                timestamp,
+                secretKey
             )
-        }
+        )
     }
 
     @Throws(IOException::class)
     private fun send(rawFrame: MavRawFrame) {
         val o = outputStream ?: throw IOException("OutputStream is null")
-        o.write(rawFrame.rawBytes)
-        o.flush()
+        writeLock.withLock {
+            o.write(rawFrame.rawBytes)
+            o.flush()
+        }
     }
 }
