@@ -15,7 +15,7 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-open class SimpleMavConnection(
+class SimpleMavConnection(
     private val dialect: MavDialect,
 ) : MavConnection {
 
@@ -23,7 +23,7 @@ open class SimpleMavConnection(
     private val writeLock: Lock = ReentrantLock()
 
     @Volatile
-    protected var state: MavConnection.State = MavConnection.State.Closed
+    private var state: MavConnection.State = MavConnection.State.Closed
         @Synchronized set
 
     private var sequence = 0
