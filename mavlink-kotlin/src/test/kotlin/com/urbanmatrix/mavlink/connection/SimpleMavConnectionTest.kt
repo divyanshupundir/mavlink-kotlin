@@ -19,13 +19,18 @@ class SimpleMavConnectionTest {
         val socket = Socket()
         socket.connect(InetSocketAddress("127.0.0.1", 5760))
 
-        val connection = SimpleMavConnection(CommonDialect).apply {
-            connect(socket.getInputStream(), socket.getOutputStream())
-        }
+        val connection = SimpleMavConnection(
+            socket.getInputStream(),
+            socket.getOutputStream(),
+            socket,
+            CommonDialect
+        )
 
-        repeat(20) {
+        repeat(100) {
             println(connection.next())
         }
+
+        connection.close()
     }
 
     @Test
@@ -33,10 +38,14 @@ class SimpleMavConnectionTest {
 
         val server = ServerSocket(5760)
         val socket = server.accept()
+        server.close()
 
-        val connection = SimpleMavConnection(CommonDialect).apply {
-            connect(socket.getInputStream(), socket.getOutputStream())
-        }
+        val connection = SimpleMavConnection(
+            socket.getInputStream(),
+            socket.getOutputStream(),
+            socket,
+            CommonDialect
+        )
 
         repeat(20) {
             val heartbeat = Heartbeat(
@@ -51,5 +60,7 @@ class SimpleMavConnectionTest {
 
             Thread.sleep(500)
         }
+
+        connection.close()
     }
 }
