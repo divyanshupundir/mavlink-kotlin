@@ -9,6 +9,7 @@ import io.reactivex.processors.FlowableProcessor
 import io.reactivex.processors.PublishProcessor
 
 class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
+
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
 
     override val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
@@ -28,7 +29,7 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
         systemId: Int,
         componentId: Int,
         payload: T
-    ): Completable  = Completable.create {
+    ): Completable = Completable.create {
         c.sendV1(
             systemId,
             componentId,
