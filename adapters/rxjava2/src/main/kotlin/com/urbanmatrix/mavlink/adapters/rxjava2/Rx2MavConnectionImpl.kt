@@ -15,40 +15,37 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
     override val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
         get() = mavFrameProcessor.onBackpressureBuffer().share()
 
-    override fun connect(): Completable = Completable.create {
+    override fun connect(): Completable = Completable.fromAction {
         c.connect()
-        it.onComplete()
     }
 
-    override fun close(): Completable = Completable.create {
+    override fun close(): Completable = Completable.fromAction {
         c.close()
-        it.onComplete()
+        mavFrameProcessor.onComplete()
     }
 
     override fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
-    ): Completable = Completable.create {
+    ): Completable = Completable.fromAction {
         c.sendV1(
             systemId,
             componentId,
             payload
         )
-        it.onComplete()
     }
 
     override fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
-    ): Completable = Completable.create {
+    ): Completable = Completable.fromAction {
         c.sendUnsignedV2(
             systemId,
             componentId,
             payload
         )
-        it.onComplete()
     }
 
     override fun <T : MavMessage<T>> sendSignedV2(
@@ -58,7 +55,7 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
         linkId: Int,
         timestamp: Long,
         secretKey: ByteArray
-    ): Completable = Completable.create {
+    ): Completable = Completable.fromAction {
         c.sendSignedV2(
             systemId,
             componentId,
@@ -67,6 +64,5 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
             timestamp,
             secretKey
         )
-        it.onComplete()
     }
 }
