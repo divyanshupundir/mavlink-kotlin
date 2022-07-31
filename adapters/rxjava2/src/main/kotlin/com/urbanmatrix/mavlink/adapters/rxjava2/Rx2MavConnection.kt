@@ -17,7 +17,7 @@ interface Rx2MavConnection {
     fun connect(): Completable
 
     @CheckReturnValue
-    fun cancel(): Completable
+    fun close(): Completable
 
     @CheckReturnValue
     fun <T : MavMessage<T>> sendV1(
