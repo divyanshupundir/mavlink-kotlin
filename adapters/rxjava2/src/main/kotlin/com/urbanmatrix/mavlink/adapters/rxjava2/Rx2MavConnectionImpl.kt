@@ -7,20 +7,42 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.processors.FlowableProcessor
 import io.reactivex.processors.PublishProcessor
+import java.io.IOException
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
 
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
+
+    private val mavlinkReadThread: Executor = Executors.newSingleThreadExecutor { Thread(it, "mavlink-read-thread") }
+
+    private var isOpen = false
+        @Synchronized set
 
     override val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
         get() = mavFrameProcessor.onBackpressureBuffer().share()
 
     override fun connect(): Completable = Completable.fromAction {
         c.connect()
+        isOpen = true
+        mavlinkReadThread.execute(this::processMavlinkMessages)
+    }
+
+    private fun processMavlinkMessages() {
+        while (!Thread.currentThread().isInterrupted && isOpen) {
+            try {
+                mavFrameProcessor.onNext(c.next())
+            } catch (e: IOException) {
+                isOpen = false
+                break
+            }
+        }
     }
 
     override fun close(): Completable = Completable.fromAction {
         c.close()
+        isOpen = false
         mavFrameProcessor.onComplete()
     }
 
