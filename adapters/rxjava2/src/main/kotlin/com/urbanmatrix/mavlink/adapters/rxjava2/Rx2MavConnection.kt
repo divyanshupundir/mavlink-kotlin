@@ -14,6 +14,12 @@ interface Rx2MavConnection {
     val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
 
     @CheckReturnValue
+    fun connect(): Completable
+
+    @CheckReturnValue
+    fun cancel(): Completable
+
+    @CheckReturnValue
     fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
@@ -36,9 +42,4 @@ interface Rx2MavConnection {
         timestamp: Long,
         secretKey: ByteArray
     ): Completable
-
-    fun swapStreams(
-        inputStream: InputStream?,
-        outputStream: OutputStream?
-    )
 }
