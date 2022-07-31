@@ -26,10 +26,10 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
     override fun connect(): Completable = Completable.fromAction {
         c.connect()
         isOpen = true
-        mavlinkReadThread.execute(this::processMavlinkMessages)
+        mavlinkReadThread.execute(this::processMavFrames)
     }
 
-    private fun processMavlinkMessages() {
+    private fun processMavFrames() {
         while (!Thread.currentThread().isInterrupted && isOpen) {
             try {
                 mavFrameProcessor.onNext(c.next())
