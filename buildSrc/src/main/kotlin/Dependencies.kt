@@ -4,6 +4,7 @@ object Deps {
 
     const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
     const val rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
+    const val rxJava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
 
     const val mavlinkKotlin = "com.urbanmatrix.mavlink:mavlink-kotlin:${Specs.Lib.releaseVersion}"
     const val mavlinkKotlinApi = "com.urbanmatrix.mavlink:api:${Specs.Lib.releaseVersion}"
