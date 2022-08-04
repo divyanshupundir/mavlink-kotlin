@@ -22,7 +22,7 @@ rootProject.name = "mavlink-kotlin-root"
 include(":api")
 include(":serialization")
 include(":generator")
+include(":definitions")
 include(":mavlink-kotlin")
 
 include(":adapters:rxjava2")
-include("definitions")
