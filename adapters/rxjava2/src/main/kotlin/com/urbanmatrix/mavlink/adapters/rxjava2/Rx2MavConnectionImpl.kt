@@ -38,7 +38,6 @@ internal class Rx2MavConnectionImpl(
             try {
                 mavFrameProcessor.onNext(connection.next())
             } catch (e: IOException) {
-                e.printStackTrace()
                 kotlin.runCatching { connection.close() }
                 isOpen = false
                 break
