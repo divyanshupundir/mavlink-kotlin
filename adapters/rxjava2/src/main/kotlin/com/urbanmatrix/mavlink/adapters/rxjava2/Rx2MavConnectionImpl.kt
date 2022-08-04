@@ -17,7 +17,6 @@ internal class Rx2MavConnectionImpl(
 ) : Rx2MavConnection {
 
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
-
     private val mavlinkReadThread: Executor = Executors.newSingleThreadExecutor { Thread(it, "mavlink-read-thread") }
 
     @Volatile
