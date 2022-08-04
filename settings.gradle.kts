@@ -25,3 +25,4 @@ include(":generator")
 include(":mavlink-kotlin")
 
 include(":adapters:rxjava2")
+include("definitions")
