@@ -1,12 +1,12 @@
-package com.urbanmatrix.mavlink.adapters.rxjava2
+package com.urbanmatrix.mavlink.adapters.rxjava3
 
 import com.urbanmatrix.mavlink.api.MavFrame
 import com.urbanmatrix.mavlink.api.MavMessage
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.annotations.CheckReturnValue
+import io.reactivex.rxjava3.annotations.CheckReturnValue
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 
-interface Rx2MavConnection {
+interface Rx3MavConnection {
 
     @get:CheckReturnValue
     val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
