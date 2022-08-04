@@ -11,12 +11,16 @@ import java.io.IOException
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
+internal class Rx2MavConnectionImpl(
+    private val connection: MavConnection,
+    private val onStreamError: () -> Unit
+) : Rx2MavConnection {
 
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
 
     private val mavlinkReadThread: Executor = Executors.newSingleThreadExecutor { Thread(it, "mavlink-read-thread") }
 
+    @Volatile
     private var isOpen = false
         @Synchronized set
 
@@ -24,7 +28,7 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
         get() = mavFrameProcessor.onBackpressureBuffer().share()
 
     override fun connect(): Completable = Completable.fromAction {
-        c.connect()
+        connection.connect()
         isOpen = true
         mavlinkReadThread.execute(this::processMavFrames)
     }
@@ -32,18 +36,21 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
     private fun processMavFrames() {
         while (!Thread.currentThread().isInterrupted && isOpen) {
             try {
-                mavFrameProcessor.onNext(c.next())
+                mavFrameProcessor.onNext(connection.next())
             } catch (e: IOException) {
+                e.printStackTrace()
+                kotlin.runCatching { connection.close() }
                 isOpen = false
                 break
             }
         }
+
+        onStreamError.invoke()
     }
 
     override fun close(): Completable = Completable.fromAction {
-        c.close()
+        connection.close()
         isOpen = false
-        mavFrameProcessor.onComplete()
     }
 
     override fun <T : MavMessage<T>> sendV1(
@@ -51,7 +58,7 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
         componentId: Int,
         payload: T
     ): Completable = Completable.fromAction {
-        c.sendV1(
+        connection.sendV1(
             systemId,
             componentId,
             payload
@@ -63,7 +70,7 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
         componentId: Int,
         payload: T
     ): Completable = Completable.fromAction {
-        c.sendUnsignedV2(
+        connection.sendUnsignedV2(
             systemId,
             componentId,
             payload
@@ -78,7 +85,7 @@ class Rx2MavConnectionImpl(private val c: MavConnection) : Rx2MavConnection {
         timestamp: Long,
         secretKey: ByteArray
     ): Completable = Completable.fromAction {
-        c.sendSignedV2(
+        connection.sendSignedV2(
             systemId,
             componentId,
             payload,
