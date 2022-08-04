@@ -1,10 +1,10 @@
-package com.urbanmatrix.mavlink.adapters.rxjava2
+package com.urbanmatrix.mavlink.adapters.rxjava3
 
 import com.urbanmatrix.mavlink.connection.MavConnection
 
-fun MavConnection.asRx2(
+fun MavConnection.asRx3(
     onStreamError: () -> Unit = {}
-): Rx2MavConnection = Rx2MavConnectionImpl(
+): Rx3MavConnection = Rx3MavConnectionImpl(
     this,
     onStreamError
 )
