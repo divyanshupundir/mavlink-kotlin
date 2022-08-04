@@ -11,7 +11,7 @@ dependencies {
     api(Deps.mavlinkKotlinApi)
     api(Deps.mavlinkKotlinSerialization)
 
-    testImplementation(project(":definitions"))
+    testImplementation(Deps.mavlinkKotlinDefinitions)
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
 }
