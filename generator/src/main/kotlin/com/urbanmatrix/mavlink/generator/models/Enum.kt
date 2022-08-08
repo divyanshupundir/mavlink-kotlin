@@ -37,7 +37,9 @@ data class EnumXml(
 
     fun toModel() = EnumModel(
         name,
-        entries.reversed().map { it.toModel() },
+        entries
+            .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
+            .map { it.toModel() },
         deprecated?.toModel(),
         description
     )

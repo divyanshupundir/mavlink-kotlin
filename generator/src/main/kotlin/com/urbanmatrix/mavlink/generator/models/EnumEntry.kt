@@ -43,7 +43,9 @@ data class EnumEntryXml(
     fun toModel() = EnumEntryModel(
         value,
         name,
-        params.reversed().map { it.toModel() },
+        params
+            .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
+            .map { it.toModel() },
         workInProgress != null,
         deprecated?.toModel(),
         description
