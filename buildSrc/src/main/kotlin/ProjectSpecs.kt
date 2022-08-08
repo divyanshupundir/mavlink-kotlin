@@ -2,8 +2,8 @@ object Specs {
     const val group = "com.urbanmatrix.mavlink"
 
     object Lib {
-        const val releaseVersion = "0.1.2"
-        const val devlopmentVersion = "0.1.3"
+        const val releaseVersion = "0.1.3"
+        const val devlopmentVersion = "0.1.4"
     }
 
     object Plugin {
