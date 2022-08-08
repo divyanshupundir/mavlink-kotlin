@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * The error type for the OSD parameter editor.
  */
+@GeneratedMavEnum
 public enum class OsdParamConfigError(
   public override val `value`: Long,
 ) : MavEnum {

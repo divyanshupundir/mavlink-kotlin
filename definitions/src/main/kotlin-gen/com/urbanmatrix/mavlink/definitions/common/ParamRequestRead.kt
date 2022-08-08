@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -22,6 +23,10 @@ import kotlin.String
  * https://mavlink.io/en/services/parameter.html for a full documentation of QGroundControl and IMU
  * code.
  */
+@GeneratedMavMessage(
+  id = 20,
+  crc = 214,
+)
 public data class ParamRequestRead(
   /**
    * System ID

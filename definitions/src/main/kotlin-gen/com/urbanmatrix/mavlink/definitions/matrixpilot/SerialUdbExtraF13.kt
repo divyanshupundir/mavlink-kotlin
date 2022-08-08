@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -14,6 +15,10 @@ import kotlin.Int
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F13: format
  */
+@GeneratedMavMessage(
+  id = 177,
+  crc = 249,
+)
 public data class SerialUdbExtraF13(
   /**
    * Serial UDB Extra GPS Week Number

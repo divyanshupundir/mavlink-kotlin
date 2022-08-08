@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeUint8
 import com.urbanmatrix.mavlink.serialization.decodeUint8Array
@@ -22,6 +24,11 @@ import kotlin.collections.List
  * Remote ID standard and the ASD-STAN prEN 4709-002 Direct Remote ID standard. Additional information
  * and usage of these messages is documented at https://mavlink.io/en/services/opendroneid.html.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12900,
+  crc = 114,
+)
 public data class OpenDroneIdBasicId(
   /**
    * System ID (0 for broadcast).

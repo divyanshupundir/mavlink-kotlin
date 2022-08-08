@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.collections.List
 /**
  * Global position estimate from a Vicon motion system source.
  */
+@GeneratedMavMessage(
+  id = 104,
+  crc = 56,
+)
 public data class ViconPositionEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)

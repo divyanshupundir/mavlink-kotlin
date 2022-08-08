@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeUint16
 import com.urbanmatrix.mavlink.serialization.decodeUint32
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -23,6 +25,11 @@ import kotlin.collections.List
  * specific to a target component (as receivers keep track of the sequence for missed events, all
  * events need to be broadcast. Thus we use destination_component instead of target_component).
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 410,
+  crc = 160,
+)
 public data class Event(
   /**
    * Component ID

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Special ACK block numbers control activation of dataflash log streaming.
  */
+@GeneratedMavEnum
 public enum class MavRemoteLogDataBlockCommands(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * Control on-board Camera Control System to take shots.
  */
+@GeneratedMavMessage(
+  id = 155,
+  crc = 22,
+)
 public data class DigicamControl(
   /**
    * System ID.

@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeString
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -22,6 +24,11 @@ import kotlin.collections.List
  * Data for filling the OpenDroneID Operator ID message, which contains the CAA (Civil Aviation
  * Authority) issued operator ID.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12905,
+  crc = 49,
+)
 public data class OpenDroneIdOperatorId(
   /**
    * System ID (0 for broadcast).

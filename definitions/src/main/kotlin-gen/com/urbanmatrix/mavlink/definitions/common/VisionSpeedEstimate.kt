@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -21,6 +22,10 @@ import kotlin.collections.List
 /**
  * Speed estimate from a vision source.
  */
+@GeneratedMavMessage(
+  id = 103,
+  crc = 208,
+)
 public data class VisionSpeedEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)

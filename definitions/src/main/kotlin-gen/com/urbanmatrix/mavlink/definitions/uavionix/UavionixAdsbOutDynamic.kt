@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.Long
 /**
  * Dynamic data used to generate ADS-B out transponder data (send at 5Hz)
  */
+@GeneratedMavMessage(
+  id = 10002,
+  crc = 186,
+)
 public data class UavionixAdsbOutDynamic(
   /**
    * UTC time in seconds since GPS epoch (Jan 6, 1980). If unknown set to UINT32_MAX

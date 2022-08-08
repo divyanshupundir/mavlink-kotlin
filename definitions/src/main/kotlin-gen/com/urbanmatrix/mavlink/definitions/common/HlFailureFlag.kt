@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags to report failure cases over the high latency telemtry.
  */
+@GeneratedMavEnum
 public enum class HlFailureFlag(
   public override val `value`: Long,
 ) : MavEnum {

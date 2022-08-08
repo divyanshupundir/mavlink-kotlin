@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Possible responses from a CELLULAR_CONFIG message.
  */
+@GeneratedMavEnum
 public enum class CellularConfigResponse(
   public override val `value`: Long,
 ) : MavEnum {

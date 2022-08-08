@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Tune formats (used for vehicle buzzer/tone generation).
  */
+@GeneratedMavEnum
 public enum class TuneFormat(
   public override val `value`: Long,
 ) : MavEnum {

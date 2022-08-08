@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -26,6 +27,10 @@ import kotlin.collections.List
  * MAVLink messages or change the devices settings. A message with zero bytes can be used to change
  * just the baudrate.
  */
+@GeneratedMavMessage(
+  id = 126,
+  crc = 220,
+)
 public data class SerialControl(
   /**
    * Serial control device type.

@@ -2,8 +2,10 @@ package com.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.generator.models.FieldModel
 import com.urbanmatrix.mavlink.generator.models.MessageModel
 import com.urbanmatrix.mavlink.generator.models.sortedByPosition
@@ -18,8 +20,10 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
+            if (workInProgress) addAnnotation(WorkInProgress::class)
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
+        .addAnnotation(generateGeneratedAnnotation())
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
         .addType(generateCompanionObject(packageName))
@@ -43,6 +47,12 @@ private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
     .addProperty(generateDeserializer(packageName))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
+    .build()
+
+private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
+    .builder(GeneratedMavMessage::class)
+    .addMember("id = %L", id)
+    .addMember("crc = %L", crc)
     .build()
 
 private fun MessageModel.generateIdProperty() = PropertySpec

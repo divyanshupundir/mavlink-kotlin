@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Camera capability flags (Bitmap)
  */
+@GeneratedMavEnum
 public enum class CameraCapFlags(
   public override val `value`: Long,
 ) : MavEnum {

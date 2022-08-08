@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Yaw behaviour during orbit flight.
  */
+@GeneratedMavEnum
 public enum class OrbitYawBehaviour(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Deprecated
 import kotlin.Long
@@ -14,6 +15,7 @@ import kotlin.Long
  * servos etc.) should be allocated sequential values. An appropriate number of values should be left
  * free after these components to allow the number of instances to be expanded.
  */
+@GeneratedMavEnum
 public enum class MavComponent(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Result from PARAM_EXT_SET message (or a PARAM_SET within a transaction).
  */
+@GeneratedMavEnum
 public enum class ParamAck(
   public override val `value`: Long,
 ) : MavEnum {

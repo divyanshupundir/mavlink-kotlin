@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -17,6 +18,10 @@ import kotlin.collections.List
  * information about each satellite visible to the receiver. See message GLOBAL_POSITION_INT for the
  * global position estimate. This message can contain information for up to 20 satellites.
  */
+@GeneratedMavMessage(
+  id = 25,
+  crc = 23,
+)
 public data class GpsStatus(
   /**
    * Number of satellites visible

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -14,6 +15,10 @@ import kotlin.Int
 /**
  * An ack for a LOGGING_DATA_ACKED message
  */
+@GeneratedMavMessage(
+  id = 268,
+  crc = 14,
+)
 public data class LoggingAck(
   /**
    * system ID of the target

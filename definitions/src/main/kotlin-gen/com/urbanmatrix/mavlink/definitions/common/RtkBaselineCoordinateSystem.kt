@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * RTK GPS baseline coordinate system, used for RTK corrections
  */
+@GeneratedMavEnum
 public enum class RtkBaselineCoordinateSystem(
   public override val `value`: Long,
 ) : MavEnum {

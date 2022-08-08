@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Micro air vehicle / autopilot classes. This identifies the individual model.
  */
+@GeneratedMavEnum
 public enum class MavAutopilot(
   public override val `value`: Long,
 ) : MavEnum {

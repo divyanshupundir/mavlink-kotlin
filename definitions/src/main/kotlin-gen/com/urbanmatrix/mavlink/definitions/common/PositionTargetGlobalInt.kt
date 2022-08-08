@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -23,6 +24,10 @@ import kotlin.Long
  * autopilot. This should match the commands sent in SET_POSITION_TARGET_GLOBAL_INT if the vehicle is
  * being controlled this way.
  */
+@GeneratedMavMessage(
+  id = 87,
+  crc = 150,
+)
 public data class PositionTargetGlobalInt(
   /**
    * Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow

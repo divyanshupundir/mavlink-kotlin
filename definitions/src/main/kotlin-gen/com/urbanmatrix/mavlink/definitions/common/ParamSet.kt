@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -30,6 +31,10 @@ import kotlin.String
  * PARAM_ACK_TRANSACTION to the setter component (instead of broadcasting PARAM_VALUE), and PARAM_SET
  * should be re-sent if this is ACK not received.
  */
+@GeneratedMavMessage(
+  id = 23,
+  crc = 168,
+)
 public data class ParamSet(
   /**
    * System ID

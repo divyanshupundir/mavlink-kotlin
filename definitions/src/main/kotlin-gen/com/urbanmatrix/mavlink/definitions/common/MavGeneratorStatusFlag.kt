@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -8,6 +9,7 @@ import kotlin.Long
  * FAULTS are conditions that cause the generator to fail. Warnings are conditions that require
  * attention before the next use (they indicate the system is not operating properly).
  */
+@GeneratedMavEnum
 public enum class MavGeneratorStatusFlag(
   public override val `value`: Long,
 ) : MavEnum {

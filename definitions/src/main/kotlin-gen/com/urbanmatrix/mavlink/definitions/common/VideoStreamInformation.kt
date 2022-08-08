@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,10 @@ import kotlin.String
  * Information about video stream. It may be requested using MAV_CMD_REQUEST_MESSAGE, where param2
  * indicates the video stream id: 0 for all streams, 1 for first, 2 for second, etc.
  */
+@GeneratedMavMessage(
+  id = 269,
+  crc = 109,
+)
 public data class VideoStreamInformation(
   /**
    * Video Stream ID (1 for first, 2 for second, etc.)

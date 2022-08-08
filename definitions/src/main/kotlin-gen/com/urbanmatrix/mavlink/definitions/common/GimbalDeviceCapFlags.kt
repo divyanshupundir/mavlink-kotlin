@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Gimbal device (low level) capability flags (bitmap)
  */
+@GeneratedMavEnum
 public enum class GimbalDeviceCapFlags(
   public override val `value`: Long,
 ) : MavEnum {

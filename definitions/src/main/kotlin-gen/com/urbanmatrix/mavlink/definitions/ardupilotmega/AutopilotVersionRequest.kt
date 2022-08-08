@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * Request the autopilot version from the system/component.
  */
+@GeneratedMavMessage(
+  id = 183,
+  crc = 85,
+)
 public data class AutopilotVersionRequest(
   /**
    * System ID.

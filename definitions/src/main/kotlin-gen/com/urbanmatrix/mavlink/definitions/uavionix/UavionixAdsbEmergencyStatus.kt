@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Emergency status encoding
  */
+@GeneratedMavEnum
 public enum class UavionixAdsbEmergencyStatus(
   public override val `value`: Long,
 ) : MavEnum {

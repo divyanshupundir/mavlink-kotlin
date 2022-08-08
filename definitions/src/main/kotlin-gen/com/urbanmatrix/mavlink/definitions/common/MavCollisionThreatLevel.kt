@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Aircraft-rated danger from this threat.
  */
+@GeneratedMavEnum
 public enum class MavCollisionThreatLevel(
   public override val `value`: Long,
 ) : MavEnum {

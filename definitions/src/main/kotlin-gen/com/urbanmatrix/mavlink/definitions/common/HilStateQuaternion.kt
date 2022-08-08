@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -26,6 +27,10 @@ import kotlin.collections.List
  * Sent from simulation to autopilot, avoids in contrast to HIL_STATE singularities. This packet is
  * useful for high throughput applications such as hardware in the loop simulations.
  */
+@GeneratedMavMessage(
+  id = 115,
+  crc = 4,
+)
 public data class HilStateQuaternion(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -17,6 +18,10 @@ import kotlin.collections.List
 /**
  * A message containing logged data (see also MAV_CMD_LOGGING_START)
  */
+@GeneratedMavMessage(
+  id = 266,
+  crc = 193,
+)
 public data class LoggingData(
   /**
    * system ID of the target

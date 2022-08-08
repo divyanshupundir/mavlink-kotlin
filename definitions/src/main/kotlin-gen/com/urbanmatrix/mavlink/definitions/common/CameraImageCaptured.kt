@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -38,6 +39,10 @@ import kotlin.collections.List
  * sequence numbers, 
  *         set to the sequence number of the final message in the range.
  */
+@GeneratedMavMessage(
+  id = 263,
+  crc = 133,
+)
 public data class CameraImageCaptured(
   /**
    * Timestamp (time since system boot).

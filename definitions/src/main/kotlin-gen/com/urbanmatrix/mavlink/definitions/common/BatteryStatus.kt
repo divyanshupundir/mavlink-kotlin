@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.collections.List
  * Battery information. Updates GCS with flight controller battery status. Smart batteries also use
  * this message, but may additionally send SMART_BATTERY_INFO.
  */
+@GeneratedMavMessage(
+  id = 147,
+  crc = 154,
+)
 public data class BatteryStatus(
   /**
    * Battery ID

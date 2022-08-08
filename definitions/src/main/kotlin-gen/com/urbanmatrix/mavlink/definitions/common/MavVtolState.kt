@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Enumeration of VTOL states
  */
+@GeneratedMavEnum
 public enum class MavVtolState(
   public override val `value`: Long,
 ) : MavEnum {

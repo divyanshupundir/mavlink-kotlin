@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeUint16
 import com.urbanmatrix.mavlink.serialization.decodeUint8
 import com.urbanmatrix.mavlink.serialization.encodeUint16
@@ -16,6 +18,11 @@ import kotlin.Int
  * is requested. Note that first_sequence can be larger than last_sequence (because the sequence number
  * can wrap). Each sequence will trigger an EVENT or EVENT_ERROR response.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 412,
+  crc = 33,
+)
 public data class RequestEvent(
   /**
    * System ID

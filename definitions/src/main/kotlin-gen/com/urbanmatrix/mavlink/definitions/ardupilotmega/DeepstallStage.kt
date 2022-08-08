@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Deepstall flight stage.
  */
+@GeneratedMavEnum
 public enum class DeepstallStage(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Int
 /**
  * Reports results of completed compass calibration. Sent until MAG_CAL_ACK received.
  */
+@GeneratedMavMessage(
+  id = 192,
+  crc = 36,
+)
 public data class MagCalReport(
   /**
    * Compass being calibrated.

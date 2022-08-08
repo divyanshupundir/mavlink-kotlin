@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -18,6 +19,10 @@ import kotlin.String
  * Request to read the value of a parameter with either the param_id string id or param_index.
  * PARAM_EXT_VALUE should be emitted in response.
  */
+@GeneratedMavMessage(
+  id = 320,
+  crc = 243,
+)
 public data class ParamExtRequestRead(
   /**
    * System ID

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.collections.List
 /**
  * Camera vision based attitude and position deltas.
  */
+@GeneratedMavMessage(
+  id = 11011,
+  crc = 106,
+)
 public data class VisionPositionDelta(
   /**
    * Timestamp (synced to UNIX time or since system boot).

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -28,6 +29,10 @@ import kotlin.Int
  * component's current latitude, yaw rather than a specific value). See also
  * https://mavlink.io/en/services/mission.html.
  */
+@GeneratedMavMessage(
+  id = 73,
+  crc = 38,
+)
 public data class MissionItemInt(
   /**
    * System ID

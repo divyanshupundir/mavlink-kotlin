@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeUint16
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -17,6 +19,11 @@ import kotlin.Int
 /**
  * Response to a REQUEST_EVENT in case of an error (e.g. the event is not available anymore).
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 413,
+  crc = 77,
+)
 public data class ResponseEventError(
   /**
    * System ID

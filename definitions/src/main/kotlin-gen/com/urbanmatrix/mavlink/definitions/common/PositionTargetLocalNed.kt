@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.Long
  * autopilot. This should match the commands sent in SET_POSITION_TARGET_LOCAL_NED if the vehicle is
  * being controlled this way.
  */
+@GeneratedMavMessage(
+  id = 85,
+  crc = 140,
+)
 public data class PositionTargetLocalNed(
   /**
    * Timestamp (time since system boot).

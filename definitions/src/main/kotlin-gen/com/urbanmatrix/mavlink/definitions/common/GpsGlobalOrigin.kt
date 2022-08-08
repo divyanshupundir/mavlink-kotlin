@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -16,6 +17,10 @@ import kotlin.Int
  * Publishes the GPS co-ordinates of the vehicle local origin (0,0,0) position. Emitted whenever a
  * new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
  */
+@GeneratedMavMessage(
+  id = 49,
+  crc = 39,
+)
 public data class GpsGlobalOrigin(
   /**
    * Latitude (WGS84)

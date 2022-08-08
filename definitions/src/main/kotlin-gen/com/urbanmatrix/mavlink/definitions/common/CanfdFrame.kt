@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -19,6 +20,10 @@ import kotlin.collections.List
  * A forwarded CANFD frame as requested by MAV_CMD_CAN_FORWARD. These are separated from CAN_FRAME
  * as they need different handling (eg. TAO handling)
  */
+@GeneratedMavMessage(
+  id = 387,
+  crc = 4,
+)
 public data class CanfdFrame(
   /**
    * System ID.

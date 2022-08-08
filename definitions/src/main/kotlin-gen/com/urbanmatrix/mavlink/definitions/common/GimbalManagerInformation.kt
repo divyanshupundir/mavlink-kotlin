@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -22,6 +24,11 @@ import kotlin.Long
  * Information about a high level gimbal manager. This message should be requested by a ground
  * station using MAV_CMD_REQUEST_MESSAGE.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 280,
+  crc = 70,
+)
 public data class GimbalManagerInformation(
   /**
    * Timestamp (time since system boot).

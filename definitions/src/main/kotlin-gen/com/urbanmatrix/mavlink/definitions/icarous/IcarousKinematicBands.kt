@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.icarous
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Int
 /**
  * Kinematic multi bands (track) output from Daidalus
  */
+@GeneratedMavMessage(
+  id = 42001,
+  crc = 239,
+)
 public data class IcarousKinematicBands(
   /**
    * Number of track bands

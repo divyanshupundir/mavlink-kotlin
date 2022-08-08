@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * These flags are used in the AIS_VESSEL.fields bitmask to indicate validity of data in the other
  * message fields. When set, the data is valid.
  */
+@GeneratedMavEnum
 public enum class AisFlags(
   public override val `value`: Long,
 ) : MavEnum {

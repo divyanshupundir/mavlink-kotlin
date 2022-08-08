@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -20,6 +21,10 @@ import kotlin.Int
 /**
  * Maximum Power Point Tracker (MPPT) sensor data for solar module power performance tracking
  */
+@GeneratedMavMessage(
+  id = 8003,
+  crc = 231,
+)
 public data class SensMppt(
   /**
    *  MPPT last timestamp 

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.Int
 /**
  * Winch status.
  */
+@GeneratedMavMessage(
+  id = 9005,
+  crc = 117,
+)
 public data class WinchStatus(
   /**
    * Timestamp (synced to UNIX time or since system boot).

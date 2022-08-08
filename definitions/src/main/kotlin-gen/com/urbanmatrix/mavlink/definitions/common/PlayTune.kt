@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -17,32 +18,36 @@ import kotlin.String
  * Control vehicle tone generation (buzzer).
  */
 @Deprecated(message = "New version explicitly defines format. More interoperable.")
+@GeneratedMavMessage(
+  id = 258,
+  crc = 240,
+)
 public data class PlayTune(
   /**
-   * tune extension (appended to tune)
+   * System ID
    */
-  public val tune2: String = "",
-  /**
-   * tune in board specific format
-   */
-  public val tune: String = "",
+  public val targetSystem: Int = 0,
   /**
    * Component ID
    */
   public val targetComponent: Int = 0,
   /**
-   * System ID
+   * tune in board specific format
    */
-  public val targetSystem: Int = 0,
+  public val tune: String = "",
+  /**
+   * tune extension (appended to tune)
+   */
+  public val tune2: String = "",
 ) : MavMessage<PlayTune> {
   public override val instanceMetadata: MavMessage.Metadata<PlayTune> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeString(tune2, 200)
-    outputBuffer.encodeString(tune, 30)
-    outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeString(tune, 30)
     return outputBuffer.array()
   }
 
@@ -56,15 +61,15 @@ public data class PlayTune(
     private val DESERIALIZER: MavDeserializer<PlayTune> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val tune2 = inputBuffer.decodeString(200)
-      val tune = inputBuffer.decodeString(30)
-      val targetComponent = inputBuffer.decodeUint8()
       val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
+      val tune = inputBuffer.decodeString(30)
 
       PlayTune(
-        tune2 = tune2,
-        tune = tune,
-        targetComponent = targetComponent,
         targetSystem = targetSystem,
+        targetComponent = targetComponent,
+        tune = tune,
+        tune2 = tune2,
       )
     }
 

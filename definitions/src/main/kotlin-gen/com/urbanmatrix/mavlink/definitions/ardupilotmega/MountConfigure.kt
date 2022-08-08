@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Message to configure a camera mount, directional antenna, etc.
  */
+@GeneratedMavMessage(
+  id = 156,
+  crc = 19,
+)
 public data class MountConfigure(
   /**
    * System ID.

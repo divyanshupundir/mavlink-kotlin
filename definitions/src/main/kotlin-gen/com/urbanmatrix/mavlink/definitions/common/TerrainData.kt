@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16Array
@@ -20,6 +21,10 @@ import kotlin.collections.List
  * Terrain data sent from GCS. The lat/lon and grid_spacing must be the same as a lat/lon from a
  * TERRAIN_REQUEST. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
  */
+@GeneratedMavMessage(
+  id = 134,
+  crc = 229,
+)
 public data class TerrainData(
   /**
    * Latitude of SW corner of first grid

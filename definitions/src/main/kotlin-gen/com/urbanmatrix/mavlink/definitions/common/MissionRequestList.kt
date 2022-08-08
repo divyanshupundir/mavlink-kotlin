@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Request the overall list of mission items from the system/component.
  */
+@GeneratedMavMessage(
+  id = 43,
+  crc = 132,
+)
 public data class MissionRequestList(
   /**
    * System ID

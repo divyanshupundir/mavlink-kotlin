@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeUint16
 import com.urbanmatrix.mavlink.serialization.decodeUint8Array
 import com.urbanmatrix.mavlink.serialization.encodeUint16
@@ -19,6 +21,11 @@ import kotlin.collections.List
  * the handshaking. Library implementers should consider adding this into the default decoding state
  * machine to allow the protocol core to respond directly.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 300,
+  crc = 217,
+)
 public data class ProtocolVersion(
   /**
    * Currently active MAVLink version number * 100: v1.0 is 100, v2.0 is 200, etc.

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
  */
+@GeneratedMavMessage(
+  id = 74,
+  crc = 20,
+)
 public data class VfrHud(
   /**
    * Vehicle speed in form appropriate for vehicle type. For standard aircraft this is typically

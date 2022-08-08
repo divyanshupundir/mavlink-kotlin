@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -19,6 +20,10 @@ import kotlin.String
  * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but
  * a quite efficient way for testing new messages and getting experimental debug output.
  */
+@GeneratedMavMessage(
+  id = 252,
+  crc = 44,
+)
 public data class NamedValueInt(
   /**
    * Timestamp (time since system boot).

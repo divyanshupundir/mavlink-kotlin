@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Long
 /**
  * Settings of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
  */
+@GeneratedMavMessage(
+  id = 260,
+  crc = 146,
+)
 public data class CameraSettings(
   /**
    * Timestamp (time since system boot).

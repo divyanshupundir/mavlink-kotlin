@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -15,6 +16,10 @@ import kotlin.Long
 /**
  * Report button state change.
  */
+@GeneratedMavMessage(
+  id = 257,
+  crc = 131,
+)
 public data class ButtonChange(
   /**
    * Timestamp (time since system boot).

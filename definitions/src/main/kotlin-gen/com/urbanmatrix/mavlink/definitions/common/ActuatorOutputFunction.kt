@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Actuator output function. Values greater or equal to 1000 are autopilot-specific.
  */
+@GeneratedMavEnum
 public enum class ActuatorOutputFunction(
   public override val `value`: Long,
 ) : MavEnum {

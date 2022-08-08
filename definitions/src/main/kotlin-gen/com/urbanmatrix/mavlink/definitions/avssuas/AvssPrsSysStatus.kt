@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.avssuas
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -15,6 +16,10 @@ import kotlin.Long
 /**
  *  AVSS PRS system status.
  */
+@GeneratedMavMessage(
+  id = 60050,
+  crc = 220,
+)
 public data class AvssPrsSysStatus(
   /**
    * Timestamp (time since PRS boot).

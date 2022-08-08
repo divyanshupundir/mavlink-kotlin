@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -23,6 +24,10 @@ import kotlin.Int
  * optional/default values (e.g. to use the component's current latitude, yaw rather than a specific
  * value). The command microservice is documented at https://mavlink.io/en/services/command.html
  */
+@GeneratedMavMessage(
+  id = 75,
+  crc = 158,
+)
 public data class CommandInt(
   /**
    * System ID

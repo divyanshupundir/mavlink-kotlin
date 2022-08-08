@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Stream status flags (Bitmap)
  */
+@GeneratedMavEnum
 public enum class VideoStreamStatusFlags(
   public override val `value`: Long,
 ) : MavEnum {

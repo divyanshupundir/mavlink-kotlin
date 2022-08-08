@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * Wind estimation.
  */
+@GeneratedMavMessage(
+  id = 168,
+  crc = 1,
+)
 public data class Wind(
   /**
    * Wind direction (that wind is coming from).

@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.avssuas
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
+@GeneratedMavEnum
 public enum class AvssM300OperationMode(
   public override val `value`: Long,
 ) : MavEnum {

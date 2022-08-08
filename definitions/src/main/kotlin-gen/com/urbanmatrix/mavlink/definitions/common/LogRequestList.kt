@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -16,6 +17,10 @@ import kotlin.Int
  * LOG_REQUEST_END is called. If there are no log files available this request shall be answered with
  * one LOG_ENTRY message with id = 0 and num_logs = 0.
  */
+@GeneratedMavMessage(
+  id = 117,
+  crc = 128,
+)
 public data class LogRequestList(
   /**
    * System ID

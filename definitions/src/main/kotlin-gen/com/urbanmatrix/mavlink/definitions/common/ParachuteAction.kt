@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Parachute actions. Trigger release and enable/disable auto-release.
  */
+@GeneratedMavEnum
 public enum class ParachuteAction(
   public override val `value`: Long,
 ) : MavEnum {

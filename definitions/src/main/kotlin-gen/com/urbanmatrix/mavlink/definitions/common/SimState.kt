@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * Status of simulation environment, if used
  */
+@GeneratedMavMessage(
+  id = 108,
+  crc = 32,
+)
 public data class SimState(
   /**
    * True attitude quaternion component 1, w (1 in null-rotation)

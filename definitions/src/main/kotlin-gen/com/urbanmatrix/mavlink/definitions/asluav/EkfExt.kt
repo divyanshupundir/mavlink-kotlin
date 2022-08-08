@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Extended EKF state estimates for ASLUAVs
  */
+@GeneratedMavMessage(
+  id = 8007,
+  crc = 64,
+)
 public data class EkfExt(
   /**
    *  Time since system start

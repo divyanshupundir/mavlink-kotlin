@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -19,6 +20,10 @@ import kotlin.Int
  * 	It may also be sent in response to MAV_CMD_GET_MESSAGE_INTERVAL.
  * 	This interface replaces DATA_STREAM.
  */
+@GeneratedMavMessage(
+  id = 244,
+  crc = 95,
+)
 public data class MessageInterval(
   /**
    * The ID of the requested MAVLink message. v1.0 is limited to 254 messages.

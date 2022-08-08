@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -18,6 +19,10 @@ import kotlin.Long
  *         This can be requested using MAV_CMD_REQUEST_MESSAGE.
  *       
  */
+@GeneratedMavMessage(
+  id = 264,
+  crc = 49,
+)
 public data class FlightInformation(
   /**
    * Timestamp (time since system boot).

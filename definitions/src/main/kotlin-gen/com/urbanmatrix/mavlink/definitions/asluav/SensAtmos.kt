@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Atmospheric sensors (temperature, humidity, ...) 
  */
+@GeneratedMavMessage(
+  id = 8009,
+  crc = 144,
+)
 public data class SensAtmos(
   /**
    * Time since system boot

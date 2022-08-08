@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Camera tracking target data (shows where tracked target is within image)
  */
+@GeneratedMavEnum
 public enum class CameraTrackingTargetData(
   public override val `value`: Long,
 ) : MavEnum {

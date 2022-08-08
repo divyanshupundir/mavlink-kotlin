@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ualberta
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Accelerometer and Gyro biases from the navigation filter
  */
+@GeneratedMavMessage(
+  id = 220,
+  crc = 34,
+)
 public data class NavFilterBias(
   /**
    * Timestamp (microseconds)

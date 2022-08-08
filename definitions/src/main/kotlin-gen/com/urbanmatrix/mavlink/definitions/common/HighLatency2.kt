@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -28,6 +29,10 @@ import kotlin.Long
 /**
  * Message appropriate for high latency connections like Iridium (version 2)
  */
+@GeneratedMavMessage(
+  id = 235,
+  crc = 179,
+)
 public data class HighLatency2(
   /**
    * Timestamp (milliseconds since boot or Unix epoch)

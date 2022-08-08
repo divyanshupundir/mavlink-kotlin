@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Video stream types
  */
+@GeneratedMavEnum
 public enum class VideoStreamType(
   public override val `value`: Long,
 ) : MavEnum {

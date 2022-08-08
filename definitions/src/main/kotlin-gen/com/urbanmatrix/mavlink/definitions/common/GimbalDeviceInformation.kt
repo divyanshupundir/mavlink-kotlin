@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -30,6 +32,11 @@ import kotlin.String
  * hardware. However, the limits by software used are likely different/smaller and dependent on
  * mode/settings/etc..
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 283,
+  crc = 74,
+)
 public data class GimbalDeviceInformation(
   /**
    * Timestamp (time since system boot).

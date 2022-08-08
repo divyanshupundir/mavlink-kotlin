@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -15,6 +16,10 @@ import kotlin.collections.List
 /**
  * RTCM message for injecting into the onboard GPS (used for DGPS)
  */
+@GeneratedMavMessage(
+  id = 233,
+  crc = 35,
+)
 public data class GpsRtcmData(
   /**
    * LSB: 1 means message is fragmented, next 2 bits are the fragment ID, the remaining 5 bits are

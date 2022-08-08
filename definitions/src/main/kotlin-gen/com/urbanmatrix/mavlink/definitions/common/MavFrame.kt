@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Deprecated
 import kotlin.Long
@@ -28,6 +29,7 @@ import kotlin.Long
  * MAV_FRAME_BODY_OFFSET_NED).
  *  
  */
+@GeneratedMavEnum
 public enum class MavFrame(
   public override val `value`: Long,
 ) : MavEnum {

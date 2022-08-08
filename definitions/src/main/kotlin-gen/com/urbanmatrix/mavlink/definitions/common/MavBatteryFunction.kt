@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Enumeration of battery functions
  */
+@GeneratedMavEnum
 public enum class MavBatteryFunction(
   public override val `value`: Long,
 ) : MavEnum {

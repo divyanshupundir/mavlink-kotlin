@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F22 format
  */
+@GeneratedMavMessage(
+  id = 188,
+  crc = 91,
+)
 public data class SerialUdbExtraF22(
   /**
    * SUE X accelerometer at calibration time

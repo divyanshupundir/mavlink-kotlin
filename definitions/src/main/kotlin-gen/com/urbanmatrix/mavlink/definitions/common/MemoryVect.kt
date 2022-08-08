@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt8Array
@@ -18,6 +19,10 @@ import kotlin.collections.List
  * Send raw controller memory. The use of this message is discouraged for normal packets, but a
  * quite efficient way for testing new messages and getting experimental debug output.
  */
+@GeneratedMavMessage(
+  id = 249,
+  crc = 204,
+)
 public data class MemoryVect(
   /**
    * Starting address of the debug variables

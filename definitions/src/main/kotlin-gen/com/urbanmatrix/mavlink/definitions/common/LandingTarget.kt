@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.collections.List
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
  */
+@GeneratedMavMessage(
+  id = 149,
+  crc = 200,
+)
 public data class LandingTarget(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

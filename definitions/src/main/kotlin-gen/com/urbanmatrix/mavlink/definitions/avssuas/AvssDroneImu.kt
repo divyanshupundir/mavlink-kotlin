@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.avssuas
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -17,6 +18,10 @@ import kotlin.Long
  *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0
  * 0).
  */
+@GeneratedMavMessage(
+  id = 60052,
+  crc = 101,
+)
 public data class AvssDroneImu(
   /**
    * Timestamp (time since FC boot).

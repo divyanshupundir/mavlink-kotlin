@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Defines how throttle value is represented in MAV_CMD_DO_MOTOR_TEST.
  */
+@GeneratedMavEnum
 public enum class MotorTestThrottleType(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.String
 /**
  * Play vehicle tone/tune (buzzer). Supersedes message PLAY_TUNE.
  */
+@GeneratedMavMessage(
+  id = 400,
+  crc = 110,
+)
 public data class PlayTuneV2(
   /**
    * System ID

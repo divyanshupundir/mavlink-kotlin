@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * RC type
  */
+@GeneratedMavEnum
 public enum class RcType(
   public override val `value`: Long,
 ) : MavEnum {

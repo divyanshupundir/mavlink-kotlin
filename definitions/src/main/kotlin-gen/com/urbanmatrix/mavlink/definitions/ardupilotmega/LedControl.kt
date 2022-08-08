@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -15,6 +16,10 @@ import kotlin.collections.List
 /**
  * Control vehicle LEDs.
  */
+@GeneratedMavMessage(
+  id = 186,
+  crc = 72,
+)
 public data class LedControl(
   /**
    * System ID.

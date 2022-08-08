@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -30,6 +32,11 @@ import kotlin.collections.List
  * information including the operator location/altitude and possible aircraft group and/or
  * category/class information.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12904,
+  crc = 77,
+)
 public data class OpenDroneIdSystem(
   /**
    * System ID (0 for broadcast).

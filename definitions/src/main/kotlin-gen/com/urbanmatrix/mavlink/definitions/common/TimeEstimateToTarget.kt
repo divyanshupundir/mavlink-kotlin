@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeInt32
 import com.urbanmatrix.mavlink.serialization.encodeInt32
 import java.nio.ByteBuffer
@@ -13,6 +15,11 @@ import kotlin.Int
  * Time/duration estimates for various events and actions given the current vehicle state and
  * position.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 380,
+  crc = 232,
+)
 public data class TimeEstimateToTarget(
   /**
    * Estimated time to complete the vehicle's configured "safe return" action from its current

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * These encode the sensors whose status is sent as part of the SYS_STATUS message in the extended
  * fields.
  */
+@GeneratedMavEnum
 public enum class MavSysStatusSensorExtended(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * The current system altitude.
  */
+@GeneratedMavMessage(
+  id = 141,
+  crc = 47,
+)
 public data class Altitude(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

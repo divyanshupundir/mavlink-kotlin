@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Zoom types for MAV_CMD_SET_CAMERA_ZOOM
  */
+@GeneratedMavEnum
 public enum class CameraZoomType(
   public override val `value`: Long,
 ) : MavEnum {

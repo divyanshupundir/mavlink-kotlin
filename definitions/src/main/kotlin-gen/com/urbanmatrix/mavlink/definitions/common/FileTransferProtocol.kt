@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -15,6 +16,10 @@ import kotlin.collections.List
 /**
  * File transfer protocol message: https://mavlink.io/en/services/ftp.html.
  */
+@GeneratedMavMessage(
+  id = 110,
+  crc = 84,
+)
 public data class FileTransferProtocol(
   /**
    * Network ID (0 for broadcast)

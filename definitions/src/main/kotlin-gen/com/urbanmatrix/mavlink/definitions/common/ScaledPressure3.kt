@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Long
 /**
  * Barometer readings for 3rd barometer
  */
+@GeneratedMavMessage(
+  id = 143,
+  crc = 131,
+)
 public data class ScaledPressure3(
   /**
    * Timestamp (time since system boot).

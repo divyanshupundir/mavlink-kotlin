@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * ACK / NACK / ERROR values as a result of MAV_CMDs and for mission item transmission.
  */
+@GeneratedMavEnum
 public enum class MavCmdAck(
   public override val `value`: Long,
 ) : MavEnum {

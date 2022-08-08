@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags to report ESC failures.
  */
+@GeneratedMavEnum
 public enum class EscFailureFlags(
   public override val `value`: Long,
 ) : MavEnum {

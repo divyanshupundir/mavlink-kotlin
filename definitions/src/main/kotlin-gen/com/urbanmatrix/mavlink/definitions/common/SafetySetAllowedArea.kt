@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -20,6 +21,10 @@ import kotlin.Int
  * to tell the MAV which setpoints/waypoints to accept and which to reject. Safety areas are often
  * enforced by national or competition regulations.
  */
+@GeneratedMavMessage(
+  id = 54,
+  crc = 15,
+)
 public data class SafetySetAllowedArea(
   /**
    * System ID

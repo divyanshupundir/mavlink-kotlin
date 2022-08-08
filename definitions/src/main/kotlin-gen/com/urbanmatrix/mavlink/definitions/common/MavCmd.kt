@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import com.urbanmatrix.mavlink.api.WorkInProgress
 import kotlin.Deprecated
@@ -15,6 +16,7 @@ import kotlin.Long
  * specific value). See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the
  * structure of the MAV_CMD entries
  */
+@GeneratedMavEnum
 public enum class MavCmd(
   public override val `value`: Long,
 ) : MavEnum {
@@ -454,26 +456,26 @@ public enum class MavCmd(
    * by the vehicle's control system to control the vehicle attitude and the attitude of various
    * sensors such as cameras.
    *
-   * index = 7; label = Z; 
-   * z
-   *
-   * index = 6; label = Y; 
-   * y
-   *
-   * index = 5; label = X; 
-   * x the location of the fixed ROI (see MAV_FRAME)
-   *
-   * index = 4; 
-   * Empty
-   *
-   * index = 3; label = ROI Index; 
-   * ROI index (allows a vehicle to manage multiple ROI's)
+   * index = 1; label = ROI Mode; 
+   * Region of interest mode.
    *
    * index = 2; label = WP Index; 
    * Waypoint index/ target ID. (see MAV_ROI enum)
    *
-   * index = 1; label = ROI Mode; 
-   * Region of interest mode.
+   * index = 3; label = ROI Index; 
+   * ROI index (allows a vehicle to manage multiple ROI's)
+   *
+   * index = 4; 
+   * Empty
+   *
+   * index = 5; label = X; 
+   * x the location of the fixed ROI (see MAV_FRAME)
+   *
+   * index = 6; label = Y; 
+   * y
+   *
+   * index = 7; label = Z; 
+   * z
    */
   @Deprecated(message = "")
   MAV_CMD_NAV_ROI(80L),
@@ -1421,26 +1423,26 @@ public enum class MavCmd(
    * by the vehicle's control system to control the vehicle attitude and the attitude of various
    * sensors such as cameras.
    *
-   * index = 7; 
-   * MAV_ROI_WPNEXT: yaw offset from next waypoint, MAV_ROI_LOCATION: altitude
-   *
-   * index = 6; 
-   * MAV_ROI_WPNEXT: roll offset from next waypoint, MAV_ROI_LOCATION: longitude
-   *
-   * index = 5; 
-   * MAV_ROI_WPNEXT: pitch offset from next waypoint, MAV_ROI_LOCATION: latitude
-   *
-   * index = 4; 
-   * Empty
-   *
-   * index = 3; label = ROI Index; 
-   * Region of interest index. (allows a vehicle to manage multiple ROI's)
+   * index = 1; label = ROI Mode; 
+   * Region of interest mode.
    *
    * index = 2; label = WP Index; 
    * Waypoint index/ target ID (depends on param 1).
    *
-   * index = 1; label = ROI Mode; 
-   * Region of interest mode.
+   * index = 3; label = ROI Index; 
+   * Region of interest index. (allows a vehicle to manage multiple ROI's)
+   *
+   * index = 4; 
+   * Empty
+   *
+   * index = 5; 
+   * MAV_ROI_WPNEXT: pitch offset from next waypoint, MAV_ROI_LOCATION: latitude
+   *
+   * index = 6; 
+   * MAV_ROI_WPNEXT: roll offset from next waypoint, MAV_ROI_LOCATION: longitude
+   *
+   * index = 7; 
+   * MAV_ROI_WPNEXT: yaw offset from next waypoint, MAV_ROI_LOCATION: altitude
    */
   @Deprecated(message = "")
   MAV_CMD_DO_SET_ROI(201L),
@@ -1502,26 +1504,26 @@ public enum class MavCmd(
   /**
    * Mission command to configure a camera or antenna mount
    *
-   * index = 7; label = Yaw Input Mode; 
-   * yaw input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
-   *
-   * index = 6; label = Pitch Input Mode; 
-   * pitch input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
-   *
-   * index = 5; label = Roll Input Mode; 
-   * roll input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
-   *
-   * index = 4; label = Stabilize Yaw; 
-   * stabilize yaw? (1 = yes, 0 = no)
-   *
-   * index = 3; label = Stabilize Pitch; 
-   * stabilize pitch? (1 = yes, 0 = no)
+   * index = 1; label = Mode; 
+   * Mount operation mode
    *
    * index = 2; label = Stabilize Roll; 
    * stabilize roll? (1 = yes, 0 = no)
    *
-   * index = 1; label = Mode; 
-   * Mount operation mode
+   * index = 3; label = Stabilize Pitch; 
+   * stabilize pitch? (1 = yes, 0 = no)
+   *
+   * index = 4; label = Stabilize Yaw; 
+   * stabilize yaw? (1 = yes, 0 = no)
+   *
+   * index = 5; label = Roll Input Mode; 
+   * roll input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
+   *
+   * index = 6; label = Pitch Input Mode; 
+   * pitch input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
+   *
+   * index = 7; label = Yaw Input Mode; 
+   * yaw input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
    */
   @Deprecated(message =
       "This message has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE. The message can still be used to communicate with legacy gimbals implementing it.")
@@ -1529,26 +1531,26 @@ public enum class MavCmd(
   /**
    * Mission command to control a camera or antenna mount
    *
-   * index = 7; label = Mode; 
-   * Mount mode.
-   *
-   * index = 6; label = Longitude; 
-   * longitude, set if appropriate mount mode.
-   *
-   * index = 5; label = Latitude; 
-   * latitude, set if appropriate mount mode.
-   *
-   * index = 4; label = Altitude; units = m; 
-   * altitude depending on mount mode.
-   *
-   * index = 3; label = Yaw; 
-   * yaw depending on mount mode (degrees or degrees/second depending on yaw input).
+   * index = 1; label = Pitch; 
+   * pitch depending on mount mode (degrees or degrees/second depending on pitch input).
    *
    * index = 2; label = Roll; 
    * roll depending on mount mode (degrees or degrees/second depending on roll input).
    *
-   * index = 1; label = Pitch; 
-   * pitch depending on mount mode (degrees or degrees/second depending on pitch input).
+   * index = 3; label = Yaw; 
+   * yaw depending on mount mode (degrees or degrees/second depending on yaw input).
+   *
+   * index = 4; label = Altitude; units = m; 
+   * altitude depending on mount mode.
+   *
+   * index = 5; label = Latitude; 
+   * latitude, set if appropriate mount mode.
+   *
+   * index = 6; label = Longitude; 
+   * longitude, set if appropriate mount mode.
+   *
+   * index = 7; label = Mode; 
+   * Mount mode.
    */
   @Deprecated(message =
       "This message is ambiguous and inconsistent. It has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW and MAV_CMD_DO_SET_ROI_*. The message can still be used to communicate with legacy gimbals implementing it.")
@@ -1786,26 +1788,26 @@ public enum class MavCmd(
   /**
    * Mission command to control a camera or antenna mount, using a quaternion as reference.
    *
-   * index = 7; 
+   * index = 1; label = Q1; 
+   * quaternion param q1, w (1 in null-rotation)
+   *
+   * index = 2; label = Q2; 
+   * quaternion param q2, x (0 in null-rotation)
+   *
+   * index = 3; label = Q3; 
+   * quaternion param q3, y (0 in null-rotation)
+   *
+   * index = 4; label = Q4; 
+   * quaternion param q4, z (0 in null-rotation)
+   *
+   * index = 5; 
    * Empty
    *
    * index = 6; 
    * Empty
    *
-   * index = 5; 
+   * index = 7; 
    * Empty
-   *
-   * index = 4; label = Q4; 
-   * quaternion param q4, z (0 in null-rotation)
-   *
-   * index = 3; label = Q3; 
-   * quaternion param q3, y (0 in null-rotation)
-   *
-   * index = 2; label = Q2; 
-   * quaternion param q2, x (0 in null-rotation)
-   *
-   * index = 1; label = Q1; 
-   * quaternion param q1, w (1 in null-rotation)
    */
   @Deprecated(message = "")
   MAV_CMD_DO_MOUNT_CONTROL_QUAT(220L),
@@ -2225,25 +2227,25 @@ public enum class MavCmd(
    * Request the home position from the vehicle.
    * 	  The vehicle will ACK the command and then emit the HOME_POSITION message.
    *
-   * index = 7; 
-   * Reserved
-   *
-   * index = 6; 
-   * Reserved
-   *
-   * index = 5; 
-   * Reserved
-   *
-   * index = 4; 
-   * Reserved
-   *
-   * index = 3; 
+   * index = 1; 
    * Reserved
    *
    * index = 2; 
    * Reserved
    *
-   * index = 1; 
+   * index = 3; 
+   * Reserved
+   *
+   * index = 4; 
+   * Reserved
+   *
+   * index = 5; 
+   * Reserved
+   *
+   * index = 6; 
+   * Reserved
+   *
+   * index = 7; 
    * Reserved
    */
   @Deprecated(message = "")
@@ -2335,11 +2337,11 @@ public enum class MavCmd(
    * Request MAVLink protocol version compatibility. All receivers should ACK the command and then
    * emit their capabilities in an PROTOCOL_VERSION message
    *
-   * index = 2; 
-   * Reserved (all remaining params)
-   *
    * index = 1; label = Protocol; 
    * 1: Request supported protocol versions by all nodes on the network
+   *
+   * index = 2; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_PROTOCOL_VERSION(519L),
@@ -2347,33 +2349,33 @@ public enum class MavCmd(
    * Request autopilot capabilities. The receiver should ACK the command and then emit its
    * capabilities in an AUTOPILOT_VERSION message
    *
-   * index = 2; 
-   * Reserved (all remaining params)
-   *
    * index = 1; label = Version; 
    * 1: Request autopilot version
+   *
+   * index = 2; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES(520L),
   /**
    * Request camera information (CAMERA_INFORMATION).
    *
-   * index = 2; 
-   * Reserved (all remaining params)
-   *
    * index = 1; label = Capabilities; 
    * 0: No action 1: Request camera capabilities
+   *
+   * index = 2; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_CAMERA_INFORMATION(521L),
   /**
    * Request camera settings (CAMERA_SETTINGS).
    *
-   * index = 2; 
-   * Reserved (all remaining params)
-   *
    * index = 1; label = Settings; 
    * 0: No Action 1: Request camera settings
+   *
+   * index = 2; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_CAMERA_SETTINGS(522L),
@@ -2381,14 +2383,14 @@ public enum class MavCmd(
    * Request storage information (STORAGE_INFORMATION). Use the command's target_component to target
    * a specific component's storage.
    *
-   * index = 3; 
-   * Reserved (all remaining params)
+   * index = 1; label = Storage ID; 
+   * Storage ID (0 for all, 1 for first, 2 for second, etc.)
    *
    * index = 2; label = Information; 
    * 0: No Action 1: Request storage information
    *
-   * index = 1; label = Storage ID; 
-   * Storage ID (0 for all, 1 for first, 2 for second, etc.)
+   * index = 3; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_STORAGE_INFORMATION(525L),
@@ -2414,22 +2416,22 @@ public enum class MavCmd(
   /**
    * Request camera capture status (CAMERA_CAPTURE_STATUS)
    *
-   * index = 2; 
-   * Reserved (all remaining params)
-   *
    * index = 1; label = Capture Status; 
    * 0: No Action 1: Request camera capture status
+   *
+   * index = 2; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS(527L),
   /**
    * Request flight information (FLIGHT_INFORMATION)
    *
-   * index = 2; 
-   * Reserved (all remaining params)
-   *
    * index = 1; label = Flight Information; 
    * 1: Request flight information
+   *
+   * index = 2; 
+   * Reserved (all remaining params)
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_FLIGHT_INFORMATION(528L),
@@ -2611,8 +2613,10 @@ public enum class MavCmd(
   /**
    * Re-request a CAMERA_IMAGE_CAPTURED message.
    *
-   * index = 7; index = 4; index = 3; index = 2; index = 1; label = Number; 
+   * index = 1; label = Number; 
    * Sequence number for missing CAMERA_IMAGE_CAPTURED message
+   *
+   * index = 2; index = 3; index = 4; index = 7; 
    */
   @Deprecated(message = "")
   MAV_CMD_REQUEST_CAMERA_IMAGE_CAPTURE(2002L),
@@ -3125,59 +3129,59 @@ public enum class MavCmd(
    * Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the
    * required release position and velocity.
    *
-   * index = 7; label = Altitude; units = m; 
-   * Altitude (MSL)
+   * index = 1; label = Operation Mode; 
+   * Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not
+   * execute it. 1: execute payload deploy immediately (rejecting further deploy commands during
+   * execution, but allowing abort). 2: add payload deploy to existing deployment list.
    *
-   * index = 6; label = Longitude; units = degE7; 
-   * Longitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled)
-   *
-   * index = 5; label = Latitude; units = degE7; 
-   * Latitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled)
-   *
-   * index = 4; label = Altitude Clearance; units = m; 
-   * Minimum altitude clearance to the release position. A negative value indicates the system can
-   * define the clearance at will.
+   * index = 2; label = Approach Vector; units = deg; 
+   * Desired approach vector in compass heading. A negative value indicates the system can define
+   * the approach vector at will.
    *
    * index = 3; label = Ground Speed; 
    * Desired ground speed at release time. This can be overridden by the airframe in case it needs
    * to meet minimum airspeed. A negative value indicates the system can define the ground speed at
    * will.
    *
-   * index = 2; label = Approach Vector; units = deg; 
-   * Desired approach vector in compass heading. A negative value indicates the system can define
-   * the approach vector at will.
+   * index = 4; label = Altitude Clearance; units = m; 
+   * Minimum altitude clearance to the release position. A negative value indicates the system can
+   * define the clearance at will.
    *
-   * index = 1; label = Operation Mode; 
-   * Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not
-   * execute it. 1: execute payload deploy immediately (rejecting further deploy commands during
-   * execution, but allowing abort). 2: add payload deploy to existing deployment list.
+   * index = 5; label = Latitude; units = degE7; 
+   * Latitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled)
+   *
+   * index = 6; label = Longitude; units = degE7; 
+   * Longitude. Note, if used in MISSION_ITEM (deprecated) the units are degrees (unscaled)
+   *
+   * index = 7; label = Altitude; units = m; 
+   * Altitude (MSL)
    */
   @Deprecated(message = "")
   MAV_CMD_PAYLOAD_PREPARE_DEPLOY(30001L),
   /**
    * Control the payload deployment.
    *
-   * index = 7; 
-   * Reserved
+   * index = 1; label = Operation Mode; 
+   * Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment
+   * mode. 100: delete first payload deployment request. 101: delete all payload deployment requests.
    *
-   * index = 6; 
-   * Reserved
-   *
-   * index = 5; 
-   * Reserved
-   *
-   * index = 4; 
+   * index = 2; 
    * Reserved
    *
    * index = 3; 
    * Reserved
    *
-   * index = 2; 
+   * index = 4; 
    * Reserved
    *
-   * index = 1; label = Operation Mode; 
-   * Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment
-   * mode. 100: delete first payload deployment request. 101: delete all payload deployment requests.
+   * index = 5; 
+   * Reserved
+   *
+   * index = 6; 
+   * Reserved
+   *
+   * index = 7; 
+   * Reserved
    */
   @Deprecated(message = "")
   MAV_CMD_PAYLOAD_CONTROL_DEPLOY(30002L),

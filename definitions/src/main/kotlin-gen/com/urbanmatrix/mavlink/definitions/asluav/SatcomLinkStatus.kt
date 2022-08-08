@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * Status of the SatCom link
  */
+@GeneratedMavMessage(
+  id = 8015,
+  crc = 23,
+)
 public data class SatcomLinkStatus(
   /**
    * Timestamp

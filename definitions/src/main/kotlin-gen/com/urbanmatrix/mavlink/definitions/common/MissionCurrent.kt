@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -13,6 +14,10 @@ import kotlin.Int
  * Message that announces the sequence number of the current active mission item. The MAV will fly
  * towards this mission item.
  */
+@GeneratedMavMessage(
+  id = 42,
+  crc = 28,
+)
 public data class MissionCurrent(
   /**
    * Sequence

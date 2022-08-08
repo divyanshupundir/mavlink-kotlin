@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.collections.List
 /**
  * The smoothed, monotonic system state used to feed the control loops of the system.
  */
+@GeneratedMavMessage(
+  id = 146,
+  crc = 103,
+)
 public data class ControlSystemState(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

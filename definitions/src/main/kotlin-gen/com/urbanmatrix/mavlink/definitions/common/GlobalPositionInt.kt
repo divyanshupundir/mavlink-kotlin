@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -22,6 +23,10 @@ import kotlin.Long
  *                is designed as scaled integer message since the resolution of float is not
  * sufficient.
  */
+@GeneratedMavMessage(
+  id = 33,
+  crc = 104,
+)
 public data class GlobalPositionInt(
   /**
    * Timestamp (time since system boot).

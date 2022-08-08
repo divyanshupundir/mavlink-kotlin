@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeUint8
 import com.urbanmatrix.mavlink.serialization.decodeUint8Array
 import com.urbanmatrix.mavlink.serialization.encodeUint8
@@ -18,6 +20,11 @@ import kotlin.collections.List
  * OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended
  * Advertising or on WiFi Neighbor Aware Networking or on WiFi Beacon.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12915,
+  crc = 94,
+)
 public data class OpenDroneIdMessagePack(
   /**
    * System ID (0 for broadcast).

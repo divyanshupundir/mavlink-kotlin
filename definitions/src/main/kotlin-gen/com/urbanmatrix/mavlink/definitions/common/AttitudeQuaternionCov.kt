@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -20,6 +21,10 @@ import kotlin.collections.List
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
  * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
  */
+@GeneratedMavMessage(
+  id = 61,
+  crc = 167,
+)
 public data class AttitudeQuaternionCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

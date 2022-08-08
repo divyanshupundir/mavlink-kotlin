@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -8,6 +9,7 @@ import kotlin.Long
  * the vehicle on which they are mounted (e.g. MAV_TYPE_OCTOROTOR). All other components must report a
  * value appropriate for their type (e.g. a camera must use MAV_TYPE_CAMERA).
  */
+@GeneratedMavEnum
 public enum class MavType(
   public override val `value`: Long,
 ) : MavEnum {

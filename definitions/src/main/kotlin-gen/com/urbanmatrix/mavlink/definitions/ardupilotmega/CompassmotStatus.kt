@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Status of compassmot calibration.
  */
+@GeneratedMavMessage(
+  id = 177,
+  crc = 240,
+)
 public data class CompassmotStatus(
   /**
    * Throttle.

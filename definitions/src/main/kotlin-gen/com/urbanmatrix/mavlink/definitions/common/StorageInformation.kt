@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,10 @@ import kotlin.String
  * MAV_CMD_REQUEST_MESSAGE.param2 to indicate the index/id of requested storage: 0 for all, 1 for
  * first, 2 for second, etc.
  */
+@GeneratedMavMessage(
+  id = 261,
+  crc = 179,
+)
 public data class StorageInformation(
   /**
    * Timestamp (time since system boot).

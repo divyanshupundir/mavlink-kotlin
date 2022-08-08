@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags in RALLY_POINT message.
  */
+@GeneratedMavEnum
 public enum class RallyFlags(
   public override val `value`: Long,
 ) : MavEnum {

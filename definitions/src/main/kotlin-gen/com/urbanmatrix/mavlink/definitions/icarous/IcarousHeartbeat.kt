@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.icarous
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * ICAROUS heartbeat
  */
+@GeneratedMavMessage(
+  id = 42000,
+  crc = 227,
+)
 public data class IcarousHeartbeat(
   /**
    * See the FMS_STATE enum.

@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
+@GeneratedMavEnum
 public enum class MavCmd(
   public override val `value`: Long,
 ) : MavEnum {

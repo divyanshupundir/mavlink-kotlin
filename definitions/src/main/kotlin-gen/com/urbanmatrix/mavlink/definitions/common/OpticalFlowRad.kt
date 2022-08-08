@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -23,6 +24,10 @@ import kotlin.Long
 /**
  * Optical flow from an angular rate flow sensor (e.g. PX4FLOW or mouse sensor)
  */
+@GeneratedMavMessage(
+  id = 106,
+  crc = 138,
+)
 public data class OpticalFlowRad(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

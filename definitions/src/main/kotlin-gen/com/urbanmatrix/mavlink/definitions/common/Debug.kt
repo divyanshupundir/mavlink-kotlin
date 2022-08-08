@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.Long
  * Send a debug value. The index is used to discriminate between values. These values show up in the
  * plot of QGroundControl as DEBUG N.
  */
+@GeneratedMavMessage(
+  id = 254,
+  crc = 46,
+)
 public data class Debug(
   /**
    * Timestamp (time since system boot).

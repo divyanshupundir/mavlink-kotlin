@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Long
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right).
  */
+@GeneratedMavMessage(
+  id = 30,
+  crc = 39,
+)
 public data class Attitude(
   /**
    * Timestamp (time since system boot).

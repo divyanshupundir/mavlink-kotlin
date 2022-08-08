@@ -1,6 +1,7 @@
 package com.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import com.urbanmatrix.mavlink.generator.models.EnumModel
 import kotlin.Long
@@ -16,6 +17,7 @@ fun EnumModel.generateEnumFile(packageName: String): FileSpec {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
+        .addAnnotation(GeneratedMavEnum::class)
         .addType(generateCompanionObject(packageName))
         .build()
 

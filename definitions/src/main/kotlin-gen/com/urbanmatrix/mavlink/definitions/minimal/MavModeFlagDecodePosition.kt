@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -8,6 +9,7 @@ import kotlin.Long
  * the value of a flag bit by combining the base_mode variable with AND with the flag position value.
  * The result will be either 0 or 1, depending on if the flag is set or not.
  */
+@GeneratedMavEnum
 public enum class MavModeFlagDecodePosition(
   public override val `value`: Long,
 ) : MavEnum {

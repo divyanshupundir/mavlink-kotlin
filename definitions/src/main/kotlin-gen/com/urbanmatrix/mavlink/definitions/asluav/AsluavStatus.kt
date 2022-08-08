@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.collections.List
 /**
  * Extended state information for ASLUAVs
  */
+@GeneratedMavMessage(
+  id = 8006,
+  crc = 97,
+)
 public data class AsluavStatus(
   /**
    *  Status of the position-indicator LEDs

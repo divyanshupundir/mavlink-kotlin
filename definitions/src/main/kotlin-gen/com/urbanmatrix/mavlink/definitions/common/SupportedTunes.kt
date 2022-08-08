@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Tune formats supported by vehicle. This should be emitted as response to MAV_CMD_REQUEST_MESSAGE.
  */
+@GeneratedMavMessage(
+  id = 401,
+  crc = 183,
+)
 public data class SupportedTunes(
   /**
    * System ID

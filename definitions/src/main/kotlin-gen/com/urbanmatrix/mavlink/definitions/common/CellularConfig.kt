@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -20,6 +21,10 @@ import kotlin.String
  *         This message is re-emitted as an acknowledgement by the modem.
  *         The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE.
  */
+@GeneratedMavMessage(
+  id = 336,
+  crc = 245,
+)
 public data class CellularConfig(
   /**
    * Enable/disable LTE. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent

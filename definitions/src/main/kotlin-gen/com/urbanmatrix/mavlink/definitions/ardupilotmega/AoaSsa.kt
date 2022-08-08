@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Angle of Attack and Side Slip Angle.
  */
+@GeneratedMavMessage(
+  id = 11020,
+  crc = 205,
+)
 public data class AoaSsa(
   /**
    * Timestamp (since boot or Unix epoch).

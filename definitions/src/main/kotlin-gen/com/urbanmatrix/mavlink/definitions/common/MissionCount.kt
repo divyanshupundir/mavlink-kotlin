@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Int
  * transaction. The GCS can then request the individual mission item based on the knowledge of the
  * total number of waypoints.
  */
+@GeneratedMavMessage(
+  id = 44,
+  crc = 221,
+)
 public data class MissionCount(
   /**
    * System ID

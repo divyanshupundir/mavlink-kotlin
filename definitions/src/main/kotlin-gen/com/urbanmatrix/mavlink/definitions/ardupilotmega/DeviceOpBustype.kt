@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Bus types for device operations.
  */
+@GeneratedMavEnum
 public enum class DeviceOpBustype(
   public override val `value`: Long,
 ) : MavEnum {

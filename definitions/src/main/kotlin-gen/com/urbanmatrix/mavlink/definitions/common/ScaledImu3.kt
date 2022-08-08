@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -16,6 +17,10 @@ import kotlin.Long
  * The RAW IMU readings for 3rd 9DOF sensor setup. This message should contain the scaled values to
  * the described units
  */
+@GeneratedMavMessage(
+  id = 129,
+  crc = 46,
+)
 public data class ScaledImu3(
   /**
    * Timestamp (time since system boot).

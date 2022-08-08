@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeString
 import com.urbanmatrix.mavlink.serialization.decodeUint32
 import com.urbanmatrix.mavlink.serialization.encodeString
@@ -29,6 +31,11 @@ import kotlin.String
  * both this message and AUTOPILOT_VERSION.
  *       
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 397,
+  crc = 182,
+)
 public data class ComponentMetadata(
   /**
    * Timestamp (time since system boot).

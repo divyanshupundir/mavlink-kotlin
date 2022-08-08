@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -8,6 +9,7 @@ import kotlin.Long
  * COMPONENT_METADATA to provide information about supported metadata types. The types are not used
  * directly in MAVLink messages.
  */
+@GeneratedMavEnum
 public enum class CompMetadataType(
   public override val `value`: Long,
 ) : MavEnum {

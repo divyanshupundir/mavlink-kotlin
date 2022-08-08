@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * Transceiver heartbeat with health report (updated every 10s)
  */
+@GeneratedMavMessage(
+  id = 10003,
+  crc = 4,
+)
 public data class UavionixAdsbTransceiverHealthReport(
   /**
    * ADS-B transponder messages

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Long
 /**
  * Setpoint in roll, pitch, yaw and thrust from the operator
  */
+@GeneratedMavMessage(
+  id = 81,
+  crc = 106,
+)
 public data class ManualSetpoint(
   /**
    * Timestamp (time since system boot).

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Specifies the datatype of a MAVLink parameter.
  */
+@GeneratedMavEnum
 public enum class MavParamType(
   public override val `value`: Long,
 ) : MavEnum {

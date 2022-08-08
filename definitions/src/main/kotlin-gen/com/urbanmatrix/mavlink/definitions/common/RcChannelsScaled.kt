@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -18,6 +19,10 @@ import kotlin.Long
  * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels
  * that are inactive should be set to UINT16_MAX.
  */
+@GeneratedMavMessage(
+  id = 34,
+  crc = 237,
+)
 public data class RcChannelsScaled(
   /**
    * Timestamp (time since system boot).

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.String
  * missing parameters after a loss or timeout. The parameter microservice is documented at
  * https://mavlink.io/en/services/parameter.html
  */
+@GeneratedMavMessage(
+  id = 22,
+  crc = 220,
+)
 public data class ParamValue(
   /**
    * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and

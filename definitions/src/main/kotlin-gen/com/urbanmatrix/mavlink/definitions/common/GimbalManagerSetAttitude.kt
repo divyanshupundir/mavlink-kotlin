@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -22,6 +24,11 @@ import kotlin.collections.List
  * High level message to control a gimbal's attitude. This message is to be sent to the gimbal
  * manager (e.g. from a ground station). Angles and rates can be set to NaN according to use case.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 282,
+  crc = 123,
+)
 public data class GimbalManagerSetAttitude(
   /**
    * System ID

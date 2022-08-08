@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * SERIAL_CONTROL device types
  */
+@GeneratedMavEnum
 public enum class SerialControlDev(
   public override val `value`: Long,
 ) : MavEnum {

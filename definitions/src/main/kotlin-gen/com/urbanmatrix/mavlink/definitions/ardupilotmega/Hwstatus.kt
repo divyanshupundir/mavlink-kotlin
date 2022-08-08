@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -14,6 +15,10 @@ import kotlin.Int
 /**
  * Status of key hardware.
  */
+@GeneratedMavMessage(
+  id = 165,
+  crc = 21,
+)
 public data class Hwstatus(
   /**
    * Board voltage.

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8Array
@@ -13,6 +14,10 @@ import kotlin.collections.List
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F16 format
  */
+@GeneratedMavMessage(
+  id = 180,
+  crc = 222,
+)
 public data class SerialUdbExtraF16(
   /**
    * Serial UDB Extra Name of Expected Lead Pilot

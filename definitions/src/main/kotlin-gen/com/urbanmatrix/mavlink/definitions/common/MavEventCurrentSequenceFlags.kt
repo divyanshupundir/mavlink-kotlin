@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags for CURRENT_EVENT_SEQUENCE.
  */
+@GeneratedMavEnum
 public enum class MavEventCurrentSequenceFlags(
   public override val `value`: Long,
 ) : MavEnum {

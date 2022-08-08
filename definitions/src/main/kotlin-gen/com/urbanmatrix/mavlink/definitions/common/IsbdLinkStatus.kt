@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * Status of the Iridium SBD link.
  */
+@GeneratedMavMessage(
+  id = 335,
+  crc = 225,
+)
 public data class IsbdLinkStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.avssuas
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Long
 /**
  *  Drone position.
  */
+@GeneratedMavMessage(
+  id = 60051,
+  crc = 245,
+)
 public data class AvssDronePosition(
   /**
    * Timestamp (time since FC boot).

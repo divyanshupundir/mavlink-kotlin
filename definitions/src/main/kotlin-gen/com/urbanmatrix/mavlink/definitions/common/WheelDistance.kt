@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeDoubleArray
@@ -19,6 +20,10 @@ import kotlin.collections.List
 /**
  * Cumulative distance traveled for each reported wheel.
  */
+@GeneratedMavMessage(
+  id = 9000,
+  crc = 113,
+)
 public data class WheelDistance(
   /**
    * Timestamp (synced to UNIX time or since system boot).

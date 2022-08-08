@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.icarous
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
+@GeneratedMavEnum
 public enum class IcarousFmsState(
   public override val `value`: Long,
 ) : MavEnum {

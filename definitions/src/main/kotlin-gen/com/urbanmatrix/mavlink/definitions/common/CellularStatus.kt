@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * Report current used cellular network status
  */
+@GeneratedMavMessage(
+  id = 334,
+  crc = 72,
+)
 public data class CellularStatus(
   /**
    * Cellular modem status

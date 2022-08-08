@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Int
  * Send a command with up to seven parameters to the MAV. The command microservice is documented at
  * https://mavlink.io/en/services/command.html
  */
+@GeneratedMavMessage(
+  id = 76,
+  crc = 152,
+)
 public data class CommandLong(
   /**
    * System which should execute the command

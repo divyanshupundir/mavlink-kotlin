@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Cellular network radio type
  */
+@GeneratedMavEnum
 public enum class CellularNetworkRadioType(
   public override val `value`: Long,
 ) : MavEnum {

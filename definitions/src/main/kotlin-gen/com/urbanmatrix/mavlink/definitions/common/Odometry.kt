@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.collections.List
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147
  * standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
  */
+@GeneratedMavMessage(
+  id = 331,
+  crc = 91,
+)
 public data class Odometry(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Type of landing target
  */
+@GeneratedMavEnum
 public enum class LandingTargetType(
   public override val `value`: Long,
 ) : MavEnum {

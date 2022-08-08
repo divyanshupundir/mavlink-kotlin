@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * EKF Status message including flags and variances.
  */
+@GeneratedMavMessage(
+  id = 193,
+  crc = 71,
+)
 public data class EkfStatusReport(
   /**
    * Flags.

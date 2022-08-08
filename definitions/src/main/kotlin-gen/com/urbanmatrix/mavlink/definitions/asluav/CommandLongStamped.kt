@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.Long
 /**
  * Send a command with up to seven parameters to the MAV and additional metadata
  */
+@GeneratedMavMessage(
+  id = 224,
+  crc = 102,
+)
 public data class CommandLongStamped(
   /**
    * UTC time, seconds elapsed since 01.01.1970

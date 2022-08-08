@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * These flags encode the cellular network status
  */
+@GeneratedMavEnum
 public enum class CellularStatusFlag(
   public override val `value`: Long,
 ) : MavEnum {

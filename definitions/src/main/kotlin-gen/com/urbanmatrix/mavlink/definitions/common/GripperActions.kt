@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Gripper actions.
  */
+@GeneratedMavEnum
 public enum class GripperActions(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Int
  * item will be transmitted / updated. If the start index is NOT 0 and above the current list size,
  * this request should be REJECTED!
  */
+@GeneratedMavMessage(
+  id = 38,
+  crc = 9,
+)
 public data class MissionWritePartialList(
   /**
    * System ID

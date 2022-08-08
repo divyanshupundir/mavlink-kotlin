@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * Flags for high level gimbal manager operation The first 16 bits are identical to the
  * GIMBAL_DEVICE_FLAGS.
  */
+@GeneratedMavEnum
 public enum class GimbalManagerFlags(
   public override val `value`: Long,
 ) : MavEnum {

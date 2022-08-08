@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Focus types for MAV_CMD_SET_CAMERA_FOCUS
  */
+@GeneratedMavEnum
 public enum class SetFocusType(
   public override val `value`: Long,
 ) : MavEnum {

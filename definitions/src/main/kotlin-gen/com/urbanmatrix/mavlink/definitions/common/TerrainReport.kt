@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.Int
  * sent as a response to a TERRAIN_CHECK request. See terrain protocol docs:
  * https://mavlink.io/en/services/terrain.html
  */
+@GeneratedMavMessage(
+  id = 136,
+  crc = 1,
+)
 public data class TerrainReport(
   /**
    * Latitude

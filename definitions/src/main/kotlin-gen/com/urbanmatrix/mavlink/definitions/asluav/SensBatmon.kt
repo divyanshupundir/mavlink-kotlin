@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -25,6 +26,10 @@ import kotlin.Long
 /**
  * Battery pack monitoring data for Li-Ion batteries
  */
+@GeneratedMavMessage(
+  id = 8010,
+  crc = 155,
+)
 public data class SensBatmon(
   /**
    * Time since system start

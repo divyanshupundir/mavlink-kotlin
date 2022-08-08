@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags in EKF_STATUS message.
  */
+@GeneratedMavEnum
 public enum class EkfStatusFlags(
   public override val `value`: Long,
 ) : MavEnum {

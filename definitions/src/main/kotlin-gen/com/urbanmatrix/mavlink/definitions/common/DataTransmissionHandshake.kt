@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.Long
  * Handshake message to initiate, control and stop image streaming when using the Image Transmission
  * Protocol: https://mavlink.io/en/services/image_transmission.html.
  */
+@GeneratedMavMessage(
+  id = 130,
+  crc = 29,
+)
 public data class DataTransmissionHandshake(
   /**
    * Type of requested/acknowledged data.

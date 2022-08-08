@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Long
 /**
  * Send Status of each log block that autopilot board might have sent.
  */
+@GeneratedMavMessage(
+  id = 185,
+  crc = 186,
+)
 public data class RemoteLogBlockStatus(
   /**
    * System ID.

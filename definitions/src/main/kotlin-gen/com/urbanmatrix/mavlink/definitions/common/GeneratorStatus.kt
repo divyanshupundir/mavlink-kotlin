@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.Long
 /**
  * Telemetry of power generation system. Alternator or mechanical generator.
  */
+@GeneratedMavMessage(
+  id = 373,
+  crc = 117,
+)
 public data class GeneratorStatus(
   /**
    * Status flags.

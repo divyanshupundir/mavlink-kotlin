@@ -4,7 +4,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.generator.models.EnumEntryModel
 
-
 fun EnumEntryModel.generateEnumConstant() = TypeSpec
     .anonymousClassBuilder()
     .addSuperclassConstructorParameter("%LL", value)

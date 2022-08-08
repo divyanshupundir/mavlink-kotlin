@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -22,6 +23,10 @@ import kotlin.Long
 /**
  * RTK GPS data. Gives information on the relative baseline calculation the GPS is reporting
  */
+@GeneratedMavMessage(
+  id = 127,
+  crc = 25,
+)
 public data class GpsRtk(
   /**
    * Time since boot of last baseline message received.

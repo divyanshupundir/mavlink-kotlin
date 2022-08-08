@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt64
@@ -13,6 +14,10 @@ import kotlin.Long
 /**
  * Time synchronization message.
  */
+@GeneratedMavMessage(
+  id = 111,
+  crc = 34,
+)
 public data class Timesync(
   /**
    * Time sync timestamp 1

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Bitmap of options for the MAV_CMD_DO_REPOSITION
  */
+@GeneratedMavEnum
 public enum class MavDoRepositionFlags(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,10 @@ import kotlin.Int
  * Notifications for values in the range between 0.5 and 1.0 should be optional and controllable by the
  * user.
  */
+@GeneratedMavMessage(
+  id = 230,
+  crc = 163,
+)
 public data class EstimatorStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

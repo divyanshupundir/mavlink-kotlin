@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Airborne status of UAS.
  */
+@GeneratedMavEnum
 public enum class UtmFlightState(
   public override val `value`: Long,
 ) : MavEnum {

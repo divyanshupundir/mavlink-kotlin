@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Action required when performing CMD_PREFLIGHT_STORAGE
  */
+@GeneratedMavEnum
 public enum class MavPreflightStorageAction(
   public override val `value`: Long,
 ) : MavEnum {

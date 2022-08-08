@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -11,6 +12,7 @@ import kotlin.Long
  * storage (RAM) on startup and written back when they are changed.)
  *       
  */
+@GeneratedMavEnum
 public enum class PreflightStorageMissionAction(
   public override val `value`: Long,
 ) : MavEnum {

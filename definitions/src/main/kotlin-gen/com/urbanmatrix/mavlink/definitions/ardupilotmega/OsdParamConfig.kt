@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.String
 /**
  * Configure an OSD parameter slot.
  */
+@GeneratedMavMessage(
+  id = 11033,
+  crc = 195,
+)
 public data class OsdParamConfig(
   /**
    * System ID.

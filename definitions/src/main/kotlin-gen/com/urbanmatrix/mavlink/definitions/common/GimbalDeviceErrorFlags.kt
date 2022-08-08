@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Gimbal device (low level) error flags (bitmap, 0 means no error)
  */
+@GeneratedMavEnum
 public enum class GimbalDeviceErrorFlags(
   public override val `value`: Long,
 ) : MavEnum {

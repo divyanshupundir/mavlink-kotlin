@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -22,6 +23,10 @@ import kotlin.collections.List
  * Sent from autopilot to simulation. Hardware in the loop control outputs (replacement for
  * HIL_CONTROLS)
  */
+@GeneratedMavMessage(
+  id = 93,
+  crc = 47,
+)
 public data class HilActuatorControls(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

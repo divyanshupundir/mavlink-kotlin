@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Possible responses from a WIFI_CONFIG_AP message.
  */
+@GeneratedMavEnum
 public enum class WifiConfigApResponse(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -17,6 +18,10 @@ import kotlin.collections.List
 /**
  * Message implementing parts of the V2 payload specs in V1 frames for transitional support.
  */
+@GeneratedMavMessage(
+  id = 248,
+  crc = 8,
+)
 public data class V2Extension(
   /**
    * Network ID (0 for broadcast)

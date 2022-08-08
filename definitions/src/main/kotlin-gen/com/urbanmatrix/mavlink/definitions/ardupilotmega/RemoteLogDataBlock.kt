@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.collections.List
 /**
  * Send a block of log data to remote location.
  */
+@GeneratedMavMessage(
+  id = 184,
+  crc = 159,
+)
 public data class RemoteLogDataBlock(
   /**
    * System ID.

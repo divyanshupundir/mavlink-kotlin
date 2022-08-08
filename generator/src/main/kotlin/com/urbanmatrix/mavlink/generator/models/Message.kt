@@ -65,7 +65,5 @@ data class MessageXml(
         workInProgress != null,
         deprecated?.toModel(),
         description
-    ).also {
-        if (name.equals("HEARTBEAT", ignoreCase = true)) println(it)
-    }
+    )
 }

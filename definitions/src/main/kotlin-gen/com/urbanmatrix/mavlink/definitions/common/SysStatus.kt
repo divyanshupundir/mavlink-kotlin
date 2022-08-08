@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -28,6 +29,10 @@ import kotlin.Int
  * autonomously. After a failure occurred it should first move from active to critical to allow manual
  * intervention and then move to emergency after a certain timeout.
  */
+@GeneratedMavMessage(
+  id = 1,
+  crc = 124,
+)
 public data class SysStatus(
   /**
    * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.

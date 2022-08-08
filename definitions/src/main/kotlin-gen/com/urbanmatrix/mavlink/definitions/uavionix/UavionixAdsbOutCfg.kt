@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -23,6 +24,10 @@ import kotlin.String
  * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec
  * thereafter)
  */
+@GeneratedMavMessage(
+  id = 10001,
+  crc = 209,
+)
 public data class UavionixAdsbOutCfg(
   /**
    * Vehicle address (24 bit)

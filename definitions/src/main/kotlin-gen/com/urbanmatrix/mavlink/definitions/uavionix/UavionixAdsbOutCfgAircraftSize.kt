@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Definitions for aircraft size
  */
+@GeneratedMavEnum
 public enum class UavionixAdsbOutCfgAircraftSize(
   public override val `value`: Long,
 ) : MavEnum {

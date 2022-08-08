@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * Depreciated but used as a compiler flag.  Do not remove
  */
+@GeneratedMavMessage(
+  id = 150,
+  crc = 181,
+)
 public data class FlexifunctionSet(
   /**
    * System ID

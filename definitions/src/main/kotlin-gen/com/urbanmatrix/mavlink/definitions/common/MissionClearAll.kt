@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Delete all mission items at once.
  */
+@GeneratedMavMessage(
+  id = 45,
+  crc = 232,
+)
 public data class MissionClearAll(
   /**
    * System ID

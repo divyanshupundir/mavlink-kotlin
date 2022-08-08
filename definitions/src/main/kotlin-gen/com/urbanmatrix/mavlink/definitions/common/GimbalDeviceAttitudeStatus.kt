@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -28,6 +30,11 @@ import kotlin.collections.List
  * pitching up, yaw is turn to the right) or relative to the vehicle heading if the flag is not set.
  * This message should be broadcast at a low regular rate (e.g. 10Hz).
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 285,
+  crc = 137,
+)
 public data class GimbalDeviceAttitudeStatus(
   /**
    * System ID

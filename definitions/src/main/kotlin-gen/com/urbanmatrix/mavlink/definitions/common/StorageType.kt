@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags to indicate the type of storage.
  */
+@GeneratedMavEnum
 public enum class StorageType(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Long
  * coordinate frame in NED coordinates. Coordinate frame is right-handed, Z-axis down (aeronautical
  * frame, NED / north-east-down convention)
  */
+@GeneratedMavMessage(
+  id = 89,
+  crc = 231,
+)
 public data class LocalPositionNedSystemGlobalOffset(
   /**
    * Timestamp (time since system boot).

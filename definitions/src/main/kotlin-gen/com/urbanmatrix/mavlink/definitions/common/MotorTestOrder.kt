@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Sequence that motors are tested when using MAV_CMD_DO_MOTOR_TEST.
  */
+@GeneratedMavEnum
 public enum class MotorTestOrder(
   public override val `value`: Long,
 ) : MavEnum {

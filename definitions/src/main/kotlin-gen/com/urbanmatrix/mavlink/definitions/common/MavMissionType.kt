@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Type of mission items being requested/sent in mission protocol.
  */
+@GeneratedMavEnum
 public enum class MavMissionType(
   public override val `value`: Long,
 ) : MavEnum {

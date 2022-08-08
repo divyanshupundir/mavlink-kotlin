@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -19,6 +20,10 @@ import kotlin.Long
  * microseconds: 0%, 2000 microseconds: 100%.  A value of UINT16_MAX implies the channel is unused.
  * Individual receivers/transmitters might violate this specification.
  */
+@GeneratedMavMessage(
+  id = 65,
+  crc = 118,
+)
 public data class RcChannels(
   /**
    * Timestamp (time since system boot).

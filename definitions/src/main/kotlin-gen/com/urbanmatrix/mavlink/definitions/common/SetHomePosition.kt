@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -39,26 +40,44 @@ import kotlin.collections.List
  */
 @Deprecated(message =
     "The command protocol version (MAV_CMD_DO_SET_HOME) allows a GCS to detect when setting the home position has failed.")
+@GeneratedMavMessage(
+  id = 243,
+  crc = 108,
+)
 public data class SetHomePosition(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * System ID.
    */
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val targetSystem: Int = 0,
   /**
-   * Local Z position of the end of the approach vector. Multicopters should set this position based
-   * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
-   * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
-   * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+   * Latitude (WGS84)
    */
-  public val approachZ: Float = 0F,
+  public val latitude: Int = 0,
   /**
-   * Local Y position of the end of the approach vector. Multicopters should set this position based
-   * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
-   * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
-   * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+   * Longitude (WGS84)
    */
-  public val approachY: Float = 0F,
+  public val longitude: Int = 0,
+  /**
+   * Altitude (MSL). Positive for up.
+   */
+  public val altitude: Int = 0,
+  /**
+   * Local X position of this position in the local coordinate frame
+   */
+  public val x: Float = 0F,
+  /**
+   * Local Y position of this position in the local coordinate frame
+   */
+  public val y: Float = 0F,
+  /**
+   * Local Z position of this position in the local coordinate frame
+   */
+  public val z: Float = 0F,
+  /**
+   * World to surface normal and heading transformation of the takeoff position. Used to indicate
+   * the heading and slope of the ground
+   */
+  public val q: List<Float> = emptyList(),
   /**
    * Local X position of the end of the approach vector. Multicopters should set this position based
    * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
@@ -67,55 +86,41 @@ public data class SetHomePosition(
    */
   public val approachX: Float = 0F,
   /**
-   * World to surface normal and heading transformation of the takeoff position. Used to indicate
-   * the heading and slope of the ground
+   * Local Y position of the end of the approach vector. Multicopters should set this position based
+   * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
+   * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
+   * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
    */
-  public val q: List<Float> = emptyList(),
+  public val approachY: Float = 0F,
   /**
-   * Local Z position of this position in the local coordinate frame
+   * Local Z position of the end of the approach vector. Multicopters should set this position based
+   * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
+   * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
+   * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
    */
-  public val z: Float = 0F,
+  public val approachZ: Float = 0F,
   /**
-   * Local Y position of this position in the local coordinate frame
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
+   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
-  public val y: Float = 0F,
-  /**
-   * Local X position of this position in the local coordinate frame
-   */
-  public val x: Float = 0F,
-  /**
-   * Altitude (MSL). Positive for up.
-   */
-  public val altitude: Int = 0,
-  /**
-   * Longitude (WGS84)
-   */
-  public val longitude: Int = 0,
-  /**
-   * Latitude (WGS84)
-   */
-  public val latitude: Int = 0,
-  /**
-   * System ID.
-   */
-  public val targetSystem: Int = 0,
+  public val timeUsec: BigInteger = BigInteger.ZERO,
 ) : MavMessage<SetHomePosition> {
   public override val instanceMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
 
   public override fun serialize(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeFloat(approachZ)
-    outputBuffer.encodeFloat(approachY)
-    outputBuffer.encodeFloat(approachX)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeInt32(latitude)
+    outputBuffer.encodeInt32(longitude)
+    outputBuffer.encodeInt32(altitude)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(approachX)
+    outputBuffer.encodeFloat(approachY)
+    outputBuffer.encodeFloat(approachZ)
     return outputBuffer.array()
   }
 
@@ -129,31 +134,31 @@ public data class SetHomePosition(
     private val DESERIALIZER: MavDeserializer<SetHomePosition> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUint64()
-      val approachZ = inputBuffer.decodeFloat()
-      val approachY = inputBuffer.decodeFloat()
-      val approachX = inputBuffer.decodeFloat()
-      val q = inputBuffer.decodeFloatArray(16)
-      val z = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val x = inputBuffer.decodeFloat()
-      val altitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val latitude = inputBuffer.decodeInt32()
       val targetSystem = inputBuffer.decodeUint8()
+      val latitude = inputBuffer.decodeInt32()
+      val longitude = inputBuffer.decodeInt32()
+      val altitude = inputBuffer.decodeInt32()
+      val x = inputBuffer.decodeFloat()
+      val y = inputBuffer.decodeFloat()
+      val z = inputBuffer.decodeFloat()
+      val q = inputBuffer.decodeFloatArray(16)
+      val approachX = inputBuffer.decodeFloat()
+      val approachY = inputBuffer.decodeFloat()
+      val approachZ = inputBuffer.decodeFloat()
 
       SetHomePosition(
-        timeUsec = timeUsec,
-        approachZ = approachZ,
-        approachY = approachY,
-        approachX = approachX,
-        q = q,
-        z = z,
-        y = y,
-        x = x,
-        altitude = altitude,
-        longitude = longitude,
-        latitude = latitude,
         targetSystem = targetSystem,
+        latitude = latitude,
+        longitude = longitude,
+        altitude = altitude,
+        x = x,
+        y = y,
+        z = z,
+        q = q,
+        approachX = approachX,
+        approachY = approachY,
+        approachZ = approachZ,
+        timeUsec = timeUsec,
       )
     }
 

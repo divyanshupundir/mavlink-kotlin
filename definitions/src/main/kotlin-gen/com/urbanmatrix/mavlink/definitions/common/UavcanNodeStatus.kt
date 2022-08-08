@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.Long
  * message "uavcan.protocol.NodeStatus" for the background information. The UAVCAN specification is
  * available at http://uavcan.org.
  */
+@GeneratedMavMessage(
+  id = 310,
+  crc = 28,
+)
 public data class UavcanNodeStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

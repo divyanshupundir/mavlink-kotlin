@@ -5,6 +5,7 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.urbanmatrix.mavlink.api.AbstractMavDialect
+import com.urbanmatrix.mavlink.api.GeneratedMavDialect
 import com.urbanmatrix.mavlink.generator.models.MavlinkModel
 
 fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
@@ -13,6 +14,7 @@ fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
         .superclass(AbstractMavDialect::class)
         .addSuperclassConstructorParameter(generateDependencies(basePackageName))
         .addSuperclassConstructorParameter(generateMessages(basePackageName))
+        .addAnnotation(GeneratedMavDialect::class)
         .build()
 
     return FileSpec.builder(packageName, dialectObjectName)

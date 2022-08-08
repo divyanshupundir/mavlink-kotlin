@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.paparazzi
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * Request the overall list of mission items from the system/component.
  */
+@GeneratedMavMessage(
+  id = 182,
+  crc = 115,
+)
 public data class ScriptRequestList(
   /**
    * System ID

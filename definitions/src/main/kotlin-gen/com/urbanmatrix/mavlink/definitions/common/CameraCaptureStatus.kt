@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -21,6 +22,10 @@ import kotlin.Long
  * Information about the status of a capture. Can be requested with a MAV_CMD_REQUEST_MESSAGE
  * command.
  */
+@GeneratedMavMessage(
+  id = 262,
+  crc = 12,
+)
 public data class CameraCaptureStatus(
   /**
    * Timestamp (time since system boot).

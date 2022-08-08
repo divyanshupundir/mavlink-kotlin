@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -28,6 +30,11 @@ import kotlin.collections.List
  * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The
  * Location message provides the location, altitude, direction and speed of the aircraft.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12901,
+  crc = 254,
+)
 public data class OpenDroneIdLocation(
   /**
    * System ID (0 for broadcast).

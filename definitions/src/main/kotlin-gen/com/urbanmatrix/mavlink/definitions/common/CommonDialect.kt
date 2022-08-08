@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
 import com.urbanmatrix.mavlink.api.AbstractMavDialect
+import com.urbanmatrix.mavlink.api.GeneratedMavDialect
 import com.urbanmatrix.mavlink.definitions.minimal.MinimalDialect
 
+@GeneratedMavDialect
 public object CommonDialect : AbstractMavDialect(
   setOf(
     MinimalDialect,

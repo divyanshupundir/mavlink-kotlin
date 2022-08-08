@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ualberta
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Mode currently commanded by pilot
  */
+@GeneratedMavEnum
 public enum class UalbertaPilotMode(
   public override val `value`: Long,
 ) : MavEnum {

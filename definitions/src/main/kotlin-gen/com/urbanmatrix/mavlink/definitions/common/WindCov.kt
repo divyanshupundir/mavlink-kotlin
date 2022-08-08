@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -17,6 +18,10 @@ import kotlin.Int
  * Wind estimate from vehicle. Note that despite the name, this message does not actually contain
  * any covariances but instead variability and accuracy fields in terms of standard deviation (1-STD).
  */
+@GeneratedMavMessage(
+  id = 231,
+  crc = 105,
+)
 public data class WindCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

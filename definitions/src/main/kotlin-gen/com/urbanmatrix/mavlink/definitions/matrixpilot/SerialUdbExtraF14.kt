@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -17,6 +18,10 @@ import kotlin.Long
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F14: format
  */
+@GeneratedMavMessage(
+  id = 178,
+  crc = 123,
+)
 public data class SerialUdbExtraF14(
   /**
    * Serial UDB Extra Wind Estimation Enabled

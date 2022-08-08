@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeUint32
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -25,6 +27,11 @@ import kotlin.collections.List
  * PageCount, Length and TimeStamp are present and AuthData is only 17 bytes. For data page 1 through
  * 15, PageCount, Length and TimeStamp are not present and the size of AuthData is 23 bytes.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12902,
+  crc = 140,
+)
 public data class OpenDroneIdAuthentication(
   /**
    * System ID (0 for broadcast).

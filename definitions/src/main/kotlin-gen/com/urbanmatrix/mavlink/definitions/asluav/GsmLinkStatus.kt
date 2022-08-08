@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Int
 /**
  * Status of GSM modem (connected to onboard computer)
  */
+@GeneratedMavMessage(
+  id = 8014,
+  crc = 200,
+)
 public data class GsmLinkStatus(
   /**
    * Timestamp (of OBC)

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,10 @@ import kotlin.String
  * Configure WiFi AP SSID, password, and mode. This message is re-emitted as an acknowledgement by
  * the AP. The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE
  */
+@GeneratedMavMessage(
+  id = 299,
+  crc = 19,
+)
 public data class WifiConfigAp(
   /**
    * Name of Wi-Fi network (SSID). Blank to leave it unchanged when setting. Current SSID when sent

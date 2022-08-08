@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -13,6 +14,10 @@ import kotlin.Int
  * Request a current rally point from MAV. MAV should respond with a RALLY_POINT message. MAV should
  * not respond if the request is invalid.
  */
+@GeneratedMavMessage(
+  id = 176,
+  crc = 234,
+)
 public data class RallyFetchPoint(
   /**
    * System ID.

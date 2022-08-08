@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Indicates the ESC connection type.
  */
+@GeneratedMavEnum
 public enum class EscConnectionType(
   public override val `value`: Long,
 ) : MavEnum {

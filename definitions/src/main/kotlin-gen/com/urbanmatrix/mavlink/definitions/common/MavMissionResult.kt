@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Result of mission operation (in a MISSION_ACK message).
  */
+@GeneratedMavEnum
 public enum class MavMissionResult(
   public override val `value`: Long,
 ) : MavEnum {

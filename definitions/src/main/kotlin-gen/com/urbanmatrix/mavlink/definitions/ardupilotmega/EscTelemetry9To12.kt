@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16Array
@@ -15,6 +16,10 @@ import kotlin.collections.List
 /**
  * ESC Telemetry Data for ESCs 9 to 12, matching data sent by BLHeli ESCs.
  */
+@GeneratedMavMessage(
+  id = 11032,
+  crc = 85,
+)
 public data class EscTelemetry9To12(
   /**
    * Temperature.

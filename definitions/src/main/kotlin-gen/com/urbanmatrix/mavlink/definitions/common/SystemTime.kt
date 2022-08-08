@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -17,6 +18,10 @@ import kotlin.Long
  * The system time is the time of the master clock, typically the computer clock of the main onboard
  * computer.
  */
+@GeneratedMavMessage(
+  id = 2,
+  crc = 137,
+)
 public data class SystemTime(
   /**
    * Timestamp (UNIX epoch time).

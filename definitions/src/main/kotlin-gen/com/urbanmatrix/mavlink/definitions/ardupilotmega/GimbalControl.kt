@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Control message for rate gimbal.
  */
+@GeneratedMavMessage(
+  id = 201,
+  crc = 205,
+)
 public data class GimbalControl(
   /**
    * System ID.

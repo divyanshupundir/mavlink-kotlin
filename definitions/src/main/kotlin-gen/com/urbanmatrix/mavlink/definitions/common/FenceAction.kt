@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Actions following geofence breach.
  */
+@GeneratedMavEnum
 public enum class FenceAction(
   public override val `value`: Long,
 ) : MavEnum {

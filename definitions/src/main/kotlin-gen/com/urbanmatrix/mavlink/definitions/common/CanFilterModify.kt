@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.collections.List
  * (2nd and 3rd bytes) which corresponds to the DroneCAN message ID for DroneCAN. Filters with more
  * than 16 IDs can be constructed by sending multiple CAN_FILTER_MODIFY messages.
  */
+@GeneratedMavMessage(
+  id = 388,
+  crc = 8,
+)
 public data class CanFilterModify(
   /**
    * System ID.

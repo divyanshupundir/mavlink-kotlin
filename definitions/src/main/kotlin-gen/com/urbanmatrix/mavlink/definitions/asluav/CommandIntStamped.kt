@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -29,6 +30,10 @@ import kotlin.Long
  * Message encoding a command with parameters as scaled integers and additional metadata. Scaling
  * depends on the actual command value.
  */
+@GeneratedMavMessage(
+  id = 223,
+  crc = 119,
+)
 public data class CommandIntStamped(
   /**
    * UTC time, seconds elapsed since 01.01.1970

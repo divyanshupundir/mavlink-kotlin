@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.Long
  * messages from this system appropriately (e.g. by laying out the user interface based on the
  * autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html
  */
+@GeneratedMavMessage(
+  id = 0,
+  crc = 50,
+)
 public data class Heartbeat(
   /**
    * Vehicle or component type. For a flight controller component the vehicle type (quadrotor,

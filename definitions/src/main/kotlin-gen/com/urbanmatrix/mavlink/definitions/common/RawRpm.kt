@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * RPM sensor data message.
  */
+@GeneratedMavMessage(
+  id = 339,
+  crc = 199,
+)
 public data class RawRpm(
   /**
    * Index of this RPM sensor (0-indexed)

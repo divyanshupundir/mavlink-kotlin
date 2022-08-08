@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -15,6 +16,10 @@ import kotlin.Long
 /**
  * State of autopilot RAM.
  */
+@GeneratedMavMessage(
+  id = 152,
+  crc = 208,
+)
 public data class Meminfo(
   /**
    * Heap top.

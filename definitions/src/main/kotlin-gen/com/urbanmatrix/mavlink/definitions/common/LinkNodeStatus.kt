@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeUint16
 import com.urbanmatrix.mavlink.serialization.decodeUint32
 import com.urbanmatrix.mavlink.serialization.decodeUint64
@@ -20,6 +22,11 @@ import kotlin.Long
 /**
  * Status generated in each node in the communication chain and injected into MAVLink stream.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 8,
+  crc = 117,
+)
 public data class LinkNodeStatus(
   /**
    * Timestamp (time since system boot).

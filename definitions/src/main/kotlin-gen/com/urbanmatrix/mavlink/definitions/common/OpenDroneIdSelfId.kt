@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeString
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -25,6 +27,11 @@ import kotlin.collections.List
  * particular area or manner. This message can also be used to provide optional additional
  * clarification in an emergency/remote ID system failure situation.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 12903,
+  crc = 249,
+)
 public data class OpenDroneIdSelfId(
   /**
    * System ID (0 for broadcast).

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -18,6 +19,10 @@ import kotlin.Int
  * Request for terrain data and terrain status. See terrain protocol docs:
  * https://mavlink.io/en/services/terrain.html
  */
+@GeneratedMavMessage(
+  id = 133,
+  crc = 6,
+)
 public data class TerrainRequest(
   /**
    * Latitude of SW corner of first grid

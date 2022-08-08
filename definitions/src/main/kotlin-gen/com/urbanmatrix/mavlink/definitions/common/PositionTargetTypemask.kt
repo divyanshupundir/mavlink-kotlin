@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -9,6 +10,7 @@ import kotlin.Long
  * ignored. If bit 9 is set the floats afx afy afz should be interpreted as force instead of
  * acceleration.
  */
+@GeneratedMavEnum
 public enum class PositionTargetTypemask(
   public override val `value`: Long,
 ) : MavEnum {

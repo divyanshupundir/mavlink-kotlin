@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * Flags to indicate usage for a particular storage (see STORAGE_INFORMATION.storage_usage and
  * MAV_CMD_SET_STORAGE_USAGE).
  */
+@GeneratedMavEnum
 public enum class StorageUsageFlag(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,10 @@ import kotlin.Int
  * Acknowledgment message during waypoint handling. The type field states if this message is a
  * positive ack (type=0) or if an error happened (type=non-zero).
  */
+@GeneratedMavMessage(
+  id = 47,
+  crc = 153,
+)
 public data class MissionAck(
   /**
    * System ID

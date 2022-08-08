@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -20,6 +21,10 @@ import kotlin.String
  * Send a key-value pair as float. The use of this message is discouraged for normal packets, but a
  * quite efficient way for testing new messages and getting experimental debug output.
  */
+@GeneratedMavMessage(
+  id = 251,
+  crc = 170,
+)
 public data class NamedValueFloat(
   /**
    * Timestamp (time since system boot).

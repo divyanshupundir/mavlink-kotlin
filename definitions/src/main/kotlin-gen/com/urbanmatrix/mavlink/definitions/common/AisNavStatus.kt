@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * Navigational status of AIS vessel, enum duplicated from AIS standard,
  * https://gpsd.gitlab.io/gpsd/AIVDM.html
  */
+@GeneratedMavEnum
 public enum class AisNavStatus(
   public override val `value`: Long,
 ) : MavEnum {

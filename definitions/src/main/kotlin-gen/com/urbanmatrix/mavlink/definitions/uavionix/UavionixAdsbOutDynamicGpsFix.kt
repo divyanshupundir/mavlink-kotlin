@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Status for ADS-B transponder dynamic input
  */
+@GeneratedMavEnum
 public enum class UavionixAdsbOutDynamicGpsFix(
   public override val `value`: Long,
 ) : MavEnum {

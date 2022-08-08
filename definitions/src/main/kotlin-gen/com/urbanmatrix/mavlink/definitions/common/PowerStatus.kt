@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Power supply status
  */
+@GeneratedMavMessage(
+  id = 125,
+  crc = 203,
+)
 public data class PowerStatus(
   /**
    * 5V rail voltage.

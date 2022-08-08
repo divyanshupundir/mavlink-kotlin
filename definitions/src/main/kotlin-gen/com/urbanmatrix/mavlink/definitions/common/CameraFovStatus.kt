@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -22,6 +24,11 @@ import kotlin.collections.List
  * Information about the field of view of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE
  * command.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 271,
+  crc = 22,
+)
 public data class CameraFovStatus(
   /**
    * Timestamp (time since system boot).

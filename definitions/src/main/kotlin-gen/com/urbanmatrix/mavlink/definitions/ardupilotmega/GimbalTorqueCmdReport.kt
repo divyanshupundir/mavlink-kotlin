@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -14,6 +15,10 @@ import kotlin.Int
 /**
  * 100 Hz gimbal torque command telemetry.
  */
+@GeneratedMavMessage(
+  id = 214,
+  crc = 69,
+)
 public data class GimbalTorqueCmdReport(
   /**
    * System ID.

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -17,6 +18,10 @@ import kotlin.Long
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
  * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
  */
+@GeneratedMavMessage(
+  id = 32,
+  crc = 185,
+)
 public data class LocalPositionNed(
   /**
    * Timestamp (time since system boot).

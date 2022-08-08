@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Winch status flags used in WINCH_STATUS
  */
+@GeneratedMavEnum
 public enum class MavWinchStatusFlag(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -19,6 +20,10 @@ import kotlin.Int
  * message should always contain the true raw values without any scaling to allow data capture and
  * system debugging.
  */
+@GeneratedMavMessage(
+  id = 27,
+  crc = 144,
+)
 public data class RawImu(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

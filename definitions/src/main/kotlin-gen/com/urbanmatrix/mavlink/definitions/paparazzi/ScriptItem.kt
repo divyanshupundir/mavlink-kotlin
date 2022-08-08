@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.paparazzi
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -18,6 +19,10 @@ import kotlin.String
  * Message encoding a mission script item. This message is emitted upon a request for the next
  * script item.
  */
+@GeneratedMavMessage(
+  id = 180,
+  crc = 231,
+)
 public data class ScriptItem(
   /**
    * System ID

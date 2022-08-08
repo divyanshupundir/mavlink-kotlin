@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -19,6 +20,10 @@ import kotlin.Int
  * modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
  * receivers/transmitters might violate this specification.
  */
+@GeneratedMavMessage(
+  id = 92,
+  crc = 54,
+)
 public data class HilRcInputsRaw(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

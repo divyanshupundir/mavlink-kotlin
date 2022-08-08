@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags for the global position report.
  */
+@GeneratedMavEnum
 public enum class UtmDataAvailFlags(
   public override val `value`: Long,
 ) : MavEnum {

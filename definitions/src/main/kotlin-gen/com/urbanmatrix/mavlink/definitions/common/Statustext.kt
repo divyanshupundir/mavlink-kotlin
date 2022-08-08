@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -23,6 +24,10 @@ import kotlin.String
  * implemented wisely, these messages are buffered on the MCU and sent only at a limited rate (e.g. 10
  * Hz).
  */
+@GeneratedMavMessage(
+  id = 253,
+  crc = 83,
+)
 public data class Statustext(
   /**
    * Severity of status. Relies on the definitions within RFC-5424.

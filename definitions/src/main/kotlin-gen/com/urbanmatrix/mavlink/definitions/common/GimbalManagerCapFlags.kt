@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -8,6 +9,7 @@ import kotlin.Long
  * GIMBAL_DEVICE_CAP_FLAGS. However, the gimbal manager does not need to copy the flags from the gimbal
  * but can also enhance the capabilities and thus add flags.
  */
+@GeneratedMavEnum
 public enum class GimbalManagerCapFlags(
   public override val `value`: Long,
 ) : MavEnum {

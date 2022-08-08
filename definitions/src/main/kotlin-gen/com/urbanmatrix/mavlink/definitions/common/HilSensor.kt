@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.Int
 /**
  * The IMU readings in SI units in NED body frame
  */
+@GeneratedMavMessage(
+  id = 107,
+  crc = 108,
+)
 public data class HilSensor(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

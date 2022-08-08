@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * These flags are used to diagnose the failure state of CELLULAR_STATUS
  */
+@GeneratedMavEnum
 public enum class CellularNetworkFailedReason(
   public override val `value`: Long,
 ) : MavEnum {

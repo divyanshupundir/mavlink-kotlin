@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -21,6 +22,10 @@ import kotlin.collections.List
 /**
  * Local position/attitude estimate from a vision source.
  */
+@GeneratedMavMessage(
+  id = 102,
+  crc = 158,
+)
 public data class VisionPositionEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)

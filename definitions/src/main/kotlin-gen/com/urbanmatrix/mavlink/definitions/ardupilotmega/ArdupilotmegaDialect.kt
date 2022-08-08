@@ -1,10 +1,12 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import com.urbanmatrix.mavlink.api.AbstractMavDialect
+import com.urbanmatrix.mavlink.api.GeneratedMavDialect
 import com.urbanmatrix.mavlink.definitions.common.CommonDialect
 import com.urbanmatrix.mavlink.definitions.icarous.IcarousDialect
 import com.urbanmatrix.mavlink.definitions.uavionix.UavionixDialect
 
+@GeneratedMavDialect
 public object ArdupilotmegaDialect : AbstractMavDialect(
   setOf(
     IcarousDialect,

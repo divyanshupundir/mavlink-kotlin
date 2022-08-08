@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -17,6 +18,10 @@ import kotlin.Int
  * Individual receivers/transmitters might violate this specification.  Note carefully the semantic
  * differences between the first 8 channels and the subsequent channels
  */
+@GeneratedMavMessage(
+  id = 70,
+  crc = 124,
+)
 public data class RcChannelsOverride(
   /**
    * System ID

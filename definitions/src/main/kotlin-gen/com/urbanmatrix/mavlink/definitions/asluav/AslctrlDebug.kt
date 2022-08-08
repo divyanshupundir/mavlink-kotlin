@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Long
 /**
  * ASL-fixed-wing controller debug data
  */
+@GeneratedMavMessage(
+  id = 8005,
+  crc = 251,
+)
 public data class AslctrlDebug(
   /**
    *  Debug data

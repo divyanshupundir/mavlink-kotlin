@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ualberta
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16Array
@@ -13,6 +14,10 @@ import kotlin.collections.List
 /**
  * Complete set of calibration parameters for the radio
  */
+@GeneratedMavMessage(
+  id = 221,
+  crc = 71,
+)
 public data class RadioCalibration(
   /**
    * Aileron setpoints: left, center, right

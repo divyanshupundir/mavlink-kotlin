@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -21,6 +22,10 @@ import kotlin.collections.List
  * The raw values of the actuator outputs (e.g. on Pixhawk, from MAIN, AUX ports). This message
  * supersedes SERVO_OUTPUT_RAW.
  */
+@GeneratedMavMessage(
+  id = 375,
+  crc = 251,
+)
 public data class ActuatorOutputStatus(
   /**
    * Timestamp (since system boot).

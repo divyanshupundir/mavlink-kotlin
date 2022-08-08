@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeUint32
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -19,6 +21,11 @@ import kotlin.Long
  * Current status about a high level gimbal manager. This message should be broadcast at a low
  * regular rate (e.g. 5Hz).
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 281,
+  crc = 48,
+)
 public data class GimbalManagerStatus(
   /**
    * Timestamp (time since system boot).

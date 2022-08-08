@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * Provides state for additional features
  */
+@GeneratedMavMessage(
+  id = 245,
+  crc = 130,
+)
 public data class ExtendedSysState(
   /**
    * The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not in VTOL

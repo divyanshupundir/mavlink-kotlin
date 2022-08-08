@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * MAV FTP error codes (https://mavlink.io/en/services/ftp.html)
  */
+@GeneratedMavEnum
 public enum class MavFtpErr(
   public override val `value`: Long,
 ) : MavEnum {

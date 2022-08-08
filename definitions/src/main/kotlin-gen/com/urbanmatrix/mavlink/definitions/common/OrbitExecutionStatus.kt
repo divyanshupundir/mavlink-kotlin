@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -22,6 +24,11 @@ import kotlin.Int
  * Vehicle status report that is sent out while orbit execution is in progress (see
  * MAV_CMD_DO_ORBIT).
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 360,
+  crc = 11,
+)
 public data class OrbitExecutionStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

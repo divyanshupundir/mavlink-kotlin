@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.String
 /**
  * Read registers for a device.
  */
+@GeneratedMavMessage(
+  id = 11000,
+  crc = 134,
+)
 public data class DeviceOpRead(
   /**
    * System ID.

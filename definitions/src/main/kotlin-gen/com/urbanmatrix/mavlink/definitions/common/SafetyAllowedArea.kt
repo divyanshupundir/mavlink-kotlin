@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Read out the safety zone the MAV currently assumes.
  */
+@GeneratedMavMessage(
+  id = 55,
+  crc = 3,
+)
 public data class SafetyAllowedArea(
   /**
    * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right

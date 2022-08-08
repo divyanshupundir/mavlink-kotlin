@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -15,6 +16,10 @@ import kotlin.Int
  * Set the mission item with sequence number seq as current item. This means that the MAV will
  * continue to this mission item on the shortest path (not following the mission items in-between).
  */
+@GeneratedMavMessage(
+  id = 41,
+  crc = 28,
+)
 public data class MissionSetCurrent(
   /**
    * System ID

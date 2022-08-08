@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.Long
 /**
  * Vibration levels and accelerometer clipping
  */
+@GeneratedMavMessage(
+  id = 241,
+  crc = 90,
+)
 public data class Vibration(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

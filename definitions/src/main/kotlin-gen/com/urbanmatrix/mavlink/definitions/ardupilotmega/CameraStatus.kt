@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -23,6 +24,10 @@ import kotlin.Int
 /**
  * Camera Event.
  */
+@GeneratedMavMessage(
+  id = 179,
+  crc = 189,
+)
 public data class CameraStatus(
   /**
    * Image timestamp (since UNIX epoch, according to camera clock).

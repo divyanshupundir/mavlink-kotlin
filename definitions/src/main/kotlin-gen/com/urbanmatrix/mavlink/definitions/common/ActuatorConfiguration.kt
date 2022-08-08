@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * Actuator configuration, used to change a setting on an actuator. Component information metadata
  * can be used to know which outputs support which commands.
  */
+@GeneratedMavEnum
 public enum class ActuatorConfiguration(
   public override val `value`: Long,
 ) : MavEnum {

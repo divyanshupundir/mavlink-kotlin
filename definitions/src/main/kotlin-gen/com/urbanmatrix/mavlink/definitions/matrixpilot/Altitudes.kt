@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -15,6 +16,10 @@ import kotlin.Long
 /**
  * The altitude measured by sensors and IMU
  */
+@GeneratedMavMessage(
+  id = 181,
+  crc = 55,
+)
 public data class Altitudes(
   /**
    * Timestamp (milliseconds since system boot)

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -13,6 +14,10 @@ import kotlin.Int
  * Request all parameters of this component. After this request, all parameters are emitted. The
  * parameter microservice is documented at https://mavlink.io/en/services/parameter.html
  */
+@GeneratedMavMessage(
+  id = 21,
+  crc = 159,
+)
 public data class ParamRequestList(
   /**
    * System ID

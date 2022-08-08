@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -16,6 +17,10 @@ import kotlin.Long
 /**
  * Camera-IMU triggering and synchronisation message.
  */
+@GeneratedMavMessage(
+  id = 112,
+  crc = 174,
+)
 public data class CameraTrigger(
   /**
    * Timestamp for image frame (UNIX Epoch time or time since system boot). The receiving end can

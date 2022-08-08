@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -16,6 +17,10 @@ import kotlin.collections.List
  * Data packet for images sent using the Image Transmission Protocol:
  * https://mavlink.io/en/services/image_transmission.html.
  */
+@GeneratedMavMessage(
+  id = 131,
+  crc = 223,
+)
 public data class EncapsulatedData(
   /**
    * sequence number (starting with 0 on every transmission)

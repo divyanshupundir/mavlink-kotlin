@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * List of possible failure type to inject.
  */
+@GeneratedMavEnum
 public enum class FailureType(
   public override val `value`: Long,
 ) : MavEnum {

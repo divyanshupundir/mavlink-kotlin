@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint64
@@ -19,6 +20,10 @@ import kotlin.collections.List
  * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp
  * will disable signing
  */
+@GeneratedMavMessage(
+  id = 256,
+  crc = 71,
+)
 public data class SetupSigning(
   /**
    * system id of the target

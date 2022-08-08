@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * These values define the type of firmware release.  These values indicate the first version or
  * release of this type.  For example the first alpha release would be 64, the second would be 65.
  */
+@GeneratedMavEnum
 public enum class FirmwareVersionType(
   public override val `value`: Long,
 ) : MavEnum {

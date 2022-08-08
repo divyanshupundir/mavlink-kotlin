@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.paparazzi
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * This message informs about the currently active SCRIPT.
  */
+@GeneratedMavMessage(
+  id = 184,
+  crc = 40,
+)
 public data class ScriptCurrent(
   /**
    * Active Sequence

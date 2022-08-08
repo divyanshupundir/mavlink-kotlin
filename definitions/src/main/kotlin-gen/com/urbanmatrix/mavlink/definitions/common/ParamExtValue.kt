@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -20,6 +21,10 @@ import kotlin.String
  * the recipient to keep track of received parameters and allows them to re-request missing parameters
  * after a loss or timeout.
  */
+@GeneratedMavMessage(
+  id = 322,
+  crc = 243,
+)
 public data class ParamExtValue(
   /**
    * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT

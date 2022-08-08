@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F8: format
  */
+@GeneratedMavMessage(
+  id = 176,
+  crc = 142,
+)
 public data class SerialUdbExtraF8(
   /**
    * Serial UDB Extra HEIGHT_TARGET_MAX

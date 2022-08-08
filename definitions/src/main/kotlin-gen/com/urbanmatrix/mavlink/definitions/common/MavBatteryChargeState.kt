@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Enumeration for battery charge states.
  */
+@GeneratedMavEnum
 public enum class MavBatteryChargeState(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -15,6 +16,10 @@ import kotlin.collections.List
 /**
  * Data packet, size 16.
  */
+@GeneratedMavMessage(
+  id = 169,
+  crc = 234,
+)
 public data class Data16(
   /**
    * Data type.

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * Monitoring of sensorpod status
  */
+@GeneratedMavMessage(
+  id = 8012,
+  crc = 54,
+)
 public data class SensorpodStatus(
   /**
    * Timestamp in linuxtime (since 1.1.1970)

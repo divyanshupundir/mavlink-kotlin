@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -9,6 +10,7 @@ import kotlin.Long
  *                simplifies the use of the mode flags. Note that manual input is enabled in all
  * modes as a safety override.
  */
+@GeneratedMavEnum
 public enum class MavMode(
   public override val `value`: Long,
 ) : MavEnum {

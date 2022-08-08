@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeInt16Array
 import com.urbanmatrix.mavlink.serialization.decodeInt8
 import com.urbanmatrix.mavlink.serialization.decodeInt8Array
@@ -29,6 +31,11 @@ import kotlin.collections.List
 /**
  * Hardware status sent by an onboard computer.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 390,
+  crc = 156,
+)
 public data class OnboardComputerStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

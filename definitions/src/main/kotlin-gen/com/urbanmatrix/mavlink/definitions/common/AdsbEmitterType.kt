@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * ADSB classification for the type of vehicle emitting the transponder signal
  */
+@GeneratedMavEnum
 public enum class AdsbEmitterType(
   public override val `value`: Long,
 ) : MavEnum {

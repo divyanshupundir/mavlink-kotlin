@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Long
 /**
  * Information about a potential collision
  */
+@GeneratedMavMessage(
+  id = 247,
+  crc = 81,
+)
 public data class Collision(
   /**
    * Collision data source

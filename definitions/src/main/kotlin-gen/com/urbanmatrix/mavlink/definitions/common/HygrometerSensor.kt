@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -16,6 +17,10 @@ import kotlin.Int
 /**
  * Temperature and humidity from hygrometer.
  */
+@GeneratedMavMessage(
+  id = 12920,
+  crc = 20,
+)
 public data class HygrometerSensor(
   /**
    * Hygrometer ID

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Int
 /**
  * Calibrated airflow angle measurements
  */
+@GeneratedMavMessage(
+  id = 8016,
+  crc = 149,
+)
 public data class SensorAirflowAngles(
   /**
    * Timestamp

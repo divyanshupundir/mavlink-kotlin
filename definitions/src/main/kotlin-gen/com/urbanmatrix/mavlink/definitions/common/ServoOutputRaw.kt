@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -19,6 +20,10 @@ import kotlin.Long
  * remote, use the RC_CHANNELS messages). The standard PPM modulation is as follows: 1000 microseconds:
  * 0%, 2000 microseconds: 100%.
  */
+@GeneratedMavMessage(
+  id = 36,
+  crc = 222,
+)
 public data class ServoOutputRaw(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

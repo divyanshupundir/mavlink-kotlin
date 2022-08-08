@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -16,6 +17,10 @@ import kotlin.Int
  * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
  * GCS.
  */
+@GeneratedMavMessage(
+  id = 160,
+  crc = 78,
+)
 public data class FencePoint(
   /**
    * System ID.

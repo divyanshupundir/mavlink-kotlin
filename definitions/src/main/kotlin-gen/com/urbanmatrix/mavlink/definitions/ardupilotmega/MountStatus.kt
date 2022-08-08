@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Int
 /**
  * Message with some status from autopilot to GCS about camera or antenna mount.
  */
+@GeneratedMavMessage(
+  id = 158,
+  crc = 134,
+)
 public data class MountStatus(
   /**
    * System ID.

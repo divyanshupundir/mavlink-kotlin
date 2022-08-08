@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -23,6 +24,10 @@ import kotlin.collections.List
 /**
  * Current motion information from a designated system
  */
+@GeneratedMavMessage(
+  id = 144,
+  crc = 127,
+)
 public data class FollowTarget(
   /**
    * Timestamp (time since system boot).

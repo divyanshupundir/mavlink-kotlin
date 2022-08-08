@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -14,6 +15,10 @@ import kotlin.String
  * Emit an encrypted signature / key identifying this system. PLEASE NOTE: This protocol has been
  * kept simple, so transmitting the key requires an encrypted channel for true safety.
  */
+@GeneratedMavMessage(
+  id = 7,
+  crc = 119,
+)
 public data class AuthKey(
   /**
    * key

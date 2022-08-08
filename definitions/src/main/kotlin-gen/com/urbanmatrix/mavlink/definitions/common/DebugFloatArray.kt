@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -24,6 +25,10 @@ import kotlin.collections.List
  * array_id and name fields are used to discriminate between messages in code and in user interfaces
  * (respectively). Do not use in production code.
  */
+@GeneratedMavMessage(
+  id = 350,
+  crc = 232,
+)
 public data class DebugFloatArray(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

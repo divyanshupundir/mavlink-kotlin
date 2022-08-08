@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.matrixpilot
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * Acknowldge sucess or failure of a flexifunction command
  */
+@GeneratedMavMessage(
+  id = 158,
+  crc = 208,
+)
 public data class FlexifunctionCommandAck(
   /**
    * Command acknowledged

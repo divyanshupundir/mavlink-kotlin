@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -15,6 +16,10 @@ import kotlin.collections.List
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
  */
+@GeneratedMavMessage(
+  id = 142,
+  crc = 72,
+)
 public data class ResourceRequest(
   /**
    * Request ID. This ID should be re-used when sending back URI contents

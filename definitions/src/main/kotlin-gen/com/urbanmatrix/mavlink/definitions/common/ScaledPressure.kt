@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -19,6 +20,10 @@ import kotlin.Long
  * The pressure readings for the typical setup of one absolute and differential pressure sensor. The
  * units are as specified in each field.
  */
+@GeneratedMavMessage(
+  id = 29,
+  crc = 115,
+)
 public data class ScaledPressure(
   /**
    * Timestamp (time since system boot).

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Type of GPS fix
  */
+@GeneratedMavEnum
 public enum class GpsFixType(
   public override val `value`: Long,
 ) : MavEnum {

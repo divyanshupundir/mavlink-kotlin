@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Int
  * Report status of a command. Includes feedback whether the command was executed. The command
  * microservice is documented at https://mavlink.io/en/services/command.html
  */
+@GeneratedMavMessage(
+  id = 77,
+  crc = 143,
+)
 public data class CommandAck(
   /**
    * Command ID (of acknowledged command).

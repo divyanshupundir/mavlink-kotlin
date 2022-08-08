@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -28,6 +29,10 @@ import kotlin.collections.List
  * higher-bandwidth links and optimized for accuracy and completeness. Please use the
  * GLOBAL_POSITION_INT message for a minimal subset.
  */
+@GeneratedMavMessage(
+  id = 63,
+  crc = 119,
+)
 public data class GlobalPositionIntCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

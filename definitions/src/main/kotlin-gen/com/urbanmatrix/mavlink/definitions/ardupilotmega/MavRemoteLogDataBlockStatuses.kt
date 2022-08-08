@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Possible remote log data block statuses.
  */
+@GeneratedMavEnum
 public enum class MavRemoteLogDataBlockStatuses(
   public override val `value`: Long,
 ) : MavEnum {

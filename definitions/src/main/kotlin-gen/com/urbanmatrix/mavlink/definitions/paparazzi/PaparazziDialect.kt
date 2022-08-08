@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.paparazzi
 
 import com.urbanmatrix.mavlink.api.AbstractMavDialect
+import com.urbanmatrix.mavlink.api.GeneratedMavDialect
 import com.urbanmatrix.mavlink.definitions.common.CommonDialect
 
+@GeneratedMavDialect
 public object PaparazziDialect : AbstractMavDialect(
   setOf(
     CommonDialect,

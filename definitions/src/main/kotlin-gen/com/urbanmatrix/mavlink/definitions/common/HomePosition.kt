@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -34,6 +35,10 @@ import kotlin.collections.List
  * param1=242 (or the deprecated MAV_CMD_GET_HOME_POSITION command).
  *       
  */
+@GeneratedMavMessage(
+  id = 242,
+  crc = 104,
+)
 public data class HomePosition(
   /**
    * Latitude (WGS84)

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -13,6 +14,10 @@ import kotlin.Int
  * Request that the vehicle report terrain height at the given location (expected response is a
  * TERRAIN_REPORT). Used by GCS to check if vehicle has all terrain data needed for a mission.
  */
+@GeneratedMavMessage(
+  id = 135,
+  crc = 203,
+)
 public data class TerrainCheck(
   /**
    * Latitude

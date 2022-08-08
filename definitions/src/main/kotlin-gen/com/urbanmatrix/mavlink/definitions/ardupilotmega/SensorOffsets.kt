@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Int
  * Offsets and calibrations values for hardware sensors. This makes it easier to debug the
  * calibration process.
  */
+@GeneratedMavMessage(
+  id = 150,
+  crc = 134,
+)
 public data class SensorOffsets(
   /**
    * Magnetometer X offset.

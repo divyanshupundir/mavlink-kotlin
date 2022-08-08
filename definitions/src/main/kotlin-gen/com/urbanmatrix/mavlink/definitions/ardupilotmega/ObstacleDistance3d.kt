@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.definitions.common.MavDistanceSensor
 import com.urbanmatrix.mavlink.definitions.common.MavFrame
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
@@ -23,6 +25,11 @@ import kotlin.Long
 /**
  * Obstacle located as a 3D vector.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 11037,
+  crc = 130,
+)
 public data class ObstacleDistance3d(
   /**
    * Timestamp (time since system boot).

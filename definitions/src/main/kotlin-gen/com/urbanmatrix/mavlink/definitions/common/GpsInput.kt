@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -29,6 +30,10 @@ import kotlin.Long
  * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global
  * position estimate of the system.
  */
+@GeneratedMavMessage(
+  id = 232,
+  crc = 151,
+)
 public data class GpsInput(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

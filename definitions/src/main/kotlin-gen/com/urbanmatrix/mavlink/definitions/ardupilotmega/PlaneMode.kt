@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * A mapping of plane flight modes for custom_mode field of heartbeat.
  */
+@GeneratedMavEnum
 public enum class PlaneMode(
   public override val `value`: Long,
 ) : MavEnum {

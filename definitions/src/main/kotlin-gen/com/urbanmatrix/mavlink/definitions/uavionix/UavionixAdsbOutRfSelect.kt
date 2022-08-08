@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Transceiver RF control flags for ADS-B transponder dynamic reports
  */
+@GeneratedMavEnum
 public enum class UavionixAdsbOutRfSelect(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -16,6 +17,10 @@ import kotlin.Int
  * The RAW pressure readings for the typical setup of one absolute pressure and one differential
  * pressure sensor. The sensor values should be the raw, UNSCALED ADC values.
  */
+@GeneratedMavMessage(
+  id = 28,
+  crc = 67,
+)
 public data class RawPressure(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

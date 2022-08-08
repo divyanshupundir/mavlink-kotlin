@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags in ESTIMATOR_STATUS message
  */
+@GeneratedMavEnum
 public enum class EstimatorStatusFlags(
   public override val `value`: Long,
 ) : MavEnum {

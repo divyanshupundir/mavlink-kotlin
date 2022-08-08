@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Int
  * https://mavlink.io/en/services/mission.html. If start and end index are the same, just send one
  * waypoint.
  */
+@GeneratedMavMessage(
+  id = 37,
+  crc = 212,
+)
 public data class MissionRequestPartialList(
   /**
    * System ID

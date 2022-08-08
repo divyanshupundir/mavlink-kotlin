@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.minimal
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * These flags encode the MAV mode.
  */
+@GeneratedMavEnum
 public enum class MavModeFlag(
   public override val `value`: Long,
 ) : MavEnum {

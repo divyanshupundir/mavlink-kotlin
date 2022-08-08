@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeFloat
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -20,6 +22,11 @@ import kotlin.Int
  * gimbal manager (e.g. from a ground station). Angles and rates can be set to NaN according to use
  * case.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 287,
+  crc = 1,
+)
 public data class GimbalManagerSetPitchyaw(
   /**
    * System ID

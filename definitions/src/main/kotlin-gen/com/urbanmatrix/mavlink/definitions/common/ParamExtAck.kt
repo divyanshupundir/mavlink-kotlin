@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,10 @@ import kotlin.String
 /**
  * Response from a PARAM_EXT_SET message.
  */
+@GeneratedMavMessage(
+  id = 324,
+  crc = 132,
+)
 public data class ParamExtAck(
   /**
    * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ualberta
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * System status specific to ualberta uav
  */
+@GeneratedMavMessage(
+  id = 222,
+  crc = 15,
+)
 public data class UalbertaSysStatus(
   /**
    * System mode, see UALBERTA_AUTOPILOT_MODE ENUM

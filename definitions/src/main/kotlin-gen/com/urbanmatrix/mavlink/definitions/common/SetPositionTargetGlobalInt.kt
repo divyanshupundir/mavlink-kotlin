@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.Long
  * Sets a desired vehicle position, velocity, and/or acceleration in a global coordinate system
  * (WGS84). Used by an external controller to command the vehicle (manual controller or other system).
  */
+@GeneratedMavMessage(
+  id = 86,
+  crc = 5,
+)
 public data class SetPositionTargetGlobalInt(
   /**
    * Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Source of information about this collision.
  */
+@GeneratedMavEnum
 public enum class MavCollisionSrc(
   public override val `value`: Long,
 ) : MavEnum {

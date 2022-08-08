@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -17,6 +18,10 @@ import kotlin.Int
 /**
  * The state of the navigation and position controller.
  */
+@GeneratedMavMessage(
+  id = 62,
+  crc = 183,
+)
 public data class NavControllerOutput(
   /**
    * Current desired roll

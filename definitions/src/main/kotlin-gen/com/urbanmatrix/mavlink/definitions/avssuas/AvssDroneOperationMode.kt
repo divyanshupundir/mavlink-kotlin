@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.avssuas
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -15,6 +16,10 @@ import kotlin.Long
 /**
  *  Drone operation mode.
  */
+@GeneratedMavMessage(
+  id = 60053,
+  crc = 45,
+)
 public data class AvssDroneOperationMode(
   /**
    * Timestamp (time since FC boot).

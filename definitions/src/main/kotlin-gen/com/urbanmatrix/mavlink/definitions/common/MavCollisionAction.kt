@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Possible actions an aircraft can take to avoid a collision.
  */
+@GeneratedMavEnum
 public enum class MavCollisionAction(
   public override val `value`: Long,
 ) : MavEnum {

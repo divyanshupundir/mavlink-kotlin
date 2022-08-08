@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.Long
  * Information about the status of a video stream. It may be requested using
  * MAV_CMD_REQUEST_MESSAGE.
  */
+@GeneratedMavMessage(
+  id = 270,
+  crc = 59,
+)
 public data class VideoStreamStatus(
   /**
    * Video Stream ID (1 for first, 2 for second, etc.)

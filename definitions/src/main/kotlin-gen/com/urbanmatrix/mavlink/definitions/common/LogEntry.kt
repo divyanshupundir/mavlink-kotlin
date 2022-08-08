@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -15,6 +16,10 @@ import kotlin.Long
 /**
  * Reply to LOG_REQUEST_LIST
  */
+@GeneratedMavMessage(
+  id = 118,
+  crc = 56,
+)
 public data class LogEntry(
   /**
    * Log id

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.paparazzi
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -15,6 +16,10 @@ import kotlin.Int
  * Request script item with the sequence number seq. The response of the system to this message
  * should be a SCRIPT_ITEM message.
  */
+@GeneratedMavMessage(
+  id = 181,
+  crc = 129,
+)
 public data class ScriptRequest(
   /**
    * System ID

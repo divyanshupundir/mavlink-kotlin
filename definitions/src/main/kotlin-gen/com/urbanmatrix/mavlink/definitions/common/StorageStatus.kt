@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags to indicate the status of camera storage.
  */
+@GeneratedMavEnum
 public enum class StorageStatus(
   public override val `value`: Long,
 ) : MavEnum {

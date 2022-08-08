@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -29,6 +30,10 @@ import kotlin.collections.List
  * MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a
  * low frequency. The UAVCAN specification is available at http://uavcan.org.
  */
+@GeneratedMavMessage(
+  id = 311,
+  crc = 95,
+)
 public data class UavcanNodeInfo(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

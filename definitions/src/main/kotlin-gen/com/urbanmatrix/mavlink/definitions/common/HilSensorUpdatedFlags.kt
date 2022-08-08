@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Flags in the HIL_SENSOR message indicate which fields have updated since the last message
  */
+@GeneratedMavEnum
 public enum class HilSensorUpdatedFlags(
   public override val `value`: Long,
 ) : MavEnum {

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -18,6 +19,10 @@ import kotlin.Int
  * nomenclature, along with a joystick-like input device. Unused axes can be disabled and buttons
  * states are transmitted as individual on/off bits of a bitmask
  */
+@GeneratedMavMessage(
+  id = 69,
+  crc = 243,
+)
 public data class ManualControl(
   /**
    * The system to be controlled.

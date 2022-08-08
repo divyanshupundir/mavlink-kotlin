@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint32
@@ -18,6 +19,10 @@ import kotlin.collections.List
 /**
  * A forwarded CAN frame as requested by MAV_CMD_CAN_FORWARD.
  */
+@GeneratedMavMessage(
+  id = 386,
+  crc = 132,
+)
 public data class CanFrame(
   /**
    * System ID.

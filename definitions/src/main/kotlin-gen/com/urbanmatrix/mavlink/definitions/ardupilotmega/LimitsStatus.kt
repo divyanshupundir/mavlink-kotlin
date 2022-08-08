@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.Long
 /**
  * Status of AP_Limits. Sent in extended status stream when AP_Limits is enabled.
  */
+@GeneratedMavMessage(
+  id = 167,
+  crc = 144,
+)
 public data class LimitsStatus(
   /**
    * State of AP_Limits.

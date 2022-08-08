@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeUint8
 import com.urbanmatrix.mavlink.serialization.encodeEnumValue
@@ -19,6 +21,11 @@ import kotlin.Int
  * sort of acknowledgement to the original command has been received. The command microservice is
  * documented at https://mavlink.io/en/services/command.html
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 80,
+  crc = 14,
+)
 public data class CommandCancel(
   /**
    * System executing long running command. Should not be broadcast (0).

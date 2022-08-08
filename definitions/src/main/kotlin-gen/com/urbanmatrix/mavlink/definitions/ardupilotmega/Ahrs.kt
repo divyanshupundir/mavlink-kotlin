@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -13,6 +14,10 @@ import kotlin.Int
 /**
  * Status of DCM attitude estimator.
  */
+@GeneratedMavMessage(
+  id = 163,
+  crc = 127,
+)
 public data class Ahrs(
   /**
    * X gyro drift estimate.

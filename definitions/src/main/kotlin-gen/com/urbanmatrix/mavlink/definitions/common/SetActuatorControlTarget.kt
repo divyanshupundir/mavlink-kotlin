@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -19,6 +20,10 @@ import kotlin.collections.List
 /**
  * Set the vehicle attitude and body angular rates.
  */
+@GeneratedMavMessage(
+  id = 139,
+  crc = 168,
+)
 public data class SetActuatorControlTarget(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

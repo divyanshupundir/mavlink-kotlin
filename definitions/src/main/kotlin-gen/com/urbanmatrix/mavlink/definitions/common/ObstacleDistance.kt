@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,10 @@ import kotlin.collections.List
  * Obstacle distances in front of the sensor, starting from the left in increment degrees to the
  * right
  */
+@GeneratedMavMessage(
+  id = 330,
+  crc = 23,
+)
 public data class ObstacleDistance(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

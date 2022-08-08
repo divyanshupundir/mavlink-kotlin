@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -26,6 +27,10 @@ import kotlin.collections.List
 /**
  * Distance sensor information for an onboard rangefinder.
  */
+@GeneratedMavMessage(
+  id = 132,
+  crc = 85,
+)
 public data class DistanceSensor(
   /**
    * Timestamp (time since system boot).

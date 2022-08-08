@@ -1,7 +1,9 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
 import com.urbanmatrix.mavlink.serialization.decodeInt32Array
 import com.urbanmatrix.mavlink.serialization.decodeUint64
@@ -23,6 +25,11 @@ import kotlin.collections.List
  * changes more slowly is sent in ESC_INFO. It should typically only be streamed on high-bandwidth
  * links (i.e. to a companion computer).
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 291,
+  crc = 10,
+)
 public data class EscStatus(
   /**
    * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.

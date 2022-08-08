@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -20,6 +21,10 @@ import kotlin.Long
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
  */
+@GeneratedMavMessage(
+  id = 162,
+  crc = 189,
+)
 public data class FenceStatus(
   /**
    * Breach status (0 if currently inside fence, 1 if outside).

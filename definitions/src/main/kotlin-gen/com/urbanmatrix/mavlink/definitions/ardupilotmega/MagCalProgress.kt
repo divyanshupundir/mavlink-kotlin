@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -22,6 +23,10 @@ import kotlin.collections.List
 /**
  * Reports progress of compass calibration.
  */
+@GeneratedMavMessage(
+  id = 191,
+  crc = 92,
+)
 public data class MagCalProgress(
   /**
    * Compass being calibrated.

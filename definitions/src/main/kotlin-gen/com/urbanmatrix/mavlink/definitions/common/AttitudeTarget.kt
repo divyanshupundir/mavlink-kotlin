@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -24,6 +25,10 @@ import kotlin.collections.List
  * match the commands sent in a SET_ATTITUDE_TARGET message if the vehicle is being controlled this
  * way.
  */
+@GeneratedMavMessage(
+  id = 83,
+  crc = 22,
+)
 public data class AttitudeTarget(
   /**
    * Timestamp (time since system boot).

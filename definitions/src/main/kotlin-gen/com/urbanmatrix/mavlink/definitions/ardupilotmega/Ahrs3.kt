@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -15,6 +16,10 @@ import kotlin.Int
 /**
  * Status of third AHRS filter if available. This is for ANU research group (Ali and Sean).
  */
+@GeneratedMavMessage(
+  id = 182,
+  crc = 229,
+)
 public data class Ahrs3(
   /**
    * Roll angle.

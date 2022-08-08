@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -13,6 +14,10 @@ import kotlin.Int
  * A certain mission item has been reached. The system will either hold this position (or circle on
  * the orbit) or (if the autocontinue on the WP was set) continue to the next waypoint.
  */
+@GeneratedMavMessage(
+  id = 46,
+  crc = 11,
+)
 public data class MissionItemReached(
   /**
    * Sequence

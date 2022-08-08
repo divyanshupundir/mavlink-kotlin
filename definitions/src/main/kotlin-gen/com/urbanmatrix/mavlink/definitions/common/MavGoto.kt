@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Actions that may be specified in MAV_CMD_OVERRIDE_GOTO to override mission execution.
  */
+@GeneratedMavEnum
 public enum class MavGoto(
   public override val `value`: Long,
 ) : MavEnum {

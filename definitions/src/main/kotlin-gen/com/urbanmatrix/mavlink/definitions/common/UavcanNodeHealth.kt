@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Generalized UAVCAN node health
  */
+@GeneratedMavEnum
 public enum class UavcanNodeHealth(
   public override val `value`: Long,
 ) : MavEnum {

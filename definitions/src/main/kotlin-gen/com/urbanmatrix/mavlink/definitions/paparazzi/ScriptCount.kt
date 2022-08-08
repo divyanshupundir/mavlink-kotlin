@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.paparazzi
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -15,6 +16,10 @@ import kotlin.Int
  * This message is emitted as response to SCRIPT_REQUEST_LIST by the MAV to get the number of
  * mission scripts.
  */
+@GeneratedMavMessage(
+  id = 183,
+  crc = 186,
+)
 public data class ScriptCount(
   /**
    * System ID

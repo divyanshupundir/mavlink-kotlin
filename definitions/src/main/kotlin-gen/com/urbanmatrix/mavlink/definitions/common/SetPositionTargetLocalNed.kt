@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -22,6 +23,10 @@ import kotlin.Long
  * Sets a desired vehicle position in a local north-east-down coordinate frame. Used by an external
  * controller to command the vehicle (manual controller or other system).
  */
+@GeneratedMavMessage(
+  id = 84,
+  crc = 143,
+)
 public data class SetPositionTargetLocalNed(
   /**
    * Timestamp (time since system boot).

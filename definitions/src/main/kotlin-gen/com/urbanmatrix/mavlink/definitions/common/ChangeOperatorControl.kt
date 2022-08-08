@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeString
@@ -15,6 +16,10 @@ import kotlin.String
 /**
  * Request to control this MAV
  */
+@GeneratedMavMessage(
+  id = 5,
+  crc = 217,
+)
 public data class ChangeOperatorControl(
   /**
    * System the GCS requests control for

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * Battery mode. Note, the normal operation mode (i.e. when flying) should be reported as
  * MAV_BATTERY_MODE_UNKNOWN to allow message trimming in normal flight.
  */
+@GeneratedMavEnum
 public enum class MavBatteryMode(
   public override val `value`: Long,
 ) : MavEnum {

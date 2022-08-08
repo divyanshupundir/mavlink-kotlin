@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -26,6 +27,10 @@ import kotlin.String
  * Smart Battery information (static/infrequent update). Use for updates from: smart battery to
  * flight stack, flight stack to GCS. Use BATTERY_STATUS for smart battery frequent updates.
  */
+@GeneratedMavMessage(
+  id = 370,
+  crc = 75,
+)
 public data class SmartBatteryInfo(
   /**
    * Battery ID

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -7,6 +8,7 @@ import kotlin.Long
  * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b00000000
  * indicates that none of the setpoint dimensions should be ignored.
  */
+@GeneratedMavEnum
 public enum class AttitudeTargetTypemask(
   public override val `value`: Long,
 ) : MavEnum {

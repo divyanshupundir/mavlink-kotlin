@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * These flags indicate status such as data validity of each data source. Set = data valid
  */
+@GeneratedMavEnum
 public enum class AdsbFlags(
   public override val `value`: Long,
 ) : MavEnum {

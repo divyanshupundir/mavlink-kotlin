@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -21,6 +22,10 @@ import kotlin.collections.List
  * specific, i.e. determined by the source, and is usually not documented as part of the MAVLink
  * specification.
  */
+@GeneratedMavMessage(
+  id = 385,
+  crc = 147,
+)
 public data class Tunnel(
   /**
    * System ID (can be 0 for broadcast, but this is discouraged)

@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Winch actions.
  */
+@GeneratedMavEnum
 public enum class WinchActions(
   public override val `value`: Long,
 ) : MavEnum {

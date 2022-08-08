@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * WiFi Mode.
  */
+@GeneratedMavEnum
 public enum class WifiConfigApMode(
   public override val `value`: Long,
 ) : MavEnum {

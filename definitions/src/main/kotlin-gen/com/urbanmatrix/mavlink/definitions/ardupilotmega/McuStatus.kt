@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -17,6 +18,10 @@ import kotlin.Int
  * The MCU status, giving MCU temperature and voltage. The min and max voltages are to allow for
  * detecting power supply instability.
  */
+@GeneratedMavMessage(
+  id = 11039,
+  crc = 142,
+)
 public data class McuStatus(
   /**
    * MCU instance

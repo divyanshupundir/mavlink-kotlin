@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Deprecated
 import kotlin.Long
@@ -8,6 +9,7 @@ import kotlin.Long
  * Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports
  * this capability.
  */
+@GeneratedMavEnum
 public enum class MavProtocolCapability(
   public override val `value`: Long,
 ) : MavEnum {

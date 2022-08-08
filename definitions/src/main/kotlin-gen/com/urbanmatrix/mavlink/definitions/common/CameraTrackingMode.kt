@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Camera tracking modes
  */
+@GeneratedMavEnum
 public enum class CameraTrackingMode(
   public override val `value`: Long,
 ) : MavEnum {

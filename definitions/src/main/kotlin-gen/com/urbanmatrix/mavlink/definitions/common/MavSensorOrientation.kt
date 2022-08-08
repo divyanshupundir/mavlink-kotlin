@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Enumeration of sensor orientation, according to its rotations
  */
+@GeneratedMavEnum
 public enum class MavSensorOrientation(
   public override val `value`: Long,
 ) : MavEnum {

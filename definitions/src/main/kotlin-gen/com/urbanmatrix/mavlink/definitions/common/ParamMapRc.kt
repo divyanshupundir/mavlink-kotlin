@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -20,6 +21,10 @@ import kotlin.String
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
  */
+@GeneratedMavMessage(
+  id = 50,
+  crc = 78,
+)
 public data class ParamMapRc(
   /**
    * System ID

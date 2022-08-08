@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,10 @@ import kotlin.Long
  *                 NOT the global position estimate of the system, but rather a RAW sensor value.
  * See message GLOBAL_POSITION_INT for the global position estimate.
  */
+@GeneratedMavMessage(
+  id = 24,
+  crc = 24,
+)
 public data class GpsRawInt(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint16
@@ -12,6 +13,10 @@ import kotlin.Int
 /**
  * Raw ADC output.
  */
+@GeneratedMavMessage(
+  id = 153,
+  crc = 188,
+)
 public data class ApAdc(
   /**
    * ADC output 1.

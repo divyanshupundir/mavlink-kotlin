@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt32
@@ -20,6 +21,10 @@ import kotlin.Int
  * local coordinate frame and the global (GPS) coordinate frame, which may be necessary when (for
  * example) indoor and outdoor settings are connected and the MAV should move from in- to outdoor.
  */
+@GeneratedMavMessage(
+  id = 48,
+  crc = 41,
+)
 public data class SetGpsGlobalOrigin(
   /**
    * System ID

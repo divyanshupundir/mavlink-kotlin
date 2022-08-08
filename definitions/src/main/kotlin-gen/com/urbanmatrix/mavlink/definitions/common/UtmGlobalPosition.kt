@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.collections.List
 /**
  * The global position resulting from GPS and sensor fusion.
  */
+@GeneratedMavMessage(
+  id = 340,
+  crc = 99,
+)
 public data class UtmGlobalPosition(
   /**
    * Time of applicability of position (microseconds since UNIX epoch).

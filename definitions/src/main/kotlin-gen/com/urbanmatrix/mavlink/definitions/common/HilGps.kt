@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeInt16
@@ -23,6 +24,10 @@ import kotlin.Int
  *                  NOT the global position estimate of the sytem, but rather a RAW sensor value.
  * See message GLOBAL_POSITION_INT for the global position estimate.
  */
+@GeneratedMavMessage(
+  id = 113,
+  crc = 124,
+)
 public data class HilGps(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

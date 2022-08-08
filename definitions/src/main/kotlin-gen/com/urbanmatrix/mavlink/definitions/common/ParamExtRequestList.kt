@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeUint8
@@ -13,6 +14,10 @@ import kotlin.Int
  * Request all parameters of this component. All parameters should be emitted in response as
  * PARAM_EXT_VALUE.
  */
+@GeneratedMavMessage(
+  id = 321,
+  crc = 88,
+)
 public data class ParamExtRequestList(
   /**
    * System ID

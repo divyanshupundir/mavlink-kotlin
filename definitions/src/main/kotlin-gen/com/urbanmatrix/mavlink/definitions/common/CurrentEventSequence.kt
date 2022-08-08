@@ -1,8 +1,10 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
+import com.urbanmatrix.mavlink.api.WorkInProgress
 import com.urbanmatrix.mavlink.serialization.decodeEnumValue
 import com.urbanmatrix.mavlink.serialization.decodeUint16
 import com.urbanmatrix.mavlink.serialization.encodeEnumValue
@@ -16,6 +18,11 @@ import kotlin.Int
  * Regular broadcast for the current latest event sequence number for a component. This is used to
  * check for dropped events.
  */
+@WorkInProgress
+@GeneratedMavMessage(
+  id = 411,
+  crc = 106,
+)
 public data class CurrentEventSequence(
   /**
    * Sequence number.

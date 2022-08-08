@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,10 @@ import kotlin.String
 /**
  * The location and information of an ADSB vehicle
  */
+@GeneratedMavMessage(
+  id = 246,
+  crc = 184,
+)
 public data class AdsbVehicle(
   /**
    * ICAO address

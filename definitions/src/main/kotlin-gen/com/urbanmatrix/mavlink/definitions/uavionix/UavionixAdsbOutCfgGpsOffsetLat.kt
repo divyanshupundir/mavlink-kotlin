@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * GPS lataral offset encoding
  */
+@GeneratedMavEnum
 public enum class UavionixAdsbOutCfgGpsOffsetLat(
   public override val `value`: Long,
 ) : MavEnum {

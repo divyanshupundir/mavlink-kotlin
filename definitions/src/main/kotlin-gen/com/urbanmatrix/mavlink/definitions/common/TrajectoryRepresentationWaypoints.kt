@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloatArray
@@ -22,6 +23,10 @@ import kotlin.collections.List
  * Describe a trajectory using an array of up-to 5 waypoints in the local frame
  * (MAV_FRAME_LOCAL_NED).
  */
+@GeneratedMavMessage(
+  id = 332,
+  crc = 236,
+)
 public data class TrajectoryRepresentationWaypoints(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp

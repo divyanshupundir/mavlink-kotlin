@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.asluav
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavMessage
 import com.urbanmatrix.mavlink.serialization.decodeFloat
@@ -18,6 +19,10 @@ import kotlin.Int
 /**
  * Fixed-wing soaring (i.e. thermal seeking) data
  */
+@GeneratedMavMessage(
+  id = 8011,
+  crc = 20,
+)
 public data class FwSoaringData(
   /**
    * Timestamp

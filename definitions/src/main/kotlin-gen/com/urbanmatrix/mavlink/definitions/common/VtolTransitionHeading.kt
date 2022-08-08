@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Direction of VTOL transition
  */
+@GeneratedMavEnum
 public enum class VtolTransitionHeading(
   public override val `value`: Long,
 ) : MavEnum {

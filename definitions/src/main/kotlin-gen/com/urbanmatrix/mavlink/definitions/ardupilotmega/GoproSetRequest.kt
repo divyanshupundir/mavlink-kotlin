@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.ardupilotmega
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,10 @@ import kotlin.collections.List
 /**
  * Request to set a GOPRO_COMMAND with a desired.
  */
+@GeneratedMavMessage(
+  id = 218,
+  crc = 17,
+)
 public data class GoproSetRequest(
   /**
    * System ID.

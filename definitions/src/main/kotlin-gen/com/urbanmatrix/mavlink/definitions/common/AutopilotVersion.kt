@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -25,6 +26,10 @@ import kotlin.collections.List
  * Version and capability of autopilot software. This should be emitted in response to a request
  * with MAV_CMD_REQUEST_MESSAGE.
  */
+@GeneratedMavMessage(
+  id = 148,
+  crc = 178,
+)
 public data class AutopilotVersion(
   /**
    * Bitmap of capabilities

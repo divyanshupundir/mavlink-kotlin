@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
@@ -8,6 +9,7 @@ import kotlin.Long
  * urgency. Based on RFC-5424 using expanded definitions at:
  * http://www.kiwisyslog.com/kb/info:-syslog-message-levels/.
  */
+@GeneratedMavEnum
 public enum class MavSeverity(
   public override val `value`: Long,
 ) : MavEnum {

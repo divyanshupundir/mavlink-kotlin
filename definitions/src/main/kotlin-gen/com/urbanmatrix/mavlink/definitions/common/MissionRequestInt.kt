@@ -1,5 +1,6 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavMessage
 import com.urbanmatrix.mavlink.api.MavDeserializer
 import com.urbanmatrix.mavlink.api.MavEnumValue
 import com.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,10 @@ import kotlin.Int
  * system to this message should be a MISSION_ITEM_INT message.
  * https://mavlink.io/en/services/mission.html
  */
+@GeneratedMavMessage(
+  id = 51,
+  crc = 196,
+)
 public data class MissionRequestInt(
   /**
    * System ID

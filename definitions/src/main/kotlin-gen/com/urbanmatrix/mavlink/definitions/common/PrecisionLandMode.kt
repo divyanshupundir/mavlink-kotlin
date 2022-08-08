@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.common
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Precision land modes (used in MAV_CMD_NAV_LAND).
  */
+@GeneratedMavEnum
 public enum class PrecisionLandMode(
   public override val `value`: Long,
 ) : MavEnum {

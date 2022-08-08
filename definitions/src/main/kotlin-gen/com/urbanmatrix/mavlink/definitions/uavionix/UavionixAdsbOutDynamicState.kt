@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.uavionix
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * State flags for ADS-B transponder dynamic report
  */
+@GeneratedMavEnum
 public enum class UavionixAdsbOutDynamicState(
   public override val `value`: Long,
 ) : MavEnum {

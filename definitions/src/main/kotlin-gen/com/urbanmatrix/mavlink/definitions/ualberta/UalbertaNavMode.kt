@@ -1,11 +1,13 @@
 package com.urbanmatrix.mavlink.definitions.ualberta
 
+import com.urbanmatrix.mavlink.api.GeneratedMavEnum
 import com.urbanmatrix.mavlink.api.MavEnum
 import kotlin.Long
 
 /**
  * Navigation filter mode
  */
+@GeneratedMavEnum
 public enum class UalbertaNavMode(
   public override val `value`: Long,
 ) : MavEnum {
