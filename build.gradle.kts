@@ -35,3 +35,20 @@ subprojects {
         }
     }
 }
+
+task("publishPlugin") {
+    dependsOn(
+        ":api:publish",
+        ":serialization:publish",
+        ":generator:publish",
+    )
+}
+
+task("publishLibrary") {
+    dependsOn(
+        ":mavlink-kotlin:publish",
+        ":definitions:publish",
+        ":adapters:rxjava2:publish",
+        ":adapters:rxjava3:publish"
+    )
+}
