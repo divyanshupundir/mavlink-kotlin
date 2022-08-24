@@ -3,7 +3,7 @@ plugins {
     `java-gradle-plugin`
     idea
     id("maven-publish")
-    id("com.gradle.plugin-publish") version "0.18.0"
+    id("com.gradle.plugin-publish") version "1.0.0-rc-1"
 }
 
 version = Specs.Plugin.developmentVersion
@@ -29,8 +29,8 @@ gradlePlugin {
     plugins {
         create("mavlinkGenerator") {
             id = "${Specs.group}.generator"
-            displayName = "Mavlink Kotlin Generator"
-            description = "This plugin is in the development stage. Feel free to contribute."
+            displayName = "MAVLink Kotlin Generator"
+            description = "Plugin for generating Kotlin implementation of MAVLink dialects."
             implementationClass = "xyz.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorPlugin"
         }
     }
