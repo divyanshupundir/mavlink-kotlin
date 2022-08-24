@@ -6,7 +6,7 @@ plugins {
     id("com.gradle.plugin-publish") version "0.18.0"
 }
 
-version = Specs.Plugin.devlopmentVersion
+version = Specs.Plugin.developmentVersion
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
