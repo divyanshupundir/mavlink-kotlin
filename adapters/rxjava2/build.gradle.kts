@@ -8,10 +8,10 @@ tasks.getByName<Test>("test") {
 }
 
 dependencies {
-    implementation(Deps.mavlinkKotlin)
+    implementation(project(":mavlink-kotlin"))
     api(Deps.rxJava2)
 
-    testImplementation(Deps.mavlinkKotlinDefinitions)
+    testImplementation(project(":definitions"))
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
 }

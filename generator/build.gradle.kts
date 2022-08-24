@@ -47,8 +47,8 @@ publishing {
 
 dependencies {
     implementation(gradleApi())
-    implementation(Deps.mavlinkKotlinApi)
-    implementation(Deps.mavlinkKotlinSerialization)
+    implementation(project(":api"))
+    implementation(project(":serialization"))
 
     implementation(Deps.jacksonDataFormatXml)
     implementation(Deps.jacksonModuleKotlin)

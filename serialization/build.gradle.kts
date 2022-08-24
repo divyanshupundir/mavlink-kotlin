@@ -3,6 +3,8 @@ plugins {
     `maven-publish`
 }
 
+version = Specs.Plugin.devlopmentVersion
+
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
