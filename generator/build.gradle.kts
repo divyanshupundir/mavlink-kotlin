@@ -28,10 +28,10 @@ pluginBundle {
 gradlePlugin {
     plugins {
         create("mavlinkGenerator") {
-            id = "com.urbanmatrix.mavlink.generator"
+            id = "${Specs.group}.generator"
             displayName = "Mavlink Kotlin Generator"
             description = "This plugin is in the development stage. Feel free to contribute."
-            implementationClass = "com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorPlugin"
+            implementationClass = "xyz.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorPlugin"
         }
     }
 }
@@ -40,7 +40,7 @@ publishing {
     repositories {
         maven {
             name = "localPluginRepository"
-            url = uri("../build/localPluginRepository")
+            url = uri("build/localPluginRepository")
         }
     }
 }

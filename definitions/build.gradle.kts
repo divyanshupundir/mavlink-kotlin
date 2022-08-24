@@ -17,7 +17,7 @@ tasks.getByName<Test>("test") {
 
 val genSrcDir = file("src/main/kotlin-gen")
 
-tasks.getByName<com.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
+tasks.getByName<xyz.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
     include(file("mavlink/message_definitions/v1.0/ardupilotmega.xml"))

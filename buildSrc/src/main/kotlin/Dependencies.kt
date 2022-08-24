@@ -6,10 +6,10 @@ object Deps {
     const val rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
     const val rxJava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
 
-    const val mavlinkKotlin = "com.urbanmatrix.mavlink:mavlink-kotlin:${Specs.Lib.releaseVersion}"
-    const val mavlinkKotlinApi = "com.urbanmatrix.mavlink:api:${Specs.Lib.releaseVersion}"
-    const val mavlinkKotlinSerialization = "com.urbanmatrix.mavlink:serialization:${Specs.Lib.releaseVersion}"
-    const val mavlinkKotlinDefinitions = "com.urbanmatrix.mavlink:definitions:${Specs.Lib.releaseVersion}"
+    const val mavlinkKotlin = "xyz.urbanmatrix.mavlink:mavlink-kotlin:${Specs.Lib.releaseVersion}"
+    const val mavlinkKotlinApi = "xyz.urbanmatrix.mavlink:api:${Specs.Lib.releaseVersion}"
+    const val mavlinkKotlinSerialization = "xyz.urbanmatrix.mavlink:serialization:${Specs.Lib.releaseVersion}"
+    const val mavlinkKotlinDefinitions = "xyz.urbanmatrix.mavlink:definitions:${Specs.Lib.releaseVersion}"
 }
 
 object TestDeps {
