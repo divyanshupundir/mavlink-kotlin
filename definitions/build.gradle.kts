@@ -1,9 +1,3 @@
-buildscript {
-    dependencies {
-        classpath("${Specs.group}:generator:${Specs.Plugin.releaseVersion}")
-    }
-}
-
 plugins {
     kotlin("jvm")
     id("${Specs.group}.generator") version Specs.Plugin.releaseVersion

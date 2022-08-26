@@ -2,7 +2,6 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven(uri("generator/build/localPluginRepository"))
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/urbanmatrix/mavlink-kotlin")
