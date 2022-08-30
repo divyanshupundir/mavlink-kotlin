@@ -37,7 +37,7 @@ task("publishPlugin") {
     dependsOn(
         ":api:publish",
         ":serialization:publish",
-        ":generator:publish",
+        ":generator:publishPlugins",
     )
 }
 

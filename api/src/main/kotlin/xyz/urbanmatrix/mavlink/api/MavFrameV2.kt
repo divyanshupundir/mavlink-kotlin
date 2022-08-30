@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.api
 
-interface MavFrameV2<T : MavMessage<T>> : MavFrame<T> {
+interface MavFrameV2<T> : MavFrame<T> {
     /**
      * Flag to check if the frame is signed or not.
      */

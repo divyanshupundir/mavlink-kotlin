@@ -1,3 +1,3 @@
 package xyz.urbanmatrix.mavlink.api
 
-interface MavFrameV1<T : MavMessage<T>> : MavFrame<T>
+interface MavFrameV1<T> : MavFrame<T>

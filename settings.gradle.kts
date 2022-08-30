@@ -21,6 +21,7 @@ rootProject.name = "mavlink-kotlin-root"
 include(":api")
 include(":serialization")
 include(":generator")
+
 include(":definitions")
 include(":mavlink-kotlin")
 
