@@ -38,7 +38,6 @@ class SimpleMavConnection(
         connectionHandle.close()
     }
 
-    @Suppress("TYPE_MISMATCH_WARNING", "UPPER_BOUND_VIOLATED_WARNING")
     @Throws(IOException::class)
     override fun next(): MavFrame<out MavMessage<*>> {
         readLock.withLock {
@@ -60,8 +59,8 @@ class SimpleMavConnection(
                 }
 
                 return when (rawFrame.stx) {
-                    MavFrameType.V1.magic -> MavFrameV1Impl<MavMessage<*>>(rawFrame, payload)
-                    MavFrameType.V2.magic -> MavFrameV2Impl<MavMessage<*>>(rawFrame, payload)
+                    MavFrameType.V1.magic -> MavFrameV1Impl(rawFrame, payload)
+                    MavFrameType.V2.magic -> MavFrameV2Impl(rawFrame, payload)
                     else -> throw IllegalStateException()
                 }
             }

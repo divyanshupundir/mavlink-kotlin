@@ -1,10 +1,9 @@
 package xyz.urbanmatrix.mavlink.frame
 
 import xyz.urbanmatrix.mavlink.api.MavFrameV1
-import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.raw.MavRawFrame
 
-data class MavFrameV1Impl<T : MavMessage<T>>(
+data class MavFrameV1Impl<T>(
     private val rawFrame: MavRawFrame,
     override val message: T
 ) : MavFrameV1<T> {
