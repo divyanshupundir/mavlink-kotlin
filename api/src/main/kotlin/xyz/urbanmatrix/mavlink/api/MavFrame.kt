@@ -6,7 +6,7 @@ package xyz.urbanmatrix.mavlink.api
  *
  * @param <T> The type of this frame's payload.
 </T> */
-interface MavFrame<T : MavMessage<T>> {
+interface MavFrame<T> {
     /**
      * The sequence of this frame.
      */
