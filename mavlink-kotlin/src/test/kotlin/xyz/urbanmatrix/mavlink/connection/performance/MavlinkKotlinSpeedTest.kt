@@ -1,17 +1,26 @@
-package xyz.urbanmatrix.mavlink.connection
+package xyz.urbanmatrix.mavlink.connection.performance
 
 import org.junit.jupiter.api.Test
 import xyz.urbanmatrix.mavlink.definitions.common.CommandLong
+import xyz.urbanmatrix.mavlink.definitions.common.MavCmd
 import xyz.urbanmatrix.mavlink.wrap
 
-class SpeedTest {
-    
+class MavlinkKotlinSpeedTest {
+
+    companion object {
+        private const val WARMUP_ITERS = 5
+        private const val ACTUAL_ITERS = 5
+
+        private const val SERIALIZATION_ITERS = 1_000_000
+        private const val DESERIALIZATION_ITERS = 100_000
+    }
+
     @Test
     fun serialization() {
         val cmd = CommandLong(
             1,
             2,
-            xyz.urbanmatrix.mavlink.definitions.common.MavCmd.MAV_CMD_DO_FOLLOW.wrap(),
+            MavCmd.MAV_CMD_DO_FOLLOW.wrap(),
             3,
             4f,
             3f,
@@ -22,18 +31,18 @@ class SpeedTest {
             2f
         )
 
-        for (i in 1..10) {
+        for (i in 1..WARMUP_ITERS) {
             println("Warmup: ${serializationStep(cmd)}")
         }
 
-        for (i in 1..10) {
-            println("Test: ${serializationStep(cmd)}")
+        for (i in 1..ACTUAL_ITERS) {
+            println("Actual: ${serializationStep(cmd)}")
         }
     }
 
     private fun serializationStep(cmd: CommandLong): Long {
         val start = System.nanoTime()
-        for (i in 1..1_000_000) {
+        for (i in 1..SERIALIZATION_ITERS) {
             cmd.serialize()
         }
         val end = System.nanoTime()
@@ -45,17 +54,18 @@ class SpeedTest {
     fun deserialization() {
         val data = ByteArray(200)
 
-        for (i in 0..9) {
+        for (i in 0..WARMUP_ITERS) {
             println("Warmup: " + deserializationStep(data))
         }
-        for (i in 0..9) {
-            println("Test: " + deserializationStep(data))
+
+        for (i in 0..ACTUAL_ITERS) {
+            println("Actual: " + deserializationStep(data))
         }
     }
 
     private fun deserializationStep(data: ByteArray): Long {
         val start = System.nanoTime()
-        for (i in 1..100_000) {
+        for (i in 1..DESERIALIZATION_ITERS) {
             CommandLong.classMetadata.deserializer.deserialize(data)
         }
         val end = System.nanoTime()

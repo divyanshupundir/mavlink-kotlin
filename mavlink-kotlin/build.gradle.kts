@@ -19,6 +19,8 @@ dependencies {
     api(Deps.mavlinkKotlinSerialization)
 
     testImplementation(project(":definitions"))
+    testImplementation(TestDeps.droneFleetMavlink)
+
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
 }
