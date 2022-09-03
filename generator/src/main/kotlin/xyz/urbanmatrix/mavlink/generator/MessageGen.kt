@@ -17,7 +17,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateConstructorProperty(enumResolver)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (workInProgress) addAnnotation(WorkInProgress::class)
@@ -27,6 +27,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
         .addType(generateCompanionObject(packageName))
+        .addType(generateBuilderClass(enumResolver))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
@@ -141,6 +142,10 @@ private fun MessageModel.generateSerialize() = FunSpec
             addStatement("return outputBuffer.array()")
         }
     )
+    .build()
+
+private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver) = TypeSpec.classBuilder("Builder")
+    .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumResolver)) } }
     .build()
 
 private val MessageModel.size: Int
