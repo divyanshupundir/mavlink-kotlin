@@ -27,7 +27,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
         .addType(generateCompanionObject(packageName))
-        .addType(generateBuilderClass(enumResolver))
+        .addType(generateBuilderClass(enumResolver, packageName))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
@@ -144,8 +144,22 @@ private fun MessageModel.generateSerialize() = FunSpec
     )
     .build()
 
-private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver) = TypeSpec.classBuilder("Builder")
+private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver, packageName: String) = TypeSpec.classBuilder("Builder")
     .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumResolver)) } }
+    .addFunction(generateBuildMethod(packageName))
+    .build()
+
+private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.builder("build")
+    .returns(getClassName(packageName))
+    .addCode(
+        buildCodeBlock {
+            add("return %T(\n", getClassName(packageName))
+            indent()
+            fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
+            unindent()
+            add(")")
+        }
+    )
     .build()
 
 private val MessageModel.size: Int
