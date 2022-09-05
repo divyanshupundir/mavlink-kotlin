@@ -48,6 +48,7 @@ private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
     .addProperty(generateDeserializer(packageName))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
+    .addFunction(generateBuilderFunction(packageName))
     .build()
 
 private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
@@ -160,6 +161,11 @@ private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.buil
             add(")")
         }
     )
+    .build()
+
+private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("builder")
+    .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
+    .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
 
 private val MessageModel.size: Int
