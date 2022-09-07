@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -143,5 +144,51 @@ public data class SensMppt(
     private val METADATA: MavMessage.Metadata<SensMppt> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensMppt> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var mpptTimestamp: BigInteger = BigInteger.ZERO
+
+    public var mppt1Volt: Float = 0F
+
+    public var mppt1Amp: Float = 0F
+
+    public var mppt1Pwm: Int = 0
+
+    public var mppt1Status: Int = 0
+
+    public var mppt2Volt: Float = 0F
+
+    public var mppt2Amp: Float = 0F
+
+    public var mppt2Pwm: Int = 0
+
+    public var mppt2Status: Int = 0
+
+    public var mppt3Volt: Float = 0F
+
+    public var mppt3Amp: Float = 0F
+
+    public var mppt3Pwm: Int = 0
+
+    public var mppt3Status: Int = 0
+
+    public fun build(): SensMppt = SensMppt(
+      mpptTimestamp = mpptTimestamp,
+      mppt1Volt = mppt1Volt,
+      mppt1Amp = mppt1Amp,
+      mppt1Pwm = mppt1Pwm,
+      mppt1Status = mppt1Status,
+      mppt2Volt = mppt2Volt,
+      mppt2Amp = mppt2Amp,
+      mppt2Pwm = mppt2Pwm,
+      mppt2Status = mppt2Status,
+      mppt3Volt = mppt3Volt,
+      mppt3Amp = mppt3Amp,
+      mppt3Pwm = mppt3Pwm,
+      mppt3Status = mppt3Status,
+    )
   }
 }

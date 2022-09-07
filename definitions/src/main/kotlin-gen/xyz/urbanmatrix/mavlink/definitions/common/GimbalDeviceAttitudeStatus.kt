@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -134,5 +135,39 @@ public data class GimbalDeviceAttitudeStatus(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalDeviceAttitudeStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var timeBootMs: Long = 0L
+
+    public var flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0)
+
+    public var q: List<Float> = emptyList()
+
+    public var angularVelocityX: Float = 0F
+
+    public var angularVelocityY: Float = 0F
+
+    public var angularVelocityZ: Float = 0F
+
+    public var failureFlags: MavEnumValue<GimbalDeviceErrorFlags> = MavEnumValue.fromValue(0)
+
+    public fun build(): GimbalDeviceAttitudeStatus = GimbalDeviceAttitudeStatus(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      timeBootMs = timeBootMs,
+      flags = flags,
+      q = q,
+      angularVelocityX = angularVelocityX,
+      angularVelocityY = angularVelocityY,
+      angularVelocityZ = angularVelocityZ,
+      failureFlags = failureFlags,
+    )
   }
 }

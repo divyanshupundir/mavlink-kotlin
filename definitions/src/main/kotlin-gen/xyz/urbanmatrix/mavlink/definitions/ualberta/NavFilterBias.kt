@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -98,5 +99,33 @@ public data class NavFilterBias(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var usec: BigInteger = BigInteger.ZERO
+
+    public var accel0: Float = 0F
+
+    public var accel1: Float = 0F
+
+    public var accel2: Float = 0F
+
+    public var gyro0: Float = 0F
+
+    public var gyro1: Float = 0F
+
+    public var gyro2: Float = 0F
+
+    public fun build(): NavFilterBias = NavFilterBias(
+      usec = usec,
+      accel0 = accel0,
+      accel1 = accel1,
+      accel2 = accel2,
+      gyro0 = gyro0,
+      gyro1 = gyro1,
+      gyro2 = gyro2,
+    )
   }
 }

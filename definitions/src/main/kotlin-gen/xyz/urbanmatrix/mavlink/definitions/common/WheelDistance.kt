@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -75,5 +76,21 @@ public data class WheelDistance(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WheelDistance> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var count: Int = 0
+
+    public var distance: List<Double> = emptyList()
+
+    public fun build(): WheelDistance = WheelDistance(
+      timeUsec = timeUsec,
+      count = count,
+      distance = distance,
+    )
   }
 }

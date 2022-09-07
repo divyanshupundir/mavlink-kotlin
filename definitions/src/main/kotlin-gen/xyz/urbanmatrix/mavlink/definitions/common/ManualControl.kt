@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -137,5 +138,42 @@ public data class ManualControl(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ManualControl> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var target: Int = 0
+
+    public var x: Int = 0
+
+    public var y: Int = 0
+
+    public var z: Int = 0
+
+    public var r: Int = 0
+
+    public var buttons: Int = 0
+
+    public var buttons2: Int = 0
+
+    public var enabledExtensions: Int = 0
+
+    public var s: Int = 0
+
+    public var t: Int = 0
+
+    public fun build(): ManualControl = ManualControl(
+      target = target,
+      x = x,
+      y = y,
+      z = z,
+      r = r,
+      buttons = buttons,
+      buttons2 = buttons2,
+      enabledExtensions = enabledExtensions,
+      s = s,
+      t = t,
+    )
   }
 }

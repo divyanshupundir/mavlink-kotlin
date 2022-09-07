@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -72,5 +73,21 @@ public data class PowerStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<PowerStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var vcc: Int = 0
+
+    public var vservo: Int = 0
+
+    public var flags: MavEnumValue<MavPowerStatus> = MavEnumValue.fromValue(0)
+
+    public fun build(): PowerStatus = PowerStatus(
+      vcc = vcc,
+      vservo = vservo,
+      flags = flags,
+    )
   }
 }

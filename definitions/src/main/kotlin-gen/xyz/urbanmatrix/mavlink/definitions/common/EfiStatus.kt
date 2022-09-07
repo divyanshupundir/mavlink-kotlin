@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -175,5 +176,66 @@ public data class EfiStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EfiStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var health: Int = 0
+
+    public var ecuIndex: Float = 0F
+
+    public var rpm: Float = 0F
+
+    public var fuelConsumed: Float = 0F
+
+    public var fuelFlow: Float = 0F
+
+    public var engineLoad: Float = 0F
+
+    public var throttlePosition: Float = 0F
+
+    public var sparkDwellTime: Float = 0F
+
+    public var barometricPressure: Float = 0F
+
+    public var intakeManifoldPressure: Float = 0F
+
+    public var intakeManifoldTemperature: Float = 0F
+
+    public var cylinderHeadTemperature: Float = 0F
+
+    public var ignitionTiming: Float = 0F
+
+    public var injectionTime: Float = 0F
+
+    public var exhaustGasTemperature: Float = 0F
+
+    public var throttleOut: Float = 0F
+
+    public var ptCompensation: Float = 0F
+
+    public var ignitionVoltage: Float = 0F
+
+    public fun build(): EfiStatus = EfiStatus(
+      health = health,
+      ecuIndex = ecuIndex,
+      rpm = rpm,
+      fuelConsumed = fuelConsumed,
+      fuelFlow = fuelFlow,
+      engineLoad = engineLoad,
+      throttlePosition = throttlePosition,
+      sparkDwellTime = sparkDwellTime,
+      barometricPressure = barometricPressure,
+      intakeManifoldPressure = intakeManifoldPressure,
+      intakeManifoldTemperature = intakeManifoldTemperature,
+      cylinderHeadTemperature = cylinderHeadTemperature,
+      ignitionTiming = ignitionTiming,
+      injectionTime = injectionTime,
+      exhaustGasTemperature = exhaustGasTemperature,
+      throttleOut = throttleOut,
+      ptCompensation = ptCompensation,
+      ignitionVoltage = ignitionVoltage,
+    )
   }
 }

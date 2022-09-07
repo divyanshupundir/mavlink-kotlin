@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -400,5 +401,162 @@ public data class SerialUdbExtraF2B(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF2B> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueTime: Long = 0L
+
+    public var suePwmInput1: Int = 0
+
+    public var suePwmInput2: Int = 0
+
+    public var suePwmInput3: Int = 0
+
+    public var suePwmInput4: Int = 0
+
+    public var suePwmInput5: Int = 0
+
+    public var suePwmInput6: Int = 0
+
+    public var suePwmInput7: Int = 0
+
+    public var suePwmInput8: Int = 0
+
+    public var suePwmInput9: Int = 0
+
+    public var suePwmInput10: Int = 0
+
+    public var suePwmInput11: Int = 0
+
+    public var suePwmInput12: Int = 0
+
+    public var suePwmOutput1: Int = 0
+
+    public var suePwmOutput2: Int = 0
+
+    public var suePwmOutput3: Int = 0
+
+    public var suePwmOutput4: Int = 0
+
+    public var suePwmOutput5: Int = 0
+
+    public var suePwmOutput6: Int = 0
+
+    public var suePwmOutput7: Int = 0
+
+    public var suePwmOutput8: Int = 0
+
+    public var suePwmOutput9: Int = 0
+
+    public var suePwmOutput10: Int = 0
+
+    public var suePwmOutput11: Int = 0
+
+    public var suePwmOutput12: Int = 0
+
+    public var sueImuLocationX: Int = 0
+
+    public var sueImuLocationY: Int = 0
+
+    public var sueImuLocationZ: Int = 0
+
+    public var sueLocationErrorEarthX: Int = 0
+
+    public var sueLocationErrorEarthY: Int = 0
+
+    public var sueLocationErrorEarthZ: Int = 0
+
+    public var sueFlags: Long = 0L
+
+    public var sueOscFails: Int = 0
+
+    public var sueImuVelocityX: Int = 0
+
+    public var sueImuVelocityY: Int = 0
+
+    public var sueImuVelocityZ: Int = 0
+
+    public var sueWaypointGoalX: Int = 0
+
+    public var sueWaypointGoalY: Int = 0
+
+    public var sueWaypointGoalZ: Int = 0
+
+    public var sueAeroX: Int = 0
+
+    public var sueAeroY: Int = 0
+
+    public var sueAeroZ: Int = 0
+
+    public var sueBaromTemp: Int = 0
+
+    public var sueBaromPress: Int = 0
+
+    public var sueBaromAlt: Int = 0
+
+    public var sueBatVolt: Int = 0
+
+    public var sueBatAmp: Int = 0
+
+    public var sueBatAmpHours: Int = 0
+
+    public var sueDesiredHeight: Int = 0
+
+    public var sueMemoryStackFree: Int = 0
+
+    public fun build(): SerialUdbExtraF2B = SerialUdbExtraF2B(
+      sueTime = sueTime,
+      suePwmInput1 = suePwmInput1,
+      suePwmInput2 = suePwmInput2,
+      suePwmInput3 = suePwmInput3,
+      suePwmInput4 = suePwmInput4,
+      suePwmInput5 = suePwmInput5,
+      suePwmInput6 = suePwmInput6,
+      suePwmInput7 = suePwmInput7,
+      suePwmInput8 = suePwmInput8,
+      suePwmInput9 = suePwmInput9,
+      suePwmInput10 = suePwmInput10,
+      suePwmInput11 = suePwmInput11,
+      suePwmInput12 = suePwmInput12,
+      suePwmOutput1 = suePwmOutput1,
+      suePwmOutput2 = suePwmOutput2,
+      suePwmOutput3 = suePwmOutput3,
+      suePwmOutput4 = suePwmOutput4,
+      suePwmOutput5 = suePwmOutput5,
+      suePwmOutput6 = suePwmOutput6,
+      suePwmOutput7 = suePwmOutput7,
+      suePwmOutput8 = suePwmOutput8,
+      suePwmOutput9 = suePwmOutput9,
+      suePwmOutput10 = suePwmOutput10,
+      suePwmOutput11 = suePwmOutput11,
+      suePwmOutput12 = suePwmOutput12,
+      sueImuLocationX = sueImuLocationX,
+      sueImuLocationY = sueImuLocationY,
+      sueImuLocationZ = sueImuLocationZ,
+      sueLocationErrorEarthX = sueLocationErrorEarthX,
+      sueLocationErrorEarthY = sueLocationErrorEarthY,
+      sueLocationErrorEarthZ = sueLocationErrorEarthZ,
+      sueFlags = sueFlags,
+      sueOscFails = sueOscFails,
+      sueImuVelocityX = sueImuVelocityX,
+      sueImuVelocityY = sueImuVelocityY,
+      sueImuVelocityZ = sueImuVelocityZ,
+      sueWaypointGoalX = sueWaypointGoalX,
+      sueWaypointGoalY = sueWaypointGoalY,
+      sueWaypointGoalZ = sueWaypointGoalZ,
+      sueAeroX = sueAeroX,
+      sueAeroY = sueAeroY,
+      sueAeroZ = sueAeroZ,
+      sueBaromTemp = sueBaromTemp,
+      sueBaromPress = sueBaromPress,
+      sueBaromAlt = sueBaromAlt,
+      sueBatVolt = sueBatVolt,
+      sueBatAmp = sueBatAmp,
+      sueBatAmpHours = sueBatAmpHours,
+      sueDesiredHeight = sueDesiredHeight,
+      sueMemoryStackFree = sueMemoryStackFree,
+    )
   }
 }

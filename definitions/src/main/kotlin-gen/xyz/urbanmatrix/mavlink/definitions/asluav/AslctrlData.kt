@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -181,5 +182,87 @@ public data class AslctrlData(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AslctrlData> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var aslctrlMode: Int = 0
+
+    public var h: Float = 0F
+
+    public var href: Float = 0F
+
+    public var hrefT: Float = 0F
+
+    public var pitchangle: Float = 0F
+
+    public var pitchangleref: Float = 0F
+
+    public var q: Float = 0F
+
+    public var qref: Float = 0F
+
+    public var uelev: Float = 0F
+
+    public var uthrot: Float = 0F
+
+    public var uthrot2: Float = 0F
+
+    public var nz: Float = 0F
+
+    public var airspeedref: Float = 0F
+
+    public var spoilersengaged: Int = 0
+
+    public var yawangle: Float = 0F
+
+    public var yawangleref: Float = 0F
+
+    public var rollangle: Float = 0F
+
+    public var rollangleref: Float = 0F
+
+    public var p: Float = 0F
+
+    public var pref: Float = 0F
+
+    public var r: Float = 0F
+
+    public var rref: Float = 0F
+
+    public var uail: Float = 0F
+
+    public var urud: Float = 0F
+
+    public fun build(): AslctrlData = AslctrlData(
+      timestamp = timestamp,
+      aslctrlMode = aslctrlMode,
+      h = h,
+      href = href,
+      hrefT = hrefT,
+      pitchangle = pitchangle,
+      pitchangleref = pitchangleref,
+      q = q,
+      qref = qref,
+      uelev = uelev,
+      uthrot = uthrot,
+      uthrot2 = uthrot2,
+      nz = nz,
+      airspeedref = airspeedref,
+      spoilersengaged = spoilersengaged,
+      yawangle = yawangle,
+      yawangleref = yawangleref,
+      rollangle = rollangle,
+      rollangleref = rollangleref,
+      p = p,
+      pref = pref,
+      r = r,
+      rref = rref,
+      uail = uail,
+      urud = urud,
+    )
   }
 }

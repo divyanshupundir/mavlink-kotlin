@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -178,5 +179,60 @@ public data class IcarousKinematicBands(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var numbands: Int = 0
+
+    public var type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+
+    public var min1: Float = 0F
+
+    public var max1: Float = 0F
+
+    public var type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+
+    public var min2: Float = 0F
+
+    public var max2: Float = 0F
+
+    public var type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+
+    public var min3: Float = 0F
+
+    public var max3: Float = 0F
+
+    public var type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+
+    public var min4: Float = 0F
+
+    public var max4: Float = 0F
+
+    public var type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+
+    public var min5: Float = 0F
+
+    public var max5: Float = 0F
+
+    public fun build(): IcarousKinematicBands = IcarousKinematicBands(
+      numbands = numbands,
+      type1 = type1,
+      min1 = min1,
+      max1 = max1,
+      type2 = type2,
+      min2 = min2,
+      max2 = max2,
+      type3 = type3,
+      min3 = min3,
+      max3 = max3,
+      type4 = type4,
+      min4 = min4,
+      max4 = max4,
+      type5 = type5,
+      min5 = min5,
+      max5 = max5,
+    )
   }
 }

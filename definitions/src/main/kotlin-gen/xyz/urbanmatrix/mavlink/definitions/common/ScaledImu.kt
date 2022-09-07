@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -127,5 +128,45 @@ public data class ScaledImu(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ScaledImu> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var xacc: Int = 0
+
+    public var yacc: Int = 0
+
+    public var zacc: Int = 0
+
+    public var xgyro: Int = 0
+
+    public var ygyro: Int = 0
+
+    public var zgyro: Int = 0
+
+    public var xmag: Int = 0
+
+    public var ymag: Int = 0
+
+    public var zmag: Int = 0
+
+    public var temperature: Int = 0
+
+    public fun build(): ScaledImu = ScaledImu(
+      timeBootMs = timeBootMs,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+      xgyro = xgyro,
+      ygyro = ygyro,
+      zgyro = zgyro,
+      xmag = xmag,
+      ymag = ymag,
+      zmag = zmag,
+      temperature = temperature,
+    )
   }
 }

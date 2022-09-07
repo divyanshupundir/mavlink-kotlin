@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -109,5 +110,36 @@ public data class IsbdLinkStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<IsbdLinkStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var lastHeartbeat: BigInteger = BigInteger.ZERO
+
+    public var failedSessions: Int = 0
+
+    public var successfulSessions: Int = 0
+
+    public var signalQuality: Int = 0
+
+    public var ringPending: Int = 0
+
+    public var txSessionPending: Int = 0
+
+    public var rxSessionPending: Int = 0
+
+    public fun build(): IsbdLinkStatus = IsbdLinkStatus(
+      timestamp = timestamp,
+      lastHeartbeat = lastHeartbeat,
+      failedSessions = failedSessions,
+      successfulSessions = successfulSessions,
+      signalQuality = signalQuality,
+      ringPending = ringPending,
+      txSessionPending = txSessionPending,
+      rxSessionPending = rxSessionPending,
+    )
   }
 }

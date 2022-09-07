@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -179,5 +180,60 @@ public data class SetPositionTargetGlobalInt(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetPositionTargetGlobalInt> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0)
+
+    public var latInt: Int = 0
+
+    public var lonInt: Int = 0
+
+    public var alt: Float = 0F
+
+    public var vx: Float = 0F
+
+    public var vy: Float = 0F
+
+    public var vz: Float = 0F
+
+    public var afx: Float = 0F
+
+    public var afy: Float = 0F
+
+    public var afz: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var yawRate: Float = 0F
+
+    public fun build(): SetPositionTargetGlobalInt = SetPositionTargetGlobalInt(
+      timeBootMs = timeBootMs,
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      coordinateFrame = coordinateFrame,
+      typeMask = typeMask,
+      latInt = latInt,
+      lonInt = lonInt,
+      alt = alt,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      afx = afx,
+      afy = afy,
+      afz = afz,
+      yaw = yaw,
+      yawRate = yawRate,
+    )
   }
 }

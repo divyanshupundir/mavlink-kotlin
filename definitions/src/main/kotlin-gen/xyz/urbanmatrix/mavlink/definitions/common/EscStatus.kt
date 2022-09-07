@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -94,5 +95,27 @@ public data class EscStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EscStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var index: Int = 0
+
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var rpm: List<Int> = emptyList()
+
+    public var voltage: List<Float> = emptyList()
+
+    public var current: List<Float> = emptyList()
+
+    public fun build(): EscStatus = EscStatus(
+      index = index,
+      timeUsec = timeUsec,
+      rpm = rpm,
+      voltage = voltage,
+      current = current,
+    )
   }
 }

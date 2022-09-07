@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -76,5 +77,21 @@ public data class GpsRtcmData(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var flags: Int = 0
+
+    public var len: Int = 0
+
+    public var `data`: List<Int> = emptyList()
+
+    public fun build(): GpsRtcmData = GpsRtcmData(
+      flags = flags,
+      len = len,
+      data = data,
+    )
   }
 }

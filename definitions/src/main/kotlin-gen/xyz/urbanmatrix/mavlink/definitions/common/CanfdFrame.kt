@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -94,5 +95,30 @@ public data class CanfdFrame(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CanfdFrame> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var bus: Int = 0
+
+    public var len: Int = 0
+
+    public var id: Long = 0L
+
+    public var `data`: List<Int> = emptyList()
+
+    public fun build(): CanfdFrame = CanfdFrame(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      bus = bus,
+      len = len,
+      id = id,
+      data = data,
+    )
   }
 }

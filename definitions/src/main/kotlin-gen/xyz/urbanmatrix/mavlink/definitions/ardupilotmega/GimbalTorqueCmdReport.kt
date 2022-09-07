@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -82,5 +83,27 @@ public data class GimbalTorqueCmdReport(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalTorqueCmdReport> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var rlTorqueCmd: Int = 0
+
+    public var elTorqueCmd: Int = 0
+
+    public var azTorqueCmd: Int = 0
+
+    public fun build(): GimbalTorqueCmdReport = GimbalTorqueCmdReport(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      rlTorqueCmd = rlTorqueCmd,
+      elTorqueCmd = elTorqueCmd,
+      azTorqueCmd = azTorqueCmd,
+    )
   }
 }

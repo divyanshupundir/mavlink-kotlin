@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -168,5 +169,60 @@ public data class HilState(
     private val METADATA: MavMessage.Metadata<HilState> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilState> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var rollspeed: Float = 0F
+
+    public var pitchspeed: Float = 0F
+
+    public var yawspeed: Float = 0F
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var vx: Int = 0
+
+    public var vy: Int = 0
+
+    public var vz: Int = 0
+
+    public var xacc: Int = 0
+
+    public var yacc: Int = 0
+
+    public var zacc: Int = 0
+
+    public fun build(): HilState = HilState(
+      timeUsec = timeUsec,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      rollspeed = rollspeed,
+      pitchspeed = pitchspeed,
+      yawspeed = yawspeed,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+    )
   }
 }

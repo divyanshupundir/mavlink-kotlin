@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -127,5 +128,45 @@ public data class SerialUdbExtraF14(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF14> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueWindEstimation: Int = 0
+
+    public var sueGpsType: Int = 0
+
+    public var sueDr: Int = 0
+
+    public var sueBoardType: Int = 0
+
+    public var sueAirframe: Int = 0
+
+    public var sueRcon: Int = 0
+
+    public var sueTrapFlags: Int = 0
+
+    public var sueTrapSource: Long = 0L
+
+    public var sueOscFailCount: Int = 0
+
+    public var sueClockConfig: Int = 0
+
+    public var sueFlightPlanType: Int = 0
+
+    public fun build(): SerialUdbExtraF14 = SerialUdbExtraF14(
+      sueWindEstimation = sueWindEstimation,
+      sueGpsType = sueGpsType,
+      sueDr = sueDr,
+      sueBoardType = sueBoardType,
+      sueAirframe = sueAirframe,
+      sueRcon = sueRcon,
+      sueTrapFlags = sueTrapFlags,
+      sueTrapSource = sueTrapSource,
+      sueOscFailCount = sueOscFailCount,
+      sueClockConfig = sueClockConfig,
+      sueFlightPlanType = sueFlightPlanType,
+    )
   }
 }

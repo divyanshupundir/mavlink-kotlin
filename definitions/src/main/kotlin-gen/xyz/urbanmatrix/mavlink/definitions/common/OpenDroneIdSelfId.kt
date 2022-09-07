@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -100,5 +101,27 @@ public data class OpenDroneIdSelfId(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdSelfId> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var idOrMac: List<Int> = emptyList()
+
+    public var descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0)
+
+    public var description: String = ""
+
+    public fun build(): OpenDroneIdSelfId = OpenDroneIdSelfId(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      idOrMac = idOrMac,
+      descriptionType = descriptionType,
+      description = description,
+    )
   }
 }

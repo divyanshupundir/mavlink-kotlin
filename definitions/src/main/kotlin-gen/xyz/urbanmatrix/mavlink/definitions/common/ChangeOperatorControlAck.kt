@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -67,5 +68,21 @@ public data class ChangeOperatorControlAck(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ChangeOperatorControlAck> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var gcsSystemId: Int = 0
+
+    public var controlRequest: Int = 0
+
+    public var ack: Int = 0
+
+    public fun build(): ChangeOperatorControlAck = ChangeOperatorControlAck(
+      gcsSystemId = gcsSystemId,
+      controlRequest = controlRequest,
+      ack = ack,
+    )
   }
 }

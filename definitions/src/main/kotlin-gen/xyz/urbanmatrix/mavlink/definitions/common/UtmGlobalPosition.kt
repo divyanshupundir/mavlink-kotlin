@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -190,5 +191,66 @@ public data class UtmGlobalPosition(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UtmGlobalPosition> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var time: BigInteger = BigInteger.ZERO
+
+    public var uasId: List<Int> = emptyList()
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var relativeAlt: Int = 0
+
+    public var vx: Int = 0
+
+    public var vy: Int = 0
+
+    public var vz: Int = 0
+
+    public var hAcc: Int = 0
+
+    public var vAcc: Int = 0
+
+    public var velAcc: Int = 0
+
+    public var nextLat: Int = 0
+
+    public var nextLon: Int = 0
+
+    public var nextAlt: Int = 0
+
+    public var updateRate: Int = 0
+
+    public var flightState: MavEnumValue<UtmFlightState> = MavEnumValue.fromValue(0)
+
+    public var flags: MavEnumValue<UtmDataAvailFlags> = MavEnumValue.fromValue(0)
+
+    public fun build(): UtmGlobalPosition = UtmGlobalPosition(
+      time = time,
+      uasId = uasId,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      relativeAlt = relativeAlt,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      hAcc = hAcc,
+      vAcc = vAcc,
+      velAcc = velAcc,
+      nextLat = nextLat,
+      nextLon = nextLon,
+      nextAlt = nextAlt,
+      updateRate = updateRate,
+      flightState = flightState,
+      flags = flags,
+    )
   }
 }

@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -108,5 +109,33 @@ public data class Event(
     private val METADATA: MavMessage.Metadata<Event> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Event> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var destinationComponent: Int = 0
+
+    public var destinationSystem: Int = 0
+
+    public var id: Long = 0L
+
+    public var eventTimeBootMs: Long = 0L
+
+    public var sequence: Int = 0
+
+    public var logLevels: Int = 0
+
+    public var arguments: List<Int> = emptyList()
+
+    public fun build(): Event = Event(
+      destinationComponent = destinationComponent,
+      destinationSystem = destinationSystem,
+      id = id,
+      eventTimeBootMs = eventTimeBootMs,
+      sequence = sequence,
+      logLevels = logLevels,
+      arguments = arguments,
+    )
   }
 }

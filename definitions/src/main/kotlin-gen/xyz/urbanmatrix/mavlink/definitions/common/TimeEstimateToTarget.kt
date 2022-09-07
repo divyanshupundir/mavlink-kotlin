@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -89,5 +90,27 @@ public data class TimeEstimateToTarget(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TimeEstimateToTarget> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var safeReturn: Int = 0
+
+    public var land: Int = 0
+
+    public var missionNextItem: Int = 0
+
+    public var missionEnd: Int = 0
+
+    public var commandedAction: Int = 0
+
+    public fun build(): TimeEstimateToTarget = TimeEstimateToTarget(
+      safeReturn = safeReturn,
+      land = land,
+      missionNextItem = missionNextItem,
+      missionEnd = missionEnd,
+      commandedAction = commandedAction,
+    )
   }
 }

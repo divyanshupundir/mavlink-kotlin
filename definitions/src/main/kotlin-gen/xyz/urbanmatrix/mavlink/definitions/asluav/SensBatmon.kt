@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -163,5 +164,57 @@ public data class SensBatmon(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensBatmon> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var batmonTimestamp: BigInteger = BigInteger.ZERO
+
+    public var temperature: Float = 0F
+
+    public var voltage: Int = 0
+
+    public var current: Int = 0
+
+    public var soc: Int = 0
+
+    public var batterystatus: Int = 0
+
+    public var serialnumber: Int = 0
+
+    public var safetystatus: Long = 0L
+
+    public var operationstatus: Long = 0L
+
+    public var cellvoltage1: Int = 0
+
+    public var cellvoltage2: Int = 0
+
+    public var cellvoltage3: Int = 0
+
+    public var cellvoltage4: Int = 0
+
+    public var cellvoltage5: Int = 0
+
+    public var cellvoltage6: Int = 0
+
+    public fun build(): SensBatmon = SensBatmon(
+      batmonTimestamp = batmonTimestamp,
+      temperature = temperature,
+      voltage = voltage,
+      current = current,
+      soc = soc,
+      batterystatus = batterystatus,
+      serialnumber = serialnumber,
+      safetystatus = safetystatus,
+      operationstatus = operationstatus,
+      cellvoltage1 = cellvoltage1,
+      cellvoltage2 = cellvoltage2,
+      cellvoltage3 = cellvoltage3,
+      cellvoltage4 = cellvoltage4,
+      cellvoltage5 = cellvoltage5,
+      cellvoltage6 = cellvoltage6,
+    )
   }
 }

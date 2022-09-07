@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -130,5 +131,48 @@ public data class AirspeedAutocal(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AirspeedAutocal> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var vx: Float = 0F
+
+    public var vy: Float = 0F
+
+    public var vz: Float = 0F
+
+    public var diffPressure: Float = 0F
+
+    public var eas2tas: Float = 0F
+
+    public var ratio: Float = 0F
+
+    public var stateX: Float = 0F
+
+    public var stateY: Float = 0F
+
+    public var stateZ: Float = 0F
+
+    public var pax: Float = 0F
+
+    public var pby: Float = 0F
+
+    public var pcz: Float = 0F
+
+    public fun build(): AirspeedAutocal = AirspeedAutocal(
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      diffPressure = diffPressure,
+      eas2tas = eas2tas,
+      ratio = ratio,
+      stateX = stateX,
+      stateY = stateY,
+      stateZ = stateZ,
+      pax = pax,
+      pby = pby,
+      pcz = pcz,
+    )
   }
 }

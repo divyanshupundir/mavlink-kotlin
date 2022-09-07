@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -88,5 +89,27 @@ public data class TerrainData(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TerrainData> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var gridSpacing: Int = 0
+
+    public var gridbit: Int = 0
+
+    public var `data`: List<Int> = emptyList()
+
+    public fun build(): TerrainData = TerrainData(
+      lat = lat,
+      lon = lon,
+      gridSpacing = gridSpacing,
+      gridbit = gridbit,
+      data = data,
+    )
   }
 }

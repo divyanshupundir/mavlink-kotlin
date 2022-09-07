@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -157,5 +158,48 @@ public data class DistanceSensor(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DistanceSensor> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var minDistance: Int = 0
+
+    public var maxDistance: Int = 0
+
+    public var currentDistance: Int = 0
+
+    public var type: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0)
+
+    public var id: Int = 0
+
+    public var orientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0)
+
+    public var covariance: Int = 0
+
+    public var horizontalFov: Float = 0F
+
+    public var verticalFov: Float = 0F
+
+    public var quaternion: List<Float> = emptyList()
+
+    public var signalQuality: Int = 0
+
+    public fun build(): DistanceSensor = DistanceSensor(
+      timeBootMs = timeBootMs,
+      minDistance = minDistance,
+      maxDistance = maxDistance,
+      currentDistance = currentDistance,
+      type = type,
+      id = id,
+      orientation = orientation,
+      covariance = covariance,
+      horizontalFov = horizontalFov,
+      verticalFov = verticalFov,
+      quaternion = quaternion,
+      signalQuality = signalQuality,
+    )
   }
 }

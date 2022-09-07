@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -128,5 +129,42 @@ public data class RallyPoint(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RallyPoint> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var idx: Int = 0
+
+    public var count: Int = 0
+
+    public var lat: Int = 0
+
+    public var lng: Int = 0
+
+    public var alt: Int = 0
+
+    public var breakAlt: Int = 0
+
+    public var landDir: Int = 0
+
+    public var flags: MavEnumValue<RallyFlags> = MavEnumValue.fromValue(0)
+
+    public fun build(): RallyPoint = RallyPoint(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      idx = idx,
+      count = count,
+      lat = lat,
+      lng = lng,
+      alt = alt,
+      breakAlt = breakAlt,
+      landDir = landDir,
+      flags = flags,
+    )
   }
 }

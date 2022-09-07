@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -98,5 +99,30 @@ public data class AttitudeQuaternionCov(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AttitudeQuaternionCov> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var q: List<Float> = emptyList()
+
+    public var rollspeed: Float = 0F
+
+    public var pitchspeed: Float = 0F
+
+    public var yawspeed: Float = 0F
+
+    public var covariance: List<Float> = emptyList()
+
+    public fun build(): AttitudeQuaternionCov = AttitudeQuaternionCov(
+      timeUsec = timeUsec,
+      q = q,
+      rollspeed = rollspeed,
+      pitchspeed = pitchspeed,
+      yawspeed = yawspeed,
+      covariance = covariance,
+    )
   }
 }

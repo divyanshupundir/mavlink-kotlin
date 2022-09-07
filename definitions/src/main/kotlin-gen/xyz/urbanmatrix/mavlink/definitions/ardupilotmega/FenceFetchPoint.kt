@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -66,5 +67,21 @@ public data class FenceFetchPoint(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FenceFetchPoint> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var idx: Int = 0
+
+    public fun build(): FenceFetchPoint = FenceFetchPoint(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      idx = idx,
+    )
   }
 }

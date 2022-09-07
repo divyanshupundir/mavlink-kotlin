@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -121,5 +122,39 @@ public data class AttitudeQuaternion(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AttitudeQuaternion> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var q1: Float = 0F
+
+    public var q2: Float = 0F
+
+    public var q3: Float = 0F
+
+    public var q4: Float = 0F
+
+    public var rollspeed: Float = 0F
+
+    public var pitchspeed: Float = 0F
+
+    public var yawspeed: Float = 0F
+
+    public var reprOffsetQ: List<Float> = emptyList()
+
+    public fun build(): AttitudeQuaternion = AttitudeQuaternion(
+      timeBootMs = timeBootMs,
+      q1 = q1,
+      q2 = q2,
+      q3 = q3,
+      q4 = q4,
+      rollspeed = rollspeed,
+      pitchspeed = pitchspeed,
+      yawspeed = yawspeed,
+      reprOffsetQ = reprOffsetQ,
+    )
   }
 }

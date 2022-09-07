@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -118,5 +119,39 @@ public data class GlobalPositionInt(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GlobalPositionInt> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var relativeAlt: Int = 0
+
+    public var vx: Int = 0
+
+    public var vy: Int = 0
+
+    public var vz: Int = 0
+
+    public var hdg: Int = 0
+
+    public fun build(): GlobalPositionInt = GlobalPositionInt(
+      timeBootMs = timeBootMs,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      relativeAlt = relativeAlt,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      hdg = hdg,
+    )
   }
 }

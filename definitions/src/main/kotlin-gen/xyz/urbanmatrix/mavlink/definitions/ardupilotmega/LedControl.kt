@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -90,5 +91,30 @@ public data class LedControl(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LedControl> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var instance: Int = 0
+
+    public var pattern: Int = 0
+
+    public var customLen: Int = 0
+
+    public var customBytes: List<Int> = emptyList()
+
+    public fun build(): LedControl = LedControl(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      instance = instance,
+      pattern = pattern,
+      customLen = customLen,
+      customBytes = customBytes,
+    )
   }
 }

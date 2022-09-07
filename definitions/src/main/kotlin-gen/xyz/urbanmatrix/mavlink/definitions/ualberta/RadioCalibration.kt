@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -88,5 +89,30 @@ public data class RadioCalibration(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RadioCalibration> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var aileron: List<Int> = emptyList()
+
+    public var elevator: List<Int> = emptyList()
+
+    public var rudder: List<Int> = emptyList()
+
+    public var gyro: List<Int> = emptyList()
+
+    public var pitch: List<Int> = emptyList()
+
+    public var throttle: List<Int> = emptyList()
+
+    public fun build(): RadioCalibration = RadioCalibration(
+      aileron = aileron,
+      elevator = elevator,
+      rudder = rudder,
+      gyro = gyro,
+      pitch = pitch,
+      throttle = throttle,
+    )
   }
 }

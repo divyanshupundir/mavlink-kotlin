@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -225,5 +226,69 @@ public data class OpenDroneIdLocation(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdLocation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var idOrMac: List<Int> = emptyList()
+
+    public var status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0)
+
+    public var direction: Int = 0
+
+    public var speedHorizontal: Int = 0
+
+    public var speedVertical: Int = 0
+
+    public var latitude: Int = 0
+
+    public var longitude: Int = 0
+
+    public var altitudeBarometric: Float = 0F
+
+    public var altitudeGeodetic: Float = 0F
+
+    public var heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0)
+
+    public var height: Float = 0F
+
+    public var horizontalAccuracy: MavEnumValue<MavOdidHorAcc> = MavEnumValue.fromValue(0)
+
+    public var verticalAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0)
+
+    public var barometerAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0)
+
+    public var speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0)
+
+    public var timestamp: Float = 0F
+
+    public var timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0)
+
+    public fun build(): OpenDroneIdLocation = OpenDroneIdLocation(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      idOrMac = idOrMac,
+      status = status,
+      direction = direction,
+      speedHorizontal = speedHorizontal,
+      speedVertical = speedVertical,
+      latitude = latitude,
+      longitude = longitude,
+      altitudeBarometric = altitudeBarometric,
+      altitudeGeodetic = altitudeGeodetic,
+      heightReference = heightReference,
+      height = height,
+      horizontalAccuracy = horizontalAccuracy,
+      verticalAccuracy = verticalAccuracy,
+      barometerAccuracy = barometerAccuracy,
+      speedAccuracy = speedAccuracy,
+      timestamp = timestamp,
+      timestampAccuracy = timestampAccuracy,
+    )
   }
 }

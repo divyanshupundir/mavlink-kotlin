@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -117,5 +118,42 @@ public data class Ahrs3(
     private val METADATA: MavMessage.Metadata<Ahrs3> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Ahrs3> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var altitude: Float = 0F
+
+    public var lat: Int = 0
+
+    public var lng: Int = 0
+
+    public var v1: Float = 0F
+
+    public var v2: Float = 0F
+
+    public var v3: Float = 0F
+
+    public var v4: Float = 0F
+
+    public fun build(): Ahrs3 = Ahrs3(
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      altitude = altitude,
+      lat = lat,
+      lng = lng,
+      v1 = v1,
+      v2 = v2,
+      v3 = v3,
+      v4 = v4,
+    )
   }
 }

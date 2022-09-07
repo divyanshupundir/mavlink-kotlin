@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -138,5 +139,48 @@ public data class RawImu(
     private val METADATA: MavMessage.Metadata<RawImu> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RawImu> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var xacc: Int = 0
+
+    public var yacc: Int = 0
+
+    public var zacc: Int = 0
+
+    public var xgyro: Int = 0
+
+    public var ygyro: Int = 0
+
+    public var zgyro: Int = 0
+
+    public var xmag: Int = 0
+
+    public var ymag: Int = 0
+
+    public var zmag: Int = 0
+
+    public var id: Int = 0
+
+    public var temperature: Int = 0
+
+    public fun build(): RawImu = RawImu(
+      timeUsec = timeUsec,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+      xgyro = xgyro,
+      ygyro = ygyro,
+      zgyro = zgyro,
+      xmag = xmag,
+      ymag = ymag,
+      zmag = zmag,
+      id = id,
+      temperature = temperature,
+    )
   }
 }

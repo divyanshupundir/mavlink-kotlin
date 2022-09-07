@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -135,5 +136,48 @@ public data class SensorOffsets(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensorOffsets> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var magOfsX: Int = 0
+
+    public var magOfsY: Int = 0
+
+    public var magOfsZ: Int = 0
+
+    public var magDeclination: Float = 0F
+
+    public var rawPress: Int = 0
+
+    public var rawTemp: Int = 0
+
+    public var gyroCalX: Float = 0F
+
+    public var gyroCalY: Float = 0F
+
+    public var gyroCalZ: Float = 0F
+
+    public var accelCalX: Float = 0F
+
+    public var accelCalY: Float = 0F
+
+    public var accelCalZ: Float = 0F
+
+    public fun build(): SensorOffsets = SensorOffsets(
+      magOfsX = magOfsX,
+      magOfsY = magOfsY,
+      magOfsZ = magOfsZ,
+      magDeclination = magDeclination,
+      rawPress = rawPress,
+      rawTemp = rawTemp,
+      gyroCalX = gyroCalX,
+      gyroCalY = gyroCalY,
+      gyroCalZ = gyroCalZ,
+      accelCalX = accelCalX,
+      accelCalY = accelCalY,
+      accelCalZ = accelCalZ,
+    )
   }
 }

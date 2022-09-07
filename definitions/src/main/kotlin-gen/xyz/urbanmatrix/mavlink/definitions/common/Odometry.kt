@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -193,5 +194,63 @@ public data class Odometry(
     private val METADATA: MavMessage.Metadata<Odometry> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Odometry> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var q: List<Float> = emptyList()
+
+    public var vx: Float = 0F
+
+    public var vy: Float = 0F
+
+    public var vz: Float = 0F
+
+    public var rollspeed: Float = 0F
+
+    public var pitchspeed: Float = 0F
+
+    public var yawspeed: Float = 0F
+
+    public var poseCovariance: List<Float> = emptyList()
+
+    public var velocityCovariance: List<Float> = emptyList()
+
+    public var resetCounter: Int = 0
+
+    public var estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0)
+
+    public fun build(): Odometry = Odometry(
+      timeUsec = timeUsec,
+      frameId = frameId,
+      childFrameId = childFrameId,
+      x = x,
+      y = y,
+      z = z,
+      q = q,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      rollspeed = rollspeed,
+      pitchspeed = pitchspeed,
+      yawspeed = yawspeed,
+      poseCovariance = poseCovariance,
+      velocityCovariance = velocityCovariance,
+      resetCounter = resetCounter,
+      estimatorType = estimatorType,
+    )
   }
 }

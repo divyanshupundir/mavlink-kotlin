@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -80,5 +81,24 @@ public data class MemoryVect(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MemoryVect> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var address: Int = 0
+
+    public var ver: Int = 0
+
+    public var type: Int = 0
+
+    public var `value`: List<Int> = emptyList()
+
+    public fun build(): MemoryVect = MemoryVect(
+      address = address,
+      ver = ver,
+      type = type,
+      value = value,
+    )
   }
 }

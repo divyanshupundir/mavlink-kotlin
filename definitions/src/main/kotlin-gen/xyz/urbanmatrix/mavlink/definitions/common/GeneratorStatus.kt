@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -142,5 +143,45 @@ public data class GeneratorStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var status: MavEnumValue<MavGeneratorStatusFlag> = MavEnumValue.fromValue(0)
+
+    public var generatorSpeed: Int = 0
+
+    public var batteryCurrent: Float = 0F
+
+    public var loadCurrent: Float = 0F
+
+    public var powerGenerated: Float = 0F
+
+    public var busVoltage: Float = 0F
+
+    public var rectifierTemperature: Int = 0
+
+    public var batCurrentSetpoint: Float = 0F
+
+    public var generatorTemperature: Int = 0
+
+    public var runtime: Long = 0L
+
+    public var timeUntilMaintenance: Int = 0
+
+    public fun build(): GeneratorStatus = GeneratorStatus(
+      status = status,
+      generatorSpeed = generatorSpeed,
+      batteryCurrent = batteryCurrent,
+      loadCurrent = loadCurrent,
+      powerGenerated = powerGenerated,
+      busVoltage = busVoltage,
+      rectifierTemperature = rectifierTemperature,
+      batCurrentSetpoint = batCurrentSetpoint,
+      generatorTemperature = generatorTemperature,
+      runtime = runtime,
+      timeUntilMaintenance = timeUntilMaintenance,
+    )
   }
 }

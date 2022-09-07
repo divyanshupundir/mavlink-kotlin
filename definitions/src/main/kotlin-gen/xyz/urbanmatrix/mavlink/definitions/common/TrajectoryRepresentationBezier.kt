@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -105,5 +106,33 @@ public data class TrajectoryRepresentationBezier(
         MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TrajectoryRepresentationBezier> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var validPoints: Int = 0
+
+    public var posX: List<Float> = emptyList()
+
+    public var posY: List<Float> = emptyList()
+
+    public var posZ: List<Float> = emptyList()
+
+    public var delta: List<Float> = emptyList()
+
+    public var posYaw: List<Float> = emptyList()
+
+    public fun build(): TrajectoryRepresentationBezier = TrajectoryRepresentationBezier(
+      timeUsec = timeUsec,
+      validPoints = validPoints,
+      posX = posX,
+      posY = posY,
+      posZ = posZ,
+      delta = delta,
+      posYaw = posYaw,
+    )
   }
 }

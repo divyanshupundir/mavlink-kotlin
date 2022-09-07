@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -186,5 +187,66 @@ public data class MagCalReport(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MagCalReport> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var compassId: Int = 0
+
+    public var calMask: Int = 0
+
+    public var calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0)
+
+    public var autosaved: Int = 0
+
+    public var fitness: Float = 0F
+
+    public var ofsX: Float = 0F
+
+    public var ofsY: Float = 0F
+
+    public var ofsZ: Float = 0F
+
+    public var diagX: Float = 0F
+
+    public var diagY: Float = 0F
+
+    public var diagZ: Float = 0F
+
+    public var offdiagX: Float = 0F
+
+    public var offdiagY: Float = 0F
+
+    public var offdiagZ: Float = 0F
+
+    public var orientationConfidence: Float = 0F
+
+    public var oldOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0)
+
+    public var newOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0)
+
+    public var scaleFactor: Float = 0F
+
+    public fun build(): MagCalReport = MagCalReport(
+      compassId = compassId,
+      calMask = calMask,
+      calStatus = calStatus,
+      autosaved = autosaved,
+      fitness = fitness,
+      ofsX = ofsX,
+      ofsY = ofsY,
+      ofsZ = ofsZ,
+      diagX = diagX,
+      diagY = diagY,
+      diagZ = diagZ,
+      offdiagX = offdiagX,
+      offdiagY = offdiagY,
+      offdiagZ = offdiagZ,
+      orientationConfidence = orientationConfidence,
+      oldOrientation = oldOrientation,
+      newOrientation = newOrientation,
+      scaleFactor = scaleFactor,
+    )
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -89,5 +90,27 @@ public data class ProtocolVersion(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ProtocolVersion> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var version: Int = 0
+
+    public var minVersion: Int = 0
+
+    public var maxVersion: Int = 0
+
+    public var specVersionHash: List<Int> = emptyList()
+
+    public var libraryVersionHash: List<Int> = emptyList()
+
+    public fun build(): ProtocolVersion = ProtocolVersion(
+      version = version,
+      minVersion = minVersion,
+      maxVersion = maxVersion,
+      specVersionHash = specVersionHash,
+      libraryVersionHash = libraryVersionHash,
+    )
   }
 }

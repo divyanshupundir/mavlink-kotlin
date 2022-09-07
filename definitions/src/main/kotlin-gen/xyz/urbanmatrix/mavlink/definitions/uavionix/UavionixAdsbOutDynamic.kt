@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -179,5 +180,61 @@ public data class UavionixAdsbOutDynamic(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var utctime: Long = 0L
+
+    public var gpslat: Int = 0
+
+    public var gpslon: Int = 0
+
+    public var gpsalt: Int = 0
+
+    public var gpsfix: MavEnumValue<UavionixAdsbOutDynamicGpsFix> = MavEnumValue.fromValue(0)
+
+    public var numsats: Int = 0
+
+    public var baroaltmsl: Int = 0
+
+    public var accuracyhor: Long = 0L
+
+    public var accuracyvert: Int = 0
+
+    public var accuracyvel: Int = 0
+
+    public var velvert: Int = 0
+
+    public var velns: Int = 0
+
+    public var velew: Int = 0
+
+    public var emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> =
+        MavEnumValue.fromValue(0)
+
+    public var state: MavEnumValue<UavionixAdsbOutDynamicState> = MavEnumValue.fromValue(0)
+
+    public var squawk: Int = 0
+
+    public fun build(): UavionixAdsbOutDynamic = UavionixAdsbOutDynamic(
+      utctime = utctime,
+      gpslat = gpslat,
+      gpslon = gpslon,
+      gpsalt = gpsalt,
+      gpsfix = gpsfix,
+      numsats = numsats,
+      baroaltmsl = baroaltmsl,
+      accuracyhor = accuracyhor,
+      accuracyvert = accuracyvert,
+      accuracyvel = accuracyvel,
+      velvert = velvert,
+      velns = velns,
+      velew = velew,
+      emergencystatus = emergencystatus,
+      state = state,
+      squawk = squawk,
+    )
   }
 }

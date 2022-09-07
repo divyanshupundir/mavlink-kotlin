@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -114,5 +115,36 @@ public data class WinchStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WinchStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var lineLength: Float = 0F
+
+    public var speed: Float = 0F
+
+    public var tension: Float = 0F
+
+    public var voltage: Float = 0F
+
+    public var current: Float = 0F
+
+    public var temperature: Int = 0
+
+    public var status: MavEnumValue<MavWinchStatusFlag> = MavEnumValue.fromValue(0)
+
+    public fun build(): WinchStatus = WinchStatus(
+      timeUsec = timeUsec,
+      lineLength = lineLength,
+      speed = speed,
+      tension = tension,
+      voltage = voltage,
+      current = current,
+      temperature = temperature,
+      status = status,
+    )
   }
 }

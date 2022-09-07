@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -150,5 +151,45 @@ public data class CameraImageCaptured(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var timeUtc: BigInteger = BigInteger.ZERO
+
+    public var cameraId: Int = 0
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var relativeAlt: Int = 0
+
+    public var q: List<Float> = emptyList()
+
+    public var imageIndex: Int = 0
+
+    public var captureResult: Int = 0
+
+    public var fileUrl: String = ""
+
+    public fun build(): CameraImageCaptured = CameraImageCaptured(
+      timeBootMs = timeBootMs,
+      timeUtc = timeUtc,
+      cameraId = cameraId,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      relativeAlt = relativeAlt,
+      q = q,
+      imageIndex = imageIndex,
+      captureResult = captureResult,
+      fileUrl = fileUrl,
+    )
   }
 }

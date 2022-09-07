@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -124,5 +125,42 @@ public data class OpticalFlow(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpticalFlow> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var sensorId: Int = 0
+
+    public var flowX: Int = 0
+
+    public var flowY: Int = 0
+
+    public var flowCompMX: Float = 0F
+
+    public var flowCompMY: Float = 0F
+
+    public var quality: Int = 0
+
+    public var groundDistance: Float = 0F
+
+    public var flowRateX: Float = 0F
+
+    public var flowRateY: Float = 0F
+
+    public fun build(): OpticalFlow = OpticalFlow(
+      timeUsec = timeUsec,
+      sensorId = sensorId,
+      flowX = flowX,
+      flowY = flowY,
+      flowCompMX = flowCompMX,
+      flowCompMY = flowCompMY,
+      quality = quality,
+      groundDistance = groundDistance,
+      flowRateX = flowRateX,
+      flowRateY = flowRateY,
+    )
   }
 }

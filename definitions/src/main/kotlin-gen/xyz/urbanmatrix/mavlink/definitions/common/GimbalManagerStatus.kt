@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -106,5 +107,33 @@ public data class GimbalManagerStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var flags: MavEnumValue<GimbalManagerFlags> = MavEnumValue.fromValue(0)
+
+    public var gimbalDeviceId: Int = 0
+
+    public var primaryControlSysid: Int = 0
+
+    public var primaryControlCompid: Int = 0
+
+    public var secondaryControlSysid: Int = 0
+
+    public var secondaryControlCompid: Int = 0
+
+    public fun build(): GimbalManagerStatus = GimbalManagerStatus(
+      timeBootMs = timeBootMs,
+      flags = flags,
+      gimbalDeviceId = gimbalDeviceId,
+      primaryControlSysid = primaryControlSysid,
+      primaryControlCompid = primaryControlCompid,
+      secondaryControlSysid = secondaryControlSysid,
+      secondaryControlCompid = secondaryControlCompid,
+    )
   }
 }

@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -159,5 +160,48 @@ public data class AutopilotStateForGimbalDevice(
         MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AutopilotStateForGimbalDevice> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var timeBootUs: BigInteger = BigInteger.ZERO
+
+    public var q: List<Float> = emptyList()
+
+    public var qEstimatedDelayUs: Long = 0L
+
+    public var vx: Float = 0F
+
+    public var vy: Float = 0F
+
+    public var vz: Float = 0F
+
+    public var vEstimatedDelayUs: Long = 0L
+
+    public var feedForwardAngularVelocityZ: Float = 0F
+
+    public var estimatorStatus: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0)
+
+    public var landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0)
+
+    public fun build(): AutopilotStateForGimbalDevice = AutopilotStateForGimbalDevice(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      timeBootUs = timeBootUs,
+      q = q,
+      qEstimatedDelayUs = qEstimatedDelayUs,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      vEstimatedDelayUs = vEstimatedDelayUs,
+      feedForwardAngularVelocityZ = feedForwardAngularVelocityZ,
+      estimatorStatus = estimatorStatus,
+      landedState = landedState,
+    )
   }
 }

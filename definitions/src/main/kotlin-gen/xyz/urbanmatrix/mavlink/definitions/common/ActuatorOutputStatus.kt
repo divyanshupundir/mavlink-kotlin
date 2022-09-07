@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -75,5 +76,21 @@ public data class ActuatorOutputStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var active: Long = 0L
+
+    public var actuator: List<Float> = emptyList()
+
+    public fun build(): ActuatorOutputStatus = ActuatorOutputStatus(
+      timeUsec = timeUsec,
+      active = active,
+      actuator = actuator,
+    )
   }
 }

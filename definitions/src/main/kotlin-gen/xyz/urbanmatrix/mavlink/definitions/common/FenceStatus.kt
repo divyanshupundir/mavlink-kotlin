@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -94,5 +95,27 @@ public data class FenceStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FenceStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var breachStatus: Int = 0
+
+    public var breachCount: Int = 0
+
+    public var breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0)
+
+    public var breachTime: Long = 0L
+
+    public var breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0)
+
+    public fun build(): FenceStatus = FenceStatus(
+      breachStatus = breachStatus,
+      breachCount = breachCount,
+      breachType = breachType,
+      breachTime = breachTime,
+      breachMitigation = breachMitigation,
+    )
   }
 }

@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -127,5 +128,45 @@ public data class AvssDroneImu(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var q1: Float = 0F
+
+    public var q2: Float = 0F
+
+    public var q3: Float = 0F
+
+    public var q4: Float = 0F
+
+    public var xacc: Float = 0F
+
+    public var yacc: Float = 0F
+
+    public var zacc: Float = 0F
+
+    public var xgyro: Float = 0F
+
+    public var ygyro: Float = 0F
+
+    public var zgyro: Float = 0F
+
+    public fun build(): AvssDroneImu = AvssDroneImu(
+      timeBootMs = timeBootMs,
+      q1 = q1,
+      q2 = q2,
+      q3 = q3,
+      q4 = q4,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+      xgyro = xgyro,
+      ygyro = ygyro,
+      zgyro = zgyro,
+    )
   }
 }

@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -122,5 +123,39 @@ public data class CameraStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var targetSystem: Int = 0
+
+    public var camIdx: Int = 0
+
+    public var imgIdx: Int = 0
+
+    public var eventId: MavEnumValue<CameraStatusTypes> = MavEnumValue.fromValue(0)
+
+    public var p1: Float = 0F
+
+    public var p2: Float = 0F
+
+    public var p3: Float = 0F
+
+    public var p4: Float = 0F
+
+    public fun build(): CameraStatus = CameraStatus(
+      timeUsec = timeUsec,
+      targetSystem = targetSystem,
+      camIdx = camIdx,
+      imgIdx = imgIdx,
+      eventId = eventId,
+      p1 = p1,
+      p2 = p2,
+      p3 = p3,
+      p4 = p4,
+    )
   }
 }

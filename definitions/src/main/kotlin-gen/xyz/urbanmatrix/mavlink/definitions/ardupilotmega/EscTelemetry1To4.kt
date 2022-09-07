@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -90,5 +91,30 @@ public data class EscTelemetry1To4(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EscTelemetry1To4> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var temperature: List<Int> = emptyList()
+
+    public var voltage: List<Int> = emptyList()
+
+    public var current: List<Int> = emptyList()
+
+    public var totalcurrent: List<Int> = emptyList()
+
+    public var rpm: List<Int> = emptyList()
+
+    public var count: List<Int> = emptyList()
+
+    public fun build(): EscTelemetry1To4 = EscTelemetry1To4(
+      temperature = temperature,
+      voltage = voltage,
+      current = current,
+      totalcurrent = totalcurrent,
+      rpm = rpm,
+      count = count,
+    )
   }
 }

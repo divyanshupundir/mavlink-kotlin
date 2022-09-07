@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -240,5 +241,84 @@ public data class HighLatency(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HighLatency> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0)
+
+    public var customMode: Long = 0L
+
+    public var landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0)
+
+    public var roll: Int = 0
+
+    public var pitch: Int = 0
+
+    public var heading: Int = 0
+
+    public var throttle: Int = 0
+
+    public var headingSp: Int = 0
+
+    public var latitude: Int = 0
+
+    public var longitude: Int = 0
+
+    public var altitudeAmsl: Int = 0
+
+    public var altitudeSp: Int = 0
+
+    public var airspeed: Int = 0
+
+    public var airspeedSp: Int = 0
+
+    public var groundspeed: Int = 0
+
+    public var climbRate: Int = 0
+
+    public var gpsNsat: Int = 0
+
+    public var gpsFixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0)
+
+    public var batteryRemaining: Int = 0
+
+    public var temperature: Int = 0
+
+    public var temperatureAir: Int = 0
+
+    public var failsafe: Int = 0
+
+    public var wpNum: Int = 0
+
+    public var wpDistance: Int = 0
+
+    public fun build(): HighLatency = HighLatency(
+      baseMode = baseMode,
+      customMode = customMode,
+      landedState = landedState,
+      roll = roll,
+      pitch = pitch,
+      heading = heading,
+      throttle = throttle,
+      headingSp = headingSp,
+      latitude = latitude,
+      longitude = longitude,
+      altitudeAmsl = altitudeAmsl,
+      altitudeSp = altitudeSp,
+      airspeed = airspeed,
+      airspeedSp = airspeedSp,
+      groundspeed = groundspeed,
+      climbRate = climbRate,
+      gpsNsat = gpsNsat,
+      gpsFixType = gpsFixType,
+      batteryRemaining = batteryRemaining,
+      temperature = temperature,
+      temperatureAir = temperatureAir,
+      failsafe = failsafe,
+      wpNum = wpNum,
+      wpDistance = wpDistance,
+    )
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -96,5 +97,27 @@ public data class Tunnel(
     private val METADATA: MavMessage.Metadata<Tunnel> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Tunnel> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var payloadType: MavEnumValue<MavTunnelPayloadType> = MavEnumValue.fromValue(0)
+
+    public var payloadLength: Int = 0
+
+    public var payload: List<Int> = emptyList()
+
+    public fun build(): Tunnel = Tunnel(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      payloadType = payloadType,
+      payloadLength = payloadLength,
+      payload = payload,
+    )
   }
 }

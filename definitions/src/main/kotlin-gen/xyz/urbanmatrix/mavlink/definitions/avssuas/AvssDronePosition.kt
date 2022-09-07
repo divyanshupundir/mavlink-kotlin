@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -94,5 +95,30 @@ public data class AvssDronePosition(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AvssDronePosition> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var groundAlt: Float = 0F
+
+    public var barometerAlt: Float = 0F
+
+    public fun build(): AvssDronePosition = AvssDronePosition(
+      timeBootMs = timeBootMs,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      groundAlt = groundAlt,
+      barometerAlt = barometerAlt,
+    )
   }
 }

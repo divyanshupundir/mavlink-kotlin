@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -62,5 +63,18 @@ public data class Battery2(
     private val METADATA: MavMessage.Metadata<Battery2> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Battery2> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var voltage: Int = 0
+
+    public var currentBattery: Int = 0
+
+    public fun build(): Battery2 = Battery2(
+      voltage = voltage,
+      currentBattery = currentBattery,
+    )
   }
 }

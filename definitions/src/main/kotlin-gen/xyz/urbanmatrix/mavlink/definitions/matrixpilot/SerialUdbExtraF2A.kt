@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -243,5 +244,93 @@ public data class SerialUdbExtraF2A(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF2A> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueTime: Long = 0L
+
+    public var sueStatus: Int = 0
+
+    public var sueLatitude: Int = 0
+
+    public var sueLongitude: Int = 0
+
+    public var sueAltitude: Int = 0
+
+    public var sueWaypointIndex: Int = 0
+
+    public var sueRmat0: Int = 0
+
+    public var sueRmat1: Int = 0
+
+    public var sueRmat2: Int = 0
+
+    public var sueRmat3: Int = 0
+
+    public var sueRmat4: Int = 0
+
+    public var sueRmat5: Int = 0
+
+    public var sueRmat6: Int = 0
+
+    public var sueRmat7: Int = 0
+
+    public var sueRmat8: Int = 0
+
+    public var sueCog: Int = 0
+
+    public var sueSog: Int = 0
+
+    public var sueCpuLoad: Int = 0
+
+    public var sueAirSpeed3dimu: Int = 0
+
+    public var sueEstimatedWind0: Int = 0
+
+    public var sueEstimatedWind1: Int = 0
+
+    public var sueEstimatedWind2: Int = 0
+
+    public var sueMagfieldearth0: Int = 0
+
+    public var sueMagfieldearth1: Int = 0
+
+    public var sueMagfieldearth2: Int = 0
+
+    public var sueSvs: Int = 0
+
+    public var sueHdop: Int = 0
+
+    public fun build(): SerialUdbExtraF2A = SerialUdbExtraF2A(
+      sueTime = sueTime,
+      sueStatus = sueStatus,
+      sueLatitude = sueLatitude,
+      sueLongitude = sueLongitude,
+      sueAltitude = sueAltitude,
+      sueWaypointIndex = sueWaypointIndex,
+      sueRmat0 = sueRmat0,
+      sueRmat1 = sueRmat1,
+      sueRmat2 = sueRmat2,
+      sueRmat3 = sueRmat3,
+      sueRmat4 = sueRmat4,
+      sueRmat5 = sueRmat5,
+      sueRmat6 = sueRmat6,
+      sueRmat7 = sueRmat7,
+      sueRmat8 = sueRmat8,
+      sueCog = sueCog,
+      sueSog = sueSog,
+      sueCpuLoad = sueCpuLoad,
+      sueAirSpeed3dimu = sueAirSpeed3dimu,
+      sueEstimatedWind0 = sueEstimatedWind0,
+      sueEstimatedWind1 = sueEstimatedWind1,
+      sueEstimatedWind2 = sueEstimatedWind2,
+      sueMagfieldearth0 = sueMagfieldearth0,
+      sueMagfieldearth1 = sueMagfieldearth1,
+      sueMagfieldearth2 = sueMagfieldearth2,
+      sueSvs = sueSvs,
+      sueHdop = sueHdop,
+    )
   }
 }

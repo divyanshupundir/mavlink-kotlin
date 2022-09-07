@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -85,5 +86,27 @@ public data class ResourceRequest(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ResourceRequest> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var requestId: Int = 0
+
+    public var uriType: Int = 0
+
+    public var uri: List<Int> = emptyList()
+
+    public var transferType: Int = 0
+
+    public var storage: List<Int> = emptyList()
+
+    public fun build(): ResourceRequest = ResourceRequest(
+      requestId = requestId,
+      uriType = uriType,
+      uri = uri,
+      transferType = transferType,
+      storage = storage,
+    )
   }
 }

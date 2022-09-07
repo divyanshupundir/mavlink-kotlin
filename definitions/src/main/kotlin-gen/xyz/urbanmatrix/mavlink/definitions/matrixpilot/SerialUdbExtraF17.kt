@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -67,5 +68,21 @@ public data class SerialUdbExtraF17(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF17> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueFeedForward: Float = 0F
+
+    public var sueTurnRateNav: Float = 0F
+
+    public var sueTurnRateFbw: Float = 0F
+
+    public fun build(): SerialUdbExtraF17 = SerialUdbExtraF17(
+      sueFeedForward = sueFeedForward,
+      sueTurnRateNav = sueTurnRateNav,
+      sueTurnRateFbw = sueTurnRateFbw,
+    )
   }
 }

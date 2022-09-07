@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -82,5 +83,24 @@ public data class GoproSetRequest(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GoproSetRequest> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var cmdId: MavEnumValue<GoproCommand> = MavEnumValue.fromValue(0)
+
+    public var `value`: List<Int> = emptyList()
+
+    public fun build(): GoproSetRequest = GoproSetRequest(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      cmdId = cmdId,
+      value = value,
+    )
   }
 }

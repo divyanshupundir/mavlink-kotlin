@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -99,5 +100,30 @@ public data class CanFilterModify(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var bus: Int = 0
+
+    public var operation: MavEnumValue<CanFilterOp> = MavEnumValue.fromValue(0)
+
+    public var numIds: Int = 0
+
+    public var ids: List<Int> = emptyList()
+
+    public fun build(): CanFilterModify = CanFilterModify(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      bus = bus,
+      operation = operation,
+      numIds = numIds,
+      ids = ids,
+    )
   }
 }

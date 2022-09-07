@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -97,5 +98,33 @@ public data class EkfExt(
     private val METADATA: MavMessage.Metadata<EkfExt> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EkfExt> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var windspeed: Float = 0F
+
+    public var winddir: Float = 0F
+
+    public var windz: Float = 0F
+
+    public var airspeed: Float = 0F
+
+    public var beta: Float = 0F
+
+    public var alpha: Float = 0F
+
+    public fun build(): EkfExt = EkfExt(
+      timestamp = timestamp,
+      windspeed = windspeed,
+      winddir = winddir,
+      windz = windz,
+      airspeed = airspeed,
+      beta = beta,
+      alpha = alpha,
+    )
   }
 }

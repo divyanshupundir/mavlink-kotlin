@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -172,5 +173,63 @@ public data class ControlSystemState(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ControlSystemState> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var xAcc: Float = 0F
+
+    public var yAcc: Float = 0F
+
+    public var zAcc: Float = 0F
+
+    public var xVel: Float = 0F
+
+    public var yVel: Float = 0F
+
+    public var zVel: Float = 0F
+
+    public var xPos: Float = 0F
+
+    public var yPos: Float = 0F
+
+    public var zPos: Float = 0F
+
+    public var airspeed: Float = 0F
+
+    public var velVariance: List<Float> = emptyList()
+
+    public var posVariance: List<Float> = emptyList()
+
+    public var q: List<Float> = emptyList()
+
+    public var rollRate: Float = 0F
+
+    public var pitchRate: Float = 0F
+
+    public var yawRate: Float = 0F
+
+    public fun build(): ControlSystemState = ControlSystemState(
+      timeUsec = timeUsec,
+      xAcc = xAcc,
+      yAcc = yAcc,
+      zAcc = zAcc,
+      xVel = xVel,
+      yVel = yVel,
+      zVel = zVel,
+      xPos = xPos,
+      yPos = yPos,
+      zPos = zPos,
+      airspeed = airspeed,
+      velVariance = velVariance,
+      posVariance = posVariance,
+      q = q,
+      rollRate = rollRate,
+      pitchRate = pitchRate,
+      yawRate = yawRate,
+    )
   }
 }

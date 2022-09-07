@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -134,5 +135,39 @@ public data class OpenDroneIdAuthentication(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdAuthentication> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var idOrMac: List<Int> = emptyList()
+
+    public var authenticationType: MavEnumValue<MavOdidAuthType> = MavEnumValue.fromValue(0)
+
+    public var dataPage: Int = 0
+
+    public var lastPageIndex: Int = 0
+
+    public var length: Int = 0
+
+    public var timestamp: Long = 0L
+
+    public var authenticationData: List<Int> = emptyList()
+
+    public fun build(): OpenDroneIdAuthentication = OpenDroneIdAuthentication(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      idOrMac = idOrMac,
+      authenticationType = authenticationType,
+      dataPage = dataPage,
+      lastPageIndex = lastPageIndex,
+      length = length,
+      timestamp = timestamp,
+      authenticationData = authenticationData,
+    )
   }
 }

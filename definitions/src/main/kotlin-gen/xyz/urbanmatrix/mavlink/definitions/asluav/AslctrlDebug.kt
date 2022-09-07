@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -128,5 +129,45 @@ public data class AslctrlDebug(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var i321: Long = 0L
+
+    public var i81: Int = 0
+
+    public var i82: Int = 0
+
+    public var f1: Float = 0F
+
+    public var f2: Float = 0F
+
+    public var f3: Float = 0F
+
+    public var f4: Float = 0F
+
+    public var f5: Float = 0F
+
+    public var f6: Float = 0F
+
+    public var f7: Float = 0F
+
+    public var f8: Float = 0F
+
+    public fun build(): AslctrlDebug = AslctrlDebug(
+      i321 = i321,
+      i81 = i81,
+      i82 = i82,
+      f1 = f1,
+      f2 = f2,
+      f3 = f3,
+      f4 = f4,
+      f5 = f5,
+      f6 = f6,
+      f7 = f7,
+      f8 = f8,
+    )
   }
 }

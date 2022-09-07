@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -80,5 +81,24 @@ public data class SetupSigning(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetupSigning> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var secretKey: List<Int> = emptyList()
+
+    public var initialTimestamp: BigInteger = BigInteger.ZERO
+
+    public fun build(): SetupSigning = SetupSigning(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      secretKey = secretKey,
+      initialTimestamp = initialTimestamp,
+    )
   }
 }

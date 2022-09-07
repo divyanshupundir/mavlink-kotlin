@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -107,5 +108,36 @@ public data class AslObctrl(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AslObctrl> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var uelev: Float = 0F
+
+    public var uthrot: Float = 0F
+
+    public var uthrot2: Float = 0F
+
+    public var uaill: Float = 0F
+
+    public var uailr: Float = 0F
+
+    public var urud: Float = 0F
+
+    public var obctrlStatus: Int = 0
+
+    public fun build(): AslObctrl = AslObctrl(
+      timestamp = timestamp,
+      uelev = uelev,
+      uthrot = uthrot,
+      uthrot2 = uthrot2,
+      uaill = uaill,
+      uailr = uailr,
+      urud = urud,
+      obctrlStatus = obctrlStatus,
+    )
   }
 }

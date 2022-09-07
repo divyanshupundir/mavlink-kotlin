@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -100,5 +101,33 @@ public data class ManualSetpoint(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ManualSetpoint> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var thrust: Float = 0F
+
+    public var modeSwitch: Int = 0
+
+    public var manualOverrideSwitch: Int = 0
+
+    public fun build(): ManualSetpoint = ManualSetpoint(
+      timeBootMs = timeBootMs,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      thrust = thrust,
+      modeSwitch = modeSwitch,
+      manualOverrideSwitch = manualOverrideSwitch,
+    )
   }
 }

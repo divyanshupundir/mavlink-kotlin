@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -119,5 +120,36 @@ public data class CellularConfig(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CellularConfig> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var enableLte: Int = 0
+
+    public var enablePin: Int = 0
+
+    public var pin: String = ""
+
+    public var newPin: String = ""
+
+    public var apn: String = ""
+
+    public var puk: String = ""
+
+    public var roaming: Int = 0
+
+    public var response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0)
+
+    public fun build(): CellularConfig = CellularConfig(
+      enableLte = enableLte,
+      enablePin = enablePin,
+      pin = pin,
+      newPin = newPin,
+      apn = apn,
+      puk = puk,
+      roaming = roaming,
+      response = response,
+    )
   }
 }

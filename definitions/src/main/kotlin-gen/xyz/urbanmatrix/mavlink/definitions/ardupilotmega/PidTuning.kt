@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -115,5 +116,39 @@ public data class PidTuning(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<PidTuning> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0)
+
+    public var desired: Float = 0F
+
+    public var achieved: Float = 0F
+
+    public var ff: Float = 0F
+
+    public var p: Float = 0F
+
+    public var i: Float = 0F
+
+    public var d: Float = 0F
+
+    public var srate: Float = 0F
+
+    public var pdmod: Float = 0F
+
+    public fun build(): PidTuning = PidTuning(
+      axis = axis,
+      desired = desired,
+      achieved = achieved,
+      ff = ff,
+      p = p,
+      i = i,
+      d = d,
+      srate = srate,
+      pdmod = pdmod,
+    )
   }
 }

@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -170,5 +171,60 @@ public data class HilSensor(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilSensor> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var xacc: Float = 0F
+
+    public var yacc: Float = 0F
+
+    public var zacc: Float = 0F
+
+    public var xgyro: Float = 0F
+
+    public var ygyro: Float = 0F
+
+    public var zgyro: Float = 0F
+
+    public var xmag: Float = 0F
+
+    public var ymag: Float = 0F
+
+    public var zmag: Float = 0F
+
+    public var absPressure: Float = 0F
+
+    public var diffPressure: Float = 0F
+
+    public var pressureAlt: Float = 0F
+
+    public var temperature: Float = 0F
+
+    public var fieldsUpdated: MavEnumValue<HilSensorUpdatedFlags> = MavEnumValue.fromValue(0)
+
+    public var id: Int = 0
+
+    public fun build(): HilSensor = HilSensor(
+      timeUsec = timeUsec,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+      xgyro = xgyro,
+      ygyro = ygyro,
+      zgyro = zgyro,
+      xmag = xmag,
+      ymag = ymag,
+      zmag = zmag,
+      absPressure = absPressure,
+      diffPressure = diffPressure,
+      pressureAlt = pressureAlt,
+      temperature = temperature,
+      fieldsUpdated = fieldsUpdated,
+      id = id,
+    )
   }
 }

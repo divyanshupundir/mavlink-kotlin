@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -113,5 +114,39 @@ public data class WindCov(
     private val METADATA: MavMessage.Metadata<WindCov> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WindCov> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var windX: Float = 0F
+
+    public var windY: Float = 0F
+
+    public var windZ: Float = 0F
+
+    public var varHoriz: Float = 0F
+
+    public var varVert: Float = 0F
+
+    public var windAlt: Float = 0F
+
+    public var horizAccuracy: Float = 0F
+
+    public var vertAccuracy: Float = 0F
+
+    public fun build(): WindCov = WindCov(
+      timeUsec = timeUsec,
+      windX = windX,
+      windY = windY,
+      windZ = windZ,
+      varHoriz = varHoriz,
+      varVert = varVert,
+      windAlt = windAlt,
+      horizAccuracy = horizAccuracy,
+      vertAccuracy = vertAccuracy,
+    )
   }
 }

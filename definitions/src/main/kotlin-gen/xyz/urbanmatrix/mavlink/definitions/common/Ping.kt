@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -85,5 +86,24 @@ public data class Ping(
     private val METADATA: MavMessage.Metadata<Ping> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Ping> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var seq: Long = 0L
+
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public fun build(): Ping = Ping(
+      timeUsec = timeUsec,
+      seq = seq,
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+    )
   }
 }

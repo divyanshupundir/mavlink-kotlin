@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -121,5 +122,39 @@ public data class VisionPositionEstimate(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<VisionPositionEstimate> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var usec: BigInteger = BigInteger.ZERO
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var covariance: List<Float> = emptyList()
+
+    public var resetCounter: Int = 0
+
+    public fun build(): VisionPositionEstimate = VisionPositionEstimate(
+      usec = usec,
+      x = x,
+      y = y,
+      z = z,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      covariance = covariance,
+      resetCounter = resetCounter,
+    )
   }
 }

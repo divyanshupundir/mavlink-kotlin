@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -131,5 +132,39 @@ public data class EscInfo(
     private val METADATA: MavMessage.Metadata<EscInfo> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EscInfo> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var index: Int = 0
+
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var counter: Int = 0
+
+    public var count: Int = 0
+
+    public var connectionType: MavEnumValue<EscConnectionType> = MavEnumValue.fromValue(0)
+
+    public var info: Int = 0
+
+    public var failureFlags: List<Int> = emptyList()
+
+    public var errorCount: List<Long> = emptyList()
+
+    public var temperature: List<Int> = emptyList()
+
+    public fun build(): EscInfo = EscInfo(
+      index = index,
+      timeUsec = timeUsec,
+      counter = counter,
+      count = count,
+      connectionType = connectionType,
+      info = info,
+      failureFlags = failureFlags,
+      errorCount = errorCount,
+      temperature = temperature,
+    )
   }
 }

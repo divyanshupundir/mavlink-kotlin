@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -160,5 +161,51 @@ public data class AdsbVehicle(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AdsbVehicle> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var icaoAddress: Long = 0L
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var altitudeType: MavEnumValue<AdsbAltitudeType> = MavEnumValue.fromValue(0)
+
+    public var altitude: Int = 0
+
+    public var heading: Int = 0
+
+    public var horVelocity: Int = 0
+
+    public var verVelocity: Int = 0
+
+    public var callsign: String = ""
+
+    public var emitterType: MavEnumValue<AdsbEmitterType> = MavEnumValue.fromValue(0)
+
+    public var tslc: Int = 0
+
+    public var flags: MavEnumValue<AdsbFlags> = MavEnumValue.fromValue(0)
+
+    public var squawk: Int = 0
+
+    public fun build(): AdsbVehicle = AdsbVehicle(
+      icaoAddress = icaoAddress,
+      lat = lat,
+      lon = lon,
+      altitudeType = altitudeType,
+      altitude = altitude,
+      heading = heading,
+      horVelocity = horVelocity,
+      verVelocity = verVelocity,
+      callsign = callsign,
+      emitterType = emitterType,
+      tslc = tslc,
+      flags = flags,
+      squawk = squawk,
+    )
   }
 }

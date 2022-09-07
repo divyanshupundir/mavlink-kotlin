@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -106,5 +107,33 @@ public data class GsmLinkStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GsmLinkStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var gsmModemType: MavEnumValue<GsmModemType> = MavEnumValue.fromValue(0)
+
+    public var gsmLinkType: MavEnumValue<GsmLinkType> = MavEnumValue.fromValue(0)
+
+    public var rssi: Int = 0
+
+    public var rsrpRscp: Int = 0
+
+    public var sinrEcio: Int = 0
+
+    public var rsrq: Int = 0
+
+    public fun build(): GsmLinkStatus = GsmLinkStatus(
+      timestamp = timestamp,
+      gsmModemType = gsmModemType,
+      gsmLinkType = gsmLinkType,
+      rssi = rssi,
+      rsrpRscp = rsrpRscp,
+      sinrEcio = sinrEcio,
+      rsrq = rsrq,
+    )
   }
 }

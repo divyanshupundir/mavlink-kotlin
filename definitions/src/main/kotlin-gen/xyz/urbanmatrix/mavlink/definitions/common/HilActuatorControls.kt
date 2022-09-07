@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -87,5 +88,24 @@ public data class HilActuatorControls(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var controls: List<Float> = emptyList()
+
+    public var mode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0)
+
+    public var flags: BigInteger = BigInteger.ZERO
+
+    public fun build(): HilActuatorControls = HilActuatorControls(
+      timeUsec = timeUsec,
+      controls = controls,
+      mode = mode,
+      flags = flags,
+    )
   }
 }

@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -226,5 +227,87 @@ public data class FwSoaringData(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FwSoaringData> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var timestampmodechanged: BigInteger = BigInteger.ZERO
+
+    public var xw: Float = 0F
+
+    public var xr: Float = 0F
+
+    public var xlat: Float = 0F
+
+    public var xlon: Float = 0F
+
+    public var varw: Float = 0F
+
+    public var varr: Float = 0F
+
+    public var varlat: Float = 0F
+
+    public var varlon: Float = 0F
+
+    public var loiterradius: Float = 0F
+
+    public var loiterdirection: Float = 0F
+
+    public var disttosoarpoint: Float = 0F
+
+    public var vsinkexp: Float = 0F
+
+    public var z1Localupdraftspeed: Float = 0F
+
+    public var z2Deltaroll: Float = 0F
+
+    public var z1Exp: Float = 0F
+
+    public var z2Exp: Float = 0F
+
+    public var thermalgsnorth: Float = 0F
+
+    public var thermalgseast: Float = 0F
+
+    public var tseDot: Float = 0F
+
+    public var debugvar1: Float = 0F
+
+    public var debugvar2: Float = 0F
+
+    public var controlmode: Int = 0
+
+    public var valid: Int = 0
+
+    public fun build(): FwSoaringData = FwSoaringData(
+      timestamp = timestamp,
+      timestampmodechanged = timestampmodechanged,
+      xw = xw,
+      xr = xr,
+      xlat = xlat,
+      xlon = xlon,
+      varw = varw,
+      varr = varr,
+      varlat = varlat,
+      varlon = varlon,
+      loiterradius = loiterradius,
+      loiterdirection = loiterdirection,
+      disttosoarpoint = disttosoarpoint,
+      vsinkexp = vsinkexp,
+      z1Localupdraftspeed = z1Localupdraftspeed,
+      z2Deltaroll = z2Deltaroll,
+      z1Exp = z1Exp,
+      z2Exp = z2Exp,
+      thermalgsnorth = thermalgsnorth,
+      thermalgseast = thermalgseast,
+      tseDot = tseDot,
+      debugvar1 = debugvar1,
+      debugvar2 = debugvar2,
+      controlmode = controlmode,
+      valid = valid,
+    )
   }
 }

@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -88,5 +89,27 @@ public data class DebugVect(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DebugVect> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var name: String = ""
+
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public fun build(): DebugVect = DebugVect(
+      name = name,
+      timeUsec = timeUsec,
+      x = x,
+      y = y,
+      z = z,
+    )
   }
 }

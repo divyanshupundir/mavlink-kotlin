@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -132,5 +133,45 @@ public data class LinkNodeStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var txBuf: Int = 0
+
+    public var rxBuf: Int = 0
+
+    public var txRate: Long = 0L
+
+    public var rxRate: Long = 0L
+
+    public var rxParseErr: Int = 0
+
+    public var txOverflows: Int = 0
+
+    public var rxOverflows: Int = 0
+
+    public var messagesSent: Long = 0L
+
+    public var messagesReceived: Long = 0L
+
+    public var messagesLost: Long = 0L
+
+    public fun build(): LinkNodeStatus = LinkNodeStatus(
+      timestamp = timestamp,
+      txBuf = txBuf,
+      rxBuf = rxBuf,
+      txRate = txRate,
+      rxRate = rxRate,
+      rxParseErr = rxParseErr,
+      txOverflows = txOverflows,
+      rxOverflows = rxOverflows,
+      messagesSent = messagesSent,
+      messagesReceived = messagesReceived,
+      messagesLost = messagesLost,
+    )
   }
 }

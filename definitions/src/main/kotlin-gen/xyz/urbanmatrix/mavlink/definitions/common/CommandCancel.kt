@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -78,5 +79,21 @@ public data class CommandCancel(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CommandCancel> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+
+    public fun build(): CommandCancel = CommandCancel(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      command = command,
+    )
   }
 }

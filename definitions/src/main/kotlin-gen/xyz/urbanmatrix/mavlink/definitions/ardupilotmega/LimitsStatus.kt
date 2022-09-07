@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -126,5 +127,39 @@ public data class LimitsStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LimitsStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var limitsState: MavEnumValue<LimitsState> = MavEnumValue.fromValue(0)
+
+    public var lastTrigger: Long = 0L
+
+    public var lastAction: Long = 0L
+
+    public var lastRecovery: Long = 0L
+
+    public var lastClear: Long = 0L
+
+    public var breachCount: Int = 0
+
+    public var modsEnabled: MavEnumValue<LimitModule> = MavEnumValue.fromValue(0)
+
+    public var modsRequired: MavEnumValue<LimitModule> = MavEnumValue.fromValue(0)
+
+    public var modsTriggered: MavEnumValue<LimitModule> = MavEnumValue.fromValue(0)
+
+    public fun build(): LimitsStatus = LimitsStatus(
+      limitsState = limitsState,
+      lastTrigger = lastTrigger,
+      lastAction = lastAction,
+      lastRecovery = lastRecovery,
+      lastClear = lastClear,
+      breachCount = breachCount,
+      modsEnabled = modsEnabled,
+      modsRequired = modsRequired,
+      modsTriggered = modsTriggered,
+    )
   }
 }

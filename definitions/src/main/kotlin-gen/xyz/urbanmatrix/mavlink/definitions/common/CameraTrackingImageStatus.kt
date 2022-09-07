@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -139,5 +140,42 @@ public data class CameraTrackingImageStatus(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0)
+
+    public var trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0)
+
+    public var targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0)
+
+    public var pointX: Float = 0F
+
+    public var pointY: Float = 0F
+
+    public var radius: Float = 0F
+
+    public var recTopX: Float = 0F
+
+    public var recTopY: Float = 0F
+
+    public var recBottomX: Float = 0F
+
+    public var recBottomY: Float = 0F
+
+    public fun build(): CameraTrackingImageStatus = CameraTrackingImageStatus(
+      trackingStatus = trackingStatus,
+      trackingMode = trackingMode,
+      targetData = targetData,
+      pointX = pointX,
+      pointY = pointY,
+      radius = radius,
+      recTopX = recTopX,
+      recTopY = recTopY,
+      recBottomX = recBottomX,
+      recBottomY = recBottomY,
+    )
   }
 }

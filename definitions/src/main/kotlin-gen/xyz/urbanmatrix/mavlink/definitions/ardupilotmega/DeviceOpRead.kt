@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -127,5 +128,42 @@ public data class DeviceOpRead(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DeviceOpRead> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var requestId: Long = 0L
+
+    public var bustype: MavEnumValue<DeviceOpBustype> = MavEnumValue.fromValue(0)
+
+    public var bus: Int = 0
+
+    public var address: Int = 0
+
+    public var busname: String = ""
+
+    public var regstart: Int = 0
+
+    public var count: Int = 0
+
+    public var bank: Int = 0
+
+    public fun build(): DeviceOpRead = DeviceOpRead(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      requestId = requestId,
+      bustype = bustype,
+      bus = bus,
+      address = address,
+      busname = busname,
+      regstart = regstart,
+      count = count,
+      bank = bank,
+    )
   }
 }

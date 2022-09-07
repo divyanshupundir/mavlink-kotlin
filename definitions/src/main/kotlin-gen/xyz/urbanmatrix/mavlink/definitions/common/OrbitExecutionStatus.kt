@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -106,5 +107,30 @@ public data class OrbitExecutionStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var radius: Float = 0F
+
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var x: Int = 0
+
+    public var y: Int = 0
+
+    public var z: Float = 0F
+
+    public fun build(): OrbitExecutionStatus = OrbitExecutionStatus(
+      timeUsec = timeUsec,
+      radius = radius,
+      frame = frame,
+      x = x,
+      y = y,
+      z = z,
+    )
   }
 }

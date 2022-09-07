@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -60,5 +61,18 @@ public data class SerialUdbExtraF16(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF16> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueIdLeadPilot: List<Int> = emptyList()
+
+    public var sueIdDiyDronesUrl: List<Int> = emptyList()
+
+    public fun build(): SerialUdbExtraF16 = SerialUdbExtraF16(
+      sueIdLeadPilot = sueIdLeadPilot,
+      sueIdDiyDronesUrl = sueIdDiyDronesUrl,
+    )
   }
 }

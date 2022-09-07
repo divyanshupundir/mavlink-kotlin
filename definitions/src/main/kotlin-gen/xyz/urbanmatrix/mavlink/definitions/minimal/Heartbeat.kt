@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -112,5 +113,30 @@ public data class Heartbeat(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Heartbeat> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var type: MavEnumValue<MavType> = MavEnumValue.fromValue(0)
+
+    public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0)
+
+    public var baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0)
+
+    public var customMode: Long = 0L
+
+    public var systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0)
+
+    public var mavlinkVersion: Int = 0
+
+    public fun build(): Heartbeat = Heartbeat(
+      type = type,
+      autopilot = autopilot,
+      baseMode = baseMode,
+      customMode = customMode,
+      systemStatus = systemStatus,
+      mavlinkVersion = mavlinkVersion,
+    )
   }
 }

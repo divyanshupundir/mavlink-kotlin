@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -126,5 +127,39 @@ public data class UavcanNodeInfo(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var uptimeSec: Long = 0L
+
+    public var name: String = ""
+
+    public var hwVersionMajor: Int = 0
+
+    public var hwVersionMinor: Int = 0
+
+    public var hwUniqueId: List<Int> = emptyList()
+
+    public var swVersionMajor: Int = 0
+
+    public var swVersionMinor: Int = 0
+
+    public var swVcsCommit: Long = 0L
+
+    public fun build(): UavcanNodeInfo = UavcanNodeInfo(
+      timeUsec = timeUsec,
+      uptimeSec = uptimeSec,
+      name = name,
+      hwVersionMajor = hwVersionMajor,
+      hwVersionMinor = hwVersionMinor,
+      hwUniqueId = hwUniqueId,
+      swVersionMajor = swVersionMajor,
+      swVersionMinor = swVersionMinor,
+      swVcsCommit = swVcsCommit,
+    )
   }
 }

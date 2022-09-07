@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -260,5 +261,93 @@ public data class HighLatency2(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HighLatency2> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: Long = 0L
+
+    public var type: MavEnumValue<MavType> = MavEnumValue.fromValue(0)
+
+    public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0)
+
+    public var customMode: Int = 0
+
+    public var latitude: Int = 0
+
+    public var longitude: Int = 0
+
+    public var altitude: Int = 0
+
+    public var targetAltitude: Int = 0
+
+    public var heading: Int = 0
+
+    public var targetHeading: Int = 0
+
+    public var targetDistance: Int = 0
+
+    public var throttle: Int = 0
+
+    public var airspeed: Int = 0
+
+    public var airspeedSp: Int = 0
+
+    public var groundspeed: Int = 0
+
+    public var windspeed: Int = 0
+
+    public var windHeading: Int = 0
+
+    public var eph: Int = 0
+
+    public var epv: Int = 0
+
+    public var temperatureAir: Int = 0
+
+    public var climbRate: Int = 0
+
+    public var battery: Int = 0
+
+    public var wpNum: Int = 0
+
+    public var failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0)
+
+    public var custom0: Int = 0
+
+    public var custom1: Int = 0
+
+    public var custom2: Int = 0
+
+    public fun build(): HighLatency2 = HighLatency2(
+      timestamp = timestamp,
+      type = type,
+      autopilot = autopilot,
+      customMode = customMode,
+      latitude = latitude,
+      longitude = longitude,
+      altitude = altitude,
+      targetAltitude = targetAltitude,
+      heading = heading,
+      targetHeading = targetHeading,
+      targetDistance = targetDistance,
+      throttle = throttle,
+      airspeed = airspeed,
+      airspeedSp = airspeedSp,
+      groundspeed = groundspeed,
+      windspeed = windspeed,
+      windHeading = windHeading,
+      eph = eph,
+      epv = epv,
+      temperatureAir = temperatureAir,
+      climbRate = climbRate,
+      battery = battery,
+      wpNum = wpNum,
+      failureFlags = failureFlags,
+      custom0 = custom0,
+      custom1 = custom1,
+      custom2 = custom2,
+    )
   }
 }

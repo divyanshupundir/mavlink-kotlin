@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -205,5 +206,66 @@ public data class SysStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SysStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var onboardControlSensorsPresent: MavEnumValue<MavSysStatusSensor> =
+        MavEnumValue.fromValue(0)
+
+    public var onboardControlSensorsEnabled: MavEnumValue<MavSysStatusSensor> =
+        MavEnumValue.fromValue(0)
+
+    public var onboardControlSensorsHealth: MavEnumValue<MavSysStatusSensor> =
+        MavEnumValue.fromValue(0)
+
+    public var load: Int = 0
+
+    public var voltageBattery: Int = 0
+
+    public var currentBattery: Int = 0
+
+    public var batteryRemaining: Int = 0
+
+    public var dropRateComm: Int = 0
+
+    public var errorsComm: Int = 0
+
+    public var errorsCount1: Int = 0
+
+    public var errorsCount2: Int = 0
+
+    public var errorsCount3: Int = 0
+
+    public var errorsCount4: Int = 0
+
+    public var onboardControlSensorsPresentExtended: MavEnumValue<MavSysStatusSensorExtended> =
+        MavEnumValue.fromValue(0)
+
+    public var onboardControlSensorsEnabledExtended: MavEnumValue<MavSysStatusSensorExtended> =
+        MavEnumValue.fromValue(0)
+
+    public var onboardControlSensorsHealthExtended: MavEnumValue<MavSysStatusSensorExtended> =
+        MavEnumValue.fromValue(0)
+
+    public fun build(): SysStatus = SysStatus(
+      onboardControlSensorsPresent = onboardControlSensorsPresent,
+      onboardControlSensorsEnabled = onboardControlSensorsEnabled,
+      onboardControlSensorsHealth = onboardControlSensorsHealth,
+      load = load,
+      voltageBattery = voltageBattery,
+      currentBattery = currentBattery,
+      batteryRemaining = batteryRemaining,
+      dropRateComm = dropRateComm,
+      errorsComm = errorsComm,
+      errorsCount1 = errorsCount1,
+      errorsCount2 = errorsCount2,
+      errorsCount3 = errorsCount3,
+      errorsCount4 = errorsCount4,
+      onboardControlSensorsPresentExtended = onboardControlSensorsPresentExtended,
+      onboardControlSensorsEnabledExtended = onboardControlSensorsEnabledExtended,
+      onboardControlSensorsHealthExtended = onboardControlSensorsHealthExtended,
+    )
   }
 }

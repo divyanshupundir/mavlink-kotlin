@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -69,5 +70,21 @@ public data class AoaSsa(
     private val METADATA: MavMessage.Metadata<AoaSsa> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AoaSsa> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var aoa: Float = 0F
+
+    public var ssa: Float = 0F
+
+    public fun build(): AoaSsa = AoaSsa(
+      timeUsec = timeUsec,
+      aoa = aoa,
+      ssa = ssa,
+    )
   }
 }

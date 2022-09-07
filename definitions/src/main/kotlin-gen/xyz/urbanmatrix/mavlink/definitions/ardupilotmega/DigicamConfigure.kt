@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -128,5 +129,45 @@ public data class DigicamConfigure(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var mode: Int = 0
+
+    public var shutterSpeed: Int = 0
+
+    public var aperture: Int = 0
+
+    public var iso: Int = 0
+
+    public var exposureType: Int = 0
+
+    public var commandId: Int = 0
+
+    public var engineCutOff: Int = 0
+
+    public var extraParam: Int = 0
+
+    public var extraValue: Float = 0F
+
+    public fun build(): DigicamConfigure = DigicamConfigure(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      mode = mode,
+      shutterSpeed = shutterSpeed,
+      aperture = aperture,
+      iso = iso,
+      exposureType = exposureType,
+      commandId = commandId,
+      engineCutOff = engineCutOff,
+      extraParam = extraParam,
+      extraValue = extraValue,
+    )
   }
 }

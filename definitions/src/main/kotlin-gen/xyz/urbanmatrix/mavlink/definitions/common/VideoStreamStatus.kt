@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -116,5 +117,36 @@ public data class VideoStreamStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var streamId: Int = 0
+
+    public var flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0)
+
+    public var framerate: Float = 0F
+
+    public var resolutionH: Int = 0
+
+    public var resolutionV: Int = 0
+
+    public var bitrate: Long = 0L
+
+    public var rotation: Int = 0
+
+    public var hfov: Int = 0
+
+    public fun build(): VideoStreamStatus = VideoStreamStatus(
+      streamId = streamId,
+      flags = flags,
+      framerate = framerate,
+      resolutionH = resolutionH,
+      resolutionV = resolutionV,
+      bitrate = bitrate,
+      rotation = rotation,
+      hfov = hfov,
+    )
   }
 }

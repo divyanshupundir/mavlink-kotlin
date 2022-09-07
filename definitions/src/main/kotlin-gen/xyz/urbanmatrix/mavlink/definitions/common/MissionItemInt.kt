@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -176,5 +177,57 @@ public data class MissionItemInt(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MissionItemInt> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var seq: Int = 0
+
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+
+    public var current: Int = 0
+
+    public var autocontinue: Int = 0
+
+    public var param1: Float = 0F
+
+    public var param2: Float = 0F
+
+    public var param3: Float = 0F
+
+    public var param4: Float = 0F
+
+    public var x: Int = 0
+
+    public var y: Int = 0
+
+    public var z: Float = 0F
+
+    public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0)
+
+    public fun build(): MissionItemInt = MissionItemInt(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      seq = seq,
+      frame = frame,
+      command = command,
+      current = current,
+      autocontinue = autocontinue,
+      param1 = param1,
+      param2 = param2,
+      param3 = param3,
+      param4 = param4,
+      x = x,
+      y = y,
+      z = z,
+      missionType = missionType,
+    )
   }
 }

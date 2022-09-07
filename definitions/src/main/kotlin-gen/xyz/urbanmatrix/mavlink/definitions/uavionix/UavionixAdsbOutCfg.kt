@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -128,5 +129,39 @@ public data class UavionixAdsbOutCfg(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var icao: Long = 0L
+
+    public var callsign: String = ""
+
+    public var emittertype: MavEnumValue<AdsbEmitterType> = MavEnumValue.fromValue(0)
+
+    public var aircraftsize: MavEnumValue<UavionixAdsbOutCfgAircraftSize> =
+        MavEnumValue.fromValue(0)
+
+    public var gpsoffsetlat: MavEnumValue<UavionixAdsbOutCfgGpsOffsetLat> =
+        MavEnumValue.fromValue(0)
+
+    public var gpsoffsetlon: MavEnumValue<UavionixAdsbOutCfgGpsOffsetLon> =
+        MavEnumValue.fromValue(0)
+
+    public var stallspeed: Int = 0
+
+    public var rfselect: MavEnumValue<UavionixAdsbOutRfSelect> = MavEnumValue.fromValue(0)
+
+    public fun build(): UavionixAdsbOutCfg = UavionixAdsbOutCfg(
+      icao = icao,
+      callsign = callsign,
+      emittertype = emittertype,
+      aircraftsize = aircraftsize,
+      gpsoffsetlat = gpsoffsetlat,
+      gpsoffsetlon = gpsoffsetlon,
+      stallspeed = stallspeed,
+      rfselect = rfselect,
+    )
   }
 }

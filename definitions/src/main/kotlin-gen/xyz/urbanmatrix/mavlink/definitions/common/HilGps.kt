@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -163,5 +164,57 @@ public data class HilGps(
     private val METADATA: MavMessage.Metadata<HilGps> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilGps> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var fixType: Int = 0
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var eph: Int = 0
+
+    public var epv: Int = 0
+
+    public var vel: Int = 0
+
+    public var vn: Int = 0
+
+    public var ve: Int = 0
+
+    public var vd: Int = 0
+
+    public var cog: Int = 0
+
+    public var satellitesVisible: Int = 0
+
+    public var id: Int = 0
+
+    public var yaw: Int = 0
+
+    public fun build(): HilGps = HilGps(
+      timeUsec = timeUsec,
+      fixType = fixType,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      eph = eph,
+      epv = epv,
+      vel = vel,
+      vn = vn,
+      ve = ve,
+      vd = vd,
+      cog = cog,
+      satellitesVisible = satellitesVisible,
+      id = id,
+      yaw = yaw,
+    )
   }
 }

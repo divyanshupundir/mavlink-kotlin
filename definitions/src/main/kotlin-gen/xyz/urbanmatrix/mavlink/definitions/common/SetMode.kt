@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -77,5 +78,21 @@ public data class SetMode(
     private val METADATA: MavMessage.Metadata<SetMode> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetMode> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var baseMode: MavEnumValue<MavMode> = MavEnumValue.fromValue(0)
+
+    public var customMode: Long = 0L
+
+    public fun build(): SetMode = SetMode(
+      targetSystem = targetSystem,
+      baseMode = baseMode,
+      customMode = customMode,
+    )
   }
 }

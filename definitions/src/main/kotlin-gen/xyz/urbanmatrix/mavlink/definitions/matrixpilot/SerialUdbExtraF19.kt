@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -101,5 +102,36 @@ public data class SerialUdbExtraF19(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF19> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueAileronOutputChannel: Int = 0
+
+    public var sueAileronReversed: Int = 0
+
+    public var sueElevatorOutputChannel: Int = 0
+
+    public var sueElevatorReversed: Int = 0
+
+    public var sueThrottleOutputChannel: Int = 0
+
+    public var sueThrottleReversed: Int = 0
+
+    public var sueRudderOutputChannel: Int = 0
+
+    public var sueRudderReversed: Int = 0
+
+    public fun build(): SerialUdbExtraF19 = SerialUdbExtraF19(
+      sueAileronOutputChannel = sueAileronOutputChannel,
+      sueAileronReversed = sueAileronReversed,
+      sueElevatorOutputChannel = sueElevatorOutputChannel,
+      sueElevatorReversed = sueElevatorReversed,
+      sueThrottleOutputChannel = sueThrottleOutputChannel,
+      sueThrottleReversed = sueThrottleReversed,
+      sueRudderOutputChannel = sueRudderOutputChannel,
+      sueRudderReversed = sueRudderReversed,
+    )
   }
 }

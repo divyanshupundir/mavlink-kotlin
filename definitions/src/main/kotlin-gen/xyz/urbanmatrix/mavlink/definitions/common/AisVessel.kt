@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -188,5 +189,63 @@ public data class AisVessel(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AisVessel> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var mmsi: Long = 0L
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var cog: Int = 0
+
+    public var heading: Int = 0
+
+    public var velocity: Int = 0
+
+    public var turnRate: Int = 0
+
+    public var navigationalStatus: MavEnumValue<AisNavStatus> = MavEnumValue.fromValue(0)
+
+    public var type: MavEnumValue<AisType> = MavEnumValue.fromValue(0)
+
+    public var dimensionBow: Int = 0
+
+    public var dimensionStern: Int = 0
+
+    public var dimensionPort: Int = 0
+
+    public var dimensionStarboard: Int = 0
+
+    public var callsign: String = ""
+
+    public var name: String = ""
+
+    public var tslc: Int = 0
+
+    public var flags: MavEnumValue<AisFlags> = MavEnumValue.fromValue(0)
+
+    public fun build(): AisVessel = AisVessel(
+      mmsi = mmsi,
+      lat = lat,
+      lon = lon,
+      cog = cog,
+      heading = heading,
+      velocity = velocity,
+      turnRate = turnRate,
+      navigationalStatus = navigationalStatus,
+      type = type,
+      dimensionBow = dimensionBow,
+      dimensionStern = dimensionStern,
+      dimensionPort = dimensionPort,
+      dimensionStarboard = dimensionStarboard,
+      callsign = callsign,
+      name = name,
+      tslc = tslc,
+      flags = flags,
+    )
   }
 }

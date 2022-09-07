@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -106,5 +107,36 @@ public data class SensorpodStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensorpodStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var visensorRate1: Int = 0
+
+    public var visensorRate2: Int = 0
+
+    public var visensorRate3: Int = 0
+
+    public var visensorRate4: Int = 0
+
+    public var recordingNodesCount: Int = 0
+
+    public var cpuTemp: Int = 0
+
+    public var freeSpace: Int = 0
+
+    public fun build(): SensorpodStatus = SensorpodStatus(
+      timestamp = timestamp,
+      visensorRate1 = visensorRate1,
+      visensorRate2 = visensorRate2,
+      visensorRate3 = visensorRate3,
+      visensorRate4 = visensorRate4,
+      recordingNodesCount = recordingNodesCount,
+      cpuTemp = cpuTemp,
+      freeSpace = freeSpace,
+    )
   }
 }

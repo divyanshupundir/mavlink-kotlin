@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -198,5 +199,69 @@ public data class GpsInput(
     private val METADATA: MavMessage.Metadata<GpsInput> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsInput> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var gpsId: Int = 0
+
+    public var ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0)
+
+    public var timeWeekMs: Long = 0L
+
+    public var timeWeek: Int = 0
+
+    public var fixType: Int = 0
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Float = 0F
+
+    public var hdop: Float = 0F
+
+    public var vdop: Float = 0F
+
+    public var vn: Float = 0F
+
+    public var ve: Float = 0F
+
+    public var vd: Float = 0F
+
+    public var speedAccuracy: Float = 0F
+
+    public var horizAccuracy: Float = 0F
+
+    public var vertAccuracy: Float = 0F
+
+    public var satellitesVisible: Int = 0
+
+    public var yaw: Int = 0
+
+    public fun build(): GpsInput = GpsInput(
+      timeUsec = timeUsec,
+      gpsId = gpsId,
+      ignoreFlags = ignoreFlags,
+      timeWeekMs = timeWeekMs,
+      timeWeek = timeWeek,
+      fixType = fixType,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      hdop = hdop,
+      vdop = vdop,
+      vn = vn,
+      ve = ve,
+      vd = vd,
+      speedAccuracy = speedAccuracy,
+      horizAccuracy = horizAccuracy,
+      vertAccuracy = vertAccuracy,
+      satellitesVisible = satellitesVisible,
+      yaw = yaw,
+    )
   }
 }

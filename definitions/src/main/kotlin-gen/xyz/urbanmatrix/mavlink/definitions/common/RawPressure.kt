@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -85,5 +86,27 @@ public data class RawPressure(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RawPressure> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var pressAbs: Int = 0
+
+    public var pressDiff1: Int = 0
+
+    public var pressDiff2: Int = 0
+
+    public var temperature: Int = 0
+
+    public fun build(): RawPressure = RawPressure(
+      timeUsec = timeUsec,
+      pressAbs = pressAbs,
+      pressDiff1 = pressDiff1,
+      pressDiff2 = pressDiff2,
+      temperature = temperature,
+    )
   }
 }

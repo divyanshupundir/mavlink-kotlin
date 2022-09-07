@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -89,5 +90,30 @@ public data class MountControl(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MountControl> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var inputA: Int = 0
+
+    public var inputB: Int = 0
+
+    public var inputC: Int = 0
+
+    public var savePosition: Int = 0
+
+    public fun build(): MountControl = MountControl(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      inputA = inputA,
+      inputB = inputB,
+      inputC = inputC,
+      savePosition = savePosition,
+    )
   }
 }

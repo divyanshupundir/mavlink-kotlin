@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -112,5 +113,33 @@ public data class OsdParamShowConfigReply(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OsdParamShowConfigReply> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var requestId: Long = 0L
+
+    public var result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0)
+
+    public var paramId: String = ""
+
+    public var configType: MavEnumValue<OsdParamConfigType> = MavEnumValue.fromValue(0)
+
+    public var minValue: Float = 0F
+
+    public var maxValue: Float = 0F
+
+    public var increment: Float = 0F
+
+    public fun build(): OsdParamShowConfigReply = OsdParamShowConfigReply(
+      requestId = requestId,
+      result = result,
+      paramId = paramId,
+      configType = configType,
+      minValue = minValue,
+      maxValue = maxValue,
+      increment = increment,
+    )
   }
 }

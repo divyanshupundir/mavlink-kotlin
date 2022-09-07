@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -161,5 +162,48 @@ public data class StorageInformation(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<StorageInformation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var storageId: Int = 0
+
+    public var storageCount: Int = 0
+
+    public var status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0)
+
+    public var totalCapacity: Float = 0F
+
+    public var usedCapacity: Float = 0F
+
+    public var availableCapacity: Float = 0F
+
+    public var readSpeed: Float = 0F
+
+    public var writeSpeed: Float = 0F
+
+    public var type: MavEnumValue<StorageType> = MavEnumValue.fromValue(0)
+
+    public var name: String = ""
+
+    public var storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0)
+
+    public fun build(): StorageInformation = StorageInformation(
+      timeBootMs = timeBootMs,
+      storageId = storageId,
+      storageCount = storageCount,
+      status = status,
+      totalCapacity = totalCapacity,
+      usedCapacity = usedCapacity,
+      availableCapacity = availableCapacity,
+      readSpeed = readSpeed,
+      writeSpeed = writeSpeed,
+      type = type,
+      name = name,
+      storageUsage = storageUsage,
+    )
   }
 }

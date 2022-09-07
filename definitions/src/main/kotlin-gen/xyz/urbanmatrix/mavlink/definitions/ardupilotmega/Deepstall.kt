@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -124,5 +125,42 @@ public data class Deepstall(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Deepstall> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var landingLat: Int = 0
+
+    public var landingLon: Int = 0
+
+    public var pathLat: Int = 0
+
+    public var pathLon: Int = 0
+
+    public var arcEntryLat: Int = 0
+
+    public var arcEntryLon: Int = 0
+
+    public var altitude: Float = 0F
+
+    public var expectedTravelDistance: Float = 0F
+
+    public var crossTrackError: Float = 0F
+
+    public var stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0)
+
+    public fun build(): Deepstall = Deepstall(
+      landingLat = landingLat,
+      landingLon = landingLon,
+      pathLat = pathLat,
+      pathLon = pathLon,
+      arcEntryLat = arcEntryLat,
+      arcEntryLon = arcEntryLon,
+      altitude = altitude,
+      expectedTravelDistance = expectedTravelDistance,
+      crossTrackError = crossTrackError,
+      stage = stage,
+    )
   }
 }

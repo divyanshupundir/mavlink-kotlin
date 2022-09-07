@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -59,5 +60,18 @@ public data class Rpm(
     private val METADATA: MavMessage.Metadata<Rpm> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Rpm> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var rpm1: Float = 0F
+
+    public var rpm2: Float = 0F
+
+    public fun build(): Rpm = Rpm(
+      rpm1 = rpm1,
+      rpm2 = rpm2,
+    )
   }
 }

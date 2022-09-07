@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -152,5 +153,54 @@ public data class HilRcInputsRaw(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilRcInputsRaw> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var chan1Raw: Int = 0
+
+    public var chan2Raw: Int = 0
+
+    public var chan3Raw: Int = 0
+
+    public var chan4Raw: Int = 0
+
+    public var chan5Raw: Int = 0
+
+    public var chan6Raw: Int = 0
+
+    public var chan7Raw: Int = 0
+
+    public var chan8Raw: Int = 0
+
+    public var chan9Raw: Int = 0
+
+    public var chan10Raw: Int = 0
+
+    public var chan11Raw: Int = 0
+
+    public var chan12Raw: Int = 0
+
+    public var rssi: Int = 0
+
+    public fun build(): HilRcInputsRaw = HilRcInputsRaw(
+      timeUsec = timeUsec,
+      chan1Raw = chan1Raw,
+      chan2Raw = chan2Raw,
+      chan3Raw = chan3Raw,
+      chan4Raw = chan4Raw,
+      chan5Raw = chan5Raw,
+      chan6Raw = chan6Raw,
+      chan7Raw = chan7Raw,
+      chan8Raw = chan8Raw,
+      chan9Raw = chan9Raw,
+      chan10Raw = chan10Raw,
+      chan11Raw = chan11Raw,
+      chan12Raw = chan12Raw,
+      rssi = rssi,
+    )
   }
 }

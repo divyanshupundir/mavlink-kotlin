@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -92,5 +93,27 @@ public data class SetActuatorControlTarget(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetActuatorControlTarget> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var groupMlx: Int = 0
+
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var controls: List<Float> = emptyList()
+
+    public fun build(): SetActuatorControlTarget = SetActuatorControlTarget(
+      timeUsec = timeUsec,
+      groupMlx = groupMlx,
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      controls = controls,
+    )
   }
 }

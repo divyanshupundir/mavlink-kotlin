@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -133,5 +134,45 @@ public data class FollowTarget(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FollowTarget> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var estCapabilities: Int = 0
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Float = 0F
+
+    public var vel: List<Float> = emptyList()
+
+    public var acc: List<Float> = emptyList()
+
+    public var attitudeQ: List<Float> = emptyList()
+
+    public var rates: List<Float> = emptyList()
+
+    public var positionCov: List<Float> = emptyList()
+
+    public var customState: BigInteger = BigInteger.ZERO
+
+    public fun build(): FollowTarget = FollowTarget(
+      timestamp = timestamp,
+      estCapabilities = estCapabilities,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      vel = vel,
+      acc = acc,
+      attitudeQ = attitudeQ,
+      rates = rates,
+      positionCov = positionCov,
+      customState = customState,
+    )
   }
 }

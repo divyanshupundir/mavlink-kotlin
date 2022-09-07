@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -97,5 +98,33 @@ public data class Altitudes(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Altitudes> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var altGps: Int = 0
+
+    public var altImu: Int = 0
+
+    public var altBarometric: Int = 0
+
+    public var altOpticalFlow: Int = 0
+
+    public var altRangeFinder: Int = 0
+
+    public var altExtra: Int = 0
+
+    public fun build(): Altitudes = Altitudes(
+      timeBootMs = timeBootMs,
+      altGps = altGps,
+      altImu = altImu,
+      altBarometric = altBarometric,
+      altOpticalFlow = altOpticalFlow,
+      altRangeFinder = altRangeFinder,
+      altExtra = altExtra,
+    )
   }
 }

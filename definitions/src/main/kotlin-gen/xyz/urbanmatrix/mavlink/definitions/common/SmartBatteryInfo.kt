@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -185,5 +186,63 @@ public data class SmartBatteryInfo(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SmartBatteryInfo> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var id: Int = 0
+
+    public var batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0)
+
+    public var type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0)
+
+    public var capacityFullSpecification: Int = 0
+
+    public var capacityFull: Int = 0
+
+    public var cycleCount: Int = 0
+
+    public var serialNumber: String = ""
+
+    public var deviceName: String = ""
+
+    public var weight: Int = 0
+
+    public var dischargeMinimumVoltage: Int = 0
+
+    public var chargingMinimumVoltage: Int = 0
+
+    public var restingMinimumVoltage: Int = 0
+
+    public var chargingMaximumVoltage: Int = 0
+
+    public var cellsInSeries: Int = 0
+
+    public var dischargeMaximumCurrent: Long = 0L
+
+    public var dischargeMaximumBurstCurrent: Long = 0L
+
+    public var manufactureDate: String = ""
+
+    public fun build(): SmartBatteryInfo = SmartBatteryInfo(
+      id = id,
+      batteryFunction = batteryFunction,
+      type = type,
+      capacityFullSpecification = capacityFullSpecification,
+      capacityFull = capacityFull,
+      cycleCount = cycleCount,
+      serialNumber = serialNumber,
+      deviceName = deviceName,
+      weight = weight,
+      dischargeMinimumVoltage = dischargeMinimumVoltage,
+      chargingMinimumVoltage = chargingMinimumVoltage,
+      restingMinimumVoltage = restingMinimumVoltage,
+      chargingMaximumVoltage = chargingMaximumVoltage,
+      cellsInSeries = cellsInSeries,
+      dischargeMaximumCurrent = dischargeMaximumCurrent,
+      dischargeMaximumBurstCurrent = dischargeMaximumBurstCurrent,
+      manufactureDate = manufactureDate,
+    )
   }
 }

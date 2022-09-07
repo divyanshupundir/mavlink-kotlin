@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -161,5 +162,51 @@ public data class CameraInformation(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraInformation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var vendorName: List<Int> = emptyList()
+
+    public var modelName: List<Int> = emptyList()
+
+    public var firmwareVersion: Long = 0L
+
+    public var focalLength: Float = 0F
+
+    public var sensorSizeH: Float = 0F
+
+    public var sensorSizeV: Float = 0F
+
+    public var resolutionH: Int = 0
+
+    public var resolutionV: Int = 0
+
+    public var lensId: Int = 0
+
+    public var flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0)
+
+    public var camDefinitionVersion: Int = 0
+
+    public var camDefinitionUri: String = ""
+
+    public fun build(): CameraInformation = CameraInformation(
+      timeBootMs = timeBootMs,
+      vendorName = vendorName,
+      modelName = modelName,
+      firmwareVersion = firmwareVersion,
+      focalLength = focalLength,
+      sensorSizeH = sensorSizeH,
+      sensorSizeV = sensorSizeV,
+      resolutionH = resolutionH,
+      resolutionV = resolutionV,
+      lensId = lensId,
+      flags = flags,
+      camDefinitionVersion = camDefinitionVersion,
+      camDefinitionUri = camDefinitionUri,
+    )
   }
 }

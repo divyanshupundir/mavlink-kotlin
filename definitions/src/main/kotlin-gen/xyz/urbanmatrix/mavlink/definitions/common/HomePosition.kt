@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -155,5 +156,45 @@ public data class HomePosition(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HomePosition> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var latitude: Int = 0
+
+    public var longitude: Int = 0
+
+    public var altitude: Int = 0
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var q: List<Float> = emptyList()
+
+    public var approachX: Float = 0F
+
+    public var approachY: Float = 0F
+
+    public var approachZ: Float = 0F
+
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public fun build(): HomePosition = HomePosition(
+      latitude = latitude,
+      longitude = longitude,
+      altitude = altitude,
+      x = x,
+      y = y,
+      z = z,
+      q = q,
+      approachX = approachX,
+      approachY = approachY,
+      approachZ = approachZ,
+      timeUsec = timeUsec,
+    )
   }
 }

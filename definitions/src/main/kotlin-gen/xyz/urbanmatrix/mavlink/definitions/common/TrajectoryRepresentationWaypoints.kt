@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -156,5 +157,54 @@ public data class TrajectoryRepresentationWaypoints(
         MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var validPoints: Int = 0
+
+    public var posX: List<Float> = emptyList()
+
+    public var posY: List<Float> = emptyList()
+
+    public var posZ: List<Float> = emptyList()
+
+    public var velX: List<Float> = emptyList()
+
+    public var velY: List<Float> = emptyList()
+
+    public var velZ: List<Float> = emptyList()
+
+    public var accX: List<Float> = emptyList()
+
+    public var accY: List<Float> = emptyList()
+
+    public var accZ: List<Float> = emptyList()
+
+    public var posYaw: List<Float> = emptyList()
+
+    public var velYaw: List<Float> = emptyList()
+
+    public var command: List<Int> = emptyList()
+
+    public fun build(): TrajectoryRepresentationWaypoints = TrajectoryRepresentationWaypoints(
+      timeUsec = timeUsec,
+      validPoints = validPoints,
+      posX = posX,
+      posY = posY,
+      posZ = posZ,
+      velX = velX,
+      velY = velY,
+      velZ = velZ,
+      accX = accX,
+      accY = accY,
+      accZ = accZ,
+      posYaw = posYaw,
+      velYaw = velYaw,
+      command = command,
+    )
   }
 }

@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -153,5 +154,48 @@ public data class AutopilotVersion(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AutopilotVersion> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var capabilities: MavEnumValue<MavProtocolCapability> = MavEnumValue.fromValue(0)
+
+    public var flightSwVersion: Long = 0L
+
+    public var middlewareSwVersion: Long = 0L
+
+    public var osSwVersion: Long = 0L
+
+    public var boardVersion: Long = 0L
+
+    public var flightCustomVersion: List<Int> = emptyList()
+
+    public var middlewareCustomVersion: List<Int> = emptyList()
+
+    public var osCustomVersion: List<Int> = emptyList()
+
+    public var vendorId: Int = 0
+
+    public var productId: Int = 0
+
+    public var uid: BigInteger = BigInteger.ZERO
+
+    public var uid2: List<Int> = emptyList()
+
+    public fun build(): AutopilotVersion = AutopilotVersion(
+      capabilities = capabilities,
+      flightSwVersion = flightSwVersion,
+      middlewareSwVersion = middlewareSwVersion,
+      osSwVersion = osSwVersion,
+      boardVersion = boardVersion,
+      flightCustomVersion = flightCustomVersion,
+      middlewareCustomVersion = middlewareCustomVersion,
+      osCustomVersion = osCustomVersion,
+      vendorId = vendorId,
+      productId = productId,
+      uid = uid,
+      uid2 = uid2,
+    )
   }
 }

@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -90,5 +91,30 @@ public data class CompassmotStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var throttle: Int = 0
+
+    public var current: Float = 0F
+
+    public var interference: Int = 0
+
+    public var compensationx: Float = 0F
+
+    public var compensationy: Float = 0F
+
+    public var compensationz: Float = 0F
+
+    public fun build(): CompassmotStatus = CompassmotStatus(
+      throttle = throttle,
+      current = current,
+      interference = interference,
+      compensationx = compensationx,
+      compensationy = compensationy,
+      compensationz = compensationz,
+    )
   }
 }

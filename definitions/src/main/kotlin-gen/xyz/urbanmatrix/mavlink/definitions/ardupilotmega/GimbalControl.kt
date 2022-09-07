@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -83,5 +84,27 @@ public data class GimbalControl(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalControl> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var demandedRateX: Float = 0F
+
+    public var demandedRateY: Float = 0F
+
+    public var demandedRateZ: Float = 0F
+
+    public fun build(): GimbalControl = GimbalControl(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      demandedRateX = demandedRateX,
+      demandedRateY = demandedRateY,
+      demandedRateZ = demandedRateZ,
+    )
   }
 }

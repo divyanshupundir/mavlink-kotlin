@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -97,5 +98,30 @@ public data class AttPosMocap(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AttPosMocap> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var q: List<Float> = emptyList()
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var covariance: List<Float> = emptyList()
+
+    public fun build(): AttPosMocap = AttPosMocap(
+      timeUsec = timeUsec,
+      q = q,
+      x = x,
+      y = y,
+      z = z,
+      covariance = covariance,
+    )
   }
 }

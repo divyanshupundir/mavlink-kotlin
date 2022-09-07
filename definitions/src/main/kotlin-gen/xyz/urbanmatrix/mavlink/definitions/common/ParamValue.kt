@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -97,5 +98,27 @@ public data class ParamValue(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamValue> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var paramId: String = ""
+
+    public var paramValue: Float = 0F
+
+    public var paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0)
+
+    public var paramCount: Int = 0
+
+    public var paramIndex: Int = 0
+
+    public fun build(): ParamValue = ParamValue(
+      paramId = paramId,
+      paramValue = paramValue,
+      paramType = paramType,
+      paramCount = paramCount,
+      paramIndex = paramIndex,
+    )
   }
 }

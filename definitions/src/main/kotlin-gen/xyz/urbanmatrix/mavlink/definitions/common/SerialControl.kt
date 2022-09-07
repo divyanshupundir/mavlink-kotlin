@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -121,5 +122,36 @@ public data class SerialControl(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialControl> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var device: MavEnumValue<SerialControlDev> = MavEnumValue.fromValue(0)
+
+    public var flags: MavEnumValue<SerialControlFlag> = MavEnumValue.fromValue(0)
+
+    public var timeout: Int = 0
+
+    public var baudrate: Long = 0L
+
+    public var count: Int = 0
+
+    public var `data`: List<Int> = emptyList()
+
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public fun build(): SerialControl = SerialControl(
+      device = device,
+      flags = flags,
+      timeout = timeout,
+      baudrate = baudrate,
+      count = count,
+      data = data,
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+    )
   }
 }

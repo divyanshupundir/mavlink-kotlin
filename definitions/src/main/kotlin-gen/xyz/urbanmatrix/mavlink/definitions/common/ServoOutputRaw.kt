@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -180,5 +181,66 @@ public data class ServoOutputRaw(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ServoOutputRaw> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: Long = 0L
+
+    public var port: Int = 0
+
+    public var servo1Raw: Int = 0
+
+    public var servo2Raw: Int = 0
+
+    public var servo3Raw: Int = 0
+
+    public var servo4Raw: Int = 0
+
+    public var servo5Raw: Int = 0
+
+    public var servo6Raw: Int = 0
+
+    public var servo7Raw: Int = 0
+
+    public var servo8Raw: Int = 0
+
+    public var servo9Raw: Int = 0
+
+    public var servo10Raw: Int = 0
+
+    public var servo11Raw: Int = 0
+
+    public var servo12Raw: Int = 0
+
+    public var servo13Raw: Int = 0
+
+    public var servo14Raw: Int = 0
+
+    public var servo15Raw: Int = 0
+
+    public var servo16Raw: Int = 0
+
+    public fun build(): ServoOutputRaw = ServoOutputRaw(
+      timeUsec = timeUsec,
+      port = port,
+      servo1Raw = servo1Raw,
+      servo2Raw = servo2Raw,
+      servo3Raw = servo3Raw,
+      servo4Raw = servo4Raw,
+      servo5Raw = servo5Raw,
+      servo6Raw = servo6Raw,
+      servo7Raw = servo7Raw,
+      servo8Raw = servo8Raw,
+      servo9Raw = servo9Raw,
+      servo10Raw = servo10Raw,
+      servo11Raw = servo11Raw,
+      servo12Raw = servo12Raw,
+      servo13Raw = servo13Raw,
+      servo14Raw = servo14Raw,
+      servo15Raw = servo15Raw,
+      servo16Raw = servo16Raw,
+    )
   }
 }

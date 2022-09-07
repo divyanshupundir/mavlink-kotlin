@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -107,5 +108,30 @@ public data class UavcanNodeStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavcanNodeStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var uptimeSec: Long = 0L
+
+    public var health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0)
+
+    public var mode: MavEnumValue<UavcanNodeMode> = MavEnumValue.fromValue(0)
+
+    public var subMode: Int = 0
+
+    public var vendorSpecificStatusCode: Int = 0
+
+    public fun build(): UavcanNodeStatus = UavcanNodeStatus(
+      timeUsec = timeUsec,
+      uptimeSec = uptimeSec,
+      health = health,
+      mode = mode,
+      subMode = subMode,
+      vendorSpecificStatusCode = vendorSpecificStatusCode,
+    )
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -76,5 +77,21 @@ public data class GoproHeartbeat(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var status: MavEnumValue<GoproHeartbeatStatus> = MavEnumValue.fromValue(0)
+
+    public var captureMode: MavEnumValue<GoproCaptureMode> = MavEnumValue.fromValue(0)
+
+    public var flags: MavEnumValue<GoproHeartbeatFlags> = MavEnumValue.fromValue(0)
+
+    public fun build(): GoproHeartbeat = GoproHeartbeat(
+      status = status,
+      captureMode = captureMode,
+      flags = flags,
+    )
   }
 }

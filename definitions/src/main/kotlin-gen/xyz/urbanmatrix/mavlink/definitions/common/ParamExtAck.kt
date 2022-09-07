@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -85,5 +86,24 @@ public data class ParamExtAck(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamExtAck> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var paramId: String = ""
+
+    public var paramValue: String = ""
+
+    public var paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0)
+
+    public var paramResult: MavEnumValue<ParamAck> = MavEnumValue.fromValue(0)
+
+    public fun build(): ParamExtAck = ParamExtAck(
+      paramId = paramId,
+      paramValue = paramValue,
+      paramType = paramType,
+      paramResult = paramResult,
+    )
   }
 }

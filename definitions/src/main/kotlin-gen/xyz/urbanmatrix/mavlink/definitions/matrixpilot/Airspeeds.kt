@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -97,5 +98,33 @@ public data class Airspeeds(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Airspeeds> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var airspeedImu: Int = 0
+
+    public var airspeedPitot: Int = 0
+
+    public var airspeedHotWire: Int = 0
+
+    public var airspeedUltrasonic: Int = 0
+
+    public var aoa: Int = 0
+
+    public var aoy: Int = 0
+
+    public fun build(): Airspeeds = Airspeeds(
+      timeBootMs = timeBootMs,
+      airspeedImu = airspeedImu,
+      airspeedPitot = airspeedPitot,
+      airspeedHotWire = airspeedHotWire,
+      airspeedUltrasonic = airspeedUltrasonic,
+      aoa = aoa,
+      aoy = aoy,
+    )
   }
 }

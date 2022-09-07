@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -110,5 +111,33 @@ public data class Collision(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Collision> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0)
+
+    public var id: Long = 0L
+
+    public var action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0)
+
+    public var threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0)
+
+    public var timeToMinimumDelta: Float = 0F
+
+    public var altitudeMinimumDelta: Float = 0F
+
+    public var horizontalMinimumDelta: Float = 0F
+
+    public fun build(): Collision = Collision(
+      src = src,
+      id = id,
+      action = action,
+      threatLevel = threatLevel,
+      timeToMinimumDelta = timeToMinimumDelta,
+      altitudeMinimumDelta = altitudeMinimumDelta,
+      horizontalMinimumDelta = horizontalMinimumDelta,
+    )
   }
 }

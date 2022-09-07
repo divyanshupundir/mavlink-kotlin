@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -86,5 +87,30 @@ public data class ApAdc(
     private val METADATA: MavMessage.Metadata<ApAdc> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ApAdc> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var adc1: Int = 0
+
+    public var adc2: Int = 0
+
+    public var adc3: Int = 0
+
+    public var adc4: Int = 0
+
+    public var adc5: Int = 0
+
+    public var adc6: Int = 0
+
+    public fun build(): ApAdc = ApAdc(
+      adc1 = adc1,
+      adc2 = adc2,
+      adc3 = adc3,
+      adc4 = adc4,
+      adc5 = adc5,
+      adc6 = adc6,
+    )
   }
 }

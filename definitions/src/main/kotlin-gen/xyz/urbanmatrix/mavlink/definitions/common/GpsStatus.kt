@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -92,5 +93,30 @@ public data class GpsStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var satellitesVisible: Int = 0
+
+    public var satellitePrn: List<Int> = emptyList()
+
+    public var satelliteUsed: List<Int> = emptyList()
+
+    public var satelliteElevation: List<Int> = emptyList()
+
+    public var satelliteAzimuth: List<Int> = emptyList()
+
+    public var satelliteSnr: List<Int> = emptyList()
+
+    public fun build(): GpsStatus = GpsStatus(
+      satellitesVisible = satellitesVisible,
+      satellitePrn = satellitePrn,
+      satelliteUsed = satelliteUsed,
+      satelliteElevation = satelliteElevation,
+      satelliteAzimuth = satelliteAzimuth,
+      satelliteSnr = satelliteSnr,
+    )
   }
 }

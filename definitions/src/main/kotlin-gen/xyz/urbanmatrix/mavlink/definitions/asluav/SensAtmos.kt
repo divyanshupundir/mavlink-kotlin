@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -70,5 +71,21 @@ public data class SensAtmos(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensAtmos> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var tempambient: Float = 0F
+
+    public var humidity: Float = 0F
+
+    public fun build(): SensAtmos = SensAtmos(
+      timestamp = timestamp,
+      tempambient = tempambient,
+      humidity = humidity,
+    )
   }
 }

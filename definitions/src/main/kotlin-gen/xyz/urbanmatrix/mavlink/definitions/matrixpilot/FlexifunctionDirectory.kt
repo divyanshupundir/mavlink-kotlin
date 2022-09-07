@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -90,5 +91,30 @@ public data class FlexifunctionDirectory(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionDirectory> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var directoryType: Int = 0
+
+    public var startIndex: Int = 0
+
+    public var count: Int = 0
+
+    public var directoryData: List<Int> = emptyList()
+
+    public fun build(): FlexifunctionDirectory = FlexifunctionDirectory(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      directoryType = directoryType,
+      startIndex = startIndex,
+      count = count,
+      directoryData = directoryData,
+    )
   }
 }

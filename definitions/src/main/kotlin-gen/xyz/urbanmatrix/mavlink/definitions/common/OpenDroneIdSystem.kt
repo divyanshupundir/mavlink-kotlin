@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -185,5 +186,59 @@ public data class OpenDroneIdSystem(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdSystem> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var idOrMac: List<Int> = emptyList()
+
+    public var operatorLocationType: MavEnumValue<MavOdidOperatorLocationType> =
+        MavEnumValue.fromValue(0)
+
+    public var classificationType: MavEnumValue<MavOdidClassificationType> =
+        MavEnumValue.fromValue(0)
+
+    public var operatorLatitude: Int = 0
+
+    public var operatorLongitude: Int = 0
+
+    public var areaCount: Int = 0
+
+    public var areaRadius: Int = 0
+
+    public var areaCeiling: Float = 0F
+
+    public var areaFloor: Float = 0F
+
+    public var categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0)
+
+    public var classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0)
+
+    public var operatorAltitudeGeo: Float = 0F
+
+    public var timestamp: Long = 0L
+
+    public fun build(): OpenDroneIdSystem = OpenDroneIdSystem(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      idOrMac = idOrMac,
+      operatorLocationType = operatorLocationType,
+      classificationType = classificationType,
+      operatorLatitude = operatorLatitude,
+      operatorLongitude = operatorLongitude,
+      areaCount = areaCount,
+      areaRadius = areaRadius,
+      areaCeiling = areaCeiling,
+      areaFloor = areaFloor,
+      categoryEu = categoryEu,
+      classEu = classEu,
+      operatorAltitudeGeo = operatorAltitudeGeo,
+      timestamp = timestamp,
+    )
   }
 }

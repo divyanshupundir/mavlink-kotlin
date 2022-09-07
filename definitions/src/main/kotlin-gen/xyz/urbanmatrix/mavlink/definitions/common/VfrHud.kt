@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -93,5 +94,30 @@ public data class VfrHud(
     private val METADATA: MavMessage.Metadata<VfrHud> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<VfrHud> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var airspeed: Float = 0F
+
+    public var groundspeed: Float = 0F
+
+    public var heading: Int = 0
+
+    public var throttle: Int = 0
+
+    public var alt: Float = 0F
+
+    public var climb: Float = 0F
+
+    public fun build(): VfrHud = VfrHud(
+      airspeed = airspeed,
+      groundspeed = groundspeed,
+      heading = heading,
+      throttle = throttle,
+      alt = alt,
+      climb = climb,
+    )
   }
 }

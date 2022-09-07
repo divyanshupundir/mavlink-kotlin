@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -74,5 +75,21 @@ public data class NamedValueFloat(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var name: String = ""
+
+    public var `value`: Float = 0F
+
+    public fun build(): NamedValueFloat = NamedValueFloat(
+      timeBootMs = timeBootMs,
+      name = name,
+      value = value,
+    )
   }
 }

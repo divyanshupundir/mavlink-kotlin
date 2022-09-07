@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -64,5 +65,18 @@ public data class SystemTime(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SystemTime> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUnixUsec: BigInteger = BigInteger.ZERO
+
+    public var timeBootMs: Long = 0L
+
+    public fun build(): SystemTime = SystemTime(
+      timeUnixUsec = timeUnixUsec,
+      timeBootMs = timeBootMs,
+    )
   }
 }

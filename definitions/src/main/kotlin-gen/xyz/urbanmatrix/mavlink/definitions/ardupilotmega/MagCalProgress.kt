@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -121,5 +122,39 @@ public data class MagCalProgress(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MagCalProgress> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var compassId: Int = 0
+
+    public var calMask: Int = 0
+
+    public var calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0)
+
+    public var attempt: Int = 0
+
+    public var completionPct: Int = 0
+
+    public var completionMask: List<Int> = emptyList()
+
+    public var directionX: Float = 0F
+
+    public var directionY: Float = 0F
+
+    public var directionZ: Float = 0F
+
+    public fun build(): MagCalProgress = MagCalProgress(
+      compassId = compassId,
+      calMask = calMask,
+      calStatus = calStatus,
+      attempt = attempt,
+      completionPct = completionPct,
+      completionMask = completionMask,
+      directionX = directionX,
+      directionY = directionY,
+      directionZ = directionZ,
+    )
   }
 }

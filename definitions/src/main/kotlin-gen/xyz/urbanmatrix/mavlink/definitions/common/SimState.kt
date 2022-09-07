@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -192,5 +193,75 @@ public data class SimState(
     private val METADATA: MavMessage.Metadata<SimState> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SimState> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var q1: Float = 0F
+
+    public var q2: Float = 0F
+
+    public var q3: Float = 0F
+
+    public var q4: Float = 0F
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var xacc: Float = 0F
+
+    public var yacc: Float = 0F
+
+    public var zacc: Float = 0F
+
+    public var xgyro: Float = 0F
+
+    public var ygyro: Float = 0F
+
+    public var zgyro: Float = 0F
+
+    public var lat: Float = 0F
+
+    public var lon: Float = 0F
+
+    public var alt: Float = 0F
+
+    public var stdDevHorz: Float = 0F
+
+    public var stdDevVert: Float = 0F
+
+    public var vn: Float = 0F
+
+    public var ve: Float = 0F
+
+    public var vd: Float = 0F
+
+    public fun build(): SimState = SimState(
+      q1 = q1,
+      q2 = q2,
+      q3 = q3,
+      q4 = q4,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+      xgyro = xgyro,
+      ygyro = ygyro,
+      zgyro = zgyro,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      stdDevHorz = stdDevHorz,
+      stdDevVert = stdDevVert,
+      vn = vn,
+      ve = ve,
+      vd = vd,
+    )
   }
 }

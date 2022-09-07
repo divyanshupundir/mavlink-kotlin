@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -173,5 +174,60 @@ public data class HilStateQuaternion(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilStateQuaternion> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var attitudeQuaternion: List<Float> = emptyList()
+
+    public var rollspeed: Float = 0F
+
+    public var pitchspeed: Float = 0F
+
+    public var yawspeed: Float = 0F
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var vx: Int = 0
+
+    public var vy: Int = 0
+
+    public var vz: Int = 0
+
+    public var indAirspeed: Int = 0
+
+    public var trueAirspeed: Int = 0
+
+    public var xacc: Int = 0
+
+    public var yacc: Int = 0
+
+    public var zacc: Int = 0
+
+    public fun build(): HilStateQuaternion = HilStateQuaternion(
+      timeUsec = timeUsec,
+      attitudeQuaternion = attitudeQuaternion,
+      rollspeed = rollspeed,
+      pitchspeed = pitchspeed,
+      yawspeed = yawspeed,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+      indAirspeed = indAirspeed,
+      trueAirspeed = trueAirspeed,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+    )
   }
 }

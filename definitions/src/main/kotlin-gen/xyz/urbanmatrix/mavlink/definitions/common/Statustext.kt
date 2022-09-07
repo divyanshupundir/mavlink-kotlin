@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -90,5 +91,24 @@ public data class Statustext(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Statustext> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var severity: MavEnumValue<MavSeverity> = MavEnumValue.fromValue(0)
+
+    public var text: String = ""
+
+    public var id: Int = 0
+
+    public var chunkSeq: Int = 0
+
+    public fun build(): Statustext = Statustext(
+      severity = severity,
+      text = text,
+      id = id,
+      chunkSeq = chunkSeq,
+    )
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -60,5 +61,18 @@ public data class Hwstatus(
     private val METADATA: MavMessage.Metadata<Hwstatus> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Hwstatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var vcc: Int = 0
+
+    public var i2cerr: Int = 0
+
+    public fun build(): Hwstatus = Hwstatus(
+      vcc = vcc,
+      i2cerr = i2cerr,
+    )
   }
 }

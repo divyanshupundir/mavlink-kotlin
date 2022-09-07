@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -138,5 +139,51 @@ public data class SerialUdbExtraF20(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueNumberOfInputs: Int = 0
+
+    public var sueTrimValueInput1: Int = 0
+
+    public var sueTrimValueInput2: Int = 0
+
+    public var sueTrimValueInput3: Int = 0
+
+    public var sueTrimValueInput4: Int = 0
+
+    public var sueTrimValueInput5: Int = 0
+
+    public var sueTrimValueInput6: Int = 0
+
+    public var sueTrimValueInput7: Int = 0
+
+    public var sueTrimValueInput8: Int = 0
+
+    public var sueTrimValueInput9: Int = 0
+
+    public var sueTrimValueInput10: Int = 0
+
+    public var sueTrimValueInput11: Int = 0
+
+    public var sueTrimValueInput12: Int = 0
+
+    public fun build(): SerialUdbExtraF20 = SerialUdbExtraF20(
+      sueNumberOfInputs = sueNumberOfInputs,
+      sueTrimValueInput1 = sueTrimValueInput1,
+      sueTrimValueInput2 = sueTrimValueInput2,
+      sueTrimValueInput3 = sueTrimValueInput3,
+      sueTrimValueInput4 = sueTrimValueInput4,
+      sueTrimValueInput5 = sueTrimValueInput5,
+      sueTrimValueInput6 = sueTrimValueInput6,
+      sueTrimValueInput7 = sueTrimValueInput7,
+      sueTrimValueInput8 = sueTrimValueInput8,
+      sueTrimValueInput9 = sueTrimValueInput9,
+      sueTrimValueInput10 = sueTrimValueInput10,
+      sueTrimValueInput11 = sueTrimValueInput11,
+      sueTrimValueInput12 = sueTrimValueInput12,
+    )
   }
 }

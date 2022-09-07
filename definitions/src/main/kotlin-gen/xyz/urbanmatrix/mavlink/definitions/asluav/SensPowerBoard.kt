@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -135,5 +136,48 @@ public data class SensPowerBoard(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensPowerBoard> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timestamp: BigInteger = BigInteger.ZERO
+
+    public var pwrBrdStatus: Int = 0
+
+    public var pwrBrdLedStatus: Int = 0
+
+    public var pwrBrdSystemVolt: Float = 0F
+
+    public var pwrBrdServoVolt: Float = 0F
+
+    public var pwrBrdDigitalVolt: Float = 0F
+
+    public var pwrBrdMotLAmp: Float = 0F
+
+    public var pwrBrdMotRAmp: Float = 0F
+
+    public var pwrBrdAnalogAmp: Float = 0F
+
+    public var pwrBrdDigitalAmp: Float = 0F
+
+    public var pwrBrdExtAmp: Float = 0F
+
+    public var pwrBrdAuxAmp: Float = 0F
+
+    public fun build(): SensPowerBoard = SensPowerBoard(
+      timestamp = timestamp,
+      pwrBrdStatus = pwrBrdStatus,
+      pwrBrdLedStatus = pwrBrdLedStatus,
+      pwrBrdSystemVolt = pwrBrdSystemVolt,
+      pwrBrdServoVolt = pwrBrdServoVolt,
+      pwrBrdDigitalVolt = pwrBrdDigitalVolt,
+      pwrBrdMotLAmp = pwrBrdMotLAmp,
+      pwrBrdMotRAmp = pwrBrdMotRAmp,
+      pwrBrdAnalogAmp = pwrBrdAnalogAmp,
+      pwrBrdDigitalAmp = pwrBrdDigitalAmp,
+      pwrBrdExtAmp = pwrBrdExtAmp,
+      pwrBrdAuxAmp = pwrBrdAuxAmp,
+    )
   }
 }

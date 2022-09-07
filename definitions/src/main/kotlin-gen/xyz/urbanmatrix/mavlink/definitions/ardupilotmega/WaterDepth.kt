@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -130,5 +131,45 @@ public data class WaterDepth(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WaterDepth> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var id: Int = 0
+
+    public var healthy: Int = 0
+
+    public var lat: Int = 0
+
+    public var lng: Int = 0
+
+    public var alt: Float = 0F
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var distance: Float = 0F
+
+    public var temperature: Float = 0F
+
+    public fun build(): WaterDepth = WaterDepth(
+      timeBootMs = timeBootMs,
+      id = id,
+      healthy = healthy,
+      lat = lat,
+      lng = lng,
+      alt = alt,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      distance = distance,
+      temperature = temperature,
+    )
   }
 }

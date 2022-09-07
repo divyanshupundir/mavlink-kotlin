@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -83,5 +84,27 @@ public data class OsdParamShowConfig(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OsdParamShowConfig> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var requestId: Long = 0L
+
+    public var osdScreen: Int = 0
+
+    public var osdIndex: Int = 0
+
+    public fun build(): OsdParamShowConfig = OsdParamShowConfig(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      requestId = requestId,
+      osdScreen = osdScreen,
+      osdIndex = osdIndex,
+    )
   }
 }

@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -124,5 +125,45 @@ public data class Simstate(
     private val METADATA: MavMessage.Metadata<Simstate> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Simstate> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var xacc: Float = 0F
+
+    public var yacc: Float = 0F
+
+    public var zacc: Float = 0F
+
+    public var xgyro: Float = 0F
+
+    public var ygyro: Float = 0F
+
+    public var zgyro: Float = 0F
+
+    public var lat: Int = 0
+
+    public var lng: Int = 0
+
+    public fun build(): Simstate = Simstate(
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      xacc = xacc,
+      yacc = yacc,
+      zacc = zacc,
+      xgyro = xgyro,
+      ygyro = ygyro,
+      zgyro = zgyro,
+      lat = lat,
+      lng = lng,
+    )
   }
 }

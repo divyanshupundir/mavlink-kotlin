@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -108,5 +109,33 @@ public data class CellularStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CellularStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var status: MavEnumValue<CellularStatusFlag> = MavEnumValue.fromValue(0)
+
+    public var failureReason: MavEnumValue<CellularNetworkFailedReason> = MavEnumValue.fromValue(0)
+
+    public var type: MavEnumValue<CellularNetworkRadioType> = MavEnumValue.fromValue(0)
+
+    public var quality: Int = 0
+
+    public var mcc: Int = 0
+
+    public var mnc: Int = 0
+
+    public var lac: Int = 0
+
+    public fun build(): CellularStatus = CellularStatus(
+      status = status,
+      failureReason = failureReason,
+      type = type,
+      quality = quality,
+      mcc = mcc,
+      mnc = mnc,
+      lac = lac,
+    )
   }
 }

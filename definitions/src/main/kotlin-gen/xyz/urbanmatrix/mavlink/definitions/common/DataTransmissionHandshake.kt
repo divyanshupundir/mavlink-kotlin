@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -108,5 +109,33 @@ public data class DataTransmissionHandshake(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0)
+
+    public var size: Long = 0L
+
+    public var width: Int = 0
+
+    public var height: Int = 0
+
+    public var packets: Int = 0
+
+    public var payload: Int = 0
+
+    public var jpgQuality: Int = 0
+
+    public fun build(): DataTransmissionHandshake = DataTransmissionHandshake(
+      type = type,
+      size = size,
+      width = width,
+      height = height,
+      packets = packets,
+      payload = payload,
+      jpgQuality = jpgQuality,
+    )
   }
 }

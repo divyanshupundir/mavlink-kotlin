@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -83,5 +84,27 @@ public data class AvssPrsSysStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AvssPrsSysStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var errorStatus: Long = 0L
+
+    public var batteryStatus: Long = 0L
+
+    public var armStatus: Int = 0
+
+    public var chargeStatus: Int = 0
+
+    public fun build(): AvssPrsSysStatus = AvssPrsSysStatus(
+      timeBootMs = timeBootMs,
+      errorStatus = errorStatus,
+      batteryStatus = batteryStatus,
+      armStatus = armStatus,
+      chargeStatus = chargeStatus,
+    )
   }
 }

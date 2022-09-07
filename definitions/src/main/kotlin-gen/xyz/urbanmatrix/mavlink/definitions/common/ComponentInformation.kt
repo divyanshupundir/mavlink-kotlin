@@ -7,6 +7,7 @@ import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -94,5 +95,27 @@ public data class ComponentInformation(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ComponentInformation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var generalMetadataFileCrc: Long = 0L
+
+    public var generalMetadataUri: String = ""
+
+    public var peripheralsMetadataFileCrc: Long = 0L
+
+    public var peripheralsMetadataUri: String = ""
+
+    public fun build(): ComponentInformation = ComponentInformation(
+      timeBootMs = timeBootMs,
+      generalMetadataFileCrc = generalMetadataFileCrc,
+      generalMetadataUri = generalMetadataUri,
+      peripheralsMetadataFileCrc = peripheralsMetadataFileCrc,
+      peripheralsMetadataUri = peripheralsMetadataUri,
+    )
   }
 }

@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -149,5 +150,52 @@ public data class Gps2Rtk(
     private val METADATA: MavMessage.Metadata<Gps2Rtk> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Gps2Rtk> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeLastBaselineMs: Long = 0L
+
+    public var rtkReceiverId: Int = 0
+
+    public var wn: Int = 0
+
+    public var tow: Long = 0L
+
+    public var rtkHealth: Int = 0
+
+    public var rtkRate: Int = 0
+
+    public var nsats: Int = 0
+
+    public var baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
+        MavEnumValue.fromValue(0)
+
+    public var baselineAMm: Int = 0
+
+    public var baselineBMm: Int = 0
+
+    public var baselineCMm: Int = 0
+
+    public var accuracy: Long = 0L
+
+    public var iarNumHypotheses: Int = 0
+
+    public fun build(): Gps2Rtk = Gps2Rtk(
+      timeLastBaselineMs = timeLastBaselineMs,
+      rtkReceiverId = rtkReceiverId,
+      wn = wn,
+      tow = tow,
+      rtkHealth = rtkHealth,
+      rtkRate = rtkRate,
+      nsats = nsats,
+      baselineCoordsType = baselineCoordsType,
+      baselineAMm = baselineAMm,
+      baselineBMm = baselineBMm,
+      baselineCMm = baselineCMm,
+      accuracy = accuracy,
+      iarNumHypotheses = iarNumHypotheses,
+    )
   }
 }

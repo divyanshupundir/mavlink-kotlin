@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -70,5 +71,21 @@ public data class DataStream(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DataStream> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var streamId: Int = 0
+
+    public var messageRate: Int = 0
+
+    public var onOff: Int = 0
+
+    public fun build(): DataStream = DataStream(
+      streamId = streamId,
+      messageRate = messageRate,
+      onOff = onOff,
+    )
   }
 }

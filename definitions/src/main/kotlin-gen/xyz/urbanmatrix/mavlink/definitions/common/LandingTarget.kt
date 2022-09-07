@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -163,5 +164,54 @@ public data class LandingTarget(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LandingTarget> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var targetNum: Int = 0
+
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var angleX: Float = 0F
+
+    public var angleY: Float = 0F
+
+    public var distance: Float = 0F
+
+    public var sizeX: Float = 0F
+
+    public var sizeY: Float = 0F
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var q: List<Float> = emptyList()
+
+    public var type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0)
+
+    public var positionValid: Int = 0
+
+    public fun build(): LandingTarget = LandingTarget(
+      timeUsec = timeUsec,
+      targetNum = targetNum,
+      frame = frame,
+      angleX = angleX,
+      angleY = angleY,
+      distance = distance,
+      sizeX = sizeX,
+      sizeY = sizeY,
+      x = x,
+      y = y,
+      z = z,
+      q = q,
+      type = type,
+      positionValid = positionValid,
+    )
   }
 }

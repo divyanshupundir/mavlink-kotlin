@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -95,5 +96,33 @@ public data class Radio(
     private val METADATA: MavMessage.Metadata<Radio> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Radio> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var rssi: Int = 0
+
+    public var remrssi: Int = 0
+
+    public var txbuf: Int = 0
+
+    public var noise: Int = 0
+
+    public var remnoise: Int = 0
+
+    public var rxerrors: Int = 0
+
+    public var fixed: Int = 0
+
+    public fun build(): Radio = Radio(
+      rssi = rssi,
+      remrssi = remrssi,
+      txbuf = txbuf,
+      noise = noise,
+      remnoise = remnoise,
+      rxerrors = rxerrors,
+      fixed = fixed,
+    )
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -93,5 +94,30 @@ public data class LoggingData(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LoggingData> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var sequence: Int = 0
+
+    public var length: Int = 0
+
+    public var firstMessageOffset: Int = 0
+
+    public var `data`: List<Int> = emptyList()
+
+    public fun build(): LoggingData = LoggingData(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      sequence = sequence,
+      length = length,
+      firstMessageOffset = firstMessageOffset,
+      data = data,
+    )
   }
 }

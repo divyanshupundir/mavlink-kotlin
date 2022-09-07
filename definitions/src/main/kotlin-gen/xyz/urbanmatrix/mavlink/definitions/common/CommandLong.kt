@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -133,5 +134,45 @@ public data class CommandLong(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CommandLong> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+
+    public var confirmation: Int = 0
+
+    public var param1: Float = 0F
+
+    public var param2: Float = 0F
+
+    public var param3: Float = 0F
+
+    public var param4: Float = 0F
+
+    public var param5: Float = 0F
+
+    public var param6: Float = 0F
+
+    public var param7: Float = 0F
+
+    public fun build(): CommandLong = CommandLong(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      command = command,
+      confirmation = confirmation,
+      param1 = param1,
+      param2 = param2,
+      param3 = param3,
+      param4 = param4,
+      param5 = param5,
+      param6 = param6,
+      param7 = param7,
+    )
   }
 }

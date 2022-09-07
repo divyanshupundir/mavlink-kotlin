@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -174,5 +175,57 @@ public data class CommandIntStamped(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CommandIntStamped> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var utcTime: Long = 0L
+
+    public var vehicleTimestamp: BigInteger = BigInteger.ZERO
+
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+
+    public var current: Int = 0
+
+    public var autocontinue: Int = 0
+
+    public var param1: Float = 0F
+
+    public var param2: Float = 0F
+
+    public var param3: Float = 0F
+
+    public var param4: Float = 0F
+
+    public var x: Int = 0
+
+    public var y: Int = 0
+
+    public var z: Float = 0F
+
+    public fun build(): CommandIntStamped = CommandIntStamped(
+      utcTime = utcTime,
+      vehicleTimestamp = vehicleTimestamp,
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      frame = frame,
+      command = command,
+      current = current,
+      autocontinue = autocontinue,
+      param1 = param1,
+      param2 = param2,
+      param3 = param3,
+      param4 = param4,
+      x = x,
+      y = y,
+      z = z,
+    )
   }
 }

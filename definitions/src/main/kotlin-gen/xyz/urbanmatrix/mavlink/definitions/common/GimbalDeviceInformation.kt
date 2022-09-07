@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -175,5 +176,57 @@ public data class GimbalDeviceInformation(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalDeviceInformation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var vendorName: String = ""
+
+    public var modelName: String = ""
+
+    public var customName: String = ""
+
+    public var firmwareVersion: Long = 0L
+
+    public var hardwareVersion: Long = 0L
+
+    public var uid: BigInteger = BigInteger.ZERO
+
+    public var capFlags: MavEnumValue<GimbalDeviceCapFlags> = MavEnumValue.fromValue(0)
+
+    public var customCapFlags: Int = 0
+
+    public var rollMin: Float = 0F
+
+    public var rollMax: Float = 0F
+
+    public var pitchMin: Float = 0F
+
+    public var pitchMax: Float = 0F
+
+    public var yawMin: Float = 0F
+
+    public var yawMax: Float = 0F
+
+    public fun build(): GimbalDeviceInformation = GimbalDeviceInformation(
+      timeBootMs = timeBootMs,
+      vendorName = vendorName,
+      modelName = modelName,
+      customName = customName,
+      firmwareVersion = firmwareVersion,
+      hardwareVersion = hardwareVersion,
+      uid = uid,
+      capFlags = capFlags,
+      customCapFlags = customCapFlags,
+      rollMin = rollMin,
+      rollMax = rollMax,
+      pitchMin = pitchMin,
+      pitchMax = pitchMax,
+      yawMin = yawMin,
+      yawMax = yawMax,
+    )
   }
 }

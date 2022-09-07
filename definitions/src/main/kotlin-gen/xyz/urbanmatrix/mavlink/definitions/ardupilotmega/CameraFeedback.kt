@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -160,5 +161,54 @@ public data class CameraFeedback(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraFeedback> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var targetSystem: Int = 0
+
+    public var camIdx: Int = 0
+
+    public var imgIdx: Int = 0
+
+    public var lat: Int = 0
+
+    public var lng: Int = 0
+
+    public var altMsl: Float = 0F
+
+    public var altRel: Float = 0F
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var focLen: Float = 0F
+
+    public var flags: MavEnumValue<CameraFeedbackFlags> = MavEnumValue.fromValue(0)
+
+    public var completedCaptures: Int = 0
+
+    public fun build(): CameraFeedback = CameraFeedback(
+      timeUsec = timeUsec,
+      targetSystem = targetSystem,
+      camIdx = camIdx,
+      imgIdx = imgIdx,
+      lat = lat,
+      lng = lng,
+      altMsl = altMsl,
+      altRel = altRel,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      focLen = focLen,
+      flags = flags,
+      completedCaptures = completedCaptures,
+    )
   }
 }

@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -74,5 +75,24 @@ public data class SensPower(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensPower> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var adc121VspbVolt: Float = 0F
+
+    public var adc121CspbAmp: Float = 0F
+
+    public var adc121Cs1Amp: Float = 0F
+
+    public var adc121Cs2Amp: Float = 0F
+
+    public fun build(): SensPower = SensPower(
+      adc121VspbVolt = adc121VspbVolt,
+      adc121CspbAmp = adc121CspbAmp,
+      adc121Cs1Amp = adc121Cs1Amp,
+      adc121Cs2Amp = adc121Cs2Amp,
+    )
   }
 }

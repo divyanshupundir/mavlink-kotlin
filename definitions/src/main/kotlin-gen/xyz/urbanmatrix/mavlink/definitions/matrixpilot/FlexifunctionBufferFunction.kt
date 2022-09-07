@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -100,5 +101,33 @@ public data class FlexifunctionBufferFunction(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionBufferFunction> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var funcIndex: Int = 0
+
+    public var funcCount: Int = 0
+
+    public var dataAddress: Int = 0
+
+    public var dataSize: Int = 0
+
+    public var `data`: List<Int> = emptyList()
+
+    public fun build(): FlexifunctionBufferFunction = FlexifunctionBufferFunction(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      funcIndex = funcIndex,
+      funcCount = funcCount,
+      dataAddress = dataAddress,
+      dataSize = dataSize,
+      data = data,
+    )
   }
 }

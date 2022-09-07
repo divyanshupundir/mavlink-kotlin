@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -72,5 +73,21 @@ public data class SupportedTunes(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SupportedTunes> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0)
+
+    public fun build(): SupportedTunes = SupportedTunes(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      format = format,
+    )
   }
 }

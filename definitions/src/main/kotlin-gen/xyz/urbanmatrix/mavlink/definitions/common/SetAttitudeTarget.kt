@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -131,5 +132,42 @@ public data class SetAttitudeTarget(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetAttitudeTarget> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0)
+
+    public var q: List<Float> = emptyList()
+
+    public var bodyRollRate: Float = 0F
+
+    public var bodyPitchRate: Float = 0F
+
+    public var bodyYawRate: Float = 0F
+
+    public var thrust: Float = 0F
+
+    public var thrustBody: List<Float> = emptyList()
+
+    public fun build(): SetAttitudeTarget = SetAttitudeTarget(
+      timeBootMs = timeBootMs,
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      typeMask = typeMask,
+      q = q,
+      bodyRollRate = bodyRollRate,
+      bodyPitchRate = bodyPitchRate,
+      bodyYawRate = bodyYawRate,
+      thrust = thrust,
+      thrustBody = thrustBody,
+    )
   }
 }

@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -122,5 +123,39 @@ public data class ParamMapRc(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamMapRc> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var paramId: String = ""
+
+    public var paramIndex: Int = 0
+
+    public var parameterRcChannelIndex: Int = 0
+
+    public var paramValue0: Float = 0F
+
+    public var scale: Float = 0F
+
+    public var paramValueMin: Float = 0F
+
+    public var paramValueMax: Float = 0F
+
+    public fun build(): ParamMapRc = ParamMapRc(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      paramId = paramId,
+      paramIndex = paramIndex,
+      parameterRcChannelIndex = parameterRcChannelIndex,
+      paramValue0 = paramValue0,
+      scale = scale,
+      paramValueMin = paramValueMin,
+      paramValueMax = paramValueMax,
+    )
   }
 }

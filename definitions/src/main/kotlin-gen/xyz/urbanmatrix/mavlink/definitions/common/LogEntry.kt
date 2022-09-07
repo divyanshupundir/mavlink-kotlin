@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -82,5 +83,27 @@ public data class LogEntry(
     private val METADATA: MavMessage.Metadata<LogEntry> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LogEntry> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var id: Int = 0
+
+    public var numLogs: Int = 0
+
+    public var lastLogNum: Int = 0
+
+    public var timeUtc: Long = 0L
+
+    public var size: Long = 0L
+
+    public fun build(): LogEntry = LogEntry(
+      id = id,
+      numLogs = numLogs,
+      lastLogNum = lastLogNum,
+      timeUtc = timeUtc,
+      size = size,
+    )
   }
 }

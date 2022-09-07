@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -145,5 +146,48 @@ public data class OpticalFlowRad(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpticalFlowRad> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var sensorId: Int = 0
+
+    public var integrationTimeUs: Long = 0L
+
+    public var integratedX: Float = 0F
+
+    public var integratedY: Float = 0F
+
+    public var integratedXgyro: Float = 0F
+
+    public var integratedYgyro: Float = 0F
+
+    public var integratedZgyro: Float = 0F
+
+    public var temperature: Int = 0
+
+    public var quality: Int = 0
+
+    public var timeDeltaDistanceUs: Long = 0L
+
+    public var distance: Float = 0F
+
+    public fun build(): OpticalFlowRad = OpticalFlowRad(
+      timeUsec = timeUsec,
+      sensorId = sensorId,
+      integrationTimeUs = integrationTimeUs,
+      integratedX = integratedX,
+      integratedY = integratedY,
+      integratedXgyro = integratedXgyro,
+      integratedYgyro = integratedYgyro,
+      integratedZgyro = integratedZgyro,
+      temperature = temperature,
+      quality = quality,
+      timeDeltaDistanceUs = timeDeltaDistanceUs,
+      distance = distance,
+    )
   }
 }

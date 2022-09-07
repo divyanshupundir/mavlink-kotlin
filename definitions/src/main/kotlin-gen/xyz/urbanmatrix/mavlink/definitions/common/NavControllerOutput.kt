@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -106,5 +107,36 @@ public data class NavControllerOutput(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var navRoll: Float = 0F
+
+    public var navPitch: Float = 0F
+
+    public var navBearing: Int = 0
+
+    public var targetBearing: Int = 0
+
+    public var wpDist: Int = 0
+
+    public var altError: Float = 0F
+
+    public var aspdError: Float = 0F
+
+    public var xtrackError: Float = 0F
+
+    public fun build(): NavControllerOutput = NavControllerOutput(
+      navRoll = navRoll,
+      navPitch = navPitch,
+      navBearing = navBearing,
+      targetBearing = targetBearing,
+      wpDist = wpDist,
+      altError = altError,
+      aspdError = aspdError,
+      xtrackError = xtrackError,
+    )
   }
 }

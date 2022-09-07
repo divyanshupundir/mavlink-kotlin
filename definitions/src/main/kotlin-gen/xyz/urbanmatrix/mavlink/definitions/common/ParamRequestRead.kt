@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -86,5 +87,24 @@ public data class ParamRequestRead(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamRequestRead> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var targetSystem: Int = 0
+
+    public var targetComponent: Int = 0
+
+    public var paramId: String = ""
+
+    public var paramIndex: Int = 0
+
+    public fun build(): ParamRequestRead = ParamRequestRead(
+      targetSystem = targetSystem,
+      targetComponent = targetComponent,
+      paramId = paramId,
+      paramIndex = paramIndex,
+    )
   }
 }

@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -216,5 +217,72 @@ public data class OnboardComputerStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var uptime: Long = 0L
+
+    public var type: Int = 0
+
+    public var cpuCores: List<Int> = emptyList()
+
+    public var cpuCombined: List<Int> = emptyList()
+
+    public var gpuCores: List<Int> = emptyList()
+
+    public var gpuCombined: List<Int> = emptyList()
+
+    public var temperatureBoard: Int = 0
+
+    public var temperatureCore: List<Int> = emptyList()
+
+    public var fanSpeed: List<Int> = emptyList()
+
+    public var ramUsage: Long = 0L
+
+    public var ramTotal: Long = 0L
+
+    public var storageType: List<Long> = emptyList()
+
+    public var storageUsage: List<Long> = emptyList()
+
+    public var storageTotal: List<Long> = emptyList()
+
+    public var linkType: List<Long> = emptyList()
+
+    public var linkTxRate: List<Long> = emptyList()
+
+    public var linkRxRate: List<Long> = emptyList()
+
+    public var linkTxMax: List<Long> = emptyList()
+
+    public var linkRxMax: List<Long> = emptyList()
+
+    public fun build(): OnboardComputerStatus = OnboardComputerStatus(
+      timeUsec = timeUsec,
+      uptime = uptime,
+      type = type,
+      cpuCores = cpuCores,
+      cpuCombined = cpuCombined,
+      gpuCores = gpuCores,
+      gpuCombined = gpuCombined,
+      temperatureBoard = temperatureBoard,
+      temperatureCore = temperatureCore,
+      fanSpeed = fanSpeed,
+      ramUsage = ramUsage,
+      ramTotal = ramTotal,
+      storageType = storageType,
+      storageUsage = storageUsage,
+      storageTotal = storageTotal,
+      linkType = linkType,
+      linkTxRate = linkTxRate,
+      linkRxRate = linkRxRate,
+      linkTxMax = linkTxMax,
+      linkRxMax = linkRxMax,
+    )
   }
 }

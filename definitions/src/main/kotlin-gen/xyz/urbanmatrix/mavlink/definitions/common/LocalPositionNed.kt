@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -99,5 +100,33 @@ public data class LocalPositionNed(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LocalPositionNed> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var vx: Float = 0F
+
+    public var vy: Float = 0F
+
+    public var vz: Float = 0F
+
+    public fun build(): LocalPositionNed = LocalPositionNed(
+      timeBootMs = timeBootMs,
+      x = x,
+      y = y,
+      z = z,
+      vx = vx,
+      vy = vy,
+      vz = vz,
+    )
   }
 }

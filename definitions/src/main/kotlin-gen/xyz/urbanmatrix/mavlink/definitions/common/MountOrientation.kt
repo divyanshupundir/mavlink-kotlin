@@ -7,6 +7,7 @@ import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -87,5 +88,27 @@ public data class MountOrientation(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MountOrientation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var roll: Float = 0F
+
+    public var pitch: Float = 0F
+
+    public var yaw: Float = 0F
+
+    public var yawAbsolute: Float = 0F
+
+    public fun build(): MountOrientation = MountOrientation(
+      timeBootMs = timeBootMs,
+      roll = roll,
+      pitch = pitch,
+      yaw = yaw,
+      yawAbsolute = yawAbsolute,
+    )
   }
 }

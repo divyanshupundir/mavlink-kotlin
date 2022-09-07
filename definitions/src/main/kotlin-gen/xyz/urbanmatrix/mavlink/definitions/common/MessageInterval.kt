@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -67,5 +68,18 @@ public data class MessageInterval(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MessageInterval> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var messageId: Int = 0
+
+    public var intervalUs: Int = 0
+
+    public fun build(): MessageInterval = MessageInterval(
+      messageId = messageId,
+      intervalUs = intervalUs,
+    )
   }
 }

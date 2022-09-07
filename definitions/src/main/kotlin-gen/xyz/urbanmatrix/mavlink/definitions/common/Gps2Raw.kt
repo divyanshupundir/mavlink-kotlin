@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -189,5 +190,66 @@ public data class Gps2Raw(
     private val METADATA: MavMessage.Metadata<Gps2Raw> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Gps2Raw> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeUsec: BigInteger = BigInteger.ZERO
+
+    public var fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0)
+
+    public var lat: Int = 0
+
+    public var lon: Int = 0
+
+    public var alt: Int = 0
+
+    public var eph: Int = 0
+
+    public var epv: Int = 0
+
+    public var vel: Int = 0
+
+    public var cog: Int = 0
+
+    public var satellitesVisible: Int = 0
+
+    public var dgpsNumch: Int = 0
+
+    public var dgpsAge: Long = 0L
+
+    public var yaw: Int = 0
+
+    public var altEllipsoid: Int = 0
+
+    public var hAcc: Long = 0L
+
+    public var vAcc: Long = 0L
+
+    public var velAcc: Long = 0L
+
+    public var hdgAcc: Long = 0L
+
+    public fun build(): Gps2Raw = Gps2Raw(
+      timeUsec = timeUsec,
+      fixType = fixType,
+      lat = lat,
+      lon = lon,
+      alt = alt,
+      eph = eph,
+      epv = epv,
+      vel = vel,
+      cog = cog,
+      satellitesVisible = satellitesVisible,
+      dgpsNumch = dgpsNumch,
+      dgpsAge = dgpsAge,
+      yaw = yaw,
+      altEllipsoid = altEllipsoid,
+      hAcc = hAcc,
+      vAcc = vAcc,
+      velAcc = velAcc,
+      hdgAcc = hdgAcc,
+    )
   }
 }

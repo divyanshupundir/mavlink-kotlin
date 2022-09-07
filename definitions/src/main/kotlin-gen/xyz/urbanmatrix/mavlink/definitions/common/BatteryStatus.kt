@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -184,5 +185,54 @@ public data class BatteryStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var id: Int = 0
+
+    public var batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0)
+
+    public var type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0)
+
+    public var temperature: Int = 0
+
+    public var voltages: List<Int> = emptyList()
+
+    public var currentBattery: Int = 0
+
+    public var currentConsumed: Int = 0
+
+    public var energyConsumed: Int = 0
+
+    public var batteryRemaining: Int = 0
+
+    public var timeRemaining: Int = 0
+
+    public var chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0)
+
+    public var voltagesExt: List<Int> = emptyList()
+
+    public var mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0)
+
+    public var faultBitmask: MavEnumValue<MavBatteryFault> = MavEnumValue.fromValue(0)
+
+    public fun build(): BatteryStatus = BatteryStatus(
+      id = id,
+      batteryFunction = batteryFunction,
+      type = type,
+      temperature = temperature,
+      voltages = voltages,
+      currentBattery = currentBattery,
+      currentConsumed = currentConsumed,
+      energyConsumed = energyConsumed,
+      batteryRemaining = batteryRemaining,
+      timeRemaining = timeRemaining,
+      chargeState = chargeState,
+      voltagesExt = voltagesExt,
+      mode = mode,
+      faultBitmask = faultBitmask,
+    )
   }
 }

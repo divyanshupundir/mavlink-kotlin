@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -101,5 +102,33 @@ public data class EkfStatusReport(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EkfStatusReport> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0)
+
+    public var velocityVariance: Float = 0F
+
+    public var posHorizVariance: Float = 0F
+
+    public var posVertVariance: Float = 0F
+
+    public var compassVariance: Float = 0F
+
+    public var terrainAltVariance: Float = 0F
+
+    public var airspeedVariance: Float = 0F
+
+    public fun build(): EkfStatusReport = EkfStatusReport(
+      flags = flags,
+      velocityVariance = velocityVariance,
+      posHorizVariance = posHorizVariance,
+      posVertVariance = posVertVariance,
+      compassVariance = compassVariance,
+      terrainAltVariance = terrainAltVariance,
+      airspeedVariance = airspeedVariance,
+    )
   }
 }

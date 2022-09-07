@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -128,5 +129,39 @@ public data class ObstacleDistance3d(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0)
+
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+
+    public var obstacleId: Int = 0
+
+    public var x: Float = 0F
+
+    public var y: Float = 0F
+
+    public var z: Float = 0F
+
+    public var minDistance: Float = 0F
+
+    public var maxDistance: Float = 0F
+
+    public fun build(): ObstacleDistance3d = ObstacleDistance3d(
+      timeBootMs = timeBootMs,
+      sensorType = sensorType,
+      frame = frame,
+      obstacleId = obstacleId,
+      x = x,
+      y = y,
+      z = z,
+      minDistance = minDistance,
+      maxDistance = maxDistance,
+    )
   }
 }

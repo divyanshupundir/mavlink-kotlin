@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -130,5 +131,42 @@ public data class CameraFovStatus(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraFovStatus> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var latCamera: Int = 0
+
+    public var lonCamera: Int = 0
+
+    public var altCamera: Int = 0
+
+    public var latImage: Int = 0
+
+    public var lonImage: Int = 0
+
+    public var altImage: Int = 0
+
+    public var q: List<Float> = emptyList()
+
+    public var hfov: Float = 0F
+
+    public var vfov: Float = 0F
+
+    public fun build(): CameraFovStatus = CameraFovStatus(
+      timeBootMs = timeBootMs,
+      latCamera = latCamera,
+      lonCamera = lonCamera,
+      altCamera = altCamera,
+      latImage = latImage,
+      lonImage = lonImage,
+      altImage = altImage,
+      q = q,
+      hfov = hfov,
+      vfov = vfov,
+    )
   }
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -53,5 +54,15 @@ public data class MissionCurrent(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MissionCurrent> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var seq: Int = 0
+
+    public fun build(): MissionCurrent = MissionCurrent(
+      seq = seq,
+    )
   }
 }

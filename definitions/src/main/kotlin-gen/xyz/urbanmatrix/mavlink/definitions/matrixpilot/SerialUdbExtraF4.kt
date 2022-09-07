@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -115,5 +116,42 @@ public data class SerialUdbExtraF4(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF4> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var sueRollStabilizationAilerons: Int = 0
+
+    public var sueRollStabilizationRudder: Int = 0
+
+    public var suePitchStabilization: Int = 0
+
+    public var sueYawStabilizationRudder: Int = 0
+
+    public var sueYawStabilizationAileron: Int = 0
+
+    public var sueAileronNavigation: Int = 0
+
+    public var sueRudderNavigation: Int = 0
+
+    public var sueAltitudeholdStabilized: Int = 0
+
+    public var sueAltitudeholdWaypoint: Int = 0
+
+    public var sueRacingMode: Int = 0
+
+    public fun build(): SerialUdbExtraF4 = SerialUdbExtraF4(
+      sueRollStabilizationAilerons = sueRollStabilizationAilerons,
+      sueRollStabilizationRudder = sueRollStabilizationRudder,
+      suePitchStabilization = suePitchStabilization,
+      sueYawStabilizationRudder = sueYawStabilizationRudder,
+      sueYawStabilizationAileron = sueYawStabilizationAileron,
+      sueAileronNavigation = sueAileronNavigation,
+      sueRudderNavigation = sueRudderNavigation,
+      sueAltitudeholdStabilized = sueAltitudeholdStabilized,
+      sueAltitudeholdWaypoint = sueAltitudeholdWaypoint,
+      sueRacingMode = sueRacingMode,
+    )
   }
 }

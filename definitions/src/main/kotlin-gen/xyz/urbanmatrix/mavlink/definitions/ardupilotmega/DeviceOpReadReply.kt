@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
@@ -93,5 +94,30 @@ public data class DeviceOpReadReply(
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DeviceOpReadReply> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var requestId: Long = 0L
+
+    public var result: Int = 0
+
+    public var regstart: Int = 0
+
+    public var count: Int = 0
+
+    public var `data`: List<Int> = emptyList()
+
+    public var bank: Int = 0
+
+    public fun build(): DeviceOpReadReply = DeviceOpReadReply(
+      requestId = requestId,
+      result = result,
+      regstart = regstart,
+      count = count,
+      data = data,
+      bank = bank,
+    )
   }
 }

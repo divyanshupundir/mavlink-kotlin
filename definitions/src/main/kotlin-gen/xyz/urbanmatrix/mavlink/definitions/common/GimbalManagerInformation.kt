@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Long
+import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -123,5 +124,39 @@ public data class GimbalManagerInformation(
         CRC, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
+
+    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+  }
+
+  public class Builder {
+    public var timeBootMs: Long = 0L
+
+    public var capFlags: MavEnumValue<GimbalManagerCapFlags> = MavEnumValue.fromValue(0)
+
+    public var gimbalDeviceId: Int = 0
+
+    public var rollMin: Float = 0F
+
+    public var rollMax: Float = 0F
+
+    public var pitchMin: Float = 0F
+
+    public var pitchMax: Float = 0F
+
+    public var yawMin: Float = 0F
+
+    public var yawMax: Float = 0F
+
+    public fun build(): GimbalManagerInformation = GimbalManagerInformation(
+      timeBootMs = timeBootMs,
+      capFlags = capFlags,
+      gimbalDeviceId = gimbalDeviceId,
+      rollMin = rollMin,
+      rollMax = rollMax,
+      pitchMin = pitchMin,
+      pitchMax = pitchMax,
+      yawMin = yawMin,
+      yawMax = yawMax,
+    )
   }
 }
