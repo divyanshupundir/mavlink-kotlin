@@ -12,9 +12,15 @@ fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = Parame
     .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
-fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
+fun FieldModel.generateConstructorProperty(enumResolver: EnumResolver) = PropertySpec
     .builder(formattedName, resolveKotlinType(enumResolver))
     .initializer(formattedName)
+    .build()
+
+fun FieldModel.generateBuilderProperty(enumResolver: EnumResolver) = PropertySpec
+    .builder(formattedName, resolveKotlinType(enumResolver))
+    .mutable()
+    .initializer(defaultKotlinValue)
     .build()
 
 private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {

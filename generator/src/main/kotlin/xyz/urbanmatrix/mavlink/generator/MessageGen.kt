@@ -17,7 +17,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateConstructorProperty(enumResolver)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (workInProgress) addAnnotation(WorkInProgress::class)
@@ -27,6 +27,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerialize())
         .addType(generateCompanionObject(packageName))
+        .addType(generateBuilderClass(enumResolver, packageName))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
@@ -47,6 +48,7 @@ private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
     .addProperty(generateDeserializer(packageName))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
+    .addFunction(generateBuilderFunction(packageName))
     .build()
 
 private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
@@ -141,6 +143,29 @@ private fun MessageModel.generateSerialize() = FunSpec
             addStatement("return outputBuffer.array()")
         }
     )
+    .build()
+
+private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver, packageName: String) = TypeSpec.classBuilder("Builder")
+    .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumResolver)) } }
+    .addFunction(generateBuildMethod(packageName))
+    .build()
+
+private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.builder("build")
+    .returns(getClassName(packageName))
+    .addCode(
+        buildCodeBlock {
+            add("return %T(\n", getClassName(packageName))
+            indent()
+            fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
+            unindent()
+            add(")")
+        }
+    )
+    .build()
+
+private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("builder")
+    .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
+    .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
 
 private val MessageModel.size: Int
