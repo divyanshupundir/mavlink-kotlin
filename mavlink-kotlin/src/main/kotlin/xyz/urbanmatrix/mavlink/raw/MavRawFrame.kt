@@ -5,6 +5,7 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
+import java.util.Arrays
 
 data class MavRawFrame(
     val stx: Int,
@@ -289,20 +290,22 @@ data class MavRawFrame(
             payload: ByteArray,
             crcExtra: Int
         ): MavRawFrame {
+            val truncatedPayload = payload.truncateZeros()
+
             val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                 SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
-                payload.size + SIZE_CHECKSUM
+                truncatedPayload.size + SIZE_CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUint8(MavFrameType.V2.magic)
-                encodeUint8(payload.size)
+                encodeUint8(truncatedPayload.size)
                 encodeUint8(0)
                 encodeUint8(0)
                 encodeUint8(seq)
                 encodeUint8(systemId)
                 encodeUint8(componentId)
                 encodeIntegerValue(messageId.toLong(), SIZE_MSG_ID_V2)
-                put(payload)
+                put(truncatedPayload)
             }
 
             val checksum = rawBuffer.array().generateCrc(crcExtra)
@@ -310,14 +313,14 @@ data class MavRawFrame(
 
             return MavRawFrame(
                 stx = MavFrameType.V2.magic,
-                len = payload.size,
+                len = truncatedPayload.size,
                 incompatFlags = 0,
                 compatFlags = 0,
                 seq = seq,
                 systemId = systemId,
                 componentId = componentId,
                 messageId = messageId,
-                payload = payload,
+                payload = truncatedPayload,
                 checksum = checksum,
                 signature = ByteArray(0),
                 rawBytes = rawBuffer.array()
@@ -335,20 +338,22 @@ data class MavRawFrame(
             timestamp: Long,
             secretKey: ByteArray
         ): MavRawFrame {
+            val truncatedPayload = payload.truncateZeros()
+
             val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                 SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
-                payload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
+                truncatedPayload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUint8(MavFrameType.V2.magic)
-                encodeUint8(payload.size)
+                encodeUint8(truncatedPayload.size)
                 encodeUint8(INCOMPAT_FLAG_SIGNED)
                 encodeUint8(0)
                 encodeUint8(seq)
                 encodeUint8(systemId)
                 encodeUint8(componentId)
                 encodeIntegerValue(messageId.toLong(), SIZE_MSG_ID_V2)
-                put(payload)
+                put(truncatedPayload)
             }
 
             val checksum = rawBuffer.array().generateCrc(crcExtra)
@@ -359,18 +364,27 @@ data class MavRawFrame(
 
             return MavRawFrame(
                 stx = MavFrameType.V2.magic,
-                len = payload.size,
+                len = truncatedPayload.size,
                 incompatFlags = INCOMPAT_FLAG_SIGNED,
                 compatFlags = 0,
                 seq = seq,
                 systemId = systemId,
                 componentId = componentId,
                 messageId = messageId,
-                payload = payload,
+                payload = truncatedPayload,
                 checksum = checksum,
                 signature = signature,
                 rawBytes = rawBuffer.array()
             )
+        }
+
+        private fun ByteArray.truncateZeros(): ByteArray {
+            for (index in lastIndex downTo 0) {
+                if (this[index] != 0.toByte()) {
+                    return this.copyOfRange(0, index + 1)
+                }
+            }
+            return ByteArray(0)
         }
     }
 }
