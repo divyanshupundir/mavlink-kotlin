@@ -25,7 +25,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         }
         .addAnnotation(generateGeneratedAnnotation())
         .addProperty(generateInstanceMetadata(packageName))
-        .addFunction(generateSerialize())
+        .addFunction(generateSerializeV1())
         .addType(generateCompanionObject(packageName))
         .addType(generateBuilderClass(enumResolver, packageName))
         .build()
@@ -128,8 +128,8 @@ private fun MessageModel.generateInstanceMetadata(packageName: String) = Propert
     .initializer("METADATA")
     .build()
 
-private fun MessageModel.generateSerialize() = FunSpec
-    .builder("serialize")
+private fun MessageModel.generateSerializeV1() = FunSpec
+    .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
     .addCode(
@@ -139,7 +139,7 @@ private fun MessageModel.generateSerialize() = FunSpec
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
             addStatement("return outputBuffer.array()")
         }
     )
