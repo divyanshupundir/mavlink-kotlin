@@ -26,6 +26,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addAnnotation(generateGeneratedAnnotation())
         .addProperty(generateInstanceMetadata(packageName))
         .addFunction(generateSerializeV1())
+        .addFunction(generateSerializeV2())
         .addType(generateCompanionObject(packageName))
         .addType(generateBuilderClass(enumResolver, packageName))
         .build()
@@ -145,6 +146,23 @@ private fun MessageModel.generateSerializeV1() = FunSpec
     )
     .build()
 
+private fun MessageModel.generateSerializeV2() = FunSpec
+    .builder("serializeV2")
+    .addModifiers(KModifier.OVERRIDE)
+    .returns(ByteArray::class)
+    .addCode(
+        buildCodeBlock {
+            addStatement(
+                "val outputBuffer = %T.allocate(SIZE).order(%T.LITTLE_ENDIAN)",
+                ByteBuffer::class,
+                ByteOrder::class
+            )
+            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            addStatement("return outputBuffer.array().%M()", truncateZerosMemberName)
+        }
+    )
+    .build()
+
 private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver, packageName: String) = TypeSpec.classBuilder("Builder")
     .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumResolver)) } }
     .addFunction(generateBuildMethod(packageName))
@@ -170,6 +188,8 @@ private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.
 
 private val MessageModel.size: Int
     get() = fields.sumOf { it.size }
+
+private val truncateZerosMemberName = MemberName("xyz.urbanmatrix.mavlink.serialization", "truncateZeros")
 
 private fun MessageModel.getClassName(packageName: String): ClassName =
     ClassName(packageName, formattedName)
