@@ -17,7 +17,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sortedByPosition().forEach { addProperty(it.generateConstructorProperty(enumResolver)) } }
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (workInProgress) addAnnotation(WorkInProgress::class)
