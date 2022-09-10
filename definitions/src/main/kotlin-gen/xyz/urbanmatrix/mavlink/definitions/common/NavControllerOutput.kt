@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The state of the navigation and position controller.
@@ -27,40 +29,48 @@ public data class NavControllerOutput(
   /**
    * Current desired roll
    */
+  @GeneratedMavField(type = "float")
   public val navRoll: Float = 0F,
   /**
    * Current desired pitch
    */
+  @GeneratedMavField(type = "float")
   public val navPitch: Float = 0F,
   /**
    * Current desired heading
    */
+  @GeneratedMavField(type = "int16_t")
   public val navBearing: Int = 0,
   /**
    * Bearing to current waypoint/target
    */
+  @GeneratedMavField(type = "int16_t")
   public val targetBearing: Int = 0,
   /**
    * Distance to active waypoint
    */
+  @GeneratedMavField(type = "uint16_t")
   public val wpDist: Int = 0,
   /**
    * Current altitude error
    */
+  @GeneratedMavField(type = "float")
   public val altError: Float = 0F,
   /**
    * Current airspeed error
    */
+  @GeneratedMavField(type = "float")
   public val aspdError: Float = 0F,
   /**
    * Current crosstrack error on x-y plane
    */
+  @GeneratedMavField(type = "float")
   public val xtrackError: Float = 0F,
 ) : MavMessage<NavControllerOutput> {
   public override val instanceMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(navRoll)
     outputBuffer.encodeFloat(navPitch)
     outputBuffer.encodeFloat(altError)
@@ -72,12 +82,27 @@ public data class NavControllerOutput(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(navRoll)
+    outputBuffer.encodeFloat(navPitch)
+    outputBuffer.encodeFloat(altError)
+    outputBuffer.encodeFloat(aspdError)
+    outputBuffer.encodeFloat(xtrackError)
+    outputBuffer.encodeInt16(navBearing)
+    outputBuffer.encodeInt16(targetBearing)
+    outputBuffer.encodeUint16(wpDist)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 62
 
     private const val CRC: Int = 183
 
-    private const val SIZE: Int = 26
+    private const val SIZE_V1: Int = 26
+
+    private const val SIZE_V2: Int = 26
 
     private val DESERIALIZER: MavDeserializer<NavControllerOutput> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

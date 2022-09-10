@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The RAW IMU readings for secondary 9DOF sensor setup. This message should contain the scaled
@@ -26,53 +28,82 @@ public data class ScaledImu2(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * X acceleration
    */
+  @GeneratedMavField(type = "int16_t")
   public val xacc: Int = 0,
   /**
    * Y acceleration
    */
+  @GeneratedMavField(type = "int16_t")
   public val yacc: Int = 0,
   /**
    * Z acceleration
    */
+  @GeneratedMavField(type = "int16_t")
   public val zacc: Int = 0,
   /**
    * Angular speed around X axis
    */
+  @GeneratedMavField(type = "int16_t")
   public val xgyro: Int = 0,
   /**
    * Angular speed around Y axis
    */
+  @GeneratedMavField(type = "int16_t")
   public val ygyro: Int = 0,
   /**
    * Angular speed around Z axis
    */
+  @GeneratedMavField(type = "int16_t")
   public val zgyro: Int = 0,
   /**
    * X Magnetic field
    */
+  @GeneratedMavField(type = "int16_t")
   public val xmag: Int = 0,
   /**
    * Y Magnetic field
    */
+  @GeneratedMavField(type = "int16_t")
   public val ymag: Int = 0,
   /**
    * Z Magnetic field
    */
+  @GeneratedMavField(type = "int16_t")
   public val zmag: Int = 0,
   /**
    * Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1
    * (0.01C).
    */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
   public val temperature: Int = 0,
 ) : MavMessage<ScaledImu2> {
   public override val instanceMetadata: MavMessage.Metadata<ScaledImu2> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeInt16(xacc)
+    outputBuffer.encodeInt16(yacc)
+    outputBuffer.encodeInt16(zacc)
+    outputBuffer.encodeInt16(xgyro)
+    outputBuffer.encodeInt16(ygyro)
+    outputBuffer.encodeInt16(zgyro)
+    outputBuffer.encodeInt16(xmag)
+    outputBuffer.encodeInt16(ymag)
+    outputBuffer.encodeInt16(zmag)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
@@ -84,7 +115,7 @@ public data class ScaledImu2(
     outputBuffer.encodeInt16(ymag)
     outputBuffer.encodeInt16(zmag)
     outputBuffer.encodeInt16(temperature)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -92,7 +123,9 @@ public data class ScaledImu2(
 
     private const val CRC: Int = 76
 
-    private const val SIZE: Int = 24
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 24
 
     private val DESERIALIZER: MavDeserializer<ScaledImu2> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

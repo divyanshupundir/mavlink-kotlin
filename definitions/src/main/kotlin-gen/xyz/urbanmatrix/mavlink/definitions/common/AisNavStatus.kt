@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -15,27 +16,43 @@ public enum class AisNavStatus(
   /**
    * Under way using engine.
    */
+  @GeneratedMavEnumEntry
   UNDER_WAY(0L),
+  @GeneratedMavEnumEntry
   AIS_NAV_ANCHORED(1L),
+  @GeneratedMavEnumEntry
   AIS_NAV_UN_COMMANDED(2L),
+  @GeneratedMavEnumEntry
   AIS_NAV_RESTRICTED_MANOEUVERABILITY(3L),
+  @GeneratedMavEnumEntry
   AIS_NAV_DRAUGHT_CONSTRAINED(4L),
+  @GeneratedMavEnumEntry
   AIS_NAV_MOORED(5L),
+  @GeneratedMavEnumEntry
   AIS_NAV_AGROUND(6L),
+  @GeneratedMavEnumEntry
   AIS_NAV_FISHING(7L),
+  @GeneratedMavEnumEntry
   AIS_NAV_SAILING(8L),
+  @GeneratedMavEnumEntry
   AIS_NAV_RESERVED_HSC(9L),
+  @GeneratedMavEnumEntry
   AIS_NAV_RESERVED_WIG(10L),
+  @GeneratedMavEnumEntry
   AIS_NAV_RESERVED_1(11L),
+  @GeneratedMavEnumEntry
   AIS_NAV_RESERVED_2(12L),
+  @GeneratedMavEnumEntry
   AIS_NAV_RESERVED_3(13L),
   /**
    * Search And Rescue Transponder.
    */
+  @GeneratedMavEnumEntry
   AIS_NAV_AIS_SART(14L),
   /**
    * Not available (default).
    */
+  @GeneratedMavEnumEntry
   AIS_NAV_UNKNOWN(15L),
   ;
 

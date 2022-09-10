@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F6: format
@@ -23,28 +25,33 @@ public data class SerialUdbExtraF6(
   /**
    * Serial UDB Extra PITCHGAIN Proportional Control
    */
+  @GeneratedMavField(type = "float")
   public val suePitchgain: Float = 0F,
   /**
    * Serial UDB Extra Pitch Rate Control
    */
+  @GeneratedMavField(type = "float")
   public val suePitchkd: Float = 0F,
   /**
    * Serial UDB Extra Rudder to Elevator Mix
    */
+  @GeneratedMavField(type = "float")
   public val sueRudderElevMix: Float = 0F,
   /**
    * Serial UDB Extra Roll to Elevator Mix
    */
+  @GeneratedMavField(type = "float")
   public val sueRollElevMix: Float = 0F,
   /**
    * Gain For Boosting Manual Elevator control When Plane Stabilized
    */
+  @GeneratedMavField(type = "float")
   public val sueElevatorBoost: Float = 0F,
 ) : MavMessage<SerialUdbExtraF6> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF6> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(suePitchgain)
     outputBuffer.encodeFloat(suePitchkd)
     outputBuffer.encodeFloat(sueRudderElevMix)
@@ -53,12 +60,24 @@ public data class SerialUdbExtraF6(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(suePitchgain)
+    outputBuffer.encodeFloat(suePitchkd)
+    outputBuffer.encodeFloat(sueRudderElevMix)
+    outputBuffer.encodeFloat(sueRollElevMix)
+    outputBuffer.encodeFloat(sueElevatorBoost)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 174
 
     private const val CRC: Int = 54
 
-    private const val SIZE: Int = 20
+    private const val SIZE_V1: Int = 20
+
+    private const val SIZE_V2: Int = 20
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF6> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

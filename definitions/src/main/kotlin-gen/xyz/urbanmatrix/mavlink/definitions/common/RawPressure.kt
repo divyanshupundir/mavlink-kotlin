@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The RAW pressure readings for the typical setup of one absolute pressure and one differential
@@ -27,28 +29,33 @@ public data class RawPressure(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Absolute pressure (raw)
    */
+  @GeneratedMavField(type = "int16_t")
   public val pressAbs: Int = 0,
   /**
    * Differential pressure 1 (raw, 0 if nonexistent)
    */
+  @GeneratedMavField(type = "int16_t")
   public val pressDiff1: Int = 0,
   /**
    * Differential pressure 2 (raw, 0 if nonexistent)
    */
+  @GeneratedMavField(type = "int16_t")
   public val pressDiff2: Int = 0,
   /**
    * Raw Temperature measurement (raw)
    */
+  @GeneratedMavField(type = "int16_t")
   public val temperature: Int = 0,
 ) : MavMessage<RawPressure> {
   public override val instanceMetadata: MavMessage.Metadata<RawPressure> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt16(pressAbs)
     outputBuffer.encodeInt16(pressDiff1)
@@ -57,12 +64,24 @@ public data class RawPressure(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeInt16(pressAbs)
+    outputBuffer.encodeInt16(pressDiff1)
+    outputBuffer.encodeInt16(pressDiff2)
+    outputBuffer.encodeInt16(temperature)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 28
 
     private const val CRC: Int = 67
 
-    private const val SIZE: Int = 16
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
 
     private val DESERIALIZER: MavDeserializer<RawPressure> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

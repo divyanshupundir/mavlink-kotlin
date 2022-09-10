@@ -2,13 +2,16 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class HeadingType(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   HEADING_TYPE_COURSE_OVER_GROUND(0L),
+  @GeneratedMavEnumEntry
   HEADING_TYPE_HEADING(1L),
   ;
 

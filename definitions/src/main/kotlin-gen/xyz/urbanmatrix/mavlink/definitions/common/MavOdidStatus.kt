@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,22 +12,27 @@ public enum class MavOdidStatus(
   /**
    * The status of the (UA) Unmanned Aircraft is undefined.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_STATUS_UNDECLARED(0L),
   /**
    * The UA is on the ground.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_STATUS_GROUND(1L),
   /**
    * The UA is in the air.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_STATUS_AIRBORNE(2L),
   /**
    * The UA is having an emergency.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_STATUS_EMERGENCY(3L),
   /**
    * The remote ID system is failing or unreliable in some way.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_STATUS_REMOTE_ID_SYSTEM_FAILURE(4L),
   ;
 

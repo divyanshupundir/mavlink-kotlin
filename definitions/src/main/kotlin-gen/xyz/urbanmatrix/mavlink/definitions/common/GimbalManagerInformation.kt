@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a high level gimbal manager. This message should be requested by a ground
@@ -34,44 +36,53 @@ public data class GimbalManagerInformation(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Bitmap of gimbal capability flags.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val capFlags: MavEnumValue<GimbalManagerCapFlags> = MavEnumValue.fromValue(0),
   /**
    * Gimbal device ID that this gimbal manager is responsible for.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: Int = 0,
   /**
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
+  @GeneratedMavField(type = "float")
   public val rollMin: Float = 0F,
   /**
    * Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
+  @GeneratedMavField(type = "float")
   public val rollMax: Float = 0F,
   /**
    * Minimum pitch angle (positive: up, negative: down)
    */
+  @GeneratedMavField(type = "float")
   public val pitchMin: Float = 0F,
   /**
    * Maximum pitch angle (positive: up, negative: down)
    */
+  @GeneratedMavField(type = "float")
   public val pitchMax: Float = 0F,
   /**
    * Minimum yaw angle (positive: to the right, negative: to the left)
    */
+  @GeneratedMavField(type = "float")
   public val yawMin: Float = 0F,
   /**
    * Maximum yaw angle (positive: to the right, negative: to the left)
    */
+  @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
 ) : MavMessage<GimbalManagerInformation> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(capFlags.value, 4)
     outputBuffer.encodeFloat(rollMin)
@@ -84,12 +95,28 @@ public data class GimbalManagerInformation(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeEnumValue(capFlags.value, 4)
+    outputBuffer.encodeFloat(rollMin)
+    outputBuffer.encodeFloat(rollMax)
+    outputBuffer.encodeFloat(pitchMin)
+    outputBuffer.encodeFloat(pitchMax)
+    outputBuffer.encodeFloat(yawMin)
+    outputBuffer.encodeFloat(yawMax)
+    outputBuffer.encodeUint8(gimbalDeviceId)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 280
 
     private const val CRC: Int = 70
 
-    private const val SIZE: Int = 33
+    private const val SIZE_V1: Int = 33
+
+    private const val SIZE_V2: Int = 33
 
     private val DESERIALIZER: MavDeserializer<GimbalManagerInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import java.math.BigInteger
@@ -12,15 +13,22 @@ fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = Parame
     .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
-fun FieldModel.generateConstructorProperty(enumResolver: EnumResolver) = PropertySpec
+fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
     .builder(formattedName, resolveKotlinType(enumResolver))
     .initializer(formattedName)
+    .addAnnotation(generateGeneratedAnnotation())
     .build()
 
 fun FieldModel.generateBuilderProperty(enumResolver: EnumResolver) = PropertySpec
     .builder(formattedName, resolveKotlinType(enumResolver))
     .mutable()
     .initializer(defaultKotlinValue)
+    .build()
+
+private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
+    .builder(GeneratedMavField::class)
+    .addMember("type = %S", type)
+    .apply { if (extension) addMember("extension = %L", true) }
     .build()
 
 private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {

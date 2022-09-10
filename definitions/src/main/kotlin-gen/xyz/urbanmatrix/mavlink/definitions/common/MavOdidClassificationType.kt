@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,10 +12,12 @@ public enum class MavOdidClassificationType(
   /**
    * The classification type for the UA is undeclared.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_CLASSIFICATION_TYPE_UNDECLARED(0L),
   /**
    * The classification type for the UA follows EU (European Union) specifications.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_CLASSIFICATION_TYPE_EU(1L),
   ;
 

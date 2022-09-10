@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The positioning status, as reported by GPS. This message is intended to display status
@@ -27,32 +29,38 @@ public data class GpsStatus(
   /**
    * Number of satellites visible
    */
+  @GeneratedMavField(type = "uint8_t")
   public val satellitesVisible: Int = 0,
   /**
    * Global satellite ID
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val satellitePrn: List<Int> = emptyList(),
   /**
    * 0: Satellite not used, 1: used for localization
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val satelliteUsed: List<Int> = emptyList(),
   /**
    * Elevation (0: right on top of receiver, 90: on the horizon) of satellite
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val satelliteElevation: List<Int> = emptyList(),
   /**
    * Direction of satellite, 0: 0 deg, 255: 360 deg.
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val satelliteAzimuth: List<Int> = emptyList(),
   /**
    * Signal to noise ratio of satellite
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val satelliteSnr: List<Int> = emptyList(),
 ) : MavMessage<GpsStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GpsStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeUint8Array(satellitePrn, 20)
     outputBuffer.encodeUint8Array(satelliteUsed, 20)
@@ -62,12 +70,25 @@ public data class GpsStatus(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(satellitesVisible)
+    outputBuffer.encodeUint8Array(satellitePrn, 20)
+    outputBuffer.encodeUint8Array(satelliteUsed, 20)
+    outputBuffer.encodeUint8Array(satelliteElevation, 20)
+    outputBuffer.encodeUint8Array(satelliteAzimuth, 20)
+    outputBuffer.encodeUint8Array(satelliteSnr, 20)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 25
 
     private const val CRC: Int = 23
 
-    private const val SIZE: Int = 101
+    private const val SIZE_V1: Int = 101
+
+    private const val SIZE_V2: Int = 101
 
     private val DESERIALIZER: MavDeserializer<GpsStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

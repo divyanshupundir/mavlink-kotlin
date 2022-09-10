@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,14 +15,17 @@ public enum class MotorTestOrder(
   /**
    * Default autopilot motor test method.
    */
+  @GeneratedMavEnumEntry
   MOTOR_TEST_ORDER_DEFAULT(0L),
   /**
    * Motor numbers are specified as their index in a predefined vehicle-specific sequence.
    */
+  @GeneratedMavEnumEntry
   MOTOR_TEST_ORDER_SEQUENCE(1L),
   /**
    * Motor numbers are specified as the output as labeled on the board.
    */
+  @GeneratedMavEnumEntry
   MOTOR_TEST_ORDER_BOARD(2L),
   ;
 

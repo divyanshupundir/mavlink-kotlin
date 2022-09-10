@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,19 +15,23 @@ public enum class StorageStatus(
   /**
    * Storage is missing (no microSD card loaded for example.)
    */
+  @GeneratedMavEnumEntry
   STORAGE_STATUS_EMPTY(0L),
   /**
    * Storage present but unformatted.
    */
+  @GeneratedMavEnumEntry
   STORAGE_STATUS_UNFORMATTED(1L),
   /**
    * Storage present and ready.
    */
+  @GeneratedMavEnumEntry
   STORAGE_STATUS_READY(2L),
   /**
    * Camera does not supply storage status information. Capacity information in STORAGE_INFORMATION
    * fields will be ignored.
    */
+  @GeneratedMavEnumEntry
   STORAGE_STATUS_NOT_SUPPORTED(3L),
   ;
 

@@ -5,11 +5,13 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Request that the vehicle report terrain height at the given location (expected response is a
@@ -23,19 +25,28 @@ public data class TerrainCheck(
   /**
    * Latitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
 ) : MavMessage<TerrainCheck> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainCheck> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -43,7 +54,9 @@ public data class TerrainCheck(
 
     private const val CRC: Int = 203
 
-    private const val SIZE: Int = 8
+    private const val SIZE_V1: Int = 8
+
+    private const val SIZE_V2: Int = 8
 
     private val DESERIALIZER: MavDeserializer<TerrainCheck> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

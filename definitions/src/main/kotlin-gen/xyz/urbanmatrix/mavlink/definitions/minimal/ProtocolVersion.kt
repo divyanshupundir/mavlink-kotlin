@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Version and capability of protocol version. This message can be requested with
@@ -31,28 +33,33 @@ public data class ProtocolVersion(
   /**
    * Currently active MAVLink version number * 100: v1.0 is 100, v2.0 is 200, etc.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val version: Int = 0,
   /**
    * Minimum MAVLink version supported
    */
+  @GeneratedMavField(type = "uint16_t")
   public val minVersion: Int = 0,
   /**
    * Maximum MAVLink version supported (set to the same value as version by default)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val maxVersion: Int = 0,
   /**
    * The first 8 bytes (not characters printed in hex!) of the git hash.
    */
+  @GeneratedMavField(type = "uint8_t[8]")
   public val specVersionHash: List<Int> = emptyList(),
   /**
    * The first 8 bytes (not characters printed in hex!) of the git hash.
    */
+  @GeneratedMavField(type = "uint8_t[8]")
   public val libraryVersionHash: List<Int> = emptyList(),
 ) : MavMessage<ProtocolVersion> {
   public override val instanceMetadata: MavMessage.Metadata<ProtocolVersion> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(version)
     outputBuffer.encodeUint16(minVersion)
     outputBuffer.encodeUint16(maxVersion)
@@ -61,12 +68,24 @@ public data class ProtocolVersion(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(version)
+    outputBuffer.encodeUint16(minVersion)
+    outputBuffer.encodeUint16(maxVersion)
+    outputBuffer.encodeUint8Array(specVersionHash, 8)
+    outputBuffer.encodeUint8Array(libraryVersionHash, 8)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 300
 
     private const val CRC: Int = 217
 
-    private const val SIZE: Int = 22
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 22
 
     private val DESERIALIZER: MavDeserializer<ProtocolVersion> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

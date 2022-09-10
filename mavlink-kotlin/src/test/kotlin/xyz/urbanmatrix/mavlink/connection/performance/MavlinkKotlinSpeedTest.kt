@@ -43,7 +43,7 @@ class MavlinkKotlinSpeedTest {
     private fun serializationStep(cmd: CommandLong): Long {
         val start = System.nanoTime()
         for (i in 1..SERIALIZATION_ITERS) {
-            cmd.serialize()
+            cmd.serializeV2()
         }
         val end = System.nanoTime()
 

@@ -7,6 +7,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Data for filling the OpenDroneID Self ID message. The Self ID Message is an opportunity for the
@@ -37,30 +39,35 @@ public data class OpenDroneIdSelfId(
   /**
    * System ID (0 for broadcast).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID (0 for broadcast).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Only used for drone ID data received from other UAs. See detailed description at
    * https://mavlink.io/en/services/opendroneid.html. 
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<Int> = emptyList(),
   /**
    * Indicates the type of the description field.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0),
   /**
    * Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in
    * the unused portion of the field.
    */
+  @GeneratedMavField(type = "char[23]")
   public val description: String = "",
 ) : MavMessage<OpenDroneIdSelfId> {
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdSelfId> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(idOrMac, 20)
@@ -69,12 +76,24 @@ public data class OpenDroneIdSelfId(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeEnumValue(descriptionType.value, 1)
+    outputBuffer.encodeString(description, 23)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 12903
 
     private const val CRC: Int = 249
 
-    private const val SIZE: Int = 46
+    private const val SIZE_V1: Int = 46
+
+    private const val SIZE_V2: Int = 46
 
     private val DESERIALIZER: MavDeserializer<OpenDroneIdSelfId> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

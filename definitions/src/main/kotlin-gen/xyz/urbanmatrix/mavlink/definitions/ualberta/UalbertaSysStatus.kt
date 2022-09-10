@@ -5,11 +5,13 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * System status specific to ualberta uav
@@ -22,24 +24,35 @@ public data class UalbertaSysStatus(
   /**
    * System mode, see UALBERTA_AUTOPILOT_MODE ENUM
    */
+  @GeneratedMavField(type = "uint8_t")
   public val mode: Int = 0,
   /**
    * Navigation mode, see UALBERTA_NAV_MODE ENUM
    */
+  @GeneratedMavField(type = "uint8_t")
   public val navMode: Int = 0,
   /**
    * Pilot mode, see UALBERTA_PILOT_MODE
    */
+  @GeneratedMavField(type = "uint8_t")
   public val pilot: Int = 0,
 ) : MavMessage<UalbertaSysStatus> {
   public override val instanceMetadata: MavMessage.Metadata<UalbertaSysStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(mode)
     outputBuffer.encodeUint8(navMode)
     outputBuffer.encodeUint8(pilot)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(mode)
+    outputBuffer.encodeUint8(navMode)
+    outputBuffer.encodeUint8(pilot)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -47,7 +60,9 @@ public data class UalbertaSysStatus(
 
     private const val CRC: Int = 15
 
-    private const val SIZE: Int = 3
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 3
 
     private val DESERIALIZER: MavDeserializer<UalbertaSysStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

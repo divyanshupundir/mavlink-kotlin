@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Maximum Power Point Tracker (MPPT) sensor data for solar module power performance tracking
@@ -30,60 +32,73 @@ public data class SensMppt(
   /**
    *  MPPT last timestamp 
    */
+  @GeneratedMavField(type = "uint64_t")
   public val mpptTimestamp: BigInteger = BigInteger.ZERO,
   /**
    *  MPPT1 voltage 
    */
+  @GeneratedMavField(type = "float")
   public val mppt1Volt: Float = 0F,
   /**
    *  MPPT1 current 
    */
+  @GeneratedMavField(type = "float")
   public val mppt1Amp: Float = 0F,
   /**
    *  MPPT1 pwm 
    */
+  @GeneratedMavField(type = "uint16_t")
   public val mppt1Pwm: Int = 0,
   /**
    *  MPPT1 status 
    */
+  @GeneratedMavField(type = "uint8_t")
   public val mppt1Status: Int = 0,
   /**
    *  MPPT2 voltage 
    */
+  @GeneratedMavField(type = "float")
   public val mppt2Volt: Float = 0F,
   /**
    *  MPPT2 current 
    */
+  @GeneratedMavField(type = "float")
   public val mppt2Amp: Float = 0F,
   /**
    *  MPPT2 pwm 
    */
+  @GeneratedMavField(type = "uint16_t")
   public val mppt2Pwm: Int = 0,
   /**
    *  MPPT2 status 
    */
+  @GeneratedMavField(type = "uint8_t")
   public val mppt2Status: Int = 0,
   /**
    * MPPT3 voltage 
    */
+  @GeneratedMavField(type = "float")
   public val mppt3Volt: Float = 0F,
   /**
    *  MPPT3 current 
    */
+  @GeneratedMavField(type = "float")
   public val mppt3Amp: Float = 0F,
   /**
    *  MPPT3 pwm 
    */
+  @GeneratedMavField(type = "uint16_t")
   public val mppt3Pwm: Int = 0,
   /**
    *  MPPT3 status 
    */
+  @GeneratedMavField(type = "uint8_t")
   public val mppt3Status: Int = 0,
 ) : MavMessage<SensMppt> {
   public override val instanceMetadata: MavMessage.Metadata<SensMppt> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(mpptTimestamp)
     outputBuffer.encodeFloat(mppt1Volt)
     outputBuffer.encodeFloat(mppt1Amp)
@@ -100,12 +115,32 @@ public data class SensMppt(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(mpptTimestamp)
+    outputBuffer.encodeFloat(mppt1Volt)
+    outputBuffer.encodeFloat(mppt1Amp)
+    outputBuffer.encodeFloat(mppt2Volt)
+    outputBuffer.encodeFloat(mppt2Amp)
+    outputBuffer.encodeFloat(mppt3Volt)
+    outputBuffer.encodeFloat(mppt3Amp)
+    outputBuffer.encodeUint16(mppt1Pwm)
+    outputBuffer.encodeUint16(mppt2Pwm)
+    outputBuffer.encodeUint16(mppt3Pwm)
+    outputBuffer.encodeUint8(mppt1Status)
+    outputBuffer.encodeUint8(mppt2Status)
+    outputBuffer.encodeUint8(mppt3Status)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 8003
 
     private const val CRC: Int = 231
 
-    private const val SIZE: Int = 41
+    private const val SIZE_V1: Int = 41
+
+    private const val SIZE_V2: Int = 41
 
     private val DESERIALIZER: MavDeserializer<SensMppt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

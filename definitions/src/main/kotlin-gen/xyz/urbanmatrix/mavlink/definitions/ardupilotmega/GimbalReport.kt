@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * 3 axis gimbal measurements.
@@ -25,56 +27,68 @@ public data class GimbalReport(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Time since last update.
    */
+  @GeneratedMavField(type = "float")
   public val deltaTime: Float = 0F,
   /**
    * Delta angle X.
    */
+  @GeneratedMavField(type = "float")
   public val deltaAngleX: Float = 0F,
   /**
    * Delta angle Y.
    */
+  @GeneratedMavField(type = "float")
   public val deltaAngleY: Float = 0F,
   /**
    * Delta angle X.
    */
+  @GeneratedMavField(type = "float")
   public val deltaAngleZ: Float = 0F,
   /**
    * Delta velocity X.
    */
+  @GeneratedMavField(type = "float")
   public val deltaVelocityX: Float = 0F,
   /**
    * Delta velocity Y.
    */
+  @GeneratedMavField(type = "float")
   public val deltaVelocityY: Float = 0F,
   /**
    * Delta velocity Z.
    */
+  @GeneratedMavField(type = "float")
   public val deltaVelocityZ: Float = 0F,
   /**
    * Joint ROLL.
    */
+  @GeneratedMavField(type = "float")
   public val jointRoll: Float = 0F,
   /**
    * Joint EL.
    */
+  @GeneratedMavField(type = "float")
   public val jointEl: Float = 0F,
   /**
    * Joint AZ.
    */
+  @GeneratedMavField(type = "float")
   public val jointAz: Float = 0F,
 ) : MavMessage<GimbalReport> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalReport> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(deltaTime)
     outputBuffer.encodeFloat(deltaAngleX)
     outputBuffer.encodeFloat(deltaAngleY)
@@ -90,12 +104,31 @@ public data class GimbalReport(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(deltaTime)
+    outputBuffer.encodeFloat(deltaAngleX)
+    outputBuffer.encodeFloat(deltaAngleY)
+    outputBuffer.encodeFloat(deltaAngleZ)
+    outputBuffer.encodeFloat(deltaVelocityX)
+    outputBuffer.encodeFloat(deltaVelocityY)
+    outputBuffer.encodeFloat(deltaVelocityZ)
+    outputBuffer.encodeFloat(jointRoll)
+    outputBuffer.encodeFloat(jointEl)
+    outputBuffer.encodeFloat(jointAz)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 200
 
     private const val CRC: Int = 134
 
-    private const val SIZE: Int = 42
+    private const val SIZE_V1: Int = 42
+
+    private const val SIZE_V2: Int = 42
 
     private val DESERIALIZER: MavDeserializer<GimbalReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

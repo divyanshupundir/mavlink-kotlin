@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA - F2: Part B
@@ -27,208 +29,258 @@ public data class SerialUdbExtraF2B(
   /**
    * Serial UDB Extra Time
    */
+  @GeneratedMavField(type = "uint32_t")
   public val sueTime: Long = 0L,
   /**
    * Serial UDB Extra PWM Input Channel 1
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput1: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 2
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput2: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 3
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput3: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 4
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput4: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 5
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput5: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 6
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput6: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 7
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput7: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 8
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput8: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 9
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput9: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 10
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput10: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 11
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput11: Int = 0,
   /**
    * Serial UDB Extra PWM Input Channel 12
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmInput12: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 1
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput1: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 2
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput2: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 3
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput3: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 4
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput4: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 5
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput5: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 6
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput6: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 7
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput7: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 8
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput8: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 9
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput9: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 10
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput10: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 11
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput11: Int = 0,
   /**
    * Serial UDB Extra PWM Output Channel 12
    */
+  @GeneratedMavField(type = "int16_t")
   public val suePwmOutput12: Int = 0,
   /**
    * Serial UDB Extra IMU Location X
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueImuLocationX: Int = 0,
   /**
    * Serial UDB Extra IMU Location Y
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueImuLocationY: Int = 0,
   /**
    * Serial UDB Extra IMU Location Z
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueImuLocationZ: Int = 0,
   /**
    * Serial UDB Location Error Earth X
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueLocationErrorEarthX: Int = 0,
   /**
    * Serial UDB Location Error Earth Y
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueLocationErrorEarthY: Int = 0,
   /**
    * Serial UDB Location Error Earth Z
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueLocationErrorEarthZ: Int = 0,
   /**
    * Serial UDB Extra Status Flags
    */
+  @GeneratedMavField(type = "uint32_t")
   public val sueFlags: Long = 0L,
   /**
    * Serial UDB Extra Oscillator Failure Count
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueOscFails: Int = 0,
   /**
    * Serial UDB Extra IMU Velocity X
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueImuVelocityX: Int = 0,
   /**
    * Serial UDB Extra IMU Velocity Y
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueImuVelocityY: Int = 0,
   /**
    * Serial UDB Extra IMU Velocity Z
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueImuVelocityZ: Int = 0,
   /**
    * Serial UDB Extra Current Waypoint Goal X
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueWaypointGoalX: Int = 0,
   /**
    * Serial UDB Extra Current Waypoint Goal Y
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueWaypointGoalY: Int = 0,
   /**
    * Serial UDB Extra Current Waypoint Goal Z
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueWaypointGoalZ: Int = 0,
   /**
    * Aeroforce in UDB X Axis
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAeroX: Int = 0,
   /**
    * Aeroforce in UDB Y Axis
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAeroY: Int = 0,
   /**
    * Aeroforce in UDB Z axis
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAeroZ: Int = 0,
   /**
    * SUE barometer temperature
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueBaromTemp: Int = 0,
   /**
    * SUE barometer pressure
    */
+  @GeneratedMavField(type = "int32_t")
   public val sueBaromPress: Int = 0,
   /**
    * SUE barometer altitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val sueBaromAlt: Int = 0,
   /**
    * SUE battery voltage
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueBatVolt: Int = 0,
   /**
    * SUE battery current
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueBatAmp: Int = 0,
   /**
    * SUE battery milli amp hours used
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueBatAmpHours: Int = 0,
   /**
    * Sue autopilot desired height
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueDesiredHeight: Int = 0,
   /**
    * Serial UDB Extra Stack Memory Free
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueMemoryStackFree: Int = 0,
 ) : MavMessage<SerialUdbExtraF2B> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF2B> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(sueTime)
     outputBuffer.encodeUint32(sueFlags)
     outputBuffer.encodeInt32(sueBaromPress)
@@ -282,12 +334,69 @@ public data class SerialUdbExtraF2B(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(sueTime)
+    outputBuffer.encodeUint32(sueFlags)
+    outputBuffer.encodeInt32(sueBaromPress)
+    outputBuffer.encodeInt32(sueBaromAlt)
+    outputBuffer.encodeInt16(suePwmInput1)
+    outputBuffer.encodeInt16(suePwmInput2)
+    outputBuffer.encodeInt16(suePwmInput3)
+    outputBuffer.encodeInt16(suePwmInput4)
+    outputBuffer.encodeInt16(suePwmInput5)
+    outputBuffer.encodeInt16(suePwmInput6)
+    outputBuffer.encodeInt16(suePwmInput7)
+    outputBuffer.encodeInt16(suePwmInput8)
+    outputBuffer.encodeInt16(suePwmInput9)
+    outputBuffer.encodeInt16(suePwmInput10)
+    outputBuffer.encodeInt16(suePwmInput11)
+    outputBuffer.encodeInt16(suePwmInput12)
+    outputBuffer.encodeInt16(suePwmOutput1)
+    outputBuffer.encodeInt16(suePwmOutput2)
+    outputBuffer.encodeInt16(suePwmOutput3)
+    outputBuffer.encodeInt16(suePwmOutput4)
+    outputBuffer.encodeInt16(suePwmOutput5)
+    outputBuffer.encodeInt16(suePwmOutput6)
+    outputBuffer.encodeInt16(suePwmOutput7)
+    outputBuffer.encodeInt16(suePwmOutput8)
+    outputBuffer.encodeInt16(suePwmOutput9)
+    outputBuffer.encodeInt16(suePwmOutput10)
+    outputBuffer.encodeInt16(suePwmOutput11)
+    outputBuffer.encodeInt16(suePwmOutput12)
+    outputBuffer.encodeInt16(sueImuLocationX)
+    outputBuffer.encodeInt16(sueImuLocationY)
+    outputBuffer.encodeInt16(sueImuLocationZ)
+    outputBuffer.encodeInt16(sueLocationErrorEarthX)
+    outputBuffer.encodeInt16(sueLocationErrorEarthY)
+    outputBuffer.encodeInt16(sueLocationErrorEarthZ)
+    outputBuffer.encodeInt16(sueOscFails)
+    outputBuffer.encodeInt16(sueImuVelocityX)
+    outputBuffer.encodeInt16(sueImuVelocityY)
+    outputBuffer.encodeInt16(sueImuVelocityZ)
+    outputBuffer.encodeInt16(sueWaypointGoalX)
+    outputBuffer.encodeInt16(sueWaypointGoalY)
+    outputBuffer.encodeInt16(sueWaypointGoalZ)
+    outputBuffer.encodeInt16(sueAeroX)
+    outputBuffer.encodeInt16(sueAeroY)
+    outputBuffer.encodeInt16(sueAeroZ)
+    outputBuffer.encodeInt16(sueBaromTemp)
+    outputBuffer.encodeInt16(sueBatVolt)
+    outputBuffer.encodeInt16(sueBatAmp)
+    outputBuffer.encodeInt16(sueBatAmpHours)
+    outputBuffer.encodeInt16(sueDesiredHeight)
+    outputBuffer.encodeInt16(sueMemoryStackFree)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 171
 
     private const val CRC: Int = 245
 
-    private const val SIZE: Int = 108
+    private const val SIZE_V1: Int = 108
+
+    private const val SIZE_V2: Int = 108
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF2B> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

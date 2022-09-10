@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -16,40 +17,49 @@ public enum class MavBatteryFault(
   /**
    * Battery has deep discharged.
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_DEEP_DISCHARGE(1L),
   /**
    * Voltage spikes.
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_SPIKES(2L),
   /**
    * One or more cells have failed. Battery should also report MAV_BATTERY_CHARGE_STATE_FAILE (and
    * should not be used).
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_CELL_FAIL(4L),
   /**
    * Over-current fault.
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_OVER_CURRENT(8L),
   /**
    * Over-temperature fault.
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_OVER_TEMPERATURE(16L),
   /**
    * Under-temperature fault.
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_UNDER_TEMPERATURE(32L),
   /**
    * Vehicle voltage is not compatible with this battery (batteries on same power rail should have
    * similar voltage).
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_INCOMPATIBLE_VOLTAGE(64L),
   /**
    * Battery firmware is not compatible with current autopilot firmware.
    */
+  @GeneratedMavEnumEntry
   MAV_BATTERY_FAULT_INCOMPATIBLE_FIRMWARE(128L),
   /**
    * Battery is not compatible due to cell configuration (e.g. 5s1p when vehicle requires 6s).
    */
+  @GeneratedMavEnumEntry
   BATTERY_FAULT_INCOMPATIBLE_CELLS_CONFIGURATION(256L),
   ;
 

@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The offset in X, Y, Z and yaw between the LOCAL_POSITION_NED messages of MAV X and the global
@@ -28,37 +30,44 @@ public data class LocalPositionNedSystemGlobalOffset(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * X Position
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * Roll
    */
+  @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch
    */
+  @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
 ) : MavMessage<LocalPositionNedSystemGlobalOffset> {
   public override val instanceMetadata: MavMessage.Metadata<LocalPositionNedSystemGlobalOffset> =
       METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -69,12 +78,26 @@ public data class LocalPositionNedSystemGlobalOffset(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloat(roll)
+    outputBuffer.encodeFloat(pitch)
+    outputBuffer.encodeFloat(yaw)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 89
 
     private const val CRC: Int = 231
 
-    private const val SIZE: Int = 28
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
 
     private val DESERIALIZER: MavDeserializer<LocalPositionNedSystemGlobalOffset> =
         MavDeserializer { bytes ->

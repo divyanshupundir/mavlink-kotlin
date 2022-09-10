@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -15,26 +16,32 @@ public enum class AttitudeTargetTypemask(
   /**
    * Ignore body roll rate
    */
+  @GeneratedMavEnumEntry
   ATTITUDE_TARGET_TYPEMASK_BODY_ROLL_RATE_IGNORE(1L),
   /**
    * Ignore body pitch rate
    */
+  @GeneratedMavEnumEntry
   ATTITUDE_TARGET_TYPEMASK_BODY_PITCH_RATE_IGNORE(2L),
   /**
    * Ignore body yaw rate
    */
+  @GeneratedMavEnumEntry
   ATTITUDE_TARGET_TYPEMASK_BODY_YAW_RATE_IGNORE(4L),
   /**
    * Use 3D body thrust setpoint instead of throttle
    */
+  @GeneratedMavEnumEntry
   ATTITUDE_TARGET_TYPEMASK_THRUST_BODY_SET(32L),
   /**
    * Ignore throttle
    */
+  @GeneratedMavEnumEntry
   ATTITUDE_TARGET_TYPEMASK_THROTTLE_IGNORE(64L),
   /**
    * Ignore attitude
    */
+  @GeneratedMavEnumEntry
   ATTITUDE_TARGET_TYPEMASK_ATTITUDE_IGNORE(128L),
   ;
 

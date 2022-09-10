@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  *  Drone position.
@@ -28,33 +30,39 @@ public data class AvssDronePosition(
   /**
    * Timestamp (time since FC boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Latitude, expressed
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude, expressed
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
    */
+  @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground, This altitude is measured by a ultrasound, Laser rangefinder or
    * millimeter-wave radar
    */
+  @GeneratedMavField(type = "float")
   public val groundAlt: Float = 0F,
   /**
    * This altitude is measured by a barometer
    */
+  @GeneratedMavField(type = "float")
   public val barometerAlt: Float = 0F,
 ) : MavMessage<AvssDronePosition> {
   public override val instanceMetadata: MavMessage.Metadata<AvssDronePosition> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -64,12 +72,25 @@ public data class AvssDronePosition(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeInt32(alt)
+    outputBuffer.encodeFloat(groundAlt)
+    outputBuffer.encodeFloat(barometerAlt)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 60051
 
     private const val CRC: Int = 245
 
-    private const val SIZE: Int = 24
+    private const val SIZE_V1: Int = 24
+
+    private const val SIZE_V2: Int = 24
 
     private val DESERIALIZER: MavDeserializer<AvssDronePosition> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

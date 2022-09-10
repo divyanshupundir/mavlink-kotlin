@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The general system state. If the system is following the MAVLink standard, the system state is
@@ -39,85 +41,128 @@ public data class SysStatus(
    * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.
    * Value of 1: present.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val onboardControlSensorsPresent: MavEnumValue<MavSysStatusSensor> =
       MavEnumValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled.
    * Value of 1: enabled.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val onboardControlSensorsEnabled: MavEnumValue<MavSysStatusSensor> =
       MavEnumValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value
    * of 0: error. Value of 1: healthy.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val onboardControlSensorsHealth: MavEnumValue<MavSysStatusSensor> =
       MavEnumValue.fromValue(0),
   /**
    * Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be below 1000
    */
+  @GeneratedMavField(type = "uint16_t")
   public val load: Int = 0,
   /**
    * Battery voltage, UINT16_MAX: Voltage not sent by autopilot
    */
+  @GeneratedMavField(type = "uint16_t")
   public val voltageBattery: Int = 0,
   /**
    * Battery current, -1: Current not sent by autopilot
    */
+  @GeneratedMavField(type = "int16_t")
   public val currentBattery: Int = 0,
   /**
    * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
    */
+  @GeneratedMavField(type = "int8_t")
   public val batteryRemaining: Int = 0,
   /**
    * Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
    * corrupted on reception on the MAV)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val dropRateComm: Int = 0,
   /**
    * Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
    * corrupted on reception on the MAV)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val errorsComm: Int = 0,
   /**
    * Autopilot-specific errors
    */
+  @GeneratedMavField(type = "uint16_t")
   public val errorsCount1: Int = 0,
   /**
    * Autopilot-specific errors
    */
+  @GeneratedMavField(type = "uint16_t")
   public val errorsCount2: Int = 0,
   /**
    * Autopilot-specific errors
    */
+  @GeneratedMavField(type = "uint16_t")
   public val errorsCount3: Int = 0,
   /**
    * Autopilot-specific errors
    */
+  @GeneratedMavField(type = "uint16_t")
   public val errorsCount4: Int = 0,
   /**
    * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.
    * Value of 1: present.
    */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
   public val onboardControlSensorsPresentExtended: MavEnumValue<MavSysStatusSensorExtended> =
       MavEnumValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled.
    * Value of 1: enabled.
    */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
   public val onboardControlSensorsEnabledExtended: MavEnumValue<MavSysStatusSensorExtended> =
       MavEnumValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value
    * of 0: error. Value of 1: healthy.
    */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
   public val onboardControlSensorsHealthExtended: MavEnumValue<MavSysStatusSensorExtended> =
       MavEnumValue.fromValue(0),
 ) : MavMessage<SysStatus> {
   public override val instanceMetadata: MavMessage.Metadata<SysStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(onboardControlSensorsPresent.value, 4)
+    outputBuffer.encodeEnumValue(onboardControlSensorsEnabled.value, 4)
+    outputBuffer.encodeEnumValue(onboardControlSensorsHealth.value, 4)
+    outputBuffer.encodeUint16(load)
+    outputBuffer.encodeUint16(voltageBattery)
+    outputBuffer.encodeInt16(currentBattery)
+    outputBuffer.encodeUint16(dropRateComm)
+    outputBuffer.encodeUint16(errorsComm)
+    outputBuffer.encodeUint16(errorsCount1)
+    outputBuffer.encodeUint16(errorsCount2)
+    outputBuffer.encodeUint16(errorsCount3)
+    outputBuffer.encodeUint16(errorsCount4)
+    outputBuffer.encodeInt8(batteryRemaining)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(onboardControlSensorsPresent.value, 4)
     outputBuffer.encodeEnumValue(onboardControlSensorsEnabled.value, 4)
     outputBuffer.encodeEnumValue(onboardControlSensorsHealth.value, 4)
@@ -134,7 +179,7 @@ public data class SysStatus(
     outputBuffer.encodeEnumValue(onboardControlSensorsPresentExtended.value, 4)
     outputBuffer.encodeEnumValue(onboardControlSensorsEnabledExtended.value, 4)
     outputBuffer.encodeEnumValue(onboardControlSensorsHealthExtended.value, 4)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -142,7 +187,9 @@ public data class SysStatus(
 
     private const val CRC: Int = 124
 
-    private const val SIZE: Int = 43
+    private const val SIZE_V1: Int = 31
+
+    private const val SIZE_V2: Int = 43
 
     private val DESERIALIZER: MavDeserializer<SysStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

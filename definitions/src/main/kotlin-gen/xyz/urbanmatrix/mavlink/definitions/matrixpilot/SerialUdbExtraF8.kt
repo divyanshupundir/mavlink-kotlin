@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F8: format
@@ -23,36 +25,43 @@ public data class SerialUdbExtraF8(
   /**
    * Serial UDB Extra HEIGHT_TARGET_MAX
    */
+  @GeneratedMavField(type = "float")
   public val sueHeightTargetMax: Float = 0F,
   /**
    * Serial UDB Extra HEIGHT_TARGET_MIN
    */
+  @GeneratedMavField(type = "float")
   public val sueHeightTargetMin: Float = 0F,
   /**
    * Serial UDB Extra ALT_HOLD_THROTTLE_MIN
    */
+  @GeneratedMavField(type = "float")
   public val sueAltHoldThrottleMin: Float = 0F,
   /**
    * Serial UDB Extra ALT_HOLD_THROTTLE_MAX
    */
+  @GeneratedMavField(type = "float")
   public val sueAltHoldThrottleMax: Float = 0F,
   /**
    * Serial UDB Extra ALT_HOLD_PITCH_MIN
    */
+  @GeneratedMavField(type = "float")
   public val sueAltHoldPitchMin: Float = 0F,
   /**
    * Serial UDB Extra ALT_HOLD_PITCH_MAX
    */
+  @GeneratedMavField(type = "float")
   public val sueAltHoldPitchMax: Float = 0F,
   /**
    * Serial UDB Extra ALT_HOLD_PITCH_HIGH
    */
+  @GeneratedMavField(type = "float")
   public val sueAltHoldPitchHigh: Float = 0F,
 ) : MavMessage<SerialUdbExtraF8> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF8> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(sueHeightTargetMax)
     outputBuffer.encodeFloat(sueHeightTargetMin)
     outputBuffer.encodeFloat(sueAltHoldThrottleMin)
@@ -63,12 +72,26 @@ public data class SerialUdbExtraF8(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(sueHeightTargetMax)
+    outputBuffer.encodeFloat(sueHeightTargetMin)
+    outputBuffer.encodeFloat(sueAltHoldThrottleMin)
+    outputBuffer.encodeFloat(sueAltHoldThrottleMax)
+    outputBuffer.encodeFloat(sueAltHoldPitchMin)
+    outputBuffer.encodeFloat(sueAltHoldPitchMax)
+    outputBuffer.encodeFloat(sueAltHoldPitchHigh)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 176
 
     private const val CRC: Int = 142
 
-    private const val SIZE: Int = 28
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF8> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

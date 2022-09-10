@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,14 +15,17 @@ public enum class ParachuteAction(
   /**
    * Disable auto-release of parachute (i.e. release triggered by crash detectors).
    */
+  @GeneratedMavEnumEntry
   PARACHUTE_DISABLE(0L),
   /**
    * Enable auto-release of parachute.
    */
+  @GeneratedMavEnumEntry
   PARACHUTE_ENABLE(1L),
   /**
    * Release parachute and kill motors.
    */
+  @GeneratedMavEnumEntry
   PARACHUTE_RELEASE(2L),
   ;
 

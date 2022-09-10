@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,14 +15,17 @@ public enum class CameraTrackingMode(
   /**
    * Not tracking
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_MODE_NONE(0L),
   /**
    * Target is a point
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_MODE_POINT(1L),
   /**
    * Target is a rectangle
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_MODE_RECTANGLE(2L),
   ;
 

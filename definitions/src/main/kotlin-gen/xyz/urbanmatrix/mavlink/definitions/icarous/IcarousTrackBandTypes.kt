@@ -2,14 +2,18 @@ package xyz.urbanmatrix.mavlink.definitions.icarous
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class IcarousTrackBandTypes(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   ICAROUS_TRACK_BAND_TYPE_NONE(0L),
+  @GeneratedMavEnumEntry
   ICAROUS_TRACK_BAND_TYPE_NEAR(1L),
+  @GeneratedMavEnumEntry
   ICAROUS_TRACK_BAND_TYPE_RECOVERY(2L),
   ;
 

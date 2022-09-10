@@ -5,12 +5,14 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Provides state for additional features
@@ -24,19 +26,28 @@ public data class ExtendedSysState(
    * The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not in VTOL
    * configuration.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val vtolState: MavEnumValue<MavVtolState> = MavEnumValue.fromValue(0),
   /**
    * The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0),
 ) : MavMessage<ExtendedSysState> {
   public override val instanceMetadata: MavMessage.Metadata<ExtendedSysState> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(vtolState.value, 1)
     outputBuffer.encodeEnumValue(landedState.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(vtolState.value, 1)
+    outputBuffer.encodeEnumValue(landedState.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -44,7 +55,9 @@ public data class ExtendedSysState(
 
     private const val CRC: Int = 130
 
-    private const val SIZE: Int = 2
+    private const val SIZE_V1: Int = 2
+
+    private const val SIZE_V2: Int = 2
 
     private val DESERIALIZER: MavDeserializer<ExtendedSysState> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

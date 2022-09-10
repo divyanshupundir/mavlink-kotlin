@@ -7,6 +7,7 @@ import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is
@@ -31,24 +33,35 @@ public data class SetMode(
   /**
    * The system setting the mode
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * The new base mode.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val baseMode: MavEnumValue<MavMode> = MavEnumValue.fromValue(0),
   /**
    * The new autopilot-specific mode. This field can be ignored by an autopilot.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val customMode: Long = 0L,
 ) : MavMessage<SetMode> {
   public override val instanceMetadata: MavMessage.Metadata<SetMode> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeEnumValue(baseMode.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(customMode)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeEnumValue(baseMode.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -56,7 +69,9 @@ public data class SetMode(
 
     private const val CRC: Int = 89
 
-    private const val SIZE: Int = 6
+    private const val SIZE_V1: Int = 6
+
+    private const val SIZE_V2: Int = 6
 
     private val DESERIALIZER: MavDeserializer<SetMode> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
@@ -29,55 +31,65 @@ public data class CameraTrackingImageStatus(
   /**
    * Current tracking status
    */
+  @GeneratedMavField(type = "uint8_t")
   public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
   /**
    * Current tracking mode
    */
+  @GeneratedMavField(type = "uint8_t")
   public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0),
   /**
    * Defines location of target data
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0),
   /**
    * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is
    * right), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val pointX: Float = 0F,
   /**
    * Current tracked point y value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is top, 1 is
    * bottom), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val pointY: Float = 0F,
   /**
    * Current tracked radius if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is image left, 1 is
    * image right), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val radius: Float = 0F,
   /**
    * Current tracked rectangle top x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is
    * left, 1 is right), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val recTopX: Float = 0F,
   /**
    * Current tracked rectangle top y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is
    * top, 1 is bottom), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val recTopY: Float = 0F,
   /**
    * Current tracked rectangle bottom x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0
    * is left, 1 is right), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val recBottomX: Float = 0F,
   /**
    * Current tracked rectangle bottom y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0
    * is top, 1 is bottom), NAN if unknown
    */
+  @GeneratedMavField(type = "float")
   public val recBottomY: Float = 0F,
 ) : MavMessage<CameraTrackingImageStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(pointX)
     outputBuffer.encodeFloat(pointY)
     outputBuffer.encodeFloat(radius)
@@ -91,12 +103,29 @@ public data class CameraTrackingImageStatus(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(pointX)
+    outputBuffer.encodeFloat(pointY)
+    outputBuffer.encodeFloat(radius)
+    outputBuffer.encodeFloat(recTopX)
+    outputBuffer.encodeFloat(recTopY)
+    outputBuffer.encodeFloat(recBottomX)
+    outputBuffer.encodeFloat(recBottomY)
+    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
+    outputBuffer.encodeEnumValue(trackingMode.value, 1)
+    outputBuffer.encodeEnumValue(targetData.value, 1)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 275
 
     private const val CRC: Int = 126
 
-    private const val SIZE: Int = 31
+    private const val SIZE_V1: Int = 31
+
+    private const val SIZE_V2: Int = 31
 
     private val DESERIALIZER: MavDeserializer<CameraTrackingImageStatus> = MavDeserializer {
         bytes ->

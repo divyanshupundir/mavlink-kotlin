@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.asluav
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,22 +12,27 @@ public enum class GsmLinkType(
   /**
    * no service
    */
+  @GeneratedMavEnumEntry
   GSM_LINK_TYPE_NONE(0L),
   /**
    * link type unknown
    */
+  @GeneratedMavEnumEntry
   GSM_LINK_TYPE_UNKNOWN(1L),
   /**
    * 2G (GSM/GRPS/EDGE) link
    */
+  @GeneratedMavEnumEntry
   GSM_LINK_TYPE_2G(2L),
   /**
    * 3G link (WCDMA/HSDPA/HSPA) 
    */
+  @GeneratedMavEnumEntry
   GSM_LINK_TYPE_3G(3L),
   /**
    * 4G link (LTE)
    */
+  @GeneratedMavEnumEntry
   GSM_LINK_TYPE_4G(4L),
   ;
 

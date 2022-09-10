@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.minimal
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -17,38 +18,46 @@ public enum class MavModeFlag(
    * MAV_CMD_COMPONENT_ARM_DISARM shall be used instead. The flag can still be used to report the armed
    * state.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_SAFETY_ARMED(128L),
   /**
    * 0b01000000 remote control input is enabled.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_MANUAL_INPUT_ENABLED(64L),
   /**
    * 0b00100000 hardware in the loop simulation. All motors / actuators are blocked, but internal
    * software is full operational.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_HIL_ENABLED(32L),
   /**
    * 0b00010000 system stabilizes electronically its attitude (and optionally position). It needs
    * however further control inputs to move around.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_STABILIZE_ENABLED(16L),
   /**
    * 0b00001000 guided mode enabled, system flies waypoints / mission items.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_GUIDED_ENABLED(8L),
   /**
    * 0b00000100 autonomous mode enabled, system finds its own goal positions. Guided flag can be set
    * or not, depends on the actual implementation.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_AUTO_ENABLED(4L),
   /**
    * 0b00000010 system has a test mode enabled. This flag is intended for temporary system tests and
    * should not be used for stable implementations.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_TEST_ENABLED(2L),
   /**
    * 0b00000001 Reserved for future use.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_CUSTOM_MODE_ENABLED(1L),
   ;
 

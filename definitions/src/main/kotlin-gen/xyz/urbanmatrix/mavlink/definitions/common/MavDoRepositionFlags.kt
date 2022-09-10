@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -15,6 +16,7 @@ public enum class MavDoRepositionFlags(
    * The aircraft should immediately transition into guided. This should not be set for follow me
    * applications
    */
+  @GeneratedMavEnumEntry
   MAV_DO_REPOSITION_FLAGS_CHANGE_MODE(1L),
   ;
 

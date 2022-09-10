@@ -3,6 +3,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 import kotlin.Deprecated
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -18,22 +19,27 @@ public enum class MavRoi(
   /**
    * No region of interest.
    */
+  @GeneratedMavEnumEntry
   MAV_ROI_NONE(0L),
   /**
    * Point toward next waypoint, with optional pitch/roll/yaw offset.
    */
+  @GeneratedMavEnumEntry
   MAV_ROI_WPNEXT(1L),
   /**
    * Point toward given waypoint.
    */
+  @GeneratedMavEnumEntry
   MAV_ROI_WPINDEX(2L),
   /**
    * Point toward fixed location.
    */
+  @GeneratedMavEnumEntry
   MAV_ROI_LOCATION(3L),
   /**
    * Point toward of given id.
    */
+  @GeneratedMavEnumEntry
   MAV_ROI_TARGET(4L),
   ;
 

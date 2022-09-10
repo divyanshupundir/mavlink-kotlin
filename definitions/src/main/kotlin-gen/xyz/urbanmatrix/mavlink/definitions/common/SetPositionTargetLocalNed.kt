@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Sets a desired vehicle position in a local north-east-down coordinate frame. Used by an external
@@ -32,73 +34,89 @@ public data class SetPositionTargetLocalNed(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
    * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
    */
+  @GeneratedMavField(type = "uint8_t")
   public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
   /**
    * X Position in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position in NED frame (note, altitude is negative in NED)
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * X velocity in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y velocity in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z velocity in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    */
+  @GeneratedMavField(type = "float")
   public val afx: Float = 0F,
   /**
    * Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    */
+  @GeneratedMavField(type = "float")
   public val afy: Float = 0F,
   /**
    * Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    */
+  @GeneratedMavField(type = "float")
   public val afz: Float = 0F,
   /**
    * yaw setpoint
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * yaw rate setpoint
    */
+  @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<SetPositionTargetLocalNed> {
   public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetLocalNed> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -118,12 +136,35 @@ public data class SetPositionTargetLocalNed(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    outputBuffer.encodeFloat(afx)
+    outputBuffer.encodeFloat(afy)
+    outputBuffer.encodeFloat(afz)
+    outputBuffer.encodeFloat(yaw)
+    outputBuffer.encodeFloat(yawRate)
+    outputBuffer.encodeEnumValue(typeMask.value, 2)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 84
 
     private const val CRC: Int = 143
 
-    private const val SIZE: Int = 53
+    private const val SIZE_V1: Int = 53
+
+    private const val SIZE_V2: Int = 53
 
     private val DESERIALIZER: MavDeserializer<SetPositionTargetLocalNed> = MavDeserializer {
         bytes ->

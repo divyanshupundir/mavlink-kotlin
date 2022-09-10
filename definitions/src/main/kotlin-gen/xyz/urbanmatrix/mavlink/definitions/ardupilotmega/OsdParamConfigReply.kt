@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Configure OSD parameter reply.
@@ -26,19 +28,28 @@ public data class OsdParamConfigReply(
   /**
    * Request ID - copied from request.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val requestId: Long = 0L,
   /**
    * Config error type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0),
 ) : MavMessage<OsdParamConfigReply> {
   public override val instanceMetadata: MavMessage.Metadata<OsdParamConfigReply> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeEnumValue(result.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(requestId)
+    outputBuffer.encodeEnumValue(result.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -46,7 +57,9 @@ public data class OsdParamConfigReply(
 
     private const val CRC: Int = 79
 
-    private const val SIZE: Int = 5
+    private const val SIZE_V1: Int = 5
+
+    private const val SIZE_V2: Int = 5
 
     private val DESERIALIZER: MavDeserializer<OsdParamConfigReply> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

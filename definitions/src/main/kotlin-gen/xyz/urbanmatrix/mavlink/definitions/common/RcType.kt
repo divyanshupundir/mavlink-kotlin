@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class RcType(
   /**
    * Spektrum DSM2
    */
+  @GeneratedMavEnumEntry
   RC_TYPE_SPEKTRUM_DSM2(0L),
   /**
    * Spektrum DSMX
    */
+  @GeneratedMavEnumEntry
   RC_TYPE_SPEKTRUM_DSMX(1L),
   ;
 

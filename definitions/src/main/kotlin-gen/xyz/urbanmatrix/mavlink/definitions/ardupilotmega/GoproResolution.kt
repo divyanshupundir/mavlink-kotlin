@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,58 +12,72 @@ public enum class GoproResolution(
   /**
    * 848 x 480 (480p).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_480p(0L),
   /**
    * 1280 x 720 (720p).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_720p(1L),
   /**
    * 1280 x 960 (960p).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_960p(2L),
   /**
    * 1920 x 1080 (1080p).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_1080p(3L),
   /**
    * 1920 x 1440 (1440p).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_1440p(4L),
   /**
    * 2704 x 1440 (2.7k-17:9).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_2_7k_17_9(5L),
   /**
    * 2704 x 1524 (2.7k-16:9).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_2_7k_16_9(6L),
   /**
    * 2704 x 2028 (2.7k-4:3).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_2_7k_4_3(7L),
   /**
    * 3840 x 2160 (4k-16:9).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_4k_16_9(8L),
   /**
    * 4096 x 2160 (4k-17:9).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_4k_17_9(9L),
   /**
    * 1280 x 720 (720p-SuperView).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_720p_SUPERVIEW(10L),
   /**
    * 1920 x 1080 (1080p-SuperView).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_1080p_SUPERVIEW(11L),
   /**
    * 2704 x 1520 (2.7k-SuperView).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_2_7k_SUPERVIEW(12L),
   /**
    * 3840 x 2160 (4k-SuperView).
    */
+  @GeneratedMavEnumEntry
   GOPRO_RESOLUTION_4k_SUPERVIEW(13L),
   ;
 

@@ -9,6 +9,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Large debug/prototyping array. The message uses the maximum available payload for data. The
@@ -35,29 +37,44 @@ public data class DebugFloatArray(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Name, for human-friendly display in a Ground Control Station
    */
+  @GeneratedMavField(type = "char[10]")
   public val name: String = "",
   /**
    * Unique ID used to discriminate between arrays
    */
+  @GeneratedMavField(type = "uint16_t")
   public val arrayId: Int = 0,
   /**
    * data
    */
+  @GeneratedMavField(
+    type = "float[58]",
+    extension = true,
+  )
   public val `data`: List<Float> = emptyList(),
 ) : MavMessage<DebugFloatArray> {
   public override val instanceMetadata: MavMessage.Metadata<DebugFloatArray> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUint16(arrayId)
+    outputBuffer.encodeString(name, 10)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16(arrayId)
     outputBuffer.encodeString(name, 10)
     outputBuffer.encodeFloatArray(data, 232)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -65,7 +82,9 @@ public data class DebugFloatArray(
 
     private const val CRC: Int = 232
 
-    private const val SIZE: Int = 252
+    private const val SIZE_V1: Int = 20
+
+    private const val SIZE_V2: Int = 252
 
     private val DESERIALIZER: MavDeserializer<DebugFloatArray> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -133,3 +133,12 @@ fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
         if (this.hasRemaining()) this.put(((value shr (shift * 8)) and 0xFF).toByte())
     }
 }
+
+fun ByteArray.truncateZeros(): ByteArray {
+    for (index in lastIndex downTo 0) {
+        if (this[index] != 0.toByte()) {
+            return this.copyOfRange(0, index + 1)
+        }
+    }
+    return ByteArray(0)
+}

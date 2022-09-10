@@ -1,6 +1,7 @@
 package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.TypeSpec
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 
@@ -22,4 +23,5 @@ fun EnumEntryModel.generateEnumConstant() = TypeSpec
 
         if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
     }
+    .addAnnotation(GeneratedMavEnumEntry::class)
     .build()

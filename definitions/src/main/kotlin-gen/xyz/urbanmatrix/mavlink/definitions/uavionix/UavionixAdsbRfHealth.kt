@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.uavionix
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,9 +12,13 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class UavionixAdsbRfHealth(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_RF_HEALTH_INITIALIZING(0L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_RF_HEALTH_OK(1L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_RF_HEALTH_FAIL_TX(2L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_RF_HEALTH_FAIL_RX(16L),
   ;
 

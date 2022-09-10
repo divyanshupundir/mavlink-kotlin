@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class GimbalAxisCalibrationRequired(
   /**
    * Whether or not this axis requires calibration is unknown at this time.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_CALIBRATION_REQUIRED_UNKNOWN(0L),
   /**
    * This axis requires calibration.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_CALIBRATION_REQUIRED_TRUE(1L),
   /**
    * This axis does not require calibration.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_CALIBRATION_REQUIRED_FALSE(2L),
   ;
 

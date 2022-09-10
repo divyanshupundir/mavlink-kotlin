@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,62 +15,77 @@ public enum class SerialControlDev(
   /**
    * First telemetry port
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_DEV_TELEM1(0L),
   /**
    * Second telemetry port
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_DEV_TELEM2(1L),
   /**
    * First GPS port
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_DEV_GPS1(2L),
   /**
    * Second GPS port
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_DEV_GPS2(3L),
   /**
    * system shell
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_DEV_SHELL(10L),
   /**
    * SERIAL0
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL0(100L),
   /**
    * SERIAL1
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL1(101L),
   /**
    * SERIAL2
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL2(102L),
   /**
    * SERIAL3
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL3(103L),
   /**
    * SERIAL4
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL4(104L),
   /**
    * SERIAL5
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL5(105L),
   /**
    * SERIAL6
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL6(106L),
   /**
    * SERIAL7
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL7(107L),
   /**
    * SERIAL8
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL8(108L),
   /**
    * SERIAL9
    */
+  @GeneratedMavEnumEntry
   SERIAL_CONTROL_SERIAL9(109L),
   ;
 

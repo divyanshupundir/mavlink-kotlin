@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -12,6 +13,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F13: format
@@ -24,24 +26,28 @@ public data class SerialUdbExtraF13(
   /**
    * Serial UDB Extra GPS Week Number
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueWeekNo: Int = 0,
   /**
    * Serial UDB Extra MP Origin Latitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val sueLatOrigin: Int = 0,
   /**
    * Serial UDB Extra MP Origin Longitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val sueLonOrigin: Int = 0,
   /**
    * Serial UDB Extra MP Origin Altitude Above Sea Level
    */
+  @GeneratedMavField(type = "int32_t")
   public val sueAltOrigin: Int = 0,
 ) : MavMessage<SerialUdbExtraF13> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF13> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(sueLatOrigin)
     outputBuffer.encodeInt32(sueLonOrigin)
     outputBuffer.encodeInt32(sueAltOrigin)
@@ -49,12 +55,23 @@ public data class SerialUdbExtraF13(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(sueLatOrigin)
+    outputBuffer.encodeInt32(sueLonOrigin)
+    outputBuffer.encodeInt32(sueAltOrigin)
+    outputBuffer.encodeInt16(sueWeekNo)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 177
 
     private const val CRC: Int = 249
 
-    private const val SIZE: Int = 14
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 14
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF13> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

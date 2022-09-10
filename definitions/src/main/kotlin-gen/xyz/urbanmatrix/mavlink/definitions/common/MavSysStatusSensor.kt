@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,131 +15,163 @@ public enum class MavSysStatusSensor(
   /**
    * 0x01 3D gyro
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_3D_GYRO(1L),
   /**
    * 0x02 3D accelerometer
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_3D_ACCEL(2L),
   /**
    * 0x04 3D magnetometer
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_3D_MAG(4L),
   /**
    * 0x08 absolute pressure
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_ABSOLUTE_PRESSURE(8L),
   /**
    * 0x10 differential pressure
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_DIFFERENTIAL_PRESSURE(16L),
   /**
    * 0x20 GPS
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_GPS(32L),
   /**
    * 0x40 optical flow
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_OPTICAL_FLOW(64L),
   /**
    * 0x80 computer vision position
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_VISION_POSITION(128L),
   /**
    * 0x100 laser based position
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_LASER_POSITION(256L),
   /**
    * 0x200 external ground truth (Vicon or Leica)
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_EXTERNAL_GROUND_TRUTH(512L),
   /**
    * 0x400 3D angular rate control
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_ANGULAR_RATE_CONTROL(1024L),
   /**
    * 0x800 attitude stabilization
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_ATTITUDE_STABILIZATION(2048L),
   /**
    * 0x1000 yaw position
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_YAW_POSITION(4096L),
   /**
    * 0x2000 z/altitude control
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_Z_ALTITUDE_CONTROL(8192L),
   /**
    * 0x4000 x/y position control
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_XY_POSITION_CONTROL(16384L),
   /**
    * 0x8000 motor outputs / control
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_MOTOR_OUTPUTS(32768L),
   /**
    * 0x10000 rc receiver
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_RC_RECEIVER(65536L),
   /**
    * 0x20000 2nd 3D gyro
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_3D_GYRO2(131072L),
   /**
    * 0x40000 2nd 3D accelerometer
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_3D_ACCEL2(262144L),
   /**
    * 0x80000 2nd 3D magnetometer
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_3D_MAG2(524288L),
   /**
    * 0x100000 geofence
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_GEOFENCE(1048576L),
   /**
    * 0x200000 AHRS subsystem health
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_AHRS(2097152L),
   /**
    * 0x400000 Terrain subsystem health
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_TERRAIN(4194304L),
   /**
    * 0x800000 Motors are reversed
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_REVERSE_MOTOR(8388608L),
   /**
    * 0x1000000 Logging
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_LOGGING(16777216L),
   /**
    * 0x2000000 Battery
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_BATTERY(33554432L),
   /**
    * 0x4000000 Proximity
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_PROXIMITY(67108864L),
   /**
    * 0x8000000 Satellite Communication 
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_SATCOM(134217728L),
   /**
    * 0x10000000 pre-arm check status. Always healthy when armed
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_PREARM_CHECK(268435456L),
   /**
    * 0x20000000 Avoidance/collision prevention
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_OBSTACLE_AVOIDANCE(536870912L),
   /**
    * 0x40000000 propulsion (actuator, esc, motor or propellor)
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_SENSOR_PROPULSION(1073741824L),
   /**
    * 0x80000000 Extended bit-field are used for further sensor status bits (needs to be set in
    * onboard_control_sensors_present only)
    */
+  @GeneratedMavEnumEntry
   MAV_SYS_STATUS_EXTENSION_USED(2147483648L),
   ;
 

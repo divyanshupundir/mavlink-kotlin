@@ -81,14 +81,13 @@ class SimpleMavConnection(
         componentId: Int,
         payload: T
     ) {
-        val payloadBytes = payload.serialize()
         send(
             MavRawFrame.createV1(
                 sequence++,
                 systemId,
                 componentId,
                 payload.instanceMetadata.id,
-                payloadBytes,
+                payload.serializeV1(),
                 payload.instanceMetadata.crc,
             )
         )
@@ -100,14 +99,13 @@ class SimpleMavConnection(
         componentId: Int,
         payload: T
     ) {
-        val payloadBytes = payload.serialize()
         send(
             MavRawFrame.createUnsignedV2(
                 sequence++,
                 systemId,
                 componentId,
                 payload.instanceMetadata.id,
-                payloadBytes,
+                payload.serializeV2(),
                 payload.instanceMetadata.crc,
             )
         )
@@ -122,14 +120,13 @@ class SimpleMavConnection(
         timestamp: Long,
         secretKey: ByteArray
     ) {
-        val payloadBytes = payload.serialize()
         send(
             MavRawFrame.createSignedV2(
                 sequence++,
                 systemId,
                 componentId,
                 payload.instanceMetadata.id,
-                payloadBytes,
+                payload.serializeV2(),
                 payload.instanceMetadata.crc,
                 linkId,
                 timestamp,

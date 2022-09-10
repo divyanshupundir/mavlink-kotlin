@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class GripperActions(
   /**
    * Gripper release cargo.
    */
+  @GeneratedMavEnumEntry
   GRIPPER_ACTION_RELEASE(0L),
   /**
    * Gripper grab onto cargo.
    */
+  @GeneratedMavEnumEntry
   GRIPPER_ACTION_GRAB(1L),
   ;
 

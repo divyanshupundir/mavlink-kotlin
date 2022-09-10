@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,19 +15,23 @@ public enum class LandingTargetType(
   /**
    * Landing target signaled by light beacon (ex: IR-LOCK)
    */
+  @GeneratedMavEnumEntry
   LANDING_TARGET_TYPE_LIGHT_BEACON(0L),
   /**
    * Landing target signaled by radio beacon (ex: ILS, NDB)
    */
+  @GeneratedMavEnumEntry
   LANDING_TARGET_TYPE_RADIO_BEACON(1L),
   /**
    * Landing target represented by a fiducial marker (ex: ARTag)
    */
+  @GeneratedMavEnumEntry
   LANDING_TARGET_TYPE_VISION_FIDUCIAL(2L),
   /**
    * Landing target represented by a pre-defined visual shape/feature (ex: X-marker, H-marker,
    * square)
    */
+  @GeneratedMavEnumEntry
   LANDING_TARGET_TYPE_VISION_OTHER(3L),
   ;
 

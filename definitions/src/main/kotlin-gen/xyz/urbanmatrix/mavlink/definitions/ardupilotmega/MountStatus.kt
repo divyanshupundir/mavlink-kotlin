@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Message with some status from autopilot to GCS about camera or antenna mount.
@@ -28,39 +30,58 @@ public data class MountStatus(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Pitch.
    */
+  @GeneratedMavField(type = "int32_t")
   public val pointingA: Int = 0,
   /**
    * Roll.
    */
+  @GeneratedMavField(type = "int32_t")
   public val pointingB: Int = 0,
   /**
    * Yaw.
    */
+  @GeneratedMavField(type = "int32_t")
   public val pointingC: Int = 0,
   /**
    * Mount operating mode.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val mountMode: MavEnumValue<MavMountMode> = MavEnumValue.fromValue(0),
 ) : MavMessage<MountStatus> {
   public override val instanceMetadata: MavMessage.Metadata<MountStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(pointingA)
+    outputBuffer.encodeInt32(pointingB)
+    outputBuffer.encodeInt32(pointingC)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(pointingA)
     outputBuffer.encodeInt32(pointingB)
     outputBuffer.encodeInt32(pointingC)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(mountMode.value, 1)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -68,7 +89,9 @@ public data class MountStatus(
 
     private const val CRC: Int = 134
 
-    private const val SIZE: Int = 15
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 15
 
     private val DESERIALIZER: MavDeserializer<MountStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

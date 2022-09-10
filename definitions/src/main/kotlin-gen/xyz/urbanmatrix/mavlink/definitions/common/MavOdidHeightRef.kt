@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,10 +12,12 @@ public enum class MavOdidHeightRef(
   /**
    * The height field is relative to the take-off location.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_HEIGHT_REF_OVER_TAKEOFF(0L),
   /**
    * The height field is relative to ground.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_HEIGHT_REF_OVER_GROUND(1L),
   ;
 

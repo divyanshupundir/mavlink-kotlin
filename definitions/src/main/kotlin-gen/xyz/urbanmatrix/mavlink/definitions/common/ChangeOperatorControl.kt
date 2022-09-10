@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeString
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Request to control this MAV
@@ -25,27 +27,31 @@ public data class ChangeOperatorControl(
   /**
    * System the GCS requests control for
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * 0: request control of this MAV, 1: Release control of this MAV
    */
+  @GeneratedMavField(type = "uint8_t")
   public val controlRequest: Int = 0,
   /**
    * 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in
    * general use the safest mode possible initially and then gradually move down the encryption level
    * if it gets a NACK message indicating an encryption mismatch.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val version: Int = 0,
   /**
    * Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL
    * terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
    */
+  @GeneratedMavField(type = "char[25]")
   public val passkey: String = "",
 ) : MavMessage<ChangeOperatorControl> {
   public override val instanceMetadata: MavMessage.Metadata<ChangeOperatorControl> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(controlRequest)
     outputBuffer.encodeUint8(version)
@@ -53,12 +59,23 @@ public data class ChangeOperatorControl(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(controlRequest)
+    outputBuffer.encodeUint8(version)
+    outputBuffer.encodeString(passkey, 25)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 5
 
     private const val CRC: Int = 217
 
-    private const val SIZE: Int = 28
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
 
     private val DESERIALIZER: MavDeserializer<ChangeOperatorControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

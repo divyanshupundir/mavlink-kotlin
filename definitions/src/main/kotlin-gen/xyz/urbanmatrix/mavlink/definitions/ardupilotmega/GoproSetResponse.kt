@@ -5,12 +5,14 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Response from a GOPRO_COMMAND set request.
@@ -23,19 +25,28 @@ public data class GoproSetResponse(
   /**
    * Command ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val cmdId: MavEnumValue<GoproCommand> = MavEnumValue.fromValue(0),
   /**
    * Status.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<GoproRequestStatus> = MavEnumValue.fromValue(0),
 ) : MavMessage<GoproSetResponse> {
   public override val instanceMetadata: MavMessage.Metadata<GoproSetResponse> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(cmdId.value, 1)
     outputBuffer.encodeEnumValue(status.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(cmdId.value, 1)
+    outputBuffer.encodeEnumValue(status.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -43,7 +54,9 @@ public data class GoproSetResponse(
 
     private const val CRC: Int = 162
 
-    private const val SIZE: Int = 2
+    private const val SIZE_V1: Int = 2
+
+    private const val SIZE_V2: Int = 2
 
     private val DESERIALIZER: MavDeserializer<GoproSetResponse> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -15,22 +16,27 @@ public enum class FirmwareVersionType(
   /**
    * development release
    */
+  @GeneratedMavEnumEntry
   FIRMWARE_VERSION_TYPE_DEV(0L),
   /**
    * alpha release
    */
+  @GeneratedMavEnumEntry
   FIRMWARE_VERSION_TYPE_ALPHA(64L),
   /**
    * beta release
    */
+  @GeneratedMavEnumEntry
   FIRMWARE_VERSION_TYPE_BETA(128L),
   /**
    * release candidate
    */
+  @GeneratedMavEnumEntry
   FIRMWARE_VERSION_TYPE_RC(192L),
   /**
    * official stable release
    */
+  @GeneratedMavEnumEntry
   FIRMWARE_VERSION_TYPE_OFFICIAL(255L),
   ;
 

@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F17 format
@@ -23,24 +25,35 @@ public data class SerialUdbExtraF17(
   /**
    * SUE Feed Forward Gain
    */
+  @GeneratedMavField(type = "float")
   public val sueFeedForward: Float = 0F,
   /**
    * SUE Max Turn Rate when Navigating
    */
+  @GeneratedMavField(type = "float")
   public val sueTurnRateNav: Float = 0F,
   /**
    * SUE Max Turn Rate in Fly By Wire Mode
    */
+  @GeneratedMavField(type = "float")
   public val sueTurnRateFbw: Float = 0F,
 ) : MavMessage<SerialUdbExtraF17> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF17> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(sueFeedForward)
     outputBuffer.encodeFloat(sueTurnRateNav)
     outputBuffer.encodeFloat(sueTurnRateFbw)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(sueFeedForward)
+    outputBuffer.encodeFloat(sueTurnRateNav)
+    outputBuffer.encodeFloat(sueTurnRateFbw)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -48,7 +61,9 @@ public data class SerialUdbExtraF17(
 
     private const val CRC: Int = 175
 
-    private const val SIZE: Int = 12
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 12
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF17> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Rangefinder reporting.
@@ -23,19 +25,28 @@ public data class Rangefinder(
   /**
    * Distance.
    */
+  @GeneratedMavField(type = "float")
   public val distance: Float = 0F,
   /**
    * Raw voltage if available, zero otherwise.
    */
+  @GeneratedMavField(type = "float")
   public val voltage: Float = 0F,
 ) : MavMessage<Rangefinder> {
   public override val instanceMetadata: MavMessage.Metadata<Rangefinder> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(distance)
     outputBuffer.encodeFloat(voltage)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(distance)
+    outputBuffer.encodeFloat(voltage)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -43,7 +54,9 @@ public data class Rangefinder(
 
     private const val CRC: Int = 83
 
-    private const val SIZE: Int = 8
+    private const val SIZE_V1: Int = 8
+
+    private const val SIZE_V2: Int = 8
 
     private val DESERIALIZER: MavDeserializer<Rangefinder> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

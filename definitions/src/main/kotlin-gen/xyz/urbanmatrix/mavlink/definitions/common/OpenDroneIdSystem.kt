@@ -8,6 +8,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -27,6 +28,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Data for filling the OpenDroneID System message. The System Message contains general system
@@ -42,71 +44,86 @@ public data class OpenDroneIdSystem(
   /**
    * System ID (0 for broadcast).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID (0 for broadcast).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Only used for drone ID data received from other UAs. See detailed description at
    * https://mavlink.io/en/services/opendroneid.html. 
    */
+  @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<Int> = emptyList(),
   /**
    * Specifies the operator location type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val operatorLocationType: MavEnumValue<MavOdidOperatorLocationType> =
       MavEnumValue.fromValue(0),
   /**
    * Specifies the classification type of the UA.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val classificationType: MavEnumValue<MavOdidClassificationType> =
       MavEnumValue.fromValue(0),
   /**
    * Latitude of the operator. If unknown: 0 (both Lat/Lon).
    */
+  @GeneratedMavField(type = "int32_t")
   public val operatorLatitude: Int = 0,
   /**
    * Longitude of the operator. If unknown: 0 (both Lat/Lon).
    */
+  @GeneratedMavField(type = "int32_t")
   public val operatorLongitude: Int = 0,
   /**
    * Number of aircraft in the area, group or formation (default 1).
    */
+  @GeneratedMavField(type = "uint16_t")
   public val areaCount: Int = 0,
   /**
    * Radius of the cylindrical area of the group or formation (default 0).
    */
+  @GeneratedMavField(type = "uint16_t")
   public val areaRadius: Int = 0,
   /**
    * Area Operations Ceiling relative to WGS84. If unknown: -1000 m.
    */
+  @GeneratedMavField(type = "float")
   public val areaCeiling: Float = 0F,
   /**
    * Area Operations Floor relative to WGS84. If unknown: -1000 m.
    */
+  @GeneratedMavField(type = "float")
   public val areaFloor: Float = 0F,
   /**
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the category of the UA.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0),
   /**
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class of the UA.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0),
   /**
    * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
    */
+  @GeneratedMavField(type = "float")
   public val operatorAltitudeGeo: Float = 0F,
   /**
    * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timestamp: Long = 0L,
 ) : MavMessage<OpenDroneIdSystem> {
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdSystem> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(operatorLatitude)
     outputBuffer.encodeInt32(operatorLongitude)
     outputBuffer.encodeFloat(areaCeiling)
@@ -125,12 +142,34 @@ public data class OpenDroneIdSystem(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(operatorLatitude)
+    outputBuffer.encodeInt32(operatorLongitude)
+    outputBuffer.encodeFloat(areaCeiling)
+    outputBuffer.encodeFloat(areaFloor)
+    outputBuffer.encodeFloat(operatorAltitudeGeo)
+    outputBuffer.encodeUint32(timestamp)
+    outputBuffer.encodeUint16(areaCount)
+    outputBuffer.encodeUint16(areaRadius)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeEnumValue(operatorLocationType.value, 1)
+    outputBuffer.encodeEnumValue(classificationType.value, 1)
+    outputBuffer.encodeEnumValue(categoryEu.value, 1)
+    outputBuffer.encodeEnumValue(classEu.value, 1)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 12904
 
     private const val CRC: Int = 77
 
-    private const val SIZE: Int = 54
+    private const val SIZE_V1: Int = 54
+
+    private const val SIZE_V2: Int = 54
 
     private val DESERIALIZER: MavDeserializer<OpenDroneIdSystem> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

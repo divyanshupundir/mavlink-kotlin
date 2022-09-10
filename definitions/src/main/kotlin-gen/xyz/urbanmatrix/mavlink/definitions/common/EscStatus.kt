@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * ESC information for higher rate streaming. Recommended streaming rate is ~10 Hz. Information that
@@ -35,29 +37,34 @@ public data class EscStatus(
   /**
    * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val index: Int = 0,
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Reported motor RPM from each ESC (negative for reverse rotation).
    */
+  @GeneratedMavField(type = "int32_t[4]")
   public val rpm: List<Int> = emptyList(),
   /**
    * Voltage measured from each ESC.
    */
+  @GeneratedMavField(type = "float[4]")
   public val voltage: List<Float> = emptyList(),
   /**
    * Current measured from each ESC.
    */
+  @GeneratedMavField(type = "float[4]")
   public val current: List<Float> = emptyList(),
 ) : MavMessage<EscStatus> {
   public override val instanceMetadata: MavMessage.Metadata<EscStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32Array(rpm, 16)
     outputBuffer.encodeFloatArray(voltage, 16)
@@ -66,12 +73,24 @@ public data class EscStatus(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeInt32Array(rpm, 16)
+    outputBuffer.encodeFloatArray(voltage, 16)
+    outputBuffer.encodeFloatArray(current, 16)
+    outputBuffer.encodeUint8(index)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 291
 
     private const val CRC: Int = 10
 
-    private const val SIZE: Int = 57
+    private const val SIZE_V1: Int = 57
+
+    private const val SIZE_V2: Int = 57
 
     private val DESERIALIZER: MavDeserializer<EscStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

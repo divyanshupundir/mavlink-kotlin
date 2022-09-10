@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.uavionix
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,8 +12,11 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class UavionixAdsbOutRfSelect(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_RF_SELECT_STANDBY(0L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_RF_SELECT_RX_ENABLED(1L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_RF_SELECT_TX_ENABLED(2L),
   ;
 

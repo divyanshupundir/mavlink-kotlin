@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * RTCM message for injecting into the onboard GPS (used for DGPS)
@@ -32,24 +34,35 @@ public data class GpsRtcmData(
    * is used to ensure that normal GPS operation doesn't corrupt RTCM data, and to recover from a
    * unreliable transport delivery order.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val flags: Int = 0,
   /**
    * data length
    */
+  @GeneratedMavField(type = "uint8_t")
   public val len: Int = 0,
   /**
    * RTCM message (may be fragmented)
    */
+  @GeneratedMavField(type = "uint8_t[180]")
   public val `data`: List<Int> = emptyList(),
 ) : MavMessage<GpsRtcmData> {
   public override val instanceMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(flags)
     outputBuffer.encodeUint8(len)
     outputBuffer.encodeUint8Array(data, 180)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(flags)
+    outputBuffer.encodeUint8(len)
+    outputBuffer.encodeUint8Array(data, 180)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -57,7 +70,9 @@ public data class GpsRtcmData(
 
     private const val CRC: Int = 35
 
-    private const val SIZE: Int = 182
+    private const val SIZE_V1: Int = 182
+
+    private const val SIZE_V2: Int = 182
 
     private val DESERIALIZER: MavDeserializer<GpsRtcmData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

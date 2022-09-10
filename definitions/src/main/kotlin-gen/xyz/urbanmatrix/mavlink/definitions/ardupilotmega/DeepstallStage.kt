@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,30 +15,37 @@ public enum class DeepstallStage(
   /**
    * Flying to the landing point.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_FLY_TO_LANDING(0L),
   /**
    * Building an estimate of the wind.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_ESTIMATE_WIND(1L),
   /**
    * Waiting to breakout of the loiter to fly the approach.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_WAIT_FOR_BREAKOUT(2L),
   /**
    * Flying to the first arc point to turn around to the landing point.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_FLY_TO_ARC(3L),
   /**
    * Turning around back to the deepstall landing point.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_ARC(4L),
   /**
    * Approaching the landing point.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_APPROACH(5L),
   /**
    * Stalling and steering towards the land point.
    */
+  @GeneratedMavEnumEntry
   DEEPSTALL_STAGE_LAND(6L),
   ;
 

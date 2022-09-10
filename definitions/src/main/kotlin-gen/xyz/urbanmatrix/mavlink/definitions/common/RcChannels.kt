@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The PPM values of the RC channels received. The standard PPM modulation is as follows: 1000
@@ -29,95 +31,116 @@ public data class RcChannels(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Total number of RC channels being received. This can be larger than 18, indicating that more
    * channels are available but not given in this message. This value should be 0 when no RC channels
    * are available.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val chancount: Int = 0,
   /**
    * RC channel 1 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan1Raw: Int = 0,
   /**
    * RC channel 2 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan2Raw: Int = 0,
   /**
    * RC channel 3 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan3Raw: Int = 0,
   /**
    * RC channel 4 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan4Raw: Int = 0,
   /**
    * RC channel 5 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan5Raw: Int = 0,
   /**
    * RC channel 6 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan6Raw: Int = 0,
   /**
    * RC channel 7 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan7Raw: Int = 0,
   /**
    * RC channel 8 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan8Raw: Int = 0,
   /**
    * RC channel 9 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan9Raw: Int = 0,
   /**
    * RC channel 10 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan10Raw: Int = 0,
   /**
    * RC channel 11 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan11Raw: Int = 0,
   /**
    * RC channel 12 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan12Raw: Int = 0,
   /**
    * RC channel 13 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan13Raw: Int = 0,
   /**
    * RC channel 14 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan14Raw: Int = 0,
   /**
    * RC channel 15 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan15Raw: Int = 0,
   /**
    * RC channel 16 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan16Raw: Int = 0,
   /**
    * RC channel 17 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan17Raw: Int = 0,
   /**
    * RC channel 18 value.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val chan18Raw: Int = 0,
   /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val rssi: Int = 0,
 ) : MavMessage<RcChannels> {
   public override val instanceMetadata: MavMessage.Metadata<RcChannels> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -142,12 +165,40 @@ public data class RcChannels(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUint16(chan1Raw)
+    outputBuffer.encodeUint16(chan2Raw)
+    outputBuffer.encodeUint16(chan3Raw)
+    outputBuffer.encodeUint16(chan4Raw)
+    outputBuffer.encodeUint16(chan5Raw)
+    outputBuffer.encodeUint16(chan6Raw)
+    outputBuffer.encodeUint16(chan7Raw)
+    outputBuffer.encodeUint16(chan8Raw)
+    outputBuffer.encodeUint16(chan9Raw)
+    outputBuffer.encodeUint16(chan10Raw)
+    outputBuffer.encodeUint16(chan11Raw)
+    outputBuffer.encodeUint16(chan12Raw)
+    outputBuffer.encodeUint16(chan13Raw)
+    outputBuffer.encodeUint16(chan14Raw)
+    outputBuffer.encodeUint16(chan15Raw)
+    outputBuffer.encodeUint16(chan16Raw)
+    outputBuffer.encodeUint16(chan17Raw)
+    outputBuffer.encodeUint16(chan18Raw)
+    outputBuffer.encodeUint8(chancount)
+    outputBuffer.encodeUint8(rssi)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 65
 
     private const val CRC: Int = 118
 
-    private const val SIZE: Int = 42
+    private const val SIZE_V1: Int = 42
+
+    private const val SIZE_V2: Int = 42
 
     private val DESERIALIZER: MavDeserializer<RcChannels> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

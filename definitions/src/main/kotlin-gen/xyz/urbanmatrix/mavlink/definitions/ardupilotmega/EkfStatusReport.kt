@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * EKF Status message including flags and variances.
@@ -26,36 +28,57 @@ public data class EkfStatusReport(
   /**
    * Flags.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0),
   /**
    * Velocity variance.
    */
+  @GeneratedMavField(type = "float")
   public val velocityVariance: Float = 0F,
   /**
    * Horizontal Position variance.
    */
+  @GeneratedMavField(type = "float")
   public val posHorizVariance: Float = 0F,
   /**
    * Vertical Position variance.
    */
+  @GeneratedMavField(type = "float")
   public val posVertVariance: Float = 0F,
   /**
    * Compass variance.
    */
+  @GeneratedMavField(type = "float")
   public val compassVariance: Float = 0F,
   /**
    * Terrain Altitude variance.
    */
+  @GeneratedMavField(type = "float")
   public val terrainAltVariance: Float = 0F,
   /**
    * Airspeed variance.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val airspeedVariance: Float = 0F,
 ) : MavMessage<EkfStatusReport> {
   public override val instanceMetadata: MavMessage.Metadata<EkfStatusReport> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(velocityVariance)
+    outputBuffer.encodeFloat(posHorizVariance)
+    outputBuffer.encodeFloat(posVertVariance)
+    outputBuffer.encodeFloat(compassVariance)
+    outputBuffer.encodeFloat(terrainAltVariance)
+    outputBuffer.encodeEnumValue(flags.value, 2)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(velocityVariance)
     outputBuffer.encodeFloat(posHorizVariance)
     outputBuffer.encodeFloat(posVertVariance)
@@ -63,7 +86,7 @@ public data class EkfStatusReport(
     outputBuffer.encodeFloat(terrainAltVariance)
     outputBuffer.encodeEnumValue(flags.value, 2)
     outputBuffer.encodeFloat(airspeedVariance)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -71,7 +94,9 @@ public data class EkfStatusReport(
 
     private const val CRC: Int = 71
 
-    private const val SIZE: Int = 26
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 26
 
     private val DESERIALIZER: MavDeserializer<EkfStatusReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

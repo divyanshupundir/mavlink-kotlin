@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Request for terrain data and terrain status. See terrain protocol docs:
@@ -28,24 +30,28 @@ public data class TerrainRequest(
   /**
    * Latitude of SW corner of first grid
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude of SW corner of first grid
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Grid spacing
    */
+  @GeneratedMavField(type = "uint16_t")
   public val gridSpacing: Int = 0,
   /**
    * Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
    */
+  @GeneratedMavField(type = "uint64_t")
   public val mask: BigInteger = BigInteger.ZERO,
 ) : MavMessage<TerrainRequest> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainRequest> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(mask)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -53,12 +59,23 @@ public data class TerrainRequest(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(mask)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeUint16(gridSpacing)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 133
 
     private const val CRC: Int = 6
 
-    private const val SIZE: Int = 18
+    private const val SIZE_V1: Int = 18
+
+    private const val SIZE_V2: Int = 18
 
     private val DESERIALIZER: MavDeserializer<TerrainRequest> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

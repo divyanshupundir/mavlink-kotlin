@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,15 +15,18 @@ public enum class PrecisionLandMode(
   /**
    * Normal (non-precision) landing.
    */
+  @GeneratedMavEnumEntry
   PRECISION_LAND_MODE_DISABLED(0L),
   /**
    * Use precision landing if beacon detected when land command accepted, otherwise land normally.
    */
+  @GeneratedMavEnumEntry
   PRECISION_LAND_MODE_OPPORTUNISTIC(1L),
   /**
    * Use precision landing, searching for beacon if not found when land command accepted (land
    * normally if beacon cannot be found).
    */
+  @GeneratedMavEnumEntry
   PRECISION_LAND_MODE_REQUIRED(2L),
   ;
 

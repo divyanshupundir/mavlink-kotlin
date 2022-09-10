@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class DeviceOpBustype(
   /**
    * I2C Device operation.
    */
+  @GeneratedMavEnumEntry
   DEVICE_OP_BUSTYPE_I2C(0L),
   /**
    * SPI Device operation.
    */
+  @GeneratedMavEnumEntry
   DEVICE_OP_BUSTYPE_SPI(1L),
   ;
 

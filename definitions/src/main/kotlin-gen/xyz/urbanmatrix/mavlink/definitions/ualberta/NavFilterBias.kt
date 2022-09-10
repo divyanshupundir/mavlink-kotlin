@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Accelerometer and Gyro biases from the navigation filter
@@ -26,36 +28,43 @@ public data class NavFilterBias(
   /**
    * Timestamp (microseconds)
    */
+  @GeneratedMavField(type = "uint64_t")
   public val usec: BigInteger = BigInteger.ZERO,
   /**
    * b_f[0]
    */
+  @GeneratedMavField(type = "float")
   public val accel0: Float = 0F,
   /**
    * b_f[1]
    */
+  @GeneratedMavField(type = "float")
   public val accel1: Float = 0F,
   /**
    * b_f[2]
    */
+  @GeneratedMavField(type = "float")
   public val accel2: Float = 0F,
   /**
    * b_f[0]
    */
+  @GeneratedMavField(type = "float")
   public val gyro0: Float = 0F,
   /**
    * b_f[1]
    */
+  @GeneratedMavField(type = "float")
   public val gyro1: Float = 0F,
   /**
    * b_f[2]
    */
+  @GeneratedMavField(type = "float")
   public val gyro2: Float = 0F,
 ) : MavMessage<NavFilterBias> {
   public override val instanceMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(usec)
     outputBuffer.encodeFloat(accel0)
     outputBuffer.encodeFloat(accel1)
@@ -66,12 +75,26 @@ public data class NavFilterBias(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeFloat(accel0)
+    outputBuffer.encodeFloat(accel1)
+    outputBuffer.encodeFloat(accel2)
+    outputBuffer.encodeFloat(gyro0)
+    outputBuffer.encodeFloat(gyro1)
+    outputBuffer.encodeFloat(gyro2)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 220
 
     private const val CRC: Int = 34
 
-    private const val SIZE: Int = 32
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 32
 
     private val DESERIALIZER: MavDeserializer<NavFilterBias> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

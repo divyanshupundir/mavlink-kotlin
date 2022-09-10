@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame
@@ -32,44 +34,53 @@ public data class GlobalPositionInt(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Latitude, expressed
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude, expressed
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
    */
+  @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground
    */
+  @GeneratedMavField(type = "int32_t")
   public val relativeAlt: Int = 0,
   /**
    * Ground X Speed (Latitude, positive north)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vx: Int = 0,
   /**
    * Ground Y Speed (Longitude, positive east)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vy: Int = 0,
   /**
    * Ground Z Speed (Altitude, positive down)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vz: Int = 0,
   /**
    * Vehicle heading (yaw angle), 0.0..359.99 degrees. If unknown, set to: UINT16_MAX
    */
+  @GeneratedMavField(type = "uint16_t")
   public val hdg: Int = 0,
 ) : MavMessage<GlobalPositionInt> {
   public override val instanceMetadata: MavMessage.Metadata<GlobalPositionInt> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -82,12 +93,28 @@ public data class GlobalPositionInt(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeInt32(alt)
+    outputBuffer.encodeInt32(relativeAlt)
+    outputBuffer.encodeInt16(vx)
+    outputBuffer.encodeInt16(vy)
+    outputBuffer.encodeInt16(vz)
+    outputBuffer.encodeUint16(hdg)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 33
 
     private const val CRC: Int = 104
 
-    private const val SIZE: Int = 28
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
 
     private val DESERIALIZER: MavDeserializer<GlobalPositionInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -9,6 +9,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -26,6 +27,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a low level gimbal. This message should be requested by the gimbal manager or a
@@ -42,70 +44,85 @@ public data class GimbalDeviceInformation(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Name of the gimbal vendor.
    */
+  @GeneratedMavField(type = "char[32]")
   public val vendorName: String = "",
   /**
    * Name of the gimbal model.
    */
+  @GeneratedMavField(type = "char[32]")
   public val modelName: String = "",
   /**
    * Custom name of the gimbal given to it by the user.
    */
+  @GeneratedMavField(type = "char[32]")
   public val customName: String = "",
   /**
    * Version of the gimbal firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val firmwareVersion: Long = 0L,
   /**
    * Version of the gimbal hardware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val hardwareVersion: Long = 0L,
   /**
    * UID of gimbal hardware (0 if unknown).
    */
+  @GeneratedMavField(type = "uint64_t")
   public val uid: BigInteger = BigInteger.ZERO,
   /**
    * Bitmap of gimbal capability flags.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val capFlags: MavEnumValue<GimbalDeviceCapFlags> = MavEnumValue.fromValue(0),
   /**
    * Bitmap for use for gimbal-specific capability flags.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val customCapFlags: Int = 0,
   /**
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
+  @GeneratedMavField(type = "float")
   public val rollMin: Float = 0F,
   /**
    * Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    */
+  @GeneratedMavField(type = "float")
   public val rollMax: Float = 0F,
   /**
    * Minimum hardware pitch angle (positive: up, negative: down)
    */
+  @GeneratedMavField(type = "float")
   public val pitchMin: Float = 0F,
   /**
    * Maximum hardware pitch angle (positive: up, negative: down)
    */
+  @GeneratedMavField(type = "float")
   public val pitchMax: Float = 0F,
   /**
    * Minimum hardware yaw angle (positive: to the right, negative: to the left)
    */
+  @GeneratedMavField(type = "float")
   public val yawMin: Float = 0F,
   /**
    * Maximum hardware yaw angle (positive: to the right, negative: to the left)
    */
+  @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
 ) : MavMessage<GimbalDeviceInformation> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceInformation> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(uid)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(firmwareVersion)
@@ -124,12 +141,34 @@ public data class GimbalDeviceInformation(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(uid)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUint32(firmwareVersion)
+    outputBuffer.encodeUint32(hardwareVersion)
+    outputBuffer.encodeFloat(rollMin)
+    outputBuffer.encodeFloat(rollMax)
+    outputBuffer.encodeFloat(pitchMin)
+    outputBuffer.encodeFloat(pitchMax)
+    outputBuffer.encodeFloat(yawMin)
+    outputBuffer.encodeFloat(yawMax)
+    outputBuffer.encodeEnumValue(capFlags.value, 2)
+    outputBuffer.encodeUint16(customCapFlags)
+    outputBuffer.encodeString(vendorName, 32)
+    outputBuffer.encodeString(modelName, 32)
+    outputBuffer.encodeString(customName, 32)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 283
 
     private const val CRC: Int = 74
 
-    private const val SIZE: Int = 144
+    private const val SIZE_V1: Int = 144
+
+    private const val SIZE_V2: Int = 144
 
     private val DESERIALIZER: MavDeserializer<GimbalDeviceInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

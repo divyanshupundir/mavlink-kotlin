@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -16,58 +17,72 @@ public enum class GimbalManagerCapFlags(
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_RETRACT.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_RETRACT(1L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_NEUTRAL.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_NEUTRAL(2L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_AXIS.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_AXIS(4L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_FOLLOW.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_FOLLOW(8L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_LOCK.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_LOCK(16L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_AXIS.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_AXIS(32L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_FOLLOW.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_FOLLOW(64L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_LOCK.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_LOCK(128L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_AXIS.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_AXIS(256L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_FOLLOW(512L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_LOCK(1024L),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_SUPPORTS_INFINITE_YAW(2048L),
   /**
    * Gimbal manager supports to point to a local position.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_LOCAL(65536L),
   /**
    * Gimbal manager supports to point to a global latitude, longitude, altitude position.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_GLOBAL(131072L),
   ;
 

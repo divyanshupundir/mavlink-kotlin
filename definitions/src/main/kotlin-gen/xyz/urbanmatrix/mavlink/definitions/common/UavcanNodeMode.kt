@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,22 +15,27 @@ public enum class UavcanNodeMode(
   /**
    * The node is performing its primary functions.
    */
+  @GeneratedMavEnumEntry
   UAVCAN_NODE_MODE_OPERATIONAL(0L),
   /**
    * The node is initializing; this mode is entered immediately after startup.
    */
+  @GeneratedMavEnumEntry
   UAVCAN_NODE_MODE_INITIALIZATION(1L),
   /**
    * The node is under maintenance.
    */
+  @GeneratedMavEnumEntry
   UAVCAN_NODE_MODE_MAINTENANCE(2L),
   /**
    * The node is in the process of updating its software.
    */
+  @GeneratedMavEnumEntry
   UAVCAN_NODE_MODE_SOFTWARE_UPDATE(3L),
   /**
    * The node is no longer available online.
    */
+  @GeneratedMavEnumEntry
   UAVCAN_NODE_MODE_OFFLINE(7L),
   ;
 

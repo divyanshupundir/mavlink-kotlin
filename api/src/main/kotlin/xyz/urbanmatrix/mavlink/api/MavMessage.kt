@@ -11,13 +11,20 @@ interface MavMessage<T : MavMessage<T>> {
     val instanceMetadata: Metadata<T>
 
     /**
-     * Serializes the message to a [ByteArray].
+     * Serializes the message to a [ByteArray] according to MAVLink v1 scheme.
+     * Extensions are not serialized.
      */
-    fun serialize(): ByteArray
+    fun serializeV1(): ByteArray
 
     /**
-     * Contains the MAVLink metadata for the message and also a [MavDeserializer]
-     * object.
+     * Serializes the message to a [ByteArray] according to MAVLink v2 scheme.
+     * Extensions are also serialized and payload truncation is applied.
+     */
+    fun serializeV2(): ByteArray
+
+    /**
+     * Contains the MAVLink metadata for the message and also a
+     * [MavDeserializer] object.
      */
     data class Metadata<T : MavMessage<T>>(
         val id: Int,

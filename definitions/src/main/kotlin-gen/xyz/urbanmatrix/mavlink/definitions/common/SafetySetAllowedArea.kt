@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Set a safety zone (volume), which is defined by two corners of a cube. This message can be used
@@ -30,45 +32,54 @@ public data class SafetySetAllowedArea(
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
    * handed, Z axis down.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * x position 1 / Latitude 1
    */
+  @GeneratedMavField(type = "float")
   public val p1x: Float = 0F,
   /**
    * y position 1 / Longitude 1
    */
+  @GeneratedMavField(type = "float")
   public val p1y: Float = 0F,
   /**
    * z position 1 / Altitude 1
    */
+  @GeneratedMavField(type = "float")
   public val p1z: Float = 0F,
   /**
    * x position 2 / Latitude 2
    */
+  @GeneratedMavField(type = "float")
   public val p2x: Float = 0F,
   /**
    * y position 2 / Longitude 2
    */
+  @GeneratedMavField(type = "float")
   public val p2y: Float = 0F,
   /**
    * z position 2 / Altitude 2
    */
+  @GeneratedMavField(type = "float")
   public val p2z: Float = 0F,
 ) : MavMessage<SafetySetAllowedArea> {
   public override val instanceMetadata: MavMessage.Metadata<SafetySetAllowedArea> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(p1x)
     outputBuffer.encodeFloat(p1y)
     outputBuffer.encodeFloat(p1z)
@@ -81,12 +92,28 @@ public data class SafetySetAllowedArea(
     return outputBuffer.array()
   }
 
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(p1x)
+    outputBuffer.encodeFloat(p1y)
+    outputBuffer.encodeFloat(p1z)
+    outputBuffer.encodeFloat(p2x)
+    outputBuffer.encodeFloat(p2y)
+    outputBuffer.encodeFloat(p2z)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(frame.value, 1)
+    return outputBuffer.array().truncateZeros()
+  }
+
   public companion object {
     private const val ID: Int = 54
 
     private const val CRC: Int = 15
 
-    private const val SIZE: Int = 27
+    private const val SIZE_V1: Int = 27
+
+    private const val SIZE_V2: Int = 27
 
     private val DESERIALIZER: MavDeserializer<SafetySetAllowedArea> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

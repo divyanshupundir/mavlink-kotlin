@@ -8,6 +8,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -22,6 +23,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Sets a desired vehicle attitude. Used by an external controller to command the vehicle (manual
@@ -35,48 +37,75 @@ public data class SetAttitudeTarget(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
   /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * Body roll rate
    */
+  @GeneratedMavField(type = "float")
   public val bodyRollRate: Float = 0F,
   /**
    * Body pitch rate
    */
+  @GeneratedMavField(type = "float")
   public val bodyPitchRate: Float = 0F,
   /**
    * Body yaw rate
    */
+  @GeneratedMavField(type = "float")
   public val bodyYawRate: Float = 0F,
   /**
    * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)
    */
+  @GeneratedMavField(type = "float")
   public val thrust: Float = 0F,
   /**
    * 3D thrust setpoint in the body NED frame, normalized to -1 .. 1
    */
+  @GeneratedMavField(
+    type = "float[3]",
+    extension = true,
+  )
   public val thrustBody: List<Float> = emptyList(),
 ) : MavMessage<SetAttitudeTarget> {
   public override val instanceMetadata: MavMessage.Metadata<SetAttitudeTarget> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(bodyRollRate)
+    outputBuffer.encodeFloat(bodyPitchRate)
+    outputBuffer.encodeFloat(bodyYawRate)
+    outputBuffer.encodeFloat(thrust)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(typeMask.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(bodyRollRate)
@@ -87,7 +116,7 @@ public data class SetAttitudeTarget(
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(typeMask.value, 1)
     outputBuffer.encodeFloatArray(thrustBody, 12)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -95,7 +124,9 @@ public data class SetAttitudeTarget(
 
     private const val CRC: Int = 49
 
-    private const val SIZE: Int = 51
+    private const val SIZE_V1: Int = 39
+
+    private const val SIZE_V2: Int = 51
 
     private val DESERIALIZER: MavDeserializer<SetAttitudeTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

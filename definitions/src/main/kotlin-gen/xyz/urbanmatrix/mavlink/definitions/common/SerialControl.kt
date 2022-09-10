@@ -7,6 +7,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -21,6 +22,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Control a serial port. This can be used for raw access to an onboard serial peripheral such as a
@@ -36,40 +38,65 @@ public data class SerialControl(
   /**
    * Serial control device type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val device: MavEnumValue<SerialControlDev> = MavEnumValue.fromValue(0),
   /**
    * Bitmap of serial control flags.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val flags: MavEnumValue<SerialControlFlag> = MavEnumValue.fromValue(0),
   /**
    * Timeout for reply data
    */
+  @GeneratedMavField(type = "uint16_t")
   public val timeout: Int = 0,
   /**
    * Baudrate of transfer. Zero means no change.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val baudrate: Long = 0L,
   /**
    * how many bytes in this transfer
    */
+  @GeneratedMavField(type = "uint8_t")
   public val count: Int = 0,
   /**
    * serial data
    */
+  @GeneratedMavField(type = "uint8_t[70]")
   public val `data`: List<Int> = emptyList(),
   /**
    * System ID
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val targetComponent: Int = 0,
 ) : MavMessage<SerialControl> {
   public override val instanceMetadata: MavMessage.Metadata<SerialControl> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(baudrate)
+    outputBuffer.encodeUint16(timeout)
+    outputBuffer.encodeEnumValue(device.value, 1)
+    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUint8Array(data, 70)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(baudrate)
     outputBuffer.encodeUint16(timeout)
     outputBuffer.encodeEnumValue(device.value, 1)
@@ -78,7 +105,7 @@ public data class SerialControl(
     outputBuffer.encodeUint8Array(data, 70)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -86,7 +113,9 @@ public data class SerialControl(
 
     private const val CRC: Int = 220
 
-    private const val SIZE: Int = 81
+    private const val SIZE_V1: Int = 79
+
+    private const val SIZE_V2: Int = 81
 
     private val DESERIALIZER: MavDeserializer<SerialControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

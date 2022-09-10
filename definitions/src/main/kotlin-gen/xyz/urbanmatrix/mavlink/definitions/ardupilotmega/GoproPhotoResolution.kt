@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,22 +12,27 @@ public enum class GoproPhotoResolution(
   /**
    * 5MP Medium.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PHOTO_RESOLUTION_5MP_MEDIUM(0L),
   /**
    * 7MP Medium.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PHOTO_RESOLUTION_7MP_MEDIUM(1L),
   /**
    * 7MP Wide.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PHOTO_RESOLUTION_7MP_WIDE(2L),
   /**
    * 10MP Wide.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PHOTO_RESOLUTION_10MP_WIDE(3L),
   /**
    * 12MP Wide.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PHOTO_RESOLUTION_12MP_WIDE(4L),
   ;
 

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class VideoStreamStatusFlags(
   /**
    * Stream is active (running)
    */
+  @GeneratedMavEnumEntry
   VIDEO_STREAM_STATUS_FLAGS_RUNNING(1L),
   /**
    * Stream is thermal imaging
    */
+  @GeneratedMavEnumEntry
   VIDEO_STREAM_STATUS_FLAGS_THERMAL(2L),
   ;
 

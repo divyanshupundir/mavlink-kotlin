@@ -17,7 +17,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sortedByPosition().forEach { addProperty(it.generateConstructorProperty(enumResolver)) } }
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (workInProgress) addAnnotation(WorkInProgress::class)
@@ -25,7 +25,8 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         }
         .addAnnotation(generateGeneratedAnnotation())
         .addProperty(generateInstanceMetadata(packageName))
-        .addFunction(generateSerialize())
+        .addFunction(generateSerializeV1())
+        .addFunction(generateSerializeV2())
         .addType(generateCompanionObject(packageName))
         .addType(generateBuilderClass(enumResolver, packageName))
         .build()
@@ -44,7 +45,8 @@ private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
-    .addProperty(generateSizeProperty())
+    .addProperty(generateSizeV1Property())
+    .addProperty(generateSizeV2Property())
     .addProperty(generateDeserializer(packageName))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
@@ -67,9 +69,14 @@ private fun MessageModel.generateCrcProperty() = PropertySpec
     .initializer("%L", crc)
     .build()
 
-private fun MessageModel.generateSizeProperty() = PropertySpec
-    .builder("SIZE", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", size)
+private fun MessageModel.generateSizeV1Property() = PropertySpec
+    .builder("SIZE_V1", Int::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%L", sizeV1)
+    .build()
+
+private fun MessageModel.generateSizeV2Property() = PropertySpec
+    .builder("SIZE_V2", Int::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%L", sizeV2)
     .build()
 
 private fun MessageModel.generateDeserializer(packageName: String) = PropertySpec
@@ -128,19 +135,36 @@ private fun MessageModel.generateInstanceMetadata(packageName: String) = Propert
     .initializer("METADATA")
     .build()
 
-private fun MessageModel.generateSerialize() = FunSpec
-    .builder("serialize")
+private fun MessageModel.generateSerializeV1() = FunSpec
+    .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
             addStatement(
-                "val outputBuffer = %T.allocate(SIZE).order(%T.LITTLE_ENDIAN)",
+                "val outputBuffer = %T.allocate(SIZE_V1).order(%T.LITTLE_ENDIAN)",
+                ByteBuffer::class,
+                ByteOrder::class
+            )
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            addStatement("return outputBuffer.array()")
+        }
+    )
+    .build()
+
+private fun MessageModel.generateSerializeV2() = FunSpec
+    .builder("serializeV2")
+    .addModifiers(KModifier.OVERRIDE)
+    .returns(ByteArray::class)
+    .addCode(
+        buildCodeBlock {
+            addStatement(
+                "val outputBuffer = %T.allocate(SIZE_V2).order(%T.LITTLE_ENDIAN)",
                 ByteBuffer::class,
                 ByteOrder::class
             )
             fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
-            addStatement("return outputBuffer.array()")
+            addStatement("return outputBuffer.array().%M()", truncateZerosMemberName)
         }
     )
     .build()
@@ -168,8 +192,13 @@ private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
 
-private val MessageModel.size: Int
+private val MessageModel.sizeV1: Int
+    get() = fields.filter { !it.extension }.sumOf { it.size }
+
+private val MessageModel.sizeV2: Int
     get() = fields.sumOf { it.size }
+
+private val truncateZerosMemberName = MemberName("xyz.urbanmatrix.mavlink.serialization", "truncateZeros")
 
 private fun MessageModel.getClassName(packageName: String): ClassName =
     ClassName(packageName, formattedName)

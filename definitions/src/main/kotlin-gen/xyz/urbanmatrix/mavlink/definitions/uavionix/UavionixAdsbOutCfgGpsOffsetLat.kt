@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.uavionix
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,13 +12,21 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class UavionixAdsbOutCfgGpsOffsetLat(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_NO_DATA(0L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_2M(1L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_4M(2L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_6M(3L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_0M(4L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_2M(5L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_4M(6L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_6M(7L),
   ;
 

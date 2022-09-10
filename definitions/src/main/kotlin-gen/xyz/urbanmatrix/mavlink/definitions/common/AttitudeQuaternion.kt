@@ -8,6 +8,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
@@ -30,34 +32,42 @@ public data class AttitudeQuaternion(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Quaternion component 1, w (1 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q1: Float = 0F,
   /**
    * Quaternion component 2, x (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q2: Float = 0F,
   /**
    * Quaternion component 3, y (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q3: Float = 0F,
   /**
    * Quaternion component 4, z (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q4: Float = 0F,
   /**
    * Roll angular speed
    */
+  @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    */
+  @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    */
+  @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
   /**
    * Rotation offset by which the attitude quaternion and angular speed vector should be rotated for
@@ -67,12 +77,29 @@ public data class AttitudeQuaternion(
    * between hover mode and fixed wing mode, thus repr_offset_q is equal to [1, 0, 0, 0] in hover mode
    * and equal to [0.7071, 0, 0.7071, 0] in fixed wing mode.
    */
+  @GeneratedMavField(
+    type = "float[4]",
+    extension = true,
+  )
   public val reprOffsetQ: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternion> {
   public override val instanceMetadata: MavMessage.Metadata<AttitudeQuaternion> = METADATA
 
-  public override fun serialize(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloat(q1)
+    outputBuffer.encodeFloat(q2)
+    outputBuffer.encodeFloat(q3)
+    outputBuffer.encodeFloat(q4)
+    outputBuffer.encodeFloat(rollspeed)
+    outputBuffer.encodeFloat(pitchspeed)
+    outputBuffer.encodeFloat(yawspeed)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
@@ -82,7 +109,7 @@ public data class AttitudeQuaternion(
     outputBuffer.encodeFloat(pitchspeed)
     outputBuffer.encodeFloat(yawspeed)
     outputBuffer.encodeFloatArray(reprOffsetQ, 16)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
@@ -90,7 +117,9 @@ public data class AttitudeQuaternion(
 
     private const val CRC: Int = 246
 
-    private const val SIZE: Int = 48
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 48
 
     private val DESERIALIZER: MavDeserializer<AttitudeQuaternion> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
