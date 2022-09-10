@@ -2,17 +2,10 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/urbanmatrix/mavlink-kotlin")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
     }
     plugins {
         kotlin("jvm") version "1.7.10"
+        id("com.vanniktech.maven.publish") version "0.22.0"
     }
 }
 

@@ -1,14 +1,9 @@
 plugins {
     kotlin("jvm")
-    `maven-publish`
+    id("com.vanniktech.maven.publish.base")
 }
 
 version = Specs.Plugin.developmentVersion
-
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
@@ -19,20 +14,7 @@ dependencies {
     testRuntimeOnly(TestDeps.jupiterEngine)
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/urbanmatrix/mavlink-kotlin")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-        }
-    }
+@Suppress("UnstableApiUsage")
+mavenPublishing {
+    configure(com.vanniktech.maven.publish.KotlinJvm())
 }
