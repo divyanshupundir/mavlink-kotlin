@@ -58,7 +58,7 @@ the other modules given that `api` is implemented correctly.
 
 ### serialization
 Tools for serializing and deserializing MAVLink message/frame Kotlin objects to and from a byte stream. More
-specifically, it contains extension functions on `ByteBuffer` to encode and decode different sizes of int, uint, float,
+specifically, it contains extension functions on `ByteArray` and `ByteBuffer` to encode and decode different sizes of int, uint, float,
 strings/characters, arrays, etc.
 
 ### generator
