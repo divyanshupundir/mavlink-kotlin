@@ -20,14 +20,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/urbanmatrix/mavlink-kotlin")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
     }
 
     @Suppress("UnstableApiUsage")
@@ -82,7 +74,8 @@ task("publishPlugin") {
     dependsOn(
         ":api:publish",
         ":serialization:publish",
-        ":generator:publishPlugins",
+        ":generator:publishPlugins"
+
     )
 }
 
@@ -92,5 +85,21 @@ task("publishLibrary") {
         ":definitions:publish",
         ":adapters:rxjava2:publish",
         ":adapters:rxjava3:publish"
+    )
+}
+
+task("closeAndReleasePlugin") {
+    dependsOn(
+        ":api:closeAndReleaseRepository",
+        ":serialization:closeAndReleaseRepository"
+    )
+}
+
+task("closeAndReleaseLibrary") {
+    dependsOn(
+        ":mavlink-kotlin:closeAndReleaseRepository",
+        ":definitions:closeAndReleaseRepository",
+        ":adapters:rxjava2:closeAndReleaseRepository",
+        ":adapters:rxjava3:closeAndReleaseRepository"
     )
 }
