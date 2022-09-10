@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.KotlinJvm
+
 plugins {
     kotlin("jvm")
     id("${Specs.group}.generator") version Specs.Plugin.releaseVersion
@@ -44,5 +46,5 @@ dependencies {
 
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(com.vanniktech.maven.publish.KotlinJvm())
+    configure(KotlinJvm())
 }

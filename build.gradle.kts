@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -24,8 +26,8 @@ allprojects {
 
     @Suppress("UnstableApiUsage")
     plugins.withId("com.vanniktech.maven.publish.base") {
-        configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
-            publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01)
+        configure<MavenPublishBaseExtension> {
+            publishToMavenCentral(SonatypeHost.S01)
             signAllPublications()
 
             pom {
@@ -33,6 +35,7 @@ allprojects {
                 name.set(project.name)
                 inceptionYear.set("2022")
                 url.set("https://github.com/urbanmatrix/mavlink-kotlin/")
+
                 licenses {
                     license {
                         name.set("The Apache Software License, Version 2.0")
@@ -40,11 +43,13 @@ allprojects {
                         distribution.set("repo")
                     }
                 }
+
                 scm {
                     url.set("https://github.com/urbanmatrix/mavlink-kotlin/")
                     connection.set("scm:git:git://github.com/urbanmatrix/mavlink-kotlin.git")
                     developerConnection.set("scm:git:ssh://git@github.com/urbanmatrix/mavlink-kotlin.git")
                 }
+
                 developers {
                     developer {
                         id.set("divyanshu1234")
@@ -75,7 +80,6 @@ task("publishPlugin") {
         ":api:publish",
         ":serialization:publish",
         ":generator:publishPlugins"
-
     )
 }
 

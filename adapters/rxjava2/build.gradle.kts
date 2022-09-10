@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.KotlinJvm
+
 plugins {
     kotlin("jvm")
     id("com.vanniktech.maven.publish.base")
@@ -20,5 +22,5 @@ dependencies {
 
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(com.vanniktech.maven.publish.KotlinJvm())
+    configure(KotlinJvm())
 }
