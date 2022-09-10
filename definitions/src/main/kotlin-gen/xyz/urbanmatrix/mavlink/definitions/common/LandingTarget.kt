@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -22,6 +23,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
@@ -35,64 +37,109 @@ public data class LandingTarget(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * The ID of the target if multiple targets are present
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetNum: Int = 0,
   /**
    * Coordinate frame used for following fields.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * X-axis angular offset of the target from the center of the image
    */
+  @GeneratedMavField(type = "float")
   public val angleX: Float = 0F,
   /**
    * Y-axis angular offset of the target from the center of the image
    */
+  @GeneratedMavField(type = "float")
   public val angleY: Float = 0F,
   /**
    * Distance to the target from the vehicle
    */
+  @GeneratedMavField(type = "float")
   public val distance: Float = 0F,
   /**
    * Size of target along x-axis
    */
+  @GeneratedMavField(type = "float")
   public val sizeX: Float = 0F,
   /**
    * Size of target along y-axis
    */
+  @GeneratedMavField(type = "float")
   public val sizeY: Float = 0F,
   /**
    * X Position of the landing target in MAV_FRAME
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val x: Float = 0F,
   /**
    * Y Position of the landing target in MAV_FRAME
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val y: Float = 0F,
   /**
    * Z Position of the landing target in MAV_FRAME
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val z: Float = 0F,
   /**
    * Quaternion of landing target orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
+  @GeneratedMavField(
+    type = "float[4]",
+    extension = true,
+  )
   public val q: List<Float> = emptyList(),
   /**
    * Type of landing target
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0),
   /**
    * Boolean indicating whether the position fields (x, y, z, q, type) contain valid target position
    * information (valid: 1, invalid: 0). Default is 0 (invalid).
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val positionValid: Int = 0,
 ) : MavMessage<LandingTarget> {
   public override val instanceMetadata: MavMessage.Metadata<LandingTarget> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(angleX)
+    outputBuffer.encodeFloat(angleY)
+    outputBuffer.encodeFloat(distance)
+    outputBuffer.encodeFloat(sizeX)
+    outputBuffer.encodeFloat(sizeY)
+    outputBuffer.encodeUint8(targetNum)
+    outputBuffer.encodeEnumValue(frame.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(angleX)
@@ -108,7 +155,7 @@ public data class LandingTarget(
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeUint8(positionValid)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

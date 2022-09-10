@@ -3,6 +3,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 import kotlin.Deprecated
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 
@@ -46,6 +47,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_WAYPOINT(16L),
   /**
    * Loiter around this waypoint an unlimited amount of time
@@ -73,6 +75,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LOITER_UNLIM(17L),
   /**
    * Loiter around this waypoint for X turns
@@ -105,6 +108,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LOITER_TURNS(18L),
   /**
    * Loiter at the specified latitude, longitude and altitude for a certain amount of time.
@@ -141,6 +145,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LOITER_TIME(19L),
   /**
    * Return to launch location
@@ -166,6 +171,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_RETURN_TO_LAUNCH(20L),
   /**
    * Land at location.
@@ -192,6 +198,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Landing altitude (ground level in current frame).
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LAND(21L),
   /**
    * Takeoff from ground / hand. Vehicles that support multiple takeoff modes (e.g. VTOL quadplane)
@@ -219,6 +226,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_TAKEOFF(22L),
   /**
    * Land at local position (local frame only)
@@ -246,6 +254,7 @@ public enum class MavCmd(
    * index = 7; label = Z Position; units = m; 
    * Z-axis / ground level position
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LAND_LOCAL(23L),
   /**
    * Takeoff from local position (local frame only)
@@ -272,6 +281,7 @@ public enum class MavCmd(
    * index = 7; label = Z Position; units = m; 
    * Z-axis position
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_TAKEOFF_LOCAL(24L),
   /**
    * Vehicle following, i.e. this waypoint represents the position of a moving vehicle
@@ -298,6 +308,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_FOLLOW(25L),
   /**
    * Continue on the current course and climb/descend to specified altitude.  When the altitude is
@@ -327,6 +338,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Desired altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_CONTINUE_AND_CHANGE_ALT(30L),
   /**
    * Begin loiter at the specified Latitude and Longitude.  If Lat=Lon=0, then loiter at the current
@@ -362,6 +374,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LOITER_TO_ALT(31L),
   /**
    * Begin following a target
@@ -390,6 +403,7 @@ public enum class MavCmd(
    * Time to land in which the MAV should go to the default position hold mode after a message RX
    * timeout.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_FOLLOW(32L),
   /**
    * Reposition the MAV after a follow target command has been sent
@@ -415,6 +429,7 @@ public enum class MavCmd(
    * index = 7; label = Y Offset; units = m; 
    * Y offset from target
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_FOLLOW_REPOSITION(33L),
   /**
    * Start orbiting on the circumference of a circle defined by the parameters. Setting values to
@@ -450,6 +465,7 @@ public enum class MavCmd(
    * NaN: Use current vehicle altitude.
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_ORBIT(34L),
   /**
    * Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used
@@ -478,6 +494,7 @@ public enum class MavCmd(
    * z
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_ROI(80L),
   /**
    * Control autonomous path planning on the MAV.
@@ -505,6 +522,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude/Z; 
    * Altitude/Z of goal
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_PATHPLANNING(81L),
   /**
    * Navigate to waypoint using a spline path.
@@ -530,6 +548,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude/Z; 
    * Altitude/Z of goal
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_SPLINE_WAYPOINT(82L),
   /**
    * Takeoff from ground using VTOL mode, and transition to forward flight with specified heading.
@@ -558,6 +577,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_VTOL_TAKEOFF(84L),
   /**
    * Land using VTOL mode
@@ -585,6 +605,7 @@ public enum class MavCmd(
    * Altitude (ground level) relative to the current coordinate frame. NaN to use system default
    * landing altitude (ignore value).
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_VTOL_LAND(85L),
   /**
    * hand control over to an external controller
@@ -610,6 +631,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_GUIDED_ENABLE(92L),
   /**
    * Delay the next navigation command a number of seconds or until a specified time
@@ -635,6 +657,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_DELAY(93L),
   /**
    * Descend and place payload. Vehicle moves to specified location, descends until it detects a
@@ -663,6 +686,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_PAYLOAD_PLACE(94L),
   /**
    * NOP - This command is only used to mark the upper limit of the NAV/ACTION commands in the
@@ -689,6 +713,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_LAST(95L),
   /**
    * Delay mission state machine.
@@ -714,6 +739,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONDITION_DELAY(112L),
   /**
    * Ascend/descend to target altitude at specified rate. Delay mission state machine until desired
@@ -740,6 +766,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Target Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONDITION_CHANGE_ALT(113L),
   /**
    * Delay mission state machine until within desired distance of next NAV point.
@@ -765,6 +792,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONDITION_DISTANCE(114L),
   /**
    * Reach a certain target angle.
@@ -790,6 +818,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONDITION_YAW(115L),
   /**
    * NOP - This command is only used to mark the upper limit of the CONDITION commands in the
@@ -816,6 +845,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONDITION_LAST(159L),
   /**
    * Set system mode.
@@ -843,6 +873,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_MODE(176L),
   /**
    * Jump to the desired command in the mission list.  Repeat this action only the specified number
@@ -869,6 +900,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_JUMP(177L),
   /**
    * Change speed and/or throttle set points.
@@ -884,6 +916,7 @@ public enum class MavCmd(
    *
    * index = 4; index = 5; index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_CHANGE_SPEED(178L),
   /**
    *
@@ -916,6 +949,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_HOME(179L),
   /**
    * Set a system parameter.  Caution!  Use of this command requires knowledge of the numeric
@@ -942,6 +976,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_PARAMETER(180L),
   /**
    * Set a relay to a condition.
@@ -967,6 +1002,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_RELAY(181L),
   /**
    * Cycle a relay on and off for a desired number of cycles with a desired period.
@@ -992,6 +1028,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_REPEAT_RELAY(182L),
   /**
    * Set a servo to a desired PWM value.
@@ -1017,6 +1054,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_SERVO(183L),
   /**
    * Cycle a between its nominal setting and a desired PWM for a desired number of cycles with a
@@ -1043,6 +1081,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_REPEAT_SERVO(184L),
   /**
    * Terminate flight immediately.
@@ -1080,6 +1119,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_FLIGHTTERMINATION(185L),
   /**
    * Change altitude set point.
@@ -1105,6 +1145,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_CHANGE_ALTITUDE(186L),
   /**
    * Sets actuators (e.g. servos) to a desired value. The actuator numbers are mapped to specific
@@ -1132,6 +1173,7 @@ public enum class MavCmd(
    * index = 7; label = Index; 
    * Index of actuator set (i.e if set to 1, Actuator 1 becomes Actuator 7)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_ACTUATOR(187L),
   /**
    * Mission command to perform a landing. This is used as a marker in a mission to tell the
@@ -1161,6 +1203,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_LAND_START(189L),
   /**
    * Mission command to perform a landing from a rally point.
@@ -1186,6 +1229,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_RALLY_LAND(190L),
   /**
    * Mission command to safely abort an autonomous landing.
@@ -1211,6 +1255,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_GO_AROUND(191L),
   /**
    * Reposition the vehicle to a specific WGS84 global position.
@@ -1238,6 +1283,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_REPOSITION(192L),
   /**
    * If in a GPS controlled position mode, hold the current position or continue.
@@ -1265,6 +1311,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_PAUSE_CONTINUE(193L),
   /**
    * Set moving direction to forward or reverse.
@@ -1290,6 +1337,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_REVERSE(194L),
   /**
    * Sets the region of interest (ROI) to a location. This can then be used by the vehicle's control
@@ -1319,6 +1367,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude of ROI location
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_ROI_LOCATION(195L),
   /**
    * Sets the region of interest (ROI) to be toward next waypoint, with optional pitch/roll/yaw
@@ -1348,6 +1397,7 @@ public enum class MavCmd(
    * index = 7; label = Yaw Offset; 
    * Yaw offset from next waypoint, positive yawing to the right
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_ROI_WPNEXT_OFFSET(196L),
   /**
    * Cancels any previous ROI command returning the vehicle/sensors to default flight
@@ -1379,6 +1429,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_ROI_NONE(197L),
   /**
    * Mount tracks system with specified system ID. Determination of target vehicle position may be
@@ -1392,6 +1443,7 @@ public enum class MavCmd(
    * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
    * device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_ROI_SYSID(198L),
   /**
    * Control onboard camera system.
@@ -1417,6 +1469,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_CONTROL_VIDEO(200L),
   /**
    * Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used
@@ -1445,6 +1498,7 @@ public enum class MavCmd(
    * MAV_ROI_WPNEXT: yaw offset from next waypoint, MAV_ROI_LOCATION: altitude
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_ROI(201L),
   /**
    * Configure digital camera. This is a fallback message for systems that have not yet implemented
@@ -1472,6 +1526,7 @@ public enum class MavCmd(
    * index = 7; label = Engine Cut-off; units = ds; 
    * Main engine cut-off time before camera trigger. (0 means no cut-off)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_DIGICAM_CONFIGURE(202L),
   /**
    * Control digital camera. This is a fallback message for systems that have not yet implemented
@@ -1500,6 +1555,7 @@ public enum class MavCmd(
    * Test shot identifier. If set to 1, image will only be captured, but not counted towards
    * internal frame count.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_DIGICAM_CONTROL(203L),
   /**
    * Mission command to configure a camera or antenna mount
@@ -1527,6 +1583,7 @@ public enum class MavCmd(
    */
   @Deprecated(message =
       "This message has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE. The message can still be used to communicate with legacy gimbals implementing it.")
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_MOUNT_CONFIGURE(204L),
   /**
    * Mission command to control a camera or antenna mount
@@ -1554,6 +1611,7 @@ public enum class MavCmd(
    */
   @Deprecated(message =
       "This message is ambiguous and inconsistent. It has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW and MAV_CMD_DO_SET_ROI_*. The message can still be used to communicate with legacy gimbals implementing it.")
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_MOUNT_CONTROL(205L),
   /**
    * Mission command to set camera trigger distance for this flight. The camera is triggered each
@@ -1581,6 +1639,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_CAM_TRIGG_DIST(206L),
   /**
    * Mission command to enable the geofence
@@ -1606,6 +1665,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_FENCE_ENABLE(207L),
   /**
    * Mission item/command to release a parachute or enable/disable auto release.
@@ -1631,6 +1691,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_PARACHUTE(208L),
   /**
    * Command to perform motor test.
@@ -1657,6 +1718,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_MOTOR_TEST(209L),
   /**
    * Change to/from inverted flight.
@@ -1682,6 +1744,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_INVERTED_FLIGHT(210L),
   /**
    * Mission command to operate a gripper.
@@ -1707,6 +1770,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_GRIPPER(211L),
   /**
    * Enable/disable autotune.
@@ -1732,6 +1796,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_AUTOTUNE_ENABLE(212L),
   /**
    * Sets a desired vehicle turn angle and speed change.
@@ -1757,6 +1822,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_SET_YAW_SPEED(213L),
   /**
    * Mission command to set camera trigger interval for this flight. If triggering is enabled, the
@@ -1784,6 +1850,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_CAM_TRIGG_INTERVAL(214L),
   /**
    * Mission command to control a camera or antenna mount, using a quaternion as reference.
@@ -1810,6 +1877,7 @@ public enum class MavCmd(
    * Empty
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_MOUNT_CONTROL_QUAT(220L),
   /**
    * set id of master controller
@@ -1835,6 +1903,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_GUIDED_MASTER(221L),
   /**
    * Set limits for external control
@@ -1865,6 +1934,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_GUIDED_LIMITS(222L),
   /**
    * Control vehicle engine. This is interpreted by the vehicles engine controller to change the
@@ -1896,6 +1966,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_ENGINE_CONTROL(223L),
   /**
    * Set the mission item with sequence number seq as current item. This means that the MAV will
@@ -1925,6 +1996,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_MISSION_CURRENT(224L),
   /**
    * NOP - This command is only used to mark the upper limit of the DO commands in the enumeration
@@ -1950,6 +2022,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_LAST(240L),
   /**
    * Trigger calibration. This command will be only accepted if in pre-flight mode. Except for
@@ -1979,6 +2052,7 @@ public enum class MavCmd(
    * index = 7; label = ESC or Baro; 
    * 1: ESC calibration, 3: barometer temperature calibration
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PREFLIGHT_CALIBRATION(241L),
   /**
    * Set sensor offsets. This command will be only accepted if in pre-flight mode.
@@ -2005,6 +2079,7 @@ public enum class MavCmd(
    * index = 7; label = 6th Dimension; 
    * Generic dimension 6, in the sensor's raw units
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PREFLIGHT_SET_SENSOR_OFFSETS(242L),
   /**
    * Trigger UAVCAN configuration (actuator ID assignment and direction mapping). Note that this
@@ -2033,6 +2108,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PREFLIGHT_UAVCAN(243L),
   /**
    * Request storage of different parameter values and logs. This command will be only accepted if
@@ -2060,6 +2136,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PREFLIGHT_STORAGE(245L),
   /**
    * Request the reboot or shutdown of system components.
@@ -2088,6 +2165,7 @@ public enum class MavCmd(
    * index = 7; 
    * WIP: ID (e.g. camera ID -1 for all IDs)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN(246L),
   /**
    * Override current mission with command to pause mission, pause mission and move to position,
@@ -2117,6 +2195,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude/Z; 
    * Altitude/Z position.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_OVERRIDE_GOTO(252L),
   /**
    * Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for
@@ -2150,6 +2229,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_OBLIQUE_SURVEY(260L),
   /**
    * start running a mission
@@ -2160,6 +2240,7 @@ public enum class MavCmd(
    * index = 2; label = Last Item; 
    * last_item:  the last mission item to run (after this item is run, the mission ends)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_MISSION_START(300L),
   /**
    * Actuator testing command. This is similar to MAV_CMD_DO_MOTOR_TEST but operates on the level of
@@ -2181,6 +2262,7 @@ public enum class MavCmd(
    *
    * index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_ACTUATOR_TEST(310L),
   /**
    * Actuator configuration command.
@@ -2193,6 +2275,7 @@ public enum class MavCmd(
    *
    * index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONFIGURE_ACTUATOR(311L),
   /**
    * Arms / Disarms a component
@@ -2204,6 +2287,7 @@ public enum class MavCmd(
    * 0: arm-disarm unless prevented by safety checks (i.e. when landed), 21196: force
    * arming/disarming (e.g. allow arming to override preflight checks and disarming in flight)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_COMPONENT_ARM_DISARM(400L),
   /**
    * Instructs system to run pre-arm checks. This command should return
@@ -2212,6 +2296,7 @@ public enum class MavCmd(
    * armable or not, just whether the system has successfully run/is currently running the checks.  The
    * result of the checks is reflected in the SYS_STATUS message.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_RUN_PREARM_CHECKS(401L),
   /**
    * Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark
@@ -2222,6 +2307,7 @@ public enum class MavCmd(
    * 0: Illuminators OFF, 1: Illuminators ON
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_ILLUMINATOR_ON_OFF(405L),
   /**
    * Request the home position from the vehicle.
@@ -2249,6 +2335,7 @@ public enum class MavCmd(
    * Reserved
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_GET_HOME_POSITION(410L),
   /**
    * Inject artificial failure for testing purposes. Note that autopilots should implement an
@@ -2263,6 +2350,7 @@ public enum class MavCmd(
    * index = 3; label = Instance; 
    * Instance affected by failure (0 to signal all).
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_INJECT_FAILURE(420L),
   /**
    * Starts receiver pairing.
@@ -2273,6 +2361,7 @@ public enum class MavCmd(
    * index = 2; label = RC Type; 
    * RC type.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_START_RX_PAIR(500L),
   /**
    *
@@ -2285,6 +2374,7 @@ public enum class MavCmd(
    * The MAVLink message ID
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_GET_MESSAGE_INTERVAL(510L),
   /**
    * Set the interval between messages for a particular MAVLink message ID. This interface replaces
@@ -2300,6 +2390,7 @@ public enum class MavCmd(
    * Target address of message stream (if message has target address fields). 0: Flight-stack
    * default (recommended), 1: address of requestor, 2: broadcast.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_MESSAGE_INTERVAL(511L),
   /**
    * Request the target system(s) emit a single instance of a specified message (i.e. a "one-shot"
@@ -2332,6 +2423,7 @@ public enum class MavCmd(
    * Target address for requested message (if message has target address fields). 0: Flight-stack
    * default, 1: address of requestor, 2: broadcast.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_MESSAGE(512L),
   /**
    * Request MAVLink protocol version compatibility. All receivers should ACK the command and then
@@ -2344,6 +2436,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_PROTOCOL_VERSION(519L),
   /**
    * Request autopilot capabilities. The receiver should ACK the command and then emit its
@@ -2356,6 +2449,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES(520L),
   /**
    * Request camera information (CAMERA_INFORMATION).
@@ -2367,6 +2461,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_CAMERA_INFORMATION(521L),
   /**
    * Request camera settings (CAMERA_SETTINGS).
@@ -2378,6 +2473,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_CAMERA_SETTINGS(522L),
   /**
    * Request storage information (STORAGE_INFORMATION). Use the command's target_component to target
@@ -2393,6 +2489,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_STORAGE_INFORMATION(525L),
   /**
    * Format a storage medium. Once format is complete, a STORAGE_INFORMATION message is sent. Use
@@ -2412,6 +2509,7 @@ public enum class MavCmd(
    * index = 4; 
    * Reserved (all remaining params)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_STORAGE_FORMAT(526L),
   /**
    * Request camera capture status (CAMERA_CAPTURE_STATUS)
@@ -2423,6 +2521,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS(527L),
   /**
    * Request flight information (FLIGHT_INFORMATION)
@@ -2434,6 +2533,7 @@ public enum class MavCmd(
    * Reserved (all remaining params)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_FLIGHT_INFORMATION(528L),
   /**
    * Reset all camera settings to Factory Default
@@ -2444,6 +2544,7 @@ public enum class MavCmd(
    * index = 2; 
    * Reserved (all remaining params)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_RESET_CAMERA_SETTINGS(529L),
   /**
    * Set camera running mode. Use NaN for reserved values. GCS will send a
@@ -2458,6 +2559,7 @@ public enum class MavCmd(
    *
    * index = 3; index = 4; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_CAMERA_MODE(530L),
   /**
    * Set camera zoom. Camera must respond with a CAMERA_SETTINGS message (on success).
@@ -2470,6 +2572,7 @@ public enum class MavCmd(
    *
    * index = 3; index = 4; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_CAMERA_ZOOM(531L),
   /**
    * Set camera focus. Camera must respond with a CAMERA_SETTINGS message (on success).
@@ -2482,6 +2585,7 @@ public enum class MavCmd(
    *
    * index = 3; index = 4; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_CAMERA_FOCUS(532L),
   /**
    * Set that a particular storage is the preferred location for saving photos, videos, and/or other
@@ -2500,6 +2604,7 @@ public enum class MavCmd(
    * index = 2; label = Usage; 
    * Usage flags
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_STORAGE_USAGE(533L),
   /**
    * Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG.
@@ -2507,6 +2612,7 @@ public enum class MavCmd(
    * index = 1; label = Tag; 
    * Tag.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_JUMP_TAG(600L),
   /**
    * Jump to the matching tag in the mission list. Repeat this action for the specified number of
@@ -2520,6 +2626,7 @@ public enum class MavCmd(
    * index = 2; label = Repeat; 
    * Repeat count.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_JUMP_TAG(601L),
   /**
    * High level setpoint to be sent to a gimbal manager to set a gimbal attitude. It is possible to
@@ -2550,6 +2657,7 @@ public enum class MavCmd(
    * device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW(1000L),
   /**
    * Gimbal configuration to set which sysid/compid is in primary and secondary control.
@@ -2578,6 +2686,7 @@ public enum class MavCmd(
    * device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE(1001L),
   /**
    * Start image capture sequence. Sends CAMERA_IMAGE_CAPTURED after each capture. Use NaN for
@@ -2600,6 +2709,7 @@ public enum class MavCmd(
    *
    * index = 5; index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_IMAGE_START_CAPTURE(2000L),
   /**
    * Stop image capture sequence Use NaN for reserved values.
@@ -2609,6 +2719,7 @@ public enum class MavCmd(
    *
    * index = 2; index = 3; index = 4; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_IMAGE_STOP_CAPTURE(2001L),
   /**
    * Re-request a CAMERA_IMAGE_CAPTURED message.
@@ -2619,6 +2730,7 @@ public enum class MavCmd(
    * index = 2; index = 3; index = 4; index = 7; 
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_CAMERA_IMAGE_CAPTURE(2002L),
   /**
    * Enable or disable on-board camera triggering system.
@@ -2632,6 +2744,7 @@ public enum class MavCmd(
    * index = 3; label = Pause; 
    * 1 to pause triggering, but without switching the camera off or retracting it. -1 to ignore
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_TRIGGER_CONTROL(2003L),
   /**
    * If the camera supports point visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_POINT is set), this
@@ -2647,6 +2760,7 @@ public enum class MavCmd(
    * Point radius (normalized 0..1, 0 is image left, 1 is image right).
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_CAMERA_TRACK_POINT(2004L),
   /**
    * If the camera supports rectangle visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE is
@@ -2665,11 +2779,13 @@ public enum class MavCmd(
    * Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_CAMERA_TRACK_RECTANGLE(2005L),
   /**
    * Stops ongoing tracking.
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_CAMERA_STOP_TRACKING(2010L),
   /**
    * Starts video capture (recording).
@@ -2683,6 +2799,7 @@ public enum class MavCmd(
    *
    * index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_VIDEO_START_CAPTURE(2500L),
   /**
    * Stop the current video capture (recording).
@@ -2692,6 +2809,7 @@ public enum class MavCmd(
    *
    * index = 2; index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_VIDEO_STOP_CAPTURE(2501L),
   /**
    * Start video streaming
@@ -2699,6 +2817,7 @@ public enum class MavCmd(
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_VIDEO_START_STREAMING(2502L),
   /**
    * Stop the given video stream
@@ -2706,6 +2825,7 @@ public enum class MavCmd(
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_VIDEO_STOP_STREAMING(2503L),
   /**
    * Request video stream information (VIDEO_STREAM_INFORMATION)
@@ -2714,6 +2834,7 @@ public enum class MavCmd(
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_VIDEO_STREAM_INFORMATION(2504L),
   /**
    * Request video stream status (VIDEO_STREAM_STATUS)
@@ -2722,6 +2843,7 @@ public enum class MavCmd(
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_REQUEST_VIDEO_STREAM_STATUS(2505L),
   /**
    * Request to start streaming logging data over MAVLink (see also LOGGING_DATA message)
@@ -2747,6 +2869,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved (set to 0)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_LOGGING_START(2510L),
   /**
    * Request to stop streaming log data over MAVLink
@@ -2772,6 +2895,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved (set to 0)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_LOGGING_STOP(2511L),
   /**
    *
@@ -2784,6 +2908,7 @@ public enum class MavCmd(
    *
    * index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_AIRFRAME_CONFIGURATION(2520L),
   /**
    * Request to start/stop transmitting over the high latency telemetry
@@ -2809,6 +2934,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CONTROL_HIGH_LATENCY(2600L),
   /**
    * Create a panorama at the current position
@@ -2825,6 +2951,7 @@ public enum class MavCmd(
    * index = 4; label = Vertical Speed; units = deg/s; 
    * Speed of the vertical rotation.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PANORAMA_CREATE(2800L),
   /**
    * Request VTOL transition
@@ -2838,6 +2965,7 @@ public enum class MavCmd(
    * transition. Can be used, for example, to trigger an emergency "Quadchute". Caution: Can be
    * dangerous/damage vehicle, depending on autopilot implementation of this command.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_VTOL_TRANSITION(3000L),
   /**
    * Request authorization to arm the vehicle to a external entity, the arm authorizer is
@@ -2851,12 +2979,14 @@ public enum class MavCmd(
    * Vehicle system id, this way ground station can request arm authorization on behalf of any
    * vehicle
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_ARM_AUTHORIZATION_REQUEST(3001L),
   /**
    * This command sets the submode to standard guided when vehicle is in guided mode. The vehicle
    * holds position and altitude and the user can input the desired velocities along all three axes.
    *                   
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_GUIDED_SUBMODE_STANDARD(4000L),
   /**
    * This command sets submode circle when vehicle is in guided mode. Vehicle flies along a circle
@@ -2882,6 +3012,7 @@ public enum class MavCmd(
    * index = 6; label = Longitude; units = degE7; 
    * Target longitude of center of circle in CIRCLE_MODE
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_GUIDED_SUBMODE_CIRCLE(4001L),
   /**
    * Delay mission state machine until gate has been reached.
@@ -2908,6 +3039,7 @@ public enum class MavCmd(
    * Altitude
    */
   @WorkInProgress
+  @GeneratedMavEnumEntry
   MAV_CMD_CONDITION_GATE(4501L),
   /**
    * Fence return point (there can only be one such point in a geofence definition). If rally points
@@ -2934,6 +3066,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_FENCE_RETURN_POINT(5000L),
   /**
    * Fence vertex for an inclusion polygon (the polygon must not be self-intersecting). The vehicle
@@ -2962,6 +3095,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION(5001L),
   /**
    * Fence vertex for an exclusion polygon (the polygon must not be self-intersecting). The vehicle
@@ -2989,6 +3123,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION(5002L),
   /**
    * Circular fence area. The vehicle must stay inside this area.
@@ -3016,6 +3151,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION(5003L),
   /**
    * Circular fence area. The vehicle must stay outside this area.
@@ -3042,6 +3178,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION(5004L),
   /**
    * Rally point. You can have multiple rally points defined.
@@ -3068,6 +3205,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_RALLY_POINT(5100L),
   /**
    * Commands the vehicle to respond with a sequence of messages UAVCAN_NODE_INFO, one message per
@@ -3097,6 +3235,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved (set to 0)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_UAVCAN_GET_NODE_INFO(5200L),
   /**
    * Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an
@@ -3124,6 +3263,7 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved (set to 0)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_ADSB_OUT_IDENT(10001L),
   /**
    * Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the
@@ -3157,6 +3297,7 @@ public enum class MavCmd(
    * Altitude (MSL)
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_PAYLOAD_PREPARE_DEPLOY(30001L),
   /**
    * Control the payload deployment.
@@ -3184,6 +3325,7 @@ public enum class MavCmd(
    * Reserved
    */
   @Deprecated(message = "")
+  @GeneratedMavEnumEntry
   MAV_CMD_PAYLOAD_CONTROL_DEPLOY(30002L),
   /**
    * Magnetometer calibration based on provided known yaw. This allows for fast calibration using
@@ -3211,6 +3353,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_FIXED_MAG_CAL_YAW(42006L),
   /**
    * Command to operate winch.
@@ -3236,6 +3379,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_WINCH(42600L),
   /**
    * User defined waypoint item. Ground Station will show the Vehicle as flying through this item.
@@ -3261,6 +3405,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_WAYPOINT_USER_1(31000L),
   /**
    * User defined waypoint item. Ground Station will show the Vehicle as flying through this item.
@@ -3286,6 +3431,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_WAYPOINT_USER_2(31001L),
   /**
    * User defined waypoint item. Ground Station will show the Vehicle as flying through this item.
@@ -3311,6 +3457,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_WAYPOINT_USER_3(31002L),
   /**
    * User defined waypoint item. Ground Station will show the Vehicle as flying through this item.
@@ -3336,6 +3483,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_WAYPOINT_USER_4(31003L),
   /**
    * User defined waypoint item. Ground Station will show the Vehicle as flying through this item.
@@ -3361,6 +3509,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_WAYPOINT_USER_5(31004L),
   /**
    * User defined spatial item. Ground Station will not show the Vehicle as flying through this
@@ -3387,6 +3536,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SPATIAL_USER_1(31005L),
   /**
    * User defined spatial item. Ground Station will not show the Vehicle as flying through this
@@ -3413,6 +3563,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SPATIAL_USER_2(31006L),
   /**
    * User defined spatial item. Ground Station will not show the Vehicle as flying through this
@@ -3439,6 +3590,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SPATIAL_USER_3(31007L),
   /**
    * User defined spatial item. Ground Station will not show the Vehicle as flying through this
@@ -3465,6 +3617,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SPATIAL_USER_4(31008L),
   /**
    * User defined spatial item. Ground Station will not show the Vehicle as flying through this
@@ -3491,6 +3644,7 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SPATIAL_USER_5(31009L),
   /**
    * User defined command. Ground Station will not show the Vehicle as flying through this item.
@@ -3517,6 +3671,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_USER_1(31010L),
   /**
    * User defined command. Ground Station will not show the Vehicle as flying through this item.
@@ -3543,6 +3698,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_USER_2(31011L),
   /**
    * User defined command. Ground Station will not show the Vehicle as flying through this item.
@@ -3569,6 +3725,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_USER_3(31012L),
   /**
    * User defined command. Ground Station will not show the Vehicle as flying through this item.
@@ -3595,6 +3752,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_USER_4(31013L),
   /**
    * User defined command. Ground Station will not show the Vehicle as flying through this item.
@@ -3621,6 +3779,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_USER_5(31014L),
   /**
    * Request forwarding of CAN packets from the given CAN bus to this component. CAN Frames are sent
@@ -3647,6 +3806,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_CAN_FORWARD(32000L),
   ;
 

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,66 +12,82 @@ public enum class MavOdidTimeAcc(
   /**
    * The timestamp accuracy is unknown.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_UNKNOWN(0L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.1 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_1_SECOND(1L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.2 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_2_SECOND(2L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.3 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_3_SECOND(3L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.4 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_4_SECOND(4L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.5 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_5_SECOND(5L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.6 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_6_SECOND(6L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.7 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_7_SECOND(7L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.8 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_8_SECOND(8L),
   /**
    * The timestamp accuracy is smaller than or equal to 0.9 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_0_9_SECOND(9L),
   /**
    * The timestamp accuracy is smaller than or equal to 1.0 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_1_0_SECOND(10L),
   /**
    * The timestamp accuracy is smaller than or equal to 1.1 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_1_1_SECOND(11L),
   /**
    * The timestamp accuracy is smaller than or equal to 1.2 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_1_2_SECOND(12L),
   /**
    * The timestamp accuracy is smaller than or equal to 1.3 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_1_3_SECOND(13L),
   /**
    * The timestamp accuracy is smaller than or equal to 1.4 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_1_4_SECOND(14L),
   /**
    * The timestamp accuracy is smaller than or equal to 1.5 second.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_TIME_ACC_1_5_SECOND(15L),
   ;
 

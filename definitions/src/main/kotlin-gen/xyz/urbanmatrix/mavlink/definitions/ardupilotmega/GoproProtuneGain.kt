@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,22 +12,27 @@ public enum class GoproProtuneGain(
   /**
    * ISO 400.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_GAIN_400(0L),
   /**
    * ISO 800 (Only Hero 4).
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_GAIN_800(1L),
   /**
    * ISO 1600.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_GAIN_1600(2L),
   /**
    * ISO 3200 (Only Hero 4).
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_GAIN_3200(3L),
   /**
    * ISO 6400.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_GAIN_6400(4L),
   ;
 

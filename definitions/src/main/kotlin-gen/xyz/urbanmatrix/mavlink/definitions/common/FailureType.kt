@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,34 +15,42 @@ public enum class FailureType(
   /**
    * No failure injected, used to reset a previous failure.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_OK(0L),
   /**
    * Sets unit off, so completely non-responsive.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_OFF(1L),
   /**
    * Unit is stuck e.g. keeps reporting the same value.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_STUCK(2L),
   /**
    * Unit is reporting complete garbage.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_GARBAGE(3L),
   /**
    * Unit is consistently wrong.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_WRONG(4L),
   /**
    * Unit is slow, so e.g. reporting at slower than expected rate.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_SLOW(5L),
   /**
    * Data of unit is delayed in time.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_DELAYED(6L),
   /**
    * Unit is sometimes working, sometimes not.
    */
+  @GeneratedMavEnumEntry
   FAILURE_TYPE_INTERMITTENT(7L),
   ;
 

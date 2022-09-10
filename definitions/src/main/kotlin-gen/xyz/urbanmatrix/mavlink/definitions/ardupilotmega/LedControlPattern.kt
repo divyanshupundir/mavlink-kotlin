@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class LedControlPattern(
   /**
    * LED patterns off (return control to regular vehicle control).
    */
+  @GeneratedMavEnumEntry
   LED_CONTROL_PATTERN_OFF(0L),
   /**
    * LEDs show pattern during firmware update.
    */
+  @GeneratedMavEnumEntry
   LED_CONTROL_PATTERN_FIRMWAREUPDATE(1L),
   /**
    * Custom Pattern using custom bytes fields.
    */
+  @GeneratedMavEnumEntry
   LED_CONTROL_PATTERN_CUSTOM(255L),
   ;
 

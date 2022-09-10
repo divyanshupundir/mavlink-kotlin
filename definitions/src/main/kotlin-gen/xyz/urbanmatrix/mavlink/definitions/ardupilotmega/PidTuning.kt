@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * PID tuning information.
@@ -26,43 +28,70 @@ public data class PidTuning(
   /**
    * Axis.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
   /**
    * Desired rate.
    */
+  @GeneratedMavField(type = "float")
   public val desired: Float = 0F,
   /**
    * Achieved rate.
    */
+  @GeneratedMavField(type = "float")
   public val achieved: Float = 0F,
   /**
    * FF component.
    */
+  @GeneratedMavField(type = "float")
   public val ff: Float = 0F,
   /**
    * P component.
    */
+  @GeneratedMavField(type = "float")
   public val p: Float = 0F,
   /**
    * I component.
    */
+  @GeneratedMavField(type = "float")
   public val i: Float = 0F,
   /**
    * D component.
    */
+  @GeneratedMavField(type = "float")
   public val d: Float = 0F,
   /**
    * Slew rate.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val srate: Float = 0F,
   /**
    * P/D oscillation modifier.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val pdmod: Float = 0F,
 ) : MavMessage<PidTuning> {
   public override val instanceMetadata: MavMessage.Metadata<PidTuning> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(desired)
+    outputBuffer.encodeFloat(achieved)
+    outputBuffer.encodeFloat(ff)
+    outputBuffer.encodeFloat(p)
+    outputBuffer.encodeFloat(i)
+    outputBuffer.encodeFloat(d)
+    outputBuffer.encodeEnumValue(axis.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
@@ -73,7 +102,7 @@ public data class PidTuning(
     outputBuffer.encodeEnumValue(axis.value, 1)
     outputBuffer.encodeFloat(srate)
     outputBuffer.encodeFloat(pdmod)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

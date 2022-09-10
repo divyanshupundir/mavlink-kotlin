@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of AP_Limits. Sent in extended status stream when AP_Limits is enabled.
@@ -28,43 +30,52 @@ public data class LimitsStatus(
   /**
    * State of AP_Limits.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val limitsState: MavEnumValue<LimitsState> = MavEnumValue.fromValue(0),
   /**
    * Time (since boot) of last breach.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val lastTrigger: Long = 0L,
   /**
    * Time (since boot) of last recovery action.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val lastAction: Long = 0L,
   /**
    * Time (since boot) of last successful recovery.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val lastRecovery: Long = 0L,
   /**
    * Time (since boot) of last all-clear.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val lastClear: Long = 0L,
   /**
    * Number of fence breaches.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val breachCount: Int = 0,
   /**
    * AP_Limit_Module bitfield of enabled modules.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val modsEnabled: MavEnumValue<LimitModule> = MavEnumValue.fromValue(0),
   /**
    * AP_Limit_Module bitfield of required modules.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val modsRequired: MavEnumValue<LimitModule> = MavEnumValue.fromValue(0),
   /**
    * AP_Limit_Module bitfield of triggered modules.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val modsTriggered: MavEnumValue<LimitModule> = MavEnumValue.fromValue(0),
 ) : MavMessage<LimitsStatus> {
   public override val instanceMetadata: MavMessage.Metadata<LimitsStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(lastTrigger)
     outputBuffer.encodeUint32(lastAction)
@@ -76,6 +87,20 @@ public data class LimitsStatus(
     outputBuffer.encodeEnumValue(modsRequired.value, 1)
     outputBuffer.encodeEnumValue(modsTriggered.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(lastTrigger)
+    outputBuffer.encodeUint32(lastAction)
+    outputBuffer.encodeUint32(lastRecovery)
+    outputBuffer.encodeUint32(lastClear)
+    outputBuffer.encodeUint16(breachCount)
+    outputBuffer.encodeEnumValue(limitsState.value, 1)
+    outputBuffer.encodeEnumValue(modsEnabled.value, 1)
+    outputBuffer.encodeEnumValue(modsRequired.value, 1)
+    outputBuffer.encodeEnumValue(modsTriggered.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

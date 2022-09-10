@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeInt64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Time synchronization message.
@@ -23,19 +25,28 @@ public data class Timesync(
   /**
    * Time sync timestamp 1
    */
+  @GeneratedMavField(type = "int64_t")
   public val tc1: Long = 0L,
   /**
    * Time sync timestamp 2
    */
+  @GeneratedMavField(type = "int64_t")
   public val ts1: Long = 0L,
 ) : MavMessage<Timesync> {
   public override val instanceMetadata: MavMessage.Metadata<Timesync> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt64(tc1)
     outputBuffer.encodeInt64(ts1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt64(tc1)
+    outputBuffer.encodeInt64(ts1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

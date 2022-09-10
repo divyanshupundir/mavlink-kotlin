@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ualberta
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,22 +15,27 @@ public enum class UalbertaAutopilotMode(
   /**
    * Raw input pulse widts sent to output
    */
+  @GeneratedMavEnumEntry
   MODE_MANUAL_DIRECT(1L),
   /**
    * Inputs are normalized using calibration, the converted back to raw pulse widths for output
    */
+  @GeneratedMavEnumEntry
   MODE_MANUAL_SCALED(2L),
   /**
    *  dfsdfs
    */
+  @GeneratedMavEnumEntry
   MODE_AUTO_PID_ATT(3L),
   /**
    *  dfsfds
    */
+  @GeneratedMavEnumEntry
   MODE_AUTO_PID_VEL(4L),
   /**
    *  dfsdfsdfs
    */
+  @GeneratedMavEnumEntry
   MODE_AUTO_PID_POS(5L),
   ;
 

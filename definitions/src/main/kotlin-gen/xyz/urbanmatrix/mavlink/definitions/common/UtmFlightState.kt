@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,22 +15,27 @@ public enum class UtmFlightState(
   /**
    * The flight state can't be determined.
    */
+  @GeneratedMavEnumEntry
   UTM_FLIGHT_STATE_UNKNOWN(1L),
   /**
    * UAS on ground.
    */
+  @GeneratedMavEnumEntry
   UTM_FLIGHT_STATE_GROUND(2L),
   /**
    * UAS airborne.
    */
+  @GeneratedMavEnumEntry
   UTM_FLIGHT_STATE_AIRBORNE(3L),
   /**
    * UAS is in an emergency flight state.
    */
+  @GeneratedMavEnumEntry
   UTM_FLIGHT_STATE_EMERGENCY(16L),
   /**
    * UAS has no active controls.
    */
+  @GeneratedMavEnumEntry
   UTM_FLIGHT_STATE_NOCTRL(32L),
   ;
 

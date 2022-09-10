@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status generated in each node in the communication chain and injected into MAVLink stream.
@@ -32,51 +34,62 @@ public data class LinkNodeStatus(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
    * Remaining free transmit buffer space
    */
+  @GeneratedMavField(type = "uint8_t")
   public val txBuf: Int = 0,
   /**
    * Remaining free receive buffer space
    */
+  @GeneratedMavField(type = "uint8_t")
   public val rxBuf: Int = 0,
   /**
    * Transmit rate
    */
+  @GeneratedMavField(type = "uint32_t")
   public val txRate: Long = 0L,
   /**
    * Receive rate
    */
+  @GeneratedMavField(type = "uint32_t")
   public val rxRate: Long = 0L,
   /**
    * Number of bytes that could not be parsed correctly.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val rxParseErr: Int = 0,
   /**
    * Transmit buffer overflows. This number wraps around as it reaches UINT16_MAX
    */
+  @GeneratedMavField(type = "uint16_t")
   public val txOverflows: Int = 0,
   /**
    * Receive buffer overflows. This number wraps around as it reaches UINT16_MAX
    */
+  @GeneratedMavField(type = "uint16_t")
   public val rxOverflows: Int = 0,
   /**
    * Messages sent
    */
+  @GeneratedMavField(type = "uint32_t")
   public val messagesSent: Long = 0L,
   /**
    * Messages received (estimated from counting seq)
    */
+  @GeneratedMavField(type = "uint32_t")
   public val messagesReceived: Long = 0L,
   /**
    * Messages lost (estimated from counting seq)
    */
+  @GeneratedMavField(type = "uint32_t")
   public val messagesLost: Long = 0L,
 ) : MavMessage<LinkNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint32(txRate)
@@ -90,6 +103,22 @@ public data class LinkNodeStatus(
     outputBuffer.encodeUint8(txBuf)
     outputBuffer.encodeUint8(rxBuf)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeUint32(txRate)
+    outputBuffer.encodeUint32(rxRate)
+    outputBuffer.encodeUint32(messagesSent)
+    outputBuffer.encodeUint32(messagesReceived)
+    outputBuffer.encodeUint32(messagesLost)
+    outputBuffer.encodeUint16(rxParseErr)
+    outputBuffer.encodeUint16(txOverflows)
+    outputBuffer.encodeUint16(rxOverflows)
+    outputBuffer.encodeUint8(txBuf)
+    outputBuffer.encodeUint8(rxBuf)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

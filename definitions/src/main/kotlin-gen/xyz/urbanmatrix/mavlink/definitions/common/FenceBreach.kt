@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,18 +12,22 @@ public enum class FenceBreach(
   /**
    * No last fence breach
    */
+  @GeneratedMavEnumEntry
   FENCE_BREACH_NONE(0L),
   /**
    * Breached minimum altitude
    */
+  @GeneratedMavEnumEntry
   FENCE_BREACH_MINALT(1L),
   /**
    * Breached maximum altitude
    */
+  @GeneratedMavEnumEntry
   FENCE_BREACH_MAXALT(2L),
   /**
    * Breached fence boundary
    */
+  @GeneratedMavEnumEntry
   FENCE_BREACH_BOUNDARY(3L),
   ;
 

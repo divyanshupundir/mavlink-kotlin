@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,18 +12,22 @@ public enum class GoproHeartbeatStatus(
   /**
    * No GoPro connected.
    */
+  @GeneratedMavEnumEntry
   GOPRO_HEARTBEAT_STATUS_DISCONNECTED(0L),
   /**
    * The detected GoPro is not HeroBus compatible.
    */
+  @GeneratedMavEnumEntry
   GOPRO_HEARTBEAT_STATUS_INCOMPATIBLE(1L),
   /**
    * A HeroBus compatible GoPro is connected.
    */
+  @GeneratedMavEnumEntry
   GOPRO_HEARTBEAT_STATUS_CONNECTED(2L),
   /**
    * An unrecoverable error was encountered with the connected GoPro, it may require a power cycle.
    */
+  @GeneratedMavEnumEntry
   GOPRO_HEARTBEAT_STATUS_ERROR(3L),
   ;
 

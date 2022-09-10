@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.avssuas
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -32,6 +33,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_SET_ARM(60050L),
   /**
    * AVSS defined command. Gets PRS arm statuses
@@ -57,6 +59,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_GET_ARM(60051L),
   /**
    * AVSS defined command.  Get the PRS battery voltage in millivolts
@@ -82,6 +85,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_GET_BATTERY(60052L),
   /**
    * AVSS defined command. Get the PRS error statuses.
@@ -107,6 +111,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_GET_ERR(60053L),
   /**
    * AVSS defined command. Set the ATS arming altitude in meters.
@@ -132,6 +137,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_SET_ARM_ALTI(60070L),
   /**
    * AVSS defined command. Get the ATS arming altitude in meters.
@@ -157,6 +163,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_GET_ARM_ALTI(60071L),
   /**
    * AVSS defined command. Shuts down the PRS system.
@@ -182,6 +189,7 @@ public enum class MavCmd(
    * index = 7; 
    * User defined
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PRS_SHUTDOWN(60072L),
   ;
 

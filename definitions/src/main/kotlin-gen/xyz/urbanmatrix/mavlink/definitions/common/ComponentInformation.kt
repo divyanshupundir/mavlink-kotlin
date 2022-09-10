@@ -8,6 +8,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeString
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  *
@@ -30,10 +32,12 @@ public data class ComponentInformation(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * CRC32 of the general metadata file (general_metadata_uri).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val generalMetadataFileCrc: Long = 0L,
   /**
    * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be
@@ -41,10 +45,12 @@ public data class ComponentInformation(
    * additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be
    * generated at compile time. The string needs to be zero terminated.
    */
+  @GeneratedMavField(type = "char[100]")
   public val generalMetadataUri: String = "",
   /**
    * CRC32 of peripherals metadata file (peripherals_metadata_uri).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val peripheralsMetadataFileCrc: Long = 0L,
   /**
    * (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS),
@@ -52,11 +58,12 @@ public data class ComponentInformation(
    * nodes. The peripherals are in a separate file because the information must be generated
    * dynamically at runtime. The string needs to be zero terminated.
    */
+  @GeneratedMavField(type = "char[100]")
   public val peripheralsMetadataUri: String = "",
 ) : MavMessage<ComponentInformation> {
   public override val instanceMetadata: MavMessage.Metadata<ComponentInformation> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(generalMetadataFileCrc)
@@ -64,6 +71,16 @@ public data class ComponentInformation(
     outputBuffer.encodeString(generalMetadataUri, 100)
     outputBuffer.encodeString(peripheralsMetadataUri, 100)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUint32(generalMetadataFileCrc)
+    outputBuffer.encodeUint32(peripheralsMetadataFileCrc)
+    outputBuffer.encodeString(generalMetadataUri, 100)
+    outputBuffer.encodeString(peripheralsMetadataUri, 100)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

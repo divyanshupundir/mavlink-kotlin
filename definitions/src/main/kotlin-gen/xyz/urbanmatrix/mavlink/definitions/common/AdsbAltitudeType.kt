@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class AdsbAltitudeType(
   /**
    * Altitude reported from a Baro source using QNH reference
    */
+  @GeneratedMavEnumEntry
   ADSB_ALTITUDE_TYPE_PRESSURE_QNH(0L),
   /**
    * Altitude reported from a GNSS source
    */
+  @GeneratedMavEnumEntry
   ADSB_ALTITUDE_TYPE_GEOMETRIC(1L),
   ;
 

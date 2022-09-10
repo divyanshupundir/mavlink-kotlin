@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,30 +12,55 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class CopterMode(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   COPTER_MODE_STABILIZE(0L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_ACRO(1L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_ALT_HOLD(2L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_AUTO(3L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_GUIDED(4L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_LOITER(5L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_RTL(6L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_CIRCLE(7L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_LAND(9L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_DRIFT(11L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_SPORT(13L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_FLIP(14L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_AUTOTUNE(15L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_POSHOLD(16L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_BRAKE(17L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_THROW(18L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_AVOID_ADSB(19L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_GUIDED_NOGPS(20L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_SMART_RTL(21L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_FLOWHOLD(22L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_FOLLOW(23L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_ZIGZAG(24L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_SYSTEMID(25L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_AUTOROTATE(26L),
+  @GeneratedMavEnumEntry
   COPTER_MODE_AUTO_RTL(27L),
   ;
 

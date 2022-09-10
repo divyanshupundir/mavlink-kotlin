@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Configure cellular modems.
@@ -31,45 +33,53 @@ public data class CellularConfig(
    * Enable/disable LTE. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent
    * back as a response.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val enableLte: Int = 0,
   /**
    * Enable/disable PIN on the SIM card. 0: setting unchanged, 1: disabled, 2: enabled. Current
    * setting when sent back as a response.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val enablePin: Int = 0,
   /**
    * PIN sent to the SIM card. Blank when PIN is disabled. Empty when message is sent back as a
    * response.
    */
+  @GeneratedMavField(type = "char[16]")
   public val pin: String = "",
   /**
    * New PIN when changing the PIN. Blank to leave it unchanged. Empty when message is sent back as
    * a response.
    */
+  @GeneratedMavField(type = "char[16]")
   public val newPin: String = "",
   /**
    * Name of the cellular APN. Blank to leave it unchanged. Current APN when sent back as a
    * response.
    */
+  @GeneratedMavField(type = "char[32]")
   public val apn: String = "",
   /**
    * Required PUK code in case the user failed to authenticate 3 times with the PIN. Empty when
    * message is sent back as a response.
    */
+  @GeneratedMavField(type = "char[16]")
   public val puk: String = "",
   /**
    * Enable/disable roaming. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when
    * sent back as a response.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val roaming: Int = 0,
   /**
    * Message acceptance response (sent back to GS).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0),
 ) : MavMessage<CellularConfig> {
   public override val instanceMetadata: MavMessage.Metadata<CellularConfig> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(enableLte)
     outputBuffer.encodeUint8(enablePin)
@@ -80,6 +90,19 @@ public data class CellularConfig(
     outputBuffer.encodeUint8(roaming)
     outputBuffer.encodeEnumValue(response.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(enableLte)
+    outputBuffer.encodeUint8(enablePin)
+    outputBuffer.encodeString(pin, 16)
+    outputBuffer.encodeString(newPin, 16)
+    outputBuffer.encodeString(apn, 32)
+    outputBuffer.encodeString(puk, 16)
+    outputBuffer.encodeUint8(roaming)
+    outputBuffer.encodeEnumValue(response.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

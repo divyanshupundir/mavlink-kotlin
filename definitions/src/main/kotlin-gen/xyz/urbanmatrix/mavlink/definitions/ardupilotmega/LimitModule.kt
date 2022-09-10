@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class LimitModule(
   /**
    * Pre-initialization.
    */
+  @GeneratedMavEnumEntry
   LIMIT_GPSLOCK(1L),
   /**
    * Disabled.
    */
+  @GeneratedMavEnumEntry
   LIMIT_GEOFENCE(2L),
   /**
    * Checking limits.
    */
+  @GeneratedMavEnumEntry
   LIMIT_ALTITUDE(4L),
   ;
 

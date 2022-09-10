@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,10 +12,12 @@ public enum class GoproProtuneColour(
   /**
    * Auto.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_COLOUR_STANDARD(0L),
   /**
    * Neutral.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_COLOUR_NEUTRAL(1L),
   ;
 

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,32 +12,39 @@ public enum class MavModeGimbal(
   /**
    * Gimbal is powered on but has not started initializing yet.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_UNINITIALIZED(0L),
   /**
    * Gimbal is currently running calibration on the pitch axis.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_CALIBRATING_PITCH(1L),
   /**
    * Gimbal is currently running calibration on the roll axis.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_CALIBRATING_ROLL(2L),
   /**
    * Gimbal is currently running calibration on the yaw axis.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_CALIBRATING_YAW(3L),
   /**
    * Gimbal has finished calibrating and initializing, but is relaxed pending reception of first
    * rate command from copter.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_INITIALIZED(4L),
   /**
    * Gimbal is actively stabilizing.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_ACTIVE(5L),
   /**
    * Gimbal is relaxed because it missed more than 10 expected rate command messages in a row.
    * Gimbal will move back to active mode when it receives a new rate command.
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_GIMBAL_RATE_CMD_TIMEOUT(6L),
   ;
 

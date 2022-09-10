@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Estimator status message including flags, innovation test ratios and estimated accuracies. The
@@ -38,47 +40,57 @@ public data class EstimatorStatus(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Bitmap indicating which EKF outputs are valid.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
   /**
    * Velocity innovation test ratio
    */
+  @GeneratedMavField(type = "float")
   public val velRatio: Float = 0F,
   /**
    * Horizontal position innovation test ratio
    */
+  @GeneratedMavField(type = "float")
   public val posHorizRatio: Float = 0F,
   /**
    * Vertical position innovation test ratio
    */
+  @GeneratedMavField(type = "float")
   public val posVertRatio: Float = 0F,
   /**
    * Magnetometer innovation test ratio
    */
+  @GeneratedMavField(type = "float")
   public val magRatio: Float = 0F,
   /**
    * Height above terrain innovation test ratio
    */
+  @GeneratedMavField(type = "float")
   public val haglRatio: Float = 0F,
   /**
    * True airspeed innovation test ratio
    */
+  @GeneratedMavField(type = "float")
   public val tasRatio: Float = 0F,
   /**
    * Horizontal position 1-STD accuracy relative to the EKF local origin
    */
+  @GeneratedMavField(type = "float")
   public val posHorizAccuracy: Float = 0F,
   /**
    * Vertical position 1-STD accuracy relative to the EKF local origin
    */
+  @GeneratedMavField(type = "float")
   public val posVertAccuracy: Float = 0F,
 ) : MavMessage<EstimatorStatus> {
   public override val instanceMetadata: MavMessage.Metadata<EstimatorStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(velRatio)
@@ -91,6 +103,21 @@ public data class EstimatorStatus(
     outputBuffer.encodeFloat(posVertAccuracy)
     outputBuffer.encodeEnumValue(flags.value, 2)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(velRatio)
+    outputBuffer.encodeFloat(posHorizRatio)
+    outputBuffer.encodeFloat(posVertRatio)
+    outputBuffer.encodeFloat(magRatio)
+    outputBuffer.encodeFloat(haglRatio)
+    outputBuffer.encodeFloat(tasRatio)
+    outputBuffer.encodeFloat(posHorizAccuracy)
+    outputBuffer.encodeFloat(posVertAccuracy)
+    outputBuffer.encodeEnumValue(flags.value, 2)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

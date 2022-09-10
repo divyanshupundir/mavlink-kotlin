@@ -2,13 +2,16 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class SpeedType(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   SPEED_TYPE_AIRSPEED(0L),
+  @GeneratedMavEnumEntry
   SPEED_TYPE_GROUNDSPEED(1L),
   ;
 

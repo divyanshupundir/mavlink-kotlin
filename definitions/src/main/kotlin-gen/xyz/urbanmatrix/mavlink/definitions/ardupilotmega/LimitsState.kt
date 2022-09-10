@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,26 +12,32 @@ public enum class LimitsState(
   /**
    * Pre-initialization.
    */
+  @GeneratedMavEnumEntry
   LIMITS_INIT(0L),
   /**
    * Disabled.
    */
+  @GeneratedMavEnumEntry
   LIMITS_DISABLED(1L),
   /**
    * Checking limits.
    */
+  @GeneratedMavEnumEntry
   LIMITS_ENABLED(2L),
   /**
    * A limit has been breached.
    */
+  @GeneratedMavEnumEntry
   LIMITS_TRIGGERED(3L),
   /**
    * Taking action e.g. Return/RTL.
    */
+  @GeneratedMavEnumEntry
   LIMITS_RECOVERING(4L),
   /**
    * We're no longer in breach of a limit.
    */
+  @GeneratedMavEnumEntry
   LIMITS_RECOVERED(5L),
   ;
 

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class MavCollisionSrc(
   /**
    * ID field references ADSB_VEHICLE packets
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_SRC_ADSB(0L),
   /**
    * ID field references MAVLink SRC ID
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_SRC_MAVLINK_GPS_GLOBAL_INT(1L),
   ;
 

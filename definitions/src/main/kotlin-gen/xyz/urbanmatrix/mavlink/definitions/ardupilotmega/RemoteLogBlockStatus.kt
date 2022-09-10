@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Send Status of each log block that autopilot board might have sent.
@@ -28,29 +30,42 @@ public data class RemoteLogBlockStatus(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Log data block sequence number.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val seqno: Long = 0L,
   /**
    * Log data block status.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<MavRemoteLogDataBlockStatuses> = MavEnumValue.fromValue(0),
 ) : MavMessage<RemoteLogBlockStatus> {
   public override val instanceMetadata: MavMessage.Metadata<RemoteLogBlockStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(seqno)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(status.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(seqno)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(status.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

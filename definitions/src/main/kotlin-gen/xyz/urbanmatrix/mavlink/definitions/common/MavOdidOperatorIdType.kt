@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,6 +12,7 @@ public enum class MavOdidOperatorIdType(
   /**
    * CAA (Civil Aviation Authority) registered operator ID.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_OPERATOR_ID_TYPE_CAA(0L),
   ;
 

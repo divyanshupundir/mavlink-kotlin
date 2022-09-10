@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Data stream status information.
@@ -26,24 +28,35 @@ public data class DataStream(
   /**
    * The ID of the requested data stream
    */
+  @GeneratedMavField(type = "uint8_t")
   public val streamId: Int = 0,
   /**
    * The message rate
    */
+  @GeneratedMavField(type = "uint16_t")
   public val messageRate: Int = 0,
   /**
    * 1 stream is enabled, 0 stream is stopped.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val onOff: Int = 0,
 ) : MavMessage<DataStream> {
   public override val instanceMetadata: MavMessage.Metadata<DataStream> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(messageRate)
     outputBuffer.encodeUint8(streamId)
     outputBuffer.encodeUint8(onOff)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(messageRate)
+    outputBuffer.encodeUint8(streamId)
+    outputBuffer.encodeUint8(onOff)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

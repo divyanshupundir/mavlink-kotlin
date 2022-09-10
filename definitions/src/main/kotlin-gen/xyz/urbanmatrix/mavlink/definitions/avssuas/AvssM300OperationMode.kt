@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.avssuas
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,58 +12,72 @@ public enum class AvssM300OperationMode(
   /**
    * In manual control mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_MANUAL_CTRL(0L),
   /**
    * In attitude mode 
    */
+  @GeneratedMavEnumEntry
   MODE_M300_ATTITUDE(1L),
   /**
    * In GPS mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_P_GPS(6L),
   /**
    * In hotpoint mode 
    */
+  @GeneratedMavEnumEntry
   MODE_M300_HOTPOINT_MODE(9L),
   /**
    * In assisted takeoff mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_ASSISTED_TAKEOFF(10L),
   /**
    * In auto takeoff mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_AUTO_TAKEOFF(11L),
   /**
    * In auto landing mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_AUTO_LANDING(12L),
   /**
    * In go home mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_NAVI_GO_HOME(15L),
   /**
    * In sdk control mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_NAVI_SDK_CTRL(17L),
   /**
    * In sport mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_S_SPORT(31L),
   /**
    * In force auto landing mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_FORCE_AUTO_LANDING(33L),
   /**
    * In tripod mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_T_TRIPOD(38L),
   /**
    * In search mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_SEARCH_MODE(40L),
   /**
    * In engine mode
    */
+  @GeneratedMavEnumEntry
   MODE_M300_ENGINE_START(41L),
   ;
 

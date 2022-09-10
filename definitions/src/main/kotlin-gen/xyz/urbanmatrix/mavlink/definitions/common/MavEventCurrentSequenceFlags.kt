@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,6 +15,7 @@ public enum class MavEventCurrentSequenceFlags(
   /**
    * A sequence reset has happened (e.g. vehicle reboot).
    */
+  @GeneratedMavEnumEntry
   MAV_EVENT_CURRENT_SEQUENCE_FLAGS_RESET(1L),
   ;
 

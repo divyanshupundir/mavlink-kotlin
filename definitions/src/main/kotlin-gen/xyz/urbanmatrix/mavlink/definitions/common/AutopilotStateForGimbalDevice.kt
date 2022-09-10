@@ -9,6 +9,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -26,6 +27,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Low level message containing autopilot state relevant for a gimbal device. This message is to be
@@ -42,58 +44,70 @@ public data class AutopilotStateForGimbalDevice(
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeBootUs: BigInteger = BigInteger.ZERO,
   /**
    * Quaternion components of autopilot attitude: w, x, y, z (1 0 0 0 is the null-rotation, Hamilton
    * convention).
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * Estimated delay of the attitude data.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val qEstimatedDelayUs: Long = 0L,
   /**
    * X Speed in NED (North, East, Down).
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y Speed in NED (North, East, Down).
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z Speed in NED (North, East, Down).
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * Estimated delay of the speed data.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val vEstimatedDelayUs: Long = 0L,
   /**
    * Feed forward Z component of angular velocity, positive is yawing to the right, NaN to be
    * ignored. This is to indicate if the autopilot is actively yawing.
    */
+  @GeneratedMavField(type = "float")
   public val feedForwardAngularVelocityZ: Float = 0F,
   /**
    * Bitmap indicating which estimator outputs are valid.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val estimatorStatus: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
   /**
    * The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0),
 ) : MavMessage<AutopilotStateForGimbalDevice> {
   public override val instanceMetadata: MavMessage.Metadata<AutopilotStateForGimbalDevice> =
       METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeBootUs)
     outputBuffer.encodeFloatArray(q, 16)
@@ -108,6 +122,23 @@ public data class AutopilotStateForGimbalDevice(
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(landedState.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeBootUs)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeUint32(qEstimatedDelayUs)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    outputBuffer.encodeUint32(vEstimatedDelayUs)
+    outputBuffer.encodeFloat(feedForwardAngularVelocityZ)
+    outputBuffer.encodeEnumValue(estimatorStatus.value, 2)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(landedState.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The smoothed, monotonic system state used to feed the control loops of the system.
@@ -30,75 +32,92 @@ public data class ControlSystemState(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * X acceleration in body frame
    */
+  @GeneratedMavField(type = "float")
   public val xAcc: Float = 0F,
   /**
    * Y acceleration in body frame
    */
+  @GeneratedMavField(type = "float")
   public val yAcc: Float = 0F,
   /**
    * Z acceleration in body frame
    */
+  @GeneratedMavField(type = "float")
   public val zAcc: Float = 0F,
   /**
    * X velocity in body frame
    */
+  @GeneratedMavField(type = "float")
   public val xVel: Float = 0F,
   /**
    * Y velocity in body frame
    */
+  @GeneratedMavField(type = "float")
   public val yVel: Float = 0F,
   /**
    * Z velocity in body frame
    */
+  @GeneratedMavField(type = "float")
   public val zVel: Float = 0F,
   /**
    * X position in local frame
    */
+  @GeneratedMavField(type = "float")
   public val xPos: Float = 0F,
   /**
    * Y position in local frame
    */
+  @GeneratedMavField(type = "float")
   public val yPos: Float = 0F,
   /**
    * Z position in local frame
    */
+  @GeneratedMavField(type = "float")
   public val zPos: Float = 0F,
   /**
    * Airspeed, set to -1 if unknown
    */
+  @GeneratedMavField(type = "float")
   public val airspeed: Float = 0F,
   /**
    * Variance of body velocity estimate
    */
+  @GeneratedMavField(type = "float[3]")
   public val velVariance: List<Float> = emptyList(),
   /**
    * Variance in local position
    */
+  @GeneratedMavField(type = "float[3]")
   public val posVariance: List<Float> = emptyList(),
   /**
    * The attitude, represented as Quaternion
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * Angular rate in roll axis
    */
+  @GeneratedMavField(type = "float")
   public val rollRate: Float = 0F,
   /**
    * Angular rate in pitch axis
    */
+  @GeneratedMavField(type = "float")
   public val pitchRate: Float = 0F,
   /**
    * Angular rate in yaw axis
    */
+  @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<ControlSystemState> {
   public override val instanceMetadata: MavMessage.Metadata<ControlSystemState> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(xAcc)
@@ -118,6 +137,28 @@ public data class ControlSystemState(
     outputBuffer.encodeFloat(pitchRate)
     outputBuffer.encodeFloat(yawRate)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(xAcc)
+    outputBuffer.encodeFloat(yAcc)
+    outputBuffer.encodeFloat(zAcc)
+    outputBuffer.encodeFloat(xVel)
+    outputBuffer.encodeFloat(yVel)
+    outputBuffer.encodeFloat(zVel)
+    outputBuffer.encodeFloat(xPos)
+    outputBuffer.encodeFloat(yPos)
+    outputBuffer.encodeFloat(zPos)
+    outputBuffer.encodeFloat(airspeed)
+    outputBuffer.encodeFloatArray(velVariance, 12)
+    outputBuffer.encodeFloatArray(posVariance, 12)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(rollRate)
+    outputBuffer.encodeFloat(pitchRate)
+    outputBuffer.encodeFloat(yawRate)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

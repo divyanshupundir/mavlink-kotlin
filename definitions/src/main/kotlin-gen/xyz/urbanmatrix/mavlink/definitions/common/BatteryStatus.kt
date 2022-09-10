@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -22,6 +23,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Battery information. Updates GCS with flight controller battery status. Smart batteries also use
@@ -35,18 +37,22 @@ public data class BatteryStatus(
   /**
    * Battery ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val id: Int = 0,
   /**
    * Function of the battery
    */
+  @GeneratedMavField(type = "uint8_t")
   public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
   /**
    * Type (chemistry) of the battery
    */
+  @GeneratedMavField(type = "uint8_t")
   public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
   /**
    * Temperature of the battery. INT16_MAX for unknown temperature.
    */
+  @GeneratedMavField(type = "int16_t")
   public val temperature: Int = 0,
   /**
    * Battery voltage of cells 1 to 10 (see voltages_ext for cells 11-14). Cells in this field above
@@ -57,31 +63,44 @@ public data class BatteryStatus(
    * voltage. This can be extended to multiple cells if the total voltage is greater than 2 *
    * (UINT16_MAX - 1).
    */
+  @GeneratedMavField(type = "uint16_t[10]")
   public val voltages: List<Int> = emptyList(),
   /**
    * Battery current, -1: autopilot does not measure the current
    */
+  @GeneratedMavField(type = "int16_t")
   public val currentBattery: Int = 0,
   /**
    * Consumed charge, -1: autopilot does not provide consumption estimate
    */
+  @GeneratedMavField(type = "int32_t")
   public val currentConsumed: Int = 0,
   /**
    * Consumed energy, -1: autopilot does not provide energy consumption estimate
    */
+  @GeneratedMavField(type = "int32_t")
   public val energyConsumed: Int = 0,
   /**
    * Remaining battery energy. Values: [0-100], -1: autopilot does not estimate the remaining
    * battery.
    */
+  @GeneratedMavField(type = "int8_t")
   public val batteryRemaining: Int = 0,
   /**
    * Remaining battery time, 0: autopilot does not provide remaining battery time estimate
    */
+  @GeneratedMavField(
+    type = "int32_t",
+    extension = true,
+  )
   public val timeRemaining: Int = 0,
   /**
    * State for extent of discharge, provided by autopilot for warning or external reactions
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0),
   /**
    * Battery voltages for cells 11 to 14. Cells above the valid cell count for this battery should
@@ -89,22 +108,48 @@ public data class BatteryStatus(
    * voltages field and allows empty byte truncation). If the measured value is 0 then 1 should be sent
    * instead.
    */
+  @GeneratedMavField(
+    type = "uint16_t[4]",
+    extension = true,
+  )
   public val voltagesExt: List<Int> = emptyList(),
   /**
    * Battery mode. Default (0) is that battery mode reporting is not supported or battery is in
    * normal-use mode.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0),
   /**
    * Fault/health indications. These should be set when charge_state is
    * MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY (if not, fault reporting is
    * not supported).
    */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
   public val faultBitmask: MavEnumValue<MavBatteryFault> = MavEnumValue.fromValue(0),
 ) : MavMessage<BatteryStatus> {
   public override val instanceMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt32(currentConsumed)
+    outputBuffer.encodeInt32(energyConsumed)
+    outputBuffer.encodeInt16(temperature)
+    outputBuffer.encodeUint16Array(voltages, 20)
+    outputBuffer.encodeInt16(currentBattery)
+    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
+    outputBuffer.encodeEnumValue(type.value, 1)
+    outputBuffer.encodeInt8(batteryRemaining)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(currentConsumed)
     outputBuffer.encodeInt32(energyConsumed)
@@ -120,7 +165,7 @@ public data class BatteryStatus(
     outputBuffer.encodeUint16Array(voltagesExt, 8)
     outputBuffer.encodeEnumValue(mode.value, 1)
     outputBuffer.encodeEnumValue(faultBitmask.value, 4)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

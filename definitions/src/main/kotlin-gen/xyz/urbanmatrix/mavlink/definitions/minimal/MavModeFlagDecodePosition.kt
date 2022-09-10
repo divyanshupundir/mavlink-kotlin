@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.minimal
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -16,34 +17,42 @@ public enum class MavModeFlagDecodePosition(
   /**
    * First bit:  10000000
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_SAFETY(128L),
   /**
    * Second bit: 01000000
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_MANUAL(64L),
   /**
    * Third bit:  00100000
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_HIL(32L),
   /**
    * Fourth bit: 00010000
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_STABILIZE(16L),
   /**
    * Fifth bit:  00001000
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_GUIDED(8L),
   /**
    * Sixth bit:   00000100
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_AUTO(4L),
   /**
    * Seventh bit: 00000010
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_TEST(2L),
   /**
    * Eighth bit: 00000001
    */
+  @GeneratedMavEnumEntry
   MAV_MODE_FLAG_DECODE_POSITION_CUSTOM_MODE(1L),
   ;
 

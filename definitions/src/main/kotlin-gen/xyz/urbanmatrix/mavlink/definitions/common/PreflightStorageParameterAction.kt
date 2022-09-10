@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -19,25 +20,30 @@ public enum class PreflightStorageParameterAction(
   /**
    * Read all parameters from persistent storage. Replaces values in volatile storage.
    */
+  @GeneratedMavEnumEntry
   PARAM_READ_PERSISTENT(0L),
   /**
    * Write all parameter values to persistent storage (flash/EEPROM)
    */
+  @GeneratedMavEnumEntry
   PARAM_WRITE_PERSISTENT(1L),
   /**
    * Reset all user configurable parameters to their default value (including airframe selection,
    * sensor calibration data, safety settings, and so on). Does not reset values that contain operation
    * counters and vehicle computed statistics.
    */
+  @GeneratedMavEnumEntry
   PARAM_RESET_CONFIG_DEFAULT(2L),
   /**
    * Reset only sensor calibration parameters to factory defaults (or firmware default if not
    * available)
    */
+  @GeneratedMavEnumEntry
   PARAM_RESET_SENSOR_DEFAULT(3L),
   /**
    * Reset all parameters, including operation counters, to default values
    */
+  @GeneratedMavEnumEntry
   PARAM_RESET_ALL_DEFAULT(4L),
   ;
 

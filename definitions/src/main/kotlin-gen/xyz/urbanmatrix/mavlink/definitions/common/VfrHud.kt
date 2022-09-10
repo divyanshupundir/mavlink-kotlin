@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
@@ -29,31 +31,37 @@ public data class VfrHud(
    * calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a pilot to
    * estimate stall speed.
    */
+  @GeneratedMavField(type = "float")
   public val airspeed: Float = 0F,
   /**
    * Current ground speed.
    */
+  @GeneratedMavField(type = "float")
   public val groundspeed: Float = 0F,
   /**
    * Current heading in compass units (0-360, 0=north).
    */
+  @GeneratedMavField(type = "int16_t")
   public val heading: Int = 0,
   /**
    * Current throttle setting (0 to 100).
    */
+  @GeneratedMavField(type = "uint16_t")
   public val throttle: Int = 0,
   /**
    * Current altitude (MSL).
    */
+  @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * Current climb rate.
    */
+  @GeneratedMavField(type = "float")
   public val climb: Float = 0F,
 ) : MavMessage<VfrHud> {
   public override val instanceMetadata: MavMessage.Metadata<VfrHud> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(airspeed)
     outputBuffer.encodeFloat(groundspeed)
@@ -62,6 +70,17 @@ public data class VfrHud(
     outputBuffer.encodeInt16(heading)
     outputBuffer.encodeUint16(throttle)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(airspeed)
+    outputBuffer.encodeFloat(groundspeed)
+    outputBuffer.encodeFloat(alt)
+    outputBuffer.encodeFloat(climb)
+    outputBuffer.encodeInt16(heading)
+    outputBuffer.encodeUint16(throttle)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

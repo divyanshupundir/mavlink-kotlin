@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,62 +15,77 @@ public enum class HighresImuUpdatedFlags(
   /**
    * None of the fields in HIGHRES_IMU have been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_NONE(0L),
   /**
    * The value in the xacc field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_XACC(1L),
   /**
    * The value in the yacc field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_YACC(2L),
   /**
    * The value in the zacc field has been updated since
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_ZACC(4L),
   /**
    * The value in the xgyro field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_XGYRO(8L),
   /**
    * The value in the ygyro field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_YGYRO(16L),
   /**
    * The value in the zgyro field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_ZGYRO(32L),
   /**
    * The value in the xmag field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_XMAG(64L),
   /**
    * The value in the ymag field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_YMAG(128L),
   /**
    * The value in the zmag field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_ZMAG(256L),
   /**
    * The value in the abs_pressure field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_ABS_PRESSURE(512L),
   /**
    * The value in the diff_pressure field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_DIFF_PRESSURE(1024L),
   /**
    * The value in the pressure_alt field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_PRESSURE_ALT(2048L),
   /**
    * The value in the temperature field has been updated
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_TEMPERATURE(4096L),
   /**
    * All fields in HIGHRES_IMU have been updated.
    */
+  @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_ALL(65535L),
   ;
 

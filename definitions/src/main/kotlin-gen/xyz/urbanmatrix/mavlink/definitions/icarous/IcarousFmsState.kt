@@ -2,17 +2,24 @@ package xyz.urbanmatrix.mavlink.definitions.icarous
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class IcarousFmsState(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   ICAROUS_FMS_STATE_IDLE(0L),
+  @GeneratedMavEnumEntry
   ICAROUS_FMS_STATE_TAKEOFF(1L),
+  @GeneratedMavEnumEntry
   ICAROUS_FMS_STATE_CLIMB(2L),
+  @GeneratedMavEnumEntry
   ICAROUS_FMS_STATE_CRUISE(3L),
+  @GeneratedMavEnumEntry
   ICAROUS_FMS_STATE_APPROACH(4L),
+  @GeneratedMavEnumEntry
   ICAROUS_FMS_STATE_LAND(5L),
   ;
 

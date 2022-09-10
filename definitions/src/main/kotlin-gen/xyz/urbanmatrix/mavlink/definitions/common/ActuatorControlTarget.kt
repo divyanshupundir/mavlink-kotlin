@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Set the vehicle attitude and body angular rates.
@@ -30,11 +32,13 @@ public data class ActuatorControlTarget(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Actuator group. The "_mlx" indicates this is a multi-instance message and a MAVLink parser
    * should use this field to difference between instances.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val groupMlx: Int = 0,
   /**
    * Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for single rotation
@@ -42,16 +46,25 @@ public data class ActuatorControlTarget(
    * controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes, landing
    * gear. Load a pass-through mixer to repurpose them as generic outputs.
    */
+  @GeneratedMavField(type = "float[8]")
   public val controls: List<Float> = emptyList(),
 ) : MavMessage<ActuatorControlTarget> {
   public override val instanceMetadata: MavMessage.Metadata<ActuatorControlTarget> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(controls, 32)
     outputBuffer.encodeUint8(groupMlx)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloatArray(controls, 32)
+    outputBuffer.encodeUint8(groupMlx)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

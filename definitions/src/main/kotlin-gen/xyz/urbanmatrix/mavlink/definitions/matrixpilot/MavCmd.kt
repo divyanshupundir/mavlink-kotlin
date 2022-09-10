@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -33,6 +34,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_PREFLIGHT_STORAGE_ADVANCED(0L),
   ;
 

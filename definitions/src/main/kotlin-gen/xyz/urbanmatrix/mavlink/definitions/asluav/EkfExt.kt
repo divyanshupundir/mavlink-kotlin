@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Extended EKF state estimates for ASLUAVs
@@ -26,35 +28,42 @@ public data class EkfExt(
   /**
    *  Time since system start
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
    *  Magnitude of wind velocity (in lateral inertial plane)
    */
+  @GeneratedMavField(type = "float")
   public val windspeed: Float = 0F,
   /**
    *  Wind heading angle from North
    */
+  @GeneratedMavField(type = "float")
   public val winddir: Float = 0F,
   /**
    *  Z (Down) component of inertial wind velocity
    */
+  @GeneratedMavField(type = "float")
   public val windz: Float = 0F,
   /**
    *  Magnitude of air velocity
    */
+  @GeneratedMavField(type = "float")
   public val airspeed: Float = 0F,
   /**
    *  Sideslip angle
    */
+  @GeneratedMavField(type = "float")
   public val beta: Float = 0F,
   /**
    *  Angle of attack
    */
+  @GeneratedMavField(type = "float")
   public val alpha: Float = 0F,
 ) : MavMessage<EkfExt> {
   public override val instanceMetadata: MavMessage.Metadata<EkfExt> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(windspeed)
@@ -64,6 +73,18 @@ public data class EkfExt(
     outputBuffer.encodeFloat(beta)
     outputBuffer.encodeFloat(alpha)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeFloat(windspeed)
+    outputBuffer.encodeFloat(winddir)
+    outputBuffer.encodeFloat(windz)
+    outputBuffer.encodeFloat(airspeed)
+    outputBuffer.encodeFloat(beta)
+    outputBuffer.encodeFloat(alpha)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

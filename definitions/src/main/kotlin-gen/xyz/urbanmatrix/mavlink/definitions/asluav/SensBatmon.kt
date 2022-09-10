@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -23,6 +24,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Battery pack monitoring data for Li-Ion batteries
@@ -35,67 +37,82 @@ public data class SensBatmon(
   /**
    * Time since system start
    */
+  @GeneratedMavField(type = "uint64_t")
   public val batmonTimestamp: BigInteger = BigInteger.ZERO,
   /**
    * Battery pack temperature
    */
+  @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
   /**
    * Battery pack voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val voltage: Int = 0,
   /**
    * Battery pack current
    */
+  @GeneratedMavField(type = "int16_t")
   public val current: Int = 0,
   /**
    * Battery pack state-of-charge
    */
+  @GeneratedMavField(type = "uint8_t")
   public val soc: Int = 0,
   /**
    * Battery monitor status report bits in Hex
    */
+  @GeneratedMavField(type = "uint16_t")
   public val batterystatus: Int = 0,
   /**
    * Battery monitor serial number in Hex
    */
+  @GeneratedMavField(type = "uint16_t")
   public val serialnumber: Int = 0,
   /**
    * Battery monitor safetystatus report bits in Hex
    */
+  @GeneratedMavField(type = "uint32_t")
   public val safetystatus: Long = 0L,
   /**
    * Battery monitor operation status report bits in Hex
    */
+  @GeneratedMavField(type = "uint32_t")
   public val operationstatus: Long = 0L,
   /**
    * Battery pack cell 1 voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val cellvoltage1: Int = 0,
   /**
    * Battery pack cell 2 voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val cellvoltage2: Int = 0,
   /**
    * Battery pack cell 3 voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val cellvoltage3: Int = 0,
   /**
    * Battery pack cell 4 voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val cellvoltage4: Int = 0,
   /**
    * Battery pack cell 5 voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val cellvoltage5: Int = 0,
   /**
    * Battery pack cell 6 voltage
    */
+  @GeneratedMavField(type = "uint16_t")
   public val cellvoltage6: Int = 0,
 ) : MavMessage<SensBatmon> {
   public override val instanceMetadata: MavMessage.Metadata<SensBatmon> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(batmonTimestamp)
     outputBuffer.encodeFloat(temperature)
@@ -113,6 +130,26 @@ public data class SensBatmon(
     outputBuffer.encodeUint16(cellvoltage6)
     outputBuffer.encodeUint8(soc)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(batmonTimestamp)
+    outputBuffer.encodeFloat(temperature)
+    outputBuffer.encodeUint32(safetystatus)
+    outputBuffer.encodeUint32(operationstatus)
+    outputBuffer.encodeUint16(voltage)
+    outputBuffer.encodeInt16(current)
+    outputBuffer.encodeUint16(batterystatus)
+    outputBuffer.encodeUint16(serialnumber)
+    outputBuffer.encodeUint16(cellvoltage1)
+    outputBuffer.encodeUint16(cellvoltage2)
+    outputBuffer.encodeUint16(cellvoltage3)
+    outputBuffer.encodeUint16(cellvoltage4)
+    outputBuffer.encodeUint16(cellvoltage5)
+    outputBuffer.encodeUint16(cellvoltage6)
+    outputBuffer.encodeUint8(soc)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

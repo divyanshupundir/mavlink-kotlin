@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of compassmot calibration.
@@ -25,31 +27,37 @@ public data class CompassmotStatus(
   /**
    * Throttle.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val throttle: Int = 0,
   /**
    * Current.
    */
+  @GeneratedMavField(type = "float")
   public val current: Float = 0F,
   /**
    * Interference.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val interference: Int = 0,
   /**
    * Motor Compensation X.
    */
+  @GeneratedMavField(type = "float")
   public val compensationx: Float = 0F,
   /**
    * Motor Compensation Y.
    */
+  @GeneratedMavField(type = "float")
   public val compensationy: Float = 0F,
   /**
    * Motor Compensation Z.
    */
+  @GeneratedMavField(type = "float")
   public val compensationz: Float = 0F,
 ) : MavMessage<CompassmotStatus> {
   public override val instanceMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(current)
     outputBuffer.encodeFloat(compensationx)
@@ -58,6 +66,17 @@ public data class CompassmotStatus(
     outputBuffer.encodeUint16(throttle)
     outputBuffer.encodeUint16(interference)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(current)
+    outputBuffer.encodeFloat(compensationx)
+    outputBuffer.encodeFloat(compensationy)
+    outputBuffer.encodeFloat(compensationz)
+    outputBuffer.encodeUint16(throttle)
+    outputBuffer.encodeUint16(interference)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

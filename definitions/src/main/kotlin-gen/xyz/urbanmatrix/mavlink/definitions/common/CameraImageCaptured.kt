@@ -10,6 +10,7 @@ import kotlin.Long
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -27,6 +28,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a captured image. This is emitted every time a message is captured.
@@ -48,53 +50,64 @@ public data class CameraImageCaptured(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUtc: BigInteger = BigInteger.ZERO,
   /**
    * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val cameraId: Int = 0,
   /**
    * Latitude where image was taken
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude where capture was taken
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL) where image was taken
    */
+  @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground
    */
+  @GeneratedMavField(type = "int32_t")
   public val relativeAlt: Int = 0,
   /**
    * Quaternion of camera orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * Zero based index of this image (i.e. a new image will have index CAMERA_CAPTURE_STATUS.image
    * count -1)
    */
+  @GeneratedMavField(type = "int32_t")
   public val imageIndex: Int = 0,
   /**
    * Boolean indicating success (1) or failure (0) while capturing this image.
    */
+  @GeneratedMavField(type = "int8_t")
   public val captureResult: Int = 0,
   /**
    * URL of image taken. Either local storage or http://foo.jpg if camera provides an HTTP
    * interface.
    */
+  @GeneratedMavField(type = "char[205]")
   public val fileUrl: String = "",
 ) : MavMessage<CameraImageCaptured> {
   public override val instanceMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUtc)
     outputBuffer.encodeUint32(timeBootMs)
@@ -108,6 +121,22 @@ public data class CameraImageCaptured(
     outputBuffer.encodeInt8(captureResult)
     outputBuffer.encodeString(fileUrl, 205)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUtc)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeInt32(alt)
+    outputBuffer.encodeInt32(relativeAlt)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeInt32(imageIndex)
+    outputBuffer.encodeUint8(cameraId)
+    outputBuffer.encodeInt8(captureResult)
+    outputBuffer.encodeString(fileUrl, 205)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

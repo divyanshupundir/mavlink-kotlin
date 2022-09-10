@@ -7,6 +7,7 @@ import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Message encoding a mission item. This message is emitted to announce
@@ -37,67 +39,130 @@ public data class MissionItem(
   /**
    * System ID
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val targetComponent: Int = 0,
   /**
    * Sequence
    */
+  @GeneratedMavField(
+    type = "uint16_t",
+    extension = true,
+  )
   public val seq: Int = 0,
   /**
    * The coordinate system of the waypoint.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * The scheduled action for the waypoint.
    */
+  @GeneratedMavField(
+    type = "uint16_t",
+    extension = true,
+  )
   public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
   /**
    * false:0, true:1
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val current: Int = 0,
   /**
    * Autocontinue to next waypoint
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val autocontinue: Int = 0,
   /**
    * PARAM1, see MAV_CMD enum
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val param1: Float = 0F,
   /**
    * PARAM2, see MAV_CMD enum
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val param2: Float = 0F,
   /**
    * PARAM3, see MAV_CMD enum
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val param3: Float = 0F,
   /**
    * PARAM4, see MAV_CMD enum
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val param4: Float = 0F,
   /**
    * PARAM5 / local: X coordinate, global: latitude
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val x: Float = 0F,
   /**
    * PARAM6 / local: Y coordinate, global: longitude
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val y: Float = 0F,
   /**
    * PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame).
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val z: Float = 0F,
   /**
    * Mission type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0),
 ) : MavMessage<MissionItem> {
   public override val instanceMetadata: MavMessage.Metadata<MissionItem> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeEnumValue(missionType.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(missionType.value, 1)
     outputBuffer.encodeUint8(targetSystem)
@@ -114,7 +179,7 @@ public data class MissionItem(
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

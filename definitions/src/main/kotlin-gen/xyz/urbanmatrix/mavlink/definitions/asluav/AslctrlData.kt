@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * ASL-fixed-wing controller data
@@ -28,62 +30,87 @@ public data class AslctrlData(
   /**
    *  Timestamp
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
    *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val aslctrlMode: Int = 0,
   /**
    *  See sourcecode for a description of these values... 
    */
+  @GeneratedMavField(type = "float")
   public val h: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val href: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val hrefT: Float = 0F,
   /**
    * Pitch angle
    */
+  @GeneratedMavField(type = "float")
   public val pitchangle: Float = 0F,
   /**
    * Pitch angle reference
    */
+  @GeneratedMavField(type = "float")
   public val pitchangleref: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val q: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val qref: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val uelev: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val uthrot: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val uthrot2: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val nz: Float = 0F,
   /**
    * Airspeed reference
    */
+  @GeneratedMavField(type = "float")
   public val airspeedref: Float = 0F,
+  @GeneratedMavField(type = "uint8_t")
   public val spoilersengaged: Int = 0,
   /**
    * Yaw angle
    */
+  @GeneratedMavField(type = "float")
   public val yawangle: Float = 0F,
   /**
    * Yaw angle reference
    */
+  @GeneratedMavField(type = "float")
   public val yawangleref: Float = 0F,
   /**
    * Roll angle
    */
+  @GeneratedMavField(type = "float")
   public val rollangle: Float = 0F,
   /**
    * Roll angle reference
    */
+  @GeneratedMavField(type = "float")
   public val rollangleref: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val p: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val pref: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val r: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val rref: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val uail: Float = 0F,
+  @GeneratedMavField(type = "float")
   public val urud: Float = 0F,
 ) : MavMessage<AslctrlData> {
   public override val instanceMetadata: MavMessage.Metadata<AslctrlData> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(h)
@@ -111,6 +138,36 @@ public data class AslctrlData(
     outputBuffer.encodeUint8(aslctrlMode)
     outputBuffer.encodeUint8(spoilersengaged)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeFloat(h)
+    outputBuffer.encodeFloat(href)
+    outputBuffer.encodeFloat(hrefT)
+    outputBuffer.encodeFloat(pitchangle)
+    outputBuffer.encodeFloat(pitchangleref)
+    outputBuffer.encodeFloat(q)
+    outputBuffer.encodeFloat(qref)
+    outputBuffer.encodeFloat(uelev)
+    outputBuffer.encodeFloat(uthrot)
+    outputBuffer.encodeFloat(uthrot2)
+    outputBuffer.encodeFloat(nz)
+    outputBuffer.encodeFloat(airspeedref)
+    outputBuffer.encodeFloat(yawangle)
+    outputBuffer.encodeFloat(yawangleref)
+    outputBuffer.encodeFloat(rollangle)
+    outputBuffer.encodeFloat(rollangleref)
+    outputBuffer.encodeFloat(p)
+    outputBuffer.encodeFloat(pref)
+    outputBuffer.encodeFloat(r)
+    outputBuffer.encodeFloat(rref)
+    outputBuffer.encodeFloat(uail)
+    outputBuffer.encodeFloat(urud)
+    outputBuffer.encodeUint8(aslctrlMode)
+    outputBuffer.encodeUint8(spoilersengaged)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

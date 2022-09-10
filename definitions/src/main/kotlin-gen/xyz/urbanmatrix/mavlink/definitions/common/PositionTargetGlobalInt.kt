@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
@@ -35,64 +37,78 @@ public data class PositionTargetGlobalInt(
    * the system to compensate for the transport delay of the setpoint. This allows the system to
    * compensate processing latency.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
    * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
    */
+  @GeneratedMavField(type = "uint8_t")
   public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
   /**
    * X Position in WGS84 frame
    */
+  @GeneratedMavField(type = "int32_t")
   public val latInt: Int = 0,
   /**
    * Y Position in WGS84 frame
    */
+  @GeneratedMavField(type = "int32_t")
   public val lonInt: Int = 0,
   /**
    * Altitude (MSL, AGL or relative to home altitude, depending on frame)
    */
+  @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * X velocity in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y velocity in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z velocity in NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    */
+  @GeneratedMavField(type = "float")
   public val afx: Float = 0F,
   /**
    * Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    */
+  @GeneratedMavField(type = "float")
   public val afy: Float = 0F,
   /**
    * Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    */
+  @GeneratedMavField(type = "float")
   public val afz: Float = 0F,
   /**
    * yaw setpoint
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * yaw rate setpoint
    */
+  @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<PositionTargetGlobalInt> {
   public override val instanceMetadata: MavMessage.Metadata<PositionTargetGlobalInt> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(latInt)
@@ -109,6 +125,25 @@ public data class PositionTargetGlobalInt(
     outputBuffer.encodeEnumValue(typeMask.value, 2)
     outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeInt32(latInt)
+    outputBuffer.encodeInt32(lonInt)
+    outputBuffer.encodeFloat(alt)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    outputBuffer.encodeFloat(afx)
+    outputBuffer.encodeFloat(afy)
+    outputBuffer.encodeFloat(afz)
+    outputBuffer.encodeFloat(yaw)
+    outputBuffer.encodeFloat(yawRate)
+    outputBuffer.encodeEnumValue(typeMask.value, 2)
+    outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

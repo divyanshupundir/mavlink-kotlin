@@ -6,6 +6,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of GSM modem (connected to onboard computer)
@@ -28,35 +30,42 @@ public data class GsmLinkStatus(
   /**
    * Timestamp (of OBC)
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timestamp: BigInteger = BigInteger.ZERO,
   /**
    * GSM modem used
    */
+  @GeneratedMavField(type = "uint8_t")
   public val gsmModemType: MavEnumValue<GsmModemType> = MavEnumValue.fromValue(0),
   /**
    * GSM link type
    */
+  @GeneratedMavField(type = "uint8_t")
   public val gsmLinkType: MavEnumValue<GsmLinkType> = MavEnumValue.fromValue(0),
   /**
    * RSSI as reported by modem (unconverted)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val rssi: Int = 0,
   /**
    * RSRP (LTE) or RSCP (WCDMA) as reported by modem (unconverted)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val rsrpRscp: Int = 0,
   /**
    * SINR (LTE) or ECIO (WCDMA) as reported by modem (unconverted)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sinrEcio: Int = 0,
   /**
    * RSRQ (LTE only) as reported by modem (unconverted)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val rsrq: Int = 0,
 ) : MavMessage<GsmLinkStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GsmLinkStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeEnumValue(gsmModemType.value, 1)
@@ -66,6 +75,18 @@ public data class GsmLinkStatus(
     outputBuffer.encodeUint8(sinrEcio)
     outputBuffer.encodeUint8(rsrq)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeEnumValue(gsmModemType.value, 1)
+    outputBuffer.encodeEnumValue(gsmLinkType.value, 1)
+    outputBuffer.encodeUint8(rssi)
+    outputBuffer.encodeUint8(rsrpRscp)
+    outputBuffer.encodeUint8(sinrEcio)
+    outputBuffer.encodeUint8(rsrq)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

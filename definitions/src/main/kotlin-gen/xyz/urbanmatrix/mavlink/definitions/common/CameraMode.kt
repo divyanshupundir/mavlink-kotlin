@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,15 +15,18 @@ public enum class CameraMode(
   /**
    * Camera is in image/photo capture mode.
    */
+  @GeneratedMavEnumEntry
   CAMERA_MODE_IMAGE(0L),
   /**
    * Camera is in video capture mode.
    */
+  @GeneratedMavEnumEntry
   CAMERA_MODE_VIDEO(1L),
   /**
    * Camera is in image survey capture mode. It allows for camera controller to do specific settings
    * for surveys.
    */
+  @GeneratedMavEnumEntry
   CAMERA_MODE_IMAGE_SURVEY(2L),
   ;
 

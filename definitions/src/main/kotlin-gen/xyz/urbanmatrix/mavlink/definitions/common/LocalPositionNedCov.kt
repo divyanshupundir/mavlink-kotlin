@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
@@ -34,46 +36,57 @@ public data class LocalPositionNedCov(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Class id of the estimator this estimate originated from.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
   /**
    * X Position
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * X Speed
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y Speed
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z Speed
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * X Acceleration
    */
+  @GeneratedMavField(type = "float")
   public val ax: Float = 0F,
   /**
    * Y Acceleration
    */
+  @GeneratedMavField(type = "float")
   public val ay: Float = 0F,
   /**
    * Z Acceleration
    */
+  @GeneratedMavField(type = "float")
   public val az: Float = 0F,
   /**
    * Row-major representation of position, velocity and acceleration 9x9 cross-covariance matrix
@@ -81,11 +94,12 @@ public data class LocalPositionNedCov(
    * ROW, next eight entries are the second row, etc.). If unknown, assign NaN value to first element
    * in the array.
    */
+  @GeneratedMavField(type = "float[45]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<LocalPositionNedCov> {
   public override val instanceMetadata: MavMessage.Metadata<LocalPositionNedCov> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(x)
@@ -100,6 +114,23 @@ public data class LocalPositionNedCov(
     outputBuffer.encodeFloatArray(covariance, 180)
     outputBuffer.encodeEnumValue(estimatorType.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    outputBuffer.encodeFloat(ax)
+    outputBuffer.encodeFloat(ay)
+    outputBuffer.encodeFloat(az)
+    outputBuffer.encodeFloatArray(covariance, 180)
+    outputBuffer.encodeEnumValue(estimatorType.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0
@@ -27,51 +29,62 @@ public data class AvssDroneImu(
   /**
    * Timestamp (time since FC boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Quaternion component 1, w (1 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q1: Float = 0F,
   /**
    * Quaternion component 2, x (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q2: Float = 0F,
   /**
    * Quaternion component 3, y (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q3: Float = 0F,
   /**
    * Quaternion component 4, z (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q4: Float = 0F,
   /**
    * X acceleration
    */
+  @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
    */
+  @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
    */
+  @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
    */
+  @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
    */
+  @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
    */
+  @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
 ) : MavMessage<AvssDroneImu> {
   public override val instanceMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(q1)
@@ -85,6 +98,22 @@ public data class AvssDroneImu(
     outputBuffer.encodeFloat(ygyro)
     outputBuffer.encodeFloat(zgyro)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloat(q1)
+    outputBuffer.encodeFloat(q2)
+    outputBuffer.encodeFloat(q3)
+    outputBuffer.encodeFloat(q4)
+    outputBuffer.encodeFloat(xacc)
+    outputBuffer.encodeFloat(yacc)
+    outputBuffer.encodeFloat(zacc)
+    outputBuffer.encodeFloat(xgyro)
+    outputBuffer.encodeFloat(ygyro)
+    outputBuffer.encodeFloat(zgyro)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

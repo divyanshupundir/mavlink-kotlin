@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,6 +12,7 @@ public enum class GoproHeartbeatFlags(
   /**
    * GoPro is currently recording.
    */
+  @GeneratedMavEnumEntry
   GOPRO_FLAG_RECORDING(1L),
   ;
 

@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
@@ -31,33 +33,39 @@ public data class AttitudeQuaternionCov(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * Roll angular speed
    */
+  @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    */
+  @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    */
+  @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
   /**
    * Row-major representation of a 3x3 attitude covariance matrix (states: roll, pitch, yaw; first
    * three entries are the first ROW, next three entries are the second row, etc.). If unknown, assign
    * NaN value to first element in the array.
    */
+  @GeneratedMavField(type = "float[9]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternionCov> {
   public override val instanceMetadata: MavMessage.Metadata<AttitudeQuaternionCov> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
@@ -66,6 +74,17 @@ public data class AttitudeQuaternionCov(
     outputBuffer.encodeFloat(yawspeed)
     outputBuffer.encodeFloatArray(covariance, 36)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(rollspeed)
+    outputBuffer.encodeFloat(pitchspeed)
+    outputBuffer.encodeFloat(yawspeed)
+    outputBuffer.encodeFloatArray(covariance, 36)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

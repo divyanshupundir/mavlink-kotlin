@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
@@ -31,47 +33,76 @@ public data class OpticalFlow(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Sensor ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sensorId: Int = 0,
   /**
    * Flow in x-sensor direction
    */
+  @GeneratedMavField(type = "int16_t")
   public val flowX: Int = 0,
   /**
    * Flow in y-sensor direction
    */
+  @GeneratedMavField(type = "int16_t")
   public val flowY: Int = 0,
   /**
    * Flow in x-sensor direction, angular-speed compensated
    */
+  @GeneratedMavField(type = "float")
   public val flowCompMX: Float = 0F,
   /**
    * Flow in y-sensor direction, angular-speed compensated
    */
+  @GeneratedMavField(type = "float")
   public val flowCompMY: Float = 0F,
   /**
    * Optical flow quality / confidence. 0: bad, 255: maximum quality
    */
+  @GeneratedMavField(type = "uint8_t")
   public val quality: Int = 0,
   /**
    * Ground distance. Positive value: distance known. Negative value: Unknown distance
    */
+  @GeneratedMavField(type = "float")
   public val groundDistance: Float = 0F,
   /**
    * Flow rate about X axis
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val flowRateX: Float = 0F,
   /**
    * Flow rate about Y axis
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val flowRateY: Float = 0F,
 ) : MavMessage<OpticalFlow> {
   public override val instanceMetadata: MavMessage.Metadata<OpticalFlow> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(flowCompMX)
+    outputBuffer.encodeFloat(flowCompMY)
+    outputBuffer.encodeFloat(groundDistance)
+    outputBuffer.encodeInt16(flowX)
+    outputBuffer.encodeInt16(flowY)
+    outputBuffer.encodeUint8(sensorId)
+    outputBuffer.encodeUint8(quality)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(flowCompMX)
@@ -83,7 +114,7 @@ public data class OpticalFlow(
     outputBuffer.encodeUint8(quality)
     outputBuffer.encodeFloat(flowRateX)
     outputBuffer.encodeFloat(flowRateY)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

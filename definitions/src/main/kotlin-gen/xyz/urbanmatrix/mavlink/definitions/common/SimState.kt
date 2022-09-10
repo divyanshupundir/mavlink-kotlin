@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of simulation environment, if used
@@ -23,91 +25,112 @@ public data class SimState(
   /**
    * True attitude quaternion component 1, w (1 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q1: Float = 0F,
   /**
    * True attitude quaternion component 2, x (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q2: Float = 0F,
   /**
    * True attitude quaternion component 3, y (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q3: Float = 0F,
   /**
    * True attitude quaternion component 4, z (0 in null-rotation)
    */
+  @GeneratedMavField(type = "float")
   public val q4: Float = 0F,
   /**
    * Attitude roll expressed as Euler angles, not recommended except for human-readable outputs
    */
+  @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Attitude pitch expressed as Euler angles, not recommended except for human-readable outputs
    */
+  @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Attitude yaw expressed as Euler angles, not recommended except for human-readable outputs
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * X acceleration
    */
+  @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
    */
+  @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
    */
+  @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
    */
+  @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
    */
+  @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
    */
+  @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * Latitude
    */
+  @GeneratedMavField(type = "float")
   public val lat: Float = 0F,
   /**
    * Longitude
    */
+  @GeneratedMavField(type = "float")
   public val lon: Float = 0F,
   /**
    * Altitude
    */
+  @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * Horizontal position standard deviation
    */
+  @GeneratedMavField(type = "float")
   public val stdDevHorz: Float = 0F,
   /**
    * Vertical position standard deviation
    */
+  @GeneratedMavField(type = "float")
   public val stdDevVert: Float = 0F,
   /**
    * True velocity in north direction in earth-fixed NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vn: Float = 0F,
   /**
    * True velocity in east direction in earth-fixed NED frame
    */
+  @GeneratedMavField(type = "float")
   public val ve: Float = 0F,
   /**
    * True velocity in down direction in earth-fixed NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vd: Float = 0F,
 ) : MavMessage<SimState> {
   public override val instanceMetadata: MavMessage.Metadata<SimState> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
@@ -131,6 +154,32 @@ public data class SimState(
     outputBuffer.encodeFloat(ve)
     outputBuffer.encodeFloat(vd)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(q1)
+    outputBuffer.encodeFloat(q2)
+    outputBuffer.encodeFloat(q3)
+    outputBuffer.encodeFloat(q4)
+    outputBuffer.encodeFloat(roll)
+    outputBuffer.encodeFloat(pitch)
+    outputBuffer.encodeFloat(yaw)
+    outputBuffer.encodeFloat(xacc)
+    outputBuffer.encodeFloat(yacc)
+    outputBuffer.encodeFloat(zacc)
+    outputBuffer.encodeFloat(xgyro)
+    outputBuffer.encodeFloat(ygyro)
+    outputBuffer.encodeFloat(zgyro)
+    outputBuffer.encodeFloat(lat)
+    outputBuffer.encodeFloat(lon)
+    outputBuffer.encodeFloat(alt)
+    outputBuffer.encodeFloat(stdDevHorz)
+    outputBuffer.encodeFloat(stdDevVert)
+    outputBuffer.encodeFloat(vn)
+    outputBuffer.encodeFloat(ve)
+    outputBuffer.encodeFloat(vd)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

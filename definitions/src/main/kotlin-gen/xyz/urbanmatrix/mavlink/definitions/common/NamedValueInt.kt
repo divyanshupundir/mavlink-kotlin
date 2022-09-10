@@ -7,6 +7,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but
@@ -29,24 +31,35 @@ public data class NamedValueInt(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Name of the debug variable
    */
+  @GeneratedMavField(type = "char[10]")
   public val name: String = "",
   /**
    * Signed integer value
    */
+  @GeneratedMavField(type = "int32_t")
   public val `value`: Int = 0,
 ) : MavMessage<NamedValueInt> {
   public override val instanceMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(value)
     outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeInt32(value)
+    outputBuffer.encodeString(name, 10)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

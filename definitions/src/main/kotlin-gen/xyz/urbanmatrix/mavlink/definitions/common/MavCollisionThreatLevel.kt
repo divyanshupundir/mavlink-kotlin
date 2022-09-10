@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,14 +15,17 @@ public enum class MavCollisionThreatLevel(
   /**
    * Not a threat
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_THREAT_LEVEL_NONE(0L),
   /**
    * Craft is mildly concerned about this threat
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_THREAT_LEVEL_LOW(1L),
   /**
    * Craft is panicking, and may take actions to avoid threat
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_THREAT_LEVEL_HIGH(2L),
   ;
 

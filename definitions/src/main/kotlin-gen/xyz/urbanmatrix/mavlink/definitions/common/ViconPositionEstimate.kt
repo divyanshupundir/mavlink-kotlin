@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Global position estimate from a Vicon motion system source.
@@ -29,41 +31,64 @@ public data class ViconPositionEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)
    */
+  @GeneratedMavField(type = "uint64_t")
   public val usec: BigInteger = BigInteger.ZERO,
   /**
    * Global X position
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Global Y position
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Global Z position
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * Roll angle
    */
+  @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle
    */
+  @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Row-major representation of 6x6 pose cross-covariance matrix upper right triangle (states: x,
    * y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW,
    * etc.). If unknown, assign NaN value to first element in the array.
    */
+  @GeneratedMavField(
+    type = "float[21]",
+    extension = true,
+  )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<ViconPositionEstimate> {
   public override val instanceMetadata: MavMessage.Metadata<ViconPositionEstimate> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloat(roll)
+    outputBuffer.encodeFloat(pitch)
+    outputBuffer.encodeFloat(yaw)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(usec)
     outputBuffer.encodeFloat(x)
@@ -73,7 +98,7 @@ public data class ViconPositionEstimate(
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloatArray(covariance, 84)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

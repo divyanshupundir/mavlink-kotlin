@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,70 +12,87 @@ public enum class GoproCommand(
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_POWER(0L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_CAPTURE_MODE(1L),
   /**
    * (___/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_SHUTTER(2L),
   /**
    * (Get/___).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_BATTERY(3L),
   /**
    * (Get/___).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_MODEL(4L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_VIDEO_SETTINGS(5L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_LOW_LIGHT(6L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PHOTO_RESOLUTION(7L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PHOTO_BURST_RATE(8L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PROTUNE(9L),
   /**
    * (Get/Set) Hero 3+ Only.
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PROTUNE_WHITE_BALANCE(10L),
   /**
    * (Get/Set) Hero 3+ Only.
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PROTUNE_COLOUR(11L),
   /**
    * (Get/Set) Hero 3+ Only.
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PROTUNE_GAIN(12L),
   /**
    * (Get/Set) Hero 3+ Only.
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PROTUNE_SHARPNESS(13L),
   /**
    * (Get/Set) Hero 3+ Only.
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_PROTUNE_EXPOSURE(14L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_TIME(15L),
   /**
    * (Get/Set).
    */
+  @GeneratedMavEnumEntry
   GOPRO_COMMAND_CHARGING(16L),
   ;
 

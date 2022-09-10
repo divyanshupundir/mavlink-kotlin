@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,22 +12,27 @@ public enum class GoproProtuneWhiteBalance(
   /**
    * Auto.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_WHITE_BALANCE_AUTO(0L),
   /**
    * 3000K.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_WHITE_BALANCE_3000K(1L),
   /**
    * 5500K.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_WHITE_BALANCE_5500K(2L),
   /**
    * 6500K.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_WHITE_BALANCE_6500K(3L),
   /**
    * Camera Raw.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_WHITE_BALANCE_RAW(4L),
   ;
 

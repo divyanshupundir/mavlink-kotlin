@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,9 +12,13 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class OsdParamConfigError(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   OSD_PARAM_SUCCESS(0L),
+  @GeneratedMavEnumEntry
   OSD_PARAM_INVALID_SCREEN(1L),
+  @GeneratedMavEnumEntry
   OSD_PARAM_INVALID_PARAMETER_INDEX(2L),
+  @GeneratedMavEnumEntry
   OSD_PARAM_INVALID_PARAMETER(3L),
   ;
 

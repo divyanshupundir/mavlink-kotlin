@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.uavionix
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,11 +12,17 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class UavionixAdsbOutDynamicGpsFix(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_0(0L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_1(1L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_2D(2L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_3D(3L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_DGPS(4L),
+  @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_RTK(5L),
   ;
 

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,21 +15,25 @@ public enum class MavResult(
   /**
    * Command is valid (is supported and has valid parameters), and was executed.
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_ACCEPTED(0L),
   /**
    * Command is valid, but cannot be executed at this time. This is used to indicate a problem that
    * should be fixed just by waiting (e.g. a state machine is busy, can't arm because have not got GPS
    * lock, etc.). Retrying later should work.
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_TEMPORARILY_REJECTED(1L),
   /**
    * Command is invalid (is supported but has invalid parameters). Retrying same command and
    * parameters will not work.
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_DENIED(2L),
   /**
    * Command is not supported (unknown).
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_UNSUPPORTED(3L),
   /**
    * Command is valid, but execution has failed. This is used to indicate any non-temporary or
@@ -36,6 +41,7 @@ public enum class MavResult(
    * For example, attempting to write a file when out of memory, attempting to arm when sensors are not
    * calibrated, etc.
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_FAILED(4L),
   /**
    * Command is valid and is being executed. This will be followed by further progress updates, i.e.
@@ -44,10 +50,12 @@ public enum class MavResult(
    * result of the operation. The COMMAND_ACK.progress field can be used to indicate the progress of
    * the operation.
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_IN_PROGRESS(5L),
   /**
    * Command has been cancelled (as a result of receiving a COMMAND_CANCEL message).
    */
+  @GeneratedMavEnumEntry
   MAV_RESULT_CANCELLED(6L),
   ;
 

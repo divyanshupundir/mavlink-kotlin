@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -21,6 +22,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about the status of a video stream. It may be requested using
@@ -34,39 +36,47 @@ public data class VideoStreamStatus(
   /**
    * Video Stream ID (1 for first, 2 for second, etc.)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val streamId: Int = 0,
   /**
    * Bitmap of stream status flags
    */
+  @GeneratedMavField(type = "uint16_t")
   public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
   /**
    * Frame rate
    */
+  @GeneratedMavField(type = "float")
   public val framerate: Float = 0F,
   /**
    * Horizontal resolution
    */
+  @GeneratedMavField(type = "uint16_t")
   public val resolutionH: Int = 0,
   /**
    * Vertical resolution
    */
+  @GeneratedMavField(type = "uint16_t")
   public val resolutionV: Int = 0,
   /**
    * Bit rate
    */
+  @GeneratedMavField(type = "uint32_t")
   public val bitrate: Long = 0L,
   /**
    * Video image rotation clockwise
    */
+  @GeneratedMavField(type = "uint16_t")
   public val rotation: Int = 0,
   /**
    * Horizontal Field of view
    */
+  @GeneratedMavField(type = "uint16_t")
   public val hfov: Int = 0,
 ) : MavMessage<VideoStreamStatus> {
   public override val instanceMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(framerate)
     outputBuffer.encodeUint32(bitrate)
@@ -77,6 +87,19 @@ public data class VideoStreamStatus(
     outputBuffer.encodeUint16(hfov)
     outputBuffer.encodeUint8(streamId)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(framerate)
+    outputBuffer.encodeUint32(bitrate)
+    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeUint16(resolutionH)
+    outputBuffer.encodeUint16(resolutionV)
+    outputBuffer.encodeUint16(rotation)
+    outputBuffer.encodeUint16(hfov)
+    outputBuffer.encodeUint8(streamId)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

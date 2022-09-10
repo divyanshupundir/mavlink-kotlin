@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,26 +15,32 @@ public enum class MavPowerStatus(
   /**
    * main brick power supply valid
    */
+  @GeneratedMavEnumEntry
   MAV_POWER_STATUS_BRICK_VALID(1L),
   /**
    * main servo power supply valid for FMU
    */
+  @GeneratedMavEnumEntry
   MAV_POWER_STATUS_SERVO_VALID(2L),
   /**
    * USB power is connected
    */
+  @GeneratedMavEnumEntry
   MAV_POWER_STATUS_USB_CONNECTED(4L),
   /**
    * peripheral supply is in over-current state
    */
+  @GeneratedMavEnumEntry
   MAV_POWER_STATUS_PERIPH_OVERCURRENT(8L),
   /**
    * hi-power peripheral supply is in over-current state
    */
+  @GeneratedMavEnumEntry
   MAV_POWER_STATUS_PERIPH_HIPOWER_OVERCURRENT(16L),
   /**
    * Power status has changed since boot
    */
+  @GeneratedMavEnumEntry
   MAV_POWER_STATUS_CHANGED(32L),
   ;
 

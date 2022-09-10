@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class MavOdidDescType(
   /**
    * Optional free-form text description of the purpose of the flight.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_DESC_TYPE_TEXT(0L),
   /**
    * Optional additional clarification when status == MAV_ODID_STATUS_EMERGENCY.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_DESC_TYPE_EMERGENCY(1L),
   /**
    * Optional additional clarification when status != MAV_ODID_STATUS_EMERGENCY.
    */
+  @GeneratedMavEnumEntry
   MAV_ODID_DESC_TYPE_EXTENDED_STATUS(2L),
   ;
 

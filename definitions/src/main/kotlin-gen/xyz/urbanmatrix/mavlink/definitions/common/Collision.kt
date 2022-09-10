@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a potential collision
@@ -29,35 +31,42 @@ public data class Collision(
   /**
    * Collision data source
    */
+  @GeneratedMavField(type = "uint8_t")
   public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0),
   /**
    * Unique identifier, domain based on src field
    */
+  @GeneratedMavField(type = "uint32_t")
   public val id: Long = 0L,
   /**
    * Action that is being taken to avoid this collision
    */
+  @GeneratedMavField(type = "uint8_t")
   public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0),
   /**
    * How concerned the aircraft is about this collision
    */
+  @GeneratedMavField(type = "uint8_t")
   public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0),
   /**
    * Estimated time until collision occurs
    */
+  @GeneratedMavField(type = "float")
   public val timeToMinimumDelta: Float = 0F,
   /**
    * Closest vertical distance between vehicle and object
    */
+  @GeneratedMavField(type = "float")
   public val altitudeMinimumDelta: Float = 0F,
   /**
    * Closest horizontal distance between vehicle and object
    */
+  @GeneratedMavField(type = "float")
   public val horizontalMinimumDelta: Float = 0F,
 ) : MavMessage<Collision> {
   public override val instanceMetadata: MavMessage.Metadata<Collision> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeFloat(timeToMinimumDelta)
@@ -67,6 +76,18 @@ public data class Collision(
     outputBuffer.encodeEnumValue(action.value, 1)
     outputBuffer.encodeEnumValue(threatLevel.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(id)
+    outputBuffer.encodeFloat(timeToMinimumDelta)
+    outputBuffer.encodeFloat(altitudeMinimumDelta)
+    outputBuffer.encodeFloat(horizontalMinimumDelta)
+    outputBuffer.encodeEnumValue(src.value, 1)
+    outputBuffer.encodeEnumValue(action.value, 1)
+    outputBuffer.encodeEnumValue(threatLevel.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

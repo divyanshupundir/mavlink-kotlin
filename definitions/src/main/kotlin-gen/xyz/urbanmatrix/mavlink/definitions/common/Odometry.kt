@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -22,6 +23,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147
@@ -36,60 +38,74 @@ public data class Odometry(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Coordinate frame of reference for the pose data.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * Coordinate frame of reference for the velocity in free space (twist) data.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * X Position
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * X linear speed
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y linear speed
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z linear speed
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * Roll angular speed
    */
+  @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    */
+  @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    */
+  @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
   /**
    * Row-major representation of a 6x6 pose cross-covariance matrix upper right triangle (states: x,
    * y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW,
    * etc.). If unknown, assign NaN value to first element in the array.
    */
+  @GeneratedMavField(type = "float[21]")
   public val poseCovariance: List<Float> = emptyList(),
   /**
    * Row-major representation of a 6x6 velocity cross-covariance matrix upper right triangle
@@ -97,21 +113,50 @@ public data class Odometry(
    * five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the
    * array.
    */
+  @GeneratedMavField(type = "float[21]")
   public val velocityCovariance: List<Float> = emptyList(),
   /**
    * Estimate reset counter. This should be incremented when the estimate resets in any of the
    * dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an
    * external SLAM system detects a loop-closure and the estimate jumps.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val resetCounter: Int = 0,
   /**
    * Type of estimator that is providing the odometry.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
 ) : MavMessage<Odometry> {
   public override val instanceMetadata: MavMessage.Metadata<Odometry> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    outputBuffer.encodeFloat(rollspeed)
+    outputBuffer.encodeFloat(pitchspeed)
+    outputBuffer.encodeFloat(yawspeed)
+    outputBuffer.encodeFloatArray(poseCovariance, 84)
+    outputBuffer.encodeFloatArray(velocityCovariance, 84)
+    outputBuffer.encodeEnumValue(frameId.value, 1)
+    outputBuffer.encodeEnumValue(childFrameId.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(x)
@@ -130,7 +175,7 @@ public data class Odometry(
     outputBuffer.encodeEnumValue(childFrameId.value, 1)
     outputBuffer.encodeUint8(resetCounter)
     outputBuffer.encodeEnumValue(estimatorType.value, 1)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

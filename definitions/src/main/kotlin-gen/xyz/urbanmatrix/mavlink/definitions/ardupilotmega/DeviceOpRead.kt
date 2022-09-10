@@ -7,6 +7,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Read registers for a device.
@@ -31,47 +33,74 @@ public data class DeviceOpRead(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Request ID - copied to reply.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val requestId: Long = 0L,
   /**
    * The bus type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val bustype: MavEnumValue<DeviceOpBustype> = MavEnumValue.fromValue(0),
   /**
    * Bus number.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val bus: Int = 0,
   /**
    * Bus address.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val address: Int = 0,
   /**
    * Name of device on bus (for SPI).
    */
+  @GeneratedMavField(type = "char[40]")
   public val busname: String = "",
   /**
    * First register to read.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val regstart: Int = 0,
   /**
    * Count of registers to read.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val count: Int = 0,
   /**
    * Bank number.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val bank: Int = 0,
 ) : MavMessage<DeviceOpRead> {
   public override val instanceMetadata: MavMessage.Metadata<DeviceOpRead> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(requestId)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(bustype.value, 1)
+    outputBuffer.encodeUint8(bus)
+    outputBuffer.encodeUint8(address)
+    outputBuffer.encodeString(busname, 40)
+    outputBuffer.encodeUint8(regstart)
+    outputBuffer.encodeUint8(count)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeUint8(targetSystem)
@@ -83,7 +112,7 @@ public data class DeviceOpRead(
     outputBuffer.encodeUint8(regstart)
     outputBuffer.encodeUint8(count)
     outputBuffer.encodeUint8(bank)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

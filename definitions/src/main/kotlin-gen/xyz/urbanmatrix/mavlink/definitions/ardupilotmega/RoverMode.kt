@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,17 +12,29 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class RoverMode(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   ROVER_MODE_MANUAL(0L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_ACRO(1L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_STEERING(3L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_HOLD(4L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_LOITER(5L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_FOLLOW(6L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_SIMPLE(7L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_AUTO(10L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_RTL(11L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_SMART_RTL(12L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_GUIDED(15L),
+  @GeneratedMavEnumEntry
   ROVER_MODE_INITIALIZING(16L),
   ;
 

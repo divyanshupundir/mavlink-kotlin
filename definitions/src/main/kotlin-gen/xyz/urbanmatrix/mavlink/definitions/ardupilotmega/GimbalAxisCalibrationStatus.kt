@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class GimbalAxisCalibrationStatus(
   /**
    * Axis calibration is in progress.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_CALIBRATION_STATUS_IN_PROGRESS(0L),
   /**
    * Axis calibration succeeded.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_CALIBRATION_STATUS_SUCCEEDED(1L),
   /**
    * Axis calibration failed.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_CALIBRATION_STATUS_FAILED(2L),
   ;
 

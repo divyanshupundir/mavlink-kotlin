@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Kinematic multi bands (track) output from Daidalus
@@ -28,71 +30,87 @@ public data class IcarousKinematicBands(
   /**
    * Number of track bands
    */
+  @GeneratedMavField(type = "int8_t")
   public val numbands: Int = 0,
   /**
    * See the TRACK_BAND_TYPES enum.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val min1: Float = 0F,
   /**
    * max angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val max1: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val min2: Float = 0F,
   /**
    * max angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val max2: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val min3: Float = 0F,
   /**
    * max angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val max3: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val min4: Float = 0F,
   /**
    * max angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val max4: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
   /**
    * min angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val min5: Float = 0F,
   /**
    * max angle (degrees)
    */
+  @GeneratedMavField(type = "float")
   public val max5: Float = 0F,
 ) : MavMessage<IcarousKinematicBands> {
   public override val instanceMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(min1)
     outputBuffer.encodeFloat(max1)
@@ -111,6 +129,27 @@ public data class IcarousKinematicBands(
     outputBuffer.encodeEnumValue(type4.value, 1)
     outputBuffer.encodeEnumValue(type5.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(min1)
+    outputBuffer.encodeFloat(max1)
+    outputBuffer.encodeFloat(min2)
+    outputBuffer.encodeFloat(max2)
+    outputBuffer.encodeFloat(min3)
+    outputBuffer.encodeFloat(max3)
+    outputBuffer.encodeFloat(min4)
+    outputBuffer.encodeFloat(max4)
+    outputBuffer.encodeFloat(min5)
+    outputBuffer.encodeFloat(max5)
+    outputBuffer.encodeInt8(numbands)
+    outputBuffer.encodeEnumValue(type1.value, 1)
+    outputBuffer.encodeEnumValue(type2.value, 1)
+    outputBuffer.encodeEnumValue(type3.value, 1)
+    outputBuffer.encodeEnumValue(type4.value, 1)
+    outputBuffer.encodeEnumValue(type5.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

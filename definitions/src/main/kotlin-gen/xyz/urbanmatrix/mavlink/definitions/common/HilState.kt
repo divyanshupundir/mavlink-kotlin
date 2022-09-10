@@ -8,6 +8,7 @@ import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Sent from simulation to autopilot. This packet is useful for high throughput applications such as
@@ -34,71 +36,87 @@ public data class HilState(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Roll angle
    */
+  @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle
    */
+  @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Body frame roll / phi angular speed
    */
+  @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Body frame pitch / theta angular speed
    */
+  @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Body frame yaw / psi angular speed
    */
+  @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
   /**
    * Latitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude
    */
+  @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Ground X Speed (Latitude)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vx: Int = 0,
   /**
    * Ground Y Speed (Longitude)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vy: Int = 0,
   /**
    * Ground Z Speed (Altitude)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vz: Int = 0,
   /**
    * X acceleration
    */
+  @GeneratedMavField(type = "int16_t")
   public val xacc: Int = 0,
   /**
    * Y acceleration
    */
+  @GeneratedMavField(type = "int16_t")
   public val yacc: Int = 0,
   /**
    * Z acceleration
    */
+  @GeneratedMavField(type = "int16_t")
   public val zacc: Int = 0,
 ) : MavMessage<HilState> {
   public override val instanceMetadata: MavMessage.Metadata<HilState> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(roll)
@@ -117,6 +135,27 @@ public data class HilState(
     outputBuffer.encodeInt16(yacc)
     outputBuffer.encodeInt16(zacc)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(roll)
+    outputBuffer.encodeFloat(pitch)
+    outputBuffer.encodeFloat(yaw)
+    outputBuffer.encodeFloat(rollspeed)
+    outputBuffer.encodeFloat(pitchspeed)
+    outputBuffer.encodeFloat(yawspeed)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeInt32(alt)
+    outputBuffer.encodeInt16(vx)
+    outputBuffer.encodeInt16(vy)
+    outputBuffer.encodeInt16(vz)
+    outputBuffer.encodeInt16(xacc)
+    outputBuffer.encodeInt16(yacc)
+    outputBuffer.encodeInt16(zacc)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,10 +12,12 @@ public enum class GoproRequestStatus(
   /**
    * The write message with ID indicated succeeded.
    */
+  @GeneratedMavEnumEntry
   GOPRO_REQUEST_SUCCESS(0L),
   /**
    * The write message with ID indicated failed.
    */
+  @GeneratedMavEnumEntry
   GOPRO_REQUEST_FAILED(1L),
   ;
 

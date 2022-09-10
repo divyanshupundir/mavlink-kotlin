@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,18 +15,22 @@ public enum class CameraTrackingTargetData(
   /**
    * No target data
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_TARGET_DATA_NONE(0L),
   /**
    * Target data embedded in image data (proprietary)
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_TARGET_DATA_EMBEDDED(1L),
   /**
    * Target data rendered in image
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_TARGET_DATA_RENDERED(2L),
   /**
    * Target data within status message (Point or Rectangle)
    */
+  @GeneratedMavEnumEntry
   CAMERA_TRACKING_TARGET_DATA_IN_STATUS(4L),
   ;
 

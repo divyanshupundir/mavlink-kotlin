@@ -9,6 +9,7 @@ import kotlin.Long
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -27,6 +28,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
@@ -39,51 +41,63 @@ public data class CameraInformation(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Name of the camera vendor
    */
+  @GeneratedMavField(type = "uint8_t[32]")
   public val vendorName: List<Int> = emptyList(),
   /**
    * Name of the camera model
    */
+  @GeneratedMavField(type = "uint8_t[32]")
   public val modelName: List<Int> = emptyList(),
   /**
    * Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff)
    */
+  @GeneratedMavField(type = "uint32_t")
   public val firmwareVersion: Long = 0L,
   /**
    * Focal length
    */
+  @GeneratedMavField(type = "float")
   public val focalLength: Float = 0F,
   /**
    * Image sensor size horizontal
    */
+  @GeneratedMavField(type = "float")
   public val sensorSizeH: Float = 0F,
   /**
    * Image sensor size vertical
    */
+  @GeneratedMavField(type = "float")
   public val sensorSizeV: Float = 0F,
   /**
    * Horizontal image resolution
    */
+  @GeneratedMavField(type = "uint16_t")
   public val resolutionH: Int = 0,
   /**
    * Vertical image resolution
    */
+  @GeneratedMavField(type = "uint16_t")
   public val resolutionV: Int = 0,
   /**
    * Reserved for a lens ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val lensId: Int = 0,
   /**
    * Bitmap of camera capability flags.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0),
   /**
    * Camera definition version (iteration)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val camDefinitionVersion: Int = 0,
   /**
    * Camera definition URI (if any, otherwise only basic functions will be available). HTTP-
@@ -92,11 +106,12 @@ public data class CameraInformation(
    * will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support
    * decompressing the file). The string needs to be zero terminated.
    */
+  @GeneratedMavField(type = "char[140]")
   public val camDefinitionUri: String = "",
 ) : MavMessage<CameraInformation> {
   public override val instanceMetadata: MavMessage.Metadata<CameraInformation> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(firmwareVersion)
@@ -112,6 +127,24 @@ public data class CameraInformation(
     outputBuffer.encodeUint8(lensId)
     outputBuffer.encodeString(camDefinitionUri, 140)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUint32(firmwareVersion)
+    outputBuffer.encodeFloat(focalLength)
+    outputBuffer.encodeFloat(sensorSizeH)
+    outputBuffer.encodeFloat(sensorSizeV)
+    outputBuffer.encodeEnumValue(flags.value, 4)
+    outputBuffer.encodeUint16(resolutionH)
+    outputBuffer.encodeUint16(resolutionV)
+    outputBuffer.encodeUint16(camDefinitionVersion)
+    outputBuffer.encodeUint8Array(vendorName, 32)
+    outputBuffer.encodeUint8Array(modelName, 32)
+    outputBuffer.encodeUint8(lensId)
+    outputBuffer.encodeString(camDefinitionUri, 140)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

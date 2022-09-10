@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The system time is the time of the master clock, typically the computer clock of the main onboard
@@ -27,19 +29,28 @@ public data class SystemTime(
   /**
    * Timestamp (UNIX epoch time).
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUnixUsec: BigInteger = BigInteger.ZERO,
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
 ) : MavMessage<SystemTime> {
   public override val instanceMetadata: MavMessage.Metadata<SystemTime> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUnixUsec)
     outputBuffer.encodeUint32(timeBootMs)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUnixUsec)
+    outputBuffer.encodeUint32(timeBootMs)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

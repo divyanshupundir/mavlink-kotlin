@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class GimbalAxis(
   /**
    * Gimbal yaw axis.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_YAW(0L),
   /**
    * Gimbal pitch axis.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_PITCH(1L),
   /**
    * Gimbal roll axis.
    */
+  @GeneratedMavEnumEntry
   GIMBAL_AXIS_ROLL(2L),
   ;
 

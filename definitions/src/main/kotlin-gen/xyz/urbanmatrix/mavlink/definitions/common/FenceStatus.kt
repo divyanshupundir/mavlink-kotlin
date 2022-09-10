@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -18,6 +19,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
@@ -30,34 +32,51 @@ public data class FenceStatus(
   /**
    * Breach status (0 if currently inside fence, 1 if outside).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val breachStatus: Int = 0,
   /**
    * Number of fence breaches.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val breachCount: Int = 0,
   /**
    * Last breach type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0),
   /**
    * Time (since boot) of last breach.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val breachTime: Long = 0L,
   /**
    * Active action to prevent fence breach
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0),
 ) : MavMessage<FenceStatus> {
   public override val instanceMetadata: MavMessage.Metadata<FenceStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(breachTime)
+    outputBuffer.encodeUint16(breachCount)
+    outputBuffer.encodeUint8(breachStatus)
+    outputBuffer.encodeEnumValue(breachType.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(breachTime)
     outputBuffer.encodeUint16(breachCount)
     outputBuffer.encodeUint8(breachStatus)
     outputBuffer.encodeEnumValue(breachType.value, 1)
     outputBuffer.encodeEnumValue(breachMitigation.value, 1)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

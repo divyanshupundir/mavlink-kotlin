@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,126 +15,226 @@ public enum class AisType(
   /**
    * Not available (default).
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_UNKNOWN(0L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_1(1L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_2(2L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_3(3L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_4(4L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_5(5L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_6(6L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_7(7L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_8(8L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_9(9L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_10(10L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_11(11L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_12(12L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_13(13L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_14(14L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_15(15L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_16(16L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_17(17L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_18(18L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_19(19L),
   /**
    * Wing In Ground effect.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG(20L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_HAZARDOUS_A(21L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_HAZARDOUS_B(22L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_HAZARDOUS_C(23L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_HAZARDOUS_D(24L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_RESERVED_1(25L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_RESERVED_2(26L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_RESERVED_3(27L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_RESERVED_4(28L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_WIG_RESERVED_5(29L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_FISHING(30L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TOWING(31L),
   /**
    * Towing: length exceeds 200m or breadth exceeds 25m.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_TOWING_LARGE(32L),
   /**
    * Dredging or other underwater ops.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_DREDGING(33L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_DIVING(34L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_MILITARY(35L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_SAILING(36L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PLEASURE(37L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_20(38L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_RESERVED_21(39L),
   /**
    * High Speed Craft.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC(40L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_HAZARDOUS_A(41L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_HAZARDOUS_B(42L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_HAZARDOUS_C(43L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_HAZARDOUS_D(44L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_RESERVED_1(45L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_RESERVED_2(46L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_RESERVED_3(47L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_RESERVED_4(48L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_HSC_UNKNOWN(49L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PILOT(50L),
   /**
    * Search And Rescue vessel.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_SAR(51L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TUG(52L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PORT_TENDER(53L),
   /**
    * Anti-pollution equipment.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_ANTI_POLLUTION(54L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_LAW_ENFORCEMENT(55L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_SPARE_LOCAL_1(56L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_SPARE_LOCAL_2(57L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_MEDICAL_TRANSPORT(58L),
   /**
    * Noncombatant ship according to RR Resolution No. 18.
    */
+  @GeneratedMavEnumEntry
   AIS_TYPE_NONECOMBATANT(59L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER(60L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_HAZARDOUS_A(61L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_HAZARDOUS_B(62L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_AIS_TYPE_PASSENGER_HAZARDOUS_C(63L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_HAZARDOUS_D(64L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_RESERVED_1(65L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_RESERVED_2(66L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_RESERVED_3(67L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_AIS_TYPE_PASSENGER_RESERVED_4(68L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_PASSENGER_UNKNOWN(69L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO(70L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_HAZARDOUS_A(71L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_HAZARDOUS_B(72L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_HAZARDOUS_C(73L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_HAZARDOUS_D(74L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_RESERVED_1(75L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_RESERVED_2(76L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_RESERVED_3(77L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_RESERVED_4(78L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_CARGO_UNKNOWN(79L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER(80L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_HAZARDOUS_A(81L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_HAZARDOUS_B(82L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_HAZARDOUS_C(83L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_HAZARDOUS_D(84L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_RESERVED_1(85L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_RESERVED_2(86L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_RESERVED_3(87L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_RESERVED_4(88L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_TANKER_UNKNOWN(89L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER(90L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_HAZARDOUS_A(91L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_HAZARDOUS_B(92L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_HAZARDOUS_C(93L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_HAZARDOUS_D(94L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_RESERVED_1(95L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_RESERVED_2(96L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_RESERVED_3(97L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_RESERVED_4(98L),
+  @GeneratedMavEnumEntry
   AIS_TYPE_OTHER_UNKNOWN(99L),
   ;
 

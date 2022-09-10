@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -32,6 +33,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SET_RESUME_REPEAT_DIST(215L),
   /**
    * Control attached liquid sprayer
@@ -57,6 +59,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SPRAYER(216L),
   /**
    * Pass instructions onto scripting, a script should be checking for a new command
@@ -82,6 +85,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SEND_SCRIPT_MESSAGE(217L),
   /**
    * Execute auxiliary function
@@ -107,6 +111,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_AUX_FUNCTION(218L),
   /**
    * Mission command to wait for an altitude or downwards vertical speed. This is meant for high
@@ -135,6 +140,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_ALTITUDE_WAIT(83L),
   /**
    * A system wide power-off event has been initiated.
@@ -160,6 +166,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_POWER_OFF_INITIATED(42000L),
   /**
    * FLY button has been clicked.
@@ -185,6 +192,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SOLO_BTN_FLY_CLICK(42001L),
   /**
    * FLY button has been held for 1.5 seconds.
@@ -210,6 +218,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SOLO_BTN_FLY_HOLD(42002L),
   /**
    * PAUSE button has been clicked.
@@ -235,6 +244,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SOLO_BTN_PAUSE_CLICK(42003L),
   /**
    * Magnetometer calibration based on fixed position
@@ -261,6 +271,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_FIXED_MAG_CAL(42004L),
   /**
    * Magnetometer calibration based on fixed expected field values.
@@ -286,6 +297,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_FIXED_MAG_CAL_FIELD(42005L),
   /**
    * Set EKF sensor source set.
@@ -311,6 +323,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_EKF_SOURCE_SET(42007L),
   /**
    * Initiate a magnetometer calibration.
@@ -338,6 +351,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_START_MAG_CAL(42424L),
   /**
    * Accept a magnetometer calibration.
@@ -363,6 +377,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_ACCEPT_MAG_CAL(42425L),
   /**
    * Cancel a running magnetometer calibration.
@@ -388,6 +403,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_CANCEL_MAG_CAL(42426L),
   /**
    * Used when doing accelerometer calibration. When sent to the GCS tells it what position to put
@@ -414,6 +430,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_ACCELCAL_VEHICLE_POS(42429L),
   /**
    * Reply with the version banner.
@@ -439,6 +456,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DO_SEND_BANNER(42428L),
   /**
    * Command autopilot to get into factory test/diagnostic mode.
@@ -464,6 +482,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SET_FACTORY_TEST_MODE(42427L),
   /**
    * Causes the gimbal to reset and boot as if it was just powered on.
@@ -489,6 +508,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GIMBAL_RESET(42501L),
   /**
    * Reports progress and success or failure of gimbal axis calibration procedure.
@@ -514,6 +534,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GIMBAL_AXIS_CALIBRATION_STATUS(42502L),
   /**
    * Starts commutation calibration on the gimbal.
@@ -539,6 +560,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GIMBAL_REQUEST_AXIS_CALIBRATION(42503L),
   /**
    * Erases gimbal application and parameters.
@@ -564,6 +586,7 @@ public enum class MavCmd(
    * index = 7; 
    * Magic number.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GIMBAL_FULL_RESET(42505L),
   /**
    * Update the bootloader
@@ -589,6 +612,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_FLASH_BOOTLOADER(42650L),
   /**
    * Reset battery capacity for batteries that accumulate consumed battery via integration.
@@ -599,6 +623,7 @@ public enum class MavCmd(
    * index = 2; label = percentage; 
    * Battery percentage remaining to set.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_BATTERY_RESET(42651L),
   /**
    * Issue a trap signal to the autopilot process, presumably to enter the debugger.
@@ -624,6 +649,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty.
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_DEBUG_TRAP(42700L),
   /**
    * Control onboard scripting.
@@ -631,6 +657,7 @@ public enum class MavCmd(
    * index = 1; 
    * Scripting command to execute
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_SCRIPTING(42701L),
   /**
    * Scripting command as NAV command with wait for completion.
@@ -656,6 +683,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_SCRIPT_TIME(42702L),
   /**
    * Maintain an attitude for a specified time.
@@ -681,6 +709,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_NAV_ATTITUDE_TIME(42703L),
   /**
    * Change flight speed at a given rate. This slews the vehicle at a controllable rate between it's
@@ -709,6 +738,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GUIDED_CHANGE_SPEED(43000L),
   /**
    * Change target altitude at a given rate. This slews the vehicle at a controllable rate between
@@ -738,6 +768,7 @@ public enum class MavCmd(
    * index = 7; label = target alt; units = m; 
    * Target Altitude
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GUIDED_CHANGE_ALTITUDE(43001L),
   /**
    * Change to target heading at a given rate, overriding previous heading/s. This slews the vehicle
@@ -766,6 +797,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @GeneratedMavEnumEntry
   MAV_CMD_GUIDED_CHANGE_HEADING(43002L),
   ;
 

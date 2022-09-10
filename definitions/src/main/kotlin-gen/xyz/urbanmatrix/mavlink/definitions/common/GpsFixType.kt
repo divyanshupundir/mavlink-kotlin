@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,38 +15,47 @@ public enum class GpsFixType(
   /**
    * No GPS connected
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_NO_GPS(0L),
   /**
    * No position information, GPS is connected
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_NO_FIX(1L),
   /**
    * 2D position
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_2D_FIX(2L),
   /**
    * 3D position
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_3D_FIX(3L),
   /**
    * DGPS/SBAS aided 3D position
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_DGPS(4L),
   /**
    * RTK float, 3D position
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_RTK_FLOAT(5L),
   /**
    * RTK Fixed, 3D position
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_RTK_FIXED(6L),
   /**
    * Static fixed, typically used for base stations
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_STATIC(7L),
   /**
    * PPP, 3D position.
    */
+  @GeneratedMavEnumEntry
   GPS_FIX_TYPE_PPP(8L),
   ;
 

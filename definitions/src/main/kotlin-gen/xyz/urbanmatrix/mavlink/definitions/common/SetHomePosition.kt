@@ -9,6 +9,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -22,6 +23,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  *
@@ -49,35 +51,67 @@ public data class SetHomePosition(
   /**
    * System ID.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val targetSystem: Int = 0,
   /**
    * Latitude (WGS84)
    */
+  @GeneratedMavField(
+    type = "int32_t",
+    extension = true,
+  )
   public val latitude: Int = 0,
   /**
    * Longitude (WGS84)
    */
+  @GeneratedMavField(
+    type = "int32_t",
+    extension = true,
+  )
   public val longitude: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
    */
+  @GeneratedMavField(
+    type = "int32_t",
+    extension = true,
+  )
   public val altitude: Int = 0,
   /**
    * Local X position of this position in the local coordinate frame
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val x: Float = 0F,
   /**
    * Local Y position of this position in the local coordinate frame
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val y: Float = 0F,
   /**
    * Local Z position of this position in the local coordinate frame
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val z: Float = 0F,
   /**
    * World to surface normal and heading transformation of the takeoff position. Used to indicate
    * the heading and slope of the ground
    */
+  @GeneratedMavField(
+    type = "float[4]",
+    extension = true,
+  )
   public val q: List<Float> = emptyList(),
   /**
    * Local X position of the end of the approach vector. Multicopters should set this position based
@@ -85,6 +119,10 @@ public data class SetHomePosition(
    * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
    * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val approachX: Float = 0F,
   /**
    * Local Y position of the end of the approach vector. Multicopters should set this position based
@@ -92,6 +130,10 @@ public data class SetHomePosition(
    * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
    * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val approachY: Float = 0F,
   /**
    * Local Z position of the end of the approach vector. Multicopters should set this position based
@@ -99,16 +141,27 @@ public data class SetHomePosition(
    * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
    * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val approachZ: Float = 0F,
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
 ) : MavMessage<SetHomePosition> {
   public override val instanceMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint8(targetSystem)
@@ -122,7 +175,7 @@ public data class SetHomePosition(
     outputBuffer.encodeFloat(approachX)
     outputBuffer.encodeFloat(approachY)
     outputBuffer.encodeFloat(approachZ)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

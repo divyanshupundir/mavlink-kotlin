@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16Array
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16Array
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * ESC Telemetry Data for ESCs 9 to 12, matching data sent by BLHeli ESCs.
@@ -25,31 +27,37 @@ public data class EscTelemetry9To12(
   /**
    * Temperature.
    */
+  @GeneratedMavField(type = "uint8_t[4]")
   public val temperature: List<Int> = emptyList(),
   /**
    * Voltage.
    */
+  @GeneratedMavField(type = "uint16_t[4]")
   public val voltage: List<Int> = emptyList(),
   /**
    * Current.
    */
+  @GeneratedMavField(type = "uint16_t[4]")
   public val current: List<Int> = emptyList(),
   /**
    * Total current.
    */
+  @GeneratedMavField(type = "uint16_t[4]")
   public val totalcurrent: List<Int> = emptyList(),
   /**
    * RPM (eRPM).
    */
+  @GeneratedMavField(type = "uint16_t[4]")
   public val rpm: List<Int> = emptyList(),
   /**
    * count of telemetry packets received (wraps at 65535).
    */
+  @GeneratedMavField(type = "uint16_t[4]")
   public val count: List<Int> = emptyList(),
 ) : MavMessage<EscTelemetry9To12> {
   public override val instanceMetadata: MavMessage.Metadata<EscTelemetry9To12> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16Array(voltage, 8)
     outputBuffer.encodeUint16Array(current, 8)
@@ -58,6 +66,17 @@ public data class EscTelemetry9To12(
     outputBuffer.encodeUint16Array(count, 8)
     outputBuffer.encodeUint8Array(temperature, 4)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16Array(voltage, 8)
+    outputBuffer.encodeUint16Array(current, 8)
+    outputBuffer.encodeUint16Array(totalcurrent, 8)
+    outputBuffer.encodeUint16Array(rpm, 8)
+    outputBuffer.encodeUint16Array(count, 8)
+    outputBuffer.encodeUint8Array(temperature, 4)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

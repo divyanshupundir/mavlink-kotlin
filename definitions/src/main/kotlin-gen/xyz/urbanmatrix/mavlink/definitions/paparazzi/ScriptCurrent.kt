@@ -5,11 +5,13 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * This message informs about the currently active SCRIPT.
@@ -22,14 +24,21 @@ public data class ScriptCurrent(
   /**
    * Active Sequence
    */
+  @GeneratedMavField(type = "uint16_t")
   public val seq: Int = 0,
 ) : MavMessage<ScriptCurrent> {
   public override val instanceMetadata: MavMessage.Metadata<ScriptCurrent> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(seq)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(seq)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

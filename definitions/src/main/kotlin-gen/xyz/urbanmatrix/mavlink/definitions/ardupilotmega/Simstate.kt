@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of simulation environment, if used.
@@ -25,51 +27,62 @@ public data class Simstate(
   /**
    * Roll angle.
    */
+  @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle.
    */
+  @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle.
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * X acceleration.
    */
+  @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration.
    */
+  @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration.
    */
+  @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis.
    */
+  @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis.
    */
+  @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis.
    */
+  @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * Latitude.
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude.
    */
+  @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
 ) : MavMessage<Simstate> {
   public override val instanceMetadata: MavMessage.Metadata<Simstate> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
@@ -83,6 +96,22 @@ public data class Simstate(
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(roll)
+    outputBuffer.encodeFloat(pitch)
+    outputBuffer.encodeFloat(yaw)
+    outputBuffer.encodeFloat(xacc)
+    outputBuffer.encodeFloat(yacc)
+    outputBuffer.encodeFloat(zacc)
+    outputBuffer.encodeFloat(xgyro)
+    outputBuffer.encodeFloat(ygyro)
+    outputBuffer.encodeFloat(zgyro)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lng)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Emit the value of a parameter. The inclusion of param_count and param_index in the message allows
@@ -32,27 +34,32 @@ public data class ParamExtValue(
    * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
    * bytes storage if the ID is stored as string
    */
+  @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
   /**
    * Parameter value
    */
+  @GeneratedMavField(type = "char[128]")
   public val paramValue: String = "",
   /**
    * Parameter type.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0),
   /**
    * Total number of parameters
    */
+  @GeneratedMavField(type = "uint16_t")
   public val paramCount: Int = 0,
   /**
    * Index of this parameter
    */
+  @GeneratedMavField(type = "uint16_t")
   public val paramIndex: Int = 0,
 ) : MavMessage<ParamExtValue> {
   public override val instanceMetadata: MavMessage.Metadata<ParamExtValue> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(paramCount)
     outputBuffer.encodeUint16(paramIndex)
@@ -60,6 +67,16 @@ public data class ParamExtValue(
     outputBuffer.encodeString(paramValue, 128)
     outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(paramCount)
+    outputBuffer.encodeUint16(paramIndex)
+    outputBuffer.encodeString(paramId, 16)
+    outputBuffer.encodeString(paramValue, 128)
+    outputBuffer.encodeEnumValue(paramType.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

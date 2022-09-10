@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,22 +15,27 @@ public enum class MavVtolState(
   /**
    * MAV is not configured as VTOL
    */
+  @GeneratedMavEnumEntry
   MAV_VTOL_STATE_UNDEFINED(0L),
   /**
    * VTOL is in transition from multicopter to fixed-wing
    */
+  @GeneratedMavEnumEntry
   MAV_VTOL_STATE_TRANSITION_TO_FW(1L),
   /**
    * VTOL is in transition from fixed-wing to multicopter
    */
+  @GeneratedMavEnumEntry
   MAV_VTOL_STATE_TRANSITION_TO_MC(2L),
   /**
    * VTOL is in multicopter state
    */
+  @GeneratedMavEnumEntry
   MAV_VTOL_STATE_MC(3L),
   /**
    * VTOL is in fixed-wing state
    */
+  @GeneratedMavEnumEntry
   MAV_VTOL_STATE_FW(4L),
   ;
 

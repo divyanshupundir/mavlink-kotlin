@@ -5,11 +5,13 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F21 format
@@ -22,31 +24,37 @@ public data class SerialUdbExtraF21(
   /**
    * SUE X accelerometer offset
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAccelXOffset: Int = 0,
   /**
    * SUE Y accelerometer offset
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAccelYOffset: Int = 0,
   /**
    * SUE Z accelerometer offset
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAccelZOffset: Int = 0,
   /**
    * SUE X gyro offset
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueGyroXOffset: Int = 0,
   /**
    * SUE Y gyro offset
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueGyroYOffset: Int = 0,
   /**
    * SUE Z gyro offset
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueGyroZOffset: Int = 0,
 ) : MavMessage<SerialUdbExtraF21> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF21> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(sueAccelXOffset)
     outputBuffer.encodeInt16(sueAccelYOffset)
@@ -55,6 +63,17 @@ public data class SerialUdbExtraF21(
     outputBuffer.encodeInt16(sueGyroYOffset)
     outputBuffer.encodeInt16(sueGyroZOffset)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt16(sueAccelXOffset)
+    outputBuffer.encodeInt16(sueAccelYOffset)
+    outputBuffer.encodeInt16(sueAccelZOffset)
+    outputBuffer.encodeInt16(sueGyroXOffset)
+    outputBuffer.encodeInt16(sueGyroYOffset)
+    outputBuffer.encodeInt16(sueGyroZOffset)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

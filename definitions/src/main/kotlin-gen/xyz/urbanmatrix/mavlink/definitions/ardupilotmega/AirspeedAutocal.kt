@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Airspeed auto-calibration.
@@ -23,55 +25,67 @@ public data class AirspeedAutocal(
   /**
    * GPS velocity north.
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * GPS velocity east.
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * GPS velocity down.
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * Differential pressure.
    */
+  @GeneratedMavField(type = "float")
   public val diffPressure: Float = 0F,
   /**
    * Estimated to true airspeed ratio.
    */
+  @GeneratedMavField(type = "float")
   public val eas2tas: Float = 0F,
   /**
    * Airspeed ratio.
    */
+  @GeneratedMavField(type = "float")
   public val ratio: Float = 0F,
   /**
    * EKF state x.
    */
+  @GeneratedMavField(type = "float")
   public val stateX: Float = 0F,
   /**
    * EKF state y.
    */
+  @GeneratedMavField(type = "float")
   public val stateY: Float = 0F,
   /**
    * EKF state z.
    */
+  @GeneratedMavField(type = "float")
   public val stateZ: Float = 0F,
   /**
    * EKF Pax.
    */
+  @GeneratedMavField(type = "float")
   public val pax: Float = 0F,
   /**
    * EKF Pby.
    */
+  @GeneratedMavField(type = "float")
   public val pby: Float = 0F,
   /**
    * EKF Pcz.
    */
+  @GeneratedMavField(type = "float")
   public val pcz: Float = 0F,
 ) : MavMessage<AirspeedAutocal> {
   public override val instanceMetadata: MavMessage.Metadata<AirspeedAutocal> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(vx)
     outputBuffer.encodeFloat(vy)
@@ -86,6 +100,23 @@ public data class AirspeedAutocal(
     outputBuffer.encodeFloat(pby)
     outputBuffer.encodeFloat(pcz)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    outputBuffer.encodeFloat(diffPressure)
+    outputBuffer.encodeFloat(eas2tas)
+    outputBuffer.encodeFloat(ratio)
+    outputBuffer.encodeFloat(stateX)
+    outputBuffer.encodeFloat(stateY)
+    outputBuffer.encodeFloat(stateZ)
+    outputBuffer.encodeFloat(pax)
+    outputBuffer.encodeFloat(pby)
+    outputBuffer.encodeFloat(pcz)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

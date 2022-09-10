@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,62 +15,77 @@ public enum class HilSensorUpdatedFlags(
   /**
    * None of the fields in HIL_SENSOR have been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_NONE(0L),
   /**
    * The value in the xacc field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_XACC(1L),
   /**
    * The value in the yacc field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_YACC(2L),
   /**
    * The value in the zacc field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_ZACC(4L),
   /**
    * The value in the xgyro field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_XGYRO(8L),
   /**
    * The value in the ygyro field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_YGYRO(16L),
   /**
    * The value in the zgyro field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_ZGYRO(32L),
   /**
    * The value in the xmag field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_XMAG(64L),
   /**
    * The value in the ymag field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_YMAG(128L),
   /**
    * The value in the zmag field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_ZMAG(256L),
   /**
    * The value in the abs_pressure field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_ABS_PRESSURE(512L),
   /**
    * The value in the diff_pressure field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_DIFF_PRESSURE(1024L),
   /**
    * The value in the pressure_alt field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_PRESSURE_ALT(2048L),
   /**
    * The value in the temperature field has been updated
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_TEMPERATURE(4096L),
   /**
    * Full reset of attitude/position/velocities/etc was performed in sim (Bit 31).
    */
+  @GeneratedMavEnumEntry
   HIL_SENSOR_UPDATED_RESET(2147483648L),
   ;
 

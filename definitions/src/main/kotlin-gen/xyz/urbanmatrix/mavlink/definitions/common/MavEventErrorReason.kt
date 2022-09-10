@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,6 +15,7 @@ public enum class MavEventErrorReason(
   /**
    * The requested event is not available (anymore).
    */
+  @GeneratedMavEnumEntry
   MAV_EVENT_ERROR_REASON_UNAVAILABLE(0L),
   ;
 

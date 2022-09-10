@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * RPM sensor data message.
@@ -25,19 +27,28 @@ public data class RawRpm(
   /**
    * Index of this RPM sensor (0-indexed)
    */
+  @GeneratedMavField(type = "uint8_t")
   public val index: Int = 0,
   /**
    * Indicated rate
    */
+  @GeneratedMavField(type = "float")
   public val frequency: Float = 0F,
 ) : MavMessage<RawRpm> {
   public override val instanceMetadata: MavMessage.Metadata<RawRpm> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(frequency)
     outputBuffer.encodeUint8(index)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(frequency)
+    outputBuffer.encodeUint8(index)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

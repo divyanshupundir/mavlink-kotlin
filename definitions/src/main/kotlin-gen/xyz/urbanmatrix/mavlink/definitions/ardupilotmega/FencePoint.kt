@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
@@ -26,31 +28,37 @@ public data class FencePoint(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Point index (first point is 1, 0 is for return point).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val idx: Int = 0,
   /**
    * Total number of points (for sanity checking).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val count: Int = 0,
   /**
    * Latitude of point.
    */
+  @GeneratedMavField(type = "float")
   public val lat: Float = 0F,
   /**
    * Longitude of point.
    */
+  @GeneratedMavField(type = "float")
   public val lng: Float = 0F,
 ) : MavMessage<FencePoint> {
   public override val instanceMetadata: MavMessage.Metadata<FencePoint> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(lat)
     outputBuffer.encodeFloat(lng)
@@ -59,6 +67,17 @@ public data class FencePoint(
     outputBuffer.encodeUint8(idx)
     outputBuffer.encodeUint8(count)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(lat)
+    outputBuffer.encodeFloat(lng)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUint8(idx)
+    outputBuffer.encodeUint8(count)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

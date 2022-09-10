@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -14,6 +15,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
@@ -27,35 +29,42 @@ public data class LocalPositionNed(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * X Position
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * X Speed
    */
+  @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y Speed
    */
+  @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z Speed
    */
+  @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
 ) : MavMessage<LocalPositionNed> {
   public override val instanceMetadata: MavMessage.Metadata<LocalPositionNed> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(x)
@@ -65,6 +74,18 @@ public data class LocalPositionNed(
     outputBuffer.encodeFloat(vy)
     outputBuffer.encodeFloat(vz)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeFloat(vx)
+    outputBuffer.encodeFloat(vy)
+    outputBuffer.encodeFloat(vz)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

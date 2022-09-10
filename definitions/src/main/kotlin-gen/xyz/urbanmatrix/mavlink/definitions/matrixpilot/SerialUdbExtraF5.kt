@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F5: format
@@ -23,29 +25,42 @@ public data class SerialUdbExtraF5(
   /**
    * Serial UDB YAWKP_AILERON Gain for Proporional control of navigation
    */
+  @GeneratedMavField(type = "float")
   public val sueYawkpAileron: Float = 0F,
   /**
    * Serial UDB YAWKD_AILERON Gain for Rate control of navigation
    */
+  @GeneratedMavField(type = "float")
   public val sueYawkdAileron: Float = 0F,
   /**
    * Serial UDB Extra ROLLKP Gain for Proportional control of roll stabilization
    */
+  @GeneratedMavField(type = "float")
   public val sueRollkp: Float = 0F,
   /**
    * Serial UDB Extra ROLLKD Gain for Rate control of roll stabilization
    */
+  @GeneratedMavField(type = "float")
   public val sueRollkd: Float = 0F,
 ) : MavMessage<SerialUdbExtraF5> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF5> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(sueYawkpAileron)
     outputBuffer.encodeFloat(sueYawkdAileron)
     outputBuffer.encodeFloat(sueRollkp)
     outputBuffer.encodeFloat(sueRollkd)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(sueYawkpAileron)
+    outputBuffer.encodeFloat(sueYawkdAileron)
+    outputBuffer.encodeFloat(sueRollkp)
+    outputBuffer.encodeFloat(sueRollkd)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Current status about a high level gimbal manager. This message should be broadcast at a low
@@ -31,35 +33,42 @@ public data class GimbalManagerStatus(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * High level gimbal manager flags currently applied.
    */
+  @GeneratedMavField(type = "uint32_t")
   public val flags: MavEnumValue<GimbalManagerFlags> = MavEnumValue.fromValue(0),
   /**
    * Gimbal device ID that this gimbal manager is responsible for.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: Int = 0,
   /**
    * System ID of MAVLink component with primary control, 0 for none.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val primaryControlSysid: Int = 0,
   /**
    * Component ID of MAVLink component with primary control, 0 for none.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val primaryControlCompid: Int = 0,
   /**
    * System ID of MAVLink component with secondary control, 0 for none.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val secondaryControlSysid: Int = 0,
   /**
    * Component ID of MAVLink component with secondary control, 0 for none.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val secondaryControlCompid: Int = 0,
 ) : MavMessage<GimbalManagerStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(flags.value, 4)
@@ -69,6 +78,18 @@ public data class GimbalManagerStatus(
     outputBuffer.encodeUint8(secondaryControlSysid)
     outputBuffer.encodeUint8(secondaryControlCompid)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeEnumValue(flags.value, 4)
+    outputBuffer.encodeUint8(gimbalDeviceId)
+    outputBuffer.encodeUint8(primaryControlSysid)
+    outputBuffer.encodeUint8(primaryControlCompid)
+    outputBuffer.encodeUint8(secondaryControlSysid)
+    outputBuffer.encodeUint8(secondaryControlCompid)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

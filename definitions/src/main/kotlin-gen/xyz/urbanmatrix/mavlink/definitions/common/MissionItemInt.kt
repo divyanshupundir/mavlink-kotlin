@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Message encoding a mission item. This message is emitted to announce
@@ -38,68 +40,105 @@ public data class MissionItemInt(
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no
    * gaps in the sequence (0,1,2,3,4).
    */
+  @GeneratedMavField(type = "uint16_t")
   public val seq: Int = 0,
   /**
    * The coordinate system of the waypoint.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * The scheduled action for the waypoint.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
   /**
    * false:0, true:1
    */
+  @GeneratedMavField(type = "uint8_t")
   public val current: Int = 0,
   /**
    * Autocontinue to next waypoint
    */
+  @GeneratedMavField(type = "uint8_t")
   public val autocontinue: Int = 0,
   /**
    * PARAM1, see MAV_CMD enum
    */
+  @GeneratedMavField(type = "float")
   public val param1: Float = 0F,
   /**
    * PARAM2, see MAV_CMD enum
    */
+  @GeneratedMavField(type = "float")
   public val param2: Float = 0F,
   /**
    * PARAM3, see MAV_CMD enum
    */
+  @GeneratedMavField(type = "float")
   public val param3: Float = 0F,
   /**
    * PARAM4, see MAV_CMD enum
    */
+  @GeneratedMavField(type = "float")
   public val param4: Float = 0F,
   /**
    * PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
    */
+  @GeneratedMavField(type = "int32_t")
   public val x: Int = 0,
   /**
    * PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees *10^7
    */
+  @GeneratedMavField(type = "int32_t")
   public val y: Int = 0,
   /**
    * PARAM7 / z position: global: altitude in meters (relative or absolute, depending on frame.
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * Mission type.
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0),
 ) : MavMessage<MissionItemInt> {
   public override val instanceMetadata: MavMessage.Metadata<MissionItemInt> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(param1)
+    outputBuffer.encodeFloat(param2)
+    outputBuffer.encodeFloat(param3)
+    outputBuffer.encodeFloat(param4)
+    outputBuffer.encodeInt32(x)
+    outputBuffer.encodeInt32(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeUint16(seq)
+    outputBuffer.encodeEnumValue(command.value, 2)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeEnumValue(frame.value, 1)
+    outputBuffer.encodeUint8(current)
+    outputBuffer.encodeUint8(autocontinue)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(param1)
     outputBuffer.encodeFloat(param2)
@@ -116,7 +155,7 @@ public data class MissionItemInt(
     outputBuffer.encodeUint8(current)
     outputBuffer.encodeUint8(autocontinue)
     outputBuffer.encodeEnumValue(missionType.value, 1)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

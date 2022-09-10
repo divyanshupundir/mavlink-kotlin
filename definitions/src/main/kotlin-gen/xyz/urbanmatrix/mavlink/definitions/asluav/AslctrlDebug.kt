@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -16,6 +17,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * ASL-fixed-wing controller debug data
@@ -28,51 +30,62 @@ public data class AslctrlDebug(
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "uint32_t")
   public val i321: Long = 0L,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "uint8_t")
   public val i81: Int = 0,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "uint8_t")
   public val i82: Int = 0,
   /**
    *  Debug data 
    */
+  @GeneratedMavField(type = "float")
   public val f1: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f2: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f3: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f4: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f5: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f6: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f7: Float = 0F,
   /**
    *  Debug data
    */
+  @GeneratedMavField(type = "float")
   public val f8: Float = 0F,
 ) : MavMessage<AslctrlDebug> {
   public override val instanceMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(i321)
     outputBuffer.encodeFloat(f1)
@@ -86,6 +99,22 @@ public data class AslctrlDebug(
     outputBuffer.encodeUint8(i81)
     outputBuffer.encodeUint8(i82)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(i321)
+    outputBuffer.encodeFloat(f1)
+    outputBuffer.encodeFloat(f2)
+    outputBuffer.encodeFloat(f3)
+    outputBuffer.encodeFloat(f4)
+    outputBuffer.encodeFloat(f5)
+    outputBuffer.encodeFloat(f6)
+    outputBuffer.encodeFloat(f7)
+    outputBuffer.encodeFloat(f8)
+    outputBuffer.encodeUint8(i81)
+    outputBuffer.encodeUint8(i82)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Wind estimation.
@@ -23,24 +25,35 @@ public data class Wind(
   /**
    * Wind direction (that wind is coming from).
    */
+  @GeneratedMavField(type = "float")
   public val direction: Float = 0F,
   /**
    * Wind speed in ground plane.
    */
+  @GeneratedMavField(type = "float")
   public val speed: Float = 0F,
   /**
    * Vertical wind speed.
    */
+  @GeneratedMavField(type = "float")
   public val speedZ: Float = 0F,
 ) : MavMessage<Wind> {
   public override val instanceMetadata: MavMessage.Metadata<Wind> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(direction)
     outputBuffer.encodeFloat(speed)
     outputBuffer.encodeFloat(speedZ)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(direction)
+    outputBuffer.encodeFloat(speed)
+    outputBuffer.encodeFloat(speedZ)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

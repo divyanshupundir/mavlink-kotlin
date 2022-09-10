@@ -5,11 +5,13 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F19 format
@@ -22,39 +24,47 @@ public data class SerialUdbExtraF19(
   /**
    * SUE aileron output channel
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueAileronOutputChannel: Int = 0,
   /**
    * SUE aileron reversed
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueAileronReversed: Int = 0,
   /**
    * SUE elevator output channel
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueElevatorOutputChannel: Int = 0,
   /**
    * SUE elevator reversed
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueElevatorReversed: Int = 0,
   /**
    * SUE throttle output channel
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueThrottleOutputChannel: Int = 0,
   /**
    * SUE throttle reversed
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueThrottleReversed: Int = 0,
   /**
    * SUE rudder output channel
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueRudderOutputChannel: Int = 0,
   /**
    * SUE rudder reversed
    */
+  @GeneratedMavField(type = "uint8_t")
   public val sueRudderReversed: Int = 0,
 ) : MavMessage<SerialUdbExtraF19> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF19> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(sueAileronOutputChannel)
     outputBuffer.encodeUint8(sueAileronReversed)
@@ -65,6 +75,19 @@ public data class SerialUdbExtraF19(
     outputBuffer.encodeUint8(sueRudderOutputChannel)
     outputBuffer.encodeUint8(sueRudderReversed)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint8(sueAileronOutputChannel)
+    outputBuffer.encodeUint8(sueAileronReversed)
+    outputBuffer.encodeUint8(sueElevatorOutputChannel)
+    outputBuffer.encodeUint8(sueElevatorReversed)
+    outputBuffer.encodeUint8(sueThrottleOutputChannel)
+    outputBuffer.encodeUint8(sueThrottleReversed)
+    outputBuffer.encodeUint8(sueRudderOutputChannel)
+    outputBuffer.encodeUint8(sueRudderReversed)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

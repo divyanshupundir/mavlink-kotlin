@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -19,14 +20,17 @@ public enum class PreflightStorageMissionAction(
   /**
    * Read current mission data from persistent storage
    */
+  @GeneratedMavEnumEntry
   MISSION_READ_PERSISTENT(0L),
   /**
    * Write current mission data to persistent storage
    */
+  @GeneratedMavEnumEntry
   MISSION_WRITE_PERSISTENT(1L),
   /**
    * Erase all mission data stored on the vehicle (both persistent and volatile storage)
    */
+  @GeneratedMavEnumEntry
   MISSION_RESET_DEFAULT(2L),
   ;
 

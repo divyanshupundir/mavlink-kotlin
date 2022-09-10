@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -26,6 +27,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global
@@ -40,83 +42,128 @@ public data class GpsInput(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * ID of the GPS for multiple GPS inputs
    */
+  @GeneratedMavField(type = "uint8_t")
   public val gpsId: Int = 0,
   /**
    * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0),
   /**
    * GPS time (from start of GPS week)
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeWeekMs: Long = 0L,
   /**
    * GPS week number
    */
+  @GeneratedMavField(type = "uint16_t")
   public val timeWeek: Int = 0,
   /**
    * 0-1: no fix, 2: 2D fix, 3: 3D fix. 4: 3D with DGPS. 5: 3D with RTK
    */
+  @GeneratedMavField(type = "uint8_t")
   public val fixType: Int = 0,
   /**
    * Latitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
    */
+  @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * GPS HDOP horizontal dilution of position (unitless). If unknown, set to: UINT16_MAX
    */
+  @GeneratedMavField(type = "float")
   public val hdop: Float = 0F,
   /**
    * GPS VDOP vertical dilution of position (unitless). If unknown, set to: UINT16_MAX
    */
+  @GeneratedMavField(type = "float")
   public val vdop: Float = 0F,
   /**
    * GPS velocity in north direction in earth-fixed NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vn: Float = 0F,
   /**
    * GPS velocity in east direction in earth-fixed NED frame
    */
+  @GeneratedMavField(type = "float")
   public val ve: Float = 0F,
   /**
    * GPS velocity in down direction in earth-fixed NED frame
    */
+  @GeneratedMavField(type = "float")
   public val vd: Float = 0F,
   /**
    * GPS speed accuracy
    */
+  @GeneratedMavField(type = "float")
   public val speedAccuracy: Float = 0F,
   /**
    * GPS horizontal accuracy
    */
+  @GeneratedMavField(type = "float")
   public val horizAccuracy: Float = 0F,
   /**
    * GPS vertical accuracy
    */
+  @GeneratedMavField(type = "float")
   public val vertAccuracy: Float = 0F,
   /**
    * Number of satellites visible.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val satellitesVisible: Int = 0,
   /**
    * Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for north
    */
+  @GeneratedMavField(
+    type = "uint16_t",
+    extension = true,
+  )
   public val yaw: Int = 0,
 ) : MavMessage<GpsInput> {
   public override val instanceMetadata: MavMessage.Metadata<GpsInput> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUint32(timeWeekMs)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeFloat(alt)
+    outputBuffer.encodeFloat(hdop)
+    outputBuffer.encodeFloat(vdop)
+    outputBuffer.encodeFloat(vn)
+    outputBuffer.encodeFloat(ve)
+    outputBuffer.encodeFloat(vd)
+    outputBuffer.encodeFloat(speedAccuracy)
+    outputBuffer.encodeFloat(horizAccuracy)
+    outputBuffer.encodeFloat(vertAccuracy)
+    outputBuffer.encodeEnumValue(ignoreFlags.value, 2)
+    outputBuffer.encodeUint16(timeWeek)
+    outputBuffer.encodeUint8(gpsId)
+    outputBuffer.encodeUint8(fixType)
+    outputBuffer.encodeUint8(satellitesVisible)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(timeWeekMs)
@@ -137,7 +184,7 @@ public data class GpsInput(
     outputBuffer.encodeUint8(fixType)
     outputBuffer.encodeUint8(satellitesVisible)
     outputBuffer.encodeUint16(yaw)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

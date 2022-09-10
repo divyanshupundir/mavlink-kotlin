@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ualberta
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,14 +15,17 @@ public enum class UalbertaPilotMode(
   /**
    *  sdf
    */
+  @GeneratedMavEnumEntry
   PILOT_MANUAL(1L),
   /**
    *  dfs
    */
+  @GeneratedMavEnumEntry
   PILOT_AUTO(2L),
   /**
    *  Rotomotion mode 
    */
+  @GeneratedMavEnumEntry
   PILOT_ROTO(3L),
   ;
 

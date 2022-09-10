@@ -9,6 +9,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The raw values of the actuator outputs (e.g. on Pixhawk, from MAIN, AUX ports). This message
@@ -31,24 +33,35 @@ public data class ActuatorOutputStatus(
   /**
    * Timestamp (since system boot).
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Active outputs
    */
+  @GeneratedMavField(type = "uint32_t")
   public val active: Long = 0L,
   /**
    * Servo / motor output array values. Zero values indicate unused channels.
    */
+  @GeneratedMavField(type = "float[32]")
   public val actuator: List<Float> = emptyList(),
 ) : MavMessage<ActuatorOutputStatus> {
   public override val instanceMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(active)
     outputBuffer.encodeFloatArray(actuator, 128)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUint32(active)
+    outputBuffer.encodeFloatArray(actuator, 128)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

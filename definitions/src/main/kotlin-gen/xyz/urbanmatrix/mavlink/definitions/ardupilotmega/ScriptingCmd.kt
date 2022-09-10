@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,18 +12,22 @@ public enum class ScriptingCmd(
   /**
    * Start a REPL session.
    */
+  @GeneratedMavEnumEntry
   SCRIPTING_CMD_REPL_START(0L),
   /**
    * End a REPL session.
    */
+  @GeneratedMavEnumEntry
   SCRIPTING_CMD_REPL_STOP(1L),
   /**
    * Stop execution of scripts.
    */
+  @GeneratedMavEnumEntry
   SCRIPTING_CMD_STOP(2L),
   /**
    * Stop execution of scripts and restart.
    */
+  @GeneratedMavEnumEntry
   SCRIPTING_CMD_STOP_AND_RESTART(3L),
   ;
 

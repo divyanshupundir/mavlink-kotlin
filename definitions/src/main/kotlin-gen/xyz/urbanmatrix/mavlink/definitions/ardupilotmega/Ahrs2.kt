@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of secondary AHRS filter if available.
@@ -25,31 +27,37 @@ public data class Ahrs2(
   /**
    * Roll angle.
    */
+  @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle.
    */
+  @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle.
    */
+  @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Altitude (MSL).
    */
+  @GeneratedMavField(type = "float")
   public val altitude: Float = 0F,
   /**
    * Latitude.
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude.
    */
+  @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
 ) : MavMessage<Ahrs2> {
   public override val instanceMetadata: MavMessage.Metadata<Ahrs2> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
@@ -58,6 +66,17 @@ public data class Ahrs2(
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(roll)
+    outputBuffer.encodeFloat(pitch)
+    outputBuffer.encodeFloat(yaw)
+    outputBuffer.encodeFloat(altitude)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lng)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -17,50 +18,62 @@ public enum class PositionTargetTypemask(
   /**
    * Ignore position x
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_X_IGNORE(1L),
   /**
    * Ignore position y
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_Y_IGNORE(2L),
   /**
    * Ignore position z
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_Z_IGNORE(4L),
   /**
    * Ignore velocity x
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_VX_IGNORE(8L),
   /**
    * Ignore velocity y
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_VY_IGNORE(16L),
   /**
    * Ignore velocity z
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_VZ_IGNORE(32L),
   /**
    * Ignore acceleration x
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_AX_IGNORE(64L),
   /**
    * Ignore acceleration y
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_AY_IGNORE(128L),
   /**
    * Ignore acceleration z
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_AZ_IGNORE(256L),
   /**
    * Use force instead of acceleration
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_FORCE_SET(512L),
   /**
    * Ignore yaw
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_YAW_IGNORE(1024L),
   /**
    * Ignore yaw rate
    */
+  @GeneratedMavEnumEntry
   POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE(2048L),
   ;
 

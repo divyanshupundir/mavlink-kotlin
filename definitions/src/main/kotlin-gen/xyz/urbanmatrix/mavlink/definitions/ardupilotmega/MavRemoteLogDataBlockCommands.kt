@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class MavRemoteLogDataBlockCommands(
   /**
    * UAV to stop sending DataFlash blocks.
    */
+  @GeneratedMavEnumEntry
   MAV_REMOTE_LOG_DATA_BLOCK_STOP(2147483645L),
   /**
    * UAV to start sending DataFlash blocks.
    */
+  @GeneratedMavEnumEntry
   MAV_REMOTE_LOG_DATA_BLOCK_START(2147483646L),
   ;
 

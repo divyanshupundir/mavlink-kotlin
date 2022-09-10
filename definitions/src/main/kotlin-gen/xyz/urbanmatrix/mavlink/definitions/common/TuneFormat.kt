@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,11 +15,13 @@ public enum class TuneFormat(
   /**
    * Format is QBasic 1.1 Play: https://www.qbasic.net/en/reference/qb11/Statement/PLAY-006.htm.
    */
+  @GeneratedMavEnumEntry
   TUNE_FORMAT_QBASIC1_1(1L),
   /**
    * Format is Modern Music Markup Language (MML):
    * https://en.wikipedia.org/wiki/Music_Macro_Language#Modern_MML.
    */
+  @GeneratedMavEnumEntry
   TUNE_FORMAT_MML_MODERN(2L),
   ;
 

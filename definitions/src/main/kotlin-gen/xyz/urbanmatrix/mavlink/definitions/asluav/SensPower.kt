@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Voltage and current sensor data
@@ -23,29 +25,42 @@ public data class SensPower(
   /**
    *  Power board voltage sensor reading
    */
+  @GeneratedMavField(type = "float")
   public val adc121VspbVolt: Float = 0F,
   /**
    *  Power board current sensor reading
    */
+  @GeneratedMavField(type = "float")
   public val adc121CspbAmp: Float = 0F,
   /**
    *  Board current sensor 1 reading
    */
+  @GeneratedMavField(type = "float")
   public val adc121Cs1Amp: Float = 0F,
   /**
    *  Board current sensor 2 reading
    */
+  @GeneratedMavField(type = "float")
   public val adc121Cs2Amp: Float = 0F,
 ) : MavMessage<SensPower> {
   public override val instanceMetadata: MavMessage.Metadata<SensPower> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(adc121VspbVolt)
     outputBuffer.encodeFloat(adc121CspbAmp)
     outputBuffer.encodeFloat(adc121Cs1Amp)
     outputBuffer.encodeFloat(adc121Cs2Amp)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(adc121VspbVolt)
+    outputBuffer.encodeFloat(adc121CspbAmp)
+    outputBuffer.encodeFloat(adc121Cs1Amp)
+    outputBuffer.encodeFloat(adc121Cs2Amp)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

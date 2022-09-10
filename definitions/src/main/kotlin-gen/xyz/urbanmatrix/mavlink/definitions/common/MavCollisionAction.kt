@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,30 +15,37 @@ public enum class MavCollisionAction(
   /**
    * Ignore any potential collisions
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_NONE(0L),
   /**
    * Report potential collision
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_REPORT(1L),
   /**
    * Ascend or Descend to avoid threat
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_ASCEND_OR_DESCEND(2L),
   /**
    * Move horizontally to avoid threat
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_MOVE_HORIZONTALLY(3L),
   /**
    * Aircraft to move perpendicular to the collision's velocity vector
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_MOVE_PERPENDICULAR(4L),
   /**
    * Aircraft to fly directly back to its launch point
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_RTL(5L),
   /**
    * Aircraft to stop in place
    */
+  @GeneratedMavEnumEntry
   MAV_COLLISION_ACTION_HOVER(6L),
   ;
 

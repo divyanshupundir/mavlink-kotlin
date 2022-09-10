@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs (replacement for
@@ -33,29 +35,42 @@ public data class HilActuatorControls(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
    */
+  @GeneratedMavField(type = "float[16]")
   public val controls: List<Float> = emptyList(),
   /**
    * System mode. Includes arming state.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val mode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
   /**
    * Flags as bitfield, 1: indicate simulation using lockstep.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val flags: BigInteger = BigInteger.ZERO,
 ) : MavMessage<HilActuatorControls> {
   public override val instanceMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint64(flags)
     outputBuffer.encodeFloatArray(controls, 64)
     outputBuffer.encodeEnumValue(mode.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUint64(flags)
+    outputBuffer.encodeFloatArray(controls, 64)
+    outputBuffer.encodeEnumValue(mode.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

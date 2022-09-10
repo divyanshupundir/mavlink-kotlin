@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * State of autopilot RAM.
@@ -25,24 +27,37 @@ public data class Meminfo(
   /**
    * Heap top.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val brkval: Int = 0,
   /**
    * Free memory.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val freemem: Int = 0,
   /**
    * Free memory (32 bit).
    */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
   public val freemem32: Long = 0L,
 ) : MavMessage<Meminfo> {
   public override val instanceMetadata: MavMessage.Metadata<Meminfo> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(brkval)
+    outputBuffer.encodeUint16(freemem)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(brkval)
     outputBuffer.encodeUint16(freemem)
     outputBuffer.encodeUint32(freemem32)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

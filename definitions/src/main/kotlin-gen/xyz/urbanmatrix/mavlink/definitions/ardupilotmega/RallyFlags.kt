@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,11 +15,13 @@ public enum class RallyFlags(
   /**
    * Flag set when requiring favorable winds for landing.
    */
+  @GeneratedMavEnumEntry
   FAVORABLE_WIND(1L),
   /**
    * Flag set when plane is to immediately descend to break altitude and land without GCS
    * intervention. Flag not set when plane is to loiter at Rally point until commanded to land.
    */
+  @GeneratedMavEnumEntry
   LAND_IMMEDIATELY(2L),
   ;
 

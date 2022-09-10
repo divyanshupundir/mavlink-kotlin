@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,10 +15,12 @@ public enum class MavRemoteLogDataBlockStatuses(
   /**
    * This block has NOT been received.
    */
+  @GeneratedMavEnumEntry
   MAV_REMOTE_LOG_DATA_BLOCK_NACK(0L),
   /**
    * This block has been received.
    */
+  @GeneratedMavEnumEntry
   MAV_REMOTE_LOG_DATA_BLOCK_ACK(1L),
   ;
 

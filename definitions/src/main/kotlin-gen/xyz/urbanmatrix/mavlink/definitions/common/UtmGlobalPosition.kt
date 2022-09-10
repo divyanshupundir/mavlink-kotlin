@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -23,6 +24,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The global position resulting from GPS and sensor fusion.
@@ -35,79 +37,97 @@ public data class UtmGlobalPosition(
   /**
    * Time of applicability of position (microseconds since UNIX epoch).
    */
+  @GeneratedMavField(type = "uint64_t")
   public val time: BigInteger = BigInteger.ZERO,
   /**
    * Unique UAS ID.
    */
+  @GeneratedMavField(type = "uint8_t[18]")
   public val uasId: List<Int> = emptyList(),
   /**
    * Latitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground
    */
+  @GeneratedMavField(type = "int32_t")
   public val relativeAlt: Int = 0,
   /**
    * Ground X speed (latitude, positive north)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vx: Int = 0,
   /**
    * Ground Y speed (longitude, positive east)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vy: Int = 0,
   /**
    * Ground Z speed (altitude, positive down)
    */
+  @GeneratedMavField(type = "int16_t")
   public val vz: Int = 0,
   /**
    * Horizontal position uncertainty (standard deviation)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val hAcc: Int = 0,
   /**
    * Altitude uncertainty (standard deviation)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val vAcc: Int = 0,
   /**
    * Speed uncertainty (standard deviation)
    */
+  @GeneratedMavField(type = "uint16_t")
   public val velAcc: Int = 0,
   /**
    * Next waypoint, latitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val nextLat: Int = 0,
   /**
    * Next waypoint, longitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val nextLon: Int = 0,
   /**
    * Next waypoint, altitude (WGS84)
    */
+  @GeneratedMavField(type = "int32_t")
   public val nextAlt: Int = 0,
   /**
    * Time until next update. Set to 0 if unknown or in data driven mode.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val updateRate: Int = 0,
   /**
    * Flight state
    */
+  @GeneratedMavField(type = "uint8_t")
   public val flightState: MavEnumValue<UtmFlightState> = MavEnumValue.fromValue(0),
   /**
    * Bitwise OR combination of the data available flags.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val flags: MavEnumValue<UtmDataAvailFlags> = MavEnumValue.fromValue(0),
 ) : MavMessage<UtmGlobalPosition> {
   public override val instanceMetadata: MavMessage.Metadata<UtmGlobalPosition> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(time)
     outputBuffer.encodeInt32(lat)
@@ -128,6 +148,29 @@ public data class UtmGlobalPosition(
     outputBuffer.encodeEnumValue(flightState.value, 1)
     outputBuffer.encodeEnumValue(flags.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(time)
+    outputBuffer.encodeInt32(lat)
+    outputBuffer.encodeInt32(lon)
+    outputBuffer.encodeInt32(alt)
+    outputBuffer.encodeInt32(relativeAlt)
+    outputBuffer.encodeInt32(nextLat)
+    outputBuffer.encodeInt32(nextLon)
+    outputBuffer.encodeInt32(nextAlt)
+    outputBuffer.encodeInt16(vx)
+    outputBuffer.encodeInt16(vy)
+    outputBuffer.encodeInt16(vz)
+    outputBuffer.encodeUint16(hAcc)
+    outputBuffer.encodeUint16(vAcc)
+    outputBuffer.encodeUint16(velAcc)
+    outputBuffer.encodeUint16(updateRate)
+    outputBuffer.encodeUint8Array(uasId, 18)
+    outputBuffer.encodeEnumValue(flightState.value, 1)
+    outputBuffer.encodeEnumValue(flags.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

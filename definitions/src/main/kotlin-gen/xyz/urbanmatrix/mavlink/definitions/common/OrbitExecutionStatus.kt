@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Vehicle status report that is sent out while orbit execution is in progress (see
@@ -35,34 +37,40 @@ public data class OrbitExecutionStatus(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * Radius of the orbit circle. Positive values orbit clockwise, negative values orbit
    * counter-clockwise.
    */
+  @GeneratedMavField(type = "float")
   public val radius: Float = 0F,
   /**
    * The coordinate system of the fields: x, y, z.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
   /**
    * X coordinate of center point. Coordinate system depends on frame field: local = x position in
    * meters * 1e4, global = latitude in degrees * 1e7.
    */
+  @GeneratedMavField(type = "int32_t")
   public val x: Int = 0,
   /**
    * Y coordinate of center point.  Coordinate system depends on frame field: local = x position in
    * meters * 1e4, global = latitude in degrees * 1e7.
    */
+  @GeneratedMavField(type = "int32_t")
   public val y: Int = 0,
   /**
    * Altitude of center point. Coordinate system depends on frame field.
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<OrbitExecutionStatus> {
   public override val instanceMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(radius)
@@ -71,6 +79,17 @@ public data class OrbitExecutionStatus(
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(radius)
+    outputBuffer.encodeInt32(x)
+    outputBuffer.encodeInt32(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeEnumValue(frame.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

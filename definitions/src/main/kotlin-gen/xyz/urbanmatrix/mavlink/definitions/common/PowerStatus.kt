@@ -5,6 +5,7 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Power supply status
@@ -25,24 +27,35 @@ public data class PowerStatus(
   /**
    * 5V rail voltage.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val vcc: Int = 0,
   /**
    * Servo rail voltage.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val vservo: Int = 0,
   /**
    * Bitmap of power supply status flags.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val flags: MavEnumValue<MavPowerStatus> = MavEnumValue.fromValue(0),
 ) : MavMessage<PowerStatus> {
   public override val instanceMetadata: MavMessage.Metadata<PowerStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint16(vservo)
     outputBuffer.encodeEnumValue(flags.value, 2)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint16(vcc)
+    outputBuffer.encodeUint16(vservo)
+    outputBuffer.encodeEnumValue(flags.value, 2)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

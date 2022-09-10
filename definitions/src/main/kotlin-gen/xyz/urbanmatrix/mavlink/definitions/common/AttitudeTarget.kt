@@ -8,6 +8,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Reports the current commanded attitude of the vehicle as specified by the autopilot. This should
@@ -34,35 +36,42 @@ public data class AttitudeTarget(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
   /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * Body roll rate
    */
+  @GeneratedMavField(type = "float")
   public val bodyRollRate: Float = 0F,
   /**
    * Body pitch rate
    */
+  @GeneratedMavField(type = "float")
   public val bodyPitchRate: Float = 0F,
   /**
    * Body yaw rate
    */
+  @GeneratedMavField(type = "float")
   public val bodyYawRate: Float = 0F,
   /**
    * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)
    */
+  @GeneratedMavField(type = "float")
   public val thrust: Float = 0F,
 ) : MavMessage<AttitudeTarget> {
   public override val instanceMetadata: MavMessage.Metadata<AttitudeTarget> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloatArray(q, 16)
@@ -72,6 +81,18 @@ public data class AttitudeTarget(
     outputBuffer.encodeFloat(thrust)
     outputBuffer.encodeEnumValue(typeMask.value, 1)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(bodyRollRate)
+    outputBuffer.encodeFloat(bodyPitchRate)
+    outputBuffer.encodeFloat(bodyYawRate)
+    outputBuffer.encodeFloat(thrust)
+    outputBuffer.encodeEnumValue(typeMask.value, 1)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

@@ -5,11 +5,13 @@ import java.nio.ByteOrder
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F22 format
@@ -22,31 +24,37 @@ public data class SerialUdbExtraF22(
   /**
    * SUE X accelerometer at calibration time
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAccelXAtCalibration: Int = 0,
   /**
    * SUE Y accelerometer at calibration time
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAccelYAtCalibration: Int = 0,
   /**
    * SUE Z accelerometer at calibration time
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueAccelZAtCalibration: Int = 0,
   /**
    * SUE X gyro at calibration time
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueGyroXAtCalibration: Int = 0,
   /**
    * SUE Y gyro at calibration time
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueGyroYAtCalibration: Int = 0,
   /**
    * SUE Z gyro at calibration time
    */
+  @GeneratedMavField(type = "int16_t")
   public val sueGyroZAtCalibration: Int = 0,
 ) : MavMessage<SerialUdbExtraF22> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF22> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(sueAccelXAtCalibration)
     outputBuffer.encodeInt16(sueAccelYAtCalibration)
@@ -55,6 +63,17 @@ public data class SerialUdbExtraF22(
     outputBuffer.encodeInt16(sueGyroYAtCalibration)
     outputBuffer.encodeInt16(sueGyroZAtCalibration)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt16(sueAccelXAtCalibration)
+    outputBuffer.encodeInt16(sueAccelYAtCalibration)
+    outputBuffer.encodeInt16(sueAccelZAtCalibration)
+    outputBuffer.encodeInt16(sueGyroXAtCalibration)
+    outputBuffer.encodeInt16(sueGyroYAtCalibration)
+    outputBuffer.encodeInt16(sueGyroZAtCalibration)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

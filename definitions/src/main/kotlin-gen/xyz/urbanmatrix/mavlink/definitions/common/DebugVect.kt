@@ -8,6 +8,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * To debug something using a named 3D vector.
@@ -29,28 +31,33 @@ public data class DebugVect(
   /**
    * Name
    */
+  @GeneratedMavField(type = "char[10]")
   public val name: String = "",
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * x
    */
+  @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * y
    */
+  @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * z
    */
+  @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<DebugVect> {
   public override val instanceMetadata: MavMessage.Metadata<DebugVect> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(x)
@@ -58,6 +65,16 @@ public data class DebugVect(
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(x)
+    outputBuffer.encodeFloat(y)
+    outputBuffer.encodeFloat(z)
+    outputBuffer.encodeString(name, 10)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

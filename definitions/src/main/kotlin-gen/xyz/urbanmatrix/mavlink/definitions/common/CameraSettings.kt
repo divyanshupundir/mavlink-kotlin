@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Long
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -17,6 +18,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Settings of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
@@ -29,29 +31,46 @@ public data class CameraSettings(
   /**
    * Timestamp (time since system boot).
    */
+  @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: Long = 0L,
   /**
    * Camera mode
    */
+  @GeneratedMavField(type = "uint8_t")
   public val modeId: MavEnumValue<CameraMode> = MavEnumValue.fromValue(0),
   /**
    * Current zoom level (0.0 to 100.0, NaN if not known)
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val zoomlevel: Float = 0F,
   /**
    * Current focus level (0.0 to 100.0, NaN if not known)
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val focuslevel: Float = 0F,
 ) : MavMessage<CameraSettings> {
   public override val instanceMetadata: MavMessage.Metadata<CameraSettings> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeEnumValue(modeId.value, 1)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(modeId.value, 1)
     outputBuffer.encodeFloat(zoomlevel)
     outputBuffer.encodeFloat(focuslevel)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

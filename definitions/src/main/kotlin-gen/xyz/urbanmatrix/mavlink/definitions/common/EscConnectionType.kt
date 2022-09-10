@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,26 +15,32 @@ public enum class EscConnectionType(
   /**
    * Traditional PPM ESC.
    */
+  @GeneratedMavEnumEntry
   ESC_CONNECTION_TYPE_PPM(0L),
   /**
    * Serial Bus connected ESC.
    */
+  @GeneratedMavEnumEntry
   ESC_CONNECTION_TYPE_SERIAL(1L),
   /**
    * One Shot PPM ESC.
    */
+  @GeneratedMavEnumEntry
   ESC_CONNECTION_TYPE_ONESHOT(2L),
   /**
    * I2C ESC.
    */
+  @GeneratedMavEnumEntry
   ESC_CONNECTION_TYPE_I2C(3L),
   /**
    * CAN-Bus ESC.
    */
+  @GeneratedMavEnumEntry
   ESC_CONNECTION_TYPE_CAN(4L),
   /**
    * DShot ESC.
    */
+  @GeneratedMavEnumEntry
   ESC_CONNECTION_TYPE_DSHOT(5L),
   ;
 

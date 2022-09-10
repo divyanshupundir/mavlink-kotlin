@@ -6,11 +6,13 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F18 format
@@ -23,27 +25,32 @@ public data class SerialUdbExtraF18(
   /**
    * SUE Angle of Attack Normal
    */
+  @GeneratedMavField(type = "float")
   public val angleOfAttackNormal: Float = 0F,
   /**
    * SUE Angle of Attack Inverted
    */
+  @GeneratedMavField(type = "float")
   public val angleOfAttackInverted: Float = 0F,
   /**
    * SUE Elevator Trim Normal
    */
+  @GeneratedMavField(type = "float")
   public val elevatorTrimNormal: Float = 0F,
   /**
    * SUE Elevator Trim Inverted
    */
+  @GeneratedMavField(type = "float")
   public val elevatorTrimInverted: Float = 0F,
   /**
    * SUE reference_speed
    */
+  @GeneratedMavField(type = "float")
   public val referenceSpeed: Float = 0F,
 ) : MavMessage<SerialUdbExtraF18> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF18> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(angleOfAttackNormal)
     outputBuffer.encodeFloat(angleOfAttackInverted)
@@ -51,6 +58,16 @@ public data class SerialUdbExtraF18(
     outputBuffer.encodeFloat(elevatorTrimInverted)
     outputBuffer.encodeFloat(referenceSpeed)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(angleOfAttackNormal)
+    outputBuffer.encodeFloat(angleOfAttackInverted)
+    outputBuffer.encodeFloat(elevatorTrimNormal)
+    outputBuffer.encodeFloat(elevatorTrimInverted)
+    outputBuffer.encodeFloat(referenceSpeed)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

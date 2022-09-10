@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
@@ -11,14 +12,17 @@ public enum class GoproProtuneSharpness(
   /**
    * Low Sharpness.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_SHARPNESS_LOW(0L),
   /**
    * Medium Sharpness.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_SHARPNESS_MEDIUM(1L),
   /**
    * High Sharpness.
    */
+  @GeneratedMavEnumEntry
   GOPRO_PROTUNE_SHARPNESS_HIGH(2L),
   ;
 

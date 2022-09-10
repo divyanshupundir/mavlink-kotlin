@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -15,6 +16,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Configure on-board Camera Control System.
@@ -27,52 +29,63 @@ public data class DigicamConfigure(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Mode enumeration from 1 to N //P, TV, AV, M, etc. (0 means ignore).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val mode: Int = 0,
   /**
    * Divisor number //e.g. 1000 means 1/1000 (0 means ignore).
    */
+  @GeneratedMavField(type = "uint16_t")
   public val shutterSpeed: Int = 0,
   /**
    * F stop number x 10 //e.g. 28 means 2.8 (0 means ignore).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val aperture: Int = 0,
   /**
    * ISO enumeration from 1 to N //e.g. 80, 100, 200, Etc (0 means ignore).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val iso: Int = 0,
   /**
    * Exposure type enumeration from 1 to N (0 means ignore).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val exposureType: Int = 0,
   /**
    * Command Identity (incremental loop: 0 to 255). //A command sent multiple times will be executed
    * or pooled just once.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val commandId: Int = 0,
   /**
    * Main engine cut-off time before camera trigger (0 means no cut-off).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val engineCutOff: Int = 0,
   /**
    * Extra parameters enumeration (0 means ignore).
    */
+  @GeneratedMavField(type = "uint8_t")
   public val extraParam: Int = 0,
   /**
    * Correspondent value to given extra_param.
    */
+  @GeneratedMavField(type = "float")
   public val extraValue: Float = 0F,
 ) : MavMessage<DigicamConfigure> {
   public override val instanceMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(extraValue)
     outputBuffer.encodeUint16(shutterSpeed)
@@ -86,6 +99,22 @@ public data class DigicamConfigure(
     outputBuffer.encodeUint8(engineCutOff)
     outputBuffer.encodeUint8(extraParam)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(extraValue)
+    outputBuffer.encodeUint16(shutterSpeed)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUint8(mode)
+    outputBuffer.encodeUint8(aperture)
+    outputBuffer.encodeUint8(iso)
+    outputBuffer.encodeUint8(exposureType)
+    outputBuffer.encodeUint8(commandId)
+    outputBuffer.encodeUint8(engineCutOff)
+    outputBuffer.encodeUint8(extraParam)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

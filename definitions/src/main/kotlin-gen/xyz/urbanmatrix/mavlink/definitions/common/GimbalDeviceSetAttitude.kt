@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
 import kotlin.collections.List
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -20,6 +21,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Low level message to control a gimbal device's attitude. This message is to be sent from the
@@ -35,37 +37,44 @@ public data class GimbalDeviceSetAttitude(
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Low level gimbal flags.
    */
+  @GeneratedMavField(type = "uint16_t")
   public val flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0),
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
    * whether the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set, set all fields to NaN if only angular
    * velocity should be used)
    */
+  @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
    * X component of angular velocity, positive is rolling to the right, NaN to be ignored.
    */
+  @GeneratedMavField(type = "float")
   public val angularVelocityX: Float = 0F,
   /**
    * Y component of angular velocity, positive is pitching up, NaN to be ignored.
    */
+  @GeneratedMavField(type = "float")
   public val angularVelocityY: Float = 0F,
   /**
    * Z component of angular velocity, positive is yawing to the right, NaN to be ignored.
    */
+  @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<GimbalDeviceSetAttitude> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceSetAttitude> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(angularVelocityX)
@@ -75,6 +84,18 @@ public data class GimbalDeviceSetAttitude(
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloatArray(q, 16)
+    outputBuffer.encodeFloat(angularVelocityX)
+    outputBuffer.encodeFloat(angularVelocityY)
+    outputBuffer.encodeFloat(angularVelocityZ)
+    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

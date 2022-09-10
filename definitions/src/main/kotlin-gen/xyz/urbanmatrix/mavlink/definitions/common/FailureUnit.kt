@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -11,20 +12,35 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 public enum class FailureUnit(
   public override val `value`: Long,
 ) : MavEnum {
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_GYRO(0L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_ACCEL(1L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_MAG(2L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_BARO(3L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_GPS(4L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_OPTICAL_FLOW(5L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_VIO(6L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_DISTANCE_SENSOR(7L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SENSOR_AIRSPEED(8L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SYSTEM_BATTERY(100L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SYSTEM_MOTOR(101L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SYSTEM_SERVO(102L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SYSTEM_AVOIDANCE(103L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SYSTEM_RC_SIGNAL(104L),
+  @GeneratedMavEnumEntry
   FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL(105L),
   ;
 

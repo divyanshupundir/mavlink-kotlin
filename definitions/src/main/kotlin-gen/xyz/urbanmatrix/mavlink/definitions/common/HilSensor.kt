@@ -7,6 +7,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
@@ -19,6 +20,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The IMU readings in SI units in NED body frame
@@ -32,71 +34,110 @@ public data class HilSensor(
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
+  @GeneratedMavField(type = "uint64_t")
   public val timeUsec: BigInteger = BigInteger.ZERO,
   /**
    * X acceleration
    */
+  @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
    */
+  @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
    */
+  @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis in body frame
    */
+  @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis in body frame
    */
+  @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis in body frame
    */
+  @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * X Magnetic field
    */
+  @GeneratedMavField(type = "float")
   public val xmag: Float = 0F,
   /**
    * Y Magnetic field
    */
+  @GeneratedMavField(type = "float")
   public val ymag: Float = 0F,
   /**
    * Z Magnetic field
    */
+  @GeneratedMavField(type = "float")
   public val zmag: Float = 0F,
   /**
    * Absolute pressure
    */
+  @GeneratedMavField(type = "float")
   public val absPressure: Float = 0F,
   /**
    * Differential pressure (airspeed)
    */
+  @GeneratedMavField(type = "float")
   public val diffPressure: Float = 0F,
   /**
    * Altitude calculated from pressure
    */
+  @GeneratedMavField(type = "float")
   public val pressureAlt: Float = 0F,
   /**
    * Temperature
    */
+  @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
   /**
    * Bitmap for fields that have updated since last message
    */
+  @GeneratedMavField(type = "uint32_t")
   public val fieldsUpdated: MavEnumValue<HilSensorUpdatedFlags> = MavEnumValue.fromValue(0),
   /**
    * Sensor ID (zero indexed). Used for multiple sensor inputs
    */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val id: Int = 0,
 ) : MavMessage<HilSensor> {
   public override val instanceMetadata: MavMessage.Metadata<HilSensor> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeFloat(xacc)
+    outputBuffer.encodeFloat(yacc)
+    outputBuffer.encodeFloat(zacc)
+    outputBuffer.encodeFloat(xgyro)
+    outputBuffer.encodeFloat(ygyro)
+    outputBuffer.encodeFloat(zgyro)
+    outputBuffer.encodeFloat(xmag)
+    outputBuffer.encodeFloat(ymag)
+    outputBuffer.encodeFloat(zmag)
+    outputBuffer.encodeFloat(absPressure)
+    outputBuffer.encodeFloat(diffPressure)
+    outputBuffer.encodeFloat(pressureAlt)
+    outputBuffer.encodeFloat(temperature)
+    outputBuffer.encodeEnumValue(fieldsUpdated.value, 4)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(xacc)
@@ -114,7 +155,7 @@ public data class HilSensor(
     outputBuffer.encodeFloat(temperature)
     outputBuffer.encodeEnumValue(fieldsUpdated.value, 4)
     outputBuffer.encodeUint8(id)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

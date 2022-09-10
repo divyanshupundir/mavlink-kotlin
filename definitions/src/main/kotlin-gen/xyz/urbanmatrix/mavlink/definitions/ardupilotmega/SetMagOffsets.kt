@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Set the magnetometer offsets
@@ -26,27 +28,32 @@ public data class SetMagOffsets(
   /**
    * System ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Magnetometer X offset.
    */
+  @GeneratedMavField(type = "int16_t")
   public val magOfsX: Int = 0,
   /**
    * Magnetometer Y offset.
    */
+  @GeneratedMavField(type = "int16_t")
   public val magOfsY: Int = 0,
   /**
    * Magnetometer Z offset.
    */
+  @GeneratedMavField(type = "int16_t")
   public val magOfsZ: Int = 0,
 ) : MavMessage<SetMagOffsets> {
   public override val instanceMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(magOfsX)
     outputBuffer.encodeInt16(magOfsY)
@@ -54,6 +61,16 @@ public data class SetMagOffsets(
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeInt16(magOfsX)
+    outputBuffer.encodeInt16(magOfsY)
+    outputBuffer.encodeInt16(magOfsZ)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

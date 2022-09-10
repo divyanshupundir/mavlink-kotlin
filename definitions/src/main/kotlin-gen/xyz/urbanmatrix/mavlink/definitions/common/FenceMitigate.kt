@@ -2,6 +2,7 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
@@ -14,14 +15,17 @@ public enum class FenceMitigate(
   /**
    * Unknown
    */
+  @GeneratedMavEnumEntry
   FENCE_MITIGATE_UNKNOWN(0L),
   /**
    * No actions being taken
    */
+  @GeneratedMavEnumEntry
   FENCE_MITIGATE_NONE(1L),
   /**
    * Velocity limiting active to prevent breach
    */
+  @GeneratedMavEnumEntry
   FENCE_MITIGATE_VEL_LIMIT(2L),
   ;
 

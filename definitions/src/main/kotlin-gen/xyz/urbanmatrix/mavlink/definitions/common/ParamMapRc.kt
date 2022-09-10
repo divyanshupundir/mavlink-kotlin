@@ -7,6 +7,7 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -18,6 +19,7 @@ import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
@@ -30,49 +32,58 @@ public data class ParamMapRc(
   /**
    * System ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
    * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
    * provide 16+1 bytes storage if the ID is stored as string
    */
+  @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
   /**
    * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be
    * ignored), send -2 to disable any existing map for this rc_channel_index.
    */
+  @GeneratedMavField(type = "int16_t")
   public val paramIndex: Int = 0,
   /**
    * Index of parameter RC channel. Not equal to the RC channel id. Typically corresponds to a
    * potentiometer-knob on the RC.
    */
+  @GeneratedMavField(type = "uint8_t")
   public val parameterRcChannelIndex: Int = 0,
   /**
    * Initial parameter value
    */
+  @GeneratedMavField(type = "float")
   public val paramValue0: Float = 0F,
   /**
    * Scale, maps the RC range [-1, 1] to a parameter value
    */
+  @GeneratedMavField(type = "float")
   public val scale: Float = 0F,
   /**
    * Minimum param value. The protocol does not define if this overwrites an onboard minimum value.
    * (Depends on implementation)
    */
+  @GeneratedMavField(type = "float")
   public val paramValueMin: Float = 0F,
   /**
    * Maximum param value. The protocol does not define if this overwrites an onboard maximum value.
    * (Depends on implementation)
    */
+  @GeneratedMavField(type = "float")
   public val paramValueMax: Float = 0F,
 ) : MavMessage<ParamMapRc> {
   public override val instanceMetadata: MavMessage.Metadata<ParamMapRc> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(paramValue0)
     outputBuffer.encodeFloat(scale)
@@ -84,6 +95,20 @@ public data class ParamMapRc(
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeUint8(parameterRcChannelIndex)
     return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(paramValue0)
+    outputBuffer.encodeFloat(scale)
+    outputBuffer.encodeFloat(paramValueMin)
+    outputBuffer.encodeFloat(paramValueMax)
+    outputBuffer.encodeInt16(paramIndex)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeString(paramId, 16)
+    outputBuffer.encodeUint8(parameterRcChannelIndex)
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {

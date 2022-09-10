@@ -6,6 +6,7 @@ import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Unit
+import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
@@ -13,6 +14,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * EFI status output
@@ -25,80 +27,123 @@ public data class EfiStatus(
   /**
    * EFI health status
    */
+  @GeneratedMavField(type = "uint8_t")
   public val health: Int = 0,
   /**
    * ECU index
    */
+  @GeneratedMavField(type = "float")
   public val ecuIndex: Float = 0F,
   /**
    * RPM
    */
+  @GeneratedMavField(type = "float")
   public val rpm: Float = 0F,
   /**
    * Fuel consumed
    */
+  @GeneratedMavField(type = "float")
   public val fuelConsumed: Float = 0F,
   /**
    * Fuel flow rate
    */
+  @GeneratedMavField(type = "float")
   public val fuelFlow: Float = 0F,
   /**
    * Engine load
    */
+  @GeneratedMavField(type = "float")
   public val engineLoad: Float = 0F,
   /**
    * Throttle position
    */
+  @GeneratedMavField(type = "float")
   public val throttlePosition: Float = 0F,
   /**
    * Spark dwell time
    */
+  @GeneratedMavField(type = "float")
   public val sparkDwellTime: Float = 0F,
   /**
    * Barometric pressure
    */
+  @GeneratedMavField(type = "float")
   public val barometricPressure: Float = 0F,
   /**
    * Intake manifold pressure(
    */
+  @GeneratedMavField(type = "float")
   public val intakeManifoldPressure: Float = 0F,
   /**
    * Intake manifold temperature
    */
+  @GeneratedMavField(type = "float")
   public val intakeManifoldTemperature: Float = 0F,
   /**
    * Cylinder head temperature
    */
+  @GeneratedMavField(type = "float")
   public val cylinderHeadTemperature: Float = 0F,
   /**
    * Ignition timing (Crank angle degrees)
    */
+  @GeneratedMavField(type = "float")
   public val ignitionTiming: Float = 0F,
   /**
    * Injection time
    */
+  @GeneratedMavField(type = "float")
   public val injectionTime: Float = 0F,
   /**
    * Exhaust gas temperature
    */
+  @GeneratedMavField(type = "float")
   public val exhaustGasTemperature: Float = 0F,
   /**
    * Output throttle
    */
+  @GeneratedMavField(type = "float")
   public val throttleOut: Float = 0F,
   /**
    * Pressure/temperature compensation
    */
+  @GeneratedMavField(type = "float")
   public val ptCompensation: Float = 0F,
   /**
    * Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply
    * voltage really is zero volts use 0.0001 instead.
    */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
   public val ignitionVoltage: Float = 0F,
 ) : MavMessage<EfiStatus> {
   public override val instanceMetadata: MavMessage.Metadata<EfiStatus> = METADATA
 
-  public override fun serialize(): ByteArray {
+  public override fun serializeV1(): ByteArray {
+    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    outputBuffer.encodeFloat(ecuIndex)
+    outputBuffer.encodeFloat(rpm)
+    outputBuffer.encodeFloat(fuelConsumed)
+    outputBuffer.encodeFloat(fuelFlow)
+    outputBuffer.encodeFloat(engineLoad)
+    outputBuffer.encodeFloat(throttlePosition)
+    outputBuffer.encodeFloat(sparkDwellTime)
+    outputBuffer.encodeFloat(barometricPressure)
+    outputBuffer.encodeFloat(intakeManifoldPressure)
+    outputBuffer.encodeFloat(intakeManifoldTemperature)
+    outputBuffer.encodeFloat(cylinderHeadTemperature)
+    outputBuffer.encodeFloat(ignitionTiming)
+    outputBuffer.encodeFloat(injectionTime)
+    outputBuffer.encodeFloat(exhaustGasTemperature)
+    outputBuffer.encodeFloat(throttleOut)
+    outputBuffer.encodeFloat(ptCompensation)
+    outputBuffer.encodeUint8(health)
+    return outputBuffer.array()
+  }
+
+  public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(ecuIndex)
     outputBuffer.encodeFloat(rpm)
@@ -118,7 +163,7 @@ public data class EfiStatus(
     outputBuffer.encodeFloat(ptCompensation)
     outputBuffer.encodeUint8(health)
     outputBuffer.encodeFloat(ignitionVoltage)
-    return outputBuffer.array()
+    return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
