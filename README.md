@@ -58,13 +58,13 @@ the other modules given that `api` is implemented correctly.
 
 ### serialization
 Tools for serializing and deserializing MAVLink message/frame Kotlin objects to and from a byte stream. More
-specifically, it contains extension functions on `ByteArray` and `ByteBuffer` to encode and decode different sizes of int, uint, float,
-strings/characters, arrays, etc.
+specifically, it contains extension functions on `ByteArray` and `ByteBuffer` to encode and decode different sizes of
+int, uint, float, strings/characters, arrays, etc.
 
 ### generator
-MAVLink generator Gradle Plugin that uses the `api` and the `serialization` modules to generate the MAVLink classes. This plugin
-is available at Gradle Plugin Portal with ID `xyz.urbanmatrix.mavlink.generator`. It can be used by anyone to generate
-MAVLink classes from their own XML files. No need to fork this project.
+MAVLink generator Gradle Plugin that uses the `api` and the `serialization` modules to generate the MAVLink classes. 
+This plugin is available at Gradle Plugin Portal with ID `xyz.urbanmatrix.mavlink.generator`. It can be used by anyone
+to generate MAVLink classes from their own XML files. No need to fork this project.
 
 The instructions on how to use the plugin are available in the `generator` module.
 
