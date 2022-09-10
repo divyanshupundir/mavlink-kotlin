@@ -13,6 +13,7 @@ pluginManagement {
     }
     plugins {
         kotlin("jvm") version "1.7.10"
+        id("com.vanniktech.maven.publish") version "0.22.0"
     }
 }
 
