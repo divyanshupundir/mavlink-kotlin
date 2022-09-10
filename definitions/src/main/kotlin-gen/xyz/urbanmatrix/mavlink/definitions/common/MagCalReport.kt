@@ -133,7 +133,7 @@ public data class MagCalReport(
   public override val instanceMetadata: MavMessage.Metadata<MagCalReport> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(fitness)
     outputBuffer.encodeFloat(ofsX)
     outputBuffer.encodeFloat(ofsY)
@@ -152,7 +152,7 @@ public data class MagCalReport(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(fitness)
     outputBuffer.encodeFloat(ofsX)
     outputBuffer.encodeFloat(ofsY)
@@ -179,7 +179,9 @@ public data class MagCalReport(
 
     private const val CRC: Int = 36
 
-    private const val SIZE: Int = 54
+    private const val SIZE_V1: Int = 44
+
+    private const val SIZE_V2: Int = 54
 
     private val DESERIALIZER: MavDeserializer<MagCalReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

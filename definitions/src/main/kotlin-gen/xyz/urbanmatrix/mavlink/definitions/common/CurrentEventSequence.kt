@@ -41,14 +41,14 @@ public data class CurrentEventSequence(
   public override val instanceMetadata: MavMessage.Metadata<CurrentEventSequence> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeEnumValue(flags.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeEnumValue(flags.value, 1)
     return outputBuffer.array().truncateZeros()
@@ -59,7 +59,9 @@ public data class CurrentEventSequence(
 
     private const val CRC: Int = 106
 
-    private const val SIZE: Int = 3
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 3
 
     private val DESERIALIZER: MavDeserializer<CurrentEventSequence> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

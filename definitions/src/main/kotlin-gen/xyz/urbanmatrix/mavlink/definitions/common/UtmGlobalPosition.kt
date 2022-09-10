@@ -128,7 +128,7 @@ public data class UtmGlobalPosition(
   public override val instanceMetadata: MavMessage.Metadata<UtmGlobalPosition> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(time)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -151,7 +151,7 @@ public data class UtmGlobalPosition(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(time)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -178,7 +178,9 @@ public data class UtmGlobalPosition(
 
     private const val CRC: Int = 99
 
-    private const val SIZE: Int = 70
+    private const val SIZE_V1: Int = 70
+
+    private const val SIZE_V2: Int = 70
 
     private val DESERIALIZER: MavDeserializer<UtmGlobalPosition> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

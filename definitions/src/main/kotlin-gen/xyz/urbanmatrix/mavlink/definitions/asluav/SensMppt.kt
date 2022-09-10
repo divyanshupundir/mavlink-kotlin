@@ -98,7 +98,7 @@ public data class SensMppt(
   public override val instanceMetadata: MavMessage.Metadata<SensMppt> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(mpptTimestamp)
     outputBuffer.encodeFloat(mppt1Volt)
     outputBuffer.encodeFloat(mppt1Amp)
@@ -116,7 +116,7 @@ public data class SensMppt(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(mpptTimestamp)
     outputBuffer.encodeFloat(mppt1Volt)
     outputBuffer.encodeFloat(mppt1Amp)
@@ -138,7 +138,9 @@ public data class SensMppt(
 
     private const val CRC: Int = 231
 
-    private const val SIZE: Int = 41
+    private const val SIZE_V1: Int = 41
+
+    private const val SIZE_V2: Int = 41
 
     private val DESERIALIZER: MavDeserializer<SensMppt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

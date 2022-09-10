@@ -64,7 +64,7 @@ public data class ComponentInformation(
   public override val instanceMetadata: MavMessage.Metadata<ComponentInformation> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(generalMetadataFileCrc)
     outputBuffer.encodeUint32(peripheralsMetadataFileCrc)
@@ -74,7 +74,7 @@ public data class ComponentInformation(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint32(generalMetadataFileCrc)
     outputBuffer.encodeUint32(peripheralsMetadataFileCrc)
@@ -88,7 +88,9 @@ public data class ComponentInformation(
 
     private const val CRC: Int = 0
 
-    private const val SIZE: Int = 212
+    private const val SIZE_V1: Int = 212
+
+    private const val SIZE_V2: Int = 212
 
     private val DESERIALIZER: MavDeserializer<ComponentInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

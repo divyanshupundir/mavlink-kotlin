@@ -36,14 +36,14 @@ public data class Timesync(
   public override val instanceMetadata: MavMessage.Metadata<Timesync> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt64(tc1)
     outputBuffer.encodeInt64(ts1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt64(tc1)
     outputBuffer.encodeInt64(ts1)
     return outputBuffer.array().truncateZeros()
@@ -54,7 +54,9 @@ public data class Timesync(
 
     private const val CRC: Int = 34
 
-    private const val SIZE: Int = 16
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
 
     private val DESERIALIZER: MavDeserializer<Timesync> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

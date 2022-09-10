@@ -59,7 +59,7 @@ public data class TimeEstimateToTarget(
   public override val instanceMetadata: MavMessage.Metadata<TimeEstimateToTarget> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(safeReturn)
     outputBuffer.encodeInt32(land)
     outputBuffer.encodeInt32(missionNextItem)
@@ -69,7 +69,7 @@ public data class TimeEstimateToTarget(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(safeReturn)
     outputBuffer.encodeInt32(land)
     outputBuffer.encodeInt32(missionNextItem)
@@ -83,7 +83,9 @@ public data class TimeEstimateToTarget(
 
     private const val CRC: Int = 232
 
-    private const val SIZE: Int = 20
+    private const val SIZE_V1: Int = 20
+
+    private const val SIZE_V2: Int = 20
 
     private val DESERIALIZER: MavDeserializer<TimeEstimateToTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

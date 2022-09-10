@@ -86,7 +86,7 @@ public data class DigicamConfigure(
   public override val instanceMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(extraValue)
     outputBuffer.encodeUint16(shutterSpeed)
     outputBuffer.encodeUint8(targetSystem)
@@ -102,7 +102,7 @@ public data class DigicamConfigure(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(extraValue)
     outputBuffer.encodeUint16(shutterSpeed)
     outputBuffer.encodeUint8(targetSystem)
@@ -122,7 +122,9 @@ public data class DigicamConfigure(
 
     private const val CRC: Int = 84
 
-    private const val SIZE: Int = 15
+    private const val SIZE_V1: Int = 15
+
+    private const val SIZE_V2: Int = 15
 
     private val DESERIALIZER: MavDeserializer<DigicamConfigure> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

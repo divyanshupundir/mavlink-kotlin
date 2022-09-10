@@ -37,14 +37,14 @@ public data class Hwstatus(
   public override val instanceMetadata: MavMessage.Metadata<Hwstatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint8(i2cerr)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint8(i2cerr)
     return outputBuffer.array().truncateZeros()
@@ -55,7 +55,9 @@ public data class Hwstatus(
 
     private const val CRC: Int = 21
 
-    private const val SIZE: Int = 3
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 3
 
     private val DESERIALIZER: MavDeserializer<Hwstatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

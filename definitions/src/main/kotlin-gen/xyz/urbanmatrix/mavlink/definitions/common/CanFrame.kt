@@ -61,7 +61,7 @@ public data class CanFrame(
   public override val instanceMetadata: MavMessage.Metadata<CanFrame> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -72,7 +72,7 @@ public data class CanFrame(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -87,7 +87,9 @@ public data class CanFrame(
 
     private const val CRC: Int = 132
 
-    private const val SIZE: Int = 16
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
 
     private val DESERIALIZER: MavDeserializer<CanFrame> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

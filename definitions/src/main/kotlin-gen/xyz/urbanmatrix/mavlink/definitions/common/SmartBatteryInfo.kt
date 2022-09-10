@@ -140,7 +140,7 @@ public data class SmartBatteryInfo(
   public override val instanceMetadata: MavMessage.Metadata<SmartBatteryInfo> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(capacityFullSpecification)
     outputBuffer.encodeInt32(capacityFull)
     outputBuffer.encodeUint16(cycleCount)
@@ -157,7 +157,7 @@ public data class SmartBatteryInfo(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(capacityFullSpecification)
     outputBuffer.encodeInt32(capacityFull)
     outputBuffer.encodeUint16(cycleCount)
@@ -183,7 +183,9 @@ public data class SmartBatteryInfo(
 
     private const val CRC: Int = 75
 
-    private const val SIZE: Int = 109
+    private const val SIZE_V1: Int = 87
+
+    private const val SIZE_V2: Int = 109
 
     private val DESERIALIZER: MavDeserializer<SmartBatteryInfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

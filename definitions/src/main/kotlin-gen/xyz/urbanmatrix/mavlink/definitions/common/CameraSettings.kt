@@ -58,14 +58,14 @@ public data class CameraSettings(
   public override val instanceMetadata: MavMessage.Metadata<CameraSettings> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(modeId.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(modeId.value, 1)
     outputBuffer.encodeFloat(zoomlevel)
@@ -78,7 +78,9 @@ public data class CameraSettings(
 
     private const val CRC: Int = 146
 
-    private const val SIZE: Int = 13
+    private const val SIZE_V1: Int = 5
+
+    private const val SIZE_V2: Int = 13
 
     private val DESERIALIZER: MavDeserializer<CameraSettings> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

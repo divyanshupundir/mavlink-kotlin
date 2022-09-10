@@ -75,7 +75,7 @@ public data class GimbalDeviceSetAttitude(
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceSetAttitude> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
@@ -87,7 +87,7 @@ public data class GimbalDeviceSetAttitude(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
@@ -103,7 +103,9 @@ public data class GimbalDeviceSetAttitude(
 
     private const val CRC: Int = 99
 
-    private const val SIZE: Int = 32
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 32
 
     private val DESERIALIZER: MavDeserializer<GimbalDeviceSetAttitude> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -49,7 +49,7 @@ public data class WheelDistance(
   public override val instanceMetadata: MavMessage.Metadata<WheelDistance> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeDoubleArray(distance, 128)
     outputBuffer.encodeUint8(count)
@@ -57,7 +57,7 @@ public data class WheelDistance(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeDoubleArray(distance, 128)
     outputBuffer.encodeUint8(count)
@@ -69,7 +69,9 @@ public data class WheelDistance(
 
     private const val CRC: Int = 113
 
-    private const val SIZE: Int = 137
+    private const val SIZE_V1: Int = 137
+
+    private const val SIZE_V2: Int = 137
 
     private val DESERIALIZER: MavDeserializer<WheelDistance> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

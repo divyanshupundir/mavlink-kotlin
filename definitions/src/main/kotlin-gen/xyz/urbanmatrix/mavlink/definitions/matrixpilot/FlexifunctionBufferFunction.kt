@@ -65,7 +65,7 @@ public data class FlexifunctionBufferFunction(
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionBufferFunction> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(funcIndex)
     outputBuffer.encodeUint16(funcCount)
     outputBuffer.encodeUint16(dataAddress)
@@ -77,7 +77,7 @@ public data class FlexifunctionBufferFunction(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(funcIndex)
     outputBuffer.encodeUint16(funcCount)
     outputBuffer.encodeUint16(dataAddress)
@@ -93,7 +93,9 @@ public data class FlexifunctionBufferFunction(
 
     private const val CRC: Int = 101
 
-    private const val SIZE: Int = 58
+    private const val SIZE_V1: Int = 58
+
+    private const val SIZE_V2: Int = 58
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunction> = MavDeserializer {
         bytes ->

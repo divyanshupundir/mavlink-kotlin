@@ -41,7 +41,7 @@ public data class ChangeOperatorControlAck(
   public override val instanceMetadata: MavMessage.Metadata<ChangeOperatorControlAck> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(gcsSystemId)
     outputBuffer.encodeUint8(controlRequest)
     outputBuffer.encodeUint8(ack)
@@ -49,7 +49,7 @@ public data class ChangeOperatorControlAck(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(gcsSystemId)
     outputBuffer.encodeUint8(controlRequest)
     outputBuffer.encodeUint8(ack)
@@ -61,7 +61,9 @@ public data class ChangeOperatorControlAck(
 
     private const val CRC: Int = 104
 
-    private const val SIZE: Int = 3
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 3
 
     private val DESERIALIZER: MavDeserializer<ChangeOperatorControlAck> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

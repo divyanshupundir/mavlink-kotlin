@@ -69,13 +69,13 @@ public data class MountOrientation(
   public override val instanceMetadata: MavMessage.Metadata<MountOrientation> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(yawAbsolute)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(yawAbsolute)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeFloat(roll)
@@ -89,7 +89,9 @@ public data class MountOrientation(
 
     private const val CRC: Int = 210
 
-    private const val SIZE: Int = 20
+    private const val SIZE_V1: Int = 4
+
+    private const val SIZE_V2: Int = 20
 
     private val DESERIALIZER: MavDeserializer<MountOrientation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

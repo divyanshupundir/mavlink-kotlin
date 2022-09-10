@@ -50,7 +50,7 @@ public data class GpsInjectData(
   public override val instanceMetadata: MavMessage.Metadata<GpsInjectData> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(len)
@@ -59,7 +59,7 @@ public data class GpsInjectData(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(len)
@@ -72,7 +72,9 @@ public data class GpsInjectData(
 
     private const val CRC: Int = 250
 
-    private const val SIZE: Int = 113
+    private const val SIZE_V1: Int = 113
+
+    private const val SIZE_V2: Int = 113
 
     private val DESERIALIZER: MavDeserializer<GpsInjectData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

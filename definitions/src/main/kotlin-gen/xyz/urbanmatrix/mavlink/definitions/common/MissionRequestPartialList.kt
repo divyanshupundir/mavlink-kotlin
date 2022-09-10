@@ -60,7 +60,7 @@ public data class MissionRequestPartialList(
   public override val instanceMetadata: MavMessage.Metadata<MissionRequestPartialList> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(startIndex)
     outputBuffer.encodeInt16(endIndex)
     outputBuffer.encodeUint8(targetSystem)
@@ -69,7 +69,7 @@ public data class MissionRequestPartialList(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(startIndex)
     outputBuffer.encodeInt16(endIndex)
     outputBuffer.encodeUint8(targetSystem)
@@ -83,7 +83,9 @@ public data class MissionRequestPartialList(
 
     private const val CRC: Int = 212
 
-    private const val SIZE: Int = 7
+    private const val SIZE_V1: Int = 6
+
+    private const val SIZE_V2: Int = 7
 
     private val DESERIALIZER: MavDeserializer<MissionRequestPartialList> = MavDeserializer {
         bytes ->

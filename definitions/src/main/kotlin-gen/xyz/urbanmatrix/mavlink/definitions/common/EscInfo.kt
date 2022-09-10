@@ -91,7 +91,7 @@ public data class EscInfo(
   public override val instanceMetadata: MavMessage.Metadata<EscInfo> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32Array(errorCount, 16)
     outputBuffer.encodeUint16(counter)
@@ -105,7 +105,7 @@ public data class EscInfo(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32Array(errorCount, 16)
     outputBuffer.encodeUint16(counter)
@@ -123,7 +123,9 @@ public data class EscInfo(
 
     private const val CRC: Int = 251
 
-    private const val SIZE: Int = 46
+    private const val SIZE_V1: Int = 46
+
+    private const val SIZE_V2: Int = 46
 
     private val DESERIALIZER: MavDeserializer<EscInfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

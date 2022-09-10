@@ -119,7 +119,7 @@ public data class HighresImu(
   public override val instanceMetadata: MavMessage.Metadata<HighresImu> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(xacc)
     outputBuffer.encodeFloat(yacc)
@@ -139,7 +139,7 @@ public data class HighresImu(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(xacc)
     outputBuffer.encodeFloat(yacc)
@@ -164,7 +164,9 @@ public data class HighresImu(
 
     private const val CRC: Int = 93
 
-    private const val SIZE: Int = 63
+    private const val SIZE_V1: Int = 62
+
+    private const val SIZE_V2: Int = 63
 
     private val DESERIALIZER: MavDeserializer<HighresImu> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

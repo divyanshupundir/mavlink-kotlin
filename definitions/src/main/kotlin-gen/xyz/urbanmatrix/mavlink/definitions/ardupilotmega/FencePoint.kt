@@ -59,7 +59,7 @@ public data class FencePoint(
   public override val instanceMetadata: MavMessage.Metadata<FencePoint> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(lat)
     outputBuffer.encodeFloat(lng)
     outputBuffer.encodeUint8(targetSystem)
@@ -70,7 +70,7 @@ public data class FencePoint(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(lat)
     outputBuffer.encodeFloat(lng)
     outputBuffer.encodeUint8(targetSystem)
@@ -85,7 +85,9 @@ public data class FencePoint(
 
     private const val CRC: Int = 78
 
-    private const val SIZE: Int = 12
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 12
 
     private val DESERIALIZER: MavDeserializer<FencePoint> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

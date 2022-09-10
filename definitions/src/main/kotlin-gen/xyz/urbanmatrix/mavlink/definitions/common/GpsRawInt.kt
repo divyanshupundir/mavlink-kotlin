@@ -142,7 +142,7 @@ public data class GpsRawInt(
   public override val instanceMetadata: MavMessage.Metadata<GpsRawInt> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -157,7 +157,7 @@ public data class GpsRawInt(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -182,7 +182,9 @@ public data class GpsRawInt(
 
     private const val CRC: Int = 24
 
-    private const val SIZE: Int = 52
+    private const val SIZE_V1: Int = 30
+
+    private const val SIZE_V2: Int = 52
 
     private val DESERIALIZER: MavDeserializer<GpsRawInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

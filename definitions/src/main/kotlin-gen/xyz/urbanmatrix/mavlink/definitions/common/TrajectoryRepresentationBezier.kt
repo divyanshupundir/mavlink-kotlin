@@ -70,7 +70,7 @@ public data class TrajectoryRepresentationBezier(
       METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
@@ -82,7 +82,7 @@ public data class TrajectoryRepresentationBezier(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
@@ -98,7 +98,9 @@ public data class TrajectoryRepresentationBezier(
 
     private const val CRC: Int = 231
 
-    private const val SIZE: Int = 109
+    private const val SIZE_V1: Int = 109
+
+    private const val SIZE_V2: Int = 109
 
     private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationBezier> = MavDeserializer {
         bytes ->

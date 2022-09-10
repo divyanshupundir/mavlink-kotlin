@@ -73,7 +73,7 @@ public data class IsbdLinkStatus(
   public override val instanceMetadata: MavMessage.Metadata<IsbdLinkStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(lastHeartbeat)
     outputBuffer.encodeUint16(failedSessions)
@@ -86,7 +86,7 @@ public data class IsbdLinkStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(lastHeartbeat)
     outputBuffer.encodeUint16(failedSessions)
@@ -103,7 +103,9 @@ public data class IsbdLinkStatus(
 
     private const val CRC: Int = 225
 
-    private const val SIZE: Int = 24
+    private const val SIZE_V1: Int = 24
+
+    private const val SIZE_V2: Int = 24
 
     private val DESERIALIZER: MavDeserializer<IsbdLinkStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

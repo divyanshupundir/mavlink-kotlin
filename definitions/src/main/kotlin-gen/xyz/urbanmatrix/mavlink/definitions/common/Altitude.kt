@@ -76,7 +76,7 @@ public data class Altitude(
   public override val instanceMetadata: MavMessage.Metadata<Altitude> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(altitudeMonotonic)
     outputBuffer.encodeFloat(altitudeAmsl)
@@ -88,7 +88,7 @@ public data class Altitude(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(altitudeMonotonic)
     outputBuffer.encodeFloat(altitudeAmsl)
@@ -104,7 +104,9 @@ public data class Altitude(
 
     private const val CRC: Int = 47
 
-    private const val SIZE: Int = 32
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 32
 
     private val DESERIALIZER: MavDeserializer<Altitude> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

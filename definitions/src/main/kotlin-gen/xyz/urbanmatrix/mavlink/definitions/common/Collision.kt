@@ -67,7 +67,7 @@ public data class Collision(
   public override val instanceMetadata: MavMessage.Metadata<Collision> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeFloat(timeToMinimumDelta)
     outputBuffer.encodeFloat(altitudeMinimumDelta)
@@ -79,7 +79,7 @@ public data class Collision(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(id)
     outputBuffer.encodeFloat(timeToMinimumDelta)
     outputBuffer.encodeFloat(altitudeMinimumDelta)
@@ -95,7 +95,9 @@ public data class Collision(
 
     private const val CRC: Int = 81
 
-    private const val SIZE: Int = 19
+    private const val SIZE_V1: Int = 19
+
+    private const val SIZE_V2: Int = 19
 
     private val DESERIALIZER: MavDeserializer<Collision> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

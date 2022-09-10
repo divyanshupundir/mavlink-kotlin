@@ -50,7 +50,7 @@ public data class GpsRtcmData(
   public override val instanceMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(flags)
     outputBuffer.encodeUint8(len)
     outputBuffer.encodeUint8Array(data, 180)
@@ -58,7 +58,7 @@ public data class GpsRtcmData(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(flags)
     outputBuffer.encodeUint8(len)
     outputBuffer.encodeUint8Array(data, 180)
@@ -70,7 +70,9 @@ public data class GpsRtcmData(
 
     private const val CRC: Int = 35
 
-    private const val SIZE: Int = 182
+    private const val SIZE_V1: Int = 182
+
+    private const val SIZE_V2: Int = 182
 
     private val DESERIALIZER: MavDeserializer<GpsRtcmData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

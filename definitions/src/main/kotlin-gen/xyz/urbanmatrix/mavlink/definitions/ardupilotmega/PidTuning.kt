@@ -80,7 +80,7 @@ public data class PidTuning(
   public override val instanceMetadata: MavMessage.Metadata<PidTuning> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(ff)
@@ -92,7 +92,7 @@ public data class PidTuning(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(ff)
@@ -110,7 +110,9 @@ public data class PidTuning(
 
     private const val CRC: Int = 98
 
-    private const val SIZE: Int = 33
+    private const val SIZE_V1: Int = 25
+
+    private const val SIZE_V2: Int = 33
 
     private val DESERIALIZER: MavDeserializer<PidTuning> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

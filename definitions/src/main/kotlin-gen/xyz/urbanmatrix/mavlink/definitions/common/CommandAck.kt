@@ -78,14 +78,14 @@ public data class CommandAck(
   public override val instanceMetadata: MavMessage.Metadata<CommandAck> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(command.value, 2)
     outputBuffer.encodeEnumValue(result.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(command.value, 2)
     outputBuffer.encodeEnumValue(result.value, 1)
     outputBuffer.encodeUint8(progress)
@@ -100,7 +100,9 @@ public data class CommandAck(
 
     private const val CRC: Int = 143
 
-    private const val SIZE: Int = 10
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 10
 
     private val DESERIALIZER: MavDeserializer<CommandAck> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

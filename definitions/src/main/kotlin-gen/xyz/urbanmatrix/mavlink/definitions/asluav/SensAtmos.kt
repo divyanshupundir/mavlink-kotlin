@@ -44,7 +44,7 @@ public data class SensAtmos(
   public override val instanceMetadata: MavMessage.Metadata<SensAtmos> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(tempambient)
     outputBuffer.encodeFloat(humidity)
@@ -52,7 +52,7 @@ public data class SensAtmos(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(tempambient)
     outputBuffer.encodeFloat(humidity)
@@ -64,7 +64,9 @@ public data class SensAtmos(
 
     private const val CRC: Int = 144
 
-    private const val SIZE: Int = 16
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
 
     private val DESERIALIZER: MavDeserializer<SensAtmos> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

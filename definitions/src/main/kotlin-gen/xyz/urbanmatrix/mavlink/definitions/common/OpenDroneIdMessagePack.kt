@@ -66,7 +66,7 @@ public data class OpenDroneIdMessagePack(
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdMessagePack> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(idOrMac, 20)
@@ -77,7 +77,7 @@ public data class OpenDroneIdMessagePack(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8Array(idOrMac, 20)
@@ -92,7 +92,9 @@ public data class OpenDroneIdMessagePack(
 
     private const val CRC: Int = 94
 
-    private const val SIZE: Int = 249
+    private const val SIZE_V1: Int = 249
+
+    private const val SIZE_V2: Int = 249
 
     private val DESERIALIZER: MavDeserializer<OpenDroneIdMessagePack> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -101,7 +101,7 @@ public data class CommandInt(
   public override val instanceMetadata: MavMessage.Metadata<CommandInt> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(param1)
     outputBuffer.encodeFloat(param2)
     outputBuffer.encodeFloat(param3)
@@ -119,7 +119,7 @@ public data class CommandInt(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(param1)
     outputBuffer.encodeFloat(param2)
     outputBuffer.encodeFloat(param3)
@@ -141,7 +141,9 @@ public data class CommandInt(
 
     private const val CRC: Int = 158
 
-    private const val SIZE: Int = 35
+    private const val SIZE_V1: Int = 35
+
+    private const val SIZE_V2: Int = 35
 
     private val DESERIALIZER: MavDeserializer<CommandInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

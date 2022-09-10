@@ -177,7 +177,7 @@ public data class HighLatency2(
   public override val instanceMetadata: MavMessage.Metadata<HighLatency2> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timestamp)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
@@ -209,7 +209,7 @@ public data class HighLatency2(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timestamp)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
@@ -245,7 +245,9 @@ public data class HighLatency2(
 
     private const val CRC: Int = 179
 
-    private const val SIZE: Int = 42
+    private const val SIZE_V1: Int = 42
+
+    private const val SIZE_V2: Int = 42
 
     private val DESERIALIZER: MavDeserializer<HighLatency2> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

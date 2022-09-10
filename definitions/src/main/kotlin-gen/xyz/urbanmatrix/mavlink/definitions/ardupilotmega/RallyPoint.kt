@@ -85,7 +85,7 @@ public data class RallyPoint(
   public override val instanceMetadata: MavMessage.Metadata<RallyPoint> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeInt16(alt)
@@ -100,7 +100,7 @@ public data class RallyPoint(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeInt16(alt)
@@ -119,7 +119,9 @@ public data class RallyPoint(
 
     private const val CRC: Int = 138
 
-    private const val SIZE: Int = 19
+    private const val SIZE_V1: Int = 19
+
+    private const val SIZE_V2: Int = 19
 
     private val DESERIALIZER: MavDeserializer<RallyPoint> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

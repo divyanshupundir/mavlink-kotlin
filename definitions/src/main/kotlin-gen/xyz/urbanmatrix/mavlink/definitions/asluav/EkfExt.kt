@@ -64,7 +64,7 @@ public data class EkfExt(
   public override val instanceMetadata: MavMessage.Metadata<EkfExt> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(windspeed)
     outputBuffer.encodeFloat(winddir)
@@ -76,7 +76,7 @@ public data class EkfExt(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeFloat(windspeed)
     outputBuffer.encodeFloat(winddir)
@@ -92,7 +92,9 @@ public data class EkfExt(
 
     private const val CRC: Int = 64
 
-    private const val SIZE: Int = 32
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 32
 
     private val DESERIALIZER: MavDeserializer<EkfExt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

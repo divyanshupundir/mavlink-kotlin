@@ -101,7 +101,7 @@ public data class RawImu(
   public override val instanceMetadata: MavMessage.Metadata<RawImu> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
@@ -116,7 +116,7 @@ public data class RawImu(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
@@ -137,7 +137,9 @@ public data class RawImu(
 
     private const val CRC: Int = 144
 
-    private const val SIZE: Int = 29
+    private const val SIZE_V1: Int = 26
+
+    private const val SIZE_V2: Int = 29
 
     private val DESERIALIZER: MavDeserializer<RawImu> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

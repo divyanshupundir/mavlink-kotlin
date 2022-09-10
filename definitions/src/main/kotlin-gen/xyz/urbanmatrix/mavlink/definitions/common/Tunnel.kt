@@ -64,7 +64,7 @@ public data class Tunnel(
   public override val instanceMetadata: MavMessage.Metadata<Tunnel> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(payloadType.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -74,7 +74,7 @@ public data class Tunnel(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(payloadType.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -88,7 +88,9 @@ public data class Tunnel(
 
     private const val CRC: Int = 147
 
-    private const val SIZE: Int = 133
+    private const val SIZE_V1: Int = 133
+
+    private const val SIZE_V2: Int = 133
 
     private val DESERIALIZER: MavDeserializer<Tunnel> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

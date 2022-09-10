@@ -57,7 +57,7 @@ public data class FlexifunctionDirectoryAck(
   public override val instanceMetadata: MavMessage.Metadata<FlexifunctionDirectoryAck> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(result)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -68,7 +68,7 @@ public data class FlexifunctionDirectoryAck(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(result)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -83,7 +83,9 @@ public data class FlexifunctionDirectoryAck(
 
     private const val CRC: Int = 218
 
-    private const val SIZE: Int = 7
+    private const val SIZE_V1: Int = 7
+
+    private const val SIZE_V2: Int = 7
 
     private val DESERIALIZER: MavDeserializer<FlexifunctionDirectoryAck> = MavDeserializer {
         bytes ->

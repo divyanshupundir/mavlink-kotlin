@@ -88,7 +88,7 @@ public data class WaterDepth(
   public override val instanceMetadata: MavMessage.Metadata<WaterDepth> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
@@ -104,7 +104,7 @@ public data class WaterDepth(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lng)
@@ -124,7 +124,9 @@ public data class WaterDepth(
 
     private const val CRC: Int = 47
 
-    private const val SIZE: Int = 38
+    private const val SIZE_V1: Int = 38
+
+    private const val SIZE_V2: Int = 38
 
     private val DESERIALIZER: MavDeserializer<WaterDepth> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

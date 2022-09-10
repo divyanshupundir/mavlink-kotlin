@@ -58,7 +58,7 @@ public data class EscTelemetry9To12(
   public override val instanceMetadata: MavMessage.Metadata<EscTelemetry9To12> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16Array(voltage, 8)
     outputBuffer.encodeUint16Array(current, 8)
     outputBuffer.encodeUint16Array(totalcurrent, 8)
@@ -69,7 +69,7 @@ public data class EscTelemetry9To12(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16Array(voltage, 8)
     outputBuffer.encodeUint16Array(current, 8)
     outputBuffer.encodeUint16Array(totalcurrent, 8)
@@ -84,7 +84,9 @@ public data class EscTelemetry9To12(
 
     private const val CRC: Int = 85
 
-    private const val SIZE: Int = 44
+    private const val SIZE_V1: Int = 44
+
+    private const val SIZE_V2: Int = 44
 
     private val DESERIALIZER: MavDeserializer<EscTelemetry9To12> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

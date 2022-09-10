@@ -120,7 +120,7 @@ public data class SetPositionTargetGlobalInt(
   public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetGlobalInt> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(latInt)
     outputBuffer.encodeInt32(lonInt)
@@ -141,7 +141,7 @@ public data class SetPositionTargetGlobalInt(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(latInt)
     outputBuffer.encodeInt32(lonInt)
@@ -166,7 +166,9 @@ public data class SetPositionTargetGlobalInt(
 
     private const val CRC: Int = 5
 
-    private const val SIZE: Int = 53
+    private const val SIZE_V1: Int = 53
+
+    private const val SIZE_V2: Int = 53
 
     private val DESERIALIZER: MavDeserializer<SetPositionTargetGlobalInt> = MavDeserializer {
         bytes ->

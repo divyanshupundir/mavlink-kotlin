@@ -77,7 +77,7 @@ public data class UavionixAdsbOutCfg(
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(icao)
     outputBuffer.encodeUint16(stallspeed)
     outputBuffer.encodeString(callsign, 9)
@@ -90,7 +90,7 @@ public data class UavionixAdsbOutCfg(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(icao)
     outputBuffer.encodeUint16(stallspeed)
     outputBuffer.encodeString(callsign, 9)
@@ -107,7 +107,9 @@ public data class UavionixAdsbOutCfg(
 
     private const val CRC: Int = 209
 
-    private const val SIZE: Int = 20
+    private const val SIZE_V1: Int = 20
+
+    private const val SIZE_V2: Int = 20
 
     private val DESERIALIZER: MavDeserializer<UavionixAdsbOutCfg> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

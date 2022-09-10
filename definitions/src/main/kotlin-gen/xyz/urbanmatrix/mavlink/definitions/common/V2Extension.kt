@@ -66,7 +66,7 @@ public data class V2Extension(
   public override val instanceMetadata: MavMessage.Metadata<V2Extension> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(messageType)
     outputBuffer.encodeUint8(targetNetwork)
     outputBuffer.encodeUint8(targetSystem)
@@ -76,7 +76,7 @@ public data class V2Extension(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(messageType)
     outputBuffer.encodeUint8(targetNetwork)
     outputBuffer.encodeUint8(targetSystem)
@@ -90,7 +90,9 @@ public data class V2Extension(
 
     private const val CRC: Int = 8
 
-    private const val SIZE: Int = 254
+    private const val SIZE_V1: Int = 254
+
+    private const val SIZE_V2: Int = 254
 
     private val DESERIALIZER: MavDeserializer<V2Extension> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

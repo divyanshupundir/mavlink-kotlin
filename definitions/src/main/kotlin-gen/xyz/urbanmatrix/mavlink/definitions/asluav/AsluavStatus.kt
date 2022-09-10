@@ -51,7 +51,7 @@ public data class AsluavStatus(
   public override val instanceMetadata: MavMessage.Metadata<AsluavStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(motorRpm)
     outputBuffer.encodeUint8(ledStatus)
     outputBuffer.encodeUint8(satcomStatus)
@@ -60,7 +60,7 @@ public data class AsluavStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(motorRpm)
     outputBuffer.encodeUint8(ledStatus)
     outputBuffer.encodeUint8(satcomStatus)
@@ -73,7 +73,9 @@ public data class AsluavStatus(
 
     private const val CRC: Int = 97
 
-    private const val SIZE: Int = 14
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 14
 
     private val DESERIALIZER: MavDeserializer<AsluavStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

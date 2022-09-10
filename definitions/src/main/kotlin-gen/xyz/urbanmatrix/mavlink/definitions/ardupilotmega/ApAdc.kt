@@ -55,7 +55,7 @@ public data class ApAdc(
   public override val instanceMetadata: MavMessage.Metadata<ApAdc> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(adc1)
     outputBuffer.encodeUint16(adc2)
     outputBuffer.encodeUint16(adc3)
@@ -66,7 +66,7 @@ public data class ApAdc(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(adc1)
     outputBuffer.encodeUint16(adc2)
     outputBuffer.encodeUint16(adc3)
@@ -81,7 +81,9 @@ public data class ApAdc(
 
     private const val CRC: Int = 188
 
-    private const val SIZE: Int = 12
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 12
 
     private val DESERIALIZER: MavDeserializer<ApAdc> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

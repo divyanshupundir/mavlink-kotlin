@@ -75,7 +75,7 @@ public data class SerialUdbExtraF4(
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF4> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(sueRollStabilizationAilerons)
     outputBuffer.encodeUint8(sueRollStabilizationRudder)
     outputBuffer.encodeUint8(suePitchStabilization)
@@ -90,7 +90,7 @@ public data class SerialUdbExtraF4(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(sueRollStabilizationAilerons)
     outputBuffer.encodeUint8(sueRollStabilizationRudder)
     outputBuffer.encodeUint8(suePitchStabilization)
@@ -109,7 +109,9 @@ public data class SerialUdbExtraF4(
 
     private const val CRC: Int = 191
 
-    private const val SIZE: Int = 10
+    private const val SIZE_V1: Int = 10
+
+    private const val SIZE_V2: Int = 10
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF4> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -55,7 +55,7 @@ public data class RawPressure(
   public override val instanceMetadata: MavMessage.Metadata<RawPressure> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt16(pressAbs)
     outputBuffer.encodeInt16(pressDiff1)
@@ -65,7 +65,7 @@ public data class RawPressure(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt16(pressAbs)
     outputBuffer.encodeInt16(pressDiff1)
@@ -79,7 +79,9 @@ public data class RawPressure(
 
     private const val CRC: Int = 67
 
-    private const val SIZE: Int = 16
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
 
     private val DESERIALIZER: MavDeserializer<RawPressure> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

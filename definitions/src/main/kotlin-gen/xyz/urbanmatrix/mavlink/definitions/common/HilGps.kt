@@ -120,7 +120,7 @@ public data class HilGps(
   public override val instanceMetadata: MavMessage.Metadata<HilGps> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -138,7 +138,7 @@ public data class HilGps(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
@@ -162,7 +162,9 @@ public data class HilGps(
 
     private const val CRC: Int = 124
 
-    private const val SIZE: Int = 39
+    private const val SIZE_V1: Int = 36
+
+    private const val SIZE_V2: Int = 39
 
     private val DESERIALIZER: MavDeserializer<HilGps> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -49,7 +49,7 @@ public data class ActuatorOutputStatus(
   public override val instanceMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(active)
     outputBuffer.encodeFloatArray(actuator, 128)
@@ -57,7 +57,7 @@ public data class ActuatorOutputStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(active)
     outputBuffer.encodeFloatArray(actuator, 128)
@@ -69,7 +69,9 @@ public data class ActuatorOutputStatus(
 
     private const val CRC: Int = 251
 
-    private const val SIZE: Int = 140
+    private const val SIZE_V1: Int = 140
+
+    private const val SIZE_V2: Int = 140
 
     private val DESERIALIZER: MavDeserializer<ActuatorOutputStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

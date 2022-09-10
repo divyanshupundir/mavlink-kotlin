@@ -58,7 +58,7 @@ public data class DebugVect(
   public override val instanceMetadata: MavMessage.Metadata<DebugVect> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -68,7 +68,7 @@ public data class DebugVect(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -82,7 +82,9 @@ public data class DebugVect(
 
     private const val CRC: Int = 49
 
-    private const val SIZE: Int = 30
+    private const val SIZE_V1: Int = 30
+
+    private const val SIZE_V2: Int = 30
 
     private val DESERIALIZER: MavDeserializer<DebugVect> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

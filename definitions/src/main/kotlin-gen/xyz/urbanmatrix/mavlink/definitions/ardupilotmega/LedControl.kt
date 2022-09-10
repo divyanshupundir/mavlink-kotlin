@@ -58,7 +58,7 @@ public data class LedControl(
   public override val instanceMetadata: MavMessage.Metadata<LedControl> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(instance)
@@ -69,7 +69,7 @@ public data class LedControl(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(instance)
@@ -84,7 +84,9 @@ public data class LedControl(
 
     private const val CRC: Int = 72
 
-    private const val SIZE: Int = 29
+    private const val SIZE_V1: Int = 29
+
+    private const val SIZE_V2: Int = 29
 
     private val DESERIALIZER: MavDeserializer<LedControl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

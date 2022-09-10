@@ -43,7 +43,7 @@ public data class PowerStatus(
   public override val instanceMetadata: MavMessage.Metadata<PowerStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint16(vservo)
     outputBuffer.encodeEnumValue(flags.value, 2)
@@ -51,7 +51,7 @@ public data class PowerStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint16(vservo)
     outputBuffer.encodeEnumValue(flags.value, 2)
@@ -63,7 +63,9 @@ public data class PowerStatus(
 
     private const val CRC: Int = 203
 
-    private const val SIZE: Int = 6
+    private const val SIZE_V1: Int = 6
+
+    private const val SIZE_V2: Int = 6
 
     private val DESERIALIZER: MavDeserializer<PowerStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

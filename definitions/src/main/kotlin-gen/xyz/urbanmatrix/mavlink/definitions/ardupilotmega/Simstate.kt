@@ -83,7 +83,7 @@ public data class Simstate(
   public override val instanceMetadata: MavMessage.Metadata<Simstate> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -99,7 +99,7 @@ public data class Simstate(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -119,7 +119,9 @@ public data class Simstate(
 
     private const val CRC: Int = 154
 
-    private const val SIZE: Int = 44
+    private const val SIZE_V1: Int = 44
+
+    private const val SIZE_V2: Int = 44
 
     private val DESERIALIZER: MavDeserializer<Simstate> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

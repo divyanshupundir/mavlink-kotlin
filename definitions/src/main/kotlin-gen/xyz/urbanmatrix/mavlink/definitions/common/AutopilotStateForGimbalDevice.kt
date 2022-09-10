@@ -108,7 +108,7 @@ public data class AutopilotStateForGimbalDevice(
       METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeBootUs)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeUint32(qEstimatedDelayUs)
@@ -125,7 +125,7 @@ public data class AutopilotStateForGimbalDevice(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeBootUs)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeUint32(qEstimatedDelayUs)
@@ -146,7 +146,9 @@ public data class AutopilotStateForGimbalDevice(
 
     private const val CRC: Int = 210
 
-    private const val SIZE: Int = 53
+    private const val SIZE_V1: Int = 53
+
+    private const val SIZE_V2: Int = 53
 
     private val DESERIALIZER: MavDeserializer<AutopilotStateForGimbalDevice> = MavDeserializer {
         bytes ->

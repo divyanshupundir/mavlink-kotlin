@@ -42,7 +42,7 @@ public data class LoggingAck(
   public override val instanceMetadata: MavMessage.Metadata<LoggingAck> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -50,7 +50,7 @@ public data class LoggingAck(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(sequence)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -62,7 +62,9 @@ public data class LoggingAck(
 
     private const val CRC: Int = 14
 
-    private const val SIZE: Int = 4
+    private const val SIZE_V1: Int = 4
+
+    private const val SIZE_V2: Int = 4
 
     private val DESERIALIZER: MavDeserializer<LoggingAck> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

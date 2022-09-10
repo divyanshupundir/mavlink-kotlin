@@ -62,7 +62,7 @@ public data class VfrHud(
   public override val instanceMetadata: MavMessage.Metadata<VfrHud> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(airspeed)
     outputBuffer.encodeFloat(groundspeed)
     outputBuffer.encodeFloat(alt)
@@ -73,7 +73,7 @@ public data class VfrHud(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(airspeed)
     outputBuffer.encodeFloat(groundspeed)
     outputBuffer.encodeFloat(alt)
@@ -88,7 +88,9 @@ public data class VfrHud(
 
     private const val CRC: Int = 20
 
-    private const val SIZE: Int = 20
+    private const val SIZE_V1: Int = 20
+
+    private const val SIZE_V2: Int = 20
 
     private val DESERIALIZER: MavDeserializer<VfrHud> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

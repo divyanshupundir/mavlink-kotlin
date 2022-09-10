@@ -77,7 +77,7 @@ public data class ViconPositionEstimate(
   public override val instanceMetadata: MavMessage.Metadata<ViconPositionEstimate> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -89,7 +89,7 @@ public data class ViconPositionEstimate(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -106,7 +106,9 @@ public data class ViconPositionEstimate(
 
     private const val CRC: Int = 56
 
-    private const val SIZE: Int = 116
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 116
 
     private val DESERIALIZER: MavDeserializer<ViconPositionEstimate> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

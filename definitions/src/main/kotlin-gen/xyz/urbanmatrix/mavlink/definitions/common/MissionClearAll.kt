@@ -46,14 +46,14 @@ public data class MissionClearAll(
   public override val instanceMetadata: MavMessage.Metadata<MissionClearAll> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(missionType.value, 1)
@@ -65,7 +65,9 @@ public data class MissionClearAll(
 
     private const val CRC: Int = 232
 
-    private const val SIZE: Int = 3
+    private const val SIZE_V1: Int = 2
+
+    private const val SIZE_V2: Int = 3
 
     private val DESERIALIZER: MavDeserializer<MissionClearAll> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

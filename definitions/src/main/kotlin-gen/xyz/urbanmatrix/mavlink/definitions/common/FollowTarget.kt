@@ -91,7 +91,7 @@ public data class FollowTarget(
   public override val instanceMetadata: MavMessage.Metadata<FollowTarget> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(customState)
     outputBuffer.encodeInt32(lat)
@@ -107,7 +107,7 @@ public data class FollowTarget(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timestamp)
     outputBuffer.encodeUint64(customState)
     outputBuffer.encodeInt32(lat)
@@ -127,7 +127,9 @@ public data class FollowTarget(
 
     private const val CRC: Int = 127
 
-    private const val SIZE: Int = 93
+    private const val SIZE_V1: Int = 93
+
+    private const val SIZE_V2: Int = 93
 
     private val DESERIALIZER: MavDeserializer<FollowTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

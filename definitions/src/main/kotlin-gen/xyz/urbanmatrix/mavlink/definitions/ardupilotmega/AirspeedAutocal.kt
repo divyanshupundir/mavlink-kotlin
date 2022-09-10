@@ -86,7 +86,7 @@ public data class AirspeedAutocal(
   public override val instanceMetadata: MavMessage.Metadata<AirspeedAutocal> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(vx)
     outputBuffer.encodeFloat(vy)
     outputBuffer.encodeFloat(vz)
@@ -103,7 +103,7 @@ public data class AirspeedAutocal(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(vx)
     outputBuffer.encodeFloat(vy)
     outputBuffer.encodeFloat(vz)
@@ -124,7 +124,9 @@ public data class AirspeedAutocal(
 
     private const val CRC: Int = 167
 
-    private const val SIZE: Int = 48
+    private const val SIZE_V1: Int = 48
+
+    private const val SIZE_V2: Int = 48
 
     private val DESERIALIZER: MavDeserializer<AirspeedAutocal> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -32,13 +32,13 @@ public data class UavionixAdsbTransceiverHealthReport(
       METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(rfhealth.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(rfhealth.value, 1)
     return outputBuffer.array().truncateZeros()
   }
@@ -48,7 +48,9 @@ public data class UavionixAdsbTransceiverHealthReport(
 
     private const val CRC: Int = 4
 
-    private const val SIZE: Int = 1
+    private const val SIZE_V1: Int = 1
+
+    private const val SIZE_V2: Int = 1
 
     private val DESERIALIZER: MavDeserializer<UavionixAdsbTransceiverHealthReport> =
         MavDeserializer { bytes ->

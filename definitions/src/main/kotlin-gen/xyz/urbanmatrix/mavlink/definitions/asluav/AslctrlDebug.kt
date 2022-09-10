@@ -86,7 +86,7 @@ public data class AslctrlDebug(
   public override val instanceMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(i321)
     outputBuffer.encodeFloat(f1)
     outputBuffer.encodeFloat(f2)
@@ -102,7 +102,7 @@ public data class AslctrlDebug(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(i321)
     outputBuffer.encodeFloat(f1)
     outputBuffer.encodeFloat(f2)
@@ -122,7 +122,9 @@ public data class AslctrlDebug(
 
     private const val CRC: Int = 251
 
-    private const val SIZE: Int = 38
+    private const val SIZE_V1: Int = 38
+
+    private const val SIZE_V2: Int = 38
 
     private val DESERIALIZER: MavDeserializer<AslctrlDebug> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

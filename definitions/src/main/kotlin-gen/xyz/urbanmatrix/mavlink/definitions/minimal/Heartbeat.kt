@@ -68,7 +68,7 @@ public data class Heartbeat(
   public override val instanceMetadata: MavMessage.Metadata<Heartbeat> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
@@ -79,7 +79,7 @@ public data class Heartbeat(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
@@ -94,7 +94,9 @@ public data class Heartbeat(
 
     private const val CRC: Int = 50
 
-    private const val SIZE: Int = 9
+    private const val SIZE_V1: Int = 9
+
+    private const val SIZE_V2: Int = 9
 
     private val DESERIALIZER: MavDeserializer<Heartbeat> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

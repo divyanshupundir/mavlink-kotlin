@@ -53,7 +53,7 @@ public data class GpsGlobalOrigin(
   public override val instanceMetadata: MavMessage.Metadata<GpsGlobalOrigin> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
@@ -61,7 +61,7 @@ public data class GpsGlobalOrigin(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
@@ -74,7 +74,9 @@ public data class GpsGlobalOrigin(
 
     private const val CRC: Int = 39
 
-    private const val SIZE: Int = 20
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 20
 
     private val DESERIALIZER: MavDeserializer<GpsGlobalOrigin> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

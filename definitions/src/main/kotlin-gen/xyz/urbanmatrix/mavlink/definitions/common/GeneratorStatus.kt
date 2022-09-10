@@ -97,7 +97,7 @@ public data class GeneratorStatus(
   public override val instanceMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 8)
     outputBuffer.encodeFloat(batteryCurrent)
     outputBuffer.encodeFloat(loadCurrent)
@@ -113,7 +113,7 @@ public data class GeneratorStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 8)
     outputBuffer.encodeFloat(batteryCurrent)
     outputBuffer.encodeFloat(loadCurrent)
@@ -133,7 +133,9 @@ public data class GeneratorStatus(
 
     private const val CRC: Int = 117
 
-    private const val SIZE: Int = 42
+    private const val SIZE_V1: Int = 42
+
+    private const val SIZE_V2: Int = 42
 
     private val DESERIALIZER: MavDeserializer<GeneratorStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

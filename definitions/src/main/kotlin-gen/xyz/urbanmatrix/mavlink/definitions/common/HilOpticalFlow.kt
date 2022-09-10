@@ -101,7 +101,7 @@ public data class HilOpticalFlow(
   public override val instanceMetadata: MavMessage.Metadata<HilOpticalFlow> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(integrationTimeUs)
     outputBuffer.encodeFloat(integratedX)
@@ -118,7 +118,7 @@ public data class HilOpticalFlow(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint32(integrationTimeUs)
     outputBuffer.encodeFloat(integratedX)
@@ -139,7 +139,9 @@ public data class HilOpticalFlow(
 
     private const val CRC: Int = 237
 
-    private const val SIZE: Int = 44
+    private const val SIZE_V1: Int = 44
+
+    private const val SIZE_V2: Int = 44
 
     private val DESERIALIZER: MavDeserializer<HilOpticalFlow> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

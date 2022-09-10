@@ -39,14 +39,14 @@ public data class OsdParamConfigReply(
   public override val instanceMetadata: MavMessage.Metadata<OsdParamConfigReply> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeEnumValue(result.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(requestId)
     outputBuffer.encodeEnumValue(result.value, 1)
     return outputBuffer.array().truncateZeros()
@@ -57,7 +57,9 @@ public data class OsdParamConfigReply(
 
     private const val CRC: Int = 79
 
-    private const val SIZE: Int = 5
+    private const val SIZE_V1: Int = 5
+
+    private const val SIZE_V2: Int = 5
 
     private val DESERIALIZER: MavDeserializer<OsdParamConfigReply> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

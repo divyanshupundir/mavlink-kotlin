@@ -104,7 +104,7 @@ public data class ObstacleDistance(
   public override val instanceMetadata: MavMessage.Metadata<ObstacleDistance> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16Array(distances, 144)
     outputBuffer.encodeUint16(minDistance)
@@ -115,7 +115,7 @@ public data class ObstacleDistance(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16Array(distances, 144)
     outputBuffer.encodeUint16(minDistance)
@@ -133,7 +133,9 @@ public data class ObstacleDistance(
 
     private const val CRC: Int = 23
 
-    private const val SIZE: Int = 167
+    private const val SIZE_V1: Int = 158
+
+    private const val SIZE_V2: Int = 167
 
     private val DESERIALIZER: MavDeserializer<ObstacleDistance> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

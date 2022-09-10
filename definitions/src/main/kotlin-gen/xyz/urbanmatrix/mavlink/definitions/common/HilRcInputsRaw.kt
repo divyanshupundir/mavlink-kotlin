@@ -104,7 +104,7 @@ public data class HilRcInputsRaw(
   public override val instanceMetadata: MavMessage.Metadata<HilRcInputsRaw> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -123,7 +123,7 @@ public data class HilRcInputsRaw(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -146,7 +146,9 @@ public data class HilRcInputsRaw(
 
     private const val CRC: Int = 54
 
-    private const val SIZE: Int = 33
+    private const val SIZE_V1: Int = 33
+
+    private const val SIZE_V2: Int = 33
 
     private val DESERIALIZER: MavDeserializer<HilRcInputsRaw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

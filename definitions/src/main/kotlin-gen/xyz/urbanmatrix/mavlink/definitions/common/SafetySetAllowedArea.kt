@@ -79,7 +79,7 @@ public data class SafetySetAllowedArea(
   public override val instanceMetadata: MavMessage.Metadata<SafetySetAllowedArea> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(p1x)
     outputBuffer.encodeFloat(p1y)
     outputBuffer.encodeFloat(p1z)
@@ -93,7 +93,7 @@ public data class SafetySetAllowedArea(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(p1x)
     outputBuffer.encodeFloat(p1y)
     outputBuffer.encodeFloat(p1z)
@@ -111,7 +111,9 @@ public data class SafetySetAllowedArea(
 
     private const val CRC: Int = 15
 
-    private const val SIZE: Int = 27
+    private const val SIZE_V1: Int = 27
+
+    private const val SIZE_V2: Int = 27
 
     private val DESERIALIZER: MavDeserializer<SafetySetAllowedArea> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

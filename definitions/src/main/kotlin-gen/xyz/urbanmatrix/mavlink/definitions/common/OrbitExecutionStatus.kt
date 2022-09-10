@@ -71,7 +71,7 @@ public data class OrbitExecutionStatus(
   public override val instanceMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(radius)
     outputBuffer.encodeInt32(x)
@@ -82,7 +82,7 @@ public data class OrbitExecutionStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloat(radius)
     outputBuffer.encodeInt32(x)
@@ -97,7 +97,9 @@ public data class OrbitExecutionStatus(
 
     private const val CRC: Int = 11
 
-    private const val SIZE: Int = 25
+    private const val SIZE_V1: Int = 25
+
+    private const val SIZE_V2: Int = 25
 
     private val DESERIALIZER: MavDeserializer<OrbitExecutionStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -51,7 +51,7 @@ public data class ParamExtAck(
   public override val instanceMetadata: MavMessage.Metadata<ParamExtAck> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeString(paramValue, 128)
     outputBuffer.encodeEnumValue(paramType.value, 1)
@@ -60,7 +60,7 @@ public data class ParamExtAck(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeString(paramValue, 128)
     outputBuffer.encodeEnumValue(paramType.value, 1)
@@ -73,7 +73,9 @@ public data class ParamExtAck(
 
     private const val CRC: Int = 132
 
-    private const val SIZE: Int = 146
+    private const val SIZE_V1: Int = 146
+
+    private const val SIZE_V2: Int = 146
 
     private val DESERIALIZER: MavDeserializer<ParamExtAck> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

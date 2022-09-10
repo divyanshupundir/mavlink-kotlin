@@ -52,7 +52,7 @@ public data class GimbalTorqueCmdReport(
   public override val instanceMetadata: MavMessage.Metadata<GimbalTorqueCmdReport> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(rlTorqueCmd)
     outputBuffer.encodeInt16(elTorqueCmd)
     outputBuffer.encodeInt16(azTorqueCmd)
@@ -62,7 +62,7 @@ public data class GimbalTorqueCmdReport(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(rlTorqueCmd)
     outputBuffer.encodeInt16(elTorqueCmd)
     outputBuffer.encodeInt16(azTorqueCmd)
@@ -76,7 +76,9 @@ public data class GimbalTorqueCmdReport(
 
     private const val CRC: Int = 69
 
-    private const val SIZE: Int = 8
+    private const val SIZE_V1: Int = 8
+
+    private const val SIZE_V2: Int = 8
 
     private val DESERIALIZER: MavDeserializer<GimbalTorqueCmdReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

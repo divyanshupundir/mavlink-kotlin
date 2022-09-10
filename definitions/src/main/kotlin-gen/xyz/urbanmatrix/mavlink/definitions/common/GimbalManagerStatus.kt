@@ -69,7 +69,7 @@ public data class GimbalManagerStatus(
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeUint8(gimbalDeviceId)
@@ -81,7 +81,7 @@ public data class GimbalManagerStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeUint8(gimbalDeviceId)
@@ -97,7 +97,9 @@ public data class GimbalManagerStatus(
 
     private const val CRC: Int = 48
 
-    private const val SIZE: Int = 13
+    private const val SIZE_V1: Int = 13
+
+    private const val SIZE_V2: Int = 13
 
     private val DESERIALIZER: MavDeserializer<GimbalManagerStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

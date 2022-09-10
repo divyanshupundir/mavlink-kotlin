@@ -89,7 +89,7 @@ public data class RcChannelsRaw(
   public override val instanceMetadata: MavMessage.Metadata<RcChannelsRaw> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -105,7 +105,7 @@ public data class RcChannelsRaw(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeUint16(chan1Raw)
     outputBuffer.encodeUint16(chan2Raw)
@@ -125,7 +125,9 @@ public data class RcChannelsRaw(
 
     private const val CRC: Int = 244
 
-    private const val SIZE: Int = 22
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 22
 
     private val DESERIALIZER: MavDeserializer<RcChannelsRaw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

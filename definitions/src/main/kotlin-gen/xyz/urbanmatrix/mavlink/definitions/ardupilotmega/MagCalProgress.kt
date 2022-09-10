@@ -80,7 +80,7 @@ public data class MagCalProgress(
   public override val instanceMetadata: MavMessage.Metadata<MagCalProgress> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(directionX)
     outputBuffer.encodeFloat(directionY)
     outputBuffer.encodeFloat(directionZ)
@@ -94,7 +94,7 @@ public data class MagCalProgress(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(directionX)
     outputBuffer.encodeFloat(directionY)
     outputBuffer.encodeFloat(directionZ)
@@ -112,7 +112,9 @@ public data class MagCalProgress(
 
     private const val CRC: Int = 92
 
-    private const val SIZE: Int = 27
+    private const val SIZE_V1: Int = 27
+
+    private const val SIZE_V2: Int = 27
 
     private val DESERIALIZER: MavDeserializer<MagCalProgress> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

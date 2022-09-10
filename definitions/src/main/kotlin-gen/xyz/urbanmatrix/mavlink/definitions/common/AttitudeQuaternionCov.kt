@@ -66,7 +66,7 @@ public data class AttitudeQuaternionCov(
   public override val instanceMetadata: MavMessage.Metadata<AttitudeQuaternionCov> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(rollspeed)
@@ -77,7 +77,7 @@ public data class AttitudeQuaternionCov(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(rollspeed)
@@ -92,7 +92,9 @@ public data class AttitudeQuaternionCov(
 
     private const val CRC: Int = 167
 
-    private const val SIZE: Int = 72
+    private const val SIZE_V1: Int = 72
+
+    private const val SIZE_V2: Int = 72
 
     private val DESERIALIZER: MavDeserializer<AttitudeQuaternionCov> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

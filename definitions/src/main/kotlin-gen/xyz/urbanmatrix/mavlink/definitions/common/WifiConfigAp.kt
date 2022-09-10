@@ -57,14 +57,14 @@ public data class WifiConfigAp(
   public override val instanceMetadata: MavMessage.Metadata<WifiConfigAp> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeString(ssid, 32)
     outputBuffer.encodeString(password, 64)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeString(ssid, 32)
     outputBuffer.encodeString(password, 64)
     outputBuffer.encodeEnumValue(mode.value, 1)
@@ -77,7 +77,9 @@ public data class WifiConfigAp(
 
     private const val CRC: Int = 19
 
-    private const val SIZE: Int = 98
+    private const val SIZE_V1: Int = 96
+
+    private const val SIZE_V2: Int = 98
 
     private val DESERIALIZER: MavDeserializer<WifiConfigAp> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

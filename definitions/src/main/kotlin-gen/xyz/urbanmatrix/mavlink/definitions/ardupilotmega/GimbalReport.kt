@@ -88,7 +88,7 @@ public data class GimbalReport(
   public override val instanceMetadata: MavMessage.Metadata<GimbalReport> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(deltaTime)
     outputBuffer.encodeFloat(deltaAngleX)
     outputBuffer.encodeFloat(deltaAngleY)
@@ -105,7 +105,7 @@ public data class GimbalReport(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(deltaTime)
     outputBuffer.encodeFloat(deltaAngleX)
     outputBuffer.encodeFloat(deltaAngleY)
@@ -126,7 +126,9 @@ public data class GimbalReport(
 
     private const val CRC: Int = 134
 
-    private const val SIZE: Int = 42
+    private const val SIZE_V1: Int = 42
+
+    private const val SIZE_V2: Int = 42
 
     private val DESERIALIZER: MavDeserializer<GimbalReport> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

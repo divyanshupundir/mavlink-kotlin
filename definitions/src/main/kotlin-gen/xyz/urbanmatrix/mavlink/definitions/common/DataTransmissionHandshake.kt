@@ -70,7 +70,7 @@ public data class DataTransmissionHandshake(
   public override val instanceMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(size)
     outputBuffer.encodeUint16(width)
     outputBuffer.encodeUint16(height)
@@ -82,7 +82,7 @@ public data class DataTransmissionHandshake(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(size)
     outputBuffer.encodeUint16(width)
     outputBuffer.encodeUint16(height)
@@ -98,7 +98,9 @@ public data class DataTransmissionHandshake(
 
     private const val CRC: Int = 29
 
-    private const val SIZE: Int = 13
+    private const val SIZE_V1: Int = 13
+
+    private const val SIZE_V2: Int = 13
 
     private val DESERIALIZER: MavDeserializer<DataTransmissionHandshake> = MavDeserializer {
         bytes ->

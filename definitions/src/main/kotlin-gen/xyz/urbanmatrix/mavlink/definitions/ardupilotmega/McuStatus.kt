@@ -55,7 +55,7 @@ public data class McuStatus(
   public override val instanceMetadata: MavMessage.Metadata<McuStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(mcuTemperature)
     outputBuffer.encodeUint16(mcuVoltage)
     outputBuffer.encodeUint16(mcuVoltageMin)
@@ -65,7 +65,7 @@ public data class McuStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(mcuTemperature)
     outputBuffer.encodeUint16(mcuVoltage)
     outputBuffer.encodeUint16(mcuVoltageMin)
@@ -79,7 +79,9 @@ public data class McuStatus(
 
     private const val CRC: Int = 142
 
-    private const val SIZE: Int = 9
+    private const val SIZE_V1: Int = 9
+
+    private const val SIZE_V2: Int = 9
 
     private val DESERIALIZER: MavDeserializer<McuStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

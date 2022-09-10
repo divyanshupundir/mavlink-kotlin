@@ -52,7 +52,7 @@ public data class ActuatorControlTarget(
   public override val instanceMetadata: MavMessage.Metadata<ActuatorControlTarget> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(controls, 32)
     outputBuffer.encodeUint8(groupMlx)
@@ -60,7 +60,7 @@ public data class ActuatorControlTarget(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeFloatArray(controls, 32)
     outputBuffer.encodeUint8(groupMlx)
@@ -72,7 +72,9 @@ public data class ActuatorControlTarget(
 
     private const val CRC: Int = 181
 
-    private const val SIZE: Int = 41
+    private const val SIZE_V1: Int = 41
+
+    private const val SIZE_V2: Int = 41
 
     private val DESERIALIZER: MavDeserializer<ActuatorControlTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -156,13 +156,13 @@ public data class SetHomePosition(
   public override val instanceMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeInt32(latitude)
@@ -183,7 +183,9 @@ public data class SetHomePosition(
 
     private const val CRC: Int = 108
 
-    private const val SIZE: Int = 61
+    private const val SIZE_V1: Int = 8
+
+    private const val SIZE_V2: Int = 61
 
     private val DESERIALIZER: MavDeserializer<SetHomePosition> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -46,14 +46,14 @@ public data class Meminfo(
   public override val instanceMetadata: MavMessage.Metadata<Meminfo> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(brkval)
     outputBuffer.encodeUint16(freemem)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(brkval)
     outputBuffer.encodeUint16(freemem)
     outputBuffer.encodeUint32(freemem32)
@@ -65,7 +65,9 @@ public data class Meminfo(
 
     private const val CRC: Int = 208
 
-    private const val SIZE: Int = 8
+    private const val SIZE_V1: Int = 4
+
+    private const val SIZE_V2: Int = 8
 
     private val DESERIALIZER: MavDeserializer<Meminfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

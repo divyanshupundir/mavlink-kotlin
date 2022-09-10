@@ -51,7 +51,7 @@ public data class PlayTuneV2(
   public override val instanceMetadata: MavMessage.Metadata<PlayTuneV2> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(format.value, 4)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -60,7 +60,7 @@ public data class PlayTuneV2(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(format.value, 4)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -73,7 +73,9 @@ public data class PlayTuneV2(
 
     private const val CRC: Int = 110
 
-    private const val SIZE: Int = 254
+    private const val SIZE_V1: Int = 254
+
+    private const val SIZE_V2: Int = 254
 
     private val DESERIALIZER: MavDeserializer<PlayTuneV2> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

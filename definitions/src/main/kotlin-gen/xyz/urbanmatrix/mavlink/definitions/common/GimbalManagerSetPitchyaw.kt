@@ -76,7 +76,7 @@ public data class GimbalManagerSetPitchyaw(
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerSetPitchyaw> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -89,7 +89,7 @@ public data class GimbalManagerSetPitchyaw(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(flags.value, 4)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -106,7 +106,9 @@ public data class GimbalManagerSetPitchyaw(
 
     private const val CRC: Int = 1
 
-    private const val SIZE: Int = 23
+    private const val SIZE_V1: Int = 23
+
+    private const val SIZE_V2: Int = 23
 
     private val DESERIALIZER: MavDeserializer<GimbalManagerSetPitchyaw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

@@ -108,7 +108,7 @@ public data class CameraImageCaptured(
   public override val instanceMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUtc)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
@@ -124,7 +124,7 @@ public data class CameraImageCaptured(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint64(timeUtc)
     outputBuffer.encodeUint32(timeBootMs)
     outputBuffer.encodeInt32(lat)
@@ -144,7 +144,9 @@ public data class CameraImageCaptured(
 
     private const val CRC: Int = 133
 
-    private const val SIZE: Int = 255
+    private const val SIZE_V1: Int = 255
+
+    private const val SIZE_V2: Int = 255
 
     private val DESERIALIZER: MavDeserializer<CameraImageCaptured> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

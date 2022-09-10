@@ -51,7 +51,7 @@ public data class RemoteLogBlockStatus(
   public override val instanceMetadata: MavMessage.Metadata<RemoteLogBlockStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(seqno)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -60,7 +60,7 @@ public data class RemoteLogBlockStatus(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(seqno)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
@@ -73,7 +73,9 @@ public data class RemoteLogBlockStatus(
 
     private const val CRC: Int = 186
 
-    private const val SIZE: Int = 7
+    private const val SIZE_V1: Int = 7
+
+    private const val SIZE_V2: Int = 7
 
     private val DESERIALIZER: MavDeserializer<RemoteLogBlockStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)

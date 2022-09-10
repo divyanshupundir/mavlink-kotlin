@@ -94,7 +94,7 @@ public data class AdapTuning(
   public override val instanceMetadata: MavMessage.Metadata<AdapTuning> = METADATA
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(error)
@@ -112,7 +112,7 @@ public data class AdapTuning(
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE).order(ByteOrder.LITTLE_ENDIAN)
+    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(desired)
     outputBuffer.encodeFloat(achieved)
     outputBuffer.encodeFloat(error)
@@ -134,7 +134,9 @@ public data class AdapTuning(
 
     private const val CRC: Int = 46
 
-    private const val SIZE: Int = 49
+    private const val SIZE_V1: Int = 49
+
+    private const val SIZE_V2: Int = 49
 
     private val DESERIALIZER: MavDeserializer<AdapTuning> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
