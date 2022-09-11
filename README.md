@@ -153,6 +153,15 @@ connection.connect()
     )
 ```
 
+The `asRx2()` extension function also takes a callback to let users handle the case when there's an error while reading
+form the stream. Users can use this to reconnect after some delay. The callback is called in the `mavlink-read-thread`.
+
+```kotlin
+val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asRx2 {
+    // Reconnect after some delay
+}
+```
+
 ### Reading
 The connection starts reading the MAVLink frames on a background thread. They are available via the  `mavFrame`
 `Flowable`.
