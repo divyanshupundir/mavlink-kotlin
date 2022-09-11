@@ -109,7 +109,9 @@ task("closeAndReleaseLibrary") {
 }
 
 task("createGitRelease") {
-    val releaseName = "release/$version"
-    ProcessBuilder("git", "tag", "-a", releaseName, "-m", "\"Release: $releaseName\"").start().waitFor()
-    ProcessBuilder("git", "push", "origin", releaseName).start().waitFor()
+    doLast {
+        val releaseName = "release/${Specs.Plugin.releaseVersion}"
+        ProcessBuilder("git", "tag", "-a", releaseName, "-m", "\"Release: $releaseName\"").start().waitFor()
+        ProcessBuilder("git", "push", "origin", releaseName).start().waitFor()
+    }
 }
