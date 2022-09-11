@@ -107,3 +107,9 @@ task("closeAndReleaseLibrary") {
         ":adapters:rxjava3:closeAndReleaseRepository"
     )
 }
+
+task("createGitRelease") {
+    val releaseName = "release/$version"
+    ProcessBuilder("git", "tag", "-a", releaseName, "-m", "\"Release: $releaseName\"").start().waitFor()
+    ProcessBuilder("git", "push", "origin", releaseName).start().waitFor()
+}
