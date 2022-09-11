@@ -16,7 +16,7 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class SimpleMavConnection(
+class StreamMavConnection(
     inputStream: InputStream,
     private val outputStream: OutputStream,
     private val connectionHandle: Closeable,

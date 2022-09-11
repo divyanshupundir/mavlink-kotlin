@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 
 internal class Rx3MavConnectionImpl(
     private val connection: MavConnection,
-    private val onStreamError: () -> Unit
+    private val onReadEnded: () -> Unit
 ) : Rx3MavConnection {
 
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
@@ -43,7 +43,7 @@ internal class Rx3MavConnectionImpl(
             }
         }
 
-        onStreamError.invoke()
+        onReadEnded.invoke()
     }
 
     override fun close(): Completable = Completable.fromAction {
