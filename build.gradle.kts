@@ -108,7 +108,7 @@ task("closeAndReleaseLibrary") {
     )
 }
 
-task("createGitRelease") {
+task("createGitTag") {
     doLast {
         val releaseName = "release/${Specs.Plugin.releaseVersion}"
         ProcessBuilder("git", "tag", "-a", releaseName, "-m", "\"Release: $releaseName\"").start().waitFor()
