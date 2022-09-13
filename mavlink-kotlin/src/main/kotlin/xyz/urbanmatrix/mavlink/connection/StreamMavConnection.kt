@@ -19,7 +19,7 @@ import kotlin.concurrent.withLock
 class StreamMavConnection(
     inputStream: InputStream,
     private val outputStream: OutputStream,
-    private val connectionHandle: Closeable,
+    private val streamHandle: Closeable,
     private val dialect: MavDialect,
 ) : MavConnection {
 
@@ -35,7 +35,7 @@ class StreamMavConnection(
 
     @Throws(IOException::class)
     override fun close() {
-        connectionHandle.close()
+        streamHandle.close()
     }
 
     @Throws(IOException::class)

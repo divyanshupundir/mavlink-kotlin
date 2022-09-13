@@ -18,3 +18,9 @@ pipeline.
 ```kotlin
 implementation("xyz.urbanmatrix.mavlink:mavlink-kotlin:$version")
 ```
+
+The core interface of the `mavlink-kotlin` module is `MavConnection`. It has the declarations of the basic read and
+write methods. This interface is later used in the `adapters` modules to provide adapter specific API.
+
+`StreamMavConnection` is an implementation of `MavConnection` that can be used to read MAVLink messages form
+`InputStreams` and write to `OutputStreams`.
