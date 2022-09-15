@@ -20,7 +20,15 @@ fun ByteBuffer.encodeUint32(value: Long): Unit = encodeIntegerValue(value, Int.S
 fun ByteBuffer.encodeInt64(value: Long): Unit = encodeIntegerValue(value, Long.SIZE_BYTES)
 
 fun ByteBuffer.encodeUint64(value: BigInteger) {
-    val data = value.toByteArray()
+    val valueBytes = value.toByteArray()
+    val data = ByteArray(Long.SIZE_BYTES)
+
+    if (valueBytes.size >= Long.SIZE_BYTES) {
+        valueBytes.copyInto(data, endIndex = Long.SIZE_BYTES)
+    } else {
+        valueBytes.copyInto(data, destinationOffset = Long.SIZE_BYTES - valueBytes.size)
+    }
+
     // Invert to little-endian, as BigInteger gives big-endian bytes
     if (this.order() == ByteOrder.LITTLE_ENDIAN) data.reverse()
 
