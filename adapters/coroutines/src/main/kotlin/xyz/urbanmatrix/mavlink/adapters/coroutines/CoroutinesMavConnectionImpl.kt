@@ -37,24 +37,41 @@ internal class CoroutinesMavConnectionImpl(
         while (coroutineContext.isActive && isOpen) {
             try {
                 connection.next()
-            }catch (e: IOException) {
+            } catch (e: IOException) {
                 kotlin.runCatching { connection.close() }
                 isOpen = false
+                break
             }
         }
+        onReadEnded.invoke()
     }
 
     override suspend fun close() {
-   //     coroutineContext.
-        TODO("Not yet implemented")
+        connection.close()
+        isOpen = false
     }
 
-    override suspend fun <T : MavMessage<T>> sendV1(systemId: Int, componentId: Int, payload: T) {
-        TODO("Not yet implemented")
+    override suspend fun <T : MavMessage<T>> sendV1(
+        systemId: Int,
+        componentId: Int,
+        payload: T
+    ) {
+        connection.sendV1(
+            systemId,
+            componentId,
+            payload
+        )
     }
 
-    override suspend fun <T : MavMessage<T>> sendUnsignedV2(systemId: Int, componentId: Int, payload: T) {
-        TODO("Not yet implemented")
+    override suspend fun <T : MavMessage<T>> sendUnsignedV2(
+        systemId: Int,
+        componentId: Int, payload: T
+    ) {
+        connection.sendUnsignedV2(
+            systemId,
+            componentId,
+            payload
+        )
     }
 
     override suspend fun <T : MavMessage<T>> sendSignedV2(
@@ -65,8 +82,13 @@ internal class CoroutinesMavConnectionImpl(
         timestamp: Long,
         secretKey: ByteArray
     ) {
-        TODO("Not yet implemented")
+        connection.sendSignedV2(
+            systemId,
+            componentId,
+            payload,
+            linkId,
+            timestamp,
+            secretKey
+        )
     }
-
-
 }
