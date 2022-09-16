@@ -20,3 +20,4 @@ include(":mavlink-kotlin")
 
 include(":adapters:rxjava2")
 include(":adapters:rxjava3")
+include("adapters:coroutines")

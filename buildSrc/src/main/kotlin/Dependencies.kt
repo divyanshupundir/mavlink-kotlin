@@ -5,6 +5,7 @@ object Deps {
     const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
     const val rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
     const val rxJava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
 
     const val mavlinkKotlinApi = "xyz.urbanmatrix.mavlink:api:${Specs.Plugin.releaseVersion}"
     const val mavlinkKotlinSerialization = "xyz.urbanmatrix.mavlink:serialization:${Specs.Plugin.releaseVersion}"
