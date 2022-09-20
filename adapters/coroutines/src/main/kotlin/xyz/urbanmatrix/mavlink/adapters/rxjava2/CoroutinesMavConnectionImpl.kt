@@ -1,13 +1,16 @@
 package xyz.urbanmatrix.mavlink.adapters.rxjava2
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 import java.io.IOException
 import java.util.concurrent.Executors
-import kotlin.coroutines.coroutineContext
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
@@ -24,8 +27,8 @@ internal class CoroutinesMavConnectionImpl(
     private var isOpen = false
         @Synchronized set
 
-    override val mavFrame: Flow<MavFrame<out MavMessage<*>>>
-        get() = TODO("Not yet implemented")
+    private val _mavFrame  = MutableSharedFlow<MavFrame<out MavMessage<*>>>()
+    override val mavFrame: Flow<MavFrame<out MavMessage<*>>> = _mavFrame
 
     override suspend fun connect() {
         connection.connect()
@@ -33,10 +36,10 @@ internal class CoroutinesMavConnectionImpl(
         mavlinkReadScope.launch { processMavFrames() }
     }
 
-    private suspend fun processMavFrames() {
-        while (coroutineContext.isActive && isOpen) {
+    private fun processMavFrames() {
+        while (!Thread.currentThread().isInterrupted && isOpen) {
             try {
-                connection.next()
+                _mavFrame.tryEmit(connection.next())
             } catch (e: IOException) {
                 kotlin.runCatching { connection.close() }
                 isOpen = false
