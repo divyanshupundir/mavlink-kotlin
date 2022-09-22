@@ -14,6 +14,7 @@ import java.util.concurrent.Executors
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
+    private val externalBufferCapacity: Int,
     private val onReadEnded: () -> Unit
 ) : CoroutinesMavConnection {
 
@@ -27,7 +28,9 @@ internal class CoroutinesMavConnectionImpl(
     private var isOpen = false
         @Synchronized set
 
-    private val _mavFrame  = MutableSharedFlow<MavFrame<out MavMessage<*>>>()
+    private val _mavFrame  = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
+        externalBufferCapacity
+    )
     override val mavFrame: Flow<MavFrame<out MavMessage<*>>> = _mavFrame
 
     override suspend fun connect() {

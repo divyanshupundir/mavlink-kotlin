@@ -6,5 +6,6 @@ fun MavConnection.asCoroutines(
     onReadEnded: () -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     this,
+    128,
     onReadEnded
 )
