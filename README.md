@@ -35,7 +35,7 @@ mavlink-kotlin heavily uses code generation to avoid reflection and provide comp
 
 In fact, we've even tested it against other available MAVLink JVM implementations, and this library is **20,000x to
 45,000x** faster in terms of serialization and deserialization speeds and provides a much better memory footprint. Don't
-believe us? try out the comparison tests in the `mavlink-kotlin` module.
+believe us? Try out the comparison tests in the `mavlink-kotlin` module.
 
 ### Interface-based API and modular design
 Don't think the in-built implementation is good enough? No issues. Write your own code generators for the messages,
