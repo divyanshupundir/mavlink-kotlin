@@ -6,7 +6,7 @@ plugins {
     id("com.gradle.plugin-publish") version "1.0.0-rc-1"
 }
 
-version = Specs.Plugin.developmentVersion
+version = Config.Plugin.developmentVersion
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
@@ -28,7 +28,7 @@ pluginBundle {
 gradlePlugin {
     plugins {
         create("mavlinkGenerator") {
-            id = "${Specs.group}.generator"
+            id = "${Config.group}.generator"
             displayName = "MAVLink Kotlin Generator"
             description = "Plugin for generating Kotlin implementation of MAVLink dialects."
             implementationClass = "xyz.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorPlugin"
@@ -41,10 +41,10 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":serialization"))
 
-    implementation(Deps.jacksonDataFormatXml)
-    implementation(Deps.jacksonModuleKotlin)
-    implementation(Deps.kotlinPoet)
+    implementation(Deps.Jackson.dataFormatXml)
+    implementation(Deps.Jackson.moduleKotlin)
+    implementation(Deps.Square.kotlinPoet)
 
-    testImplementation(TestDeps.jupiterApi)
-    testRuntimeOnly(TestDeps.jupiterEngine)
+    testImplementation(TestDeps.Jupiter.api)
+    testRuntimeOnly(TestDeps.Jupiter.engine)
 }

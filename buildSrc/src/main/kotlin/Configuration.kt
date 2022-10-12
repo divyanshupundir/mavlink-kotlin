@@ -1,4 +1,4 @@
-object Specs {
+object Config {
     const val group = "xyz.urbanmatrix.mavlink"
 
     object Plugin {

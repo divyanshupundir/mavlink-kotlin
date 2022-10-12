@@ -2,12 +2,12 @@ import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
     kotlin("jvm")
-    id("${Specs.group}.generator") version Specs.Plugin.releaseVersion
+    id("${Config.group}.generator") version Config.Plugin.releaseVersion
     idea
     id("com.vanniktech.maven.publish.base")
 }
 
-version = Specs.Lib.developmentVersion
+version = Config.Lib.developmentVersion
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
@@ -40,8 +40,8 @@ repositories {
 }
 
 dependencies {
-    implementation(Deps.mavlinkKotlinApi)
-    implementation(Deps.mavlinkKotlinSerialization)
+    implementation(Deps.MavlinkKotlin.api)
+    implementation(Deps.MavlinkKotlin.serialization)
 }
 
 @Suppress("UnstableApiUsage")

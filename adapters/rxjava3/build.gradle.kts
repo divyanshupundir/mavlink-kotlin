@@ -5,7 +5,7 @@ plugins {
     id("com.vanniktech.maven.publish.base")
 }
 
-version = Specs.Lib.developmentVersion
+version = Config.Lib.developmentVersion
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
@@ -13,11 +13,11 @@ tasks.getByName<Test>("test") {
 
 dependencies {
     implementation(project(":mavlink-kotlin"))
-    api(Deps.rxJava3)
+    api(Deps.ReactiveX.rxJava3)
 
     testImplementation(project(":definitions"))
-    testImplementation(TestDeps.jupiterApi)
-    testRuntimeOnly(TestDeps.jupiterEngine)
+    testImplementation(TestDeps.Jupiter.api)
+    testRuntimeOnly(TestDeps.Jupiter.engine)
 }
 
 @Suppress("UnstableApiUsage")

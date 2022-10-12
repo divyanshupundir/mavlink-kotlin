@@ -18,7 +18,7 @@ plugins {
 apply(plugin = "com.vanniktech.maven.publish.base")
 
 allprojects {
-    group = Specs.group
+    group = Config.group
 
     repositories {
         mavenCentral()
@@ -110,7 +110,7 @@ task("closeAndReleaseLibrary") {
 
 task("createGitTag") {
     doLast {
-        val tagName = "v${Specs.Plugin.releaseVersion}"
+        val tagName = "v${Config.Plugin.releaseVersion}"
         ProcessBuilder("git", "tag", "-a", tagName, "-m", "\"$tagName\"").start().waitFor()
         ProcessBuilder("git", "push", "origin", tagName).start().waitFor()
     }
