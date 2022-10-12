@@ -20,10 +20,6 @@ apply(plugin = "com.vanniktech.maven.publish.base")
 allprojects {
     group = Config.group
 
-    repositories {
-        mavenCentral()
-    }
-
     @Suppress("UnstableApiUsage")
     plugins.withId("com.vanniktech.maven.publish.base") {
         configure<MavenPublishBaseExtension> {

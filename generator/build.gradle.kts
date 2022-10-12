@@ -3,7 +3,7 @@ plugins {
     `java-gradle-plugin`
     idea
     id("maven-publish")
-    id("com.gradle.plugin-publish") version "1.0.0-rc-1"
+    id("com.gradle.plugin-publish") version "1.0.0"
 }
 
 version = Config.Plugin.developmentVersion

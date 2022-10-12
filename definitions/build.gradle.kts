@@ -35,10 +35,6 @@ sourceSets.getByName("main") {
     java.srcDir(genSrcDir)
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(Deps.MavlinkKotlin.api)
     implementation(Deps.MavlinkKotlin.serialization)
