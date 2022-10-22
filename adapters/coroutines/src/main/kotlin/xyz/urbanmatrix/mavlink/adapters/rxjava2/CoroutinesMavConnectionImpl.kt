@@ -1,42 +1,42 @@
-package xyz.urbanmatrix.mavlink.adapters.coroutines
+package xyz.urbanmatrix.mavlink.adapters.rxjava2
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 import java.io.IOException
 import java.util.concurrent.Executors
-import kotlin.coroutines.coroutineContext
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
+    extraBufferCapacity: Int,
     private val onReadEnded: () -> Unit
 ) : CoroutinesMavConnection {
 
-    private val mavlinkReadDispatcher = Executors.newSingleThreadExecutor {
-        Thread(it, "mavlink-read-thread")
-    }.asCoroutineDispatcher()
-
-    private val mavlinkReadScope = CoroutineScope(mavlinkReadDispatcher + SupervisorJob())
+    private val mavlinkReadThread = Executors.newSingleThreadExecutor { Thread(it, "mavlink-read-thread") }
 
     @Volatile
     private var isOpen = false
         @Synchronized set
 
-    override val mavFrame: Flow<MavFrame<out MavMessage<*>>>
-        get() = TODO("Not yet implemented")
+    private val _mavFrame  = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
+        extraBufferCapacity = extraBufferCapacity,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    override val mavFrame: Flow<MavFrame<out MavMessage<*>>> = _mavFrame
 
     override suspend fun connect() {
         connection.connect()
         isOpen = true
-        mavlinkReadScope.launch { processMavFrames() }
+        mavlinkReadThread.execute(::processMavFrames)
     }
 
-    private suspend fun processMavFrames() {
-        while (coroutineContext.isActive && isOpen) {
+    private fun processMavFrames() {
+        while (!Thread.currentThread().isInterrupted && isOpen) {
             try {
-                connection.next()
+                _mavFrame.tryEmit(connection.next())
             } catch (e: IOException) {
                 kotlin.runCatching { connection.close() }
                 isOpen = false

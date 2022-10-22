@@ -1,5 +1,8 @@
+import com.vanniktech.maven.publish.KotlinJvm
+
 plugins {
     kotlin("jvm")
+    id("com.vanniktech.maven.publish.base")
 }
 
 version = Specs.Lib.developmentVersion
@@ -15,4 +18,9 @@ dependencies {
     testImplementation(project(":definitions"))
     testImplementation(TestDeps.jupiterApi)
     testRuntimeOnly(TestDeps.jupiterEngine)
+}
+
+@Suppress("UnstableApiUsage")
+mavenPublishing {
+    configure(KotlinJvm())
 }
