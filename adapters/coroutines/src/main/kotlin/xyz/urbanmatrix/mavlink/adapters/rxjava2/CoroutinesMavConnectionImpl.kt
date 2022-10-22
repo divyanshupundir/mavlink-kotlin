@@ -29,7 +29,7 @@ internal class CoroutinesMavConnectionImpl(
         connection.connect()
         isOpen = true
 
-        return scope.launch(Dispatchers.IO) {
+        return scope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
     }
