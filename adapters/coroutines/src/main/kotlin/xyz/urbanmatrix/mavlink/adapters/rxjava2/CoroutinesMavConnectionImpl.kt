@@ -1,13 +1,13 @@
 package xyz.urbanmatrix.mavlink.adapters.rxjava2
 
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 import java.io.IOException
-import java.util.concurrent.Executors
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
@@ -15,32 +15,39 @@ internal class CoroutinesMavConnectionImpl(
     private val onReadEnded: () -> Unit
 ) : CoroutinesMavConnection {
 
-    private val mavlinkReadThread = Executors.newSingleThreadExecutor { Thread(it, "mavlink-read-thread") }
-
     @Volatile
     private var isOpen = false
         @Synchronized set
 
-    private val _mavFrame  = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
+    private val _mavFrame = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
         extraBufferCapacity = extraBufferCapacity,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-    override val mavFrame: Flow<MavFrame<out MavMessage<*>>> = _mavFrame
+    override val mavFrame = _mavFrame.asSharedFlow()
 
-    override suspend fun connect() {
+    override suspend fun connect(scope: CoroutineScope): Job {
         connection.connect()
         isOpen = true
-        mavlinkReadThread.execute(::processMavFrames)
+
+        return scope.launch(Dispatchers.IO) {
+            processMavFrames()
+        }
     }
 
-    private fun processMavFrames() {
-        while (!Thread.currentThread().isInterrupted && isOpen) {
+    private suspend fun CoroutineScope.processMavFrames() {
+        while (isActive && isOpen) {
             try {
-                _mavFrame.tryEmit(connection.next())
-            } catch (e: IOException) {
-                kotlin.runCatching { connection.close() }
-                isOpen = false
-                break
+                _mavFrame.emit(connection.next())
+            } catch (e: Exception) {
+                when (e) {
+                    is IOException, is CancellationException -> {
+                        kotlin.runCatching { connection.close() }
+                        isOpen = false
+                        break
+                    }
+
+                    else -> throw e
+                }
             }
         }
         onReadEnded.invoke()

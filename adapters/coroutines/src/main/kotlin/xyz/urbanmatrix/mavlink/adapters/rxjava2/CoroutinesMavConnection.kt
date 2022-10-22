@@ -1,14 +1,16 @@
 package xyz.urbanmatrix.mavlink.adapters.rxjava2
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.SharedFlow
 import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
 
 interface CoroutinesMavConnection {
 
-    val mavFrame: Flow<MavFrame<out MavMessage<*>>>
+    val mavFrame: SharedFlow<MavFrame<out MavMessage<*>>>
 
-    suspend fun connect()
+    suspend fun connect(scope: CoroutineScope): Job
 
     suspend fun close()
 
