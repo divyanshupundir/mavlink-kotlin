@@ -25,11 +25,13 @@ internal class CoroutinesMavConnectionImpl(
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
-    override suspend fun connect(scope: CoroutineScope): Job {
-        connection.connect()
-        isOpen = true
+    override suspend fun connect(scope: CoroutineScope) {
+        withContext(Dispatchers.IO) {
+            connection.connect()
+            isOpen = true
+        }
 
-        return scope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
+        scope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
     }
@@ -53,7 +55,7 @@ internal class CoroutinesMavConnectionImpl(
         onReadEnded.invoke()
     }
 
-    override suspend fun close() {
+    override suspend fun close(): Unit = withContext(Dispatchers.IO) {
         connection.close()
         isOpen = false
     }
@@ -62,7 +64,7 @@ internal class CoroutinesMavConnectionImpl(
         systemId: Int,
         componentId: Int,
         payload: T
-    ) {
+    ) = withContext(Dispatchers.IO) {
         connection.sendV1(
             systemId,
             componentId,
@@ -73,7 +75,7 @@ internal class CoroutinesMavConnectionImpl(
     override suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int, payload: T
-    ) {
+    ) = withContext(Dispatchers.IO) {
         connection.sendUnsignedV2(
             systemId,
             componentId,
@@ -88,7 +90,7 @@ internal class CoroutinesMavConnectionImpl(
         linkId: Int,
         timestamp: Long,
         secretKey: ByteArray
-    ) {
+    ) = withContext(Dispatchers.IO) {
         connection.sendSignedV2(
             systemId,
             componentId,
