@@ -2,7 +2,7 @@ package xyz.urbanmatrix.mavlink.adapters.rxjava2
 
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 
-fun MavConnection.asCoroutines(
+fun MavConnection.asCoroutine(
     onReadEnded: () -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     this,
