@@ -9,7 +9,7 @@ interface CoroutinesMavConnection {
 
     val mavFrame: SharedFlow<MavFrame<out MavMessage<*>>>
 
-    suspend fun connect(scope: CoroutineScope)
+    suspend fun connect(readerScope: CoroutineScope)
 
     suspend fun close()
 

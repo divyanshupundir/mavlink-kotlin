@@ -25,13 +25,13 @@ internal class CoroutinesMavConnectionImpl(
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
-    override suspend fun connect(scope: CoroutineScope) {
+    override suspend fun connect(readerScope: CoroutineScope) {
         withContext(Dispatchers.IO) {
             connection.connect()
             isOpen = true
         }
 
-        scope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
+        readerScope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
     }
