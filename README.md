@@ -85,7 +85,7 @@ the handling of the connections easy.
 Users can use the `MavConnection` interface to create an adapter of their own. Some adapters already available are:
 - RxJava2
 - RxJava3
-- Kotlin Coroutines (in development) 
+- Kotlin Coroutines
 
 Detailed instructions on how to use these are available in the respective adapter directories.
 
