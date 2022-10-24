@@ -5,21 +5,21 @@ plugins {
     id("com.vanniktech.maven.publish.base")
 }
 
-version = Specs.Lib.developmentVersion
+version = Config.Lib.developmentVersion
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
 dependencies {
-    api(Deps.mavlinkKotlinApi)
-    api(Deps.mavlinkKotlinSerialization)
+    api(Deps.MavlinkKotlin.api)
+    api(Deps.MavlinkKotlin.serialization)
 
     testImplementation(project(":definitions"))
-    testImplementation(TestDeps.droneFleetMavlink)
+    testImplementation(TestDeps.DroneFleet.mavlink)
 
-    testImplementation(TestDeps.jupiterApi)
-    testRuntimeOnly(TestDeps.jupiterEngine)
+    testImplementation(TestDeps.Jupiter.api)
+    testRuntimeOnly(TestDeps.Jupiter.engine)
 }
 
 @Suppress("UnstableApiUsage")

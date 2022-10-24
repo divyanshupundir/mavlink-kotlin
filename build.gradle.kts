@@ -18,10 +18,17 @@ plugins {
 apply(plugin = "com.vanniktech.maven.publish.base")
 
 allprojects {
-    group = Specs.group
+    group = Config.group
 
-    repositories {
-        mavenCentral()
+    tasks.withType<JavaCompile> {
+        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
     }
 
     @Suppress("UnstableApiUsage")
@@ -62,19 +69,6 @@ allprojects {
     }
 }
 
-subprojects {
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
-    }
-
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
-        }
-    }
-}
-
 task("publishPlugin") {
     dependsOn(
         ":api:publish",
@@ -110,7 +104,7 @@ task("closeAndReleaseLibrary") {
 
 task("createGitTag") {
     doLast {
-        val tagName = "v${Specs.Plugin.releaseVersion}"
+        val tagName = "v${Config.Plugin.releaseVersion}"
         ProcessBuilder("git", "tag", "-a", tagName, "-m", "\"$tagName\"").start().waitFor()
         ProcessBuilder("git", "push", "origin", tagName).start().waitFor()
     }

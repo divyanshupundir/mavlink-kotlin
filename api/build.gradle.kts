@@ -5,15 +5,15 @@ plugins {
     id("com.vanniktech.maven.publish.base")
 }
 
-version = Specs.Plugin.developmentVersion
+version = Config.Plugin.developmentVersion
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
 dependencies {
-    testImplementation(TestDeps.jupiterApi)
-    testRuntimeOnly(TestDeps.jupiterEngine)
+    testImplementation(TestDeps.Jupiter.api)
+    testRuntimeOnly(TestDeps.Jupiter.engine)
 }
 
 @Suppress("UnstableApiUsage")
