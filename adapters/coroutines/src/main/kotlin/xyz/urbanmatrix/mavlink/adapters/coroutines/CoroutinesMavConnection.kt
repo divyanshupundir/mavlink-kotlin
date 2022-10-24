@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.adapters.rxjava2
+package xyz.urbanmatrix.mavlink.adapters.coroutines
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow

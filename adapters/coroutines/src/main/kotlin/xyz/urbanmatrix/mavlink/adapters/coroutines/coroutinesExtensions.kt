@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.adapters.rxjava2
+package xyz.urbanmatrix.mavlink.adapters.coroutines
 
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 
