@@ -10,14 +10,16 @@ object Deps {
         const val rxJava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
     }
 
-    object Square {
-        const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
+    object Kotlin {
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     }
 
     object MavlinkKotlin {
         const val api = "xyz.urbanmatrix.mavlink:api:${Config.Plugin.releaseVersion}"
         const val serialization = "xyz.urbanmatrix.mavlink:serialization:${Config.Plugin.releaseVersion}"
     }
+
+    const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
 }
 
 object TestDeps {
@@ -27,7 +29,8 @@ object TestDeps {
     }
 
     object Jupiter {
-        const val api = "org.junit.jupiter:junit-jupiter-api:5.8.2"
-        const val engine = "org.junit.jupiter:junit-jupiter-engine:5.8.2"
+        private const val version = "5.8.2"
+        const val api = "org.junit.jupiter:junit-jupiter-api:$version"
+        const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
     }
 }
