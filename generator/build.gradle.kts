@@ -43,7 +43,7 @@ dependencies {
 
     implementation(Deps.Jackson.dataFormatXml)
     implementation(Deps.Jackson.moduleKotlin)
-    implementation(Deps.Square.kotlinPoet)
+    implementation(Deps.kotlinPoet)
 
     testImplementation(TestDeps.Jupiter.api)
     testRuntimeOnly(TestDeps.Jupiter.engine)

@@ -82,7 +82,8 @@ task("publishLibrary") {
         ":mavlink-kotlin:publish",
         ":definitions:publish",
         ":adapters:rxjava2:publish",
-        ":adapters:rxjava3:publish"
+        ":adapters:rxjava3:publish",
+        ":adapters:coroutines:publish"
     )
 }
 
@@ -98,7 +99,8 @@ task("closeAndReleaseLibrary") {
         ":mavlink-kotlin:closeAndReleaseRepository",
         ":definitions:closeAndReleaseRepository",
         ":adapters:rxjava2:closeAndReleaseRepository",
-        ":adapters:rxjava3:closeAndReleaseRepository"
+        ":adapters:rxjava3:closeAndReleaseRepository",
+        ":adapters:coroutines:closeAndReleaseRepository"
     )
 }
 
