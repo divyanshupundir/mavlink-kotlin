@@ -87,7 +87,6 @@ internal class CoroutinesMavConnectionImpl(
         Result.failure(e)
     }
 
-
     override suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int, payload: T
@@ -103,7 +102,6 @@ internal class CoroutinesMavConnectionImpl(
     } catch (e: IOException) {
         Result.failure(e)
     }
-
 
     override suspend fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
