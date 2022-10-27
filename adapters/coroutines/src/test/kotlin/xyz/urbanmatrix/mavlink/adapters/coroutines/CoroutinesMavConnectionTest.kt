@@ -61,7 +61,3 @@ class CoroutinesMavConnectionTest {
         }
     }
 }
-
-suspend inline fun <reified T : MavMessage<T>> CoroutinesMavConnection.awaitMessage() = mavFrame.map { it.message }
-    .first { it is T }
-
