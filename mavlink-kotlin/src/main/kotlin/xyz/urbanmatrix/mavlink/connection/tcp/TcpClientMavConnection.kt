@@ -14,22 +14,27 @@ class TcpClientMavConnection(
 
     @Throws(IOException::class)
     override fun connect() {
-        val socket = Socket().apply {
-            connect(
-                InetSocketAddress(
-                    this@TcpClientMavConnection.host,
-                    this@TcpClientMavConnection.port
-                )
-            )
-        }
+        when (state) {
+            is State.Open -> throw IOException("Already open")
 
-        state = State.Open(
-            StreamMavConnection(
-                socket.getInputStream(),
-                socket.getOutputStream(),
-                socket,
-                dialect
-            )
-        )
+            State.Closed -> {
+                val socket = Socket().apply {
+                    connect(
+                        InetSocketAddress(
+                            this@TcpClientMavConnection.host,
+                            this@TcpClientMavConnection.port
+                        )
+                    )
+                }
+                state = State.Open(
+                    StreamMavConnection(
+                        socket.getInputStream(),
+                        socket.getOutputStream(),
+                        socket,
+                        dialect
+                    )
+                )
+            }
+        }
     }
 }
