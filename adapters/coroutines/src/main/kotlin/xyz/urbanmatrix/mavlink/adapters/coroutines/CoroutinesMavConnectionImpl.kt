@@ -25,7 +25,7 @@ internal class CoroutinesMavConnectionImpl(
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
-    override suspend fun connect(readerScope: CoroutineScope) {
+    override suspend fun connect(readerScope: CoroutineScope): Result<Unit> = try {
         withContext(Dispatchers.IO) {
             connection.connect()
             isOpen = true
@@ -34,6 +34,11 @@ internal class CoroutinesMavConnectionImpl(
         readerScope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
+
+        Result.success(Unit)
+
+    } catch (e: IOException) {
+        Result.failure(e)
     }
 
     private suspend fun CoroutineScope.processMavFrames() {
@@ -55,33 +60,50 @@ internal class CoroutinesMavConnectionImpl(
         onReadEnded.invoke()
     }
 
-    override suspend fun close(): Unit = withContext(Dispatchers.IO) {
-        connection.close()
-        isOpen = false
+    override suspend fun close(): Result<Unit> = try {
+        withContext(Dispatchers.IO) {
+            connection.close()
+            isOpen = false
+        }
+        Result.success(Unit)
+    } catch (e: IOException) {
+        Result.failure(e)
     }
 
     override suspend fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
-    ) = withContext(Dispatchers.IO) {
-        connection.sendV1(
-            systemId,
-            componentId,
-            payload
-        )
+    ): Result<Unit> = try {
+        withContext(Dispatchers.IO) {
+            connection.sendV1(
+                systemId,
+                componentId,
+                payload
+            )
+        }
+        Result.success(Unit)
+    } catch (e: IOException) {
+        Result.failure(e)
     }
+
 
     override suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int, payload: T
-    ) = withContext(Dispatchers.IO) {
-        connection.sendUnsignedV2(
-            systemId,
-            componentId,
-            payload
-        )
+    ): Result<Unit> = try {
+        withContext(Dispatchers.IO) {
+            connection.sendUnsignedV2(
+                systemId,
+                componentId,
+                payload
+            )
+        }
+        Result.success(Unit)
+    } catch (e: IOException) {
+        Result.failure(e)
     }
+
 
     override suspend fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
@@ -90,14 +112,19 @@ internal class CoroutinesMavConnectionImpl(
         linkId: Int,
         timestamp: Long,
         secretKey: ByteArray
-    ) = withContext(Dispatchers.IO) {
-        connection.sendSignedV2(
-            systemId,
-            componentId,
-            payload,
-            linkId,
-            timestamp,
-            secretKey
-        )
+    ): Result<Unit> = try {
+        withContext(Dispatchers.IO) {
+            connection.sendSignedV2(
+                systemId,
+                componentId,
+                payload,
+                linkId,
+                timestamp,
+                secretKey
+            )
+        }
+        Result.success(Unit)
+    } catch (e: IOException) {
+        Result.failure(e)
     }
 }

@@ -19,7 +19,7 @@ abstract class TcpMavConnection : MavConnection {
                 state = State.Closed
             }
 
-            State.Closed -> {}
+            State.Closed -> throw IOException("Already closed")
         }
     }
 
@@ -27,7 +27,7 @@ abstract class TcpMavConnection : MavConnection {
     final override fun next(): MavFrame<out MavMessage<*>> {
         return when (val s = state) {
             is State.Open -> s.connection.next()
-            State.Closed -> throw IOException()
+            State.Closed -> throw IOException("Closed")
         }
     }
 
@@ -44,7 +44,7 @@ abstract class TcpMavConnection : MavConnection {
                 payload
             )
 
-            State.Closed -> throw IOException()
+            State.Closed -> throw IOException("Closed")
         }
     }
 
@@ -61,7 +61,7 @@ abstract class TcpMavConnection : MavConnection {
                 payload
             )
 
-            State.Closed -> throw IOException()
+            State.Closed -> throw IOException("Closed")
         }
     }
 
@@ -84,11 +84,11 @@ abstract class TcpMavConnection : MavConnection {
                 secretKey
             )
 
-            State.Closed -> throw IOException()
+            State.Closed -> throw IOException("Closed")
         }
     }
 
-    sealed interface State {
+    protected sealed interface State {
         class Open(val connection: MavConnection) : State
         object Closed : State
     }

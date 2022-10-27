@@ -12,17 +12,23 @@ class TcpServerMavConnection(
 
     @Throws(IOException::class)
     override fun connect() {
-        val server = ServerSocket(port)
-        val socket = server.accept()
-        server.close()
+        when (state) {
+            is State.Open -> throw IOException("Already Open")
 
-        state = State.Open(
-            StreamMavConnection(
-                socket.getInputStream(),
-                socket.getOutputStream(),
-                socket,
-                dialect
-            )
-        )
+            State.Closed -> {
+                val server = ServerSocket(port)
+                val socket = server.accept()
+                server.close()
+
+                state = State.Open(
+                    StreamMavConnection(
+                        socket.getInputStream(),
+                        socket.getOutputStream(),
+                        socket,
+                        dialect
+                    )
+                )
+            }
+        }
     }
 }
