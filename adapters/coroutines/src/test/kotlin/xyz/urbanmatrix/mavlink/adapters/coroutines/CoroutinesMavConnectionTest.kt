@@ -4,7 +4,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
-import xyz.urbanmatrix.mavlink.adapters.coroutines.asCoroutine
 import xyz.urbanmatrix.mavlink.connection.tcp.TcpClientMavConnection
 import xyz.urbanmatrix.mavlink.definitions.common.CommonDialect
 
