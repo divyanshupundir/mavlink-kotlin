@@ -1,7 +1,7 @@
 package xyz.urbanmatrix.mavlink.generator.models
 
-import xyz.urbanmatrix.mavlink.generator.createXmlMapper
 import org.junit.jupiter.api.Test
+import xyz.urbanmatrix.mavlink.generator.createXmlMapper
 
 class EnumXmlTest {
 
@@ -53,6 +53,60 @@ class EnumXmlTest {
             </entry>
             <entry value="8192" name="HL_FAILURE_FLAG_MISSION">
                 <description>Mission failure.</description>
+            </entry>
+        </enum>
+        """.trimIndent()
+
+        println(mapper.readValue(inp, EnumXml::class.java).toModel())
+    }
+
+
+    @Test
+    fun bitmask() {
+        val inp = """
+        <enum name="GIMBAL_MANAGER_CAP_FLAGS" bitmask="true">
+            <description>Gimbal manager high level capability flags (bitmap). The first 16 bits are identical to the GIMBAL_DEVICE_CAP_FLAGS. However, the gimbal manager does not need to copy the flags from the gimbal but can also enhance the capabilities and thus add flags.</description>
+            <entry value="1" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_RETRACT">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_RETRACT.</description>
+            </entry>
+            <entry value="2" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_NEUTRAL">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_NEUTRAL.</description>
+            </entry>
+            <entry value="4" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_AXIS">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_AXIS.</description>
+            </entry>
+            <entry value="8" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_FOLLOW">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_FOLLOW.</description>
+            </entry>
+            <entry value="16" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_LOCK">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_LOCK.</description>
+            </entry>
+            <entry value="32" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_AXIS">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_AXIS.</description>
+            </entry>
+            <entry value="64" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_FOLLOW">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_FOLLOW.</description>
+            </entry>
+            <entry value="128" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_LOCK">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_LOCK.</description>
+            </entry>
+            <entry value="256" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_AXIS">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_AXIS.</description>
+            </entry>
+            <entry value="512" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_FOLLOW">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW.</description>
+            </entry>
+            <entry value="1024" name="GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_LOCK">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK.</description>
+            </entry>
+            <entry value="2048" name="GIMBAL_MANAGER_CAP_FLAGS_SUPPORTS_INFINITE_YAW">
+                <description>Based on GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW.</description>
+            </entry>
+            <entry value="65536" name="GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_LOCAL">
+                <description>Gimbal manager supports to point to a local position.</description>
+            </entry>
+            <entry value="131072" name="GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_GLOBAL">
+                <description>Gimbal manager supports to point to a global latitude, longitude, altitude position.</description>
             </entry>
         </enum>
         """.trimIndent()
