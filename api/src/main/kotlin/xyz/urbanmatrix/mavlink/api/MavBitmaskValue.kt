@@ -1,5 +1,8 @@
 package xyz.urbanmatrix.mavlink.api
 
+/**
+ * Wrapper class for a [MavBitmask].
+ */
 data class MavBitmaskValue<E : MavBitmask>(val flags: List<E>, val value: Long) {
 
     companion object {
