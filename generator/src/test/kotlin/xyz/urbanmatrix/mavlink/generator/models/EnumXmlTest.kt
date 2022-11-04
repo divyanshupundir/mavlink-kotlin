@@ -113,4 +113,26 @@ class EnumXmlTest {
 
         println(mapper.readValue(inp, EnumXml::class.java).toModel())
     }
+
+    @Test
+    fun withoutBitmask() {
+        val inp = """
+        <enum name="FENCE_BREACH">
+            <entry value="0" name="FENCE_BREACH_NONE">
+                <description>No last fence breach</description>
+            </entry>
+            <entry value="1" name="FENCE_BREACH_MINALT">
+                <description>Breached minimum altitude</description>
+            </entry>
+            <entry value="2" name="FENCE_BREACH_MAXALT">
+                <description>Breached maximum altitude</description>
+            </entry>
+            <entry value="3" name="FENCE_BREACH_BOUNDARY">
+                <description>Breached fence boundary</description>
+            </entry>
+        </enum>
+        """.trimIndent()
+
+        println(mapper.readValue(inp, EnumXml::class.java).toModel())
+    }
 }

@@ -24,7 +24,7 @@ data class EnumXml(
     val name: String,
 
     @JacksonXmlProperty(localName = "bitmask", isAttribute = true)
-    val bitmask: String,
+    val bitmask: Boolean,
 
     @JacksonXmlProperty(localName = "deprecated")
     val deprecated: DeprecatedXml?,
@@ -41,7 +41,7 @@ data class EnumXml(
 
     fun toModel() = EnumModel(
         name,
-        bitmask.toBoolean(),
+        bitmask,
         entries
             .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
             .map { it.toModel() },
