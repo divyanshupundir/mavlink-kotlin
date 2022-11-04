@@ -8,6 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 data class EnumEntryModel(
     val value: Long,
     val name: String,
+    val bitmask: Boolean,
     val params: List<ParamModel>,
     val workInProgress: Boolean,
     val deprecated: DeprecatedModel?,
@@ -23,6 +24,9 @@ data class EnumEntryXml(
 
     @JacksonXmlProperty(localName = "name", isAttribute = true)
     val name: String,
+
+    @JacksonXmlProperty(localName = "bitmask", isAttribute = true)
+    val bitmask: Boolean,
 
     @JacksonXmlProperty(localName = "deprecated")
     val deprecated: DeprecatedXml?,
@@ -43,6 +47,7 @@ data class EnumEntryXml(
     fun toModel() = EnumEntryModel(
         value,
         name,
+        bitmask,
         params
             .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
             .map { it.toModel() },
