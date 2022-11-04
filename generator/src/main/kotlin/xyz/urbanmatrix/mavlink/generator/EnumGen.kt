@@ -2,13 +2,14 @@ package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 import xyz.urbanmatrix.mavlink.api.MavEnum
 import xyz.urbanmatrix.mavlink.generator.models.EnumModel
 import kotlin.Long
 
 fun EnumModel.generateEnumFile(packageName: String): FileSpec {
     val enum = TypeSpec.enumBuilder(formattedName)
-        .addSuperinterface(MavEnum::class)
+        .addSuperinterface(if (bitmask) MavBitmask::class else MavEnum::class)
         .primaryConstructor(generatePrimaryConstructor())
         .addProperty(generateValueProperty())
         .apply {
@@ -16,7 +17,7 @@ fun EnumModel.generateEnumFile(packageName: String): FileSpec {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
-        .addAnnotation(GeneratedMavEnum::class)
+        .addAnnotation(generateGeneratedAnnotation())
         .addType(generateCompanionObject(packageName))
         .build()
 
@@ -33,6 +34,11 @@ private fun generatePrimaryConstructor() = FunSpec
 private fun generateValueProperty() = PropertySpec
     .builder("value", Long::class, KModifier.OVERRIDE)
     .initializer("value")
+    .build()
+
+private fun EnumModel.generateGeneratedAnnotation() = AnnotationSpec
+    .builder(GeneratedMavEnum::class)
+    .apply { if (bitmask) addMember("bitmask = true") }
     .build()
 
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
