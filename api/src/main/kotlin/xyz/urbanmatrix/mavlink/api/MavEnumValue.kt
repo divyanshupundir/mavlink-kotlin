@@ -11,6 +11,6 @@ data class MavEnumValue<E : MavEnum>(val entry: E?, val value: Long) {
         fun <E : MavEnum> of(entry: E) = MavEnumValue(entry, entry.value)
 
         @JvmStatic
-        fun <E : MavEnum> from(value: Long) = MavEnumValue<E>(null, value)
+        fun <E : MavEnum> fromValue(value: Long) = MavEnumValue<E>(null, value)
     }
 }

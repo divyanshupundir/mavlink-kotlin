@@ -16,6 +16,6 @@ data class MavBitmaskValue<E : MavBitmask>(val flags: List<E>, val value: Long) 
         )
 
         @JvmStatic
-        fun <E : MavBitmask> from(value: Long) = MavBitmaskValue<E>(emptyList(), value)
+        fun <E : MavBitmask> fromValue(value: Long) = MavBitmaskValue<E>(emptyList(), value)
     }
 }
