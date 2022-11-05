@@ -6,30 +6,28 @@ import xyz.urbanmatrix.mavlink.generator.models.MavlinkModel
 
 class EnumResolver(
     private val basePackage: String,
-    private val mavlinkModels: List<MavlinkModel>
+    mavlinkModels: List<MavlinkModel>
 ) {
-    fun resolveModel(enumType: String): EnumModel {
+    private val nameToModels = mutableMapOf<String, Pair<EnumModel, MavlinkModel>>()
+
+    init {
         for (mavlinkModel in mavlinkModels) {
             for (enumModel in mavlinkModel.enums) {
-                if (enumModel.name == enumType) {
-                    return enumModel
-                }
+                nameToModels[enumModel.name] = enumModel to mavlinkModel
             }
         }
-        throw IllegalArgumentException("$enumType not defined in available mavlink schema")
     }
 
-    fun resolveClassName(enumType: String): ClassName {
-        for (mavlinkModel in mavlinkModels) {
-            for (enumModel in mavlinkModel.enums) {
-                if (enumModel.name == enumType) {
-                    return ClassName(
-                        "$basePackage.${mavlinkModel.subPackageName}",
-                        enumModel.formattedName
-                    )
-                }
-            }
-        }
-        throw IllegalArgumentException("$enumType not defined in available mavlink schema")
+    fun resolveModel(enumType: String): EnumModel = getModel(enumType).first
+
+    fun resolveClassName(enumType: String): ClassName = with(getModel(enumType)) {
+        ClassName(
+            "$basePackage.${second.subPackageName}",
+            first.formattedName
+        )
+    }
+
+    private fun getModel(enumType: String) = requireNotNull(nameToModels[enumType]) {
+        "$enumType not defined in available mavlink schema"
     }
 }
