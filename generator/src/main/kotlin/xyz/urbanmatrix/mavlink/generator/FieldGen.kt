@@ -40,7 +40,7 @@ private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName =
         else List::class.asTypeName().parameterizedBy(resolveKotlinPrimitiveType(this.primitiveType))
     }
     is FieldModel.Enum -> {
-        MavEnumValue::class.asTypeName().parameterizedBy(enumResolver.resolve(this.enumType))
+        MavEnumValue::class.asTypeName().parameterizedBy(enumResolver.resolveClassName(this.enumType))
     }
 }
 
