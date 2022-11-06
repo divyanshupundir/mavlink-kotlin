@@ -28,7 +28,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper
         .addFunction(generateSerializeV1(enumHelper))
         .addFunction(generateSerializeV2(enumHelper))
         .addType(generateCompanionObject(packageName, enumHelper))
-        .addType(generateBuilderClass(enumHelper, packageName))
+        .addType(generateBuilderClass(packageName, enumHelper))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
@@ -169,7 +169,7 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     )
     .build()
 
-private fun MessageModel.generateBuilderClass(enumHelper: EnumHelper, packageName: String) = TypeSpec.classBuilder("Builder")
+private fun MessageModel.generateBuilderClass(packageName: String, enumHelper: EnumHelper) = TypeSpec.classBuilder("Builder")
     .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumHelper)) } }
     .addFunction(generateBuildMethod(packageName))
     .build()
