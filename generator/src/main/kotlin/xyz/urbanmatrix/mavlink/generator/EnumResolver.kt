@@ -27,6 +27,8 @@ class EnumResolver(
         )
     }
 
+    fun isBitmask(enumType: String): Boolean = getModel(enumType).first.bitmask
+
     private fun getModel(enumType: String) = requireNotNull(nameToModels[enumType]) {
         "$enumType not defined in available mavlink schema"
     }
