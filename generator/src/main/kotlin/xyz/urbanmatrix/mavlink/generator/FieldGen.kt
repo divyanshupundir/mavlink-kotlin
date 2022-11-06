@@ -46,30 +46,34 @@ private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = whe
     }
 }
 
-fun FieldModel.generateSerializeStatement(outputName: String): CodeBlock {
+fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHelper): CodeBlock {
     val encode = CodeBlock.builder()
     when (this) {
-        is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName)
-        is FieldModel.Primitive -> encode.addStatement("$outputName.%M($formattedName)", encodeMethodName)
-        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)", encodeMethodName)
+        is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName(enumHelper))
+        is FieldModel.Primitive -> encode.addStatement("$outputName.%M($formattedName)", encodeMethodName(enumHelper))
+        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)",
+            encodeMethodName(enumHelper)
+        )
     }
     return encode.build()
 }
 
-fun FieldModel.generateDeserializeStatement(inputName: String): CodeBlock {
+fun FieldModel.generateDeserializeStatement(inputName: String, enumHelper: EnumHelper): CodeBlock {
     val decode = CodeBlock.builder()
     when (this) {
         is FieldModel.Enum -> {
             decode.beginControlFlow(
                 "val $formattedName = $inputName.%M($size).let { value ->",
-                decodeMethodName
+                decodeMethodName(enumHelper)
             )
             decode.addStatement("val entry = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getEntryFromValueOrNull(value)")
             decode.addStatement("if (entry != null) %1T.of(entry) else %1T.fromValue(value)", MavEnumValue::class)
             decode.endControlFlow()
         }
-        is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName)
-        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+        is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName(enumHelper))
+        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)",
+            decodeMethodName(enumHelper)
+        )
     }
     return decode.build()
 }
@@ -109,8 +113,12 @@ private fun FieldModel.defaultKotlinValue(enumHelper: EnumHelper): String = when
 
 private const val SERIALIZATION_PACKAGE = "xyz.urbanmatrix.mavlink.serialization"
 
-private val FieldModel.encodeMethodName: MemberName get() = when (this) {
-    is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "encodeEnumValue")
+private fun FieldModel.encodeMethodName(enumHelper: EnumHelper): MemberName = when (this) {
+    is FieldModel.Enum -> MemberName(
+        SERIALIZATION_PACKAGE,
+        if (enumHelper.isBitmask(enumType)) "encodeBitmaskValue" else "encodeEnumValue"
+    )
+
     is FieldModel.Primitive -> when (type) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8")
         "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8")
@@ -125,6 +133,7 @@ private val FieldModel.encodeMethodName: MemberName get() = when (this) {
         "char" -> MemberName(SERIALIZATION_PACKAGE, "encodeChar")
         else -> throw IllegalArgumentException("Unknown type: $type")
     }
+
     is FieldModel.PrimitiveArray -> when (primitiveType) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8Array")
         "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8Array")
@@ -141,8 +150,12 @@ private val FieldModel.encodeMethodName: MemberName get() = when (this) {
     }
 }
 
-private val FieldModel.decodeMethodName: MemberName get() = when (this) {
-    is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "decodeEnumValue")
+private fun FieldModel.decodeMethodName(enumHelper: EnumHelper): MemberName = when (this) {
+    is FieldModel.Enum -> MemberName(
+        SERIALIZATION_PACKAGE,
+        if (enumHelper.isBitmask(enumType)) "decodeBitmaskValue" else "decodeEnumValue"
+    )
+
     is FieldModel.Primitive -> when (type) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8")
         "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint8")
@@ -157,6 +170,7 @@ private val FieldModel.decodeMethodName: MemberName get() = when (this) {
         "char" -> MemberName(SERIALIZATION_PACKAGE, "decodeChar")
         else -> throw IllegalArgumentException("Unknown type: $type")
     }
+
     is FieldModel.PrimitiveArray -> when (primitiveType) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8Array")
         "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint8Array")

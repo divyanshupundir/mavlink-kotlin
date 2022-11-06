@@ -25,9 +25,9 @@ fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper
         }
         .addAnnotation(generateGeneratedAnnotation())
         .addProperty(generateInstanceMetadata(packageName))
-        .addFunction(generateSerializeV1())
-        .addFunction(generateSerializeV2())
-        .addType(generateCompanionObject(packageName))
+        .addFunction(generateSerializeV1(enumHelper))
+        .addFunction(generateSerializeV2(enumHelper))
+        .addType(generateCompanionObject(packageName, enumHelper))
         .addType(generateBuilderClass(enumHelper, packageName))
         .build()
 
@@ -41,13 +41,13 @@ private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = Fu
     .apply { fields.sortedByPosition().forEach { addParameter(it.generateConstructorParameter(enumHelper)) } }
     .build()
 
-private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
+private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
     .addProperty(generateSizeV1Property())
     .addProperty(generateSizeV2Property())
-    .addProperty(generateDeserializer(packageName))
+    .addProperty(generateDeserializer(packageName, enumHelper))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
     .addFunction(generateBuilderFunction(packageName))
@@ -79,7 +79,7 @@ private fun MessageModel.generateSizeV2Property() = PropertySpec
     .initializer("%L", sizeV2)
     .build()
 
-private fun MessageModel.generateDeserializer(packageName: String) = PropertySpec
+private fun MessageModel.generateDeserializer(packageName: String, enumHelper: EnumHelper) = PropertySpec
     .builder(
         "DESERIALIZER",
         MavDeserializer::class.asClassName().parameterizedBy(getClassName(packageName)),
@@ -94,7 +94,7 @@ private fun MessageModel.generateDeserializer(packageName: String) = PropertySpe
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer")) }
+            fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer", enumHelper)) }
 
             addStatement("")
 
@@ -135,7 +135,7 @@ private fun MessageModel.generateInstanceMetadata(packageName: String) = Propert
     .initializer("METADATA")
     .build()
 
-private fun MessageModel.generateSerializeV1() = FunSpec
+private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
@@ -146,13 +146,13 @@ private fun MessageModel.generateSerializeV1() = FunSpec
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
             addStatement("return outputBuffer.array()")
         }
     )
     .build()
 
-private fun MessageModel.generateSerializeV2() = FunSpec
+private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV2")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
@@ -163,7 +163,7 @@ private fun MessageModel.generateSerializeV2() = FunSpec
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
             addStatement("return outputBuffer.array().%M()", truncateZerosMemberName)
         }
     )
