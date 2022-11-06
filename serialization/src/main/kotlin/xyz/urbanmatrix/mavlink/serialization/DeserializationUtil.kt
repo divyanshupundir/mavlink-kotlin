@@ -99,6 +99,8 @@ fun ByteBuffer.decodeDoubleArray(dataSize: Int): List<Double> = decodeArray(
 
 fun ByteBuffer.decodeEnumValue(dataSize: Int): Long = decodeUnsignedIntegerValue(dataSize)
 
+fun ByteBuffer.decodeBitmaskValue(dataSize: Int): Long = decodeUnsignedIntegerValue(dataSize)
+
 inline fun <T : Any> ByteBuffer.decodeArray(elementCount: Int, decode: ByteBuffer.() -> T): List<T> =
     List(elementCount) { this.decode() }
 
