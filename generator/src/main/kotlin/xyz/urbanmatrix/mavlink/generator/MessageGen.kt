@@ -12,12 +12,12 @@ import xyz.urbanmatrix.mavlink.generator.models.sortedByPosition
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumResolver): FileSpec {
+fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
-        .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
+        .primaryConstructor(generatePrimaryConstructor(enumHelper))
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumHelper)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (workInProgress) addAnnotation(WorkInProgress::class)
@@ -28,7 +28,7 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .addFunction(generateSerializeV1())
         .addFunction(generateSerializeV2())
         .addType(generateCompanionObject(packageName))
-        .addType(generateBuilderClass(enumResolver, packageName))
+        .addType(generateBuilderClass(enumHelper, packageName))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
@@ -36,9 +36,9 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .build()
 }
 
-private fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
+private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = FunSpec
     .constructorBuilder()
-    .apply { fields.sortedByPosition().forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
+    .apply { fields.sortedByPosition().forEach { addParameter(it.generateConstructorParameter(enumHelper)) } }
     .build()
 
 private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
@@ -169,8 +169,8 @@ private fun MessageModel.generateSerializeV2() = FunSpec
     )
     .build()
 
-private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver, packageName: String) = TypeSpec.classBuilder("Builder")
-    .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumResolver)) } }
+private fun MessageModel.generateBuilderClass(enumHelper: EnumHelper, packageName: String) = TypeSpec.classBuilder("Builder")
+    .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumHelper)) } }
     .addFunction(generateBuildMethod(packageName))
     .build()
 

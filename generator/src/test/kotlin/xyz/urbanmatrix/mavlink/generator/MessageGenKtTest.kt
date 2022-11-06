@@ -8,7 +8,7 @@ class MessageGenKtTest {
     @Test
     fun messageGeneration() {
         val models = listOf(readMavlinkMinimal(), readMavlinkCommon())
-        val enumResolver = EnumResolver(BASE_PACKAGE, models)
+        val enumHelper = EnumHelper(BASE_PACKAGE, models)
 
         for (model in models) {
             model
@@ -23,7 +23,7 @@ class MessageGenKtTest {
 
             for (message in model.messages) {
                 message
-                    .generateMessageFile("$BASE_PACKAGE.${model.subPackageName}", enumResolver)
+                    .generateMessageFile("$BASE_PACKAGE.${model.subPackageName}", enumHelper)
                     .writeTo(File(GENERATED_SOURCES_DIR))
             }
         }

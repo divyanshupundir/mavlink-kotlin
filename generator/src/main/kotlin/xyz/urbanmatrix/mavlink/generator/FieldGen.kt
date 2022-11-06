@@ -8,22 +8,22 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import java.math.BigInteger
 
-fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = ParameterSpec
-    .builder(formattedName, resolveKotlinType(enumResolver))
-    .defaultValue(defaultKotlinValue(enumResolver))
+fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
+    .builder(formattedName, resolveKotlinType(enumHelper))
+    .defaultValue(defaultKotlinValue(enumHelper))
     .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
-fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
-    .builder(formattedName, resolveKotlinType(enumResolver))
+fun FieldModel.generateProperty(enumHelper: EnumHelper) = PropertySpec
+    .builder(formattedName, resolveKotlinType(enumHelper))
     .initializer(formattedName)
     .addAnnotation(generateGeneratedAnnotation())
     .build()
 
-fun FieldModel.generateBuilderProperty(enumResolver: EnumResolver) = PropertySpec
-    .builder(formattedName, resolveKotlinType(enumResolver))
+fun FieldModel.generateBuilderProperty(enumHelper: EnumHelper) = PropertySpec
+    .builder(formattedName, resolveKotlinType(enumHelper))
     .mutable()
-    .initializer(defaultKotlinValue(enumResolver))
+    .initializer(defaultKotlinValue(enumHelper))
     .build()
 
 private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
@@ -32,7 +32,7 @@ private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
     .apply { if (extension) addMember("extension = %L", true) }
     .build()
 
-private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {
+private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = when (this) {
     is FieldModel.Primitive -> {
         resolveKotlinPrimitiveType(this.type)
     }
@@ -41,8 +41,8 @@ private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName =
         else List::class.asTypeName().parameterizedBy(resolveKotlinPrimitiveType(this.primitiveType))
     }
     is FieldModel.Enum -> {
-        val clazz = if (enumResolver.isBitmask(enumType)) MavBitmaskValue::class else MavEnumValue::class
-        clazz.asTypeName().parameterizedBy(enumResolver.resolveClassName(this.enumType))
+        val clazz = if (enumHelper.isBitmask(enumType)) MavBitmaskValue::class else MavEnumValue::class
+        clazz.asTypeName().parameterizedBy(enumHelper.resolveClassName(this.enumType))
     }
 }
 
@@ -85,7 +85,7 @@ private fun resolveKotlinPrimitiveType(primitiveType: String): TypeName = when (
     else -> throw IllegalArgumentException("Unknown field type: $primitiveType")
 }
 
-private fun FieldModel.defaultKotlinValue(enumResolver: EnumResolver): String = when (this) {
+private fun FieldModel.defaultKotlinValue(enumHelper: EnumHelper): String = when (this) {
     is FieldModel.Primitive -> when (this.type) {
         "uint8_t_mavlink_version", "uint8_t", "int8_t",
         "uint16_t", "int16_t", "int32_t" -> "0"
@@ -100,7 +100,7 @@ private fun FieldModel.defaultKotlinValue(enumResolver: EnumResolver): String = 
 
     is FieldModel.PrimitiveArray -> if (this.primitiveType == "char") "\"\"" else "emptyList()"
 
-    is FieldModel.Enum -> if (enumResolver.isBitmask(this.enumType)) {
+    is FieldModel.Enum -> if (enumHelper.isBitmask(this.enumType)) {
         "${MavBitmaskValue::class.simpleName}.fromValue(0)"
     } else {
         "${MavEnumValue::class.simpleName}.fromValue(0)"
