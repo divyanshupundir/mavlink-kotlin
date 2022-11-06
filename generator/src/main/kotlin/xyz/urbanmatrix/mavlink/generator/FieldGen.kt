@@ -36,10 +36,12 @@ private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = whe
     is FieldModel.Primitive -> {
         resolveKotlinPrimitiveType(this.type)
     }
+
     is FieldModel.PrimitiveArray -> {
         if (this.primitiveType == "char") String::class.asTypeName()
         else List::class.asTypeName().parameterizedBy(resolveKotlinPrimitiveType(this.primitiveType))
     }
+
     is FieldModel.Enum -> {
         val clazz = if (enumHelper.isBitmask(enumType)) MavBitmaskValue::class else MavEnumValue::class
         clazz.asTypeName().parameterizedBy(enumHelper.resolveClassName(this.enumType))
