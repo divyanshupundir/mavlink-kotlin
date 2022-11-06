@@ -51,9 +51,7 @@ fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHe
     when (this) {
         is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName(enumHelper))
         is FieldModel.Primitive -> encode.addStatement("$outputName.%M($formattedName)", encodeMethodName(enumHelper))
-        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)",
-            encodeMethodName(enumHelper)
-        )
+        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)", encodeMethodName(enumHelper))
     }
     return encode.build()
 }
@@ -70,10 +68,10 @@ fun FieldModel.generateDeserializeStatement(inputName: String, enumHelper: EnumH
             decode.addStatement("if (entry != null) %1T.of(entry) else %1T.fromValue(value)", MavEnumValue::class)
             decode.endControlFlow()
         }
+
         is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName(enumHelper))
-        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)",
-            decodeMethodName(enumHelper)
-        )
+
+        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName(enumHelper))
     }
     return decode.build()
 }
@@ -104,11 +102,7 @@ private fun FieldModel.defaultKotlinValue(enumHelper: EnumHelper): String = when
 
     is FieldModel.PrimitiveArray -> if (this.primitiveType == "char") "\"\"" else "emptyList()"
 
-    is FieldModel.Enum -> if (enumHelper.isBitmask(this.enumType)) {
-        "${MavBitmaskValue::class.simpleName}.fromValue(0)"
-    } else {
-        "${MavEnumValue::class.simpleName}.fromValue(0)"
-    }
+    is FieldModel.Enum -> "${if (enumHelper.isBitmask(this.enumType)) MavBitmaskValue::class.simpleName else MavEnumValue::class.simpleName}.fromValue(0)"
 }
 
 private const val SERIALIZATION_PACKAGE = "xyz.urbanmatrix.mavlink.serialization"
