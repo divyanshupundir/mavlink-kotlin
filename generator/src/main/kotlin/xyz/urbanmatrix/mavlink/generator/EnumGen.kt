@@ -1,6 +1,7 @@
 package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.MavBitmask
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -44,6 +45,7 @@ private fun EnumModel.generateGeneratedAnnotation() = AnnotationSpec
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
     .addFunction(generateGetEntryFromValueOrNull(packageName))
+    .apply { if (bitmask) addFunction(generateGetFlagsFromValue(packageName)) }
     .build()
 
 private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = FunSpec
@@ -56,6 +58,17 @@ private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = Fun
             entries.forEach { addStatement("${it.value}L -> ${it.name}") }
             addStatement("else -> null")
             endControlFlow()
+        }
+    )
+    .build()
+
+private fun EnumModel.generateGetFlagsFromValue(packageName: String) = FunSpec
+    .builder("getFlagsFromValue")
+    .addParameter(ParameterSpec("v", Long::class.asTypeName()))
+    .returns(List::class.asTypeName().parameterizedBy(getClassName(packageName)))
+    .addCode(
+        buildCodeBlock {
+            add("return emptyList()")
         }
     )
     .build()
