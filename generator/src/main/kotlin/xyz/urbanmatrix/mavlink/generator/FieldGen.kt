@@ -102,7 +102,11 @@ private fun FieldModel.defaultKotlinValue(enumHelper: EnumHelper): String = when
 
     is FieldModel.PrimitiveArray -> if (this.primitiveType == "char") "\"\"" else "emptyList()"
 
-    is FieldModel.Enum -> "${if (enumHelper.isBitmask(this.enumType)) MavBitmaskValue::class.simpleName else MavEnumValue::class.simpleName}.fromValue(0)"
+    is FieldModel.Enum -> if (enumHelper.isBitmask(this.enumType)) {
+        "${MavBitmaskValue::class.simpleName}.fromValue(0)"
+    } else {
+        "${MavEnumValue::class.simpleName}.fromValue(0)"
+    }
 }
 
 private const val SERIALIZATION_PACKAGE = "xyz.urbanmatrix.mavlink.serialization"
