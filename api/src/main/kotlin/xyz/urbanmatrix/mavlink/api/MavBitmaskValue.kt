@@ -8,12 +8,15 @@ class MavBitmaskValue<E : MavBitmask> private constructor(val flags: List<E>, va
     companion object {
 
         @JvmStatic
-        fun <E : MavBitmask> of(vararg flags: E) = MavBitmaskValue(
-            flags.asList(),
+        fun <E : MavBitmask> of(flags: List<E>) = MavBitmaskValue(
+            flags,
             flags.map { it.value }
                 .reduceOrNull { bitmask, value -> bitmask or value }
                 ?: 0L
         )
+
+        @JvmStatic
+        fun <E : MavBitmask> of(vararg flags: E) = of(flags.asList())
 
         @JvmStatic
         fun <E : MavBitmask> fromValue(value: Long) = MavBitmaskValue<E>(emptyList(), value)
