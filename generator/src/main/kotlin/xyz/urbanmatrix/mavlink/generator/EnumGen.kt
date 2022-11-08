@@ -68,7 +68,9 @@ private fun EnumModel.generateGetFlagsFromValue(packageName: String) = FunSpec
     .returns(List::class.asTypeName().parameterizedBy(getClassName(packageName)))
     .addCode(
         buildCodeBlock {
-            add("return emptyList()")
+            beginControlFlow("return buildList {")
+            entries.forEach { addStatement("if (v and ${it.value}L == ${it.value}L) add(${it.name})") }
+            endControlFlow()
         }
     )
     .build()
