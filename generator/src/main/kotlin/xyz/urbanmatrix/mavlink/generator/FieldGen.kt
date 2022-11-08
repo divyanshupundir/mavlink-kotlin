@@ -59,7 +59,15 @@ fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHe
 fun FieldModel.generateDeserializeStatement(inputName: String, enumHelper: EnumHelper): CodeBlock {
     val decode = CodeBlock.builder()
     when (this) {
-        is FieldModel.Enum -> {
+        is FieldModel.Enum -> if (enumHelper.isBitmask(enumType)) {
+            decode.beginControlFlow(
+                "val $formattedName = $inputName.%M($size).let { value ->",
+                decodeMethodName(enumHelper)
+            )
+            decode.addStatement("val flags = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getFlagsFromValue(value)")
+            decode.addStatement("if (flags.isNotEmpty()) %1T.of(flags) else %1T.fromValue(value)", MavBitmaskValue::class)
+            decode.endControlFlow()
+        } else {
             decode.beginControlFlow(
                 "val $formattedName = $inputName.%M($size).let { value ->",
                 decodeMethodName(enumHelper)
