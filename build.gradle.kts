@@ -107,7 +107,7 @@ task("closeAndReleaseLibrary") {
 task("createGitTag") {
     doLast {
         val tagName = "v${Config.Plugin.releaseVersion}"
-        ProcessBuilder("git", "tag", "-a", tagName, "-m", "\"$tagName\"").start().waitFor()
+        ProcessBuilder("git", "tag", tagName).start().waitFor()
         ProcessBuilder("git", "push", "origin", tagName).start().waitFor()
     }
 }
