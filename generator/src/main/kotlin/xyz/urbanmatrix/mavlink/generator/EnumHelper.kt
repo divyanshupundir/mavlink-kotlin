@@ -13,7 +13,7 @@ class EnumHelper(
     init {
         for (mavlinkModel in mavlinkModels) {
             for (enumModel in mavlinkModel.enums) {
-                nameToModels[enumModel.name] = enumModel to mavlinkModel
+                nameToModels.putIfAbsent(enumModel.name, enumModel to mavlinkModel)
             }
         }
     }
