@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Flags in the HIGHRES_IMU message indicate which fields have updated since the last message
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class HighresImuUpdatedFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * None of the fields in HIGHRES_IMU have been updated
    */
@@ -107,6 +108,24 @@ public enum class HighresImuUpdatedFlags(
       4096L -> HIGHRES_IMU_UPDATED_TEMPERATURE
       65535L -> HIGHRES_IMU_UPDATED_ALL
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<HighresImuUpdatedFlags> = buildList {
+      if (v and 0L == 0L) add(HIGHRES_IMU_UPDATED_NONE)
+      if (v and 1L == 1L) add(HIGHRES_IMU_UPDATED_XACC)
+      if (v and 2L == 2L) add(HIGHRES_IMU_UPDATED_YACC)
+      if (v and 4L == 4L) add(HIGHRES_IMU_UPDATED_ZACC)
+      if (v and 8L == 8L) add(HIGHRES_IMU_UPDATED_XGYRO)
+      if (v and 16L == 16L) add(HIGHRES_IMU_UPDATED_YGYRO)
+      if (v and 32L == 32L) add(HIGHRES_IMU_UPDATED_ZGYRO)
+      if (v and 64L == 64L) add(HIGHRES_IMU_UPDATED_XMAG)
+      if (v and 128L == 128L) add(HIGHRES_IMU_UPDATED_YMAG)
+      if (v and 256L == 256L) add(HIGHRES_IMU_UPDATED_ZMAG)
+      if (v and 512L == 512L) add(HIGHRES_IMU_UPDATED_ABS_PRESSURE)
+      if (v and 1024L == 1024L) add(HIGHRES_IMU_UPDATED_DIFF_PRESSURE)
+      if (v and 2048L == 2048L) add(HIGHRES_IMU_UPDATED_PRESSURE_ALT)
+      if (v and 4096L == 4096L) add(HIGHRES_IMU_UPDATED_TEMPERATURE)
+      if (v and 65535L == 65535L) add(HIGHRES_IMU_UPDATED_ALL)
     }
   }
 }

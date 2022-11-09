@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * These encode the sensors whose status is sent as part of the SYS_STATUS message.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class MavSysStatusSensor(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * 0x01 3D gyro
    */
@@ -210,6 +211,41 @@ public enum class MavSysStatusSensor(
       1073741824L -> MAV_SYS_STATUS_SENSOR_PROPULSION
       2147483648L -> MAV_SYS_STATUS_EXTENSION_USED
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<MavSysStatusSensor> = buildList {
+      if (v and 1L == 1L) add(MAV_SYS_STATUS_SENSOR_3D_GYRO)
+      if (v and 2L == 2L) add(MAV_SYS_STATUS_SENSOR_3D_ACCEL)
+      if (v and 4L == 4L) add(MAV_SYS_STATUS_SENSOR_3D_MAG)
+      if (v and 8L == 8L) add(MAV_SYS_STATUS_SENSOR_ABSOLUTE_PRESSURE)
+      if (v and 16L == 16L) add(MAV_SYS_STATUS_SENSOR_DIFFERENTIAL_PRESSURE)
+      if (v and 32L == 32L) add(MAV_SYS_STATUS_SENSOR_GPS)
+      if (v and 64L == 64L) add(MAV_SYS_STATUS_SENSOR_OPTICAL_FLOW)
+      if (v and 128L == 128L) add(MAV_SYS_STATUS_SENSOR_VISION_POSITION)
+      if (v and 256L == 256L) add(MAV_SYS_STATUS_SENSOR_LASER_POSITION)
+      if (v and 512L == 512L) add(MAV_SYS_STATUS_SENSOR_EXTERNAL_GROUND_TRUTH)
+      if (v and 1024L == 1024L) add(MAV_SYS_STATUS_SENSOR_ANGULAR_RATE_CONTROL)
+      if (v and 2048L == 2048L) add(MAV_SYS_STATUS_SENSOR_ATTITUDE_STABILIZATION)
+      if (v and 4096L == 4096L) add(MAV_SYS_STATUS_SENSOR_YAW_POSITION)
+      if (v and 8192L == 8192L) add(MAV_SYS_STATUS_SENSOR_Z_ALTITUDE_CONTROL)
+      if (v and 16384L == 16384L) add(MAV_SYS_STATUS_SENSOR_XY_POSITION_CONTROL)
+      if (v and 32768L == 32768L) add(MAV_SYS_STATUS_SENSOR_MOTOR_OUTPUTS)
+      if (v and 65536L == 65536L) add(MAV_SYS_STATUS_SENSOR_RC_RECEIVER)
+      if (v and 131072L == 131072L) add(MAV_SYS_STATUS_SENSOR_3D_GYRO2)
+      if (v and 262144L == 262144L) add(MAV_SYS_STATUS_SENSOR_3D_ACCEL2)
+      if (v and 524288L == 524288L) add(MAV_SYS_STATUS_SENSOR_3D_MAG2)
+      if (v and 1048576L == 1048576L) add(MAV_SYS_STATUS_GEOFENCE)
+      if (v and 2097152L == 2097152L) add(MAV_SYS_STATUS_AHRS)
+      if (v and 4194304L == 4194304L) add(MAV_SYS_STATUS_TERRAIN)
+      if (v and 8388608L == 8388608L) add(MAV_SYS_STATUS_REVERSE_MOTOR)
+      if (v and 16777216L == 16777216L) add(MAV_SYS_STATUS_LOGGING)
+      if (v and 33554432L == 33554432L) add(MAV_SYS_STATUS_SENSOR_BATTERY)
+      if (v and 67108864L == 67108864L) add(MAV_SYS_STATUS_SENSOR_PROXIMITY)
+      if (v and 134217728L == 134217728L) add(MAV_SYS_STATUS_SENSOR_SATCOM)
+      if (v and 268435456L == 268435456L) add(MAV_SYS_STATUS_PREARM_CHECK)
+      if (v and 536870912L == 536870912L) add(MAV_SYS_STATUS_OBSTACLE_AVOIDANCE)
+      if (v and 1073741824L == 1073741824L) add(MAV_SYS_STATUS_SENSOR_PROPULSION)
+      if (v and 2147483648L == 2147483648L) add(MAV_SYS_STATUS_EXTENSION_USED)
     }
   }
 }

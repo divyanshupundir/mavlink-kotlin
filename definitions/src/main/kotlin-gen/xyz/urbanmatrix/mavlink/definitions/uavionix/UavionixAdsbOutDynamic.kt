@@ -8,15 +8,18 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -108,7 +111,7 @@ public data class UavionixAdsbOutDynamic(
    * ADS-B transponder dynamic input state flags
    */
   @GeneratedMavField(type = "uint16_t")
-  public val state: MavEnumValue<UavionixAdsbOutDynamicState> = MavEnumValue.fromValue(0),
+  public val state: MavBitmaskValue<UavionixAdsbOutDynamicState> = MavBitmaskValue.fromValue(0),
   /**
    * Mode A code (typically 1200 [0x04B0] for VFR)
    */
@@ -130,7 +133,7 @@ public data class UavionixAdsbOutDynamic(
     outputBuffer.encodeInt16(velvert)
     outputBuffer.encodeInt16(velns)
     outputBuffer.encodeInt16(velew)
-    outputBuffer.encodeEnumValue(state.value, 2)
+    outputBuffer.encodeBitmaskValue(state.value, 2)
     outputBuffer.encodeUint16(squawk)
     outputBuffer.encodeEnumValue(gpsfix.value, 1)
     outputBuffer.encodeUint8(numsats)
@@ -151,7 +154,7 @@ public data class UavionixAdsbOutDynamic(
     outputBuffer.encodeInt16(velvert)
     outputBuffer.encodeInt16(velns)
     outputBuffer.encodeInt16(velew)
-    outputBuffer.encodeEnumValue(state.value, 2)
+    outputBuffer.encodeBitmaskValue(state.value, 2)
     outputBuffer.encodeUint16(squawk)
     outputBuffer.encodeEnumValue(gpsfix.value, 1)
     outputBuffer.encodeUint8(numsats)
@@ -181,9 +184,9 @@ public data class UavionixAdsbOutDynamic(
       val velvert = inputBuffer.decodeInt16()
       val velns = inputBuffer.decodeInt16()
       val velew = inputBuffer.decodeInt16()
-      val state = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = UavionixAdsbOutDynamicState.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val state = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = UavionixAdsbOutDynamicState.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val squawk = inputBuffer.decodeUint16()
       val gpsfix = inputBuffer.decodeEnumValue(1).let { value ->
@@ -255,7 +258,7 @@ public data class UavionixAdsbOutDynamic(
     public var emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> =
         MavEnumValue.fromValue(0)
 
-    public var state: MavEnumValue<UavionixAdsbOutDynamicState> = MavEnumValue.fromValue(0)
+    public var state: MavBitmaskValue<UavionixAdsbOutDynamicState> = MavBitmaskValue.fromValue(0)
 
     public var squawk: Int = 0
 

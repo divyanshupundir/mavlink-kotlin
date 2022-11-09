@@ -9,10 +9,12 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.definitions.minimal.MavModeFlag
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
@@ -20,6 +22,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -42,7 +45,7 @@ public data class HighLatency(
    * Bitmap of enabled system modes.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
+  public val baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0),
   /**
    * A bitfield for use for autopilot-specific flags.
    */
@@ -174,7 +177,7 @@ public data class HighLatency(
     outputBuffer.encodeInt16(altitudeAmsl)
     outputBuffer.encodeInt16(altitudeSp)
     outputBuffer.encodeUint16(wpDistance)
-    outputBuffer.encodeEnumValue(baseMode.value, 1)
+    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
     outputBuffer.encodeEnumValue(landedState.value, 1)
     outputBuffer.encodeInt8(throttle)
     outputBuffer.encodeUint8(airspeed)
@@ -203,7 +206,7 @@ public data class HighLatency(
     outputBuffer.encodeInt16(altitudeAmsl)
     outputBuffer.encodeInt16(altitudeSp)
     outputBuffer.encodeUint16(wpDistance)
-    outputBuffer.encodeEnumValue(baseMode.value, 1)
+    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
     outputBuffer.encodeEnumValue(landedState.value, 1)
     outputBuffer.encodeInt8(throttle)
     outputBuffer.encodeUint8(airspeed)
@@ -241,9 +244,9 @@ public data class HighLatency(
       val altitudeAmsl = inputBuffer.decodeInt16()
       val altitudeSp = inputBuffer.decodeInt16()
       val wpDistance = inputBuffer.decodeUint16()
-      val baseMode = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavModeFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val baseMode = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = MavModeFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val landedState = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavLandedState.getEntryFromValueOrNull(value)
@@ -303,7 +306,7 @@ public data class HighLatency(
   }
 
   public class Builder {
-    public var baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0)
+    public var baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0)
 
     public var customMode: Long = 0L
 

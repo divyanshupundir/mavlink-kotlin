@@ -9,14 +9,14 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
@@ -105,7 +105,7 @@ public data class HighresImu(
    * Bitmap for fields that have updated since last message
    */
   @GeneratedMavField(type = "uint16_t")
-  public val fieldsUpdated: MavEnumValue<HighresImuUpdatedFlags> = MavEnumValue.fromValue(0),
+  public val fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with
    * id=0)
@@ -134,7 +134,7 @@ public data class HighresImu(
     outputBuffer.encodeFloat(diffPressure)
     outputBuffer.encodeFloat(pressureAlt)
     outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeEnumValue(fieldsUpdated.value, 2)
+    outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 2)
     return outputBuffer.array()
   }
 
@@ -154,7 +154,7 @@ public data class HighresImu(
     outputBuffer.encodeFloat(diffPressure)
     outputBuffer.encodeFloat(pressureAlt)
     outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeEnumValue(fieldsUpdated.value, 2)
+    outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 2)
     outputBuffer.encodeUint8(id)
     return outputBuffer.array().truncateZeros()
   }
@@ -184,9 +184,9 @@ public data class HighresImu(
       val diffPressure = inputBuffer.decodeFloat()
       val pressureAlt = inputBuffer.decodeFloat()
       val temperature = inputBuffer.decodeFloat()
-      val fieldsUpdated = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = HighresImuUpdatedFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val fieldsUpdated = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = HighresImuUpdatedFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val id = inputBuffer.decodeUint8()
 
@@ -248,7 +248,7 @@ public data class HighresImu(
 
     public var temperature: Float = 0F
 
-    public var fieldsUpdated: MavEnumValue<HighresImuUpdatedFlags> = MavEnumValue.fromValue(0)
+    public var fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> = MavBitmaskValue.fromValue(0)
 
     public var id: Int = 0
 

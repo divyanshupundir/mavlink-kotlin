@@ -11,17 +11,17 @@ import kotlin.String
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
@@ -82,7 +82,7 @@ public data class GimbalDeviceInformation(
    * Bitmap of gimbal capability flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val capFlags: MavEnumValue<GimbalDeviceCapFlags> = MavEnumValue.fromValue(0),
+  public val capFlags: MavBitmaskValue<GimbalDeviceCapFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Bitmap for use for gimbal-specific capability flags.
    */
@@ -133,7 +133,7 @@ public data class GimbalDeviceInformation(
     outputBuffer.encodeFloat(pitchMax)
     outputBuffer.encodeFloat(yawMin)
     outputBuffer.encodeFloat(yawMax)
-    outputBuffer.encodeEnumValue(capFlags.value, 2)
+    outputBuffer.encodeBitmaskValue(capFlags.value, 2)
     outputBuffer.encodeUint16(customCapFlags)
     outputBuffer.encodeString(vendorName, 32)
     outputBuffer.encodeString(modelName, 32)
@@ -153,7 +153,7 @@ public data class GimbalDeviceInformation(
     outputBuffer.encodeFloat(pitchMax)
     outputBuffer.encodeFloat(yawMin)
     outputBuffer.encodeFloat(yawMax)
-    outputBuffer.encodeEnumValue(capFlags.value, 2)
+    outputBuffer.encodeBitmaskValue(capFlags.value, 2)
     outputBuffer.encodeUint16(customCapFlags)
     outputBuffer.encodeString(vendorName, 32)
     outputBuffer.encodeString(modelName, 32)
@@ -182,9 +182,9 @@ public data class GimbalDeviceInformation(
       val pitchMax = inputBuffer.decodeFloat()
       val yawMin = inputBuffer.decodeFloat()
       val yawMax = inputBuffer.decodeFloat()
-      val capFlags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = GimbalDeviceCapFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val capFlags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = GimbalDeviceCapFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val customCapFlags = inputBuffer.decodeUint16()
       val vendorName = inputBuffer.decodeString(32)
@@ -234,7 +234,7 @@ public data class GimbalDeviceInformation(
 
     public var uid: BigInteger = BigInteger.ZERO
 
-    public var capFlags: MavEnumValue<GimbalDeviceCapFlags> = MavEnumValue.fromValue(0)
+    public var capFlags: MavBitmaskValue<GimbalDeviceCapFlags> = MavBitmaskValue.fromValue(0)
 
     public var customCapFlags: Int = 0
 

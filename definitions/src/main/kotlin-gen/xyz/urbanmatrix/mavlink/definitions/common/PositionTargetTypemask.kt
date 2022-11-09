@@ -1,9 +1,10 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of
@@ -11,10 +12,10 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  * ignored. If bit 9 is set the floats afx afy afz should be interpreted as force instead of
  * acceleration.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class PositionTargetTypemask(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Ignore position x
    */
@@ -92,6 +93,21 @@ public enum class PositionTargetTypemask(
       1024L -> POSITION_TARGET_TYPEMASK_YAW_IGNORE
       2048L -> POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<PositionTargetTypemask> = buildList {
+      if (v and 1L == 1L) add(POSITION_TARGET_TYPEMASK_X_IGNORE)
+      if (v and 2L == 2L) add(POSITION_TARGET_TYPEMASK_Y_IGNORE)
+      if (v and 4L == 4L) add(POSITION_TARGET_TYPEMASK_Z_IGNORE)
+      if (v and 8L == 8L) add(POSITION_TARGET_TYPEMASK_VX_IGNORE)
+      if (v and 16L == 16L) add(POSITION_TARGET_TYPEMASK_VY_IGNORE)
+      if (v and 32L == 32L) add(POSITION_TARGET_TYPEMASK_VZ_IGNORE)
+      if (v and 64L == 64L) add(POSITION_TARGET_TYPEMASK_AX_IGNORE)
+      if (v and 128L == 128L) add(POSITION_TARGET_TYPEMASK_AY_IGNORE)
+      if (v and 256L == 256L) add(POSITION_TARGET_TYPEMASK_AZ_IGNORE)
+      if (v and 512L == 512L) add(POSITION_TARGET_TYPEMASK_FORCE_SET)
+      if (v and 1024L == 1024L) add(POSITION_TARGET_TYPEMASK_YAW_IGNORE)
+      if (v and 2048L == 2048L) add(POSITION_TARGET_TYPEMASK_YAW_RATE_IGNORE)
     }
   }
 }

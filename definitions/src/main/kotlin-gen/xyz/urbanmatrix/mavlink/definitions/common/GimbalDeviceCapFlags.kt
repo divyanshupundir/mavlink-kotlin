@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Gimbal device (low level) capability flags (bitmap)
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class GimbalDeviceCapFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Gimbal device supports a retracted position
    */
@@ -92,6 +93,21 @@ public enum class GimbalDeviceCapFlags(
       1024L -> GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK
       2048L -> GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<GimbalDeviceCapFlags> = buildList {
+      if (v and 1L == 1L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_RETRACT)
+      if (v and 2L == 2L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_NEUTRAL)
+      if (v and 4L == 4L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_AXIS)
+      if (v and 8L == 8L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_FOLLOW)
+      if (v and 16L == 16L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_ROLL_LOCK)
+      if (v and 32L == 32L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_AXIS)
+      if (v and 64L == 64L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_FOLLOW)
+      if (v and 128L == 128L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_PITCH_LOCK)
+      if (v and 256L == 256L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_AXIS)
+      if (v and 512L == 512L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_FOLLOW)
+      if (v and 1024L == 1024L) add(GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK)
+      if (v and 2048L == 2048L) add(GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW)
     }
   }
 }

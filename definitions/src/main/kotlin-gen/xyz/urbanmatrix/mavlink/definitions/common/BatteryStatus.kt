@@ -8,15 +8,18 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeInt8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16Array
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -131,7 +134,7 @@ public data class BatteryStatus(
     type = "uint32_t",
     extension = true,
   )
-  public val faultBitmask: MavEnumValue<MavBatteryFault> = MavEnumValue.fromValue(0),
+  public val faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<BatteryStatus> {
   public override val instanceMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
 
@@ -164,7 +167,7 @@ public data class BatteryStatus(
     outputBuffer.encodeEnumValue(chargeState.value, 1)
     outputBuffer.encodeUint16Array(voltagesExt, 8)
     outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeEnumValue(faultBitmask.value, 4)
+    outputBuffer.encodeBitmaskValue(faultBitmask.value, 4)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -204,9 +207,9 @@ public data class BatteryStatus(
         val entry = MavBatteryMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val faultBitmask = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavBatteryFault.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val faultBitmask = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavBatteryFault.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       BatteryStatus(
@@ -263,7 +266,7 @@ public data class BatteryStatus(
 
     public var mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0)
 
-    public var faultBitmask: MavEnumValue<MavBatteryFault> = MavEnumValue.fromValue(0)
+    public var faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0)
 
     public fun build(): BatteryStatus = BatteryStatus(
       id = id,

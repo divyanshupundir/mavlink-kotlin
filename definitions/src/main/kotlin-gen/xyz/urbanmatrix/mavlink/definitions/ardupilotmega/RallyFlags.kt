@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Flags in RALLY_POINT message.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class RallyFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Flag set when requiring favorable winds for landing.
    */
@@ -30,6 +31,11 @@ public enum class RallyFlags(
       1L -> FAVORABLE_WIND
       2L -> LAND_IMMEDIATELY
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<RallyFlags> = buildList {
+      if (v and 1L == 1L) add(FAVORABLE_WIND)
+      if (v and 2L == 2L) add(LAND_IMMEDIATELY)
     }
   }
 }

@@ -8,14 +8,14 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
@@ -46,7 +46,7 @@ public data class GimbalManagerSetManualControl(
    * High level gimbal manager flags.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val flags: MavEnumValue<GimbalManagerFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
    * device components. Send command multiple times for more than one gimbal (but not all gimbals).
@@ -80,7 +80,7 @@ public data class GimbalManagerSetManualControl(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(flags.value, 4)
+    outputBuffer.encodeBitmaskValue(flags.value, 4)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(pitchRate)
@@ -93,7 +93,7 @@ public data class GimbalManagerSetManualControl(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(flags.value, 4)
+    outputBuffer.encodeBitmaskValue(flags.value, 4)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(pitchRate)
@@ -116,9 +116,9 @@ public data class GimbalManagerSetManualControl(
     private val DESERIALIZER: MavDeserializer<GimbalManagerSetManualControl> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val flags = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = GimbalManagerFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = GimbalManagerFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
@@ -154,7 +154,7 @@ public data class GimbalManagerSetManualControl(
 
     public var targetComponent: Int = 0
 
-    public var flags: MavEnumValue<GimbalManagerFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0)
 
     public var gimbalDeviceId: Int = 0
 

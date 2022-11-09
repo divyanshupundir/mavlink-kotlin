@@ -1,19 +1,20 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Flags to report status/failure cases for a power generator (used in GENERATOR_STATUS). Note that
  * FAULTS are conditions that cause the generator to fail. Warnings are conditions that require
  * attention before the next use (they indicate the system is not operating properly).
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class MavGeneratorStatusFlag(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Generator is off.
    */
@@ -160,6 +161,32 @@ public enum class MavGeneratorStatusFlag(
       2097152L -> MAV_GENERATOR_STATUS_FLAG_WARMING_UP
       4194304L -> MAV_GENERATOR_STATUS_FLAG_IDLE
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<MavGeneratorStatusFlag> = buildList {
+      if (v and 1L == 1L) add(MAV_GENERATOR_STATUS_FLAG_OFF)
+      if (v and 2L == 2L) add(MAV_GENERATOR_STATUS_FLAG_READY)
+      if (v and 4L == 4L) add(MAV_GENERATOR_STATUS_FLAG_GENERATING)
+      if (v and 8L == 8L) add(MAV_GENERATOR_STATUS_FLAG_CHARGING)
+      if (v and 16L == 16L) add(MAV_GENERATOR_STATUS_FLAG_REDUCED_POWER)
+      if (v and 32L == 32L) add(MAV_GENERATOR_STATUS_FLAG_MAXPOWER)
+      if (v and 64L == 64L) add(MAV_GENERATOR_STATUS_FLAG_OVERTEMP_WARNING)
+      if (v and 128L == 128L) add(MAV_GENERATOR_STATUS_FLAG_OVERTEMP_FAULT)
+      if (v and 256L == 256L) add(MAV_GENERATOR_STATUS_FLAG_ELECTRONICS_OVERTEMP_WARNING)
+      if (v and 512L == 512L) add(MAV_GENERATOR_STATUS_FLAG_ELECTRONICS_OVERTEMP_FAULT)
+      if (v and 1024L == 1024L) add(MAV_GENERATOR_STATUS_FLAG_ELECTRONICS_FAULT)
+      if (v and 2048L == 2048L) add(MAV_GENERATOR_STATUS_FLAG_POWERSOURCE_FAULT)
+      if (v and 4096L == 4096L) add(MAV_GENERATOR_STATUS_FLAG_COMMUNICATION_WARNING)
+      if (v and 8192L == 8192L) add(MAV_GENERATOR_STATUS_FLAG_COOLING_WARNING)
+      if (v and 16384L == 16384L) add(MAV_GENERATOR_STATUS_FLAG_POWER_RAIL_FAULT)
+      if (v and 32768L == 32768L) add(MAV_GENERATOR_STATUS_FLAG_OVERCURRENT_FAULT)
+      if (v and 65536L == 65536L) add(MAV_GENERATOR_STATUS_FLAG_BATTERY_OVERCHARGE_CURRENT_FAULT)
+      if (v and 131072L == 131072L) add(MAV_GENERATOR_STATUS_FLAG_OVERVOLTAGE_FAULT)
+      if (v and 262144L == 262144L) add(MAV_GENERATOR_STATUS_FLAG_BATTERY_UNDERVOLT_FAULT)
+      if (v and 524288L == 524288L) add(MAV_GENERATOR_STATUS_FLAG_START_INHIBITED)
+      if (v and 1048576L == 1048576L) add(MAV_GENERATOR_STATUS_FLAG_MAINTENANCE_REQUIRED)
+      if (v and 2097152L == 2097152L) add(MAV_GENERATOR_STATUS_FLAG_WARMING_UP)
+      if (v and 4194304L == 4194304L) add(MAV_GENERATOR_STATUS_FLAG_IDLE)
     }
   }
 }

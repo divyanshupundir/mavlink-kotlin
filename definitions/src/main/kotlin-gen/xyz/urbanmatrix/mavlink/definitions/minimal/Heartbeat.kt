@@ -8,12 +8,15 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
@@ -47,7 +50,7 @@ public data class Heartbeat(
    * System mode bitmap.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
+  public val baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0),
   /**
    * A bitfield for use for autopilot-specific flags
    */
@@ -72,7 +75,7 @@ public data class Heartbeat(
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeEnumValue(baseMode.value, 1)
+    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
     outputBuffer.encodeEnumValue(systemStatus.value, 1)
     outputBuffer.encodeUint8(mavlinkVersion)
     return outputBuffer.array()
@@ -83,7 +86,7 @@ public data class Heartbeat(
     outputBuffer.encodeUint32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeEnumValue(baseMode.value, 1)
+    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
     outputBuffer.encodeEnumValue(systemStatus.value, 1)
     outputBuffer.encodeUint8(mavlinkVersion)
     return outputBuffer.array().truncateZeros()
@@ -109,9 +112,9 @@ public data class Heartbeat(
         val entry = MavAutopilot.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val baseMode = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavModeFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val baseMode = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = MavModeFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val systemStatus = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavState.getEntryFromValueOrNull(value)
@@ -143,7 +146,7 @@ public data class Heartbeat(
 
     public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0)
 
-    public var baseMode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0)
+    public var baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0)
 
     public var customMode: Long = 0L
 

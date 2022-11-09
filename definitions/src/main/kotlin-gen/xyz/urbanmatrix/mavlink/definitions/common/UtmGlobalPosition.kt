@@ -9,15 +9,18 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -123,7 +126,7 @@ public data class UtmGlobalPosition(
    * Bitwise OR combination of the data available flags.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavEnumValue<UtmDataAvailFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<UtmDataAvailFlags> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<UtmGlobalPosition> {
   public override val instanceMetadata: MavMessage.Metadata<UtmGlobalPosition> = METADATA
 
@@ -146,7 +149,7 @@ public data class UtmGlobalPosition(
     outputBuffer.encodeUint16(updateRate)
     outputBuffer.encodeUint8Array(uasId, 18)
     outputBuffer.encodeEnumValue(flightState.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array()
   }
 
@@ -169,7 +172,7 @@ public data class UtmGlobalPosition(
     outputBuffer.encodeUint16(updateRate)
     outputBuffer.encodeUint8Array(uasId, 18)
     outputBuffer.encodeEnumValue(flightState.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -204,9 +207,9 @@ public data class UtmGlobalPosition(
         val entry = UtmFlightState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = UtmDataAvailFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = UtmDataAvailFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       UtmGlobalPosition(
@@ -275,7 +278,7 @@ public data class UtmGlobalPosition(
 
     public var flightState: MavEnumValue<UtmFlightState> = MavEnumValue.fromValue(0)
 
-    public var flags: MavEnumValue<UtmDataAvailFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<UtmDataAvailFlags> = MavBitmaskValue.fromValue(0)
 
     public fun build(): UtmGlobalPosition = UtmGlobalPosition(
       time = time,

@@ -1,6 +1,7 @@
 package xyz.urbanmatrix.mavlink.connection
 
 import org.junit.jupiter.api.Test
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.definitions.common.CommonDialect
 import xyz.urbanmatrix.mavlink.definitions.minimal.Heartbeat
@@ -50,7 +51,7 @@ class StreamMavConnectionTest {
             val heartbeat = Heartbeat(
                 MavType.MAV_TYPE_FIXED_WING.wrap(),
                 MavAutopilot.MAV_AUTOPILOT_PX4.wrap(),
-                MavEnumValue.fromValue(200),
+                MavBitmaskValue.fromValue(200),
                 52202,
                 MavState.MAV_STATE_ACTIVE.wrap(),
                 2

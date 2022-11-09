@@ -10,15 +10,15 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
@@ -53,7 +53,7 @@ public data class SetAttitudeTarget(
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0),
+  public val typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0),
   /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
@@ -100,7 +100,7 @@ public data class SetAttitudeTarget(
     outputBuffer.encodeFloat(thrust)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(typeMask.value, 1)
+    outputBuffer.encodeBitmaskValue(typeMask.value, 1)
     return outputBuffer.array()
   }
 
@@ -114,7 +114,7 @@ public data class SetAttitudeTarget(
     outputBuffer.encodeFloat(thrust)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeEnumValue(typeMask.value, 1)
+    outputBuffer.encodeBitmaskValue(typeMask.value, 1)
     outputBuffer.encodeFloatArray(thrustBody, 12)
     return outputBuffer.array().truncateZeros()
   }
@@ -138,9 +138,9 @@ public data class SetAttitudeTarget(
       val thrust = inputBuffer.decodeFloat()
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
-      val typeMask = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = AttitudeTargetTypemask.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val typeMask = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = AttitudeTargetTypemask.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val thrustBody = inputBuffer.decodeFloatArray(12)
 
@@ -174,7 +174,7 @@ public data class SetAttitudeTarget(
 
     public var targetComponent: Int = 0
 
-    public var typeMask: MavEnumValue<AttitudeTargetTypemask> = MavEnumValue.fromValue(0)
+    public var typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0)
 
     public var q: List<Float> = emptyList()
 

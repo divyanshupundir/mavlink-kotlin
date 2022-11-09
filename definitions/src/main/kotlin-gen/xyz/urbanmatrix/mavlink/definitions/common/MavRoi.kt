@@ -17,39 +17,39 @@ public enum class MavRoi(
   public override val `value`: Long,
 ) : MavEnum {
   /**
-   * No region of interest.
+   * Point toward of given id.
    */
   @GeneratedMavEnumEntry
-  MAV_ROI_NONE(0L),
-  /**
-   * Point toward next waypoint, with optional pitch/roll/yaw offset.
-   */
-  @GeneratedMavEnumEntry
-  MAV_ROI_WPNEXT(1L),
-  /**
-   * Point toward given waypoint.
-   */
-  @GeneratedMavEnumEntry
-  MAV_ROI_WPINDEX(2L),
+  MAV_ROI_TARGET(4L),
   /**
    * Point toward fixed location.
    */
   @GeneratedMavEnumEntry
   MAV_ROI_LOCATION(3L),
   /**
-   * Point toward of given id.
+   * Point toward given waypoint.
    */
   @GeneratedMavEnumEntry
-  MAV_ROI_TARGET(4L),
+  MAV_ROI_WPINDEX(2L),
+  /**
+   * Point toward next waypoint, with optional pitch/roll/yaw offset.
+   */
+  @GeneratedMavEnumEntry
+  MAV_ROI_WPNEXT(1L),
+  /**
+   * No region of interest.
+   */
+  @GeneratedMavEnumEntry
+  MAV_ROI_NONE(0L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavRoi? = when (v) {
-      0L -> MAV_ROI_NONE
-      1L -> MAV_ROI_WPNEXT
-      2L -> MAV_ROI_WPINDEX
-      3L -> MAV_ROI_LOCATION
       4L -> MAV_ROI_TARGET
+      3L -> MAV_ROI_LOCATION
+      2L -> MAV_ROI_WPINDEX
+      1L -> MAV_ROI_WPNEXT
+      0L -> MAV_ROI_NONE
       else -> null
     }
   }

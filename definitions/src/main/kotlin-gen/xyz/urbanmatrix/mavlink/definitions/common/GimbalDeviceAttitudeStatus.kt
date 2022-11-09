@@ -10,16 +10,16 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
@@ -58,7 +58,7 @@ public data class GimbalDeviceAttitudeStatus(
    * Current gimbal flags set.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
    * whether the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set)
@@ -84,7 +84,7 @@ public data class GimbalDeviceAttitudeStatus(
    * Failure flags (0 for no failure)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val failureFlags: MavEnumValue<GimbalDeviceErrorFlags> = MavEnumValue.fromValue(0),
+  public val failureFlags: MavBitmaskValue<GimbalDeviceErrorFlags> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<GimbalDeviceAttitudeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceAttitudeStatus> = METADATA
 
@@ -95,8 +95,8 @@ public data class GimbalDeviceAttitudeStatus(
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
     outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeEnumValue(failureFlags.value, 4)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(failureFlags.value, 4)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
@@ -109,8 +109,8 @@ public data class GimbalDeviceAttitudeStatus(
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
     outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeEnumValue(failureFlags.value, 4)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(failureFlags.value, 4)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array().truncateZeros()
@@ -133,13 +133,13 @@ public data class GimbalDeviceAttitudeStatus(
       val angularVelocityX = inputBuffer.decodeFloat()
       val angularVelocityY = inputBuffer.decodeFloat()
       val angularVelocityZ = inputBuffer.decodeFloat()
-      val failureFlags = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = GimbalDeviceErrorFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val failureFlags = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = GimbalDeviceErrorFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = GimbalDeviceFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = GimbalDeviceFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -173,7 +173,7 @@ public data class GimbalDeviceAttitudeStatus(
 
     public var timeBootMs: Long = 0L
 
-    public var flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0)
 
     public var q: List<Float> = emptyList()
 
@@ -183,7 +183,7 @@ public data class GimbalDeviceAttitudeStatus(
 
     public var angularVelocityZ: Float = 0F
 
-    public var failureFlags: MavEnumValue<GimbalDeviceErrorFlags> = MavEnumValue.fromValue(0)
+    public var failureFlags: MavBitmaskValue<GimbalDeviceErrorFlags> = MavBitmaskValue.fromValue(0)
 
     public fun build(): GimbalDeviceAttitudeStatus = GimbalDeviceAttitudeStatus(
       targetSystem = targetSystem,

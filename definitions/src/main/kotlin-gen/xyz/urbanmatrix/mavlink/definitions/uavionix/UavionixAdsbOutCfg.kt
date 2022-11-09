@@ -9,14 +9,17 @@ import kotlin.String
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.definitions.common.AdsbEmitterType
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeString
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
@@ -72,7 +75,7 @@ public data class UavionixAdsbOutCfg(
    * ADS-B transponder reciever and transmit enable flags
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rfselect: MavEnumValue<UavionixAdsbOutRfSelect> = MavEnumValue.fromValue(0),
+  public val rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<UavionixAdsbOutCfg> {
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
 
@@ -85,7 +88,7 @@ public data class UavionixAdsbOutCfg(
     outputBuffer.encodeEnumValue(aircraftsize.value, 1)
     outputBuffer.encodeEnumValue(gpsoffsetlat.value, 1)
     outputBuffer.encodeEnumValue(gpsoffsetlon.value, 1)
-    outputBuffer.encodeEnumValue(rfselect.value, 1)
+    outputBuffer.encodeBitmaskValue(rfselect.value, 1)
     return outputBuffer.array()
   }
 
@@ -98,7 +101,7 @@ public data class UavionixAdsbOutCfg(
     outputBuffer.encodeEnumValue(aircraftsize.value, 1)
     outputBuffer.encodeEnumValue(gpsoffsetlat.value, 1)
     outputBuffer.encodeEnumValue(gpsoffsetlon.value, 1)
-    outputBuffer.encodeEnumValue(rfselect.value, 1)
+    outputBuffer.encodeBitmaskValue(rfselect.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -132,9 +135,9 @@ public data class UavionixAdsbOutCfg(
         val entry = UavionixAdsbOutCfgGpsOffsetLon.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val rfselect = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbOutRfSelect.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val rfselect = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = UavionixAdsbOutRfSelect.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       UavionixAdsbOutCfg(
@@ -176,7 +179,7 @@ public data class UavionixAdsbOutCfg(
 
     public var stallspeed: Int = 0
 
-    public var rfselect: MavEnumValue<UavionixAdsbOutRfSelect> = MavEnumValue.fromValue(0)
+    public var rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0)
 
     public fun build(): UavionixAdsbOutCfg = UavionixAdsbOutCfg(
       icao = icao,

@@ -9,16 +9,16 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -38,7 +38,7 @@ public data class GeneratorStatus(
    * Status flags.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val status: MavEnumValue<MavGeneratorStatusFlag> = MavEnumValue.fromValue(0),
+  public val status: MavBitmaskValue<MavGeneratorStatusFlag> = MavBitmaskValue.fromValue(0),
   /**
    * Speed of electrical generator or alternator. UINT16_MAX: field not provided.
    */
@@ -98,7 +98,7 @@ public data class GeneratorStatus(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(status.value, 8)
+    outputBuffer.encodeBitmaskValue(status.value, 8)
     outputBuffer.encodeFloat(batteryCurrent)
     outputBuffer.encodeFloat(loadCurrent)
     outputBuffer.encodeFloat(powerGenerated)
@@ -114,7 +114,7 @@ public data class GeneratorStatus(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(status.value, 8)
+    outputBuffer.encodeBitmaskValue(status.value, 8)
     outputBuffer.encodeFloat(batteryCurrent)
     outputBuffer.encodeFloat(loadCurrent)
     outputBuffer.encodeFloat(powerGenerated)
@@ -139,9 +139,9 @@ public data class GeneratorStatus(
 
     private val DESERIALIZER: MavDeserializer<GeneratorStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val status = inputBuffer.decodeEnumValue(8).let { value ->
-        val entry = MavGeneratorStatusFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val status = inputBuffer.decodeBitmaskValue(8).let { value ->
+        val flags = MavGeneratorStatusFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val batteryCurrent = inputBuffer.decodeFloat()
       val loadCurrent = inputBuffer.decodeFloat()
@@ -179,7 +179,7 @@ public data class GeneratorStatus(
   }
 
   public class Builder {
-    public var status: MavEnumValue<MavGeneratorStatusFlag> = MavEnumValue.fromValue(0)
+    public var status: MavBitmaskValue<MavGeneratorStatusFlag> = MavBitmaskValue.fromValue(0)
 
     public var generatorSpeed: Int = 0
 

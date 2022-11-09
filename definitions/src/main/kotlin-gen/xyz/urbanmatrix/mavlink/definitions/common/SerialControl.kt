@@ -9,14 +9,17 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
@@ -44,7 +47,7 @@ public data class SerialControl(
    * Bitmap of serial control flags.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavEnumValue<SerialControlFlag> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<SerialControlFlag> = MavBitmaskValue.fromValue(0),
   /**
    * Timeout for reply data
    */
@@ -89,7 +92,7 @@ public data class SerialControl(
     outputBuffer.encodeUint32(baudrate)
     outputBuffer.encodeUint16(timeout)
     outputBuffer.encodeEnumValue(device.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     outputBuffer.encodeUint8(count)
     outputBuffer.encodeUint8Array(data, 70)
     return outputBuffer.array()
@@ -100,7 +103,7 @@ public data class SerialControl(
     outputBuffer.encodeUint32(baudrate)
     outputBuffer.encodeUint16(timeout)
     outputBuffer.encodeEnumValue(device.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     outputBuffer.encodeUint8(count)
     outputBuffer.encodeUint8Array(data, 70)
     outputBuffer.encodeUint8(targetSystem)
@@ -125,9 +128,9 @@ public data class SerialControl(
         val entry = SerialControlDev.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = SerialControlFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = SerialControlFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val count = inputBuffer.decodeUint8()
       val data = inputBuffer.decodeUint8Array(70)
@@ -158,7 +161,7 @@ public data class SerialControl(
   public class Builder {
     public var device: MavEnumValue<SerialControlDev> = MavEnumValue.fromValue(0)
 
-    public var flags: MavEnumValue<SerialControlFlag> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<SerialControlFlag> = MavBitmaskValue.fromValue(0)
 
     public var timeout: Int = 0
 

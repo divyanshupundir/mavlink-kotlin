@@ -9,14 +9,14 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
@@ -70,7 +70,7 @@ public data class WinchStatus(
    * Status flags
    */
   @GeneratedMavField(type = "uint32_t")
-  public val status: MavEnumValue<MavWinchStatusFlag> = MavEnumValue.fromValue(0),
+  public val status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<WinchStatus> {
   public override val instanceMetadata: MavMessage.Metadata<WinchStatus> = METADATA
 
@@ -82,7 +82,7 @@ public data class WinchStatus(
     outputBuffer.encodeFloat(tension)
     outputBuffer.encodeFloat(voltage)
     outputBuffer.encodeFloat(current)
-    outputBuffer.encodeEnumValue(status.value, 4)
+    outputBuffer.encodeBitmaskValue(status.value, 4)
     outputBuffer.encodeInt16(temperature)
     return outputBuffer.array()
   }
@@ -95,7 +95,7 @@ public data class WinchStatus(
     outputBuffer.encodeFloat(tension)
     outputBuffer.encodeFloat(voltage)
     outputBuffer.encodeFloat(current)
-    outputBuffer.encodeEnumValue(status.value, 4)
+    outputBuffer.encodeBitmaskValue(status.value, 4)
     outputBuffer.encodeInt16(temperature)
     return outputBuffer.array().truncateZeros()
   }
@@ -117,9 +117,9 @@ public data class WinchStatus(
       val tension = inputBuffer.decodeFloat()
       val voltage = inputBuffer.decodeFloat()
       val current = inputBuffer.decodeFloat()
-      val status = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavWinchStatusFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val status = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavWinchStatusFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val temperature = inputBuffer.decodeInt16()
 
@@ -159,7 +159,7 @@ public data class WinchStatus(
 
     public var temperature: Int = 0
 
-    public var status: MavEnumValue<MavWinchStatusFlag> = MavEnumValue.fromValue(0)
+    public var status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0)
 
     public fun build(): WinchStatus = WinchStatus(
       timeUsec = timeUsec,

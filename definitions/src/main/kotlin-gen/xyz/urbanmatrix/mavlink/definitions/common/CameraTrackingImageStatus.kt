@@ -8,12 +8,15 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
@@ -42,7 +45,7 @@ public data class CameraTrackingImageStatus(
    * Defines location of target data
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0),
+  public val targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0),
   /**
    * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is
    * right), NAN if unknown
@@ -99,7 +102,7 @@ public data class CameraTrackingImageStatus(
     outputBuffer.encodeFloat(recBottomY)
     outputBuffer.encodeEnumValue(trackingStatus.value, 1)
     outputBuffer.encodeEnumValue(trackingMode.value, 1)
-    outputBuffer.encodeEnumValue(targetData.value, 1)
+    outputBuffer.encodeBitmaskValue(targetData.value, 1)
     return outputBuffer.array()
   }
 
@@ -114,7 +117,7 @@ public data class CameraTrackingImageStatus(
     outputBuffer.encodeFloat(recBottomY)
     outputBuffer.encodeEnumValue(trackingStatus.value, 1)
     outputBuffer.encodeEnumValue(trackingMode.value, 1)
-    outputBuffer.encodeEnumValue(targetData.value, 1)
+    outputBuffer.encodeBitmaskValue(targetData.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -145,9 +148,9 @@ public data class CameraTrackingImageStatus(
         val entry = CameraTrackingMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetData = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = CameraTrackingTargetData.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val targetData = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = CameraTrackingTargetData.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       CameraTrackingImageStatus(
@@ -178,7 +181,7 @@ public data class CameraTrackingImageStatus(
 
     public var trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0)
 
-    public var targetData: MavEnumValue<CameraTrackingTargetData> = MavEnumValue.fromValue(0)
+    public var targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0)
 
     public var pointX: Float = 0F
 

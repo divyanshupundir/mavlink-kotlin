@@ -1,19 +1,20 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Smart battery supply status/fault flags (bitmask) for health indication. The battery must also
  * report either MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY if any of these
  * are set.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class MavBatteryFault(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Battery has deep discharged.
    */
@@ -75,6 +76,18 @@ public enum class MavBatteryFault(
       128L -> MAV_BATTERY_FAULT_INCOMPATIBLE_FIRMWARE
       256L -> BATTERY_FAULT_INCOMPATIBLE_CELLS_CONFIGURATION
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<MavBatteryFault> = buildList {
+      if (v and 1L == 1L) add(MAV_BATTERY_FAULT_DEEP_DISCHARGE)
+      if (v and 2L == 2L) add(MAV_BATTERY_FAULT_SPIKES)
+      if (v and 4L == 4L) add(MAV_BATTERY_FAULT_CELL_FAIL)
+      if (v and 8L == 8L) add(MAV_BATTERY_FAULT_OVER_CURRENT)
+      if (v and 16L == 16L) add(MAV_BATTERY_FAULT_OVER_TEMPERATURE)
+      if (v and 32L == 32L) add(MAV_BATTERY_FAULT_UNDER_TEMPERATURE)
+      if (v and 64L == 64L) add(MAV_BATTERY_FAULT_INCOMPATIBLE_VOLTAGE)
+      if (v and 128L == 128L) add(MAV_BATTERY_FAULT_INCOMPATIBLE_FIRMWARE)
+      if (v and 256L == 256L) add(BATTERY_FAULT_INCOMPATIBLE_CELLS_CONFIGURATION)
     }
   }
 }
