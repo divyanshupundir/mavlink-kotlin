@@ -23,71 +23,67 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 @Deprecated(message = "New version explicitly defines format. More interoperable.")
 @GeneratedMavMessage(
   id = 258,
-  crc = 240,
+  crc = 187,
 )
 public data class PlayTune(
   /**
    * System ID
    */
-  @GeneratedMavField(
-    type = "uint8_t",
-    extension = true,
-  )
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
-  @GeneratedMavField(
-    type = "uint8_t",
-    extension = true,
-  )
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * tune in board specific format
    */
-  @GeneratedMavField(
-    type = "char[30]",
-    extension = true,
-  )
+  @GeneratedMavField(type = "char[30]")
   public val tune: String = "",
   /**
    * tune extension (appended to tune)
    */
-  @GeneratedMavField(type = "char[200]")
+  @GeneratedMavField(
+    type = "char[200]",
+    extension = true,
+  )
   public val tune2: String = "",
 ) : MavMessage<PlayTune> {
   public override val instanceMetadata: MavMessage.Metadata<PlayTune> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeString(tune2, 200)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeString(tune, 30)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeString(tune2, 200)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeString(tune, 30)
+    outputBuffer.encodeString(tune2, 200)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
     private const val ID: Int = 258
 
-    private const val CRC: Int = 240
+    private const val CRC: Int = 187
 
-    private const val SIZE_V1: Int = 200
+    private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 232
 
     private val DESERIALIZER: MavDeserializer<PlayTune> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val tune2 = inputBuffer.decodeString(200)
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
       val tune = inputBuffer.decodeString(30)
+      val tune2 = inputBuffer.decodeString(200)
 
       PlayTune(
         targetSystem = targetSystem,
