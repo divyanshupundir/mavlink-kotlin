@@ -58,7 +58,8 @@ data class MessageXml(
         id,
         name,
         fields
-            .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
+            .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content again
+            .onEach { if (deprecated != null && extensions == null) it.extension = !it.extension }
             .onEach { if (extensions != null) it.extension = false }
             .onEachIndexed { i, f -> f.position = i + 1 }
             .map { it.toModel() },
