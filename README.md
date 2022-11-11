@@ -242,7 +242,7 @@ val completable = connection.sendSignedV2(
     payload = heartbeat,
     linkId = linkId,       // Integer link ID
     timestamp = timestamp, // Long microseconds
-    secretKey = secretKeu  // ByteArray passcode
+    secretKey = secretKey  // ByteArray passcode
 )
 ```
 
