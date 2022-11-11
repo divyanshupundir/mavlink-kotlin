@@ -40,9 +40,12 @@ data class MessageXml(
     // Jackson reads lists form the bottom. Assuming all fields form the bottom
     // to be extensions. When the extensions tag comes, setting extensions field
     // to be null. If extensions is never null, then no field is an extension.
-    var extensions: ExtensionsXml? = ExtensionsXml()
+    var extensions: ExtensionsXml? = null
         @JsonSetter("extensions") set(_) {
-            field = null
+            field = ExtensionsXml()
+            if (deprecated == null) {
+                fields.onEach { it.extension = true }
+            }
         }
 
     var fields = mutableListOf<FieldXml>()
@@ -50,6 +53,10 @@ data class MessageXml(
     @JsonSetter("field")
     fun addField(field: FieldXml) {
         field.extension = extensions != null
+
+        if (deprecated == null && extensions != null) {
+            field.extension = false
+        }
 
         fields += field
     }
@@ -59,8 +66,6 @@ data class MessageXml(
         name,
         fields
             .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content again
-            .onEach { if (deprecated != null && extensions == null) it.extension = !it.extension }
-            .onEach { if (extensions != null) it.extension = false }
             .onEachIndexed { i, f -> f.position = i + 1 }
             .map { it.toModel() },
         workInProgress != null,
