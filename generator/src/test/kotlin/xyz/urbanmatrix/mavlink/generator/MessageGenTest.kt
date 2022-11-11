@@ -3,7 +3,7 @@ package xyz.urbanmatrix.mavlink.generator
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class MessageGenKtTest {
+class MessageGenTest {
 
     @Test
     fun messageGeneration() {
