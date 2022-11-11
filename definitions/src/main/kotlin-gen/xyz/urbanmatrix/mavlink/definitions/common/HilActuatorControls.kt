@@ -10,14 +10,14 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.definitions.minimal.MavModeFlag
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
@@ -46,7 +46,7 @@ public data class HilActuatorControls(
    * System mode. Includes arming state.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val mode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0),
+  public val mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0),
   /**
    * Flags as bitfield, 1: indicate simulation using lockstep.
    */
@@ -60,7 +60,7 @@ public data class HilActuatorControls(
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint64(flags)
     outputBuffer.encodeFloatArray(controls, 64)
-    outputBuffer.encodeEnumValue(mode.value, 1)
+    outputBuffer.encodeBitmaskValue(mode.value, 1)
     return outputBuffer.array()
   }
 
@@ -69,7 +69,7 @@ public data class HilActuatorControls(
     outputBuffer.encodeUint64(timeUsec)
     outputBuffer.encodeUint64(flags)
     outputBuffer.encodeFloatArray(controls, 64)
-    outputBuffer.encodeEnumValue(mode.value, 1)
+    outputBuffer.encodeBitmaskValue(mode.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -87,9 +87,9 @@ public data class HilActuatorControls(
       val timeUsec = inputBuffer.decodeUint64()
       val flags = inputBuffer.decodeUint64()
       val controls = inputBuffer.decodeFloatArray(64)
-      val mode = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = MavModeFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val mode = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = MavModeFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       HilActuatorControls(
@@ -114,7 +114,7 @@ public data class HilActuatorControls(
 
     public var controls: List<Float> = emptyList()
 
-    public var mode: MavEnumValue<MavModeFlag> = MavEnumValue.fromValue(0)
+    public var mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0)
 
     public var flags: BigInteger = BigInteger.ZERO
 

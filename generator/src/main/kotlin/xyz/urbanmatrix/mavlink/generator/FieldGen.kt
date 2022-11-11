@@ -3,26 +3,27 @@ package xyz.urbanmatrix.mavlink.generator
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import java.math.BigInteger
 
-fun FieldModel.generateConstructorParameter(enumResolver: EnumResolver) = ParameterSpec
-    .builder(formattedName, resolveKotlinType(enumResolver))
-    .defaultValue(defaultKotlinValue)
+fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
+    .builder(formattedName, resolveKotlinType(enumHelper))
+    .defaultValue(defaultKotlinValue(enumHelper))
     .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
-fun FieldModel.generateProperty(enumResolver: EnumResolver) = PropertySpec
-    .builder(formattedName, resolveKotlinType(enumResolver))
+fun FieldModel.generateProperty(enumHelper: EnumHelper) = PropertySpec
+    .builder(formattedName, resolveKotlinType(enumHelper))
     .initializer(formattedName)
     .addAnnotation(generateGeneratedAnnotation())
     .build()
 
-fun FieldModel.generateBuilderProperty(enumResolver: EnumResolver) = PropertySpec
-    .builder(formattedName, resolveKotlinType(enumResolver))
+fun FieldModel.generateBuilderProperty(enumHelper: EnumHelper) = PropertySpec
+    .builder(formattedName, resolveKotlinType(enumHelper))
     .mutable()
-    .initializer(defaultKotlinValue)
+    .initializer(defaultKotlinValue(enumHelper))
     .build()
 
 private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
@@ -31,7 +32,7 @@ private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
     .apply { if (extension) addMember("extension = %L", true) }
     .build()
 
-private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName = when (this) {
+private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = when (this) {
     is FieldModel.Primitive -> {
         resolveKotlinPrimitiveType(this.type)
     }
@@ -40,34 +41,45 @@ private fun FieldModel.resolveKotlinType(enumResolver: EnumResolver): TypeName =
         else List::class.asTypeName().parameterizedBy(resolveKotlinPrimitiveType(this.primitiveType))
     }
     is FieldModel.Enum -> {
-        MavEnumValue::class.asTypeName().parameterizedBy(enumResolver.resolve(this.enumType))
+        val clazz = if (enumHelper.isBitmask(enumType)) MavBitmaskValue::class else MavEnumValue::class
+        clazz.asTypeName().parameterizedBy(enumHelper.resolveClassName(this.enumType))
     }
 }
 
-fun FieldModel.generateSerializeStatement(outputName: String): CodeBlock {
+fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHelper): CodeBlock {
     val encode = CodeBlock.builder()
     when (this) {
-        is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName)
-        is FieldModel.Primitive -> encode.addStatement("$outputName.%M($formattedName)", encodeMethodName)
-        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)", encodeMethodName)
+        is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName(enumHelper))
+        is FieldModel.Primitive -> encode.addStatement("$outputName.%M($formattedName)", encodeMethodName(enumHelper))
+        is FieldModel.PrimitiveArray -> encode.addStatement("$outputName.%M($formattedName, $size)", encodeMethodName(enumHelper))
     }
     return encode.build()
 }
 
-fun FieldModel.generateDeserializeStatement(inputName: String): CodeBlock {
+fun FieldModel.generateDeserializeStatement(inputName: String, enumHelper: EnumHelper): CodeBlock {
     val decode = CodeBlock.builder()
     when (this) {
-        is FieldModel.Enum -> {
+        is FieldModel.Enum -> if (enumHelper.isBitmask(enumType)) {
             decode.beginControlFlow(
                 "val $formattedName = $inputName.%M($size).let { value ->",
-                decodeMethodName
+                decodeMethodName(enumHelper)
+            )
+            decode.addStatement("val flags = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getFlagsFromValue(value)")
+            decode.addStatement("if (flags.isNotEmpty()) %1T.of(flags) else %1T.fromValue(value)", MavBitmaskValue::class)
+            decode.endControlFlow()
+        } else {
+            decode.beginControlFlow(
+                "val $formattedName = $inputName.%M($size).let { value ->",
+                decodeMethodName(enumHelper)
             )
             decode.addStatement("val entry = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getEntryFromValueOrNull(value)")
             decode.addStatement("if (entry != null) %1T.of(entry) else %1T.fromValue(value)", MavEnumValue::class)
             decode.endControlFlow()
         }
-        is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName)
-        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName)
+
+        is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName(enumHelper))
+
+        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName(enumHelper))
     }
     return decode.build()
 }
@@ -83,26 +95,36 @@ private fun resolveKotlinPrimitiveType(primitiveType: String): TypeName = when (
     else -> throw IllegalArgumentException("Unknown field type: $primitiveType")
 }
 
-private val FieldModel.defaultKotlinValue: String
-    get() = when (this) {
-        is FieldModel.Primitive -> when (this.type) {
-            "uint8_t_mavlink_version", "uint8_t", "int8_t",
-            "uint16_t", "int16_t", "int32_t" -> "0"
-            "uint32_t", "int64_t" -> "0L"
-            "uint64_t" -> "BigInteger.ZERO"
-            "float" -> "0F"
-            "double" -> "0.0"
-            "char" -> "''"
-            else -> throw IllegalArgumentException("Unknown field type: ${this.type}")
-        }
-        is FieldModel.PrimitiveArray -> if (this.primitiveType == "char") "\"\"" else "emptyList()"
-        is FieldModel.Enum -> "MavEnumValue.fromValue(0)"
+private fun FieldModel.defaultKotlinValue(enumHelper: EnumHelper): String = when (this) {
+    is FieldModel.Primitive -> when (this.type) {
+        "uint8_t_mavlink_version", "uint8_t", "int8_t",
+        "uint16_t", "int16_t", "int32_t" -> "0"
+
+        "uint32_t", "int64_t" -> "0L"
+        "uint64_t" -> "${BigInteger::class.simpleName}.ZERO"
+        "float" -> "0F"
+        "double" -> "0.0"
+        "char" -> "''"
+        else -> throw IllegalArgumentException("Unknown field type: ${this.type}")
     }
+
+    is FieldModel.PrimitiveArray -> if (this.primitiveType == "char") "\"\"" else "emptyList()"
+
+    is FieldModel.Enum -> if (enumHelper.isBitmask(this.enumType)) {
+        "${MavBitmaskValue::class.simpleName}.fromValue(0)"
+    } else {
+        "${MavEnumValue::class.simpleName}.fromValue(0)"
+    }
+}
 
 private const val SERIALIZATION_PACKAGE = "xyz.urbanmatrix.mavlink.serialization"
 
-private val FieldModel.encodeMethodName: MemberName get() = when (this) {
-    is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "encodeEnumValue")
+private fun FieldModel.encodeMethodName(enumHelper: EnumHelper): MemberName = when (this) {
+    is FieldModel.Enum -> MemberName(
+        SERIALIZATION_PACKAGE,
+        if (enumHelper.isBitmask(enumType)) "encodeBitmaskValue" else "encodeEnumValue"
+    )
+
     is FieldModel.Primitive -> when (type) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8")
         "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8")
@@ -117,6 +139,7 @@ private val FieldModel.encodeMethodName: MemberName get() = when (this) {
         "char" -> MemberName(SERIALIZATION_PACKAGE, "encodeChar")
         else -> throw IllegalArgumentException("Unknown type: $type")
     }
+
     is FieldModel.PrimitiveArray -> when (primitiveType) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeInt8Array")
         "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "encodeUint8Array")
@@ -133,8 +156,12 @@ private val FieldModel.encodeMethodName: MemberName get() = when (this) {
     }
 }
 
-private val FieldModel.decodeMethodName: MemberName get() = when (this) {
-    is FieldModel.Enum -> MemberName(SERIALIZATION_PACKAGE, "decodeEnumValue")
+private fun FieldModel.decodeMethodName(enumHelper: EnumHelper): MemberName = when (this) {
+    is FieldModel.Enum -> MemberName(
+        SERIALIZATION_PACKAGE,
+        if (enumHelper.isBitmask(enumType)) "decodeBitmaskValue" else "decodeEnumValue"
+    )
+
     is FieldModel.Primitive -> when (type) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8")
         "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint8")
@@ -149,6 +176,7 @@ private val FieldModel.decodeMethodName: MemberName get() = when (this) {
         "char" -> MemberName(SERIALIZATION_PACKAGE, "decodeChar")
         else -> throw IllegalArgumentException("Unknown type: $type")
     }
+
     is FieldModel.PrimitiveArray -> when (primitiveType) {
         "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8Array")
         "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUint8Array")

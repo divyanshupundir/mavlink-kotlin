@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Flags to report failure cases over the high latency telemtry.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class HlFailureFlag(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * GPS failure.
    */
@@ -101,6 +102,23 @@ public enum class HlFailureFlag(
       4096L -> HL_FAILURE_FLAG_ESTIMATOR
       8192L -> HL_FAILURE_FLAG_MISSION
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<HlFailureFlag> = buildList {
+      if (v and 1L == 1L) add(HL_FAILURE_FLAG_GPS)
+      if (v and 2L == 2L) add(HL_FAILURE_FLAG_DIFFERENTIAL_PRESSURE)
+      if (v and 4L == 4L) add(HL_FAILURE_FLAG_ABSOLUTE_PRESSURE)
+      if (v and 8L == 8L) add(HL_FAILURE_FLAG_3D_ACCEL)
+      if (v and 16L == 16L) add(HL_FAILURE_FLAG_3D_GYRO)
+      if (v and 32L == 32L) add(HL_FAILURE_FLAG_3D_MAG)
+      if (v and 64L == 64L) add(HL_FAILURE_FLAG_TERRAIN)
+      if (v and 128L == 128L) add(HL_FAILURE_FLAG_BATTERY)
+      if (v and 256L == 256L) add(HL_FAILURE_FLAG_RC_RECEIVER)
+      if (v and 512L == 512L) add(HL_FAILURE_FLAG_OFFBOARD_LINK)
+      if (v and 1024L == 1024L) add(HL_FAILURE_FLAG_ENGINE)
+      if (v and 2048L == 2048L) add(HL_FAILURE_FLAG_GEOFENCE)
+      if (v and 4096L == 4096L) add(HL_FAILURE_FLAG_ESTIMATOR)
+      if (v and 8192L == 8192L) add(HL_FAILURE_FLAG_MISSION)
     }
   }
 }

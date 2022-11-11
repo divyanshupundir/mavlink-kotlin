@@ -8,6 +8,7 @@ import xyz.urbanmatrix.mavlink.generator.CaseFormat
 
 data class EnumModel(
     val name: String,
+    val bitmask: Boolean,
     val entries: List<EnumEntryModel>,
     val deprecated: DeprecatedModel?,
     val description: String?
@@ -21,6 +22,9 @@ data class EnumXml(
 
     @JacksonXmlProperty(localName = "name", isAttribute = true)
     val name: String,
+
+    @JacksonXmlProperty(localName = "bitmask", isAttribute = true)
+    val bitmask: Boolean,
 
     @JacksonXmlProperty(localName = "deprecated")
     val deprecated: DeprecatedXml?,
@@ -37,6 +41,7 @@ data class EnumXml(
 
     fun toModel() = EnumModel(
         name,
+        bitmask,
         entries
             .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
             .map { it.toModel() },

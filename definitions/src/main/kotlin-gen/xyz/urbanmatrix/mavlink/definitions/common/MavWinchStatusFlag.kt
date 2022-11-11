@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Winch status flags used in WINCH_STATUS
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class MavWinchStatusFlag(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Winch is healthy
    */
@@ -85,6 +86,20 @@ public enum class MavWinchStatusFlag(
       512L -> MAV_WINCH_STATUS_REDELIVER
       1024L -> MAV_WINCH_STATUS_ABANDON_LINE
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<MavWinchStatusFlag> = buildList {
+      if (v and 1L == 1L) add(MAV_WINCH_STATUS_HEALTHY)
+      if (v and 2L == 2L) add(MAV_WINCH_STATUS_FULLY_RETRACTED)
+      if (v and 4L == 4L) add(MAV_WINCH_STATUS_MOVING)
+      if (v and 8L == 8L) add(MAV_WINCH_STATUS_CLUTCH_ENGAGED)
+      if (v and 16L == 16L) add(MAV_WINCH_STATUS_LOCKED)
+      if (v and 32L == 32L) add(MAV_WINCH_STATUS_DROPPING)
+      if (v and 64L == 64L) add(MAV_WINCH_STATUS_ARRESTING)
+      if (v and 128L == 128L) add(MAV_WINCH_STATUS_GROUND_SENSE)
+      if (v and 256L == 256L) add(MAV_WINCH_STATUS_RETRACTING)
+      if (v and 512L == 512L) add(MAV_WINCH_STATUS_REDELIVER)
+      if (v and 1024L == 1024L) add(MAV_WINCH_STATUS_ABANDON_LINE)
     }
   }
 }

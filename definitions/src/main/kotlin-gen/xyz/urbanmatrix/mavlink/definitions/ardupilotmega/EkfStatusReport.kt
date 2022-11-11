@@ -8,12 +8,12 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
@@ -29,7 +29,7 @@ public data class EkfStatusReport(
    * Flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<EkfStatusFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Velocity variance.
    */
@@ -73,7 +73,7 @@ public data class EkfStatusReport(
     outputBuffer.encodeFloat(posVertVariance)
     outputBuffer.encodeFloat(compassVariance)
     outputBuffer.encodeFloat(terrainAltVariance)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     return outputBuffer.array()
   }
 
@@ -84,7 +84,7 @@ public data class EkfStatusReport(
     outputBuffer.encodeFloat(posVertVariance)
     outputBuffer.encodeFloat(compassVariance)
     outputBuffer.encodeFloat(terrainAltVariance)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeFloat(airspeedVariance)
     return outputBuffer.array().truncateZeros()
   }
@@ -105,9 +105,9 @@ public data class EkfStatusReport(
       val posVertVariance = inputBuffer.decodeFloat()
       val compassVariance = inputBuffer.decodeFloat()
       val terrainAltVariance = inputBuffer.decodeFloat()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = EkfStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = EkfStatusFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val airspeedVariance = inputBuffer.decodeFloat()
 
@@ -132,7 +132,7 @@ public data class EkfStatusReport(
   }
 
   public class Builder {
-    public var flags: MavEnumValue<EkfStatusFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<EkfStatusFlags> = MavBitmaskValue.fromValue(0)
 
     public var velocityVariance: Float = 0F
 

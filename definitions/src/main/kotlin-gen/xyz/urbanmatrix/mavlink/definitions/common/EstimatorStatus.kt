@@ -9,13 +9,13 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
@@ -46,7 +46,7 @@ public data class EstimatorStatus(
    * Bitmap indicating which EKF outputs are valid.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<EstimatorStatusFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Velocity innovation test ratio
    */
@@ -101,7 +101,7 @@ public data class EstimatorStatus(
     outputBuffer.encodeFloat(tasRatio)
     outputBuffer.encodeFloat(posHorizAccuracy)
     outputBuffer.encodeFloat(posVertAccuracy)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     return outputBuffer.array()
   }
 
@@ -116,7 +116,7 @@ public data class EstimatorStatus(
     outputBuffer.encodeFloat(tasRatio)
     outputBuffer.encodeFloat(posHorizAccuracy)
     outputBuffer.encodeFloat(posVertAccuracy)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -140,9 +140,9 @@ public data class EstimatorStatus(
       val tasRatio = inputBuffer.decodeFloat()
       val posHorizAccuracy = inputBuffer.decodeFloat()
       val posVertAccuracy = inputBuffer.decodeFloat()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = EstimatorStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = EstimatorStatusFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       EstimatorStatus(
@@ -171,7 +171,7 @@ public data class EstimatorStatus(
   public class Builder {
     public var timeUsec: BigInteger = BigInteger.ZERO
 
-    public var flags: MavEnumValue<EstimatorStatusFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<EstimatorStatusFlags> = MavBitmaskValue.fromValue(0)
 
     public var velRatio: Float = 0F
 

@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.minimal
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * These flags encode the MAV mode.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlag(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * 0b10000000 MAV safety set to armed. Motors are enabled / running / can start. Ready to fly.
    * Additional note: this flag is to be ignore when sent in the command MAV_CMD_DO_SET_MODE and
@@ -72,6 +73,17 @@ public enum class MavModeFlag(
       2L -> MAV_MODE_FLAG_TEST_ENABLED
       1L -> MAV_MODE_FLAG_CUSTOM_MODE_ENABLED
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<MavModeFlag> = buildList {
+      if (v and 128L == 128L) add(MAV_MODE_FLAG_SAFETY_ARMED)
+      if (v and 64L == 64L) add(MAV_MODE_FLAG_MANUAL_INPUT_ENABLED)
+      if (v and 32L == 32L) add(MAV_MODE_FLAG_HIL_ENABLED)
+      if (v and 16L == 16L) add(MAV_MODE_FLAG_STABILIZE_ENABLED)
+      if (v and 8L == 8L) add(MAV_MODE_FLAG_GUIDED_ENABLED)
+      if (v and 4L == 4L) add(MAV_MODE_FLAG_AUTO_ENABLED)
+      if (v and 2L == 2L) add(MAV_MODE_FLAG_TEST_ENABLED)
+      if (v and 1L == 1L) add(MAV_MODE_FLAG_CUSTOM_MODE_ENABLED)
     }
   }
 }

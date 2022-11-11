@@ -7,14 +7,14 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
@@ -42,22 +42,22 @@ public data class SysStatus(
    * Value of 1: present.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val onboardControlSensorsPresent: MavEnumValue<MavSysStatusSensor> =
-      MavEnumValue.fromValue(0),
+  public val onboardControlSensorsPresent: MavBitmaskValue<MavSysStatusSensor> =
+      MavBitmaskValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled.
    * Value of 1: enabled.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val onboardControlSensorsEnabled: MavEnumValue<MavSysStatusSensor> =
-      MavEnumValue.fromValue(0),
+  public val onboardControlSensorsEnabled: MavBitmaskValue<MavSysStatusSensor> =
+      MavBitmaskValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value
    * of 0: error. Value of 1: healthy.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val onboardControlSensorsHealth: MavEnumValue<MavSysStatusSensor> =
-      MavEnumValue.fromValue(0),
+  public val onboardControlSensorsHealth: MavBitmaskValue<MavSysStatusSensor> =
+      MavBitmaskValue.fromValue(0),
   /**
    * Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be below 1000
    */
@@ -118,8 +118,8 @@ public data class SysStatus(
     type = "uint32_t",
     extension = true,
   )
-  public val onboardControlSensorsPresentExtended: MavEnumValue<MavSysStatusSensorExtended> =
-      MavEnumValue.fromValue(0),
+  public val onboardControlSensorsPresentExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
+      MavBitmaskValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled.
    * Value of 1: enabled.
@@ -128,8 +128,8 @@ public data class SysStatus(
     type = "uint32_t",
     extension = true,
   )
-  public val onboardControlSensorsEnabledExtended: MavEnumValue<MavSysStatusSensorExtended> =
-      MavEnumValue.fromValue(0),
+  public val onboardControlSensorsEnabledExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
+      MavBitmaskValue.fromValue(0),
   /**
    * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value
    * of 0: error. Value of 1: healthy.
@@ -138,16 +138,16 @@ public data class SysStatus(
     type = "uint32_t",
     extension = true,
   )
-  public val onboardControlSensorsHealthExtended: MavEnumValue<MavSysStatusSensorExtended> =
-      MavEnumValue.fromValue(0),
+  public val onboardControlSensorsHealthExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
+      MavBitmaskValue.fromValue(0),
 ) : MavMessage<SysStatus> {
   public override val instanceMetadata: MavMessage.Metadata<SysStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(onboardControlSensorsPresent.value, 4)
-    outputBuffer.encodeEnumValue(onboardControlSensorsEnabled.value, 4)
-    outputBuffer.encodeEnumValue(onboardControlSensorsHealth.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsHealth.value, 4)
     outputBuffer.encodeUint16(load)
     outputBuffer.encodeUint16(voltageBattery)
     outputBuffer.encodeInt16(currentBattery)
@@ -163,9 +163,9 @@ public data class SysStatus(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(onboardControlSensorsPresent.value, 4)
-    outputBuffer.encodeEnumValue(onboardControlSensorsEnabled.value, 4)
-    outputBuffer.encodeEnumValue(onboardControlSensorsHealth.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsHealth.value, 4)
     outputBuffer.encodeUint16(load)
     outputBuffer.encodeUint16(voltageBattery)
     outputBuffer.encodeInt16(currentBattery)
@@ -176,9 +176,9 @@ public data class SysStatus(
     outputBuffer.encodeUint16(errorsCount3)
     outputBuffer.encodeUint16(errorsCount4)
     outputBuffer.encodeInt8(batteryRemaining)
-    outputBuffer.encodeEnumValue(onboardControlSensorsPresentExtended.value, 4)
-    outputBuffer.encodeEnumValue(onboardControlSensorsEnabledExtended.value, 4)
-    outputBuffer.encodeEnumValue(onboardControlSensorsHealthExtended.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsPresentExtended.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsEnabledExtended.value, 4)
+    outputBuffer.encodeBitmaskValue(onboardControlSensorsHealthExtended.value, 4)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -193,17 +193,17 @@ public data class SysStatus(
 
     private val DESERIALIZER: MavDeserializer<SysStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val onboardControlSensorsPresent = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavSysStatusSensor.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val onboardControlSensorsPresent = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavSysStatusSensor.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsEnabled = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavSysStatusSensor.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val onboardControlSensorsEnabled = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavSysStatusSensor.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsHealth = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavSysStatusSensor.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val onboardControlSensorsHealth = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavSysStatusSensor.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val load = inputBuffer.decodeUint16()
       val voltageBattery = inputBuffer.decodeUint16()
@@ -215,17 +215,17 @@ public data class SysStatus(
       val errorsCount3 = inputBuffer.decodeUint16()
       val errorsCount4 = inputBuffer.decodeUint16()
       val batteryRemaining = inputBuffer.decodeInt8()
-      val onboardControlSensorsPresentExtended = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavSysStatusSensorExtended.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val onboardControlSensorsPresentExtended = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavSysStatusSensorExtended.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsEnabledExtended = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavSysStatusSensorExtended.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val onboardControlSensorsEnabledExtended = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavSysStatusSensorExtended.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsHealthExtended = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = MavSysStatusSensorExtended.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val onboardControlSensorsHealthExtended = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = MavSysStatusSensorExtended.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       SysStatus(
@@ -258,14 +258,14 @@ public data class SysStatus(
   }
 
   public class Builder {
-    public var onboardControlSensorsPresent: MavEnumValue<MavSysStatusSensor> =
-        MavEnumValue.fromValue(0)
+    public var onboardControlSensorsPresent: MavBitmaskValue<MavSysStatusSensor> =
+        MavBitmaskValue.fromValue(0)
 
-    public var onboardControlSensorsEnabled: MavEnumValue<MavSysStatusSensor> =
-        MavEnumValue.fromValue(0)
+    public var onboardControlSensorsEnabled: MavBitmaskValue<MavSysStatusSensor> =
+        MavBitmaskValue.fromValue(0)
 
-    public var onboardControlSensorsHealth: MavEnumValue<MavSysStatusSensor> =
-        MavEnumValue.fromValue(0)
+    public var onboardControlSensorsHealth: MavBitmaskValue<MavSysStatusSensor> =
+        MavBitmaskValue.fromValue(0)
 
     public var load: Int = 0
 
@@ -287,14 +287,14 @@ public data class SysStatus(
 
     public var errorsCount4: Int = 0
 
-    public var onboardControlSensorsPresentExtended: MavEnumValue<MavSysStatusSensorExtended> =
-        MavEnumValue.fromValue(0)
+    public var onboardControlSensorsPresentExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
+        MavBitmaskValue.fromValue(0)
 
-    public var onboardControlSensorsEnabledExtended: MavEnumValue<MavSysStatusSensorExtended> =
-        MavEnumValue.fromValue(0)
+    public var onboardControlSensorsEnabledExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
+        MavBitmaskValue.fromValue(0)
 
-    public var onboardControlSensorsHealthExtended: MavEnumValue<MavSysStatusSensorExtended> =
-        MavEnumValue.fromValue(0)
+    public var onboardControlSensorsHealthExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
+        MavBitmaskValue.fromValue(0)
 
     public fun build(): SysStatus = SysStatus(
       onboardControlSensorsPresent = onboardControlSensorsPresent,

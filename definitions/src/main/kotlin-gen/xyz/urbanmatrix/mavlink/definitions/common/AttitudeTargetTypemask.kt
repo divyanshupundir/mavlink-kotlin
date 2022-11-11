@@ -1,18 +1,19 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b00000000
  * indicates that none of the setpoint dimensions should be ignored.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class AttitudeTargetTypemask(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Ignore body roll rate
    */
@@ -54,6 +55,15 @@ public enum class AttitudeTargetTypemask(
       64L -> ATTITUDE_TARGET_TYPEMASK_THROTTLE_IGNORE
       128L -> ATTITUDE_TARGET_TYPEMASK_ATTITUDE_IGNORE
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<AttitudeTargetTypemask> = buildList {
+      if (v and 1L == 1L) add(ATTITUDE_TARGET_TYPEMASK_BODY_ROLL_RATE_IGNORE)
+      if (v and 2L == 2L) add(ATTITUDE_TARGET_TYPEMASK_BODY_PITCH_RATE_IGNORE)
+      if (v and 4L == 4L) add(ATTITUDE_TARGET_TYPEMASK_BODY_YAW_RATE_IGNORE)
+      if (v and 32L == 32L) add(ATTITUDE_TARGET_TYPEMASK_THRUST_BODY_SET)
+      if (v and 64L == 64L) add(ATTITUDE_TARGET_TYPEMASK_THROTTLE_IGNORE)
+      if (v and 128L == 128L) add(ATTITUDE_TARGET_TYPEMASK_ATTITUDE_IGNORE)
     }
   }
 }

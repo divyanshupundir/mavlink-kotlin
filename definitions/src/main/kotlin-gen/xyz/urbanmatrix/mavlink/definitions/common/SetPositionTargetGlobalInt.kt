@@ -9,14 +9,17 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -60,7 +63,7 @@ public data class SetPositionTargetGlobalInt(
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0),
+  public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0),
   /**
    * X Position in WGS84 frame
    */
@@ -133,7 +136,7 @@ public data class SetPositionTargetGlobalInt(
     outputBuffer.encodeFloat(afz)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(yawRate)
-    outputBuffer.encodeEnumValue(typeMask.value, 2)
+    outputBuffer.encodeBitmaskValue(typeMask.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
@@ -154,7 +157,7 @@ public data class SetPositionTargetGlobalInt(
     outputBuffer.encodeFloat(afz)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(yawRate)
-    outputBuffer.encodeEnumValue(typeMask.value, 2)
+    outputBuffer.encodeBitmaskValue(typeMask.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeEnumValue(coordinateFrame.value, 1)
@@ -185,9 +188,9 @@ public data class SetPositionTargetGlobalInt(
       val afz = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
       val yawRate = inputBuffer.decodeFloat()
-      val typeMask = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = PositionTargetTypemask.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val typeMask = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = PositionTargetTypemask.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -234,7 +237,7 @@ public data class SetPositionTargetGlobalInt(
 
     public var coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
 
-    public var typeMask: MavEnumValue<PositionTargetTypemask> = MavEnumValue.fromValue(0)
+    public var typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0)
 
     public var latInt: Int = 0
 

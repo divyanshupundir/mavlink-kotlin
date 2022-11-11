@@ -9,15 +9,15 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
@@ -42,7 +42,7 @@ public data class GimbalManagerInformation(
    * Bitmap of gimbal capability flags.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val capFlags: MavEnumValue<GimbalManagerCapFlags> = MavEnumValue.fromValue(0),
+  public val capFlags: MavBitmaskValue<GimbalManagerCapFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Gimbal device ID that this gimbal manager is responsible for.
    */
@@ -84,7 +84,7 @@ public data class GimbalManagerInformation(
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeEnumValue(capFlags.value, 4)
+    outputBuffer.encodeBitmaskValue(capFlags.value, 4)
     outputBuffer.encodeFloat(rollMin)
     outputBuffer.encodeFloat(rollMax)
     outputBuffer.encodeFloat(pitchMin)
@@ -98,7 +98,7 @@ public data class GimbalManagerInformation(
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeEnumValue(capFlags.value, 4)
+    outputBuffer.encodeBitmaskValue(capFlags.value, 4)
     outputBuffer.encodeFloat(rollMin)
     outputBuffer.encodeFloat(rollMax)
     outputBuffer.encodeFloat(pitchMin)
@@ -121,9 +121,9 @@ public data class GimbalManagerInformation(
     private val DESERIALIZER: MavDeserializer<GimbalManagerInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUint32()
-      val capFlags = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = GimbalManagerCapFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val capFlags = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = GimbalManagerCapFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val rollMin = inputBuffer.decodeFloat()
       val rollMax = inputBuffer.decodeFloat()
@@ -158,7 +158,7 @@ public data class GimbalManagerInformation(
   public class Builder {
     public var timeBootMs: Long = 0L
 
-    public var capFlags: MavEnumValue<GimbalManagerCapFlags> = MavEnumValue.fromValue(0)
+    public var capFlags: MavBitmaskValue<GimbalManagerCapFlags> = MavBitmaskValue.fromValue(0)
 
     public var gimbalDeviceId: Int = 0
 

@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Flags for gimbal device (lower level) operation.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class GimbalDeviceFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Set to retracted safe position (no stabilization), takes presedence over all other flags.
    */
@@ -53,6 +54,14 @@ public enum class GimbalDeviceFlags(
       8L -> GIMBAL_DEVICE_FLAGS_PITCH_LOCK
       16L -> GIMBAL_DEVICE_FLAGS_YAW_LOCK
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<GimbalDeviceFlags> = buildList {
+      if (v and 1L == 1L) add(GIMBAL_DEVICE_FLAGS_RETRACT)
+      if (v and 2L == 2L) add(GIMBAL_DEVICE_FLAGS_NEUTRAL)
+      if (v and 4L == 4L) add(GIMBAL_DEVICE_FLAGS_ROLL_LOCK)
+      if (v and 8L == 8L) add(GIMBAL_DEVICE_FLAGS_PITCH_LOCK)
+      if (v and 16L == 16L) add(GIMBAL_DEVICE_FLAGS_YAW_LOCK)
     }
   }
 }

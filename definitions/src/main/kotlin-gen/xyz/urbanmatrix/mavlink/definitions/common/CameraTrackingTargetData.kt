@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Camera tracking target data (shows where tracked target is within image)
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class CameraTrackingTargetData(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * No target data
    */
@@ -41,6 +42,13 @@ public enum class CameraTrackingTargetData(
       2L -> CAMERA_TRACKING_TARGET_DATA_RENDERED
       4L -> CAMERA_TRACKING_TARGET_DATA_IN_STATUS
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<CameraTrackingTargetData> = buildList {
+      if (v and 0L == 0L) add(CAMERA_TRACKING_TARGET_DATA_NONE)
+      if (v and 1L == 1L) add(CAMERA_TRACKING_TARGET_DATA_EMBEDDED)
+      if (v and 2L == 2L) add(CAMERA_TRACKING_TARGET_DATA_RENDERED)
+      if (v and 4L == 4L) add(CAMERA_TRACKING_TARGET_DATA_IN_STATUS)
     }
   }
 }

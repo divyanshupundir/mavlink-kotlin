@@ -9,14 +9,14 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
@@ -105,7 +105,7 @@ public data class HilSensor(
    * Bitmap for fields that have updated since last message
    */
   @GeneratedMavField(type = "uint32_t")
-  public val fieldsUpdated: MavEnumValue<HilSensorUpdatedFlags> = MavEnumValue.fromValue(0),
+  public val fieldsUpdated: MavBitmaskValue<HilSensorUpdatedFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Sensor ID (zero indexed). Used for multiple sensor inputs
    */
@@ -133,7 +133,7 @@ public data class HilSensor(
     outputBuffer.encodeFloat(diffPressure)
     outputBuffer.encodeFloat(pressureAlt)
     outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeEnumValue(fieldsUpdated.value, 4)
+    outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 4)
     return outputBuffer.array()
   }
 
@@ -153,7 +153,7 @@ public data class HilSensor(
     outputBuffer.encodeFloat(diffPressure)
     outputBuffer.encodeFloat(pressureAlt)
     outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeEnumValue(fieldsUpdated.value, 4)
+    outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 4)
     outputBuffer.encodeUint8(id)
     return outputBuffer.array().truncateZeros()
   }
@@ -183,9 +183,9 @@ public data class HilSensor(
       val diffPressure = inputBuffer.decodeFloat()
       val pressureAlt = inputBuffer.decodeFloat()
       val temperature = inputBuffer.decodeFloat()
-      val fieldsUpdated = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = HilSensorUpdatedFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val fieldsUpdated = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = HilSensorUpdatedFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val id = inputBuffer.decodeUint8()
 
@@ -247,7 +247,7 @@ public data class HilSensor(
 
     public var temperature: Float = 0F
 
-    public var fieldsUpdated: MavEnumValue<HilSensorUpdatedFlags> = MavEnumValue.fromValue(0)
+    public var fieldsUpdated: MavBitmaskValue<HilSensorUpdatedFlags> = MavBitmaskValue.fromValue(0)
 
     public var id: Int = 0
 

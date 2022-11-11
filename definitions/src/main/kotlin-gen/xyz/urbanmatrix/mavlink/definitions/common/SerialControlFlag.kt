@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * SERIAL_CONTROL flags (bitmask)
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class SerialControlFlag(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Set if this is a reply
    */
@@ -49,6 +50,14 @@ public enum class SerialControlFlag(
       8L -> SERIAL_CONTROL_FLAG_BLOCKING
       16L -> SERIAL_CONTROL_FLAG_MULTI
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<SerialControlFlag> = buildList {
+      if (v and 1L == 1L) add(SERIAL_CONTROL_FLAG_REPLY)
+      if (v and 2L == 2L) add(SERIAL_CONTROL_FLAG_RESPOND)
+      if (v and 4L == 4L) add(SERIAL_CONTROL_FLAG_EXCLUSIVE)
+      if (v and 8L == 8L) add(SERIAL_CONTROL_FLAG_BLOCKING)
+      if (v and 16L == 16L) add(SERIAL_CONTROL_FLAG_MULTI)
     }
   }
 }

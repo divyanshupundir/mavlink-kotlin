@@ -10,15 +10,15 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint64
@@ -38,7 +38,7 @@ public data class AutopilotVersion(
    * Bitmap of capabilities
    */
   @GeneratedMavField(type = "uint64_t")
-  public val capabilities: MavEnumValue<MavProtocolCapability> = MavEnumValue.fromValue(0),
+  public val capabilities: MavBitmaskValue<MavProtocolCapability> = MavBitmaskValue.fromValue(0),
   /**
    * Firmware version number
    */
@@ -110,7 +110,7 @@ public data class AutopilotVersion(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(capabilities.value, 8)
+    outputBuffer.encodeBitmaskValue(capabilities.value, 8)
     outputBuffer.encodeUint64(uid)
     outputBuffer.encodeUint32(flightSwVersion)
     outputBuffer.encodeUint32(middlewareSwVersion)
@@ -126,7 +126,7 @@ public data class AutopilotVersion(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(capabilities.value, 8)
+    outputBuffer.encodeBitmaskValue(capabilities.value, 8)
     outputBuffer.encodeUint64(uid)
     outputBuffer.encodeUint32(flightSwVersion)
     outputBuffer.encodeUint32(middlewareSwVersion)
@@ -152,9 +152,9 @@ public data class AutopilotVersion(
 
     private val DESERIALIZER: MavDeserializer<AutopilotVersion> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val capabilities = inputBuffer.decodeEnumValue(8).let { value ->
-        val entry = MavProtocolCapability.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val capabilities = inputBuffer.decodeBitmaskValue(8).let { value ->
+        val flags = MavProtocolCapability.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val uid = inputBuffer.decodeUint64()
       val flightSwVersion = inputBuffer.decodeUint32()
@@ -194,7 +194,7 @@ public data class AutopilotVersion(
   }
 
   public class Builder {
-    public var capabilities: MavEnumValue<MavProtocolCapability> = MavEnumValue.fromValue(0)
+    public var capabilities: MavBitmaskValue<MavProtocolCapability> = MavBitmaskValue.fromValue(0)
 
     public var flightSwVersion: Long = 0L
 

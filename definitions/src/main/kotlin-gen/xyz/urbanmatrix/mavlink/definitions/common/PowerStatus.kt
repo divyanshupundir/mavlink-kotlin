@@ -7,12 +7,12 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
@@ -38,7 +38,7 @@ public data class PowerStatus(
    * Bitmap of power supply status flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavEnumValue<MavPowerStatus> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<MavPowerStatus> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<PowerStatus> {
   public override val instanceMetadata: MavMessage.Metadata<PowerStatus> = METADATA
 
@@ -46,7 +46,7 @@ public data class PowerStatus(
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint16(vservo)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     return outputBuffer.array()
   }
 
@@ -54,7 +54,7 @@ public data class PowerStatus(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUint16(vcc)
     outputBuffer.encodeUint16(vservo)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -71,9 +71,9 @@ public data class PowerStatus(
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vcc = inputBuffer.decodeUint16()
       val vservo = inputBuffer.decodeUint16()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = MavPowerStatus.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = MavPowerStatus.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       PowerStatus(
@@ -97,7 +97,7 @@ public data class PowerStatus(
 
     public var vservo: Int = 0
 
-    public var flags: MavEnumValue<MavPowerStatus> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<MavPowerStatus> = MavBitmaskValue.fromValue(0)
 
     public fun build(): PowerStatus = PowerStatus(
       vcc = vcc,

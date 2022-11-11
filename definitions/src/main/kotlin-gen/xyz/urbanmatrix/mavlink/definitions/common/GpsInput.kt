@@ -10,17 +10,17 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint64
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
@@ -53,7 +53,7 @@ public data class GpsInput(
    * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0),
+  public val ignoreFlags: MavBitmaskValue<GpsInputIgnoreFlags> = MavBitmaskValue.fromValue(0),
   /**
    * GPS time (from start of GPS week)
    */
@@ -155,7 +155,7 @@ public data class GpsInput(
     outputBuffer.encodeFloat(speedAccuracy)
     outputBuffer.encodeFloat(horizAccuracy)
     outputBuffer.encodeFloat(vertAccuracy)
-    outputBuffer.encodeEnumValue(ignoreFlags.value, 2)
+    outputBuffer.encodeBitmaskValue(ignoreFlags.value, 2)
     outputBuffer.encodeUint16(timeWeek)
     outputBuffer.encodeUint8(gpsId)
     outputBuffer.encodeUint8(fixType)
@@ -178,7 +178,7 @@ public data class GpsInput(
     outputBuffer.encodeFloat(speedAccuracy)
     outputBuffer.encodeFloat(horizAccuracy)
     outputBuffer.encodeFloat(vertAccuracy)
-    outputBuffer.encodeEnumValue(ignoreFlags.value, 2)
+    outputBuffer.encodeBitmaskValue(ignoreFlags.value, 2)
     outputBuffer.encodeUint16(timeWeek)
     outputBuffer.encodeUint8(gpsId)
     outputBuffer.encodeUint8(fixType)
@@ -211,9 +211,9 @@ public data class GpsInput(
       val speedAccuracy = inputBuffer.decodeFloat()
       val horizAccuracy = inputBuffer.decodeFloat()
       val vertAccuracy = inputBuffer.decodeFloat()
-      val ignoreFlags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = GpsInputIgnoreFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val ignoreFlags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = GpsInputIgnoreFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val timeWeek = inputBuffer.decodeUint16()
       val gpsId = inputBuffer.decodeUint8()
@@ -257,7 +257,7 @@ public data class GpsInput(
 
     public var gpsId: Int = 0
 
-    public var ignoreFlags: MavEnumValue<GpsInputIgnoreFlags> = MavEnumValue.fromValue(0)
+    public var ignoreFlags: MavBitmaskValue<GpsInputIgnoreFlags> = MavBitmaskValue.fromValue(0)
 
     public var timeWeekMs: Long = 0L
 

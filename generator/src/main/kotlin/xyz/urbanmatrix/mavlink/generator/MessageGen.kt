@@ -12,12 +12,12 @@ import xyz.urbanmatrix.mavlink.generator.models.sortedByPosition
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumResolver): FileSpec {
+fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
-        .primaryConstructor(generatePrimaryConstructor(enumResolver))
-        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumResolver)) } }
+        .primaryConstructor(generatePrimaryConstructor(enumHelper))
+        .apply { fields.sortedByPosition().forEach { addProperty(it.generateProperty(enumHelper)) } }
         .apply {
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (workInProgress) addAnnotation(WorkInProgress::class)
@@ -25,10 +25,10 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         }
         .addAnnotation(generateGeneratedAnnotation())
         .addProperty(generateInstanceMetadata(packageName))
-        .addFunction(generateSerializeV1())
-        .addFunction(generateSerializeV2())
-        .addType(generateCompanionObject(packageName))
-        .addType(generateBuilderClass(enumResolver, packageName))
+        .addFunction(generateSerializeV1(enumHelper))
+        .addFunction(generateSerializeV2(enumHelper))
+        .addType(generateCompanionObject(packageName, enumHelper))
+        .addType(generateBuilderClass(packageName, enumHelper))
         .build()
 
     return FileSpec.builder(packageName, formattedName)
@@ -36,18 +36,18 @@ fun MessageModel.generateMessageFile(packageName: String, enumResolver: EnumReso
         .build()
 }
 
-private fun MessageModel.generatePrimaryConstructor(enumResolver: EnumResolver) = FunSpec
+private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = FunSpec
     .constructorBuilder()
-    .apply { fields.sortedByPosition().forEach { addParameter(it.generateConstructorParameter(enumResolver)) } }
+    .apply { fields.sortedByPosition().forEach { addParameter(it.generateConstructorParameter(enumHelper)) } }
     .build()
 
-private fun MessageModel.generateCompanionObject(packageName: String) = TypeSpec
+private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcProperty())
     .addProperty(generateSizeV1Property())
     .addProperty(generateSizeV2Property())
-    .addProperty(generateDeserializer(packageName))
+    .addProperty(generateDeserializer(packageName, enumHelper))
     .addProperty(generateMetadataProperty(packageName))
     .addProperty(generateClassMetadata(packageName))
     .addFunction(generateBuilderFunction(packageName))
@@ -79,7 +79,7 @@ private fun MessageModel.generateSizeV2Property() = PropertySpec
     .initializer("%L", sizeV2)
     .build()
 
-private fun MessageModel.generateDeserializer(packageName: String) = PropertySpec
+private fun MessageModel.generateDeserializer(packageName: String, enumHelper: EnumHelper) = PropertySpec
     .builder(
         "DESERIALIZER",
         MavDeserializer::class.asClassName().parameterizedBy(getClassName(packageName)),
@@ -94,7 +94,7 @@ private fun MessageModel.generateDeserializer(packageName: String) = PropertySpe
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer")) }
+            fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer", enumHelper)) }
 
             addStatement("")
 
@@ -135,7 +135,7 @@ private fun MessageModel.generateInstanceMetadata(packageName: String) = Propert
     .initializer("METADATA")
     .build()
 
-private fun MessageModel.generateSerializeV1() = FunSpec
+private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
@@ -146,13 +146,13 @@ private fun MessageModel.generateSerializeV1() = FunSpec
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
             addStatement("return outputBuffer.array()")
         }
     )
     .build()
 
-private fun MessageModel.generateSerializeV2() = FunSpec
+private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV2")
     .addModifiers(KModifier.OVERRIDE)
     .returns(ByteArray::class)
@@ -163,14 +163,14 @@ private fun MessageModel.generateSerializeV2() = FunSpec
                 ByteBuffer::class,
                 ByteOrder::class
             )
-            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer")) }
+            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
             addStatement("return outputBuffer.array().%M()", truncateZerosMemberName)
         }
     )
     .build()
 
-private fun MessageModel.generateBuilderClass(enumResolver: EnumResolver, packageName: String) = TypeSpec.classBuilder("Builder")
-    .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumResolver)) } }
+private fun MessageModel.generateBuilderClass(packageName: String, enumHelper: EnumHelper) = TypeSpec.classBuilder("Builder")
+    .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumHelper)) } }
     .addFunction(generateBuildMethod(packageName))
     .build()
 

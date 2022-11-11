@@ -127,6 +127,8 @@ fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int) = encodeArray
 
 fun ByteBuffer.encodeEnumValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
 
+fun ByteBuffer.encodeBitmaskValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
+
 inline fun <T : Any> ByteBuffer.encodeArray(
     arr: List<T>,
     elementCount: Int,

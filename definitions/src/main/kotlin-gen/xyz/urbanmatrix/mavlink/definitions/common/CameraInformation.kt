@@ -11,17 +11,17 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
@@ -93,7 +93,7 @@ public data class CameraInformation(
    * Bitmap of camera capability flags.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Camera definition version (iteration)
    */
@@ -118,7 +118,7 @@ public data class CameraInformation(
     outputBuffer.encodeFloat(focalLength)
     outputBuffer.encodeFloat(sensorSizeH)
     outputBuffer.encodeFloat(sensorSizeV)
-    outputBuffer.encodeEnumValue(flags.value, 4)
+    outputBuffer.encodeBitmaskValue(flags.value, 4)
     outputBuffer.encodeUint16(resolutionH)
     outputBuffer.encodeUint16(resolutionV)
     outputBuffer.encodeUint16(camDefinitionVersion)
@@ -136,7 +136,7 @@ public data class CameraInformation(
     outputBuffer.encodeFloat(focalLength)
     outputBuffer.encodeFloat(sensorSizeH)
     outputBuffer.encodeFloat(sensorSizeV)
-    outputBuffer.encodeEnumValue(flags.value, 4)
+    outputBuffer.encodeBitmaskValue(flags.value, 4)
     outputBuffer.encodeUint16(resolutionH)
     outputBuffer.encodeUint16(resolutionV)
     outputBuffer.encodeUint16(camDefinitionVersion)
@@ -163,9 +163,9 @@ public data class CameraInformation(
       val focalLength = inputBuffer.decodeFloat()
       val sensorSizeH = inputBuffer.decodeFloat()
       val sensorSizeV = inputBuffer.decodeFloat()
-      val flags = inputBuffer.decodeEnumValue(4).let { value ->
-        val entry = CameraCapFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
+        val flags = CameraCapFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val resolutionH = inputBuffer.decodeUint16()
       val resolutionV = inputBuffer.decodeUint16()
@@ -222,7 +222,7 @@ public data class CameraInformation(
 
     public var lensId: Int = 0
 
-    public var flags: MavEnumValue<CameraCapFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0)
 
     public var camDefinitionVersion: Int = 0
 

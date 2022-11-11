@@ -9,15 +9,15 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
 import xyz.urbanmatrix.mavlink.serialization.encodeUint32
@@ -42,7 +42,7 @@ public data class VideoStreamStatus(
    * Bitmap of stream status flags
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Frame rate
    */
@@ -80,7 +80,7 @@ public data class VideoStreamStatus(
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(framerate)
     outputBuffer.encodeUint32(bitrate)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeUint16(resolutionH)
     outputBuffer.encodeUint16(resolutionV)
     outputBuffer.encodeUint16(rotation)
@@ -93,7 +93,7 @@ public data class VideoStreamStatus(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(framerate)
     outputBuffer.encodeUint32(bitrate)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeUint16(resolutionH)
     outputBuffer.encodeUint16(resolutionV)
     outputBuffer.encodeUint16(rotation)
@@ -115,9 +115,9 @@ public data class VideoStreamStatus(
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val framerate = inputBuffer.decodeFloat()
       val bitrate = inputBuffer.decodeUint32()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = VideoStreamStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = VideoStreamStatusFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val resolutionH = inputBuffer.decodeUint16()
       val resolutionV = inputBuffer.decodeUint16()
@@ -149,7 +149,7 @@ public data class VideoStreamStatus(
   public class Builder {
     public var streamId: Int = 0
 
-    public var flags: MavEnumValue<VideoStreamStatusFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0)
 
     public var framerate: Float = 0F
 

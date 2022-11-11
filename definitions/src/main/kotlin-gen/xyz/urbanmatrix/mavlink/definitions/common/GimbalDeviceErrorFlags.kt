@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Gimbal device (low level) error flags (bitmap, 0 means no error)
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class GimbalDeviceErrorFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Gimbal device is limited by hardware roll limit.
    */
@@ -71,6 +72,18 @@ public enum class GimbalDeviceErrorFlags(
       128L -> GIMBAL_DEVICE_ERROR_FLAGS_COMMS_ERROR
       256L -> GIMBAL_DEVICE_ERROR_FLAGS_CALIBRATION_RUNNING
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<GimbalDeviceErrorFlags> = buildList {
+      if (v and 1L == 1L) add(GIMBAL_DEVICE_ERROR_FLAGS_AT_ROLL_LIMIT)
+      if (v and 2L == 2L) add(GIMBAL_DEVICE_ERROR_FLAGS_AT_PITCH_LIMIT)
+      if (v and 4L == 4L) add(GIMBAL_DEVICE_ERROR_FLAGS_AT_YAW_LIMIT)
+      if (v and 8L == 8L) add(GIMBAL_DEVICE_ERROR_FLAGS_ENCODER_ERROR)
+      if (v and 16L == 16L) add(GIMBAL_DEVICE_ERROR_FLAGS_POWER_ERROR)
+      if (v and 32L == 32L) add(GIMBAL_DEVICE_ERROR_FLAGS_MOTOR_ERROR)
+      if (v and 64L == 64L) add(GIMBAL_DEVICE_ERROR_FLAGS_SOFTWARE_ERROR)
+      if (v and 128L == 128L) add(GIMBAL_DEVICE_ERROR_FLAGS_COMMS_ERROR)
+      if (v and 256L == 256L) add(GIMBAL_DEVICE_ERROR_FLAGS_CALIBRATION_RUNNING)
     }
   }
 }

@@ -1,7 +1,7 @@
 package xyz.urbanmatrix.mavlink.generator.models
 
-import xyz.urbanmatrix.mavlink.generator.createXmlMapper
 import org.junit.jupiter.api.Test
+import xyz.urbanmatrix.mavlink.generator.createXmlMapper
 
 class EnumEntryXmlTest {
 

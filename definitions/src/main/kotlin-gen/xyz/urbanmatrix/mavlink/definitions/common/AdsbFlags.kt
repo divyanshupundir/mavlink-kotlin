@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * These flags indicate status such as data validity of each data source. Set = data valid
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class AdsbFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   @GeneratedMavEnumEntry
   ADSB_FLAGS_VALID_COORDS(1L),
   @GeneratedMavEnumEntry
@@ -47,6 +48,19 @@ public enum class AdsbFlags(
       256L -> ADSB_FLAGS_BARO_VALID
       32768L -> ADSB_FLAGS_SOURCE_UAT
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<AdsbFlags> = buildList {
+      if (v and 1L == 1L) add(ADSB_FLAGS_VALID_COORDS)
+      if (v and 2L == 2L) add(ADSB_FLAGS_VALID_ALTITUDE)
+      if (v and 4L == 4L) add(ADSB_FLAGS_VALID_HEADING)
+      if (v and 8L == 8L) add(ADSB_FLAGS_VALID_VELOCITY)
+      if (v and 16L == 16L) add(ADSB_FLAGS_VALID_CALLSIGN)
+      if (v and 32L == 32L) add(ADSB_FLAGS_VALID_SQUAWK)
+      if (v and 64L == 64L) add(ADSB_FLAGS_SIMULATED)
+      if (v and 128L == 128L) add(ADSB_FLAGS_VERTICAL_VELOCITY_VALID)
+      if (v and 256L == 256L) add(ADSB_FLAGS_BARO_VALID)
+      if (v and 32768L == 32768L) add(ADSB_FLAGS_SOURCE_UAT)
     }
   }
 }

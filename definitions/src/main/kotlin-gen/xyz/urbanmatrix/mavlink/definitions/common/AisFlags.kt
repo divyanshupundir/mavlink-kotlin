@@ -1,18 +1,19 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * These flags are used in the AIS_VESSEL.fields bitmask to indicate validity of data in the other
  * message fields. When set, the data is valid.
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class AisFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * 1 = Position accuracy less than 10m, 0 = position accuracy greater than 10m.
    */
@@ -79,6 +80,22 @@ public enum class AisFlags(
       2048L -> AIS_FLAGS_VALID_CALLSIGN
       4096L -> AIS_FLAGS_VALID_NAME
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<AisFlags> = buildList {
+      if (v and 1L == 1L) add(AIS_FLAGS_POSITION_ACCURACY)
+      if (v and 2L == 2L) add(AIS_FLAGS_VALID_COG)
+      if (v and 4L == 4L) add(AIS_FLAGS_VALID_VELOCITY)
+      if (v and 8L == 8L) add(AIS_FLAGS_HIGH_VELOCITY)
+      if (v and 16L == 16L) add(AIS_FLAGS_VALID_TURN_RATE)
+      if (v and 32L == 32L) add(AIS_FLAGS_TURN_RATE_SIGN_ONLY)
+      if (v and 64L == 64L) add(AIS_FLAGS_VALID_DIMENSIONS)
+      if (v and 128L == 128L) add(AIS_FLAGS_LARGE_BOW_DIMENSION)
+      if (v and 256L == 256L) add(AIS_FLAGS_LARGE_STERN_DIMENSION)
+      if (v and 512L == 512L) add(AIS_FLAGS_LARGE_PORT_DIMENSION)
+      if (v and 1024L == 1024L) add(AIS_FLAGS_LARGE_STARBOARD_DIMENSION)
+      if (v and 2048L == 2048L) add(AIS_FLAGS_VALID_CALLSIGN)
+      if (v and 4096L == 4096L) add(AIS_FLAGS_VALID_NAME)
     }
   }
 }

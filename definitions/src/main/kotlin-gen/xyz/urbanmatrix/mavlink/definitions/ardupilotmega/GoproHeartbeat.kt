@@ -7,10 +7,13 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
@@ -36,7 +39,7 @@ public data class GoproHeartbeat(
    * Additional status bits.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavEnumValue<GoproHeartbeatFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<GoproHeartbeat> {
   public override val instanceMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
 
@@ -44,7 +47,7 @@ public data class GoproHeartbeat(
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(captureMode.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array()
   }
 
@@ -52,7 +55,7 @@ public data class GoproHeartbeat(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(captureMode.value, 1)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -75,9 +78,9 @@ public data class GoproHeartbeat(
         val entry = GoproCaptureMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = GoproHeartbeatFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = GoproHeartbeatFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       GoproHeartbeat(
@@ -101,7 +104,7 @@ public data class GoproHeartbeat(
 
     public var captureMode: MavEnumValue<GoproCaptureMode> = MavEnumValue.fromValue(0)
 
-    public var flags: MavEnumValue<GoproHeartbeatFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0)
 
     public fun build(): GoproHeartbeat = GoproHeartbeat(
       status = status,

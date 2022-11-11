@@ -7,15 +7,15 @@ import kotlin.Int
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeUint16
@@ -80,7 +80,7 @@ public data class RallyPoint(
    * Configuration flags.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavEnumValue<RallyFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0),
 ) : MavMessage<RallyPoint> {
   public override val instanceMetadata: MavMessage.Metadata<RallyPoint> = METADATA
 
@@ -95,7 +95,7 @@ public data class RallyPoint(
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(idx)
     outputBuffer.encodeUint8(count)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array()
   }
 
@@ -110,7 +110,7 @@ public data class RallyPoint(
     outputBuffer.encodeUint8(targetComponent)
     outputBuffer.encodeUint8(idx)
     outputBuffer.encodeUint8(count)
-    outputBuffer.encodeEnumValue(flags.value, 1)
+    outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
@@ -134,9 +134,9 @@ public data class RallyPoint(
       val targetComponent = inputBuffer.decodeUint8()
       val idx = inputBuffer.decodeUint8()
       val count = inputBuffer.decodeUint8()
-      val flags = inputBuffer.decodeEnumValue(1).let { value ->
-        val entry = RallyFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+        val flags = RallyFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       RallyPoint(
@@ -181,7 +181,7 @@ public data class RallyPoint(
 
     public var landDir: Int = 0
 
-    public var flags: MavEnumValue<RallyFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0)
 
     public fun build(): RallyPoint = RallyPoint(
       targetSystem = targetSystem,

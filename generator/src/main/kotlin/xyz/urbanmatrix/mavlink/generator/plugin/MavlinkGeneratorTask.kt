@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.generator.plugin
 
-import xyz.urbanmatrix.mavlink.generator.EnumResolver
+import xyz.urbanmatrix.mavlink.generator.EnumHelper
 import xyz.urbanmatrix.mavlink.generator.generateDialectFile
 import xyz.urbanmatrix.mavlink.generator.generateEnumFile
 import xyz.urbanmatrix.mavlink.generator.generateMessageFile
@@ -60,7 +60,7 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
             }
         }
 
-        val enumResolver = EnumResolver(BASE_PACKAGE, mavlinkModels)
+        val enumHelper = EnumHelper(BASE_PACKAGE, mavlinkModels)
 
         for (model in mavlinkModels) {
             model
@@ -77,7 +77,7 @@ abstract class MavlinkGeneratorTask : DefaultTask() {
 
             for (message in model.messages) {
                 message
-                    .generateMessageFile(packageName, enumResolver)
+                    .generateMessageFile(packageName, enumHelper)
                     .writeTo(generatedSourcesDir)
             }
         }

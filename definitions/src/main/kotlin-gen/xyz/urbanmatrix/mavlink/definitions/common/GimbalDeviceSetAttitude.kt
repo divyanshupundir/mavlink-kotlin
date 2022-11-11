@@ -9,15 +9,15 @@ import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeUint8
@@ -48,7 +48,7 @@ public data class GimbalDeviceSetAttitude(
    * Low level gimbal flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0),
+  public val flags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0),
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
    * whether the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set, set all fields to NaN if only angular
@@ -80,7 +80,7 @@ public data class GimbalDeviceSetAttitude(
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
     outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
@@ -92,7 +92,7 @@ public data class GimbalDeviceSetAttitude(
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
     outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeEnumValue(flags.value, 2)
+    outputBuffer.encodeBitmaskValue(flags.value, 2)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array().truncateZeros()
@@ -113,9 +113,9 @@ public data class GimbalDeviceSetAttitude(
       val angularVelocityX = inputBuffer.decodeFloat()
       val angularVelocityY = inputBuffer.decodeFloat()
       val angularVelocityZ = inputBuffer.decodeFloat()
-      val flags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = GimbalDeviceFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = GimbalDeviceFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val targetSystem = inputBuffer.decodeUint8()
       val targetComponent = inputBuffer.decodeUint8()
@@ -145,7 +145,7 @@ public data class GimbalDeviceSetAttitude(
 
     public var targetComponent: Int = 0
 
-    public var flags: MavEnumValue<GimbalDeviceFlags> = MavEnumValue.fromValue(0)
+    public var flags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0)
 
     public var q: List<Float> = emptyList()
 

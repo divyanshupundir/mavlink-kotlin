@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
 /**
  * Camera capability flags (Bitmap)
  */
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class CameraCapFlags(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Camera is able to record video
    */
@@ -90,6 +91,21 @@ public enum class CameraCapFlags(
       1024L -> CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE
       2048L -> CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<CameraCapFlags> = buildList {
+      if (v and 1L == 1L) add(CAMERA_CAP_FLAGS_CAPTURE_VIDEO)
+      if (v and 2L == 2L) add(CAMERA_CAP_FLAGS_CAPTURE_IMAGE)
+      if (v and 4L == 4L) add(CAMERA_CAP_FLAGS_HAS_MODES)
+      if (v and 8L == 8L) add(CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE)
+      if (v and 16L == 16L) add(CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE)
+      if (v and 32L == 32L) add(CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE)
+      if (v and 64L == 64L) add(CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM)
+      if (v and 128L == 128L) add(CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS)
+      if (v and 256L == 256L) add(CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM)
+      if (v and 512L == 512L) add(CAMERA_CAP_FLAGS_HAS_TRACKING_POINT)
+      if (v and 1024L == 1024L) add(CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE)
+      if (v and 2048L == 2048L) add(CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS)
     }
   }
 }

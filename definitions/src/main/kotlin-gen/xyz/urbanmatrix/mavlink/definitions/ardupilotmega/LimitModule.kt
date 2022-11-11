@@ -1,14 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import kotlin.Long
+import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.api.MavBitmask
 
-@GeneratedMavEnum
+@GeneratedMavEnum(bitmask = true)
 public enum class LimitModule(
   public override val `value`: Long,
-) : MavEnum {
+) : MavBitmask {
   /**
    * Pre-initialization.
    */
@@ -32,6 +33,12 @@ public enum class LimitModule(
       2L -> LIMIT_GEOFENCE
       4L -> LIMIT_ALTITUDE
       else -> null
+    }
+
+    public fun getFlagsFromValue(v: Long): List<LimitModule> = buildList {
+      if (v and 1L == 1L) add(LIMIT_GPSLOCK)
+      if (v and 2L == 2L) add(LIMIT_GEOFENCE)
+      if (v and 4L == 4L) add(LIMIT_ALTITUDE)
     }
   }
 }

@@ -8,11 +8,13 @@ import kotlin.Long
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
+import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.definitions.minimal.MavAutopilot
 import xyz.urbanmatrix.mavlink.definitions.minimal.MavType
+import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
@@ -20,6 +22,7 @@ import xyz.urbanmatrix.mavlink.serialization.decodeInt8
 import xyz.urbanmatrix.mavlink.serialization.decodeUint16
 import xyz.urbanmatrix.mavlink.serialization.decodeUint32
 import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
@@ -157,7 +160,7 @@ public data class HighLatency2(
    * Bitmap of failure flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0),
+  public val failureFlags: MavBitmaskValue<HlFailureFlag> = MavBitmaskValue.fromValue(0),
   /**
    * Field for custom payload.
    */
@@ -186,7 +189,7 @@ public data class HighLatency2(
     outputBuffer.encodeInt16(targetAltitude)
     outputBuffer.encodeUint16(targetDistance)
     outputBuffer.encodeUint16(wpNum)
-    outputBuffer.encodeEnumValue(failureFlags.value, 2)
+    outputBuffer.encodeBitmaskValue(failureFlags.value, 2)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
     outputBuffer.encodeUint8(heading)
@@ -218,7 +221,7 @@ public data class HighLatency2(
     outputBuffer.encodeInt16(targetAltitude)
     outputBuffer.encodeUint16(targetDistance)
     outputBuffer.encodeUint16(wpNum)
-    outputBuffer.encodeEnumValue(failureFlags.value, 2)
+    outputBuffer.encodeBitmaskValue(failureFlags.value, 2)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
     outputBuffer.encodeUint8(heading)
@@ -259,9 +262,9 @@ public data class HighLatency2(
       val targetAltitude = inputBuffer.decodeInt16()
       val targetDistance = inputBuffer.decodeUint16()
       val wpNum = inputBuffer.decodeUint16()
-      val failureFlags = inputBuffer.decodeEnumValue(2).let { value ->
-        val entry = HlFailureFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val failureFlags = inputBuffer.decodeBitmaskValue(2).let { value ->
+        val flags = HlFailureFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavType.getEntryFromValueOrNull(value)
@@ -375,7 +378,7 @@ public data class HighLatency2(
 
     public var wpNum: Int = 0
 
-    public var failureFlags: MavEnumValue<HlFailureFlag> = MavEnumValue.fromValue(0)
+    public var failureFlags: MavBitmaskValue<HlFailureFlag> = MavBitmaskValue.fromValue(0)
 
     public var custom0: Int = 0
 
