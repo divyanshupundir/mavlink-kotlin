@@ -50,7 +50,7 @@ class CoroutinesMavConnectionTest {
                     param1 = 1f
                 )
             )
-            connection.sendUnsignedV2(
+            connection.trySendUnsignedV2(
                 100, 1,
                 CommandLong(
                     1,
