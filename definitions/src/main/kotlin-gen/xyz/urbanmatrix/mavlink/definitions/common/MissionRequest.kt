@@ -27,74 +27,70 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
     "A system that gets this request should respond with MISSION_ITEM_INT (as though MISSION_REQUEST_INT was received).")
 @GeneratedMavMessage(
   id = 40,
-  crc = 63,
+  crc = 230,
 )
 public data class MissionRequest(
   /**
    * System ID
    */
-  @GeneratedMavField(
-    type = "uint8_t",
-    extension = true,
-  )
+  @GeneratedMavField(type = "uint8_t")
   public val targetSystem: Int = 0,
   /**
    * Component ID
    */
-  @GeneratedMavField(
-    type = "uint8_t",
-    extension = true,
-  )
+  @GeneratedMavField(type = "uint8_t")
   public val targetComponent: Int = 0,
   /**
    * Sequence
    */
-  @GeneratedMavField(
-    type = "uint16_t",
-    extension = true,
-  )
+  @GeneratedMavField(type = "uint16_t")
   public val seq: Int = 0,
   /**
    * Mission type.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0),
 ) : MavMessage<MissionRequest> {
   public override val instanceMetadata: MavMessage.Metadata<MissionRequest> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(missionType.value, 1)
+    outputBuffer.encodeUint16(seq)
+    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUint8(targetComponent)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(missionType.value, 1)
+    outputBuffer.encodeUint16(seq)
     outputBuffer.encodeUint8(targetSystem)
     outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint16(seq)
+    outputBuffer.encodeEnumValue(missionType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
     private const val ID: Int = 40
 
-    private const val CRC: Int = 63
+    private const val CRC: Int = 230
 
-    private const val SIZE_V1: Int = 1
+    private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 5
 
     private val DESERIALIZER: MavDeserializer<MissionRequest> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
+      val seq = inputBuffer.decodeUint16()
+      val targetSystem = inputBuffer.decodeUint8()
+      val targetComponent = inputBuffer.decodeUint8()
       val missionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val seq = inputBuffer.decodeUint16()
 
       MissionRequest(
         targetSystem = targetSystem,
