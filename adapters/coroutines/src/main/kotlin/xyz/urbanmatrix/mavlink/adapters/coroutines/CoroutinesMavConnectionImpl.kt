@@ -25,7 +25,8 @@ internal class CoroutinesMavConnectionImpl(
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
-    override suspend fun connect(readerScope: CoroutineScope): Result<Unit> = try {
+    @Throws(IOException::class)
+    override suspend fun connect(readerScope: CoroutineScope) {
         withContext(Dispatchers.IO) {
             connection.connect()
             isOpen = true
@@ -34,11 +35,6 @@ internal class CoroutinesMavConnectionImpl(
         readerScope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
-
-        Result.success(Unit)
-
-    } catch (e: IOException) {
-        Result.failure(e)
     }
 
     private suspend fun CoroutineScope.processMavFrames() {
@@ -60,21 +56,20 @@ internal class CoroutinesMavConnectionImpl(
         onReadEnded.invoke()
     }
 
-    override suspend fun close(): Result<Unit> = try {
+    @Throws(IOException::class)
+    override suspend fun close() {
         withContext(Dispatchers.IO) {
             connection.close()
             isOpen = false
         }
-        Result.success(Unit)
-    } catch (e: IOException) {
-        Result.failure(e)
     }
 
+    @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
-    ): Result<Unit> = try {
+    ) {
         withContext(Dispatchers.IO) {
             connection.sendV1(
                 systemId,
@@ -82,15 +77,13 @@ internal class CoroutinesMavConnectionImpl(
                 payload
             )
         }
-        Result.success(Unit)
-    } catch (e: IOException) {
-        Result.failure(e)
     }
 
+    @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int, payload: T
-    ): Result<Unit> = try {
+    ) {
         withContext(Dispatchers.IO) {
             connection.sendUnsignedV2(
                 systemId,
@@ -98,11 +91,9 @@ internal class CoroutinesMavConnectionImpl(
                 payload
             )
         }
-        Result.success(Unit)
-    } catch (e: IOException) {
-        Result.failure(e)
     }
 
+    @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
@@ -110,7 +101,7 @@ internal class CoroutinesMavConnectionImpl(
         linkId: Int,
         timestamp: Long,
         secretKey: ByteArray
-    ): Result<Unit> = try {
+    ) {
         withContext(Dispatchers.IO) {
             connection.sendSignedV2(
                 systemId,
@@ -121,8 +112,5 @@ internal class CoroutinesMavConnectionImpl(
                 secretKey
             )
         }
-        Result.success(Unit)
-    } catch (e: IOException) {
-        Result.failure(e)
     }
 }

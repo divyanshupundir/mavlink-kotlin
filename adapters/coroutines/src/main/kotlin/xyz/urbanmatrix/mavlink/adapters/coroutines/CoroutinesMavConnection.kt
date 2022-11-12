@@ -4,27 +4,33 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import java.io.IOException
 
 interface CoroutinesMavConnection {
 
     val mavFrame: SharedFlow<MavFrame<out MavMessage<*>>>
 
-    suspend fun connect(readerScope: CoroutineScope): Result<Unit>
+    @Throws(IOException::class)
+    suspend fun connect(readerScope: CoroutineScope)
 
-    suspend fun close(): Result<Unit>
+    @Throws(IOException::class)
+    suspend fun close()
 
-    suspend fun <T: MavMessage<T>> sendV1(
+    @Throws(IOException::class)
+    suspend fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
-    ): Result<Unit>
+    )
 
+    @Throws(IOException::class)
     suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
-    ): Result<Unit>
+    )
 
+    @Throws(IOException::class)
     suspend fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
@@ -32,5 +38,5 @@ interface CoroutinesMavConnection {
         linkId: Int,
         timestamp: Long,
         secretKey: ByteArray
-    ): Result<Unit>
+    )
 }
