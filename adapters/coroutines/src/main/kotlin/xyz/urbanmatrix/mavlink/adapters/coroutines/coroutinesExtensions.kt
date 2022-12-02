@@ -6,11 +6,11 @@ import xyz.urbanmatrix.mavlink.connection.MavConnection
 import java.io.IOException
 
 fun MavConnection.asCoroutine(
-    onReadEnded: () -> Unit = {}
+    onIoFailure: CoroutinesMavConnection.() -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     this,
     128,
-    onReadEnded
+    onIoFailure
 )
 
 suspend fun CoroutinesMavConnection.tryConnect(readerScope: CoroutineScope): Boolean = runCatchingIo {
