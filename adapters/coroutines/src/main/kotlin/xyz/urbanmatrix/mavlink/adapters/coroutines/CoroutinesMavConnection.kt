@@ -6,32 +6,32 @@ import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import java.io.IOException
 
-interface CoroutinesMavConnection {
+public interface CoroutinesMavConnection {
 
-    val mavFrame: SharedFlow<MavFrame<out MavMessage<*>>>
-
-    @Throws(IOException::class)
-    suspend fun connect(readerScope: CoroutineScope)
+    public val mavFrame: SharedFlow<MavFrame<out MavMessage<*>>>
 
     @Throws(IOException::class)
-    suspend fun close()
+    public suspend fun connect(readerScope: CoroutineScope)
 
     @Throws(IOException::class)
-    suspend fun <T : MavMessage<T>> sendV1(
+    public suspend fun close()
+
+    @Throws(IOException::class)
+    public suspend fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
     )
 
     @Throws(IOException::class)
-    suspend fun <T : MavMessage<T>> sendUnsignedV2(
+    public suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
     )
 
     @Throws(IOException::class)
-    suspend fun <T : MavMessage<T>> sendSignedV2(
+    public suspend fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
         payload: T,

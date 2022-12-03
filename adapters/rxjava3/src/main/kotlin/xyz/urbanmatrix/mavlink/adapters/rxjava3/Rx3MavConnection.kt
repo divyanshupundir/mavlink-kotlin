@@ -6,33 +6,33 @@ import io.reactivex.rxjava3.annotations.CheckReturnValue
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 
-interface Rx3MavConnection {
+public interface Rx3MavConnection {
 
     @get:CheckReturnValue
-    val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
+    public val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
 
     @CheckReturnValue
-    fun connect(): Completable
+    public fun connect(): Completable
 
     @CheckReturnValue
-    fun close(): Completable
+    public fun close(): Completable
 
     @CheckReturnValue
-    fun <T : MavMessage<T>> sendV1(
+    public fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
     ): Completable
 
     @CheckReturnValue
-    fun <T : MavMessage<T>> sendUnsignedV2(
+    public fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
     ): Completable
 
     @CheckReturnValue
-    fun <T : MavMessage<T>> sendSignedV2(
+    public fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
         payload: T,
