@@ -188,6 +188,7 @@ private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.buil
     .build()
 
 private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("builder")
+    .returns(getClassName(packageName))
     .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
