@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 
 internal class Rx3MavConnectionImpl(
     private val connection: MavConnection,
-    private val onReadEnded: () -> Unit
+    private val onIoFailure: Rx3MavConnection.() -> Unit
 ) : Rx3MavConnection {
 
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
@@ -38,12 +38,17 @@ internal class Rx3MavConnectionImpl(
                 mavFrameProcessor.onNext(connection.next())
             } catch (e: IOException) {
                 kotlin.runCatching { connection.close() }
+                break
+            } catch (e: InterruptedException) {
+                kotlin.runCatching { connection.close() }
                 isOpen = false
                 break
             }
         }
 
-        onReadEnded.invoke()
+        if (isOpen) {
+            onIoFailure()
+        }
     }
 
     override fun close(): Completable = Completable.fromAction {
