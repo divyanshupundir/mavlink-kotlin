@@ -21,13 +21,13 @@ allprojects {
     group = Config.group
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = Config.javaVersion.toString()
+        targetCompatibility = Config.javaVersion.toString()
     }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            jvmTarget = Config.javaVersion.toString()
         }
     }
 
