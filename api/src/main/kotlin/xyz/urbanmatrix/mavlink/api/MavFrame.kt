@@ -6,34 +6,34 @@ package xyz.urbanmatrix.mavlink.api
  *
  * @param <T> The type of this frame's payload.
 </T> */
-interface MavFrame<T> {
+public interface MavFrame<T> {
     /**
      * The sequence of this frame.
      */
-    val sequence: Int
+    public val sequence: Int
 
     /**
      * The ID of the system that originated this frame.
      */
-    val systemId: Int
+    public val systemId: Int
 
     /**
      * The ID of the component that originated this frame.
      */
-    val componentId: Int
+    public val componentId: Int
 
     /**
      * The message/payload of this frame.
      */
-    val message: T
+    public val message: T
 
     /**
      * A copy of the original raw bytes of this frame.
      */
-    val frameBytes: ByteArray
+    public val frameBytes: ByteArray
 
     /**
      * The checksum of this frame.
      */
-    val checksum: Int
+    public val checksum: Int
 }

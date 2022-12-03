@@ -3,12 +3,12 @@ package xyz.urbanmatrix.mavlink.api
 /**
  * Wrapper class for a [MavBitmask].
  */
-class MavBitmaskValue<E : MavBitmask> private constructor(val flags: List<E>, val value: Long) {
+public class MavBitmaskValue<E : MavBitmask> private constructor(public val flags: List<E>, public val value: Long) {
 
-    companion object {
+    public companion object {
 
         @JvmStatic
-        fun <E : MavBitmask> of(flags: List<E>) = MavBitmaskValue(
+        public fun <E : MavBitmask> of(flags: List<E>): MavBitmaskValue<E> = MavBitmaskValue(
             flags,
             flags.map { it.value }
                 .reduceOrNull { bitmask, value -> bitmask or value }
@@ -16,10 +16,10 @@ class MavBitmaskValue<E : MavBitmask> private constructor(val flags: List<E>, va
         )
 
         @JvmStatic
-        fun <E : MavBitmask> of(vararg flags: E) = of(flags.asList())
+        public fun <E : MavBitmask> of(vararg flags: E): MavBitmaskValue<E> = of(flags.asList())
 
         @JvmStatic
-        fun <E : MavBitmask> fromValue(value: Long) = MavBitmaskValue<E>(emptyList(), value)
+        public fun <E : MavBitmask> fromValue(value: Long): MavBitmaskValue<E> = MavBitmaskValue<E>(emptyList(), value)
     }
 
     override fun equals(other: Any?): Boolean {

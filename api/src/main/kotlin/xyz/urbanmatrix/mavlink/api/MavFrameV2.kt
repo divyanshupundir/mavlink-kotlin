@@ -1,25 +1,25 @@
 package xyz.urbanmatrix.mavlink.api
 
-interface MavFrameV2<T> : MavFrame<T> {
+public interface MavFrameV2<T> : MavFrame<T> {
     /**
      * Flag to check if the frame is signed or not.
      */
-    val isSigned: Boolean
+    public val isSigned: Boolean
 
     /**
      * The link ID in this frame's signature, or `-1` if this packet is not signed.
      */
-    val signatureLinkId: Int
+    public val signatureLinkId: Int
 
     /**
      * The timestamp in this frame's signature, or `-1` if this packet is not signed.
      */
-    val signatureTimestamp: Long
+    public val signatureTimestamp: Long
 
     /**
      * The complete signature of this message.
      */
-    val signature: ByteArray
+    public val signature: ByteArray
 
     /**
      * Validates this frame's signature, using its own link ID and timestamp.
@@ -27,5 +27,5 @@ interface MavFrameV2<T> : MavFrame<T> {
      * @param secretKey The secret key to use when validating the signature.
      * @return `true` if the signature validation passed, or `false` otherwise.
      */
-    fun validateSignature(secretKey: ByteArray): Boolean
+    public fun validateSignature(secretKey: ByteArray): Boolean
 }
