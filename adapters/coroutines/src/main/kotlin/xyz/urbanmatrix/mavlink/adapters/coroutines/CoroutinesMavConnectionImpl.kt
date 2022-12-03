@@ -12,7 +12,7 @@ import java.io.IOException
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
     extraBufferCapacity: Int,
-    private val onReadEnded: () -> Unit
+    private val onIoFailure: CoroutinesMavConnection.() -> Unit
 ) : CoroutinesMavConnection {
 
     @Volatile
@@ -41,19 +41,19 @@ internal class CoroutinesMavConnectionImpl(
         while (isActive && isOpen) {
             try {
                 _mavFrame.emit(connection.next())
-            } catch (e: Exception) {
-                when (e) {
-                    is IOException, is CancellationException -> {
-                        kotlin.runCatching { connection.close() }
-                        isOpen = false
-                        break
-                    }
-
-                    else -> throw e
-                }
+            } catch (e: IOException) {
+                kotlin.runCatching { connection.close() }
+                break
+            } catch (e: CancellationException) {
+                kotlin.runCatching { connection.close() }
+                isOpen = false
+                break
             }
         }
-        onReadEnded.invoke()
+
+        if (isOpen) {
+            onIoFailure()
+        }
     }
 
     @Throws(IOException::class)

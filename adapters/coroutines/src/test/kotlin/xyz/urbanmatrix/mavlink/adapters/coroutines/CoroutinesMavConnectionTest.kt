@@ -1,12 +1,9 @@
 package xyz.urbanmatrix.mavlink.adapters.coroutines
 
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
-import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.connection.tcp.TcpClientMavConnection
 import xyz.urbanmatrix.mavlink.definitions.common.CommandLong
 import xyz.urbanmatrix.mavlink.definitions.common.CommonDialect
@@ -39,6 +36,7 @@ class CoroutinesMavConnectionTest {
     @Test
     fun write(): Unit = runBlocking {
         val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
+
         launch {
             connection.connect(this)
             connection.sendUnsignedV2(
@@ -58,6 +56,27 @@ class CoroutinesMavConnectionTest {
                     MavCmd.MAV_CMD_NAV_LAND.wrap()
                 )
             )
+        }
+    }
+
+    @Test
+    fun reconnect(): Unit = runBlocking {
+        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine {
+            launch {
+                while (!tryConnect(this)) {
+                    delay(2000)
+                }
+            }
+        }
+
+        launch {
+            while (!connection.tryConnect(this)) {
+                delay(2000)
+            }
+        }
+
+        launch {
+            connection.mavFrame.collect { println(it.message) }
         }
     }
 }
