@@ -10,6 +10,6 @@ object Config {
     }
 
     object Lib {
-        const val developmentVersion = "0.12.2"
+        const val developmentVersion = "0.12.3"
     }
 }
