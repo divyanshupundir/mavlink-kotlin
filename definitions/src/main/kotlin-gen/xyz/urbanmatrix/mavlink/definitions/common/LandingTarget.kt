@@ -214,7 +214,8 @@ public data class LandingTarget(
 
     public val classMetadata: MavMessage.Metadata<LandingTarget> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LandingTarget =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

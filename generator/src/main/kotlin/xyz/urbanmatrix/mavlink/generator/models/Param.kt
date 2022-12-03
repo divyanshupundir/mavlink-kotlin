@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-data class ParamModel(
+internal data class ParamModel(
     val index: Int,
     val label: String?,
     val units: String?,
@@ -14,7 +14,7 @@ data class ParamModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "param")
-data class ParamXml(
+internal data class ParamXml(
 
     @JacksonXmlProperty(localName = "index", isAttribute = true)
     val index: Int,

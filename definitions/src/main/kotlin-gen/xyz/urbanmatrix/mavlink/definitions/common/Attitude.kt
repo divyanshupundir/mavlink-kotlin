@@ -122,7 +122,8 @@ public data class Attitude(
 
     public val classMetadata: MavMessage.Metadata<Attitude> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Attitude =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

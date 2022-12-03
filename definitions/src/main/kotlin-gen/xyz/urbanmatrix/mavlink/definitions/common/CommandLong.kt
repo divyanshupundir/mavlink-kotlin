@@ -166,7 +166,8 @@ public data class CommandLong(
 
     public val classMetadata: MavMessage.Metadata<CommandLong> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CommandLong =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

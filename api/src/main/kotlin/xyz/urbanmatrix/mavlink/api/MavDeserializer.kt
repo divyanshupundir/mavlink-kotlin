@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.api
 
-fun interface MavDeserializer<T> {
+public fun interface MavDeserializer<T> {
 
     /**
      * Deserializes a [ByteArray] as a MAVLink message.
@@ -10,5 +10,5 @@ fun interface MavDeserializer<T> {
      * correspond to the MAVLink message associated with this [MavDeserializer]
      */
     @Throws(MavDeserializationException::class)
-    fun deserialize(messageBytes: ByteArray): T
+    public fun deserialize(messageBytes: ByteArray): T
 }

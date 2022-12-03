@@ -2,4 +2,4 @@ package xyz.urbanmatrix.mavlink.api
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
 @MustBeDocumented
-annotation class WorkInProgress
+public annotation class WorkInProgress

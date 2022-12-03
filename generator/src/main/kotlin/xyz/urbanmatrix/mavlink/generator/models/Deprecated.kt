@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-data class DeprecatedModel(
+internal data class DeprecatedModel(
     val since: String,
     val replacedBy: String,
     val content: String?
@@ -13,7 +13,7 @@ data class DeprecatedModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "deprecated")
-data class DeprecatedXml(
+internal data class DeprecatedXml(
 
     @JacksonXmlProperty(localName = "since", isAttribute = true)
     val since: String,

@@ -5,21 +5,21 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.charset.StandardCharsets
 
-fun ByteBuffer.encodeInt8(value: Int): Unit = encodeIntegerValue(value.toLong(), Byte.SIZE_BYTES)
+public fun ByteBuffer.encodeInt8(value: Int): Unit = encodeIntegerValue(value.toLong(), Byte.SIZE_BYTES)
 
-fun ByteBuffer.encodeUint8(value: Int): Unit = encodeIntegerValue(value.toLong(), Byte.SIZE_BYTES)
+public fun ByteBuffer.encodeUint8(value: Int): Unit = encodeIntegerValue(value.toLong(), Byte.SIZE_BYTES)
 
-fun ByteBuffer.encodeInt16(value: Int): Unit = encodeIntegerValue(value.toLong(), Short.SIZE_BYTES)
+public fun ByteBuffer.encodeInt16(value: Int): Unit = encodeIntegerValue(value.toLong(), Short.SIZE_BYTES)
 
-fun ByteBuffer.encodeUint16(value: Int): Unit = encodeIntegerValue(value.toLong(), Short.SIZE_BYTES)
+public fun ByteBuffer.encodeUint16(value: Int): Unit = encodeIntegerValue(value.toLong(), Short.SIZE_BYTES)
 
-fun ByteBuffer.encodeInt32(value: Int): Unit = encodeIntegerValue(value.toLong(), Int.SIZE_BYTES)
+public fun ByteBuffer.encodeInt32(value: Int): Unit = encodeIntegerValue(value.toLong(), Int.SIZE_BYTES)
 
-fun ByteBuffer.encodeUint32(value: Long): Unit = encodeIntegerValue(value, Int.SIZE_BYTES)
+public fun ByteBuffer.encodeUint32(value: Long): Unit = encodeIntegerValue(value, Int.SIZE_BYTES)
 
-fun ByteBuffer.encodeInt64(value: Long): Unit = encodeIntegerValue(value, Long.SIZE_BYTES)
+public fun ByteBuffer.encodeInt64(value: Long): Unit = encodeIntegerValue(value, Long.SIZE_BYTES)
 
-fun ByteBuffer.encodeUint64(value: BigInteger) {
+public fun ByteBuffer.encodeUint64(value: BigInteger) {
     val valueBytes = value.toByteArray()
     val data = ByteArray(Long.SIZE_BYTES)
 
@@ -37,17 +37,17 @@ fun ByteBuffer.encodeUint64(value: BigInteger) {
     }
 }
 
-fun ByteBuffer.encodeFloat(value: Float) {
+public fun ByteBuffer.encodeFloat(value: Float) {
     if (this.remaining() >= Float.SIZE_BYTES) this.putFloat(value)
 }
 
-fun ByteBuffer.encodeDouble(value: Double) {
+public fun ByteBuffer.encodeDouble(value: Double) {
     if (this.remaining() >= Double.SIZE_BYTES) this.putDouble(value)
 }
 
-fun ByteBuffer.encodeChar(value: Char): Unit = encodeIntegerValue(value.code.toLong(), Byte.SIZE_BYTES)
+public fun ByteBuffer.encodeChar(value: Char): Unit = encodeIntegerValue(value.code.toLong(), Byte.SIZE_BYTES)
 
-fun ByteBuffer.encodeString(value: String, length: Int) {
+public fun ByteBuffer.encodeString(value: String, length: Int) {
     val data = value.toByteArray(charset = StandardCharsets.UTF_8)
 
     for (i in 0 until length) {
@@ -55,81 +55,81 @@ fun ByteBuffer.encodeString(value: String, length: Int) {
     }
 }
 
-fun ByteBuffer.encodeUint8Array(arr: List<Int>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeUint8Array(arr: List<Int>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Byte.SIZE_BYTES,
     0,
     ByteBuffer::encodeUint8
 )
 
-fun ByteBuffer.encodeInt8Array(arr: List<Int>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeInt8Array(arr: List<Int>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Byte.SIZE_BYTES,
     0,
     ByteBuffer::encodeInt8
 )
 
-fun ByteBuffer.encodeUint16Array(arr: List<Int>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeUint16Array(arr: List<Int>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Short.SIZE_BYTES,
     0,
     ByteBuffer::encodeUint16
 )
 
-fun ByteBuffer.encodeInt16Array(arr: List<Int>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeInt16Array(arr: List<Int>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Short.SIZE_BYTES,
     0,
     ByteBuffer::encodeInt16
 )
 
-fun ByteBuffer.encodeUint32Array(arr: List<Long>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeUint32Array(arr: List<Long>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Int.SIZE_BYTES,
     0L,
     ByteBuffer::encodeUint32
 )
 
-fun ByteBuffer.encodeInt32Array(arr: List<Int>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeInt32Array(arr: List<Int>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Int.SIZE_BYTES,
     0,
     ByteBuffer::encodeInt32
 )
 
-fun ByteBuffer.encodeUint64Array(arr: List<BigInteger>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeUint64Array(arr: List<BigInteger>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Long.SIZE_BYTES,
     BigInteger.ZERO,
     ByteBuffer::encodeUint64
 )
 
-fun ByteBuffer.encodeInt64Array(arr: List<Long>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeInt64Array(arr: List<Long>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Long.SIZE_BYTES,
     0L,
     ByteBuffer::encodeInt64
 )
 
-fun ByteBuffer.encodeFloatArray(arr: List<Float>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeFloatArray(arr: List<Float>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Float.SIZE_BYTES,
     0F,
     ByteBuffer::encodeFloat
 )
 
-fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int) = encodeArray(
+public fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int): Unit = encodeArray(
     arr,
     dataSize / Double.SIZE_BYTES,
     0.0,
     ByteBuffer::encodeDouble
 )
 
-fun ByteBuffer.encodeEnumValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
+public fun ByteBuffer.encodeEnumValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
 
-fun ByteBuffer.encodeBitmaskValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
+public fun ByteBuffer.encodeBitmaskValue(value: Long, dataSize: Int): Unit = encodeIntegerValue(value, dataSize)
 
-inline fun <T : Any> ByteBuffer.encodeArray(
+public inline fun <T : Any> ByteBuffer.encodeArray(
     arr: List<T>,
     elementCount: Int,
     defaultValue: T,
@@ -138,13 +138,13 @@ inline fun <T : Any> ByteBuffer.encodeArray(
     for (i in 0 until elementCount) this.encode(if (i < arr.size) arr[i] else defaultValue)
 }
 
-fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
+public fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
     for (shift in 0 until dataSize) {
         if (this.hasRemaining()) this.put(((value shr (shift * 8)) and 0xFF).toByte())
     }
 }
 
-fun ByteArray.truncateZeros(): ByteArray {
+public fun ByteArray.truncateZeros(): ByteArray {
     for (index in lastIndex downTo 0) {
         if (this[index] != 0.toByte()) {
             return this.copyOfRange(0, index + 1)

@@ -161,7 +161,8 @@ public data class DigicamConfigure(
 
     public val classMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DigicamConfigure =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -106,7 +106,8 @@ public data class McuStatus(
 
     public val classMetadata: MavMessage.Metadata<McuStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): McuStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

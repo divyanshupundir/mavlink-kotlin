@@ -74,7 +74,8 @@ public data class LogRequestEnd(
 
     public val classMetadata: MavMessage.Metadata<LogRequestEnd> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LogRequestEnd =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

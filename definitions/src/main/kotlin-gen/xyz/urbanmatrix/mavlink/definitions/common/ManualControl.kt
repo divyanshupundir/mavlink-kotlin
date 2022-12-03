@@ -176,7 +176,8 @@ public data class ManualControl(
 
     public val classMetadata: MavMessage.Metadata<ManualControl> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ManualControl =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

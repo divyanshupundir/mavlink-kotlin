@@ -122,7 +122,8 @@ public data class Airspeeds(
 
     public val classMetadata: MavMessage.Metadata<Airspeeds> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Airspeeds =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -109,7 +109,8 @@ public data class TerrainData(
 
     public val classMetadata: MavMessage.Metadata<TerrainData> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): TerrainData =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

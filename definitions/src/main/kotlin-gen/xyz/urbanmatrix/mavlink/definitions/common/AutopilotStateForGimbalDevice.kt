@@ -197,7 +197,8 @@ public data class AutopilotStateForGimbalDevice(
 
     public val classMetadata: MavMessage.Metadata<AutopilotStateForGimbalDevice> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AutopilotStateForGimbalDevice =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

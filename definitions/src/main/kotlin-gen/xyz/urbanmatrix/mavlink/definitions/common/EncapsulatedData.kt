@@ -78,7 +78,8 @@ public data class EncapsulatedData(
 
     public val classMetadata: MavMessage.Metadata<EncapsulatedData> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EncapsulatedData =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

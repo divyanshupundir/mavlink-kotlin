@@ -2,7 +2,7 @@ package xyz.urbanmatrix.mavlink.generator
 
 import java.nio.charset.StandardCharsets
 
-class CrcX25 {
+internal class CrcX25 {
 
     private var crc: Int = 0xFFFF
 

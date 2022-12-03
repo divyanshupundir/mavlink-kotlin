@@ -255,7 +255,8 @@ public data class RcChannels(
 
     public val classMetadata: MavMessage.Metadata<RcChannels> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RcChannels =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

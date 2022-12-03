@@ -86,7 +86,8 @@ public data class ScriptRequest(
 
     public val classMetadata: MavMessage.Metadata<ScriptRequest> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ScriptRequest =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -190,7 +190,8 @@ public data class CommandInt(
 
     public val classMetadata: MavMessage.Metadata<CommandInt> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CommandInt =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

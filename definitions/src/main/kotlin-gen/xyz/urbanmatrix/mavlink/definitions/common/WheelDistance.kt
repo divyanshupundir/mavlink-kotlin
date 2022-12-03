@@ -92,7 +92,8 @@ public data class WheelDistance(
 
     public val classMetadata: MavMessage.Metadata<WheelDistance> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): WheelDistance =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -4,7 +4,7 @@ import com.squareup.kotlinpoet.ClassName
 import xyz.urbanmatrix.mavlink.generator.models.EnumModel
 import xyz.urbanmatrix.mavlink.generator.models.MavlinkModel
 
-class EnumHelper(
+internal class EnumHelper(
     private val basePackage: String,
     mavlinkModels: List<MavlinkModel>
 ) {

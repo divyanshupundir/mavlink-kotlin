@@ -141,7 +141,8 @@ public data class WinchStatus(
 
     public val classMetadata: MavMessage.Metadata<WinchStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): WinchStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

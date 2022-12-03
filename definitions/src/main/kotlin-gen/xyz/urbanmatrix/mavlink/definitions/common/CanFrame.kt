@@ -115,7 +115,8 @@ public data class CanFrame(
 
     public val classMetadata: MavMessage.Metadata<CanFrame> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CanFrame =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

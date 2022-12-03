@@ -142,7 +142,8 @@ public data class GimbalManagerSetPitchyaw(
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerSetPitchyaw> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GimbalManagerSetPitchyaw =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

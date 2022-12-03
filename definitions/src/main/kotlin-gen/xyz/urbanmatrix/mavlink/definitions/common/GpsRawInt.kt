@@ -234,7 +234,8 @@ public data class GpsRawInt(
 
     public val classMetadata: MavMessage.Metadata<GpsRawInt> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GpsRawInt =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

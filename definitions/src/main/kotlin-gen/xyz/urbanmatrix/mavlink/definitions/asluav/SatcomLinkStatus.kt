@@ -133,7 +133,8 @@ public data class SatcomLinkStatus(
 
     public val classMetadata: MavMessage.Metadata<SatcomLinkStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SatcomLinkStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

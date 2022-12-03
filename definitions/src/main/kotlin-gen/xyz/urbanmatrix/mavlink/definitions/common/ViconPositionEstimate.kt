@@ -139,7 +139,8 @@ public data class ViconPositionEstimate(
 
     public val classMetadata: MavMessage.Metadata<ViconPositionEstimate> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ViconPositionEstimate =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

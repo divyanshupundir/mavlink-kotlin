@@ -1,3 +1,3 @@
 package xyz.urbanmatrix.mavlink.api
 
-interface MavBitmask : MavEnum
+public interface MavBitmask : MavEnum

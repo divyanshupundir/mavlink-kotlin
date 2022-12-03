@@ -160,7 +160,8 @@ public data class AvssDroneImu(
 
     public val classMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AvssDroneImu =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

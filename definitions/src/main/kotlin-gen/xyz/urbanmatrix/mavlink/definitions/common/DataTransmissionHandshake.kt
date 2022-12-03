@@ -133,7 +133,8 @@ public data class DataTransmissionHandshake(
 
     public val classMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DataTransmissionHandshake =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

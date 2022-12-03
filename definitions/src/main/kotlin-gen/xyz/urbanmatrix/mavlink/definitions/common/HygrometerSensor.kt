@@ -87,7 +87,8 @@ public data class HygrometerSensor(
 
     public val classMetadata: MavMessage.Metadata<HygrometerSensor> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HygrometerSensor =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

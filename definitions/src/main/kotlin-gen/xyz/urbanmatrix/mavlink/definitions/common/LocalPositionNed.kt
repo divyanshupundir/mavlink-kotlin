@@ -124,7 +124,8 @@ public data class LocalPositionNed(
 
     public val classMetadata: MavMessage.Metadata<LocalPositionNed> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LocalPositionNed =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -135,7 +135,8 @@ public data class Collision(
 
     public val classMetadata: MavMessage.Metadata<Collision> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Collision =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

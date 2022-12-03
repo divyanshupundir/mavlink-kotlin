@@ -180,7 +180,8 @@ public data class HilOpticalFlow(
 
     public val classMetadata: MavMessage.Metadata<HilOpticalFlow> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HilOpticalFlow =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

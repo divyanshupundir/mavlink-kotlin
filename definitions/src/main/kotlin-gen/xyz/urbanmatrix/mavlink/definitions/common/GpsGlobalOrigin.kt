@@ -99,7 +99,8 @@ public data class GpsGlobalOrigin(
 
     public val classMetadata: MavMessage.Metadata<GpsGlobalOrigin> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GpsGlobalOrigin =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

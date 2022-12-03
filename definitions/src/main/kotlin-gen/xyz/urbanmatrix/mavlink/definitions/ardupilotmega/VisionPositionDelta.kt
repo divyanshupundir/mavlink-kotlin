@@ -110,7 +110,8 @@ public data class VisionPositionDelta(
 
     public val classMetadata: MavMessage.Metadata<VisionPositionDelta> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): VisionPositionDelta =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

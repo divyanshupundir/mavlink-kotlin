@@ -211,7 +211,8 @@ public data class HilState(
 
     public val classMetadata: MavMessage.Metadata<HilState> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HilState =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

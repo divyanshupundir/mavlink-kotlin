@@ -133,7 +133,8 @@ public data class CellularStatus(
 
     public val classMetadata: MavMessage.Metadata<CellularStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CellularStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

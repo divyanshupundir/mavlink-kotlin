@@ -8,7 +8,11 @@ plugins {
 
 version = Config.Plugin.developmentVersion
 
-tasks.getByName<Test>("test") {
+kotlin {
+    explicitApi()
+}
+
+tasks.test {
     useJUnitPlatform()
 }
 

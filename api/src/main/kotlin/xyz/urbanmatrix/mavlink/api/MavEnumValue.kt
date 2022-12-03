@@ -3,15 +3,15 @@ package xyz.urbanmatrix.mavlink.api
 /**
  * Wrapper class for a [MavEnum].
  */
-class MavEnumValue<E : MavEnum> private constructor(val entry: E?, val value: Long) {
+public class MavEnumValue<E : MavEnum> private constructor(public val entry: E?, public val value: Long) {
 
-    companion object {
-
-        @JvmStatic
-        fun <E : MavEnum> of(entry: E) = MavEnumValue(entry, entry.value)
+    public companion object {
 
         @JvmStatic
-        fun <E : MavEnum> fromValue(value: Long) = MavEnumValue<E>(null, value)
+        public fun <E : MavEnum> of(entry: E): MavEnumValue<E> = MavEnumValue(entry, entry.value)
+
+        @JvmStatic
+        public fun <E : MavEnum> fromValue(value: Long): MavEnumValue<E> = MavEnumValue<E>(null, value)
     }
 
     override fun equals(other: Any?): Boolean {

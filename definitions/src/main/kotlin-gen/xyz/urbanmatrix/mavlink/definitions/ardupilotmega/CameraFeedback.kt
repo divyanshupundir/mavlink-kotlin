@@ -201,7 +201,8 @@ public data class CameraFeedback(
 
     public val classMetadata: MavMessage.Metadata<CameraFeedback> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CameraFeedback =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

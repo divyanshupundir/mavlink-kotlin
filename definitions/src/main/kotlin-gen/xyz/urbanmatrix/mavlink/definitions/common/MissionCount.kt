@@ -104,7 +104,8 @@ public data class MissionCount(
 
     public val classMetadata: MavMessage.Metadata<MissionCount> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MissionCount =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -75,7 +75,8 @@ public data class ParamRequestList(
 
     public val classMetadata: MavMessage.Metadata<ParamRequestList> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ParamRequestList =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

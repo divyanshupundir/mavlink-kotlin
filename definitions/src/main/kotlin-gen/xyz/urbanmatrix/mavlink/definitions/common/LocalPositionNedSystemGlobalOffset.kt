@@ -127,7 +127,8 @@ public data class LocalPositionNedSystemGlobalOffset(
 
     public val classMetadata: MavMessage.Metadata<LocalPositionNedSystemGlobalOffset> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LocalPositionNedSystemGlobalOffset =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

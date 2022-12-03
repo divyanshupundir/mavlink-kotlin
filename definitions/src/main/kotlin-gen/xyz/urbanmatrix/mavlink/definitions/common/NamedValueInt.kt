@@ -90,7 +90,8 @@ public data class NamedValueInt(
 
     public val classMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): NamedValueInt =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

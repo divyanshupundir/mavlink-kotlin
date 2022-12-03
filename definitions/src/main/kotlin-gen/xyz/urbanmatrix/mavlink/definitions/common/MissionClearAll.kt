@@ -91,7 +91,8 @@ public data class MissionClearAll(
 
     public val classMetadata: MavMessage.Metadata<MissionClearAll> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MissionClearAll =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

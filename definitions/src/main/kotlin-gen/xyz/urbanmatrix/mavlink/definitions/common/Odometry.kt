@@ -242,7 +242,8 @@ public data class Odometry(
 
     public val classMetadata: MavMessage.Metadata<Odometry> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Odometry =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -113,7 +113,8 @@ public data class LedControl(
 
     public val classMetadata: MavMessage.Metadata<LedControl> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LedControl =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

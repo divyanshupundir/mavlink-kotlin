@@ -75,7 +75,8 @@ public data class Rangefinder(
 
     public val classMetadata: MavMessage.Metadata<Rangefinder> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Rangefinder =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

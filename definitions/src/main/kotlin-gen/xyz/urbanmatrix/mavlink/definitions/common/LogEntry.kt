@@ -103,7 +103,8 @@ public data class LogEntry(
 
     public val classMetadata: MavMessage.Metadata<LogEntry> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LogEntry =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

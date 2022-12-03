@@ -243,7 +243,8 @@ public data class ServoOutputRaw(
 
     public val classMetadata: MavMessage.Metadata<ServoOutputRaw> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ServoOutputRaw =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

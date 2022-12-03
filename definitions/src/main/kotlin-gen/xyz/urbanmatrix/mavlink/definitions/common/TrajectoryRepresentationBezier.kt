@@ -130,7 +130,8 @@ public data class TrajectoryRepresentationBezier(
 
     public val classMetadata: MavMessage.Metadata<TrajectoryRepresentationBezier> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): TrajectoryRepresentationBezier =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

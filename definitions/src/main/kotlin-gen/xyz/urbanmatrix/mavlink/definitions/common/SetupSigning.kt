@@ -99,7 +99,8 @@ public data class SetupSigning(
 
     public val classMetadata: MavMessage.Metadata<SetupSigning> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SetupSigning =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -135,7 +135,8 @@ public data class CommandAck(
 
     public val classMetadata: MavMessage.Metadata<CommandAck> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CommandAck =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

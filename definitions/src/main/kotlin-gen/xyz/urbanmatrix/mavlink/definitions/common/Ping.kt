@@ -104,7 +104,8 @@ public data class Ping(
 
     public val classMetadata: MavMessage.Metadata<Ping> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Ping =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

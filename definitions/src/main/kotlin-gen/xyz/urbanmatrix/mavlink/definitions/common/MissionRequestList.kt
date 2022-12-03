@@ -91,7 +91,8 @@ public data class MissionRequestList(
 
     public val classMetadata: MavMessage.Metadata<MissionRequestList> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MissionRequestList =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

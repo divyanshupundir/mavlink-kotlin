@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import xyz.urbanmatrix.mavlink.generator.CaseFormat
 
-data class MessageModel(
+internal data class MessageModel(
     val id: Int,
     val name: String,
     val fields: List<FieldModel>,
@@ -19,7 +19,7 @@ data class MessageModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "entry")
-data class MessageXml(
+internal data class MessageXml(
 
     @JacksonXmlProperty(localName = "id", isAttribute = true)
     val id: Int,

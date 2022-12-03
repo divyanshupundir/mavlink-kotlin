@@ -74,7 +74,8 @@ public data class Rpm(
 
     public val classMetadata: MavMessage.Metadata<Rpm> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Rpm =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

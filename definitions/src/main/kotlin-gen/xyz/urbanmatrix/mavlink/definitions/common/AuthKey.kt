@@ -66,7 +66,8 @@ public data class AuthKey(
 
     public val classMetadata: MavMessage.Metadata<AuthKey> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AuthKey =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

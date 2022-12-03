@@ -131,7 +131,8 @@ public data class GsmLinkStatus(
 
     public val classMetadata: MavMessage.Metadata<GsmLinkStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GsmLinkStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

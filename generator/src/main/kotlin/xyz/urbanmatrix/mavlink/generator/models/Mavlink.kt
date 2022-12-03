@@ -7,7 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import xyz.urbanmatrix.mavlink.generator.CaseFormat
 
-data class MavlinkModel(
+internal data class MavlinkModel(
     val name: String,
     val includes: List<String>,
     val version: Int,
@@ -21,7 +21,7 @@ data class MavlinkModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "mavlink")
-data class MavlinkXml(
+internal data class MavlinkXml(
 
     @JacksonXmlProperty(localName = "version", isAttribute = true)
     val version: Int,

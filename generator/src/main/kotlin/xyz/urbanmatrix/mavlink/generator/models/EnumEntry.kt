@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
-data class EnumEntryModel(
+internal data class EnumEntryModel(
     val value: Long,
     val name: String,
     val params: List<ParamModel>,
@@ -16,7 +16,7 @@ data class EnumEntryModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "entry")
-data class EnumEntryXml(
+internal data class EnumEntryXml(
 
     @JacksonXmlProperty(localName = "value", isAttribute = true)
     val value: Long,

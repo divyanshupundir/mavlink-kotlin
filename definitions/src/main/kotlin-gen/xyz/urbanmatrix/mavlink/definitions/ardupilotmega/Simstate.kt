@@ -157,7 +157,8 @@ public data class Simstate(
 
     public val classMetadata: MavMessage.Metadata<Simstate> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Simstate =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

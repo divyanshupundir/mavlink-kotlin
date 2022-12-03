@@ -154,7 +154,8 @@ public data class VisionPositionEstimate(
 
     public val classMetadata: MavMessage.Metadata<VisionPositionEstimate> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): VisionPositionEstimate =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

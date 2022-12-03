@@ -111,7 +111,8 @@ public data class RadioCalibration(
 
     public val classMetadata: MavMessage.Metadata<RadioCalibration> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RadioCalibration =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

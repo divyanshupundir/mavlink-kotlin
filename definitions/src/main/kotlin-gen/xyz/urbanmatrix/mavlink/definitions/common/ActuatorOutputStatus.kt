@@ -92,7 +92,8 @@ public data class ActuatorOutputStatus(
 
     public val classMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ActuatorOutputStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

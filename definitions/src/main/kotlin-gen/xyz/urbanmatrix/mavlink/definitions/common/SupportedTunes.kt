@@ -89,7 +89,8 @@ public data class SupportedTunes(
 
     public val classMetadata: MavMessage.Metadata<SupportedTunes> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SupportedTunes =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

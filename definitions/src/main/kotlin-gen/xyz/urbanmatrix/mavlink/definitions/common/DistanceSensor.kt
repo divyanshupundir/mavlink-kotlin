@@ -200,7 +200,8 @@ public data class DistanceSensor(
 
     public val classMetadata: MavMessage.Metadata<DistanceSensor> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DistanceSensor =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

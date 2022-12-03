@@ -216,7 +216,8 @@ public data class HilStateQuaternion(
 
     public val classMetadata: MavMessage.Metadata<HilStateQuaternion> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HilStateQuaternion =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

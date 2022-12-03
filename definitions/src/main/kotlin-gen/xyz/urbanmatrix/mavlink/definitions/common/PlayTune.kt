@@ -98,7 +98,8 @@ public data class PlayTune(
 
     public val classMetadata: MavMessage.Metadata<PlayTune> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): PlayTune =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

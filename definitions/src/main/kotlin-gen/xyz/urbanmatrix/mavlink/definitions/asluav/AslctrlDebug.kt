@@ -161,7 +161,8 @@ public data class AslctrlDebug(
 
     public val classMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AslctrlDebug =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

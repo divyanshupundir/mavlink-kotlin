@@ -86,7 +86,8 @@ public data class ScriptCount(
 
     public val classMetadata: MavMessage.Metadata<ScriptCount> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ScriptCount =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -86,7 +86,8 @@ public data class AoaSsa(
 
     public val classMetadata: MavMessage.Metadata<AoaSsa> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AoaSsa =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

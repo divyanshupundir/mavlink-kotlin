@@ -155,7 +155,8 @@ public data class GlobalVisionPositionEstimate(
 
     public val classMetadata: MavMessage.Metadata<GlobalVisionPositionEstimate> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GlobalVisionPositionEstimate =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

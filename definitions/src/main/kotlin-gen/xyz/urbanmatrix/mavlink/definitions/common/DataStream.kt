@@ -87,7 +87,8 @@ public data class DataStream(
 
     public val classMetadata: MavMessage.Metadata<DataStream> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DataStream =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

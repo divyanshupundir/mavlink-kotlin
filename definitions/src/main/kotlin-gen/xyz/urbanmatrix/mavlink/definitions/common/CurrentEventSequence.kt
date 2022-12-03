@@ -83,7 +83,8 @@ public data class CurrentEventSequence(
 
     public val classMetadata: MavMessage.Metadata<CurrentEventSequence> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CurrentEventSequence =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

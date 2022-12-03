@@ -111,7 +111,8 @@ public data class ResponseEventError(
 
     public val classMetadata: MavMessage.Metadata<ResponseEventError> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ResponseEventError =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

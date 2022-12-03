@@ -89,7 +89,8 @@ public data class PowerStatus(
 
     public val classMetadata: MavMessage.Metadata<PowerStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): PowerStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

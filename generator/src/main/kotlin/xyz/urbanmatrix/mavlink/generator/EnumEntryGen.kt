@@ -5,7 +5,7 @@ import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 
-fun EnumEntryModel.generateEnumConstant() = TypeSpec
+internal fun EnumEntryModel.generateEnumConstant() = TypeSpec
     .anonymousClassBuilder()
     .addSuperclassConstructorParameter("%LL", value)
     .apply {

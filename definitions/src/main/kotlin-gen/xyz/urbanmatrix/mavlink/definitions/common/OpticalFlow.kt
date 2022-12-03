@@ -159,7 +159,8 @@ public data class OpticalFlow(
 
     public val classMetadata: MavMessage.Metadata<OpticalFlow> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): OpticalFlow =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

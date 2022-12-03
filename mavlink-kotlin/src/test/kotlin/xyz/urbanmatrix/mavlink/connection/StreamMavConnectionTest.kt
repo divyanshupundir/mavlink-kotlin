@@ -2,7 +2,7 @@ package xyz.urbanmatrix.mavlink.connection
 
 import org.junit.jupiter.api.Test
 import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
+import xyz.urbanmatrix.mavlink.connection.stream.StreamMavConnection
 import xyz.urbanmatrix.mavlink.definitions.common.CommonDialect
 import xyz.urbanmatrix.mavlink.definitions.minimal.Heartbeat
 import xyz.urbanmatrix.mavlink.definitions.minimal.MavAutopilot

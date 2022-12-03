@@ -12,7 +12,7 @@ import xyz.urbanmatrix.mavlink.generator.models.sortedByPosition
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
+internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
@@ -188,6 +188,7 @@ private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.buil
     .build()
 
 private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("builder")
+    .returns(getClassName(packageName))
     .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
@@ -203,7 +204,7 @@ private val truncateZerosMemberName = MemberName("xyz.urbanmatrix.mavlink.serial
 private fun MessageModel.getClassName(packageName: String): ClassName =
     ClassName(packageName, formattedName)
 
-val MessageModel.crc: Int
+internal val MessageModel.crc: Int
     get() {
         val crc = CrcX25().apply {
             accumulate("$name ")

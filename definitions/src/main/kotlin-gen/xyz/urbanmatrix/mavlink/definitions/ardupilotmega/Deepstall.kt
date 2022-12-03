@@ -155,7 +155,8 @@ public data class Deepstall(
 
     public val classMetadata: MavMessage.Metadata<Deepstall> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Deepstall =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

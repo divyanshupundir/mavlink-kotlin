@@ -148,7 +148,8 @@ public data class PidTuning(
 
     public val classMetadata: MavMessage.Metadata<PidTuning> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): PidTuning =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -200,7 +200,8 @@ public data class AdsbVehicle(
 
     public val classMetadata: MavMessage.Metadata<AdsbVehicle> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AdsbVehicle =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

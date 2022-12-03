@@ -84,7 +84,8 @@ public data class RallyFetchPoint(
 
     public val classMetadata: MavMessage.Metadata<RallyFetchPoint> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RallyFetchPoint =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

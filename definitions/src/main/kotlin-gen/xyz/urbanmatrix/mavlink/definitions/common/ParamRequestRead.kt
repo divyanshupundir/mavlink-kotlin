@@ -105,7 +105,8 @@ public data class ParamRequestRead(
 
     public val classMetadata: MavMessage.Metadata<ParamRequestRead> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ParamRequestRead =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

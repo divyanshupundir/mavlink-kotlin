@@ -117,7 +117,8 @@ public data class AvssDronePosition(
 
     public val classMetadata: MavMessage.Metadata<AvssDronePosition> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AvssDronePosition =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

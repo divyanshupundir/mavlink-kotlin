@@ -180,7 +180,8 @@ public data class AdapTuning(
 
     public val classMetadata: MavMessage.Metadata<AdapTuning> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AdapTuning =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

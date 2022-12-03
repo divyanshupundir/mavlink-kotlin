@@ -74,7 +74,8 @@ public data class FlexifunctionSet(
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionSet> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionSet =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

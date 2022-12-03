@@ -157,7 +157,8 @@ public data class ObstacleDistance3d(
 
     public val classMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ObstacleDistance3d =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

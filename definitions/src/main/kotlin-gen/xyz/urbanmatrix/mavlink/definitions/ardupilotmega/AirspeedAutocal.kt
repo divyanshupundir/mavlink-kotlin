@@ -165,7 +165,8 @@ public data class AirspeedAutocal(
 
     public val classMetadata: MavMessage.Metadata<AirspeedAutocal> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AirspeedAutocal =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

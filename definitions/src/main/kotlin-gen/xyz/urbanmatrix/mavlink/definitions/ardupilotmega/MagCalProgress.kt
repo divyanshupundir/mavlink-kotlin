@@ -150,7 +150,8 @@ public data class MagCalProgress(
 
     public val classMetadata: MavMessage.Metadata<MagCalProgress> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MagCalProgress =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

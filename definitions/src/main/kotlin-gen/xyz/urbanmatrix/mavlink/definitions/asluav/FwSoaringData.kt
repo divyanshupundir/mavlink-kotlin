@@ -287,7 +287,8 @@ public data class FwSoaringData(
 
     public val classMetadata: MavMessage.Metadata<FwSoaringData> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FwSoaringData =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

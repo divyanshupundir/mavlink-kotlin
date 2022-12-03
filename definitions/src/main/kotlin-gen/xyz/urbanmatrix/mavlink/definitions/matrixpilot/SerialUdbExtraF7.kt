@@ -111,7 +111,8 @@ public data class SerialUdbExtraF7(
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF7> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF7 =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

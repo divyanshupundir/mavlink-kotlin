@@ -142,7 +142,8 @@ public data class WindCov(
 
     public val classMetadata: MavMessage.Metadata<WindCov> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): WindCov =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

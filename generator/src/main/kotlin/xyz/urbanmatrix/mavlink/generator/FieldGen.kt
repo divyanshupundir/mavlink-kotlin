@@ -8,19 +8,19 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import java.math.BigInteger
 
-fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
+internal fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
     .builder(formattedName, resolveKotlinType(enumHelper))
     .defaultValue(defaultKotlinValue(enumHelper))
     .apply { if (content != null) addKdoc(content!!.replace("%", "%%")) }
     .build()
 
-fun FieldModel.generateProperty(enumHelper: EnumHelper) = PropertySpec
+internal fun FieldModel.generateProperty(enumHelper: EnumHelper) = PropertySpec
     .builder(formattedName, resolveKotlinType(enumHelper))
     .initializer(formattedName)
     .addAnnotation(generateGeneratedAnnotation())
     .build()
 
-fun FieldModel.generateBuilderProperty(enumHelper: EnumHelper) = PropertySpec
+internal fun FieldModel.generateBuilderProperty(enumHelper: EnumHelper) = PropertySpec
     .builder(formattedName, resolveKotlinType(enumHelper))
     .mutable()
     .initializer(defaultKotlinValue(enumHelper))
@@ -46,7 +46,7 @@ private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = whe
     }
 }
 
-fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHelper): CodeBlock {
+internal fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHelper): CodeBlock {
     val encode = CodeBlock.builder()
     when (this) {
         is FieldModel.Enum -> encode.addStatement("$outputName.%M($formattedName.value, $size)", encodeMethodName(enumHelper))
@@ -56,7 +56,7 @@ fun FieldModel.generateSerializeStatement(outputName: String, enumHelper: EnumHe
     return encode.build()
 }
 
-fun FieldModel.generateDeserializeStatement(inputName: String, enumHelper: EnumHelper): CodeBlock {
+internal fun FieldModel.generateDeserializeStatement(inputName: String, enumHelper: EnumHelper): CodeBlock {
     val decode = CodeBlock.builder()
     when (this) {
         is FieldModel.Enum -> if (enumHelper.isBitmask(enumType)) {

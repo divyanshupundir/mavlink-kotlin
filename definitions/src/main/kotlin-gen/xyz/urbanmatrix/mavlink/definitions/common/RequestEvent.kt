@@ -98,7 +98,8 @@ public data class RequestEvent(
 
     public val classMetadata: MavMessage.Metadata<RequestEvent> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RequestEvent =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

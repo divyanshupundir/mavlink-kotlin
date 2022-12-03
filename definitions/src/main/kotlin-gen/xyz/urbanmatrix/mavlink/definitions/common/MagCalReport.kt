@@ -241,7 +241,8 @@ public data class MagCalReport(
 
     public val classMetadata: MavMessage.Metadata<MagCalReport> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MagCalReport =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

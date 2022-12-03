@@ -1,11 +1,11 @@
 package xyz.urbanmatrix.mavlink.connection.tcp
 
 import xyz.urbanmatrix.mavlink.api.MavDialect
-import xyz.urbanmatrix.mavlink.connection.StreamMavConnection
+import xyz.urbanmatrix.mavlink.connection.stream.StreamMavConnection
 import java.io.IOException
 import java.net.ServerSocket
 
-class TcpServerMavConnection(
+public class TcpServerMavConnection(
     private val port: Int,
     private val dialect: MavDialect
 ) : TcpMavConnection() {

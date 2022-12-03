@@ -163,7 +163,8 @@ public data class WaterDepth(
 
     public val classMetadata: MavMessage.Metadata<WaterDepth> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): WaterDepth =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

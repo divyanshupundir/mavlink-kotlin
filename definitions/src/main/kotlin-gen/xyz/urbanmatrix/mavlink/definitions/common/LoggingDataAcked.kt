@@ -116,7 +116,8 @@ public data class LoggingDataAcked(
 
     public val classMetadata: MavMessage.Metadata<LoggingDataAcked> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LoggingDataAcked =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

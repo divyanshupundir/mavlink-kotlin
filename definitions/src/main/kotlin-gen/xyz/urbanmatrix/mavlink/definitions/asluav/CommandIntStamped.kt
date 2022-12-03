@@ -215,7 +215,8 @@ public data class CommandIntStamped(
 
     public val classMetadata: MavMessage.Metadata<CommandIntStamped> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CommandIntStamped =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

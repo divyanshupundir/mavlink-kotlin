@@ -170,7 +170,8 @@ public data class SensorOffsets(
 
     public val classMetadata: MavMessage.Metadata<SensorOffsets> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensorOffsets =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

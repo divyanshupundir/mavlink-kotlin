@@ -205,7 +205,8 @@ public data class PositionTargetGlobalInt(
 
     public val classMetadata: MavMessage.Metadata<PositionTargetGlobalInt> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): PositionTargetGlobalInt =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

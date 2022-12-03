@@ -83,7 +83,8 @@ public data class FlexifunctionCommand(
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionCommand> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionCommand =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

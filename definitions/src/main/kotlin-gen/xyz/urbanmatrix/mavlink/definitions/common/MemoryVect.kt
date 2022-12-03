@@ -99,7 +99,8 @@ public data class MemoryVect(
 
     public val classMetadata: MavMessage.Metadata<MemoryVect> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MemoryVect =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

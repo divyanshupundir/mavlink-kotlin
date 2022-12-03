@@ -77,7 +77,8 @@ public data class DeviceOpWriteReply(
 
     public val classMetadata: MavMessage.Metadata<DeviceOpWriteReply> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DeviceOpWriteReply =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

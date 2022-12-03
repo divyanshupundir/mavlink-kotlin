@@ -105,7 +105,8 @@ public data class ComponentMetadata(
 
     public val classMetadata: MavMessage.Metadata<ComponentMetadata> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ComponentMetadata =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

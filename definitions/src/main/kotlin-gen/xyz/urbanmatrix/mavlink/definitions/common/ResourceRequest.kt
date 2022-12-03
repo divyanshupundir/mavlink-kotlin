@@ -106,7 +106,8 @@ public data class ResourceRequest(
 
     public val classMetadata: MavMessage.Metadata<ResourceRequest> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ResourceRequest =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

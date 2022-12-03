@@ -109,7 +109,8 @@ public data class DebugVect(
 
     public val classMetadata: MavMessage.Metadata<DebugVect> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DebugVect =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

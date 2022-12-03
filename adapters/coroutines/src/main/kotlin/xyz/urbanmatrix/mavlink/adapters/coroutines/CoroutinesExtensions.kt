@@ -5,7 +5,7 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 import java.io.IOException
 
-fun MavConnection.asCoroutine(
+public fun MavConnection.asCoroutine(
     onIoFailure: CoroutinesMavConnection.() -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     this,
@@ -13,15 +13,15 @@ fun MavConnection.asCoroutine(
     onIoFailure
 )
 
-suspend fun CoroutinesMavConnection.tryConnect(readerScope: CoroutineScope): Boolean = runCatchingIo {
+public suspend fun CoroutinesMavConnection.tryConnect(readerScope: CoroutineScope): Boolean = runCatchingIo {
     connect(readerScope)
 }
 
-suspend fun CoroutinesMavConnection.tryClose(): Boolean = runCatchingIo {
+public suspend fun CoroutinesMavConnection.tryClose(): Boolean = runCatchingIo {
     close()
 }
 
-suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendV1(
+public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendV1(
     systemId: Int,
     componentId: Int,
     payload: T
@@ -29,7 +29,7 @@ suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendV1(
     sendV1(systemId, componentId, payload)
 }
 
-suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendUnsignedV2(
+public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendUnsignedV2(
     systemId: Int,
     componentId: Int,
     payload: T
@@ -37,7 +37,7 @@ suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendUnsignedV2(
     sendUnsignedV2(systemId, componentId, payload)
 }
 
-suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendSignedV2(
+public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendSignedV2(
     systemId: Int,
     componentId: Int,
     payload: T,

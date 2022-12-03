@@ -79,7 +79,8 @@ public data class SystemTime(
 
     public val classMetadata: MavMessage.Metadata<SystemTime> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SystemTime =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

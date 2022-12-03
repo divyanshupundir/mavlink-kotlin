@@ -183,7 +183,8 @@ public data class CameraImageCaptured(
 
     public val classMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CameraImageCaptured =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

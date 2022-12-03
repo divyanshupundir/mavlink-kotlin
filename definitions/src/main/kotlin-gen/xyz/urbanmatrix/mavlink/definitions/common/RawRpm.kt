@@ -76,7 +76,8 @@ public data class RawRpm(
 
     public val classMetadata: MavMessage.Metadata<RawRpm> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RawRpm =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

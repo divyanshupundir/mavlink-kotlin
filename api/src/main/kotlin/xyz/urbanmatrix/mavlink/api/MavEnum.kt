@@ -1,5 +1,5 @@
 package xyz.urbanmatrix.mavlink.api
 
-interface MavEnum {
-    val value: Long
+public interface MavEnum {
+    public val value: Long
 }

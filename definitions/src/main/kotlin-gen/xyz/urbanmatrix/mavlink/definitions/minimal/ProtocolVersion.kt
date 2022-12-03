@@ -110,7 +110,8 @@ public data class ProtocolVersion(
 
     public val classMetadata: MavMessage.Metadata<ProtocolVersion> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ProtocolVersion =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

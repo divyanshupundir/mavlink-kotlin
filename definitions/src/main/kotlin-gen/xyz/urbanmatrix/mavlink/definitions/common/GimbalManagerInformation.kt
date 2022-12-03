@@ -152,7 +152,8 @@ public data class GimbalManagerInformation(
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GimbalManagerInformation =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

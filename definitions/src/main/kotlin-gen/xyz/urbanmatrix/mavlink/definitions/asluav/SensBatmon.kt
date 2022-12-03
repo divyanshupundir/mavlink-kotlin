@@ -204,7 +204,8 @@ public data class SensBatmon(
 
     public val classMetadata: MavMessage.Metadata<SensBatmon> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensBatmon =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -180,7 +180,8 @@ public data class SensMppt(
 
     public val classMetadata: MavMessage.Metadata<SensMppt> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensMppt =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

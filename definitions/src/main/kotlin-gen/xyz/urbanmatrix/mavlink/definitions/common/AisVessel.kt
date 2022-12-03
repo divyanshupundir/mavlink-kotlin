@@ -236,7 +236,8 @@ public data class AisVessel(
 
     public val classMetadata: MavMessage.Metadata<AisVessel> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AisVessel =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

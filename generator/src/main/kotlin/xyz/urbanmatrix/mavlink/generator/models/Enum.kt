@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import xyz.urbanmatrix.mavlink.generator.CaseFormat
 
-data class EnumModel(
+internal data class EnumModel(
     val name: String,
     val bitmask: Boolean,
     val entries: List<EnumEntryModel>,
@@ -18,7 +18,7 @@ data class EnumModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "enum")
-data class EnumXml(
+internal data class EnumXml(
 
     @JacksonXmlProperty(localName = "name", isAttribute = true)
     val name: String,
