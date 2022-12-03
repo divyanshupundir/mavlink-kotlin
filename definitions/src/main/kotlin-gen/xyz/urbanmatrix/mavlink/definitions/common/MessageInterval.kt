@@ -82,7 +82,8 @@ public data class MessageInterval(
 
     public val classMetadata: MavMessage.Metadata<MessageInterval> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MessageInterval =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

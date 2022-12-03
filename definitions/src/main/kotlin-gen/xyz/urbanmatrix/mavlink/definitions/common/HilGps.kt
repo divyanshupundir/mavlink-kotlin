@@ -208,7 +208,8 @@ public data class HilGps(
 
     public val classMetadata: MavMessage.Metadata<HilGps> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HilGps =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

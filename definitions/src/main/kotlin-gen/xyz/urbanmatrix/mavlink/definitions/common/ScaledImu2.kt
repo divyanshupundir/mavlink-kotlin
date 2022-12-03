@@ -162,7 +162,8 @@ public data class ScaledImu2(
 
     public val classMetadata: MavMessage.Metadata<ScaledImu2> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ScaledImu2 =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

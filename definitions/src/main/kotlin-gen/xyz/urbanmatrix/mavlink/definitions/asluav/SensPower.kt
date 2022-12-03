@@ -93,7 +93,8 @@ public data class SensPower(
 
     public val classMetadata: MavMessage.Metadata<SensPower> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensPower =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

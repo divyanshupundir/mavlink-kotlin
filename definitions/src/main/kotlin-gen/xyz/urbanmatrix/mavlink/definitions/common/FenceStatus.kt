@@ -117,7 +117,8 @@ public data class FenceStatus(
 
     public val classMetadata: MavMessage.Metadata<FenceStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FenceStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

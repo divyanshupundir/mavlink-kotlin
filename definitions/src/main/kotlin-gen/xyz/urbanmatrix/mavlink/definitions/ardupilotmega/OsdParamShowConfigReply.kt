@@ -137,7 +137,8 @@ public data class OsdParamShowConfigReply(
 
     public val classMetadata: MavMessage.Metadata<OsdParamShowConfigReply> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): OsdParamShowConfigReply =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

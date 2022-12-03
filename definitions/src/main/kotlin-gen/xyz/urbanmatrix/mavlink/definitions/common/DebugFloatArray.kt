@@ -107,7 +107,8 @@ public data class DebugFloatArray(
 
     public val classMetadata: MavMessage.Metadata<DebugFloatArray> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DebugFloatArray =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

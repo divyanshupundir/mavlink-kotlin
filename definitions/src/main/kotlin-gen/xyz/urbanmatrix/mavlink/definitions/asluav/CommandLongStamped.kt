@@ -190,7 +190,8 @@ public data class CommandLongStamped(
 
     public val classMetadata: MavMessage.Metadata<CommandLongStamped> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CommandLongStamped =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -106,7 +106,8 @@ public data class HilActuatorControls(
 
     public val classMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HilActuatorControls =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

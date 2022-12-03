@@ -158,7 +158,8 @@ public data class UavionixAdsbOutCfg(
 
     public val classMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): UavionixAdsbOutCfg =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

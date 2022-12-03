@@ -85,7 +85,8 @@ public data class LoggingAck(
 
     public val classMetadata: MavMessage.Metadata<LoggingAck> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LoggingAck =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

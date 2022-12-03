@@ -107,7 +107,8 @@ public data class SensorAirflowAngles(
 
     public val classMetadata: MavMessage.Metadata<SensorAirflowAngles> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensorAirflowAngles =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

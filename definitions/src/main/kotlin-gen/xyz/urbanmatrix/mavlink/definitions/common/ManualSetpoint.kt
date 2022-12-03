@@ -125,7 +125,8 @@ public data class ManualSetpoint(
 
     public val classMetadata: MavMessage.Metadata<ManualSetpoint> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ManualSetpoint =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

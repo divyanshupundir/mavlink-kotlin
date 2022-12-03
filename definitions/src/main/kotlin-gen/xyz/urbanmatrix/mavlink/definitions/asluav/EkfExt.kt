@@ -122,7 +122,8 @@ public data class EkfExt(
 
     public val classMetadata: MavMessage.Metadata<EkfExt> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EkfExt =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

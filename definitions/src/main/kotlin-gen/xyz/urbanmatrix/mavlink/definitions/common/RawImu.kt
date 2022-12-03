@@ -177,7 +177,8 @@ public data class RawImu(
 
     public val classMetadata: MavMessage.Metadata<RawImu> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RawImu =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

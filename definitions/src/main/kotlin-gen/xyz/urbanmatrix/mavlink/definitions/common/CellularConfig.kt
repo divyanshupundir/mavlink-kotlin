@@ -146,7 +146,8 @@ public data class CellularConfig(
 
     public val classMetadata: MavMessage.Metadata<CellularConfig> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CellularConfig =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

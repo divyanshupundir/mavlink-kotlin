@@ -217,7 +217,8 @@ public data class ControlSystemState(
 
     public val classMetadata: MavMessage.Metadata<ControlSystemState> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ControlSystemState =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

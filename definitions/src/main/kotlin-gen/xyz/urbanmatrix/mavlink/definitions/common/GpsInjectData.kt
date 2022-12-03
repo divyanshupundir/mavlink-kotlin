@@ -97,7 +97,8 @@ public data class GpsInjectData(
 
     public val classMetadata: MavMessage.Metadata<GpsInjectData> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GpsInjectData =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

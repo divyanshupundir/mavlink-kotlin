@@ -109,7 +109,8 @@ public data class ApAdc(
 
     public val classMetadata: MavMessage.Metadata<ApAdc> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ApAdc =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

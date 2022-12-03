@@ -74,7 +74,8 @@ public data class FlexifunctionCommandAck(
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionCommandAck> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionCommandAck =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

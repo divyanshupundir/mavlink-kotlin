@@ -110,7 +110,8 @@ public data class MountOrientation(
 
     public val classMetadata: MavMessage.Metadata<MountOrientation> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MountOrientation =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

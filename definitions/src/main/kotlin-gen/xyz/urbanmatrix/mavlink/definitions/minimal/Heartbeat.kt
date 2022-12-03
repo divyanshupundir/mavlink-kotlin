@@ -138,7 +138,8 @@ public data class Heartbeat(
 
     public val classMetadata: MavMessage.Metadata<Heartbeat> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Heartbeat =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

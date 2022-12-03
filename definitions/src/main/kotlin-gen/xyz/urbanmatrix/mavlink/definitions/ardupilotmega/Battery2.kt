@@ -77,7 +77,8 @@ public data class Battery2(
 
     public val classMetadata: MavMessage.Metadata<Battery2> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Battery2 =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

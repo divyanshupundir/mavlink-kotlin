@@ -165,7 +165,8 @@ public data class EstimatorStatus(
 
     public val classMetadata: MavMessage.Metadata<EstimatorStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EstimatorStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

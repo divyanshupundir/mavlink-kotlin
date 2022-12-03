@@ -94,7 +94,8 @@ public data class SetMode(
 
     public val classMetadata: MavMessage.Metadata<SetMode> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SetMode =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

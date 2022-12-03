@@ -249,7 +249,8 @@ public data class GpsInput(
 
     public val classMetadata: MavMessage.Metadata<GpsInput> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GpsInput =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

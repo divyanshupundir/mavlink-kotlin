@@ -71,7 +71,8 @@ public data class UavionixAdsbTransceiverHealthReport(
 
     public val classMetadata: MavMessage.Metadata<UavionixAdsbTransceiverHealthReport> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): UavionixAdsbTransceiverHealthReport =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

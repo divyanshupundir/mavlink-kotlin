@@ -133,7 +133,8 @@ public data class NavControllerOutput(
 
     public val classMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): NavControllerOutput =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -86,7 +86,8 @@ public data class MissionSetCurrent(
 
     public val classMetadata: MavMessage.Metadata<MissionSetCurrent> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MissionSetCurrent =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

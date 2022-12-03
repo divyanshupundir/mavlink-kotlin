@@ -85,7 +85,8 @@ public data class Data96(
 
     public val classMetadata: MavMessage.Metadata<Data96> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Data96 =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

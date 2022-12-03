@@ -115,7 +115,8 @@ public data class EscStatus(
 
     public val classMetadata: MavMessage.Metadata<EscStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EscStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

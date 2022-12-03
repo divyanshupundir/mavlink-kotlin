@@ -180,7 +180,8 @@ public data class OpticalFlowRad(
 
     public val classMetadata: MavMessage.Metadata<OpticalFlowRad> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): OpticalFlowRad =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -115,7 +115,8 @@ public data class ParamExtSet(
 
     public val classMetadata: MavMessage.Metadata<ParamExtSet> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ParamExtSet =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

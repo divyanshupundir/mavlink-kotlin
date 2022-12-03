@@ -267,7 +267,8 @@ public data class OnboardComputerStatus(
 
     public val classMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): OnboardComputerStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -134,7 +134,8 @@ public data class AslObctrl(
 
     public val classMetadata: MavMessage.Metadata<AslObctrl> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AslObctrl =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

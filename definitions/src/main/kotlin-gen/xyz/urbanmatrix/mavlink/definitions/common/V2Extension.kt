@@ -117,7 +117,8 @@ public data class V2Extension(
 
     public val classMetadata: MavMessage.Metadata<V2Extension> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): V2Extension =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

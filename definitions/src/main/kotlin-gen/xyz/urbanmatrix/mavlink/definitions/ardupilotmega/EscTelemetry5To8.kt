@@ -113,7 +113,8 @@ public data class EscTelemetry5To8(
 
     public val classMetadata: MavMessage.Metadata<EscTelemetry5To8> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EscTelemetry5To8 =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

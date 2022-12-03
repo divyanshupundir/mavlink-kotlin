@@ -190,7 +190,8 @@ public data class AutopilotVersion(
 
     public val classMetadata: MavMessage.Metadata<AutopilotVersion> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AutopilotVersion =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

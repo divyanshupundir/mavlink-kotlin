@@ -109,7 +109,8 @@ public data class ScaledPressure2(
 
     public val classMetadata: MavMessage.Metadata<ScaledPressure2> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ScaledPressure2 =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

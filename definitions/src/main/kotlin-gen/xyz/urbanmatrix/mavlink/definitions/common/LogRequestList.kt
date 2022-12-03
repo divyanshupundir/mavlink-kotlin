@@ -96,7 +96,8 @@ public data class LogRequestList(
 
     public val classMetadata: MavMessage.Metadata<LogRequestList> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LogRequestList =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

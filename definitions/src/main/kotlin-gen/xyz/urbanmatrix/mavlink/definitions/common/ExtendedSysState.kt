@@ -82,7 +82,8 @@ public data class ExtendedSysState(
 
     public val classMetadata: MavMessage.Metadata<ExtendedSysState> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ExtendedSysState =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

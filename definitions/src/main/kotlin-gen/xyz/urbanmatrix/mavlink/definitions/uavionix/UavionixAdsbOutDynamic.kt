@@ -225,7 +225,8 @@ public data class UavionixAdsbOutDynamic(
 
     public val classMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): UavionixAdsbOutDynamic =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

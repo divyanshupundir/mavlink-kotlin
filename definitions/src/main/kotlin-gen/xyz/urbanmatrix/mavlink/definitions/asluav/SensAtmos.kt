@@ -87,7 +87,8 @@ public data class SensAtmos(
 
     public val classMetadata: MavMessage.Metadata<SensAtmos> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensAtmos =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

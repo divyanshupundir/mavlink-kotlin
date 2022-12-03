@@ -74,7 +74,8 @@ public data class Timesync(
 
     public val classMetadata: MavMessage.Metadata<Timesync> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Timesync =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

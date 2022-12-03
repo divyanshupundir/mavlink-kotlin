@@ -172,7 +172,8 @@ public data class DeviceOpWrite(
 
     public val classMetadata: MavMessage.Metadata<DeviceOpWrite> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DeviceOpWrite =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

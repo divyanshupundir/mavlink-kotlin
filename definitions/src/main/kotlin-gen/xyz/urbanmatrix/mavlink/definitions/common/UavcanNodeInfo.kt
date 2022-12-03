@@ -155,7 +155,8 @@ public data class UavcanNodeInfo(
 
     public val classMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): UavcanNodeInfo =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

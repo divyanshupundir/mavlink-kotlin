@@ -186,7 +186,8 @@ public data class GpsRtk(
 
     public val classMetadata: MavMessage.Metadata<GpsRtk> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GpsRtk =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

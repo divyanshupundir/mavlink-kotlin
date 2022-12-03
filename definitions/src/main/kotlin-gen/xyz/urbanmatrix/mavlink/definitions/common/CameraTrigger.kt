@@ -80,7 +80,8 @@ public data class CameraTrigger(
 
     public val classMetadata: MavMessage.Metadata<CameraTrigger> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CameraTrigger =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

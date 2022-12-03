@@ -128,7 +128,8 @@ public data class EkfStatusReport(
 
     public val classMetadata: MavMessage.Metadata<EkfStatusReport> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EkfStatusReport =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

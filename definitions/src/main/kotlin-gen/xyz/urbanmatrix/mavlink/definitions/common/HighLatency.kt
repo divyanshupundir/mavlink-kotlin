@@ -302,7 +302,8 @@ public data class HighLatency(
 
     public val classMetadata: MavMessage.Metadata<HighLatency> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HighLatency =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

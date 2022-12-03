@@ -101,7 +101,8 @@ public data class GoproSetRequest(
 
     public val classMetadata: MavMessage.Metadata<GoproSetRequest> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GoproSetRequest =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

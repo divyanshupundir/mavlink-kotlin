@@ -163,7 +163,8 @@ public data class RcChannelsScaled(
 
     public val classMetadata: MavMessage.Metadata<RcChannelsScaled> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RcChannelsScaled =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

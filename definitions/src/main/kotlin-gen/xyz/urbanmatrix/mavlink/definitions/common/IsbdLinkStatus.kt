@@ -136,7 +136,8 @@ public data class IsbdLinkStatus(
 
     public val classMetadata: MavMessage.Metadata<IsbdLinkStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): IsbdLinkStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -104,7 +104,8 @@ public data class AvssPrsSysStatus(
 
     public val classMetadata: MavMessage.Metadata<AvssPrsSysStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AvssPrsSysStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

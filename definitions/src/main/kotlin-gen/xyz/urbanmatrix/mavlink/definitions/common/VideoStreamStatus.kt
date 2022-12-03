@@ -143,7 +143,8 @@ public data class VideoStreamStatus(
 
     public val classMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): VideoStreamStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

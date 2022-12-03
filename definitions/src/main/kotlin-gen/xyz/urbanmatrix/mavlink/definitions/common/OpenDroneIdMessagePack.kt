@@ -121,7 +121,8 @@ public data class OpenDroneIdMessagePack(
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdMessagePack> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): OpenDroneIdMessagePack =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

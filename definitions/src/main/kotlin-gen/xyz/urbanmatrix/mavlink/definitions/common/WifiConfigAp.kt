@@ -108,7 +108,8 @@ public data class WifiConfigAp(
 
     public val classMetadata: MavMessage.Metadata<WifiConfigAp> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): WifiConfigAp =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

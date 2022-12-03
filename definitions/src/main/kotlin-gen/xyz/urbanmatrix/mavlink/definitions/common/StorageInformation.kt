@@ -202,7 +202,8 @@ public data class StorageInformation(
 
     public val classMetadata: MavMessage.Metadata<StorageInformation> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): StorageInformation =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

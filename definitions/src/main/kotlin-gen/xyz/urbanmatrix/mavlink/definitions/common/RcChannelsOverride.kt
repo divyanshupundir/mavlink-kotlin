@@ -279,7 +279,8 @@ public data class RcChannelsOverride(
 
     public val classMetadata: MavMessage.Metadata<RcChannelsOverride> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RcChannelsOverride =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

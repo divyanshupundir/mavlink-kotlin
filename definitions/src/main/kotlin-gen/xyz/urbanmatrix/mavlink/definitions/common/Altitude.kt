@@ -134,7 +134,8 @@ public data class Altitude(
 
     public val classMetadata: MavMessage.Metadata<Altitude> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Altitude =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

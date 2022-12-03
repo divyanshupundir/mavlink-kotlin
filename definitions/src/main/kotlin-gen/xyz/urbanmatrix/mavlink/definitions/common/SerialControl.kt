@@ -155,7 +155,8 @@ public data class SerialControl(
 
     public val classMetadata: MavMessage.Metadata<SerialControl> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SerialControl =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

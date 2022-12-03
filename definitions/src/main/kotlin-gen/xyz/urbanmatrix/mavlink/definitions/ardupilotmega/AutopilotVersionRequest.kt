@@ -74,7 +74,8 @@ public data class AutopilotVersionRequest(
 
     public val classMetadata: MavMessage.Metadata<AutopilotVersionRequest> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AutopilotVersionRequest =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

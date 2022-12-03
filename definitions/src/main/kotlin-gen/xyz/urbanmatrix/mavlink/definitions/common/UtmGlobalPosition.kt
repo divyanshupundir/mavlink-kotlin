@@ -240,7 +240,8 @@ public data class UtmGlobalPosition(
 
     public val classMetadata: MavMessage.Metadata<UtmGlobalPosition> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): UtmGlobalPosition =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -122,7 +122,8 @@ public data class CanFilterModify(
 
     public val classMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CanFilterModify =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

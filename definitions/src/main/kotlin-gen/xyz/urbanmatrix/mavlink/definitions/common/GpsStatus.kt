@@ -115,7 +115,8 @@ public data class GpsStatus(
 
     public val classMetadata: MavMessage.Metadata<GpsStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GpsStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

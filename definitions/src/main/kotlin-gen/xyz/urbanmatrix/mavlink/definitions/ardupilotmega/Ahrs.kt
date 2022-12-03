@@ -119,7 +119,8 @@ public data class Ahrs(
 
     public val classMetadata: MavMessage.Metadata<Ahrs> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Ahrs =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

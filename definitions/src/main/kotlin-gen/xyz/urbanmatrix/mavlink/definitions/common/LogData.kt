@@ -99,7 +99,8 @@ public data class LogData(
 
     public val classMetadata: MavMessage.Metadata<LogData> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LogData =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

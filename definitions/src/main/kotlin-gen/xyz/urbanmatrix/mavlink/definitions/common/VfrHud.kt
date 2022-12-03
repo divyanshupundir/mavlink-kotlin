@@ -116,7 +116,8 @@ public data class VfrHud(
 
     public val classMetadata: MavMessage.Metadata<VfrHud> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): VfrHud =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

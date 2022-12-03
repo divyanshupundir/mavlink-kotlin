@@ -123,7 +123,8 @@ public data class NavFilterBias(
 
     public val classMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): NavFilterBias =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

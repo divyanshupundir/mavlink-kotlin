@@ -165,7 +165,8 @@ public data class LinkNodeStatus(
 
     public val classMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LinkNodeStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

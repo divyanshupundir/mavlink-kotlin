@@ -160,7 +160,8 @@ public data class DeviceOpRead(
 
     public val classMetadata: MavMessage.Metadata<DeviceOpRead> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): DeviceOpRead =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

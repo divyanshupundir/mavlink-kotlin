@@ -168,7 +168,8 @@ public data class GlobalPositionIntCov(
 
     public val classMetadata: MavMessage.Metadata<GlobalPositionIntCov> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GlobalPositionIntCov =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

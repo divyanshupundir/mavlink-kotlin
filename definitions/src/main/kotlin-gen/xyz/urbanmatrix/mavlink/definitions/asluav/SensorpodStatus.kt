@@ -133,7 +133,8 @@ public data class SensorpodStatus(
 
     public val classMetadata: MavMessage.Metadata<SensorpodStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SensorpodStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

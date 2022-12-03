@@ -97,7 +97,8 @@ public data class FileTransferProtocol(
 
     public val classMetadata: MavMessage.Metadata<FileTransferProtocol> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FileTransferProtocol =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

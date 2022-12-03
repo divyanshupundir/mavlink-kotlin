@@ -98,7 +98,8 @@ public data class ScriptItem(
 
     public val classMetadata: MavMessage.Metadata<ScriptItem> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ScriptItem =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

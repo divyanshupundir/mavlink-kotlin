@@ -112,7 +112,8 @@ public data class MountControl(
 
     public val classMetadata: MavMessage.Metadata<MountControl> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MountControl =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

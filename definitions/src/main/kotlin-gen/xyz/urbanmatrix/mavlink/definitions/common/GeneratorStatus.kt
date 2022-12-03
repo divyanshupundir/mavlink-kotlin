@@ -175,7 +175,8 @@ public data class GeneratorStatus(
 
     public val classMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GeneratorStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -274,7 +274,8 @@ public data class OpenDroneIdLocation(
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdLocation> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): OpenDroneIdLocation =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -118,7 +118,8 @@ public data class ParamValue(
 
     public val classMetadata: MavMessage.Metadata<ParamValue> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ParamValue =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

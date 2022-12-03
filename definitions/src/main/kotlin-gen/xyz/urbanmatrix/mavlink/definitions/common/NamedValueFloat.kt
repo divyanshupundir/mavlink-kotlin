@@ -91,7 +91,8 @@ public data class NamedValueFloat(
 
     public val classMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): NamedValueFloat =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

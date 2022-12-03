@@ -113,7 +113,8 @@ public data class CompassmotStatus(
 
     public val classMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CompassmotStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

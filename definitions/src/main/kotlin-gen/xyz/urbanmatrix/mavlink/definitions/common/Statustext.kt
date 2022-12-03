@@ -113,7 +113,8 @@ public data class Statustext(
 
     public val classMetadata: MavMessage.Metadata<Statustext> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Statustext =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

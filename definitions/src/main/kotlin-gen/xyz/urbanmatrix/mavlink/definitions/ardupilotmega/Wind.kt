@@ -83,7 +83,8 @@ public data class Wind(
 
     public val classMetadata: MavMessage.Metadata<Wind> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Wind =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

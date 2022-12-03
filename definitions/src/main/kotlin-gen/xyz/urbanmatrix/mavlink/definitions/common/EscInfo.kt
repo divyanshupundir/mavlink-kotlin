@@ -160,7 +160,8 @@ public data class EscInfo(
 
     public val classMetadata: MavMessage.Metadata<EscInfo> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): EscInfo =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

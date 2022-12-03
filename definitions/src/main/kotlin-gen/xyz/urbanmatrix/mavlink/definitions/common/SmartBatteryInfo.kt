@@ -240,7 +240,8 @@ public data class SmartBatteryInfo(
 
     public val classMetadata: MavMessage.Metadata<SmartBatteryInfo> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SmartBatteryInfo =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

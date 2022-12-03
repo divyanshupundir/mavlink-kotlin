@@ -190,7 +190,8 @@ public data class HomePosition(
 
     public val classMetadata: MavMessage.Metadata<HomePosition> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HomePosition =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

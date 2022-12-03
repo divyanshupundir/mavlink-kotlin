@@ -69,7 +69,8 @@ public data class IcarousHeartbeat(
 
     public val classMetadata: MavMessage.Metadata<IcarousHeartbeat> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): IcarousHeartbeat =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -83,7 +83,8 @@ public data class UalbertaSysStatus(
 
     public val classMetadata: MavMessage.Metadata<UalbertaSysStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): UalbertaSysStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

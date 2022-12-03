@@ -216,7 +216,8 @@ public data class HighresImu(
 
     public val classMetadata: MavMessage.Metadata<HighresImu> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HighresImu =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

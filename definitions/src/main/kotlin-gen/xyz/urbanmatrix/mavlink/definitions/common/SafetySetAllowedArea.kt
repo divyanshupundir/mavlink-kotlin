@@ -149,7 +149,8 @@ public data class SafetySetAllowedArea(
 
     public val classMetadata: MavMessage.Metadata<SafetySetAllowedArea> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SafetySetAllowedArea =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

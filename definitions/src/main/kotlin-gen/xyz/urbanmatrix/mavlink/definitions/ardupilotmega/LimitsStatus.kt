@@ -158,7 +158,8 @@ public data class LimitsStatus(
 
     public val classMetadata: MavMessage.Metadata<LimitsStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): LimitsStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

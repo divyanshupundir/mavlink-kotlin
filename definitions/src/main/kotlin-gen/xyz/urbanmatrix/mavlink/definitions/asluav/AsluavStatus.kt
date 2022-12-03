@@ -98,7 +98,8 @@ public data class AsluavStatus(
 
     public val classMetadata: MavMessage.Metadata<AsluavStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AsluavStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

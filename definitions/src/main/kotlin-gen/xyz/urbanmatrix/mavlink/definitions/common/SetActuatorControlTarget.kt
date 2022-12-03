@@ -113,7 +113,8 @@ public data class SetActuatorControlTarget(
 
     public val classMetadata: MavMessage.Metadata<SetActuatorControlTarget> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SetActuatorControlTarget =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

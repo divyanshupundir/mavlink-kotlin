@@ -110,7 +110,8 @@ public data class TimeEstimateToTarget(
 
     public val classMetadata: MavMessage.Metadata<TimeEstimateToTarget> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): TimeEstimateToTarget =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

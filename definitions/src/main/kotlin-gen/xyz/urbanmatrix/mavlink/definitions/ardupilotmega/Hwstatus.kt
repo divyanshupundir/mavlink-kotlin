@@ -75,7 +75,8 @@ public data class Hwstatus(
 
     public val classMetadata: MavMessage.Metadata<Hwstatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Hwstatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -86,7 +86,8 @@ public data class ButtonChange(
 
     public val classMetadata: MavMessage.Metadata<ButtonChange> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ButtonChange =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

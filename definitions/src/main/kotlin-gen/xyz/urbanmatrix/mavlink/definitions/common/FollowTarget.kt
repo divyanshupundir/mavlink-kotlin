@@ -166,7 +166,8 @@ public data class FollowTarget(
 
     public val classMetadata: MavMessage.Metadata<FollowTarget> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FollowTarget =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -151,7 +151,8 @@ public data class ParamMapRc(
 
     public val classMetadata: MavMessage.Metadata<ParamMapRc> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ParamMapRc =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

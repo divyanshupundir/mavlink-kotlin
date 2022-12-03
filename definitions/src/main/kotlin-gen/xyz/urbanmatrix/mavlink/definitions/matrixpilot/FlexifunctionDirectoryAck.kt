@@ -113,7 +113,8 @@ public data class FlexifunctionDirectoryAck(
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionDirectoryAck> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionDirectoryAck =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

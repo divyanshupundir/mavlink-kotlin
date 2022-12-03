@@ -105,7 +105,8 @@ public data class SetMagOffsets(
 
     public val classMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): SetMagOffsets =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

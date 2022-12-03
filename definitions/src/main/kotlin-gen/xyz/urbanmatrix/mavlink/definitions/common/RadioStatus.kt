@@ -125,7 +125,8 @@ public data class RadioStatus(
 
     public val classMetadata: MavMessage.Metadata<RadioStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RadioStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -117,7 +117,8 @@ public data class Tunnel(
 
     public val classMetadata: MavMessage.Metadata<Tunnel> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Tunnel =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

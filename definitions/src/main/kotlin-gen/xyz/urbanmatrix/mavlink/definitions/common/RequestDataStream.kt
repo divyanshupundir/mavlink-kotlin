@@ -105,7 +105,8 @@ public data class RequestDataStream(
 
     public val classMetadata: MavMessage.Metadata<RequestDataStream> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RequestDataStream =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

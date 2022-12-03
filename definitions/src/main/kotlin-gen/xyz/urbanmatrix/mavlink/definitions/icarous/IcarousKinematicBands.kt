@@ -221,7 +221,8 @@ public data class IcarousKinematicBands(
 
     public val classMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): IcarousKinematicBands =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

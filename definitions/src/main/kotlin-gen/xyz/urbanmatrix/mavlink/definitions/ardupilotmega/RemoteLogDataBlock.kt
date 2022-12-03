@@ -101,7 +101,8 @@ public data class RemoteLogDataBlock(
 
     public val classMetadata: MavMessage.Metadata<RemoteLogDataBlock> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RemoteLogDataBlock =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

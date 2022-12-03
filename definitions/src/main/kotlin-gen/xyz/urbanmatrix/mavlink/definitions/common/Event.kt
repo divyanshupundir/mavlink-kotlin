@@ -133,7 +133,8 @@ public data class Event(
 
     public val classMetadata: MavMessage.Metadata<Event> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Event =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

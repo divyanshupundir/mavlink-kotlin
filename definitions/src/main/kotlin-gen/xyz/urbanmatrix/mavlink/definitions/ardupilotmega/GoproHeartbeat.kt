@@ -96,7 +96,8 @@ public data class GoproHeartbeat(
 
     public val classMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): GoproHeartbeat =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

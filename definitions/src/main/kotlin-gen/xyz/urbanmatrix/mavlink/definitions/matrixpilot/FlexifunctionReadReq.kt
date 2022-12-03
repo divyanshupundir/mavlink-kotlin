@@ -94,7 +94,8 @@ public data class FlexifunctionReadReq(
 
     public val classMetadata: MavMessage.Metadata<FlexifunctionReadReq> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionReadReq =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

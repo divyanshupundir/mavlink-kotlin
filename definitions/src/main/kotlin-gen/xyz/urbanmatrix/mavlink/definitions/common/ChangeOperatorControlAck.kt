@@ -84,7 +84,8 @@ public data class ChangeOperatorControlAck(
 
     public val classMetadata: MavMessage.Metadata<ChangeOperatorControlAck> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ChangeOperatorControlAck =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

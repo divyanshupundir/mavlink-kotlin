@@ -113,7 +113,8 @@ public data class MissionWritePartialList(
 
     public val classMetadata: MavMessage.Metadata<MissionWritePartialList> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): MissionWritePartialList =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

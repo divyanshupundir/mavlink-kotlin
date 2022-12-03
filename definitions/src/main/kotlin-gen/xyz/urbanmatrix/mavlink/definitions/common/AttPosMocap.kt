@@ -122,7 +122,8 @@ public data class AttPosMocap(
 
     public val classMetadata: MavMessage.Metadata<AttPosMocap> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): AttPosMocap =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

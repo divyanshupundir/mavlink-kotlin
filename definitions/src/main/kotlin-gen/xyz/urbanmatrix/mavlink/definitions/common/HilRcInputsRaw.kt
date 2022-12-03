@@ -191,7 +191,8 @@ public data class HilRcInputsRaw(
 
     public val classMetadata: MavMessage.Metadata<HilRcInputsRaw> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): HilRcInputsRaw =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

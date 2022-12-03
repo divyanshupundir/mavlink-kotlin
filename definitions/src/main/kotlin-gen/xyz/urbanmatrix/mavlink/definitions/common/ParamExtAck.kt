@@ -104,7 +104,8 @@ public data class ParamExtAck(
 
     public val classMetadata: MavMessage.Metadata<ParamExtAck> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): ParamExtAck =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

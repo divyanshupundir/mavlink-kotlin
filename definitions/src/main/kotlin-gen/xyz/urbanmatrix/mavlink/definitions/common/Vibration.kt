@@ -127,7 +127,8 @@ public data class Vibration(
 
     public val classMetadata: MavMessage.Metadata<Vibration> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): Vibration =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

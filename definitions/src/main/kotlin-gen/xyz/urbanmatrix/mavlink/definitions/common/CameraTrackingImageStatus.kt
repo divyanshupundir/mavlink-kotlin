@@ -173,7 +173,8 @@ public data class CameraTrackingImageStatus(
 
     public val classMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): CameraTrackingImageStatus =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

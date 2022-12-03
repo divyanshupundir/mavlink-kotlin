@@ -106,7 +106,8 @@ public data class RawPressure(
 
     public val classMetadata: MavMessage.Metadata<RawPressure> = METADATA
 
-    public fun builder(builderAction: Builder.() -> Unit) = Builder().apply(builderAction).build()
+    public fun builder(builderAction: Builder.() -> Unit): RawPressure =
+        Builder().apply(builderAction).build()
   }
 
   public class Builder {

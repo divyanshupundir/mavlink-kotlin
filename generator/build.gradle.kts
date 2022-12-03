@@ -9,7 +9,7 @@ plugins {
 version = Config.Plugin.developmentVersion
 
 kotlin {
-    explicitApiWarning()
+    explicitApi()
 }
 
 tasks.test {
