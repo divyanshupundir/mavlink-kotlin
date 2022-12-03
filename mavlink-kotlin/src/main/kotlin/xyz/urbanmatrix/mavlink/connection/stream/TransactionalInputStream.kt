@@ -1,10 +1,10 @@
-package xyz.urbanmatrix.mavlink.raw
+package xyz.urbanmatrix.mavlink.connection.stream
 
 import java.io.IOException
 import java.io.InputStream
 import java.io.PushbackInputStream
 
-class TransactionalInputStream(
+internal class TransactionalInputStream(
     inputStream: InputStream,
     bufferSize: Int
 ) : PushbackInputStream(

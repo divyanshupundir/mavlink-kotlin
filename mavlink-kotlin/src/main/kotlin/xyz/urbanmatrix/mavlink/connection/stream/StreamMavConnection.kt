@@ -1,13 +1,14 @@
-package xyz.urbanmatrix.mavlink.connection
+package xyz.urbanmatrix.mavlink.connection.stream
 
 import xyz.urbanmatrix.mavlink.api.MavDialect
 import xyz.urbanmatrix.mavlink.api.MavFrame
 import xyz.urbanmatrix.mavlink.api.MavMessage
+import xyz.urbanmatrix.mavlink.connection.MavConnection
 import xyz.urbanmatrix.mavlink.frame.MavFrameV1Impl
 import xyz.urbanmatrix.mavlink.frame.MavFrameV2Impl
 import xyz.urbanmatrix.mavlink.mavRawFrameReader
-import xyz.urbanmatrix.mavlink.raw.MavFrameType
-import xyz.urbanmatrix.mavlink.raw.MavRawFrame
+import xyz.urbanmatrix.mavlink.frame.MavFrameType
+import xyz.urbanmatrix.mavlink.frame.MavRawFrame
 import java.io.Closeable
 import java.io.IOException
 import java.io.InputStream
@@ -16,7 +17,7 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class StreamMavConnection(
+internal class StreamMavConnection(
     inputStream: InputStream,
     private val outputStream: OutputStream,
     private val streamHandle: Closeable,

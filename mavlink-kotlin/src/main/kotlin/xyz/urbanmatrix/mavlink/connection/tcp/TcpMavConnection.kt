@@ -5,7 +5,7 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.connection.MavConnection
 import java.io.IOException
 
-abstract class TcpMavConnection : MavConnection {
+public abstract class TcpMavConnection : MavConnection {
 
     @Volatile
     protected var state: State = State.Closed
@@ -89,7 +89,7 @@ abstract class TcpMavConnection : MavConnection {
     }
 
     protected sealed interface State {
-        class Open(val connection: MavConnection) : State
-        object Closed : State
+        public class Open(public val connection: MavConnection) : State
+        public object Closed : State
     }
 }

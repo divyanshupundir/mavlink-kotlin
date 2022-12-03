@@ -1,10 +1,12 @@
-package xyz.urbanmatrix.mavlink.raw
+package xyz.urbanmatrix.mavlink.connection.stream
 
+import xyz.urbanmatrix.mavlink.frame.MavFrameType
+import xyz.urbanmatrix.mavlink.frame.MavRawFrame
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
 
-class MavRawFrameReader(
+internal class MavRawFrameReader(
     inputStream: InputStream
 ) {
     companion object {
@@ -28,7 +30,7 @@ class MavRawFrameReader(
                 MavFrameType.V1.magic -> {
                     val success = inputStream.advance(
                         MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID +
-                            MavRawFrame.SIZE_COMP_ID + MavRawFrame.SIZE_MSG_ID_V1 +
+                                MavRawFrame.SIZE_COMP_ID + MavRawFrame.SIZE_MSG_ID_V1 +
                             payloadLength + MavRawFrame.SIZE_CHECKSUM
                     )
                     if (!success) {
@@ -51,9 +53,9 @@ class MavRawFrameReader(
 
                     val success = inputStream.advance(
                         MavRawFrame.SIZE_COMPAT_FLAGS + MavRawFrame.SIZE_SEQ +
-                            MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID +
-                            MavRawFrame.SIZE_MSG_ID_V2 + payloadLength +
-                            MavRawFrame.SIZE_CHECKSUM + signatureSize
+                                MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID +
+                                MavRawFrame.SIZE_MSG_ID_V2 + payloadLength +
+                                MavRawFrame.SIZE_CHECKSUM + signatureSize
                     )
                     if (!success) {
                         drop()

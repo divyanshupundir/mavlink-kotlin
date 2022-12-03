@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.raw
+package xyz.urbanmatrix.mavlink.frame
 
 import xyz.urbanmatrix.mavlink.serialization.*
 import java.io.IOException
@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
 
-data class MavRawFrame(
+internal data class MavRawFrame(
     val stx: Int,
     val len: Int,
     val incompatFlags: Int,

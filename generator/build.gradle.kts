@@ -8,7 +8,7 @@ plugins {
 
 version = Config.Plugin.developmentVersion
 
-tasks.getByName<Test>("test") {
+tasks.test {
     useJUnitPlatform()
 }
 

@@ -5,30 +5,30 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import java.io.Closeable
 import java.io.IOException
 
-interface MavConnection : Closeable {
+public interface MavConnection : Closeable {
 
     @Throws(IOException::class)
-    fun connect()
+    public fun connect()
 
     @Throws(IOException::class)
-    fun next(): MavFrame<out MavMessage<*>>
+    public fun next(): MavFrame<out MavMessage<*>>
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendV1(
+    public fun <T : MavMessage<T>> sendV1(
         systemId: Int,
         componentId: Int,
         payload: T
     )
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendUnsignedV2(
+    public fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: Int,
         componentId: Int,
         payload: T
     )
 
     @Throws(IOException::class)
-    fun <T : MavMessage<T>> sendSignedV2(
+    public fun <T : MavMessage<T>> sendSignedV2(
         systemId: Int,
         componentId: Int,
         payload: T,
