@@ -7,7 +7,7 @@ import xyz.urbanmatrix.mavlink.generator.models.MavlinkXml
 import java.io.File
 import java.io.IOException
 
-object MavlinkDefinitionParser {
+internal object MavlinkDefinitionParser {
 
     private val xmlMapper = XmlMapper.builder()
         .defaultUseWrapper(false)

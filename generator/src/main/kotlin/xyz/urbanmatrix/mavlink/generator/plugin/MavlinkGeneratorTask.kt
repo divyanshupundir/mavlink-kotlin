@@ -10,27 +10,27 @@ import org.gradle.api.tasks.TaskAction
 import java.io.File
 import java.io.IOException
 
-abstract class MavlinkGeneratorTask : DefaultTask() {
+public abstract class MavlinkGeneratorTask : DefaultTask() {
 
-    companion object {
+    private companion object {
         private const val BASE_PACKAGE = "xyz.urbanmatrix.mavlink.definitions"
     }
 
     @OutputDirectory
-    lateinit var generatedSourcesDir: File
+    public lateinit var generatedSourcesDir: File
 
     private val definitions = mutableSetOf<File>()
 
-    fun include(file: File) {
+    public fun include(file: File) {
         definitions += file
     }
 
-    fun includeDir(dir: File) {
+    public fun includeDir(dir: File) {
         definitions += dir.listFiles()!!.toSet()
     }
 
     @TaskAction
-    fun generate() {
+    public fun generate() {
         if (definitions.isEmpty())
             throw IllegalArgumentException("No XML definition provided.")
 

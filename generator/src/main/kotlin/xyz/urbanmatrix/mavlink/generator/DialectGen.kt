@@ -8,7 +8,7 @@ import xyz.urbanmatrix.mavlink.api.AbstractMavDialect
 import xyz.urbanmatrix.mavlink.api.GeneratedMavDialect
 import xyz.urbanmatrix.mavlink.generator.models.MavlinkModel
 
-fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
+internal fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
     val packageName = "$basePackageName.$subPackageName"
     val dialect = TypeSpec.objectBuilder(dialectObjectName)
         .superclass(AbstractMavDialect::class)

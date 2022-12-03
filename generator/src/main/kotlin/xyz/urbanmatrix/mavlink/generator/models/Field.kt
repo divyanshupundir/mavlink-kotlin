@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 import xyz.urbanmatrix.mavlink.generator.CaseFormat
 
-sealed class FieldModel : Comparable<FieldModel> {
+internal sealed class FieldModel : Comparable<FieldModel> {
 
     abstract val position: Int
     abstract val type: String
@@ -90,7 +90,7 @@ sealed class FieldModel : Comparable<FieldModel> {
     }
 }
 
-fun List<FieldModel>.sortedByPosition() = sortedBy { it.position }
+internal fun List<FieldModel>.sortedByPosition() = sortedBy { it.position }
 
 private fun resolveKotlinPrimitiveSize(rawType: String) = when (rawType) {
     "char" -> 1
@@ -106,7 +106,7 @@ private fun resolveKotlinPrimitiveSize(rawType: String) = when (rawType) {
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "field")
-data class FieldXml(
+internal data class FieldXml(
 
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     val type: String,

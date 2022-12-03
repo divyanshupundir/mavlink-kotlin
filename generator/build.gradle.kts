@@ -8,6 +8,10 @@ plugins {
 
 version = Config.Plugin.developmentVersion
 
+kotlin {
+    explicitApiWarning()
+}
+
 tasks.test {
     useJUnitPlatform()
 }

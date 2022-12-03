@@ -8,11 +8,11 @@ import java.io.File
 const val BASE_PACKAGE = "xyz.urbanmatrix.mavlink.test"
 const val GENERATED_SOURCES_DIR = "build/generated/sources"
 
-fun createXmlMapper() = XmlMapper.builder()
+internal fun createXmlMapper() = XmlMapper.builder()
     .defaultUseWrapper(false)
     .build()
     .registerKotlinModule()
 
-fun readMavlinkCommon() = MavlinkDefinitionParser.parse(File("src/test/resources/common.xml"))
+internal fun readMavlinkCommon() = MavlinkDefinitionParser.parse(File("src/test/resources/common.xml"))
 
-fun readMavlinkMinimal() = MavlinkDefinitionParser.parse(File("src/test/resources/minimal.xml"))
+internal fun readMavlinkMinimal() = MavlinkDefinitionParser.parse(File("src/test/resources/minimal.xml"))

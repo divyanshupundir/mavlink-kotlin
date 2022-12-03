@@ -8,7 +8,7 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 import xyz.urbanmatrix.mavlink.generator.models.EnumModel
 import kotlin.Long
 
-fun EnumModel.generateEnumFile(packageName: String): FileSpec {
+internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
     val enum = TypeSpec.enumBuilder(formattedName)
         .addSuperinterface(if (bitmask) MavBitmask::class else MavEnum::class)
         .primaryConstructor(generatePrimaryConstructor())

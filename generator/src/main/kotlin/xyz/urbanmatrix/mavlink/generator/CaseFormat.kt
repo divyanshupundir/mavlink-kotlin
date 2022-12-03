@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.generator
 
-class CaseFormat(val words: List<String>) {
+internal class CaseFormat(private val words: List<String>) {
 
     companion object {
 
