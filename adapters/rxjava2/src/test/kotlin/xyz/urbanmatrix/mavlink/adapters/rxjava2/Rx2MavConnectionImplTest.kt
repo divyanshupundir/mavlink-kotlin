@@ -42,6 +42,6 @@ class Rx2MavConnectionImplTest {
             }
         }
 
-        connection.mavFrame.blockingSubscribe { println(it) }
+        connection.mavFrame.blockingSubscribe(::println)
     }
 }
