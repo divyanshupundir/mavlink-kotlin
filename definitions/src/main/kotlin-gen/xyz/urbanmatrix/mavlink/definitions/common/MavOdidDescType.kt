@@ -13,24 +13,24 @@ public enum class MavOdidDescType(
    * Optional free-form text description of the purpose of the flight.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_DESC_TYPE_TEXT(0L),
+  TEXT(0L),
   /**
    * Optional additional clarification when status == MAV_ODID_STATUS_EMERGENCY.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_DESC_TYPE_EMERGENCY(1L),
+  EMERGENCY(1L),
   /**
    * Optional additional clarification when status != MAV_ODID_STATUS_EMERGENCY.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_DESC_TYPE_EXTENDED_STATUS(2L),
+  EXTENDED_STATUS(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavOdidDescType? = when (v) {
-      0L -> MAV_ODID_DESC_TYPE_TEXT
-      1L -> MAV_ODID_DESC_TYPE_EMERGENCY
-      2L -> MAV_ODID_DESC_TYPE_EXTENDED_STATUS
+      0L -> TEXT
+      1L -> EMERGENCY
+      2L -> EXTENDED_STATUS
       else -> null
     }
   }

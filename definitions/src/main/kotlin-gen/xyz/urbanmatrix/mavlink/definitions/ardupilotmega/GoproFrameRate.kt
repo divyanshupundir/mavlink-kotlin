@@ -13,90 +13,90 @@ public enum class GoproFrameRate(
    * 12 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_12(0L),
+  _12(0L),
   /**
    * 15 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_15(1L),
+  _15(1L),
   /**
    * 24 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_24(2L),
+  _24(2L),
   /**
    * 25 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_25(3L),
+  _25(3L),
   /**
    * 30 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_30(4L),
+  _30(4L),
   /**
    * 48 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_48(5L),
+  _48(5L),
   /**
    * 50 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_50(6L),
+  _50(6L),
   /**
    * 60 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_60(7L),
+  _60(7L),
   /**
    * 80 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_80(8L),
+  _80(8L),
   /**
    * 90 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_90(9L),
+  _90(9L),
   /**
    * 100 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_100(10L),
+  _100(10L),
   /**
    * 120 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_120(11L),
+  _120(11L),
   /**
    * 240 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_240(12L),
+  _240(12L),
   /**
    * 12.5 FPS.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FRAME_RATE_12_5(13L),
+  _12_5(13L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproFrameRate? = when (v) {
-      0L -> GOPRO_FRAME_RATE_12
-      1L -> GOPRO_FRAME_RATE_15
-      2L -> GOPRO_FRAME_RATE_24
-      3L -> GOPRO_FRAME_RATE_25
-      4L -> GOPRO_FRAME_RATE_30
-      5L -> GOPRO_FRAME_RATE_48
-      6L -> GOPRO_FRAME_RATE_50
-      7L -> GOPRO_FRAME_RATE_60
-      8L -> GOPRO_FRAME_RATE_80
-      9L -> GOPRO_FRAME_RATE_90
-      10L -> GOPRO_FRAME_RATE_100
-      11L -> GOPRO_FRAME_RATE_120
-      12L -> GOPRO_FRAME_RATE_240
-      13L -> GOPRO_FRAME_RATE_12_5
+      0L -> _12
+      1L -> _15
+      2L -> _24
+      3L -> _25
+      4L -> _30
+      5L -> _48
+      6L -> _50
+      7L -> _60
+      8L -> _80
+      9L -> _90
+      10L -> _100
+      11L -> _120
+      12L -> _240
+      13L -> _12_5
       else -> null
     }
   }

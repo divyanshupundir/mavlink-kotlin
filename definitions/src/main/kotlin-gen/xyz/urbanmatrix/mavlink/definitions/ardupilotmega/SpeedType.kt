@@ -10,15 +10,15 @@ public enum class SpeedType(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  SPEED_TYPE_AIRSPEED(0L),
+  AIRSPEED(0L),
   @GeneratedMavEnumEntry
-  SPEED_TYPE_GROUNDSPEED(1L),
+  GROUNDSPEED(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): SpeedType? = when (v) {
-      0L -> SPEED_TYPE_AIRSPEED
-      1L -> SPEED_TYPE_GROUNDSPEED
+      0L -> AIRSPEED
+      1L -> GROUNDSPEED
       else -> null
     }
   }

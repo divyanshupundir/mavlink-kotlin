@@ -17,36 +17,36 @@ public enum class FirmwareVersionType(
    * development release
    */
   @GeneratedMavEnumEntry
-  FIRMWARE_VERSION_TYPE_DEV(0L),
+  DEV(0L),
   /**
    * alpha release
    */
   @GeneratedMavEnumEntry
-  FIRMWARE_VERSION_TYPE_ALPHA(64L),
+  ALPHA(64L),
   /**
    * beta release
    */
   @GeneratedMavEnumEntry
-  FIRMWARE_VERSION_TYPE_BETA(128L),
+  BETA(128L),
   /**
    * release candidate
    */
   @GeneratedMavEnumEntry
-  FIRMWARE_VERSION_TYPE_RC(192L),
+  RC(192L),
   /**
    * official stable release
    */
   @GeneratedMavEnumEntry
-  FIRMWARE_VERSION_TYPE_OFFICIAL(255L),
+  OFFICIAL(255L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): FirmwareVersionType? = when (v) {
-      0L -> FIRMWARE_VERSION_TYPE_DEV
-      64L -> FIRMWARE_VERSION_TYPE_ALPHA
-      128L -> FIRMWARE_VERSION_TYPE_BETA
-      192L -> FIRMWARE_VERSION_TYPE_RC
-      255L -> FIRMWARE_VERSION_TYPE_OFFICIAL
+      0L -> DEV
+      64L -> ALPHA
+      128L -> BETA
+      192L -> RC
+      255L -> OFFICIAL
       else -> null
     }
   }

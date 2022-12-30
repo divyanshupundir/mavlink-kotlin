@@ -16,30 +16,30 @@ public enum class MavGoto(
    * Hold at the current position.
    */
   @GeneratedMavEnumEntry
-  MAV_GOTO_DO_HOLD(0L),
+  DO_HOLD(0L),
   /**
    * Continue with the next item in mission execution.
    */
   @GeneratedMavEnumEntry
-  MAV_GOTO_DO_CONTINUE(1L),
+  DO_CONTINUE(1L),
   /**
    * Hold at the current position of the system
    */
   @GeneratedMavEnumEntry
-  MAV_GOTO_HOLD_AT_CURRENT_POSITION(2L),
+  HOLD_AT_CURRENT_POSITION(2L),
   /**
    * Hold at the position specified in the parameters of the DO_HOLD action
    */
   @GeneratedMavEnumEntry
-  MAV_GOTO_HOLD_AT_SPECIFIED_POSITION(3L),
+  HOLD_AT_SPECIFIED_POSITION(3L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavGoto? = when (v) {
-      0L -> MAV_GOTO_DO_HOLD
-      1L -> MAV_GOTO_DO_CONTINUE
-      2L -> MAV_GOTO_HOLD_AT_CURRENT_POSITION
-      3L -> MAV_GOTO_HOLD_AT_SPECIFIED_POSITION
+      0L -> DO_HOLD
+      1L -> DO_CONTINUE
+      2L -> HOLD_AT_CURRENT_POSITION
+      3L -> HOLD_AT_SPECIFIED_POSITION
       else -> null
     }
   }

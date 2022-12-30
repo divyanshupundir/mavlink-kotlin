@@ -17,25 +17,25 @@ public enum class MavBatteryMode(
    * Battery mode not supported/unknown battery mode/normal operation.
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_MODE_UNKNOWN(0L),
+  UNKNOWN(0L),
   /**
    * Battery is auto discharging (towards storage level).
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_MODE_AUTO_DISCHARGING(1L),
+  AUTO_DISCHARGING(1L),
   /**
    * Battery in hot-swap mode (current limited to prevent spikes that might damage sensitive
    * electrical circuits).
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_MODE_HOT_SWAP(2L),
+  HOT_SWAP(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavBatteryMode? = when (v) {
-      0L -> MAV_BATTERY_MODE_UNKNOWN
-      1L -> MAV_BATTERY_MODE_AUTO_DISCHARGING
-      2L -> MAV_BATTERY_MODE_HOT_SWAP
+      0L -> UNKNOWN
+      1L -> AUTO_DISCHARGING
+      2L -> HOT_SWAP
       else -> null
     }
   }

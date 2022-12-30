@@ -13,24 +13,24 @@ public enum class MavOdidOperatorLocationType(
    * The location/altitude of the operator is the same as the take-off location.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_OPERATOR_LOCATION_TYPE_TAKEOFF(0L),
+  TAKEOFF(0L),
   /**
    * The location/altitude of the operator is dynamic. E.g. based on live GNSS data.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_OPERATOR_LOCATION_TYPE_LIVE_GNSS(1L),
+  LIVE_GNSS(1L),
   /**
    * The location/altitude of the operator are fixed values.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_OPERATOR_LOCATION_TYPE_FIXED(2L),
+  FIXED(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavOdidOperatorLocationType? = when (v) {
-      0L -> MAV_ODID_OPERATOR_LOCATION_TYPE_TAKEOFF
-      1L -> MAV_ODID_OPERATOR_LOCATION_TYPE_LIVE_GNSS
-      2L -> MAV_ODID_OPERATOR_LOCATION_TYPE_FIXED
+      0L -> TAKEOFF
+      1L -> LIVE_GNSS
+      2L -> FIXED
       else -> null
     }
   }

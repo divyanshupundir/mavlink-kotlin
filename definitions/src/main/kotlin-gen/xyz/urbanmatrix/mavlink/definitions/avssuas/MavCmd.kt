@@ -34,7 +34,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_SET_ARM(60050L),
+  PRS_SET_ARM(60050L),
   /**
    * AVSS defined command. Gets PRS arm statuses
    *
@@ -60,7 +60,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_GET_ARM(60051L),
+  PRS_GET_ARM(60051L),
   /**
    * AVSS defined command.  Get the PRS battery voltage in millivolts
    *
@@ -86,7 +86,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_GET_BATTERY(60052L),
+  PRS_GET_BATTERY(60052L),
   /**
    * AVSS defined command. Get the PRS error statuses.
    *
@@ -112,7 +112,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_GET_ERR(60053L),
+  PRS_GET_ERR(60053L),
   /**
    * AVSS defined command. Set the ATS arming altitude in meters.
    *
@@ -138,7 +138,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_SET_ARM_ALTI(60070L),
+  PRS_SET_ARM_ALTI(60070L),
   /**
    * AVSS defined command. Get the ATS arming altitude in meters.
    *
@@ -164,7 +164,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_GET_ARM_ALTI(60071L),
+  PRS_GET_ARM_ALTI(60071L),
   /**
    * AVSS defined command. Shuts down the PRS system.
    *
@@ -190,18 +190,18 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PRS_SHUTDOWN(60072L),
+  PRS_SHUTDOWN(60072L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavCmd? = when (v) {
-      60050L -> MAV_CMD_PRS_SET_ARM
-      60051L -> MAV_CMD_PRS_GET_ARM
-      60052L -> MAV_CMD_PRS_GET_BATTERY
-      60053L -> MAV_CMD_PRS_GET_ERR
-      60070L -> MAV_CMD_PRS_SET_ARM_ALTI
-      60071L -> MAV_CMD_PRS_GET_ARM_ALTI
-      60072L -> MAV_CMD_PRS_SHUTDOWN
+      60050L -> PRS_SET_ARM
+      60051L -> PRS_GET_ARM
+      60052L -> PRS_GET_BATTERY
+      60053L -> PRS_GET_ERR
+      60070L -> PRS_SET_ARM_ALTI
+      60071L -> PRS_GET_ARM_ALTI
+      60072L -> PRS_SHUTDOWN
       else -> null
     }
   }

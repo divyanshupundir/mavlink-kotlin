@@ -16,31 +16,31 @@ public enum class MavMissionType(
    * Items are mission commands for main mission.
    */
   @GeneratedMavEnumEntry
-  MAV_MISSION_TYPE_MISSION(0L),
+  MISSION(0L),
   /**
    * Specifies GeoFence area(s). Items are MAV_CMD_NAV_FENCE_ GeoFence items.
    */
   @GeneratedMavEnumEntry
-  MAV_MISSION_TYPE_FENCE(1L),
+  FENCE(1L),
   /**
    * Specifies the rally points for the vehicle. Rally points are alternative RTL points. Items are
    * MAV_CMD_NAV_RALLY_POINT rally point items.
    */
   @GeneratedMavEnumEntry
-  MAV_MISSION_TYPE_RALLY(2L),
+  RALLY(2L),
   /**
    * Only used in MISSION_CLEAR_ALL to clear all mission types.
    */
   @GeneratedMavEnumEntry
-  MAV_MISSION_TYPE_ALL(255L),
+  ALL(255L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavMissionType? = when (v) {
-      0L -> MAV_MISSION_TYPE_MISSION
-      1L -> MAV_MISSION_TYPE_FENCE
-      2L -> MAV_MISSION_TYPE_RALLY
-      255L -> MAV_MISSION_TYPE_ALL
+      0L -> MISSION
+      1L -> FENCE
+      2L -> RALLY
+      255L -> ALL
       else -> null
     }
   }

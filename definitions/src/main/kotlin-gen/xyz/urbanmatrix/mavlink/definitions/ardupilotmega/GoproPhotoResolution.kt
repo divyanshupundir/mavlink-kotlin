@@ -13,36 +13,36 @@ public enum class GoproPhotoResolution(
    * 5MP Medium.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PHOTO_RESOLUTION_5MP_MEDIUM(0L),
+  _5MP_MEDIUM(0L),
   /**
    * 7MP Medium.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PHOTO_RESOLUTION_7MP_MEDIUM(1L),
+  _7MP_MEDIUM(1L),
   /**
    * 7MP Wide.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PHOTO_RESOLUTION_7MP_WIDE(2L),
+  _7MP_WIDE(2L),
   /**
    * 10MP Wide.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PHOTO_RESOLUTION_10MP_WIDE(3L),
+  _10MP_WIDE(3L),
   /**
    * 12MP Wide.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PHOTO_RESOLUTION_12MP_WIDE(4L),
+  _12MP_WIDE(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproPhotoResolution? = when (v) {
-      0L -> GOPRO_PHOTO_RESOLUTION_5MP_MEDIUM
-      1L -> GOPRO_PHOTO_RESOLUTION_7MP_MEDIUM
-      2L -> GOPRO_PHOTO_RESOLUTION_7MP_WIDE
-      3L -> GOPRO_PHOTO_RESOLUTION_10MP_WIDE
-      4L -> GOPRO_PHOTO_RESOLUTION_12MP_WIDE
+      0L -> _5MP_MEDIUM
+      1L -> _7MP_MEDIUM
+      2L -> _7MP_WIDE
+      3L -> _10MP_WIDE
+      4L -> _12MP_WIDE
       else -> null
     }
   }

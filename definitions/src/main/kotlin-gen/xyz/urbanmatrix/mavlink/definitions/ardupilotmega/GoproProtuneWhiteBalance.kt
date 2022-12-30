@@ -13,36 +13,36 @@ public enum class GoproProtuneWhiteBalance(
    * Auto.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_WHITE_BALANCE_AUTO(0L),
+  AUTO(0L),
   /**
    * 3000K.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_WHITE_BALANCE_3000K(1L),
+  _3000K(1L),
   /**
    * 5500K.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_WHITE_BALANCE_5500K(2L),
+  _5500K(2L),
   /**
    * 6500K.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_WHITE_BALANCE_6500K(3L),
+  _6500K(3L),
   /**
    * Camera Raw.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_WHITE_BALANCE_RAW(4L),
+  RAW(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproProtuneWhiteBalance? = when (v) {
-      0L -> GOPRO_PROTUNE_WHITE_BALANCE_AUTO
-      1L -> GOPRO_PROTUNE_WHITE_BALANCE_3000K
-      2L -> GOPRO_PROTUNE_WHITE_BALANCE_5500K
-      3L -> GOPRO_PROTUNE_WHITE_BALANCE_6500K
-      4L -> GOPRO_PROTUNE_WHITE_BALANCE_RAW
+      0L -> AUTO
+      1L -> _3000K
+      2L -> _5500K
+      3L -> _6500K
+      4L -> RAW
       else -> null
     }
   }

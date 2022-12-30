@@ -13,36 +13,36 @@ public enum class MavOdidStatus(
    * The status of the (UA) Unmanned Aircraft is undefined.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_STATUS_UNDECLARED(0L),
+  UNDECLARED(0L),
   /**
    * The UA is on the ground.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_STATUS_GROUND(1L),
+  GROUND(1L),
   /**
    * The UA is in the air.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_STATUS_AIRBORNE(2L),
+  AIRBORNE(2L),
   /**
    * The UA is having an emergency.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_STATUS_EMERGENCY(3L),
+  EMERGENCY(3L),
   /**
    * The remote ID system is failing or unreliable in some way.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_STATUS_REMOTE_ID_SYSTEM_FAILURE(4L),
+  REMOTE_ID_SYSTEM_FAILURE(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavOdidStatus? = when (v) {
-      0L -> MAV_ODID_STATUS_UNDECLARED
-      1L -> MAV_ODID_STATUS_GROUND
-      2L -> MAV_ODID_STATUS_AIRBORNE
-      3L -> MAV_ODID_STATUS_EMERGENCY
-      4L -> MAV_ODID_STATUS_REMOTE_ID_SYSTEM_FAILURE
+      0L -> UNDECLARED
+      1L -> GROUND
+      2L -> AIRBORNE
+      3L -> EMERGENCY
+      4L -> REMOTE_ID_SYSTEM_FAILURE
       else -> null
     }
   }

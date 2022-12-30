@@ -13,27 +13,27 @@ public enum class TrackerMode(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  TRACKER_MODE_MANUAL(0L),
+  MANUAL(0L),
   @GeneratedMavEnumEntry
-  TRACKER_MODE_STOP(1L),
+  STOP(1L),
   @GeneratedMavEnumEntry
-  TRACKER_MODE_SCAN(2L),
+  SCAN(2L),
   @GeneratedMavEnumEntry
-  TRACKER_MODE_SERVO_TEST(3L),
+  SERVO_TEST(3L),
   @GeneratedMavEnumEntry
-  TRACKER_MODE_AUTO(10L),
+  AUTO(10L),
   @GeneratedMavEnumEntry
-  TRACKER_MODE_INITIALIZING(16L),
+  INITIALIZING(16L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): TrackerMode? = when (v) {
-      0L -> TRACKER_MODE_MANUAL
-      1L -> TRACKER_MODE_STOP
-      2L -> TRACKER_MODE_SCAN
-      3L -> TRACKER_MODE_SERVO_TEST
-      10L -> TRACKER_MODE_AUTO
-      16L -> TRACKER_MODE_INITIALIZING
+      0L -> MANUAL
+      1L -> STOP
+      2L -> SCAN
+      3L -> SERVO_TEST
+      10L -> AUTO
+      16L -> INITIALIZING
       else -> null
     }
   }

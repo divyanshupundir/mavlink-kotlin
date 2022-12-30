@@ -16,24 +16,24 @@ public enum class CameraTrackingMode(
    * Not tracking
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_MODE_NONE(0L),
+  NONE(0L),
   /**
    * Target is a point
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_MODE_POINT(1L),
+  POINT(1L),
   /**
    * Target is a rectangle
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_MODE_RECTANGLE(2L),
+  RECTANGLE(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): CameraTrackingMode? = when (v) {
-      0L -> CAMERA_TRACKING_MODE_NONE
-      1L -> CAMERA_TRACKING_MODE_POINT
-      2L -> CAMERA_TRACKING_MODE_RECTANGLE
+      0L -> NONE
+      1L -> POINT
+      2L -> RECTANGLE
       else -> null
     }
   }

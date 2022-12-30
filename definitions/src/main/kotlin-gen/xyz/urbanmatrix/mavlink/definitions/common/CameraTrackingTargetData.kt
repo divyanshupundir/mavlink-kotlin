@@ -17,38 +17,38 @@ public enum class CameraTrackingTargetData(
    * No target data
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_TARGET_DATA_NONE(0L),
+  NONE(0L),
   /**
    * Target data embedded in image data (proprietary)
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_TARGET_DATA_EMBEDDED(1L),
+  EMBEDDED(1L),
   /**
    * Target data rendered in image
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_TARGET_DATA_RENDERED(2L),
+  RENDERED(2L),
   /**
    * Target data within status message (Point or Rectangle)
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_TARGET_DATA_IN_STATUS(4L),
+  IN_STATUS(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): CameraTrackingTargetData? = when (v) {
-      0L -> CAMERA_TRACKING_TARGET_DATA_NONE
-      1L -> CAMERA_TRACKING_TARGET_DATA_EMBEDDED
-      2L -> CAMERA_TRACKING_TARGET_DATA_RENDERED
-      4L -> CAMERA_TRACKING_TARGET_DATA_IN_STATUS
+      0L -> NONE
+      1L -> EMBEDDED
+      2L -> RENDERED
+      4L -> IN_STATUS
       else -> null
     }
 
     public fun getFlagsFromValue(v: Long): List<CameraTrackingTargetData> = buildList {
-      if (v and 0L == 0L) add(CAMERA_TRACKING_TARGET_DATA_NONE)
-      if (v and 1L == 1L) add(CAMERA_TRACKING_TARGET_DATA_EMBEDDED)
-      if (v and 2L == 2L) add(CAMERA_TRACKING_TARGET_DATA_RENDERED)
-      if (v and 4L == 4L) add(CAMERA_TRACKING_TARGET_DATA_IN_STATUS)
+      if (v and 0L == 0L) add(NONE)
+      if (v and 1L == 1L) add(EMBEDDED)
+      if (v and 2L == 2L) add(RENDERED)
+      if (v and 4L == 4L) add(IN_STATUS)
     }
   }
 }

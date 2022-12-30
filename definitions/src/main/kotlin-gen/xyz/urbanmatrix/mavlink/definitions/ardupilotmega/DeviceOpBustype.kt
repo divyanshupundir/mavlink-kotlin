@@ -16,18 +16,18 @@ public enum class DeviceOpBustype(
    * I2C Device operation.
    */
   @GeneratedMavEnumEntry
-  DEVICE_OP_BUSTYPE_I2C(0L),
+  I2C(0L),
   /**
    * SPI Device operation.
    */
   @GeneratedMavEnumEntry
-  DEVICE_OP_BUSTYPE_SPI(1L),
+  SPI(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): DeviceOpBustype? = when (v) {
-      0L -> DEVICE_OP_BUSTYPE_I2C
-      1L -> DEVICE_OP_BUSTYPE_SPI
+      0L -> I2C
+      1L -> SPI
       else -> null
     }
   }

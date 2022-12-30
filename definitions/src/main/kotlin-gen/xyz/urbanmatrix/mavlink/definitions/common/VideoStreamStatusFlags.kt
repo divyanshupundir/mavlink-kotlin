@@ -17,24 +17,24 @@ public enum class VideoStreamStatusFlags(
    * Stream is active (running)
    */
   @GeneratedMavEnumEntry
-  VIDEO_STREAM_STATUS_FLAGS_RUNNING(1L),
+  RUNNING(1L),
   /**
    * Stream is thermal imaging
    */
   @GeneratedMavEnumEntry
-  VIDEO_STREAM_STATUS_FLAGS_THERMAL(2L),
+  THERMAL(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): VideoStreamStatusFlags? = when (v) {
-      1L -> VIDEO_STREAM_STATUS_FLAGS_RUNNING
-      2L -> VIDEO_STREAM_STATUS_FLAGS_THERMAL
+      1L -> RUNNING
+      2L -> THERMAL
       else -> null
     }
 
     public fun getFlagsFromValue(v: Long): List<VideoStreamStatusFlags> = buildList {
-      if (v and 1L == 1L) add(VIDEO_STREAM_STATUS_FLAGS_RUNNING)
-      if (v and 2L == 2L) add(VIDEO_STREAM_STATUS_FLAGS_THERMAL)
+      if (v and 1L == 1L) add(RUNNING)
+      if (v and 2L == 2L) add(THERMAL)
     }
   }
 }

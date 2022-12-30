@@ -16,89 +16,89 @@ public enum class CellularStatusFlag(
    * State unknown or not reportable.
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_UNKNOWN(0L),
+  UNKNOWN(0L),
   /**
    * Modem is unusable
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_FAILED(1L),
+  FAILED(1L),
   /**
    * Modem is being initialized
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_INITIALIZING(2L),
+  INITIALIZING(2L),
   /**
    * Modem is locked
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_LOCKED(3L),
+  LOCKED(3L),
   /**
    * Modem is not enabled and is powered down
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_DISABLED(4L),
+  DISABLED(4L),
   /**
    * Modem is currently transitioning to the CELLULAR_STATUS_FLAG_DISABLED state
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_DISABLING(5L),
+  DISABLING(5L),
   /**
    * Modem is currently transitioning to the CELLULAR_STATUS_FLAG_ENABLED state
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_ENABLING(6L),
+  ENABLING(6L),
   /**
    * Modem is enabled and powered on but not registered with a network provider and not available
    * for data connections
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_ENABLED(7L),
+  ENABLED(7L),
   /**
    * Modem is searching for a network provider to register
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_SEARCHING(8L),
+  SEARCHING(8L),
   /**
    * Modem is registered with a network provider, and data connections and messaging may be
    * available for use
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_REGISTERED(9L),
+  REGISTERED(9L),
   /**
    * Modem is disconnecting and deactivating the last active packet data bearer. This state will not
    * be entered if more than one packet data bearer is active and one of the active bearers is
    * deactivated
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_DISCONNECTING(10L),
+  DISCONNECTING(10L),
   /**
    * Modem is activating and connecting the first packet data bearer. Subsequent bearer activations
    * when another bearer is already active do not cause this state to be entered
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_CONNECTING(11L),
+  CONNECTING(11L),
   /**
    * One or more packet data bearers is active and connected
    */
   @GeneratedMavEnumEntry
-  CELLULAR_STATUS_FLAG_CONNECTED(12L),
+  CONNECTED(12L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): CellularStatusFlag? = when (v) {
-      0L -> CELLULAR_STATUS_FLAG_UNKNOWN
-      1L -> CELLULAR_STATUS_FLAG_FAILED
-      2L -> CELLULAR_STATUS_FLAG_INITIALIZING
-      3L -> CELLULAR_STATUS_FLAG_LOCKED
-      4L -> CELLULAR_STATUS_FLAG_DISABLED
-      5L -> CELLULAR_STATUS_FLAG_DISABLING
-      6L -> CELLULAR_STATUS_FLAG_ENABLING
-      7L -> CELLULAR_STATUS_FLAG_ENABLED
-      8L -> CELLULAR_STATUS_FLAG_SEARCHING
-      9L -> CELLULAR_STATUS_FLAG_REGISTERED
-      10L -> CELLULAR_STATUS_FLAG_DISCONNECTING
-      11L -> CELLULAR_STATUS_FLAG_CONNECTING
-      12L -> CELLULAR_STATUS_FLAG_CONNECTED
+      0L -> UNKNOWN
+      1L -> FAILED
+      2L -> INITIALIZING
+      3L -> LOCKED
+      4L -> DISABLED
+      5L -> DISABLING
+      6L -> ENABLING
+      7L -> ENABLED
+      8L -> SEARCHING
+      9L -> REGISTERED
+      10L -> DISCONNECTING
+      11L -> CONNECTING
+      12L -> CONNECTED
       else -> null
     }
   }

@@ -16,24 +16,24 @@ public enum class CameraTrackingStatusFlags(
    * Camera is not tracking
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_STATUS_FLAGS_IDLE(0L),
+  IDLE(0L),
   /**
    * Camera is tracking
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_STATUS_FLAGS_ACTIVE(1L),
+  ACTIVE(1L),
   /**
    * Camera tracking in error state
    */
   @GeneratedMavEnumEntry
-  CAMERA_TRACKING_STATUS_FLAGS_ERROR(2L),
+  ERROR(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): CameraTrackingStatusFlags? = when (v) {
-      0L -> CAMERA_TRACKING_STATUS_FLAGS_IDLE
-      1L -> CAMERA_TRACKING_STATUS_FLAGS_ACTIVE
-      2L -> CAMERA_TRACKING_STATUS_FLAGS_ERROR
+      0L -> IDLE
+      1L -> ACTIVE
+      2L -> ERROR
       else -> null
     }
   }

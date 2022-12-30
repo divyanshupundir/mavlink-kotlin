@@ -16,22 +16,22 @@ public enum class MavBatteryFunction(
    * Battery function is unknown
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_FUNCTION_UNKNOWN(0L),
+  UNKNOWN(0L),
   /**
    * Battery supports all flight systems
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_FUNCTION_ALL(1L),
+  ALL(1L),
   /**
    * Battery for the propulsion system
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_FUNCTION_PROPULSION(2L),
+  PROPULSION(2L),
   /**
    * Avionics battery
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_FUNCTION_AVIONICS(3L),
+  AVIONICS(3L),
   /**
    * Payload battery
    */
@@ -41,10 +41,10 @@ public enum class MavBatteryFunction(
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavBatteryFunction? = when (v) {
-      0L -> MAV_BATTERY_FUNCTION_UNKNOWN
-      1L -> MAV_BATTERY_FUNCTION_ALL
-      2L -> MAV_BATTERY_FUNCTION_PROPULSION
-      3L -> MAV_BATTERY_FUNCTION_AVIONICS
+      0L -> UNKNOWN
+      1L -> ALL
+      2L -> PROPULSION
+      3L -> AVIONICS
       4L -> MAV_BATTERY_TYPE_PAYLOAD
       else -> null
     }

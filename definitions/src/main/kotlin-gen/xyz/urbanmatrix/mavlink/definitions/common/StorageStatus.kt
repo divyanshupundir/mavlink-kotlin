@@ -16,31 +16,31 @@ public enum class StorageStatus(
    * Storage is missing (no microSD card loaded for example.)
    */
   @GeneratedMavEnumEntry
-  STORAGE_STATUS_EMPTY(0L),
+  EMPTY(0L),
   /**
    * Storage present but unformatted.
    */
   @GeneratedMavEnumEntry
-  STORAGE_STATUS_UNFORMATTED(1L),
+  UNFORMATTED(1L),
   /**
    * Storage present and ready.
    */
   @GeneratedMavEnumEntry
-  STORAGE_STATUS_READY(2L),
+  READY(2L),
   /**
    * Camera does not supply storage status information. Capacity information in STORAGE_INFORMATION
    * fields will be ignored.
    */
   @GeneratedMavEnumEntry
-  STORAGE_STATUS_NOT_SUPPORTED(3L),
+  NOT_SUPPORTED(3L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): StorageStatus? = when (v) {
-      0L -> STORAGE_STATUS_EMPTY
-      1L -> STORAGE_STATUS_UNFORMATTED
-      2L -> STORAGE_STATUS_READY
-      3L -> STORAGE_STATUS_NOT_SUPPORTED
+      0L -> EMPTY
+      1L -> UNFORMATTED
+      2L -> READY
+      3L -> NOT_SUPPORTED
       else -> null
     }
   }

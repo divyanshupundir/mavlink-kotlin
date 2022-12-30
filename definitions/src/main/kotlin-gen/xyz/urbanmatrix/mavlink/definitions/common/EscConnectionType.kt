@@ -16,42 +16,42 @@ public enum class EscConnectionType(
    * Traditional PPM ESC.
    */
   @GeneratedMavEnumEntry
-  ESC_CONNECTION_TYPE_PPM(0L),
+  PPM(0L),
   /**
    * Serial Bus connected ESC.
    */
   @GeneratedMavEnumEntry
-  ESC_CONNECTION_TYPE_SERIAL(1L),
+  SERIAL(1L),
   /**
    * One Shot PPM ESC.
    */
   @GeneratedMavEnumEntry
-  ESC_CONNECTION_TYPE_ONESHOT(2L),
+  ONESHOT(2L),
   /**
    * I2C ESC.
    */
   @GeneratedMavEnumEntry
-  ESC_CONNECTION_TYPE_I2C(3L),
+  I2C(3L),
   /**
    * CAN-Bus ESC.
    */
   @GeneratedMavEnumEntry
-  ESC_CONNECTION_TYPE_CAN(4L),
+  CAN(4L),
   /**
    * DShot ESC.
    */
   @GeneratedMavEnumEntry
-  ESC_CONNECTION_TYPE_DSHOT(5L),
+  DSHOT(5L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): EscConnectionType? = when (v) {
-      0L -> ESC_CONNECTION_TYPE_PPM
-      1L -> ESC_CONNECTION_TYPE_SERIAL
-      2L -> ESC_CONNECTION_TYPE_ONESHOT
-      3L -> ESC_CONNECTION_TYPE_I2C
-      4L -> ESC_CONNECTION_TYPE_CAN
-      5L -> ESC_CONNECTION_TYPE_DSHOT
+      0L -> PPM
+      1L -> SERIAL
+      2L -> ONESHOT
+      3L -> I2C
+      4L -> CAN
+      5L -> DSHOT
       else -> null
     }
   }

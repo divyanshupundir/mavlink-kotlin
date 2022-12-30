@@ -20,7 +20,7 @@ class MavlinkKotlinSpeedTest {
         val cmd = CommandLong(
             1,
             2,
-            MavCmd.MAV_CMD_DO_FOLLOW.wrap(),
+            MavCmd.DO_FOLLOW.wrap(),
             3,
             4f,
             3f,

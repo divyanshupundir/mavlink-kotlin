@@ -13,24 +13,24 @@ public enum class GoproProtuneSharpness(
    * Low Sharpness.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_SHARPNESS_LOW(0L),
+  LOW(0L),
   /**
    * Medium Sharpness.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_SHARPNESS_MEDIUM(1L),
+  MEDIUM(1L),
   /**
    * High Sharpness.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_SHARPNESS_HIGH(2L),
+  HIGH(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproProtuneSharpness? = when (v) {
-      0L -> GOPRO_PROTUNE_SHARPNESS_LOW
-      1L -> GOPRO_PROTUNE_SHARPNESS_MEDIUM
-      2L -> GOPRO_PROTUNE_SHARPNESS_HIGH
+      0L -> LOW
+      1L -> MEDIUM
+      2L -> HIGH
       else -> null
     }
   }

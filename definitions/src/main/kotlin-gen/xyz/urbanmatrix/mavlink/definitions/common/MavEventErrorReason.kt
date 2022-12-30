@@ -16,12 +16,12 @@ public enum class MavEventErrorReason(
    * The requested event is not available (anymore).
    */
   @GeneratedMavEnumEntry
-  MAV_EVENT_ERROR_REASON_UNAVAILABLE(0L),
+  UNAVAILABLE(0L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavEventErrorReason? = when (v) {
-      0L -> MAV_EVENT_ERROR_REASON_UNAVAILABLE
+      0L -> UNAVAILABLE
       else -> null
     }
   }

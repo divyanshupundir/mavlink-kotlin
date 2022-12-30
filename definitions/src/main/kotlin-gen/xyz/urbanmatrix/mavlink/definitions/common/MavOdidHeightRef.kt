@@ -13,18 +13,18 @@ public enum class MavOdidHeightRef(
    * The height field is relative to the take-off location.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_HEIGHT_REF_OVER_TAKEOFF(0L),
+  OVER_TAKEOFF(0L),
   /**
    * The height field is relative to ground.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_HEIGHT_REF_OVER_GROUND(1L),
+  OVER_GROUND(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavOdidHeightRef? = when (v) {
-      0L -> MAV_ODID_HEIGHT_REF_OVER_TAKEOFF
-      1L -> MAV_ODID_HEIGHT_REF_OVER_GROUND
+      0L -> OVER_TAKEOFF
+      1L -> OVER_GROUND
       else -> null
     }
   }

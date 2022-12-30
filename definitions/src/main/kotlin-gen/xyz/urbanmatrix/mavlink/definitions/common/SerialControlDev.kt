@@ -16,27 +16,27 @@ public enum class SerialControlDev(
    * First telemetry port
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_DEV_TELEM1(0L),
+  TELEM1(0L),
   /**
    * Second telemetry port
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_DEV_TELEM2(1L),
+  TELEM2(1L),
   /**
    * First GPS port
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_DEV_GPS1(2L),
+  GPS1(2L),
   /**
    * Second GPS port
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_DEV_GPS2(3L),
+  GPS2(3L),
   /**
    * system shell
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_DEV_SHELL(10L),
+  SHELL(10L),
   /**
    * SERIAL0
    */
@@ -91,11 +91,11 @@ public enum class SerialControlDev(
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): SerialControlDev? = when (v) {
-      0L -> SERIAL_CONTROL_DEV_TELEM1
-      1L -> SERIAL_CONTROL_DEV_TELEM2
-      2L -> SERIAL_CONTROL_DEV_GPS1
-      3L -> SERIAL_CONTROL_DEV_GPS2
-      10L -> SERIAL_CONTROL_DEV_SHELL
+      0L -> TELEM1
+      1L -> TELEM2
+      2L -> GPS1
+      3L -> GPS2
+      10L -> SHELL
       100L -> SERIAL_CONTROL_SERIAL0
       101L -> SERIAL_CONTROL_SERIAL1
       102L -> SERIAL_CONTROL_SERIAL2

@@ -16,36 +16,36 @@ public enum class MavBatteryType(
    * Not specified.
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_TYPE_UNKNOWN(0L),
+  UNKNOWN(0L),
   /**
    * Lithium polymer battery
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_TYPE_LIPO(1L),
+  LIPO(1L),
   /**
    * Lithium-iron-phosphate battery
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_TYPE_LIFE(2L),
+  LIFE(2L),
   /**
    * Lithium-ION battery
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_TYPE_LION(3L),
+  LION(3L),
   /**
    * Nickel metal hydride battery
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_TYPE_NIMH(4L),
+  NIMH(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavBatteryType? = when (v) {
-      0L -> MAV_BATTERY_TYPE_UNKNOWN
-      1L -> MAV_BATTERY_TYPE_LIPO
-      2L -> MAV_BATTERY_TYPE_LIFE
-      3L -> MAV_BATTERY_TYPE_LION
-      4L -> MAV_BATTERY_TYPE_NIMH
+      0L -> UNKNOWN
+      1L -> LIPO
+      2L -> LIFE
+      3L -> LION
+      4L -> NIMH
       else -> null
     }
   }

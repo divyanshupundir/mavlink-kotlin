@@ -13,18 +13,18 @@ public enum class GoproProtuneColour(
    * Auto.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_COLOUR_STANDARD(0L),
+  STANDARD(0L),
   /**
    * Neutral.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_COLOUR_NEUTRAL(1L),
+  NEUTRAL(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproProtuneColour? = when (v) {
-      0L -> GOPRO_PROTUNE_COLOUR_STANDARD
-      1L -> GOPRO_PROTUNE_COLOUR_NEUTRAL
+      0L -> STANDARD
+      1L -> NEUTRAL
       else -> null
     }
   }

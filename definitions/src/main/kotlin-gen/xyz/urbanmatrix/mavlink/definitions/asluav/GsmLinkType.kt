@@ -13,36 +13,36 @@ public enum class GsmLinkType(
    * no service
    */
   @GeneratedMavEnumEntry
-  GSM_LINK_TYPE_NONE(0L),
+  NONE(0L),
   /**
    * link type unknown
    */
   @GeneratedMavEnumEntry
-  GSM_LINK_TYPE_UNKNOWN(1L),
+  UNKNOWN(1L),
   /**
    * 2G (GSM/GRPS/EDGE) link
    */
   @GeneratedMavEnumEntry
-  GSM_LINK_TYPE_2G(2L),
+  _2G(2L),
   /**
    * 3G link (WCDMA/HSDPA/HSPA) 
    */
   @GeneratedMavEnumEntry
-  GSM_LINK_TYPE_3G(3L),
+  _3G(3L),
   /**
    * 4G link (LTE)
    */
   @GeneratedMavEnumEntry
-  GSM_LINK_TYPE_4G(4L),
+  _4G(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GsmLinkType? = when (v) {
-      0L -> GSM_LINK_TYPE_NONE
-      1L -> GSM_LINK_TYPE_UNKNOWN
-      2L -> GSM_LINK_TYPE_2G
-      3L -> GSM_LINK_TYPE_3G
-      4L -> GSM_LINK_TYPE_4G
+      0L -> NONE
+      1L -> UNKNOWN
+      2L -> _2G
+      3L -> _3G
+      4L -> _4G
       else -> null
     }
   }

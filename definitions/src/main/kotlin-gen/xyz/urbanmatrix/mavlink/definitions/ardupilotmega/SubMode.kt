@@ -13,36 +13,36 @@ public enum class SubMode(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  SUB_MODE_STABILIZE(0L),
+  STABILIZE(0L),
   @GeneratedMavEnumEntry
-  SUB_MODE_ACRO(1L),
+  ACRO(1L),
   @GeneratedMavEnumEntry
-  SUB_MODE_ALT_HOLD(2L),
+  ALT_HOLD(2L),
   @GeneratedMavEnumEntry
-  SUB_MODE_AUTO(3L),
+  AUTO(3L),
   @GeneratedMavEnumEntry
-  SUB_MODE_GUIDED(4L),
+  GUIDED(4L),
   @GeneratedMavEnumEntry
-  SUB_MODE_CIRCLE(7L),
+  CIRCLE(7L),
   @GeneratedMavEnumEntry
-  SUB_MODE_SURFACE(9L),
+  SURFACE(9L),
   @GeneratedMavEnumEntry
-  SUB_MODE_POSHOLD(16L),
+  POSHOLD(16L),
   @GeneratedMavEnumEntry
-  SUB_MODE_MANUAL(19L),
+  MANUAL(19L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): SubMode? = when (v) {
-      0L -> SUB_MODE_STABILIZE
-      1L -> SUB_MODE_ACRO
-      2L -> SUB_MODE_ALT_HOLD
-      3L -> SUB_MODE_AUTO
-      4L -> SUB_MODE_GUIDED
-      7L -> SUB_MODE_CIRCLE
-      9L -> SUB_MODE_SURFACE
-      16L -> SUB_MODE_POSHOLD
-      19L -> SUB_MODE_MANUAL
+      0L -> STABILIZE
+      1L -> ACRO
+      2L -> ALT_HOLD
+      3L -> AUTO
+      4L -> GUIDED
+      7L -> CIRCLE
+      9L -> SURFACE
+      16L -> POSHOLD
+      19L -> MANUAL
       else -> null
     }
   }

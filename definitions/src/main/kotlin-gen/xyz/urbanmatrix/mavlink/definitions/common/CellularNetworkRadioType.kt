@@ -13,24 +13,24 @@ public enum class CellularNetworkRadioType(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  CELLULAR_NETWORK_RADIO_TYPE_NONE(0L),
+  NONE(0L),
   @GeneratedMavEnumEntry
-  CELLULAR_NETWORK_RADIO_TYPE_GSM(1L),
+  GSM(1L),
   @GeneratedMavEnumEntry
-  CELLULAR_NETWORK_RADIO_TYPE_CDMA(2L),
+  CDMA(2L),
   @GeneratedMavEnumEntry
-  CELLULAR_NETWORK_RADIO_TYPE_WCDMA(3L),
+  WCDMA(3L),
   @GeneratedMavEnumEntry
-  CELLULAR_NETWORK_RADIO_TYPE_LTE(4L),
+  LTE(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): CellularNetworkRadioType? = when (v) {
-      0L -> CELLULAR_NETWORK_RADIO_TYPE_NONE
-      1L -> CELLULAR_NETWORK_RADIO_TYPE_GSM
-      2L -> CELLULAR_NETWORK_RADIO_TYPE_CDMA
-      3L -> CELLULAR_NETWORK_RADIO_TYPE_WCDMA
-      4L -> CELLULAR_NETWORK_RADIO_TYPE_LTE
+      0L -> NONE
+      1L -> GSM
+      2L -> CDMA
+      3L -> WCDMA
+      4L -> LTE
       else -> null
     }
   }

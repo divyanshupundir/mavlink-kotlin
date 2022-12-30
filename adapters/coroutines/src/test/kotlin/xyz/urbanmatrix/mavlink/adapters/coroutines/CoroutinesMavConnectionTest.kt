@@ -44,7 +44,7 @@ class CoroutinesMavConnectionTest {
                 CommandLong(
                     1,
                     1,
-                    MavCmd.MAV_CMD_COMPONENT_ARM_DISARM.wrap(),
+                    MavCmd.COMPONENT_ARM_DISARM.wrap(),
                     param1 = 1f
                 )
             )
@@ -53,7 +53,7 @@ class CoroutinesMavConnectionTest {
                 CommandLong(
                     1,
                     1,
-                    MavCmd.MAV_CMD_NAV_LAND.wrap()
+                    MavCmd.NAV_LAND.wrap()
                 )
             )
         }

@@ -14,29 +14,29 @@ public enum class UavionixAdsbRfHealth(
   public override val `value`: Long,
 ) : MavBitmask {
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_RF_HEALTH_INITIALIZING(0L),
+  INITIALIZING(0L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_RF_HEALTH_OK(1L),
+  OK(1L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_RF_HEALTH_FAIL_TX(2L),
+  FAIL_TX(2L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_RF_HEALTH_FAIL_RX(16L),
+  FAIL_RX(16L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): UavionixAdsbRfHealth? = when (v) {
-      0L -> UAVIONIX_ADSB_RF_HEALTH_INITIALIZING
-      1L -> UAVIONIX_ADSB_RF_HEALTH_OK
-      2L -> UAVIONIX_ADSB_RF_HEALTH_FAIL_TX
-      16L -> UAVIONIX_ADSB_RF_HEALTH_FAIL_RX
+      0L -> INITIALIZING
+      1L -> OK
+      2L -> FAIL_TX
+      16L -> FAIL_RX
       else -> null
     }
 
     public fun getFlagsFromValue(v: Long): List<UavionixAdsbRfHealth> = buildList {
-      if (v and 0L == 0L) add(UAVIONIX_ADSB_RF_HEALTH_INITIALIZING)
-      if (v and 1L == 1L) add(UAVIONIX_ADSB_RF_HEALTH_OK)
-      if (v and 2L == 2L) add(UAVIONIX_ADSB_RF_HEALTH_FAIL_TX)
-      if (v and 16L == 16L) add(UAVIONIX_ADSB_RF_HEALTH_FAIL_RX)
+      if (v and 0L == 0L) add(INITIALIZING)
+      if (v and 1L == 1L) add(OK)
+      if (v and 2L == 2L) add(FAIL_TX)
+      if (v and 16L == 16L) add(FAIL_RX)
     }
   }
 }

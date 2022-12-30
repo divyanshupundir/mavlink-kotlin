@@ -19,76 +19,76 @@ public enum class MavMode(
    * System is not ready to fly, booting, calibrating, etc. No flag is set.
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_PREFLIGHT(0L),
+  PREFLIGHT(0L),
   /**
    * System is allowed to be active, under assisted RC control.
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_STABILIZE_DISARMED(80L),
+  STABILIZE_DISARMED(80L),
   /**
    * System is allowed to be active, under assisted RC control.
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_STABILIZE_ARMED(208L),
+  STABILIZE_ARMED(208L),
   /**
    * System is allowed to be active, under manual (RC) control, no stabilization
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_MANUAL_DISARMED(64L),
+  MANUAL_DISARMED(64L),
   /**
    * System is allowed to be active, under manual (RC) control, no stabilization
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_MANUAL_ARMED(192L),
+  MANUAL_ARMED(192L),
   /**
    * System is allowed to be active, under autonomous control, manual setpoint
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_GUIDED_DISARMED(88L),
+  GUIDED_DISARMED(88L),
   /**
    * System is allowed to be active, under autonomous control, manual setpoint
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_GUIDED_ARMED(216L),
+  GUIDED_ARMED(216L),
   /**
    * System is allowed to be active, under autonomous control and navigation (the trajectory is
    * decided onboard and not pre-programmed by waypoints)
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_AUTO_DISARMED(92L),
+  AUTO_DISARMED(92L),
   /**
    * System is allowed to be active, under autonomous control and navigation (the trajectory is
    * decided onboard and not pre-programmed by waypoints)
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_AUTO_ARMED(220L),
+  AUTO_ARMED(220L),
   /**
    * UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for
    * developers only.
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_TEST_DISARMED(66L),
+  TEST_DISARMED(66L),
   /**
    * UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for
    * developers only.
    */
   @GeneratedMavEnumEntry
-  MAV_MODE_TEST_ARMED(194L),
+  TEST_ARMED(194L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavMode? = when (v) {
-      0L -> MAV_MODE_PREFLIGHT
-      80L -> MAV_MODE_STABILIZE_DISARMED
-      208L -> MAV_MODE_STABILIZE_ARMED
-      64L -> MAV_MODE_MANUAL_DISARMED
-      192L -> MAV_MODE_MANUAL_ARMED
-      88L -> MAV_MODE_GUIDED_DISARMED
-      216L -> MAV_MODE_GUIDED_ARMED
-      92L -> MAV_MODE_AUTO_DISARMED
-      220L -> MAV_MODE_AUTO_ARMED
-      66L -> MAV_MODE_TEST_DISARMED
-      194L -> MAV_MODE_TEST_ARMED
+      0L -> PREFLIGHT
+      80L -> STABILIZE_DISARMED
+      208L -> STABILIZE_ARMED
+      64L -> MANUAL_DISARMED
+      192L -> MANUAL_ARMED
+      88L -> GUIDED_DISARMED
+      216L -> GUIDED_ARMED
+      92L -> AUTO_DISARMED
+      220L -> AUTO_ARMED
+      66L -> TEST_DISARMED
+      194L -> TEST_ARMED
       else -> null
     }
   }

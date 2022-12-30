@@ -16,36 +16,36 @@ public enum class MavDistanceSensor(
    * Laser rangefinder, e.g. LightWare SF02/F or PulsedLight units
    */
   @GeneratedMavEnumEntry
-  MAV_DISTANCE_SENSOR_LASER(0L),
+  LASER(0L),
   /**
    * Ultrasound rangefinder, e.g. MaxBotix units
    */
   @GeneratedMavEnumEntry
-  MAV_DISTANCE_SENSOR_ULTRASOUND(1L),
+  ULTRASOUND(1L),
   /**
    * Infrared rangefinder, e.g. Sharp units
    */
   @GeneratedMavEnumEntry
-  MAV_DISTANCE_SENSOR_INFRARED(2L),
+  INFRARED(2L),
   /**
    * Radar type, e.g. uLanding units
    */
   @GeneratedMavEnumEntry
-  MAV_DISTANCE_SENSOR_RADAR(3L),
+  RADAR(3L),
   /**
    * Broken or unknown type, e.g. analog units
    */
   @GeneratedMavEnumEntry
-  MAV_DISTANCE_SENSOR_UNKNOWN(4L),
+  UNKNOWN(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavDistanceSensor? = when (v) {
-      0L -> MAV_DISTANCE_SENSOR_LASER
-      1L -> MAV_DISTANCE_SENSOR_ULTRASOUND
-      2L -> MAV_DISTANCE_SENSOR_INFRARED
-      3L -> MAV_DISTANCE_SENSOR_RADAR
-      4L -> MAV_DISTANCE_SENSOR_UNKNOWN
+      0L -> LASER
+      1L -> ULTRASOUND
+      2L -> INFRARED
+      3L -> RADAR
+      4L -> UNKNOWN
       else -> null
     }
   }

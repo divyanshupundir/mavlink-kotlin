@@ -13,30 +13,30 @@ public enum class FenceBreach(
    * No last fence breach
    */
   @GeneratedMavEnumEntry
-  FENCE_BREACH_NONE(0L),
+  NONE(0L),
   /**
    * Breached minimum altitude
    */
   @GeneratedMavEnumEntry
-  FENCE_BREACH_MINALT(1L),
+  MINALT(1L),
   /**
    * Breached maximum altitude
    */
   @GeneratedMavEnumEntry
-  FENCE_BREACH_MAXALT(2L),
+  MAXALT(2L),
   /**
    * Breached fence boundary
    */
   @GeneratedMavEnumEntry
-  FENCE_BREACH_BOUNDARY(3L),
+  BOUNDARY(3L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): FenceBreach? = when (v) {
-      0L -> FENCE_BREACH_NONE
-      1L -> FENCE_BREACH_MINALT
-      2L -> FENCE_BREACH_MAXALT
-      3L -> FENCE_BREACH_BOUNDARY
+      0L -> NONE
+      1L -> MINALT
+      2L -> MAXALT
+      3L -> BOUNDARY
       else -> null
     }
   }

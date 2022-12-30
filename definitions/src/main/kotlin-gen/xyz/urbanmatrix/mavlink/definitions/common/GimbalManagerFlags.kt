@@ -18,45 +18,45 @@ public enum class GimbalManagerFlags(
    * Based on GIMBAL_DEVICE_FLAGS_RETRACT
    */
   @GeneratedMavEnumEntry
-  GIMBAL_MANAGER_FLAGS_RETRACT(1L),
+  RETRACT(1L),
   /**
    * Based on GIMBAL_DEVICE_FLAGS_NEUTRAL
    */
   @GeneratedMavEnumEntry
-  GIMBAL_MANAGER_FLAGS_NEUTRAL(2L),
+  NEUTRAL(2L),
   /**
    * Based on GIMBAL_DEVICE_FLAGS_ROLL_LOCK
    */
   @GeneratedMavEnumEntry
-  GIMBAL_MANAGER_FLAGS_ROLL_LOCK(4L),
+  ROLL_LOCK(4L),
   /**
    * Based on GIMBAL_DEVICE_FLAGS_PITCH_LOCK
    */
   @GeneratedMavEnumEntry
-  GIMBAL_MANAGER_FLAGS_PITCH_LOCK(8L),
+  PITCH_LOCK(8L),
   /**
    * Based on GIMBAL_DEVICE_FLAGS_YAW_LOCK
    */
   @GeneratedMavEnumEntry
-  GIMBAL_MANAGER_FLAGS_YAW_LOCK(16L),
+  YAW_LOCK(16L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GimbalManagerFlags? = when (v) {
-      1L -> GIMBAL_MANAGER_FLAGS_RETRACT
-      2L -> GIMBAL_MANAGER_FLAGS_NEUTRAL
-      4L -> GIMBAL_MANAGER_FLAGS_ROLL_LOCK
-      8L -> GIMBAL_MANAGER_FLAGS_PITCH_LOCK
-      16L -> GIMBAL_MANAGER_FLAGS_YAW_LOCK
+      1L -> RETRACT
+      2L -> NEUTRAL
+      4L -> ROLL_LOCK
+      8L -> PITCH_LOCK
+      16L -> YAW_LOCK
       else -> null
     }
 
     public fun getFlagsFromValue(v: Long): List<GimbalManagerFlags> = buildList {
-      if (v and 1L == 1L) add(GIMBAL_MANAGER_FLAGS_RETRACT)
-      if (v and 2L == 2L) add(GIMBAL_MANAGER_FLAGS_NEUTRAL)
-      if (v and 4L == 4L) add(GIMBAL_MANAGER_FLAGS_ROLL_LOCK)
-      if (v and 8L == 8L) add(GIMBAL_MANAGER_FLAGS_PITCH_LOCK)
-      if (v and 16L == 16L) add(GIMBAL_MANAGER_FLAGS_YAW_LOCK)
+      if (v and 1L == 1L) add(RETRACT)
+      if (v and 2L == 2L) add(NEUTRAL)
+      if (v and 4L == 4L) add(ROLL_LOCK)
+      if (v and 8L == 8L) add(PITCH_LOCK)
+      if (v and 16L == 16L) add(YAW_LOCK)
     }
   }
 }
