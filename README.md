@@ -191,11 +191,11 @@ To send a message, create the `MavMessage` object that you want to send.
 ```kotlin
 // Using the constructor
 val heartbeat = Heartbeat(
-    type = MavType.MAV_TYPE_FIXED_WING.wrap(),                   // The wrap() extension function wraps a MavEnum in a MavEnumValue
+    type = MavType.FIXED_WING.wrap(),                   // The wrap() extension function wraps a MavEnum in a MavEnumValue
     autopilot = MavEnumValue.of(MavAutopilot.MAV_AUTOPILOT_PX4), // Or use the MavEnumValue.of() function
     baseMode = MavBitmaskValue.of(                               // Use the MavBitmaskValue.of() to create a bitmask
-        MavModeFlag.MAV_MODE_FLAG_AUTO_ENABLED,
-        MavModeFlag.MAV_MODE_FLAG_SAFETY_ARMED
+        MavModeFlag.AUTO_ENABLED,
+        MavModeFlag.SAFETY_ARMED
     ),
     systemStatus = MavEnumValue.fromValue(4),                    // Use the MavEnumValue.fromValue() to specify your own value that is not in the enum
     mavlinkVersion = 2
@@ -203,16 +203,16 @@ val heartbeat = Heartbeat(
 
 // Using the builder function
 val heartbeat = Heartbeat.builder {
-    type = MavType.MAV_TYPE_FIXED_WING.wrap()
-    autopilot = MavAutopilot.MAV_AUTOPILOT_PX4.wrap()
+    type = MavType.FIXED_WING.wrap()
+    autopilot = MavAutopilot.PX4.wrap()
     baseMode = MavEnumValue.fromValue(200)
     mavlinkVersion = 2
 }
 
 // Using the Builder class
 val builder = Heartbeat.Builder()
-builder.type = MavType.MAV_TYPE_FIXED_WING.wrap()
-builder.autopilot = MavAutopilot.MAV_AUTOPILOT_PX4.wrap()
+builder.type = MavType.FIXED_WING.wrap()
+builder.autopilot = MavAutopilot.PX4.wrap()
 builder.mavlinkVersion = 2
 val heartbeat = builder.build()
 ```
