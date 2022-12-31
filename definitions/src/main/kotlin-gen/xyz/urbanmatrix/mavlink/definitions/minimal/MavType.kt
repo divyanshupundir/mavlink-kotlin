@@ -18,270 +18,270 @@ public enum class MavType(
    * Generic micro air vehicle
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_GENERIC(0L),
+  GENERIC(0L),
   /**
    * Fixed wing aircraft.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_FIXED_WING(1L),
+  FIXED_WING(1L),
   /**
    * Quadrotor
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_QUADROTOR(2L),
+  QUADROTOR(2L),
   /**
    * Coaxial helicopter
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_COAXIAL(3L),
+  COAXIAL(3L),
   /**
    * Normal helicopter with tail rotor.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_HELICOPTER(4L),
+  HELICOPTER(4L),
   /**
    * Ground installation
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_ANTENNA_TRACKER(5L),
+  ANTENNA_TRACKER(5L),
   /**
    * Operator control unit / ground control station
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_GCS(6L),
+  GCS(6L),
   /**
    * Airship, controlled
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_AIRSHIP(7L),
+  AIRSHIP(7L),
   /**
    * Free balloon, uncontrolled
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_FREE_BALLOON(8L),
+  FREE_BALLOON(8L),
   /**
    * Rocket
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_ROCKET(9L),
+  ROCKET(9L),
   /**
    * Ground rover
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_GROUND_ROVER(10L),
+  GROUND_ROVER(10L),
   /**
    * Surface vessel, boat, ship
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_SURFACE_BOAT(11L),
+  SURFACE_BOAT(11L),
   /**
    * Submarine
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_SUBMARINE(12L),
+  SUBMARINE(12L),
   /**
    * Hexarotor
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_HEXAROTOR(13L),
+  HEXAROTOR(13L),
   /**
    * Octorotor
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_OCTOROTOR(14L),
+  OCTOROTOR(14L),
   /**
    * Tricopter
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_TRICOPTER(15L),
+  TRICOPTER(15L),
   /**
    * Flapping wing
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_FLAPPING_WING(16L),
+  FLAPPING_WING(16L),
   /**
    * Kite
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_KITE(17L),
+  KITE(17L),
   /**
    * Onboard companion controller
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_ONBOARD_CONTROLLER(18L),
+  ONBOARD_CONTROLLER(18L),
   /**
    * Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note,
    * value previously named MAV_TYPE_VTOL_DUOROTOR.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_TAILSITTER_DUOROTOR(19L),
+  VTOL_TAILSITTER_DUOROTOR(19L),
   /**
    * Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value
    * previously named MAV_TYPE_VTOL_QUADROTOR.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_TAILSITTER_QUADROTOR(20L),
+  VTOL_TAILSITTER_QUADROTOR(20L),
   /**
    * Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to
    * tilt (some) rotors to provide thrust in cruise flight.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_TILTROTOR(21L),
+  VTOL_TILTROTOR(21L),
   /**
    * VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay
    * (nominally) horizontal in all flight phases.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_FIXEDROTOR(22L),
+  VTOL_FIXEDROTOR(22L),
   /**
    * Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for
    * hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or
    * MAV_TYPE_VTOL_QUADROTOR if appropriate.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_TAILSITTER(23L),
+  VTOL_TAILSITTER(23L),
   /**
    * VTOL reserved 4
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_RESERVED4(24L),
+  VTOL_RESERVED4(24L),
   /**
    * VTOL reserved 5
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_VTOL_RESERVED5(25L),
+  VTOL_RESERVED5(25L),
   /**
    * Gimbal
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_GIMBAL(26L),
+  GIMBAL(26L),
   /**
    * ADSB system
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_ADSB(27L),
+  ADSB(27L),
   /**
    * Steerable, nonrigid airfoil
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_PARAFOIL(28L),
+  PARAFOIL(28L),
   /**
    * Dodecarotor
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_DODECAROTOR(29L),
+  DODECAROTOR(29L),
   /**
    * Camera
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_CAMERA(30L),
+  CAMERA(30L),
   /**
    * Charging station
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_CHARGING_STATION(31L),
+  CHARGING_STATION(31L),
   /**
    * FLARM collision avoidance system
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_FLARM(32L),
+  FLARM(32L),
   /**
    * Servo
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_SERVO(33L),
+  SERVO(33L),
   /**
    * Open Drone ID. See https://mavlink.io/en/services/opendroneid.html.
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_ODID(34L),
+  ODID(34L),
   /**
    * Decarotor
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_DECAROTOR(35L),
+  DECAROTOR(35L),
   /**
    * Battery
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_BATTERY(36L),
+  BATTERY(36L),
   /**
    * Parachute
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_PARACHUTE(37L),
+  PARACHUTE(37L),
   /**
    * Log
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_LOG(38L),
+  LOG(38L),
   /**
    * OSD
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_OSD(39L),
+  OSD(39L),
   /**
    * IMU
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_IMU(40L),
+  IMU(40L),
   /**
    * GPS
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_GPS(41L),
+  GPS(41L),
   /**
    * Winch
    */
   @GeneratedMavEnumEntry
-  MAV_TYPE_WINCH(42L),
+  WINCH(42L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavType? = when (v) {
-      0L -> MAV_TYPE_GENERIC
-      1L -> MAV_TYPE_FIXED_WING
-      2L -> MAV_TYPE_QUADROTOR
-      3L -> MAV_TYPE_COAXIAL
-      4L -> MAV_TYPE_HELICOPTER
-      5L -> MAV_TYPE_ANTENNA_TRACKER
-      6L -> MAV_TYPE_GCS
-      7L -> MAV_TYPE_AIRSHIP
-      8L -> MAV_TYPE_FREE_BALLOON
-      9L -> MAV_TYPE_ROCKET
-      10L -> MAV_TYPE_GROUND_ROVER
-      11L -> MAV_TYPE_SURFACE_BOAT
-      12L -> MAV_TYPE_SUBMARINE
-      13L -> MAV_TYPE_HEXAROTOR
-      14L -> MAV_TYPE_OCTOROTOR
-      15L -> MAV_TYPE_TRICOPTER
-      16L -> MAV_TYPE_FLAPPING_WING
-      17L -> MAV_TYPE_KITE
-      18L -> MAV_TYPE_ONBOARD_CONTROLLER
-      19L -> MAV_TYPE_VTOL_TAILSITTER_DUOROTOR
-      20L -> MAV_TYPE_VTOL_TAILSITTER_QUADROTOR
-      21L -> MAV_TYPE_VTOL_TILTROTOR
-      22L -> MAV_TYPE_VTOL_FIXEDROTOR
-      23L -> MAV_TYPE_VTOL_TAILSITTER
-      24L -> MAV_TYPE_VTOL_RESERVED4
-      25L -> MAV_TYPE_VTOL_RESERVED5
-      26L -> MAV_TYPE_GIMBAL
-      27L -> MAV_TYPE_ADSB
-      28L -> MAV_TYPE_PARAFOIL
-      29L -> MAV_TYPE_DODECAROTOR
-      30L -> MAV_TYPE_CAMERA
-      31L -> MAV_TYPE_CHARGING_STATION
-      32L -> MAV_TYPE_FLARM
-      33L -> MAV_TYPE_SERVO
-      34L -> MAV_TYPE_ODID
-      35L -> MAV_TYPE_DECAROTOR
-      36L -> MAV_TYPE_BATTERY
-      37L -> MAV_TYPE_PARACHUTE
-      38L -> MAV_TYPE_LOG
-      39L -> MAV_TYPE_OSD
-      40L -> MAV_TYPE_IMU
-      41L -> MAV_TYPE_GPS
-      42L -> MAV_TYPE_WINCH
+      0L -> GENERIC
+      1L -> FIXED_WING
+      2L -> QUADROTOR
+      3L -> COAXIAL
+      4L -> HELICOPTER
+      5L -> ANTENNA_TRACKER
+      6L -> GCS
+      7L -> AIRSHIP
+      8L -> FREE_BALLOON
+      9L -> ROCKET
+      10L -> GROUND_ROVER
+      11L -> SURFACE_BOAT
+      12L -> SUBMARINE
+      13L -> HEXAROTOR
+      14L -> OCTOROTOR
+      15L -> TRICOPTER
+      16L -> FLAPPING_WING
+      17L -> KITE
+      18L -> ONBOARD_CONTROLLER
+      19L -> VTOL_TAILSITTER_DUOROTOR
+      20L -> VTOL_TAILSITTER_QUADROTOR
+      21L -> VTOL_TILTROTOR
+      22L -> VTOL_FIXEDROTOR
+      23L -> VTOL_TAILSITTER
+      24L -> VTOL_RESERVED4
+      25L -> VTOL_RESERVED5
+      26L -> GIMBAL
+      27L -> ADSB
+      28L -> PARAFOIL
+      29L -> DODECAROTOR
+      30L -> CAMERA
+      31L -> CHARGING_STATION
+      32L -> FLARM
+      33L -> SERVO
+      34L -> ODID
+      35L -> DECAROTOR
+      36L -> BATTERY
+      37L -> PARACHUTE
+      38L -> LOG
+      39L -> OSD
+      40L -> IMU
+      41L -> GPS
+      42L -> WINCH
       else -> null
     }
   }

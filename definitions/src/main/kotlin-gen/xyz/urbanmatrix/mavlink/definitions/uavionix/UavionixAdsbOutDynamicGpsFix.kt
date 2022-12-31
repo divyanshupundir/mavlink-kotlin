@@ -13,27 +13,27 @@ public enum class UavionixAdsbOutDynamicGpsFix(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_0(0L),
+  NONE_0(0L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_1(1L),
+  NONE_1(1L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_2D(2L),
+  _2D(2L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_3D(3L),
+  _3D(3L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_DGPS(4L),
+  DGPS(4L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_RTK(5L),
+  RTK(5L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): UavionixAdsbOutDynamicGpsFix? = when (v) {
-      0L -> UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_0
-      1L -> UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_NONE_1
-      2L -> UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_2D
-      3L -> UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_3D
-      4L -> UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_DGPS
-      5L -> UAVIONIX_ADSB_OUT_DYNAMIC_GPS_FIX_RTK
+      0L -> NONE_0
+      1L -> NONE_1
+      2L -> _2D
+      3L -> _3D
+      4L -> DGPS
+      5L -> RTK
       else -> null
     }
   }

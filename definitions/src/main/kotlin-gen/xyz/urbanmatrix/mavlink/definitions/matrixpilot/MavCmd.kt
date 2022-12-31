@@ -35,12 +35,12 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PREFLIGHT_STORAGE_ADVANCED(0L),
+  PREFLIGHT_STORAGE_ADVANCED(0L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavCmd? = when (v) {
-      0L -> MAV_CMD_PREFLIGHT_STORAGE_ADVANCED
+      0L -> PREFLIGHT_STORAGE_ADVANCED
       else -> null
     }
   }

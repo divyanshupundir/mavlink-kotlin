@@ -16,24 +16,24 @@ public enum class MavCollisionThreatLevel(
    * Not a threat
    */
   @GeneratedMavEnumEntry
-  MAV_COLLISION_THREAT_LEVEL_NONE(0L),
+  NONE(0L),
   /**
    * Craft is mildly concerned about this threat
    */
   @GeneratedMavEnumEntry
-  MAV_COLLISION_THREAT_LEVEL_LOW(1L),
+  LOW(1L),
   /**
    * Craft is panicking, and may take actions to avoid threat
    */
   @GeneratedMavEnumEntry
-  MAV_COLLISION_THREAT_LEVEL_HIGH(2L),
+  HIGH(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavCollisionThreatLevel? = when (v) {
-      0L -> MAV_COLLISION_THREAT_LEVEL_NONE
-      1L -> MAV_COLLISION_THREAT_LEVEL_LOW
-      2L -> MAV_COLLISION_THREAT_LEVEL_HIGH
+      0L -> NONE
+      1L -> LOW
+      2L -> HIGH
       else -> null
     }
   }

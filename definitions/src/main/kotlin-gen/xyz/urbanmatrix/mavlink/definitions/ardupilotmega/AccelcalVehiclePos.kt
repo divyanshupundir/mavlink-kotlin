@@ -10,33 +10,33 @@ public enum class AccelcalVehiclePos(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_LEVEL(1L),
+  LEVEL(1L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_LEFT(2L),
+  LEFT(2L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_RIGHT(3L),
+  RIGHT(3L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_NOSEDOWN(4L),
+  NOSEDOWN(4L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_NOSEUP(5L),
+  NOSEUP(5L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_BACK(6L),
+  BACK(6L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_SUCCESS(16777215L),
+  SUCCESS(16777215L),
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS_FAILED(16777216L),
+  FAILED(16777216L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): AccelcalVehiclePos? = when (v) {
-      1L -> ACCELCAL_VEHICLE_POS_LEVEL
-      2L -> ACCELCAL_VEHICLE_POS_LEFT
-      3L -> ACCELCAL_VEHICLE_POS_RIGHT
-      4L -> ACCELCAL_VEHICLE_POS_NOSEDOWN
-      5L -> ACCELCAL_VEHICLE_POS_NOSEUP
-      6L -> ACCELCAL_VEHICLE_POS_BACK
-      16777215L -> ACCELCAL_VEHICLE_POS_SUCCESS
-      16777216L -> ACCELCAL_VEHICLE_POS_FAILED
+      1L -> LEVEL
+      2L -> LEFT
+      3L -> RIGHT
+      4L -> NOSEDOWN
+      5L -> NOSEUP
+      6L -> BACK
+      16777215L -> SUCCESS
+      16777216L -> FAILED
       else -> null
     }
   }

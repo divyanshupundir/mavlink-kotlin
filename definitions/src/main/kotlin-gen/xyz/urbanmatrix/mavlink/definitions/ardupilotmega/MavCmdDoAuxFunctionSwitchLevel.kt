@@ -13,24 +13,24 @@ public enum class MavCmdDoAuxFunctionSwitchLevel(
    * Switch Low.
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_DO_AUX_FUNCTION_SWITCH_LEVEL_LOW(0L),
+  LOW(0L),
   /**
    * Switch Middle.
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_DO_AUX_FUNCTION_SWITCH_LEVEL_MIDDLE(1L),
+  MIDDLE(1L),
   /**
    * Switch High.
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_DO_AUX_FUNCTION_SWITCH_LEVEL_HIGH(2L),
+  HIGH(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavCmdDoAuxFunctionSwitchLevel? = when (v) {
-      0L -> MAV_CMD_DO_AUX_FUNCTION_SWITCH_LEVEL_LOW
-      1L -> MAV_CMD_DO_AUX_FUNCTION_SWITCH_LEVEL_MIDDLE
-      2L -> MAV_CMD_DO_AUX_FUNCTION_SWITCH_LEVEL_HIGH
+      0L -> LOW
+      1L -> MIDDLE
+      2L -> HIGH
       else -> null
     }
   }

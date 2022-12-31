@@ -16,18 +16,18 @@ public enum class RtkBaselineCoordinateSystem(
    * Earth-centered, Earth-fixed
    */
   @GeneratedMavEnumEntry
-  RTK_BASELINE_COORDINATE_SYSTEM_ECEF(0L),
+  ECEF(0L),
   /**
    * RTK basestation centered, north, east, down
    */
   @GeneratedMavEnumEntry
-  RTK_BASELINE_COORDINATE_SYSTEM_NED(1L),
+  NED(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): RtkBaselineCoordinateSystem? = when (v) {
-      0L -> RTK_BASELINE_COORDINATE_SYSTEM_ECEF
-      1L -> RTK_BASELINE_COORDINATE_SYSTEM_NED
+      0L -> ECEF
+      1L -> NED
       else -> null
     }
   }

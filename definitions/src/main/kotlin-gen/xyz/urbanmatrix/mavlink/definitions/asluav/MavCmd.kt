@@ -34,7 +34,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_RESET_MPPT(40001L),
+  RESET_MPPT(40001L),
   /**
    * Mission command to perform a power cycle on payload
    *
@@ -60,13 +60,13 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  MAV_CMD_PAYLOAD_CONTROL(40002L),
+  PAYLOAD_CONTROL(40002L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavCmd? = when (v) {
-      40001L -> MAV_CMD_RESET_MPPT
-      40002L -> MAV_CMD_PAYLOAD_CONTROL
+      40001L -> RESET_MPPT
+      40002L -> PAYLOAD_CONTROL
       else -> null
     }
   }

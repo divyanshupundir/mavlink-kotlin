@@ -16,25 +16,25 @@ public enum class PrecisionLandMode(
    * Normal (non-precision) landing.
    */
   @GeneratedMavEnumEntry
-  PRECISION_LAND_MODE_DISABLED(0L),
+  DISABLED(0L),
   /**
    * Use precision landing if beacon detected when land command accepted, otherwise land normally.
    */
   @GeneratedMavEnumEntry
-  PRECISION_LAND_MODE_OPPORTUNISTIC(1L),
+  OPPORTUNISTIC(1L),
   /**
    * Use precision landing, searching for beacon if not found when land command accepted (land
    * normally if beacon cannot be found).
    */
   @GeneratedMavEnumEntry
-  PRECISION_LAND_MODE_REQUIRED(2L),
+  REQUIRED(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): PrecisionLandMode? = when (v) {
-      0L -> PRECISION_LAND_MODE_DISABLED
-      1L -> PRECISION_LAND_MODE_OPPORTUNISTIC
-      2L -> PRECISION_LAND_MODE_REQUIRED
+      0L -> DISABLED
+      1L -> OPPORTUNISTIC
+      2L -> REQUIRED
       else -> null
     }
   }

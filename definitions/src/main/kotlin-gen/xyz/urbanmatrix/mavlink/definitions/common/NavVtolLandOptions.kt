@@ -13,7 +13,7 @@ public enum class NavVtolLandOptions(
    * Default autopilot landing behaviour.
    */
   @GeneratedMavEnumEntry
-  NAV_VTOL_LAND_OPTIONS_DEFAULT(0L),
+  DEFAULT(0L),
   /**
    * Descend in fixed wing mode, transitioning to multicopter mode for vertical landing when close
    * to the ground.
@@ -22,20 +22,20 @@ public enum class NavVtolLandOptions(
    *         
    */
   @GeneratedMavEnumEntry
-  NAV_VTOL_LAND_OPTIONS_FW_DESCENT(1L),
+  FW_DESCENT(1L),
   /**
    * Land in multicopter mode on reaching the landing co-ordinates (the whole landing is by "hover
    * descent").
    */
   @GeneratedMavEnumEntry
-  NAV_VTOL_LAND_OPTIONS_HOVER_DESCENT(2L),
+  HOVER_DESCENT(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): NavVtolLandOptions? = when (v) {
-      0L -> NAV_VTOL_LAND_OPTIONS_DEFAULT
-      1L -> NAV_VTOL_LAND_OPTIONS_FW_DESCENT
-      2L -> NAV_VTOL_LAND_OPTIONS_HOVER_DESCENT
+      0L -> DEFAULT
+      1L -> FW_DESCENT
+      2L -> HOVER_DESCENT
       else -> null
     }
   }

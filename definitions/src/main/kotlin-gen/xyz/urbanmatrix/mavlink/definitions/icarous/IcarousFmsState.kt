@@ -10,27 +10,27 @@ public enum class IcarousFmsState(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  ICAROUS_FMS_STATE_IDLE(0L),
+  IDLE(0L),
   @GeneratedMavEnumEntry
-  ICAROUS_FMS_STATE_TAKEOFF(1L),
+  TAKEOFF(1L),
   @GeneratedMavEnumEntry
-  ICAROUS_FMS_STATE_CLIMB(2L),
+  CLIMB(2L),
   @GeneratedMavEnumEntry
-  ICAROUS_FMS_STATE_CRUISE(3L),
+  CRUISE(3L),
   @GeneratedMavEnumEntry
-  ICAROUS_FMS_STATE_APPROACH(4L),
+  APPROACH(4L),
   @GeneratedMavEnumEntry
-  ICAROUS_FMS_STATE_LAND(5L),
+  LAND(5L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): IcarousFmsState? = when (v) {
-      0L -> ICAROUS_FMS_STATE_IDLE
-      1L -> ICAROUS_FMS_STATE_TAKEOFF
-      2L -> ICAROUS_FMS_STATE_CLIMB
-      3L -> ICAROUS_FMS_STATE_CRUISE
-      4L -> ICAROUS_FMS_STATE_APPROACH
-      5L -> ICAROUS_FMS_STATE_LAND
+      0L -> IDLE
+      1L -> TAKEOFF
+      2L -> CLIMB
+      3L -> CRUISE
+      4L -> APPROACH
+      5L -> LAND
       else -> null
     }
   }

@@ -13,12 +13,12 @@ public enum class MavOdidOperatorIdType(
    * CAA (Civil Aviation Authority) registered operator ID.
    */
   @GeneratedMavEnumEntry
-  MAV_ODID_OPERATOR_ID_TYPE_CAA(0L),
+  CAA(0L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavOdidOperatorIdType? = when (v) {
-      0L -> MAV_ODID_OPERATOR_ID_TYPE_CAA
+      0L -> CAA
       else -> null
     }
   }

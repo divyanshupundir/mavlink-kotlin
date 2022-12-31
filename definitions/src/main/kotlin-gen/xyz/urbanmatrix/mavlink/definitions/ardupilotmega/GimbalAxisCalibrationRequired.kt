@@ -13,24 +13,24 @@ public enum class GimbalAxisCalibrationRequired(
    * Whether or not this axis requires calibration is unknown at this time.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_REQUIRED_UNKNOWN(0L),
+  UNKNOWN(0L),
   /**
    * This axis requires calibration.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_REQUIRED_TRUE(1L),
+  TRUE(1L),
   /**
    * This axis does not require calibration.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_REQUIRED_FALSE(2L),
+  FALSE(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GimbalAxisCalibrationRequired? = when (v) {
-      0L -> GIMBAL_AXIS_CALIBRATION_REQUIRED_UNKNOWN
-      1L -> GIMBAL_AXIS_CALIBRATION_REQUIRED_TRUE
-      2L -> GIMBAL_AXIS_CALIBRATION_REQUIRED_FALSE
+      0L -> UNKNOWN
+      1L -> TRUE
+      2L -> FALSE
       else -> null
     }
   }

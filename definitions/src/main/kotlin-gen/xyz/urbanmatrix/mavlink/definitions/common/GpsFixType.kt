@@ -16,60 +16,60 @@ public enum class GpsFixType(
    * No GPS connected
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_NO_GPS(0L),
+  NO_GPS(0L),
   /**
    * No position information, GPS is connected
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_NO_FIX(1L),
+  NO_FIX(1L),
   /**
    * 2D position
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_2D_FIX(2L),
+  _2D_FIX(2L),
   /**
    * 3D position
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_3D_FIX(3L),
+  _3D_FIX(3L),
   /**
    * DGPS/SBAS aided 3D position
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_DGPS(4L),
+  DGPS(4L),
   /**
    * RTK float, 3D position
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_RTK_FLOAT(5L),
+  RTK_FLOAT(5L),
   /**
    * RTK Fixed, 3D position
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_RTK_FIXED(6L),
+  RTK_FIXED(6L),
   /**
    * Static fixed, typically used for base stations
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_STATIC(7L),
+  STATIC(7L),
   /**
    * PPP, 3D position.
    */
   @GeneratedMavEnumEntry
-  GPS_FIX_TYPE_PPP(8L),
+  PPP(8L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GpsFixType? = when (v) {
-      0L -> GPS_FIX_TYPE_NO_GPS
-      1L -> GPS_FIX_TYPE_NO_FIX
-      2L -> GPS_FIX_TYPE_2D_FIX
-      3L -> GPS_FIX_TYPE_3D_FIX
-      4L -> GPS_FIX_TYPE_DGPS
-      5L -> GPS_FIX_TYPE_RTK_FLOAT
-      6L -> GPS_FIX_TYPE_RTK_FIXED
-      7L -> GPS_FIX_TYPE_STATIC
-      8L -> GPS_FIX_TYPE_PPP
+      0L -> NO_GPS
+      1L -> NO_FIX
+      2L -> _2D_FIX
+      3L -> _3D_FIX
+      4L -> DGPS
+      5L -> RTK_FLOAT
+      6L -> RTK_FIXED
+      7L -> STATIC
+      8L -> PPP
       else -> null
     }
   }

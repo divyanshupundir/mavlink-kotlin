@@ -16,17 +16,17 @@ public enum class ParamAck(
    * Parameter value ACCEPTED and SET
    */
   @GeneratedMavEnumEntry
-  PARAM_ACK_ACCEPTED(0L),
+  ACCEPTED(0L),
   /**
    * Parameter value UNKNOWN/UNSUPPORTED
    */
   @GeneratedMavEnumEntry
-  PARAM_ACK_VALUE_UNSUPPORTED(1L),
+  VALUE_UNSUPPORTED(1L),
   /**
    * Parameter failed to set
    */
   @GeneratedMavEnumEntry
-  PARAM_ACK_FAILED(2L),
+  FAILED(2L),
   /**
    * Parameter value received but not yet set/accepted. A subsequent PARAM_ACK_TRANSACTION or
    * PARAM_EXT_ACK with the final result will follow once operation is completed. This is returned
@@ -34,15 +34,15 @@ public enum class ParamAck(
    * and does not need to be resent.
    */
   @GeneratedMavEnumEntry
-  PARAM_ACK_IN_PROGRESS(3L),
+  IN_PROGRESS(3L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): ParamAck? = when (v) {
-      0L -> PARAM_ACK_ACCEPTED
-      1L -> PARAM_ACK_VALUE_UNSUPPORTED
-      2L -> PARAM_ACK_FAILED
-      3L -> PARAM_ACK_IN_PROGRESS
+      0L -> ACCEPTED
+      1L -> VALUE_UNSUPPORTED
+      2L -> FAILED
+      3L -> IN_PROGRESS
       else -> null
     }
   }

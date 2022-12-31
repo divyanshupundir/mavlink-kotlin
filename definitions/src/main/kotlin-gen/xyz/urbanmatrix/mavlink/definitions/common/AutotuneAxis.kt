@@ -17,38 +17,38 @@ public enum class AutotuneAxis(
    * Flight stack tunes axis according to its default settings.
    */
   @GeneratedMavEnumEntry
-  AUTOTUNE_AXIS_DEFAULT(0L),
+  DEFAULT(0L),
   /**
    * Autotune roll axis.
    */
   @GeneratedMavEnumEntry
-  AUTOTUNE_AXIS_ROLL(1L),
+  ROLL(1L),
   /**
    * Autotune pitch axis.
    */
   @GeneratedMavEnumEntry
-  AUTOTUNE_AXIS_PITCH(2L),
+  PITCH(2L),
   /**
    * Autotune yaw axis.
    */
   @GeneratedMavEnumEntry
-  AUTOTUNE_AXIS_YAW(4L),
+  YAW(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): AutotuneAxis? = when (v) {
-      0L -> AUTOTUNE_AXIS_DEFAULT
-      1L -> AUTOTUNE_AXIS_ROLL
-      2L -> AUTOTUNE_AXIS_PITCH
-      4L -> AUTOTUNE_AXIS_YAW
+      0L -> DEFAULT
+      1L -> ROLL
+      2L -> PITCH
+      4L -> YAW
       else -> null
     }
 
     public fun getFlagsFromValue(v: Long): List<AutotuneAxis> = buildList {
-      if (v and 0L == 0L) add(AUTOTUNE_AXIS_DEFAULT)
-      if (v and 1L == 1L) add(AUTOTUNE_AXIS_ROLL)
-      if (v and 2L == 2L) add(AUTOTUNE_AXIS_PITCH)
-      if (v and 4L == 4L) add(AUTOTUNE_AXIS_YAW)
+      if (v and 0L == 0L) add(DEFAULT)
+      if (v and 1L == 1L) add(ROLL)
+      if (v and 2L == 2L) add(PITCH)
+      if (v and 4L == 4L) add(YAW)
     }
   }
 }

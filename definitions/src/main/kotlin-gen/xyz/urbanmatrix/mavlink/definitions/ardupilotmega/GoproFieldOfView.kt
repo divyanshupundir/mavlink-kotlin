@@ -13,24 +13,24 @@ public enum class GoproFieldOfView(
    * 0x00: Wide.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FIELD_OF_VIEW_WIDE(0L),
+  WIDE(0L),
   /**
    * 0x01: Medium.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FIELD_OF_VIEW_MEDIUM(1L),
+  MEDIUM(1L),
   /**
    * 0x02: Narrow.
    */
   @GeneratedMavEnumEntry
-  GOPRO_FIELD_OF_VIEW_NARROW(2L),
+  NARROW(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproFieldOfView? = when (v) {
-      0L -> GOPRO_FIELD_OF_VIEW_WIDE
-      1L -> GOPRO_FIELD_OF_VIEW_MEDIUM
-      2L -> GOPRO_FIELD_OF_VIEW_NARROW
+      0L -> WIDE
+      1L -> MEDIUM
+      2L -> NARROW
       else -> null
     }
   }

@@ -16,18 +16,18 @@ public enum class RcType(
    * Spektrum DSM2
    */
   @GeneratedMavEnumEntry
-  RC_TYPE_SPEKTRUM_DSM2(0L),
+  SPEKTRUM_DSM2(0L),
   /**
    * Spektrum DSMX
    */
   @GeneratedMavEnumEntry
-  RC_TYPE_SPEKTRUM_DSMX(1L),
+  SPEKTRUM_DSMX(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): RcType? = when (v) {
-      0L -> RC_TYPE_SPEKTRUM_DSM2
-      1L -> RC_TYPE_SPEKTRUM_DSMX
+      0L -> SPEKTRUM_DSM2
+      1L -> SPEKTRUM_DSMX
       else -> null
     }
   }

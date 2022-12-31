@@ -13,36 +13,36 @@ public enum class GoproProtuneGain(
    * ISO 400.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_GAIN_400(0L),
+  _400(0L),
   /**
    * ISO 800 (Only Hero 4).
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_GAIN_800(1L),
+  _800(1L),
   /**
    * ISO 1600.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_GAIN_1600(2L),
+  _1600(2L),
   /**
    * ISO 3200 (Only Hero 4).
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_GAIN_3200(3L),
+  _3200(3L),
   /**
    * ISO 6400.
    */
   @GeneratedMavEnumEntry
-  GOPRO_PROTUNE_GAIN_6400(4L),
+  _6400(4L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GoproProtuneGain? = when (v) {
-      0L -> GOPRO_PROTUNE_GAIN_400
-      1L -> GOPRO_PROTUNE_GAIN_800
-      2L -> GOPRO_PROTUNE_GAIN_1600
-      3L -> GOPRO_PROTUNE_GAIN_3200
-      4L -> GOPRO_PROTUNE_GAIN_6400
+      0L -> _400
+      1L -> _800
+      2L -> _1600
+      3L -> _3200
+      4L -> _6400
       else -> null
     }
   }

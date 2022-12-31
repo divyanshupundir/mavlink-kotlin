@@ -13,81 +13,81 @@ public enum class PlaneMode(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  PLANE_MODE_MANUAL(0L),
+  MANUAL(0L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_CIRCLE(1L),
+  CIRCLE(1L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_STABILIZE(2L),
+  STABILIZE(2L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_TRAINING(3L),
+  TRAINING(3L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_ACRO(4L),
+  ACRO(4L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_FLY_BY_WIRE_A(5L),
+  FLY_BY_WIRE_A(5L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_FLY_BY_WIRE_B(6L),
+  FLY_BY_WIRE_B(6L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_CRUISE(7L),
+  CRUISE(7L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_AUTOTUNE(8L),
+  AUTOTUNE(8L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_AUTO(10L),
+  AUTO(10L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_RTL(11L),
+  RTL(11L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_LOITER(12L),
+  LOITER(12L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_TAKEOFF(13L),
+  TAKEOFF(13L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_AVOID_ADSB(14L),
+  AVOID_ADSB(14L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_GUIDED(15L),
+  GUIDED(15L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_INITIALIZING(16L),
+  INITIALIZING(16L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QSTABILIZE(17L),
+  QSTABILIZE(17L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QHOVER(18L),
+  QHOVER(18L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QLOITER(19L),
+  QLOITER(19L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QLAND(20L),
+  QLAND(20L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QRTL(21L),
+  QRTL(21L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QAUTOTUNE(22L),
+  QAUTOTUNE(22L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_QACRO(23L),
+  QACRO(23L),
   @GeneratedMavEnumEntry
-  PLANE_MODE_THERMAL(24L),
+  THERMAL(24L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): PlaneMode? = when (v) {
-      0L -> PLANE_MODE_MANUAL
-      1L -> PLANE_MODE_CIRCLE
-      2L -> PLANE_MODE_STABILIZE
-      3L -> PLANE_MODE_TRAINING
-      4L -> PLANE_MODE_ACRO
-      5L -> PLANE_MODE_FLY_BY_WIRE_A
-      6L -> PLANE_MODE_FLY_BY_WIRE_B
-      7L -> PLANE_MODE_CRUISE
-      8L -> PLANE_MODE_AUTOTUNE
-      10L -> PLANE_MODE_AUTO
-      11L -> PLANE_MODE_RTL
-      12L -> PLANE_MODE_LOITER
-      13L -> PLANE_MODE_TAKEOFF
-      14L -> PLANE_MODE_AVOID_ADSB
-      15L -> PLANE_MODE_GUIDED
-      16L -> PLANE_MODE_INITIALIZING
-      17L -> PLANE_MODE_QSTABILIZE
-      18L -> PLANE_MODE_QHOVER
-      19L -> PLANE_MODE_QLOITER
-      20L -> PLANE_MODE_QLAND
-      21L -> PLANE_MODE_QRTL
-      22L -> PLANE_MODE_QAUTOTUNE
-      23L -> PLANE_MODE_QACRO
-      24L -> PLANE_MODE_THERMAL
+      0L -> MANUAL
+      1L -> CIRCLE
+      2L -> STABILIZE
+      3L -> TRAINING
+      4L -> ACRO
+      5L -> FLY_BY_WIRE_A
+      6L -> FLY_BY_WIRE_B
+      7L -> CRUISE
+      8L -> AUTOTUNE
+      10L -> AUTO
+      11L -> RTL
+      12L -> LOITER
+      13L -> TAKEOFF
+      14L -> AVOID_ADSB
+      15L -> GUIDED
+      16L -> INITIALIZING
+      17L -> QSTABILIZE
+      18L -> QHOVER
+      19L -> QLOITER
+      20L -> QLAND
+      21L -> QRTL
+      22L -> QAUTOTUNE
+      23L -> QACRO
+      24L -> THERMAL
       else -> null
     }
   }

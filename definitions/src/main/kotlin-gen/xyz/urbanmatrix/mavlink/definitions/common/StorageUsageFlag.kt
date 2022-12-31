@@ -17,30 +17,30 @@ public enum class StorageUsageFlag(
    * Always set to 1 (indicates STORAGE_INFORMATION.storage_usage is supported).
    */
   @GeneratedMavEnumEntry
-  STORAGE_USAGE_FLAG_SET(1L),
+  SET(1L),
   /**
    * Storage for saving photos.
    */
   @GeneratedMavEnumEntry
-  STORAGE_USAGE_FLAG_PHOTO(2L),
+  PHOTO(2L),
   /**
    * Storage for saving videos.
    */
   @GeneratedMavEnumEntry
-  STORAGE_USAGE_FLAG_VIDEO(4L),
+  VIDEO(4L),
   /**
    * Storage for saving logs.
    */
   @GeneratedMavEnumEntry
-  STORAGE_USAGE_FLAG_LOGS(8L),
+  LOGS(8L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): StorageUsageFlag? = when (v) {
-      1L -> STORAGE_USAGE_FLAG_SET
-      2L -> STORAGE_USAGE_FLAG_PHOTO
-      4L -> STORAGE_USAGE_FLAG_VIDEO
-      8L -> STORAGE_USAGE_FLAG_LOGS
+      1L -> SET
+      2L -> PHOTO
+      4L -> VIDEO
+      8L -> LOGS
       else -> null
     }
   }

@@ -16,114 +16,114 @@ public enum class MavFtpOpcode(
    * None. Ignored, always ACKed
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_NONE(0L),
+  NONE(0L),
   /**
    * TerminateSession: Terminates open Read session
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_TERMINATESESSION(1L),
+  TERMINATESESSION(1L),
   /**
    * ResetSessions: Terminates all open read sessions
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_RESETSESSION(2L),
+  RESETSESSION(2L),
   /**
    * ListDirectory. List files and directories in path from offset
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_LISTDIRECTORY(3L),
+  LISTDIRECTORY(3L),
   /**
    * OpenFileRO: Opens file at path for reading, returns session
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_OPENFILERO(4L),
+  OPENFILERO(4L),
   /**
    * ReadFile: Reads size bytes from offset in session
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_READFILE(5L),
+  READFILE(5L),
   /**
    * CreateFile: Creates file at path for writing, returns session
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_CREATEFILE(6L),
+  CREATEFILE(6L),
   /**
    * WriteFile: Writes size bytes to offset in session
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_WRITEFILE(7L),
+  WRITEFILE(7L),
   /**
    * RemoveFile: Remove file at path
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_REMOVEFILE(8L),
+  REMOVEFILE(8L),
   /**
    * CreateDirectory: Creates directory at path
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_CREATEDIRECTORY(9L),
+  CREATEDIRECTORY(9L),
   /**
    * RemoveDirectory: Removes directory at path. The directory must be empty.
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_REMOVEDIRECTORY(10L),
+  REMOVEDIRECTORY(10L),
   /**
    * OpenFileWO: Opens file at path for writing, returns session
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_OPENFILEWO(11L),
+  OPENFILEWO(11L),
   /**
    * TruncateFile: Truncate file at path to offset length
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_TRUNCATEFILE(12L),
+  TRUNCATEFILE(12L),
   /**
    * Rename: Rename path1 to path2
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_RENAME(13L),
+  RENAME(13L),
   /**
    * CalcFileCRC32: Calculate CRC32 for file at path
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_CALCFILECRC(14L),
+  CALCFILECRC(14L),
   /**
    * BurstReadFile: Burst download session file
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_BURSTREADFILE(15L),
+  BURSTREADFILE(15L),
   /**
    * ACK: ACK response
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_ACK(128L),
+  ACK(128L),
   /**
    * NAK: NAK response
    */
   @GeneratedMavEnumEntry
-  MAV_FTP_OPCODE_NAK(129L),
+  NAK(129L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavFtpOpcode? = when (v) {
-      0L -> MAV_FTP_OPCODE_NONE
-      1L -> MAV_FTP_OPCODE_TERMINATESESSION
-      2L -> MAV_FTP_OPCODE_RESETSESSION
-      3L -> MAV_FTP_OPCODE_LISTDIRECTORY
-      4L -> MAV_FTP_OPCODE_OPENFILERO
-      5L -> MAV_FTP_OPCODE_READFILE
-      6L -> MAV_FTP_OPCODE_CREATEFILE
-      7L -> MAV_FTP_OPCODE_WRITEFILE
-      8L -> MAV_FTP_OPCODE_REMOVEFILE
-      9L -> MAV_FTP_OPCODE_CREATEDIRECTORY
-      10L -> MAV_FTP_OPCODE_REMOVEDIRECTORY
-      11L -> MAV_FTP_OPCODE_OPENFILEWO
-      12L -> MAV_FTP_OPCODE_TRUNCATEFILE
-      13L -> MAV_FTP_OPCODE_RENAME
-      14L -> MAV_FTP_OPCODE_CALCFILECRC
-      15L -> MAV_FTP_OPCODE_BURSTREADFILE
-      128L -> MAV_FTP_OPCODE_ACK
-      129L -> MAV_FTP_OPCODE_NAK
+      0L -> NONE
+      1L -> TERMINATESESSION
+      2L -> RESETSESSION
+      3L -> LISTDIRECTORY
+      4L -> OPENFILERO
+      5L -> READFILE
+      6L -> CREATEFILE
+      7L -> WRITEFILE
+      8L -> REMOVEFILE
+      9L -> CREATEDIRECTORY
+      10L -> REMOVEDIRECTORY
+      11L -> OPENFILEWO
+      12L -> TRUNCATEFILE
+      13L -> RENAME
+      14L -> CALCFILECRC
+      15L -> BURSTREADFILE
+      128L -> ACK
+      129L -> NAK
       else -> null
     }
   }

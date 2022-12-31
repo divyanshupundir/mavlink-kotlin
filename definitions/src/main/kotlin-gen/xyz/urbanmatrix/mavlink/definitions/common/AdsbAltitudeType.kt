@@ -16,18 +16,18 @@ public enum class AdsbAltitudeType(
    * Altitude reported from a Baro source using QNH reference
    */
   @GeneratedMavEnumEntry
-  ADSB_ALTITUDE_TYPE_PRESSURE_QNH(0L),
+  PRESSURE_QNH(0L),
   /**
    * Altitude reported from a GNSS source
    */
   @GeneratedMavEnumEntry
-  ADSB_ALTITUDE_TYPE_GEOMETRIC(1L),
+  GEOMETRIC(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): AdsbAltitudeType? = when (v) {
-      0L -> ADSB_ALTITUDE_TYPE_PRESSURE_QNH
-      1L -> ADSB_ALTITUDE_TYPE_GEOMETRIC
+      0L -> PRESSURE_QNH
+      1L -> GEOMETRIC
       else -> null
     }
   }

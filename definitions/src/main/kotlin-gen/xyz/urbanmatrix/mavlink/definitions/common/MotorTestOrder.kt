@@ -16,24 +16,24 @@ public enum class MotorTestOrder(
    * Default autopilot motor test method.
    */
   @GeneratedMavEnumEntry
-  MOTOR_TEST_ORDER_DEFAULT(0L),
+  DEFAULT(0L),
   /**
    * Motor numbers are specified as their index in a predefined vehicle-specific sequence.
    */
   @GeneratedMavEnumEntry
-  MOTOR_TEST_ORDER_SEQUENCE(1L),
+  SEQUENCE(1L),
   /**
    * Motor numbers are specified as the output as labeled on the board.
    */
   @GeneratedMavEnumEntry
-  MOTOR_TEST_ORDER_BOARD(2L),
+  BOARD(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MotorTestOrder? = when (v) {
-      0L -> MOTOR_TEST_ORDER_DEFAULT
-      1L -> MOTOR_TEST_ORDER_SEQUENCE
-      2L -> MOTOR_TEST_ORDER_BOARD
+      0L -> DEFAULT
+      1L -> SEQUENCE
+      2L -> BOARD
       else -> null
     }
   }

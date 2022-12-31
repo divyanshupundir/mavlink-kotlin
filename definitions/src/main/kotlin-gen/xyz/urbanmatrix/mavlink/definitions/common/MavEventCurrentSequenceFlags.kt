@@ -16,12 +16,12 @@ public enum class MavEventCurrentSequenceFlags(
    * A sequence reset has happened (e.g. vehicle reboot).
    */
   @GeneratedMavEnumEntry
-  MAV_EVENT_CURRENT_SEQUENCE_FLAGS_RESET(1L),
+  RESET(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavEventCurrentSequenceFlags? = when (v) {
-      1L -> MAV_EVENT_CURRENT_SEQUENCE_FLAGS_RESET
+      1L -> RESET
       else -> null
     }
   }

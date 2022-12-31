@@ -13,33 +13,33 @@ public enum class UavionixAdsbOutCfgGpsOffsetLat(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_NO_DATA(0L),
+  NO_DATA(0L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_2M(1L),
+  LEFT_2M(1L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_4M(2L),
+  LEFT_4M(2L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_6M(3L),
+  LEFT_6M(3L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_0M(4L),
+  RIGHT_0M(4L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_2M(5L),
+  RIGHT_2M(5L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_4M(6L),
+  RIGHT_4M(6L),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_6M(7L),
+  RIGHT_6M(7L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): UavionixAdsbOutCfgGpsOffsetLat? = when (v) {
-      0L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_NO_DATA
-      1L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_2M
-      2L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_4M
-      3L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_LEFT_6M
-      4L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_0M
-      5L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_2M
-      6L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_4M
-      7L -> UAVIONIX_ADSB_OUT_CFG_GPS_OFFSET_LAT_RIGHT_6M
+      0L -> NO_DATA
+      1L -> LEFT_2M
+      2L -> LEFT_4M
+      3L -> LEFT_6M
+      4L -> RIGHT_0M
+      5L -> RIGHT_2M
+      6L -> RIGHT_4M
+      7L -> RIGHT_6M
       else -> null
     }
   }

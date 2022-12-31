@@ -10,15 +10,15 @@ public enum class HeadingType(
   public override val `value`: Long,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  HEADING_TYPE_COURSE_OVER_GROUND(0L),
+  COURSE_OVER_GROUND(0L),
   @GeneratedMavEnumEntry
-  HEADING_TYPE_HEADING(1L),
+  HEADING(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): HeadingType? = when (v) {
-      0L -> HEADING_TYPE_COURSE_OVER_GROUND
-      1L -> HEADING_TYPE_HEADING
+      0L -> COURSE_OVER_GROUND
+      1L -> HEADING
       else -> null
     }
   }

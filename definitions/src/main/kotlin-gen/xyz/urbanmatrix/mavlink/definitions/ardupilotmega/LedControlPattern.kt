@@ -13,24 +13,24 @@ public enum class LedControlPattern(
    * LED patterns off (return control to regular vehicle control).
    */
   @GeneratedMavEnumEntry
-  LED_CONTROL_PATTERN_OFF(0L),
+  OFF(0L),
   /**
    * LEDs show pattern during firmware update.
    */
   @GeneratedMavEnumEntry
-  LED_CONTROL_PATTERN_FIRMWAREUPDATE(1L),
+  FIRMWAREUPDATE(1L),
   /**
    * Custom Pattern using custom bytes fields.
    */
   @GeneratedMavEnumEntry
-  LED_CONTROL_PATTERN_CUSTOM(255L),
+  CUSTOM(255L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): LedControlPattern? = when (v) {
-      0L -> LED_CONTROL_PATTERN_OFF
-      1L -> LED_CONTROL_PATTERN_FIRMWAREUPDATE
-      255L -> LED_CONTROL_PATTERN_CUSTOM
+      0L -> OFF
+      1L -> FIRMWAREUPDATE
+      255L -> CUSTOM
       else -> null
     }
   }

@@ -5,6 +5,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.MavBitmask
 import xyz.urbanmatrix.mavlink.api.MavEnum
+import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 import xyz.urbanmatrix.mavlink.generator.models.EnumModel
 import kotlin.Long
 
@@ -14,7 +15,7 @@ internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
         .primaryConstructor(generatePrimaryConstructor())
         .addProperty(generateValueProperty())
         .apply {
-            entries.forEach { addEnumConstant(it.name, it.generateEnumConstant()) }
+            entries.forEach { addEnumConstant(it.getSimpleName(name), it.generateEnumConstant()) }
             if (deprecated != null) addAnnotation(deprecated.generateAnnotation())
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
@@ -55,7 +56,7 @@ private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = Fun
     .addCode(
         buildCodeBlock {
             beginControlFlow("return when (v) {")
-            entries.forEach { addStatement("${it.value}L -> ${it.name}") }
+            entries.forEach { addStatement("${it.value}L -> ${it.getSimpleName(name)}") }
             addStatement("else -> null")
             endControlFlow()
         }
@@ -69,7 +70,7 @@ private fun EnumModel.generateGetFlagsFromValue(packageName: String) = FunSpec
     .addCode(
         buildCodeBlock {
             beginControlFlow("return buildList {")
-            entries.forEach { addStatement("if (v and ${it.value}L == ${it.value}L) add(${it.name})") }
+            entries.forEach { addStatement("if (v and ${it.value}L == ${it.value}L) add(${it.getSimpleName(name)})") }
             endControlFlow()
         }
     )
@@ -78,3 +79,7 @@ private fun EnumModel.generateGetFlagsFromValue(packageName: String) = FunSpec
 private fun EnumModel.getClassName(packageName: String): ClassName =
     ClassName(packageName, formattedName)
 
+private fun EnumEntryModel.getSimpleName(enumName: String): String {
+    val simpleName = name.substringAfter(enumName + "_")
+    return if (simpleName.first().isJavaIdentifierStart()) simpleName else "_$simpleName"
+}

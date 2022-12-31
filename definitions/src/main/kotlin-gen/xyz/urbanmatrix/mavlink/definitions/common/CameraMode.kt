@@ -16,25 +16,25 @@ public enum class CameraMode(
    * Camera is in image/photo capture mode.
    */
   @GeneratedMavEnumEntry
-  CAMERA_MODE_IMAGE(0L),
+  IMAGE(0L),
   /**
    * Camera is in video capture mode.
    */
   @GeneratedMavEnumEntry
-  CAMERA_MODE_VIDEO(1L),
+  VIDEO(1L),
   /**
    * Camera is in image survey capture mode. It allows for camera controller to do specific settings
    * for surveys.
    */
   @GeneratedMavEnumEntry
-  CAMERA_MODE_IMAGE_SURVEY(2L),
+  IMAGE_SURVEY(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): CameraMode? = when (v) {
-      0L -> CAMERA_MODE_IMAGE
-      1L -> CAMERA_MODE_VIDEO
-      2L -> CAMERA_MODE_IMAGE_SURVEY
+      0L -> IMAGE
+      1L -> VIDEO
+      2L -> IMAGE_SURVEY
       else -> null
     }
   }

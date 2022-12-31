@@ -49,11 +49,11 @@ class StreamMavConnectionTest {
 
         repeat(20) {
             val heartbeat = Heartbeat(
-                MavType.MAV_TYPE_FIXED_WING.wrap(),
-                MavAutopilot.MAV_AUTOPILOT_PX4.wrap(),
+                MavType.FIXED_WING.wrap(),
+                MavAutopilot.PX4.wrap(),
                 MavBitmaskValue.fromValue(200),
                 52202,
-                MavState.MAV_STATE_ACTIVE.wrap(),
+                MavState.ACTIVE.wrap(),
                 2
             )
             connection.sendV1(250, 1, heartbeat)

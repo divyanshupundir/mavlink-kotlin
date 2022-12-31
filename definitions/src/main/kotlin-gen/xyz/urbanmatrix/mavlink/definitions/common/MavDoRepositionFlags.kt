@@ -18,17 +18,17 @@ public enum class MavDoRepositionFlags(
    * applications
    */
   @GeneratedMavEnumEntry
-  MAV_DO_REPOSITION_FLAGS_CHANGE_MODE(1L),
+  CHANGE_MODE(1L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): MavDoRepositionFlags? = when (v) {
-      1L -> MAV_DO_REPOSITION_FLAGS_CHANGE_MODE
+      1L -> CHANGE_MODE
       else -> null
     }
 
     public fun getFlagsFromValue(v: Long): List<MavDoRepositionFlags> = buildList {
-      if (v and 1L == 1L) add(MAV_DO_REPOSITION_FLAGS_CHANGE_MODE)
+      if (v and 1L == 1L) add(CHANGE_MODE)
     }
   }
 }

@@ -16,30 +16,30 @@ public enum class VideoStreamType(
    * Stream is RTSP
    */
   @GeneratedMavEnumEntry
-  VIDEO_STREAM_TYPE_RTSP(0L),
+  RTSP(0L),
   /**
    * Stream is RTP UDP (URI gives the port number)
    */
   @GeneratedMavEnumEntry
-  VIDEO_STREAM_TYPE_RTPUDP(1L),
+  RTPUDP(1L),
   /**
    * Stream is MPEG on TCP
    */
   @GeneratedMavEnumEntry
-  VIDEO_STREAM_TYPE_TCP_MPEG(2L),
+  TCP_MPEG(2L),
   /**
    * Stream is h.264 on MPEG TS (URI gives the port number)
    */
   @GeneratedMavEnumEntry
-  VIDEO_STREAM_TYPE_MPEG_TS_H264(3L),
+  MPEG_TS_H264(3L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): VideoStreamType? = when (v) {
-      0L -> VIDEO_STREAM_TYPE_RTSP
-      1L -> VIDEO_STREAM_TYPE_RTPUDP
-      2L -> VIDEO_STREAM_TYPE_TCP_MPEG
-      3L -> VIDEO_STREAM_TYPE_MPEG_TS_H264
+      0L -> RTSP
+      1L -> RTPUDP
+      2L -> TCP_MPEG
+      3L -> MPEG_TS_H264
       else -> null
     }
   }

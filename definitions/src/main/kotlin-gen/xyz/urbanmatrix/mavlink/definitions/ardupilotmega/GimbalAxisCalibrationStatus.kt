@@ -13,24 +13,24 @@ public enum class GimbalAxisCalibrationStatus(
    * Axis calibration is in progress.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_STATUS_IN_PROGRESS(0L),
+  IN_PROGRESS(0L),
   /**
    * Axis calibration succeeded.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_STATUS_SUCCEEDED(1L),
+  SUCCEEDED(1L),
   /**
    * Axis calibration failed.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_STATUS_FAILED(2L),
+  FAILED(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): GimbalAxisCalibrationStatus? = when (v) {
-      0L -> GIMBAL_AXIS_CALIBRATION_STATUS_IN_PROGRESS
-      1L -> GIMBAL_AXIS_CALIBRATION_STATUS_SUCCEEDED
-      2L -> GIMBAL_AXIS_CALIBRATION_STATUS_FAILED
+      0L -> IN_PROGRESS
+      1L -> SUCCEEDED
+      2L -> FAILED
       else -> null
     }
   }

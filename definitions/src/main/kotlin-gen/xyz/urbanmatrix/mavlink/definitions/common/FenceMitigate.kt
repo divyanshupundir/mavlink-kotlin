@@ -16,24 +16,24 @@ public enum class FenceMitigate(
    * Unknown
    */
   @GeneratedMavEnumEntry
-  FENCE_MITIGATE_UNKNOWN(0L),
+  UNKNOWN(0L),
   /**
    * No actions being taken
    */
   @GeneratedMavEnumEntry
-  FENCE_MITIGATE_NONE(1L),
+  NONE(1L),
   /**
    * Velocity limiting active to prevent breach
    */
   @GeneratedMavEnumEntry
-  FENCE_MITIGATE_VEL_LIMIT(2L),
+  VEL_LIMIT(2L),
   ;
 
   public companion object {
     public fun getEntryFromValueOrNull(v: Long): FenceMitigate? = when (v) {
-      0L -> FENCE_MITIGATE_UNKNOWN
-      1L -> FENCE_MITIGATE_NONE
-      2L -> FENCE_MITIGATE_VEL_LIMIT
+      0L -> UNKNOWN
+      1L -> NONE
+      2L -> VEL_LIMIT
       else -> null
     }
   }
