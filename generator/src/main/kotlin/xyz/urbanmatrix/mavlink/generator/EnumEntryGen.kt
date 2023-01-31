@@ -7,7 +7,7 @@ import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 
 internal fun EnumEntryModel.generateEnumConstant() = TypeSpec
     .anonymousClassBuilder()
-    .addSuperclassConstructorParameter("%LL", value)
+    .addSuperclassConstructorParameter("%Lu", value)
     .apply {
         if (description != null) addKdoc(description.replace("%", "%%"))
 
