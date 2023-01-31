@@ -44,12 +44,14 @@ private fun EnumModel.generateGeneratedAnnotation() = AnnotationSpec
 
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
+    .addSuperinterface(MavEnum.Companion::class.asTypeName().parameterizedBy(getClassName(packageName)))
     .addFunction(generateGetEntryFromValueOrNull(packageName))
     .apply { if (bitmask) addFunction(generateGetFlagsFromValue(packageName)) }
     .build()
 
 private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = FunSpec
     .builder("getEntryFromValueOrNull")
+    .addModifiers(KModifier.OVERRIDE)
     .addParameter(ParameterSpec("v", UInt::class.asTypeName()))
     .returns(getClassName(packageName).copy(nullable = true))
     .addCode(
