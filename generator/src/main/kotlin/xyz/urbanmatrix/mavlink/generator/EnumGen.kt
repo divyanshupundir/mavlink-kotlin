@@ -45,6 +45,7 @@ private fun EnumModel.generateGeneratedAnnotation() = AnnotationSpec
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
     .addSuperinterface(MavEnum.Companion::class.asTypeName().parameterizedBy(getClassName(packageName)))
+    .apply { if (bitmask) addSuperinterface(MavBitmask.Companion::class.asTypeName().parameterizedBy(getClassName(packageName))) }
     .addFunction(generateGetEntryFromValueOrNull(packageName))
     .apply { if (bitmask) addFunction(generateGetFlagsFromValue(packageName)) }
     .build()
@@ -66,6 +67,7 @@ private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = Fun
 
 private fun EnumModel.generateGetFlagsFromValue(packageName: String) = FunSpec
     .builder("getFlagsFromValue")
+    .addModifiers(KModifier.OVERRIDE)
     .addParameter(ParameterSpec("v", UInt::class.asTypeName()))
     .returns(List::class.asTypeName().parameterizedBy(getClassName(packageName)))
     .addCode(
