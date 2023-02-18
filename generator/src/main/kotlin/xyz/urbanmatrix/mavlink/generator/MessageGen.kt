@@ -55,18 +55,18 @@ private fun MessageModel.generateCompanionObject(packageName: String, enumHelper
 
 private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
     .builder(GeneratedMavMessage::class)
-    .addMember("id = %L", id)
-    .addMember("crc = %L", crc)
+    .addMember("id = %Lu", id)
+    .addMember("crc = %Lu", crc)
     .build()
 
 private fun MessageModel.generateIdProperty() = PropertySpec
-    .builder("ID", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", id)
+    .builder("ID", UInt::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%Lu", id)
     .build()
 
 private fun MessageModel.generateCrcProperty() = PropertySpec
-    .builder("CRC", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", crc)
+    .builder("CRC", UShort::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%Lu", crc)
     .build()
 
 private fun MessageModel.generateSizeV1Property() = PropertySpec
