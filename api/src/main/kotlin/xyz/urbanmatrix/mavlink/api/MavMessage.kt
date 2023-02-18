@@ -28,7 +28,7 @@ public interface MavMessage<T : MavMessage<T>> {
      */
     public data class Metadata<T : MavMessage<T>>(
         val id: UInt,
-        val crc: UShort,
+        val crcExtra: Byte,
         val deserializer: MavDeserializer<T>
     )
 }
