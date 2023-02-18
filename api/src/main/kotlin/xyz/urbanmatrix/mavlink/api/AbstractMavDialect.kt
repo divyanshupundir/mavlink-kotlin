@@ -2,10 +2,10 @@ package xyz.urbanmatrix.mavlink.api
 
 public abstract class AbstractMavDialect(
     private val dependencies: Set<MavDialect>,
-    private val messages: Map<Int, MavMessage.Metadata<out MavMessage<*>>>
+    private val messages: Map<UInt, MavMessage.Metadata<out MavMessage<*>>>
 ) : MavDialect {
 
-    override fun resolveMetadataOrNull(messageId: Int): MavMessage.Metadata<out MavMessage<*>>? {
+    override fun resolveMetadataOrNull(messageId: UInt): MavMessage.Metadata<out MavMessage<*>>? {
         if (messages.containsKey(messageId)) {
             return messages[messageId]
         } else {
@@ -19,7 +19,7 @@ public abstract class AbstractMavDialect(
         return null
     }
 
-    override fun supports(messageId: Int): Boolean {
+    override fun supports(messageId: UInt): Boolean {
         if (messages.containsKey(messageId)) {
             return true
         } else {

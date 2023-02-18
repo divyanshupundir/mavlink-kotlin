@@ -9,12 +9,12 @@ public interface MavFrameV2<T> : MavFrame<T> {
     /**
      * The link ID in this frame's signature, or `-1` if this packet is not signed.
      */
-    public val signatureLinkId: Int
+    public val signatureLinkId: UByte
 
     /**
      * The timestamp in this frame's signature, or `-1` if this packet is not signed.
      */
-    public val signatureTimestamp: Long
+    public val signatureTimestamp: ULong
 
     /**
      * The complete signature of this message.

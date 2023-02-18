@@ -152,6 +152,12 @@ public inline fun <T : Any> ByteBuffer.encodeArray(
     for (i in 0 until elementCount) this.encode(if (i < arr.size) arr[i] else defaultValue)
 }
 
+public fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
+    for (shift in 0 until dataSize) {
+        if (this.hasRemaining()) this.put(((value shr (shift * 8)) and 0xFF).toByte())
+    }
+}
+
 public fun ByteArray.truncateZeros(): ByteArray {
     for (index in lastIndex downTo 0) {
         if (this[index] != 0.toByte()) {

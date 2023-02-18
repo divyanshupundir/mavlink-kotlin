@@ -1,6 +1,7 @@
 package xyz.urbanmatrix.mavlink.serialization
 
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.nio.charset.StandardCharsets
 
 public fun ByteBuffer.decodeInt8(): Byte =
@@ -111,3 +112,24 @@ public fun ByteBuffer.decodeBitmaskValue(dataSize: Int): UInt = when (dataSize) 
 
 public inline fun <T : Any> ByteBuffer.decodeArray(elementCount: Int, decode: ByteBuffer.() -> T): List<T> =
     List(elementCount) { this.decode() }
+
+public fun ByteBuffer.decodeUnsignedIntegerValue(dataSize: Int): Long {
+    val data = ByteArray(dataSize) { if (this.hasRemaining()) this.get() else 0 }
+
+    if (this.order() == ByteOrder.BIG_ENDIAN) data.reverse()
+
+    var value: Long = 0
+    for (i in 0 until dataSize) {
+        value = value or ((data[i].toLong() and 0xFF.toLong()) shl (i * Byte.SIZE_BITS))
+    }
+    return value
+}
+
+public fun ByteBuffer.decodeSignedIntegerValue(dataSize: Int): Long {
+    var value = decodeUnsignedIntegerValue(dataSize)
+    val signBitIndex = dataSize * Byte.SIZE_BITS - 1
+    if ((value shr signBitIndex) == 1L) {
+        value = value or (-1L shl signBitIndex)
+    }
+    return value
+}
