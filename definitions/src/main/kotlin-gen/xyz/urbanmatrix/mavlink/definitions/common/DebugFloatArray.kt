@@ -1,12 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,12 +18,12 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -29,8 +32,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * (respectively). Do not use in production code.
  */
 @GeneratedMavMessage(
-  id = 350,
-  crc = 232,
+  id = 350u,
+  crcExtra = -24,
 )
 public data class DebugFloatArray(
   /**
@@ -38,7 +41,7 @@ public data class DebugFloatArray(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Name, for human-friendly display in a Ground Control Station
    */
@@ -48,7 +51,7 @@ public data class DebugFloatArray(
    * Unique ID used to discriminate between arrays
    */
   @GeneratedMavField(type = "uint16_t")
-  public val arrayId: Int = 0,
+  public val arrayId: UShort = 0u,
   /**
    * data
    */
@@ -62,25 +65,25 @@ public data class DebugFloatArray(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint16(arrayId)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt16(arrayId)
     outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint16(arrayId)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt16(arrayId)
     outputBuffer.encodeString(name, 10)
     outputBuffer.encodeFloatArray(data, 232)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 350
+    private const val ID: UInt = 350u
 
-    private const val CRC: Int = 232
+    private const val CRC_EXTRA: Byte = -24
 
     private const val SIZE_V1: Int = 20
 
@@ -88,8 +91,8 @@ public data class DebugFloatArray(
 
     private val DESERIALIZER: MavDeserializer<DebugFloatArray> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
-      val arrayId = inputBuffer.decodeUint16()
+      val timeUsec = inputBuffer.decodeUInt64()
+      val arrayId = inputBuffer.decodeUInt16()
       val name = inputBuffer.decodeString(10)
       val data = inputBuffer.decodeFloatArray(232)
 
@@ -102,7 +105,7 @@ public data class DebugFloatArray(
     }
 
 
-    private val METADATA: MavMessage.Metadata<DebugFloatArray> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<DebugFloatArray> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DebugFloatArray> = METADATA
@@ -112,11 +115,11 @@ public data class DebugFloatArray(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var name: String = ""
 
-    public var arrayId: Int = 0
+    public var arrayId: UShort = 0u
 
     public var `data`: List<Float> = emptyList()
 

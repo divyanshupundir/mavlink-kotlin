@@ -1,21 +1,24 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,15 +28,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * example) indoor and outdoor settings are connected and the MAV should move from in- to outdoor.
  */
 @GeneratedMavMessage(
-  id = 48,
-  crc = 41,
+  id = 48u,
+  crcExtra = 41,
 )
 public data class SetGpsGlobalOrigin(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Latitude (WGS84)
    */
@@ -57,7 +60,7 @@ public data class SetGpsGlobalOrigin(
     type = "uint64_t",
     extension = true,
   )
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
 ) : MavMessage<SetGpsGlobalOrigin> {
   public override val instanceMetadata: MavMessage.Metadata<SetGpsGlobalOrigin> = METADATA
 
@@ -66,7 +69,7 @@ public data class SetGpsGlobalOrigin(
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUInt8(targetSystem)
     return outputBuffer.array()
   }
 
@@ -75,15 +78,15 @@ public data class SetGpsGlobalOrigin(
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt64(timeUsec)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 48
+    private const val ID: UInt = 48u
 
-    private const val CRC: Int = 41
+    private const val CRC_EXTRA: Byte = 41
 
     private const val SIZE_V1: Int = 13
 
@@ -94,8 +97,8 @@ public data class SetGpsGlobalOrigin(
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
       val altitude = inputBuffer.decodeInt32()
-      val targetSystem = inputBuffer.decodeUint8()
-      val timeUsec = inputBuffer.decodeUint64()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val timeUsec = inputBuffer.decodeUInt64()
 
       SetGpsGlobalOrigin(
         targetSystem = targetSystem,
@@ -107,8 +110,8 @@ public data class SetGpsGlobalOrigin(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SetGpsGlobalOrigin> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SetGpsGlobalOrigin> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetGpsGlobalOrigin> = METADATA
 
@@ -117,7 +120,7 @@ public data class SetGpsGlobalOrigin(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
     public var latitude: Int = 0
 
@@ -125,7 +128,7 @@ public data class SetGpsGlobalOrigin(
 
     public var altitude: Int = 0
 
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public fun build(): SetGpsGlobalOrigin = SetGpsGlobalOrigin(
       targetSystem = targetSystem,

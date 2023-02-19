@@ -18,10 +18,10 @@ class MavlinkKotlinSpeedTest {
     @Test
     fun serialization() {
         val cmd = CommandLong(
-            1,
-            2,
+            1u,
+            2u,
             MavCmd.DO_FOLLOW.wrap(),
-            3,
+            3u,
             4f,
             3f,
             4f,

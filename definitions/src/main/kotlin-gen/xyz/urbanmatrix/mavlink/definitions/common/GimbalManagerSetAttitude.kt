@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,11 +19,11 @@ import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -29,31 +32,31 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 282,
-  crc = 123,
+  id = 282u,
+  crcExtra = 123,
 )
 public data class GimbalManagerSetAttitude(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * High level gimbal manager flags to use.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
    * device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gimbalDeviceId: Int = 0,
+  public val gimbalDeviceId: UByte = 0u,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
    * whether the flag GIMBAL_MANAGER_FLAGS_YAW_LOCK is set)
@@ -85,9 +88,9 @@ public data class GimbalManagerSetAttitude(
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
     outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(gimbalDeviceId)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(gimbalDeviceId)
     return outputBuffer.array()
   }
 
@@ -98,16 +101,16 @@ public data class GimbalManagerSetAttitude(
     outputBuffer.encodeFloat(angularVelocityX)
     outputBuffer.encodeFloat(angularVelocityY)
     outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(gimbalDeviceId)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(gimbalDeviceId)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 282
+    private const val ID: UInt = 282u
 
-    private const val CRC: Int = 123
+    private const val CRC_EXTRA: Byte = 123
 
     private const val SIZE_V1: Int = 35
 
@@ -123,9 +126,9 @@ public data class GimbalManagerSetAttitude(
       val angularVelocityX = inputBuffer.decodeFloat()
       val angularVelocityY = inputBuffer.decodeFloat()
       val angularVelocityZ = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val gimbalDeviceId = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val gimbalDeviceId = inputBuffer.decodeUInt8()
 
       GimbalManagerSetAttitude(
         targetSystem = targetSystem,
@@ -141,7 +144,7 @@ public data class GimbalManagerSetAttitude(
 
 
     private val METADATA: MavMessage.Metadata<GimbalManagerSetAttitude> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerSetAttitude> = METADATA
 
@@ -150,13 +153,13 @@ public data class GimbalManagerSetAttitude(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u)
 
-    public var gimbalDeviceId: Int = 0
+    public var gimbalDeviceId: UByte = 0u
 
     public var q: List<Float> = emptyList()
 

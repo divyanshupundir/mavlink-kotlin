@@ -1,37 +1,40 @@
 package xyz.urbanmatrix.mavlink.definitions.asluav
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Off-board controls/commands for ASLUAVs
  */
 @GeneratedMavMessage(
-  id = 8008,
-  crc = 234,
+  id = 8008u,
+  crcExtra = -22,
 )
 public data class AslObctrl(
   /**
    *  Time since system start
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timestamp: BigInteger = BigInteger.ZERO,
+  public val timestamp: ULong = 0uL,
   /**
    *  Elevator command [~]
    */
@@ -66,40 +69,40 @@ public data class AslObctrl(
    *  Off-board computer status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val obctrlStatus: Int = 0,
+  public val obctrlStatus: UByte = 0u,
 ) : MavMessage<AslObctrl> {
   public override val instanceMetadata: MavMessage.Metadata<AslObctrl> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeUInt64(timestamp)
     outputBuffer.encodeFloat(uelev)
     outputBuffer.encodeFloat(uthrot)
     outputBuffer.encodeFloat(uthrot2)
     outputBuffer.encodeFloat(uaill)
     outputBuffer.encodeFloat(uailr)
     outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUint8(obctrlStatus)
+    outputBuffer.encodeUInt8(obctrlStatus)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeUInt64(timestamp)
     outputBuffer.encodeFloat(uelev)
     outputBuffer.encodeFloat(uthrot)
     outputBuffer.encodeFloat(uthrot2)
     outputBuffer.encodeFloat(uaill)
     outputBuffer.encodeFloat(uailr)
     outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUint8(obctrlStatus)
+    outputBuffer.encodeUInt8(obctrlStatus)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 8008
+    private const val ID: UInt = 8008u
 
-    private const val CRC: Int = 234
+    private const val CRC_EXTRA: Byte = -22
 
     private const val SIZE_V1: Int = 33
 
@@ -107,14 +110,14 @@ public data class AslObctrl(
 
     private val DESERIALIZER: MavDeserializer<AslObctrl> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUint64()
+      val timestamp = inputBuffer.decodeUInt64()
       val uelev = inputBuffer.decodeFloat()
       val uthrot = inputBuffer.decodeFloat()
       val uthrot2 = inputBuffer.decodeFloat()
       val uaill = inputBuffer.decodeFloat()
       val uailr = inputBuffer.decodeFloat()
       val urud = inputBuffer.decodeFloat()
-      val obctrlStatus = inputBuffer.decodeUint8()
+      val obctrlStatus = inputBuffer.decodeUInt8()
 
       AslObctrl(
         timestamp = timestamp,
@@ -129,7 +132,7 @@ public data class AslObctrl(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AslObctrl> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AslObctrl> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AslObctrl> = METADATA
@@ -139,7 +142,7 @@ public data class AslObctrl(
   }
 
   public class Builder {
-    public var timestamp: BigInteger = BigInteger.ZERO
+    public var timestamp: ULong = 0uL
 
     public var uelev: Float = 0F
 
@@ -153,7 +156,7 @@ public data class AslObctrl(
 
     public var urud: Float = 0F
 
-    public var obctrlStatus: Int = 0
+    public var obctrlStatus: UByte = 0u
 
     public fun build(): AslObctrl = AslObctrl(
       timestamp = timestamp,

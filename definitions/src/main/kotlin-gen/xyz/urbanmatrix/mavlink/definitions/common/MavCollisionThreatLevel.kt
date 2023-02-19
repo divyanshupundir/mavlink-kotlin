@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,30 +10,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavCollisionThreatLevel(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not a threat
    */
   @GeneratedMavEnumEntry
-  NONE(0L),
+  NONE(0u),
   /**
    * Craft is mildly concerned about this threat
    */
   @GeneratedMavEnumEntry
-  LOW(1L),
+  LOW(1u),
   /**
    * Craft is panicking, and may take actions to avoid threat
    */
   @GeneratedMavEnumEntry
-  HIGH(2L),
+  HIGH(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavCollisionThreatLevel? = when (v) {
-      0L -> NONE
-      1L -> LOW
-      2L -> HIGH
+  public companion object : MavEnum.Companion<MavCollisionThreatLevel> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavCollisionThreatLevel? = when (v) {
+      0u -> NONE
+      1u -> LOW
+      2u -> HIGH
       else -> null
     }
   }

@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,18 +10,18 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavEventErrorReason(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * The requested event is not available (anymore).
    */
   @GeneratedMavEnumEntry
-  UNAVAILABLE(0L),
+  UNAVAILABLE(0u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavEventErrorReason? = when (v) {
-      0L -> UNAVAILABLE
+  public companion object : MavEnum.Companion<MavEventErrorReason> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavEventErrorReason? = when (v) {
+      0u -> UNAVAILABLE
       else -> null
     }
   }

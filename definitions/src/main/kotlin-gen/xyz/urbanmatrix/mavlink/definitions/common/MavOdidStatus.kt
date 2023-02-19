@@ -1,48 +1,48 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class MavOdidStatus(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * The status of the (UA) Unmanned Aircraft is undefined.
    */
   @GeneratedMavEnumEntry
-  UNDECLARED(0L),
+  UNDECLARED(0u),
   /**
    * The UA is on the ground.
    */
   @GeneratedMavEnumEntry
-  GROUND(1L),
+  GROUND(1u),
   /**
    * The UA is in the air.
    */
   @GeneratedMavEnumEntry
-  AIRBORNE(2L),
+  AIRBORNE(2u),
   /**
    * The UA is having an emergency.
    */
   @GeneratedMavEnumEntry
-  EMERGENCY(3L),
+  EMERGENCY(3u),
   /**
    * The remote ID system is failing or unreliable in some way.
    */
   @GeneratedMavEnumEntry
-  REMOTE_ID_SYSTEM_FAILURE(4L),
+  REMOTE_ID_SYSTEM_FAILURE(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavOdidStatus? = when (v) {
-      0L -> UNDECLARED
-      1L -> GROUND
-      2L -> AIRBORNE
-      3L -> EMERGENCY
-      4L -> REMOTE_ID_SYSTEM_FAILURE
+  public companion object : MavEnum.Companion<MavOdidStatus> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavOdidStatus? = when (v) {
+      0u -> UNDECLARED
+      1u -> GROUND
+      2u -> AIRBORNE
+      3u -> EMERGENCY
+      4u -> REMOTE_ID_SYSTEM_FAILURE
       else -> null
     }
   }

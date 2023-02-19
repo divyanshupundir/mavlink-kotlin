@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,11 +15,11 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -26,76 +28,76 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 281,
-  crc = 48,
+  id = 281u,
+  crcExtra = 48,
 )
 public data class GimbalManagerStatus(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * High level gimbal manager flags currently applied.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Gimbal device ID that this gimbal manager is responsible for.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gimbalDeviceId: Int = 0,
+  public val gimbalDeviceId: UByte = 0u,
   /**
    * System ID of MAVLink component with primary control, 0 for none.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val primaryControlSysid: Int = 0,
+  public val primaryControlSysid: UByte = 0u,
   /**
    * Component ID of MAVLink component with primary control, 0 for none.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val primaryControlCompid: Int = 0,
+  public val primaryControlCompid: UByte = 0u,
   /**
    * System ID of MAVLink component with secondary control, 0 for none.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val secondaryControlSysid: Int = 0,
+  public val secondaryControlSysid: UByte = 0u,
   /**
    * Component ID of MAVLink component with secondary control, 0 for none.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val secondaryControlCompid: Int = 0,
+  public val secondaryControlCompid: UByte = 0u,
 ) : MavMessage<GimbalManagerStatus> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalManagerStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeUint8(gimbalDeviceId)
-    outputBuffer.encodeUint8(primaryControlSysid)
-    outputBuffer.encodeUint8(primaryControlCompid)
-    outputBuffer.encodeUint8(secondaryControlSysid)
-    outputBuffer.encodeUint8(secondaryControlCompid)
+    outputBuffer.encodeUInt8(gimbalDeviceId)
+    outputBuffer.encodeUInt8(primaryControlSysid)
+    outputBuffer.encodeUInt8(primaryControlCompid)
+    outputBuffer.encodeUInt8(secondaryControlSysid)
+    outputBuffer.encodeUInt8(secondaryControlCompid)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeUint8(gimbalDeviceId)
-    outputBuffer.encodeUint8(primaryControlSysid)
-    outputBuffer.encodeUint8(primaryControlCompid)
-    outputBuffer.encodeUint8(secondaryControlSysid)
-    outputBuffer.encodeUint8(secondaryControlCompid)
+    outputBuffer.encodeUInt8(gimbalDeviceId)
+    outputBuffer.encodeUInt8(primaryControlSysid)
+    outputBuffer.encodeUInt8(primaryControlCompid)
+    outputBuffer.encodeUInt8(secondaryControlSysid)
+    outputBuffer.encodeUInt8(secondaryControlCompid)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 281
+    private const val ID: UInt = 281u
 
-    private const val CRC: Int = 48
+    private const val CRC_EXTRA: Byte = 48
 
     private const val SIZE_V1: Int = 13
 
@@ -103,16 +105,16 @@ public data class GimbalManagerStatus(
 
     private val DESERIALIZER: MavDeserializer<GimbalManagerStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val gimbalDeviceId = inputBuffer.decodeUint8()
-      val primaryControlSysid = inputBuffer.decodeUint8()
-      val primaryControlCompid = inputBuffer.decodeUint8()
-      val secondaryControlSysid = inputBuffer.decodeUint8()
-      val secondaryControlCompid = inputBuffer.decodeUint8()
+      val gimbalDeviceId = inputBuffer.decodeUInt8()
+      val primaryControlSysid = inputBuffer.decodeUInt8()
+      val primaryControlCompid = inputBuffer.decodeUInt8()
+      val secondaryControlSysid = inputBuffer.decodeUInt8()
+      val secondaryControlCompid = inputBuffer.decodeUInt8()
 
       GimbalManagerStatus(
         timeBootMs = timeBootMs,
@@ -126,8 +128,8 @@ public data class GimbalManagerStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GimbalManagerStatus> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<GimbalManagerStatus> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerStatus> = METADATA
 
@@ -136,19 +138,19 @@ public data class GimbalManagerStatus(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u)
 
-    public var gimbalDeviceId: Int = 0
+    public var gimbalDeviceId: UByte = 0u
 
-    public var primaryControlSysid: Int = 0
+    public var primaryControlSysid: UByte = 0u
 
-    public var primaryControlCompid: Int = 0
+    public var primaryControlCompid: UByte = 0u
 
-    public var secondaryControlSysid: Int = 0
+    public var secondaryControlSysid: UByte = 0u
 
-    public var secondaryControlCompid: Int = 0
+    public var secondaryControlCompid: UByte = 0u
 
     public fun build(): GimbalManagerStatus = GimbalManagerStatus(
       timeBootMs = timeBootMs,

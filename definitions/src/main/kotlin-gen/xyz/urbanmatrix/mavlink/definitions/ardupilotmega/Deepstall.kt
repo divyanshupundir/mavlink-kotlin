@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -23,8 +25,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Deepstall path planning.
  */
 @GeneratedMavMessage(
-  id = 195,
-  crc = 120,
+  id = 195u,
+  crcExtra = 120,
 )
 public data class Deepstall(
   /**
@@ -76,7 +78,7 @@ public data class Deepstall(
    * Deepstall stage.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0),
+  public val stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Deepstall> {
   public override val instanceMetadata: MavMessage.Metadata<Deepstall> = METADATA
 
@@ -111,9 +113,9 @@ public data class Deepstall(
   }
 
   public companion object {
-    private const val ID: Int = 195
+    private const val ID: UInt = 195u
 
-    private const val CRC: Int = 120
+    private const val CRC_EXTRA: Byte = 120
 
     private const val SIZE_V1: Int = 37
 
@@ -150,7 +152,7 @@ public data class Deepstall(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Deepstall> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Deepstall> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Deepstall> = METADATA
@@ -178,7 +180,7 @@ public data class Deepstall(
 
     public var crossTrackError: Float = 0F
 
-    public var stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0)
+    public var stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0u)
 
     public fun build(): Deepstall = Deepstall(
       landingLat = landingLat,

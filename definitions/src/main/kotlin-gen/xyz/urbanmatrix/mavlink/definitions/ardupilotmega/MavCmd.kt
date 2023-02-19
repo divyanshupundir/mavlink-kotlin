@@ -1,13 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Set the distance to be repeated on mission resume
@@ -34,7 +34,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_SET_RESUME_REPEAT_DIST(215L),
+  DO_SET_RESUME_REPEAT_DIST(215u),
   /**
    * Control attached liquid sprayer
    *
@@ -60,7 +60,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_SPRAYER(216L),
+  DO_SPRAYER(216u),
   /**
    * Pass instructions onto scripting, a script should be checking for a new command
    *
@@ -86,7 +86,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_SEND_SCRIPT_MESSAGE(217L),
+  DO_SEND_SCRIPT_MESSAGE(217u),
   /**
    * Execute auxiliary function
    *
@@ -112,7 +112,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_AUX_FUNCTION(218L),
+  DO_AUX_FUNCTION(218u),
   /**
    * Mission command to wait for an altitude or downwards vertical speed. This is meant for high
    * altitude balloon launches, allowing the aircraft to be idle until either an altitude is reached or
@@ -141,7 +141,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  NAV_ALTITUDE_WAIT(83L),
+  NAV_ALTITUDE_WAIT(83u),
   /**
    * A system wide power-off event has been initiated.
    *
@@ -167,7 +167,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  POWER_OFF_INITIATED(42000L),
+  POWER_OFF_INITIATED(42000u),
   /**
    * FLY button has been clicked.
    *
@@ -193,7 +193,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  SOLO_BTN_FLY_CLICK(42001L),
+  SOLO_BTN_FLY_CLICK(42001u),
   /**
    * FLY button has been held for 1.5 seconds.
    *
@@ -219,7 +219,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  SOLO_BTN_FLY_HOLD(42002L),
+  SOLO_BTN_FLY_HOLD(42002u),
   /**
    * PAUSE button has been clicked.
    *
@@ -245,7 +245,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  SOLO_BTN_PAUSE_CLICK(42003L),
+  SOLO_BTN_PAUSE_CLICK(42003u),
   /**
    * Magnetometer calibration based on fixed position
    *         in earth field given by inclination, declination and intensity.
@@ -272,7 +272,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  FIXED_MAG_CAL(42004L),
+  FIXED_MAG_CAL(42004u),
   /**
    * Magnetometer calibration based on fixed expected field values.
    *
@@ -298,7 +298,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  FIXED_MAG_CAL_FIELD(42005L),
+  FIXED_MAG_CAL_FIELD(42005u),
   /**
    * Set EKF sensor source set.
    *
@@ -324,7 +324,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  SET_EKF_SOURCE_SET(42007L),
+  SET_EKF_SOURCE_SET(42007u),
   /**
    * Initiate a magnetometer calibration.
    *
@@ -352,7 +352,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_START_MAG_CAL(42424L),
+  DO_START_MAG_CAL(42424u),
   /**
    * Accept a magnetometer calibration.
    *
@@ -378,7 +378,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_ACCEPT_MAG_CAL(42425L),
+  DO_ACCEPT_MAG_CAL(42425u),
   /**
    * Cancel a running magnetometer calibration.
    *
@@ -404,7 +404,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_CANCEL_MAG_CAL(42426L),
+  DO_CANCEL_MAG_CAL(42426u),
   /**
    * Used when doing accelerometer calibration. When sent to the GCS tells it what position to put
    * the vehicle in. When sent to the vehicle says what position the vehicle is in.
@@ -431,7 +431,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  ACCELCAL_VEHICLE_POS(42429L),
+  ACCELCAL_VEHICLE_POS(42429u),
   /**
    * Reply with the version banner.
    *
@@ -457,7 +457,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DO_SEND_BANNER(42428L),
+  DO_SEND_BANNER(42428u),
   /**
    * Command autopilot to get into factory test/diagnostic mode.
    *
@@ -483,7 +483,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  SET_FACTORY_TEST_MODE(42427L),
+  SET_FACTORY_TEST_MODE(42427u),
   /**
    * Causes the gimbal to reset and boot as if it was just powered on.
    *
@@ -509,7 +509,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_RESET(42501L),
+  GIMBAL_RESET(42501u),
   /**
    * Reports progress and success or failure of gimbal axis calibration procedure.
    *
@@ -535,7 +535,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_AXIS_CALIBRATION_STATUS(42502L),
+  GIMBAL_AXIS_CALIBRATION_STATUS(42502u),
   /**
    * Starts commutation calibration on the gimbal.
    *
@@ -561,7 +561,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_REQUEST_AXIS_CALIBRATION(42503L),
+  GIMBAL_REQUEST_AXIS_CALIBRATION(42503u),
   /**
    * Erases gimbal application and parameters.
    *
@@ -587,7 +587,7 @@ public enum class MavCmd(
    * Magic number.
    */
   @GeneratedMavEnumEntry
-  GIMBAL_FULL_RESET(42505L),
+  GIMBAL_FULL_RESET(42505u),
   /**
    * Update the bootloader
    *
@@ -613,7 +613,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  FLASH_BOOTLOADER(42650L),
+  FLASH_BOOTLOADER(42650u),
   /**
    * Reset battery capacity for batteries that accumulate consumed battery via integration.
    *
@@ -624,7 +624,7 @@ public enum class MavCmd(
    * Battery percentage remaining to set.
    */
   @GeneratedMavEnumEntry
-  BATTERY_RESET(42651L),
+  BATTERY_RESET(42651u),
   /**
    * Issue a trap signal to the autopilot process, presumably to enter the debugger.
    *
@@ -650,7 +650,7 @@ public enum class MavCmd(
    * Empty.
    */
   @GeneratedMavEnumEntry
-  DEBUG_TRAP(42700L),
+  DEBUG_TRAP(42700u),
   /**
    * Control onboard scripting.
    *
@@ -658,7 +658,7 @@ public enum class MavCmd(
    * Scripting command to execute
    */
   @GeneratedMavEnumEntry
-  SCRIPTING(42701L),
+  SCRIPTING(42701u),
   /**
    * Scripting command as NAV command with wait for completion.
    *
@@ -684,7 +684,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  NAV_SCRIPT_TIME(42702L),
+  NAV_SCRIPT_TIME(42702u),
   /**
    * Maintain an attitude for a specified time.
    *
@@ -710,7 +710,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  NAV_ATTITUDE_TIME(42703L),
+  NAV_ATTITUDE_TIME(42703u),
   /**
    * Change flight speed at a given rate. This slews the vehicle at a controllable rate between it's
    * previous speed and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores these
@@ -739,7 +739,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  GUIDED_CHANGE_SPEED(43000L),
+  GUIDED_CHANGE_SPEED(43000u),
   /**
    * Change target altitude at a given rate. This slews the vehicle at a controllable rate between
    * it's previous altitude and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores
@@ -769,7 +769,7 @@ public enum class MavCmd(
    * Target Altitude
    */
   @GeneratedMavEnumEntry
-  GUIDED_CHANGE_ALTITUDE(43001L),
+  GUIDED_CHANGE_ALTITUDE(43001u),
   /**
    * Change to target heading at a given rate, overriding previous heading/s. This slews the vehicle
    * at a controllable rate between it's previous heading and the new one. (affects GUIDED only.
@@ -798,42 +798,42 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  GUIDED_CHANGE_HEADING(43002L),
+  GUIDED_CHANGE_HEADING(43002u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavCmd? = when (v) {
-      215L -> DO_SET_RESUME_REPEAT_DIST
-      216L -> DO_SPRAYER
-      217L -> DO_SEND_SCRIPT_MESSAGE
-      218L -> DO_AUX_FUNCTION
-      83L -> NAV_ALTITUDE_WAIT
-      42000L -> POWER_OFF_INITIATED
-      42001L -> SOLO_BTN_FLY_CLICK
-      42002L -> SOLO_BTN_FLY_HOLD
-      42003L -> SOLO_BTN_PAUSE_CLICK
-      42004L -> FIXED_MAG_CAL
-      42005L -> FIXED_MAG_CAL_FIELD
-      42007L -> SET_EKF_SOURCE_SET
-      42424L -> DO_START_MAG_CAL
-      42425L -> DO_ACCEPT_MAG_CAL
-      42426L -> DO_CANCEL_MAG_CAL
-      42429L -> ACCELCAL_VEHICLE_POS
-      42428L -> DO_SEND_BANNER
-      42427L -> SET_FACTORY_TEST_MODE
-      42501L -> GIMBAL_RESET
-      42502L -> GIMBAL_AXIS_CALIBRATION_STATUS
-      42503L -> GIMBAL_REQUEST_AXIS_CALIBRATION
-      42505L -> GIMBAL_FULL_RESET
-      42650L -> FLASH_BOOTLOADER
-      42651L -> BATTERY_RESET
-      42700L -> DEBUG_TRAP
-      42701L -> SCRIPTING
-      42702L -> NAV_SCRIPT_TIME
-      42703L -> NAV_ATTITUDE_TIME
-      43000L -> GUIDED_CHANGE_SPEED
-      43001L -> GUIDED_CHANGE_ALTITUDE
-      43002L -> GUIDED_CHANGE_HEADING
+  public companion object : MavEnum.Companion<MavCmd> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+      215u -> DO_SET_RESUME_REPEAT_DIST
+      216u -> DO_SPRAYER
+      217u -> DO_SEND_SCRIPT_MESSAGE
+      218u -> DO_AUX_FUNCTION
+      83u -> NAV_ALTITUDE_WAIT
+      42000u -> POWER_OFF_INITIATED
+      42001u -> SOLO_BTN_FLY_CLICK
+      42002u -> SOLO_BTN_FLY_HOLD
+      42003u -> SOLO_BTN_PAUSE_CLICK
+      42004u -> FIXED_MAG_CAL
+      42005u -> FIXED_MAG_CAL_FIELD
+      42007u -> SET_EKF_SOURCE_SET
+      42424u -> DO_START_MAG_CAL
+      42425u -> DO_ACCEPT_MAG_CAL
+      42426u -> DO_CANCEL_MAG_CAL
+      42429u -> ACCELCAL_VEHICLE_POS
+      42428u -> DO_SEND_BANNER
+      42427u -> SET_FACTORY_TEST_MODE
+      42501u -> GIMBAL_RESET
+      42502u -> GIMBAL_AXIS_CALIBRATION_STATUS
+      42503u -> GIMBAL_REQUEST_AXIS_CALIBRATION
+      42505u -> GIMBAL_FULL_RESET
+      42650u -> FLASH_BOOTLOADER
+      42651u -> BATTERY_RESET
+      42700u -> DEBUG_TRAP
+      42701u -> SCRIPTING
+      42702u -> NAV_SCRIPT_TIME
+      42703u -> NAV_ATTITUDE_TIME
+      43000u -> GUIDED_CHANGE_SPEED
+      43001u -> GUIDED_CHANGE_ALTITUDE
+      43002u -> GUIDED_CHANGE_HEADING
       else -> null
     }
   }

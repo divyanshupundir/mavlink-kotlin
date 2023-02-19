@@ -1,28 +1,30 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The current system altitude.
  */
 @GeneratedMavMessage(
-  id = 141,
-  crc = 47,
+  id = 141u,
+  crcExtra = 47,
 )
 public data class Altitude(
   /**
@@ -30,7 +32,7 @@ public data class Altitude(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * This altitude measure is initialized on system boot and monotonic (it is never reset, but
    * represents the local altitude change). The only guarantee on this field is that it will never be
@@ -77,7 +79,7 @@ public data class Altitude(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(altitudeMonotonic)
     outputBuffer.encodeFloat(altitudeAmsl)
     outputBuffer.encodeFloat(altitudeLocal)
@@ -89,7 +91,7 @@ public data class Altitude(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(altitudeMonotonic)
     outputBuffer.encodeFloat(altitudeAmsl)
     outputBuffer.encodeFloat(altitudeLocal)
@@ -100,9 +102,9 @@ public data class Altitude(
   }
 
   public companion object {
-    private const val ID: Int = 141
+    private const val ID: UInt = 141u
 
-    private const val CRC: Int = 47
+    private const val CRC_EXTRA: Byte = 47
 
     private const val SIZE_V1: Int = 32
 
@@ -110,7 +112,7 @@ public data class Altitude(
 
     private val DESERIALIZER: MavDeserializer<Altitude> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val altitudeMonotonic = inputBuffer.decodeFloat()
       val altitudeAmsl = inputBuffer.decodeFloat()
       val altitudeLocal = inputBuffer.decodeFloat()
@@ -130,7 +132,8 @@ public data class Altitude(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Altitude> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Altitude> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Altitude> = METADATA
 
@@ -139,7 +142,7 @@ public data class Altitude(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var altitudeMonotonic: Float = 0F
 

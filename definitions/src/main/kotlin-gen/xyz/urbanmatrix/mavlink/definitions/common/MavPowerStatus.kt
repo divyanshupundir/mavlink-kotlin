@@ -1,68 +1,70 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * Power supply status flags (bitmask)
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavPowerStatus(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * main brick power supply valid
    */
   @GeneratedMavEnumEntry
-  BRICK_VALID(1L),
+  BRICK_VALID(1u),
   /**
    * main servo power supply valid for FMU
    */
   @GeneratedMavEnumEntry
-  SERVO_VALID(2L),
+  SERVO_VALID(2u),
   /**
    * USB power is connected
    */
   @GeneratedMavEnumEntry
-  USB_CONNECTED(4L),
+  USB_CONNECTED(4u),
   /**
    * peripheral supply is in over-current state
    */
   @GeneratedMavEnumEntry
-  PERIPH_OVERCURRENT(8L),
+  PERIPH_OVERCURRENT(8u),
   /**
    * hi-power peripheral supply is in over-current state
    */
   @GeneratedMavEnumEntry
-  PERIPH_HIPOWER_OVERCURRENT(16L),
+  PERIPH_HIPOWER_OVERCURRENT(16u),
   /**
    * Power status has changed since boot
    */
   @GeneratedMavEnumEntry
-  CHANGED(32L),
+  CHANGED(32u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavPowerStatus? = when (v) {
-      1L -> BRICK_VALID
-      2L -> SERVO_VALID
-      4L -> USB_CONNECTED
-      8L -> PERIPH_OVERCURRENT
-      16L -> PERIPH_HIPOWER_OVERCURRENT
-      32L -> CHANGED
+  public companion object : MavEnum.Companion<MavPowerStatus>, MavBitmask.Companion<MavPowerStatus>
+      {
+    public override fun getEntryFromValueOrNull(v: UInt): MavPowerStatus? = when (v) {
+      1u -> BRICK_VALID
+      2u -> SERVO_VALID
+      4u -> USB_CONNECTED
+      8u -> PERIPH_OVERCURRENT
+      16u -> PERIPH_HIPOWER_OVERCURRENT
+      32u -> CHANGED
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<MavPowerStatus> = buildList {
-      if (v and 1L == 1L) add(BRICK_VALID)
-      if (v and 2L == 2L) add(SERVO_VALID)
-      if (v and 4L == 4L) add(USB_CONNECTED)
-      if (v and 8L == 8L) add(PERIPH_OVERCURRENT)
-      if (v and 16L == 16L) add(PERIPH_HIPOWER_OVERCURRENT)
-      if (v and 32L == 32L) add(CHANGED)
+    public override fun getFlagsFromValue(v: UInt): List<MavPowerStatus> = buildList {
+      if (v and 1u == 1u) add(BRICK_VALID)
+      if (v and 2u == 2u) add(SERVO_VALID)
+      if (v and 4u == 4u) add(USB_CONNECTED)
+      if (v and 8u == 8u) add(PERIPH_OVERCURRENT)
+      if (v and 16u == 16u) add(PERIPH_HIPOWER_OVERCURRENT)
+      if (v and 32u == 32u) add(CHANGED)
     }
   }
 }

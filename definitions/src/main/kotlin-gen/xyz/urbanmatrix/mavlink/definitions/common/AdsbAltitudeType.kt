@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,24 +10,24 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class AdsbAltitudeType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Altitude reported from a Baro source using QNH reference
    */
   @GeneratedMavEnumEntry
-  PRESSURE_QNH(0L),
+  PRESSURE_QNH(0u),
   /**
    * Altitude reported from a GNSS source
    */
   @GeneratedMavEnumEntry
-  GEOMETRIC(1L),
+  GEOMETRIC(1u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AdsbAltitudeType? = when (v) {
-      0L -> PRESSURE_QNH
-      1L -> GEOMETRIC
+  public companion object : MavEnum.Companion<AdsbAltitudeType> {
+    public override fun getEntryFromValueOrNull(v: UInt): AdsbAltitudeType? = when (v) {
+      0u -> PRESSURE_QNH
+      1u -> GEOMETRIC
       else -> null
     }
   }

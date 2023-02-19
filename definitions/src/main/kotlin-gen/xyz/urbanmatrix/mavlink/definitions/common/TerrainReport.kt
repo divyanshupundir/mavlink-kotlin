@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,10 +15,10 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,8 +27,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * https://mavlink.io/en/services/terrain.html
  */
 @GeneratedMavMessage(
-  id = 136,
-  crc = 1,
+  id = 136u,
+  crcExtra = 1,
 )
 public data class TerrainReport(
   /**
@@ -42,7 +45,7 @@ public data class TerrainReport(
    * grid spacing (zero if terrain at this location unavailable)
    */
   @GeneratedMavField(type = "uint16_t")
-  public val spacing: Int = 0,
+  public val spacing: UShort = 0u,
   /**
    * Terrain height MSL
    */
@@ -57,12 +60,12 @@ public data class TerrainReport(
    * Number of 4x4 terrain blocks waiting to be received or read from disk
    */
   @GeneratedMavField(type = "uint16_t")
-  public val pending: Int = 0,
+  public val pending: UShort = 0u,
   /**
    * Number of 4x4 terrain blocks in memory
    */
   @GeneratedMavField(type = "uint16_t")
-  public val loaded: Int = 0,
+  public val loaded: UShort = 0u,
 ) : MavMessage<TerrainReport> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainReport> = METADATA
 
@@ -72,9 +75,9 @@ public data class TerrainReport(
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(terrainHeight)
     outputBuffer.encodeFloat(currentHeight)
-    outputBuffer.encodeUint16(spacing)
-    outputBuffer.encodeUint16(pending)
-    outputBuffer.encodeUint16(loaded)
+    outputBuffer.encodeUInt16(spacing)
+    outputBuffer.encodeUInt16(pending)
+    outputBuffer.encodeUInt16(loaded)
     return outputBuffer.array()
   }
 
@@ -84,16 +87,16 @@ public data class TerrainReport(
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(terrainHeight)
     outputBuffer.encodeFloat(currentHeight)
-    outputBuffer.encodeUint16(spacing)
-    outputBuffer.encodeUint16(pending)
-    outputBuffer.encodeUint16(loaded)
+    outputBuffer.encodeUInt16(spacing)
+    outputBuffer.encodeUInt16(pending)
+    outputBuffer.encodeUInt16(loaded)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 136
+    private const val ID: UInt = 136u
 
-    private const val CRC: Int = 1
+    private const val CRC_EXTRA: Byte = 1
 
     private const val SIZE_V1: Int = 22
 
@@ -105,9 +108,9 @@ public data class TerrainReport(
       val lon = inputBuffer.decodeInt32()
       val terrainHeight = inputBuffer.decodeFloat()
       val currentHeight = inputBuffer.decodeFloat()
-      val spacing = inputBuffer.decodeUint16()
-      val pending = inputBuffer.decodeUint16()
-      val loaded = inputBuffer.decodeUint16()
+      val spacing = inputBuffer.decodeUInt16()
+      val pending = inputBuffer.decodeUInt16()
+      val loaded = inputBuffer.decodeUInt16()
 
       TerrainReport(
         lat = lat,
@@ -121,7 +124,7 @@ public data class TerrainReport(
     }
 
 
-    private val METADATA: MavMessage.Metadata<TerrainReport> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<TerrainReport> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TerrainReport> = METADATA
@@ -135,15 +138,15 @@ public data class TerrainReport(
 
     public var lon: Int = 0
 
-    public var spacing: Int = 0
+    public var spacing: UShort = 0u
 
     public var terrainHeight: Float = 0F
 
     public var currentHeight: Float = 0F
 
-    public var pending: Int = 0
+    public var pending: UShort = 0u
 
-    public var loaded: Int = 0
+    public var loaded: UShort = 0u
 
     public fun build(): TerrainReport = TerrainReport(
       lat = lat,

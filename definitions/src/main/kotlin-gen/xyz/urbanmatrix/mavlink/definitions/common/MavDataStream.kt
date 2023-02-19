@@ -1,7 +1,7 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Deprecated
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -14,66 +14,66 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 @Deprecated(message = "")
 @GeneratedMavEnum
 public enum class MavDataStream(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Dependent on the autopilot
    */
   @GeneratedMavEnumEntry
-  EXTRA3(12L),
+  EXTRA3(12u),
   /**
    * Dependent on the autopilot
    */
   @GeneratedMavEnumEntry
-  EXTRA2(11L),
+  EXTRA2(11u),
   /**
    * Dependent on the autopilot
    */
   @GeneratedMavEnumEntry
-  EXTRA1(10L),
+  EXTRA1(10u),
   /**
    * Enable LOCAL_POSITION, GLOBAL_POSITION_INT messages.
    */
   @GeneratedMavEnumEntry
-  POSITION(6L),
+  POSITION(6u),
   /**
    * Enable ATTITUDE_CONTROLLER_OUTPUT, POSITION_CONTROLLER_OUTPUT, NAV_CONTROLLER_OUTPUT.
    */
   @GeneratedMavEnumEntry
-  RAW_CONTROLLER(4L),
+  RAW_CONTROLLER(4u),
   /**
    * Enable RC_CHANNELS_SCALED, RC_CHANNELS_RAW, SERVO_OUTPUT_RAW
    */
   @GeneratedMavEnumEntry
-  RC_CHANNELS(3L),
+  RC_CHANNELS(3u),
   /**
    * Enable GPS_STATUS, CONTROL_STATUS, AUX_STATUS
    */
   @GeneratedMavEnumEntry
-  EXTENDED_STATUS(2L),
+  EXTENDED_STATUS(2u),
   /**
    * Enable IMU_RAW, GPS_RAW, GPS_STATUS packets.
    */
   @GeneratedMavEnumEntry
-  RAW_SENSORS(1L),
+  RAW_SENSORS(1u),
   /**
    * Enable all data streams
    */
   @GeneratedMavEnumEntry
-  ALL(0L),
+  ALL(0u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavDataStream? = when (v) {
-      12L -> EXTRA3
-      11L -> EXTRA2
-      10L -> EXTRA1
-      6L -> POSITION
-      4L -> RAW_CONTROLLER
-      3L -> RC_CHANNELS
-      2L -> EXTENDED_STATUS
-      1L -> RAW_SENSORS
-      0L -> ALL
+  public companion object : MavEnum.Companion<MavDataStream> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavDataStream? = when (v) {
+      12u -> EXTRA3
+      11u -> EXTRA2
+      10u -> EXTRA1
+      6u -> POSITION
+      4u -> RAW_CONTROLLER
+      3u -> RC_CHANNELS
+      2u -> EXTENDED_STATUS
+      1u -> RAW_SENSORS
+      0u -> ALL
       else -> null
     }
   }

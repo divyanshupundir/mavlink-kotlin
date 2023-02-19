@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.minimal
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,138 +10,138 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavAutopilot(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Generic autopilot, full support for everything
    */
   @GeneratedMavEnumEntry
-  GENERIC(0L),
+  GENERIC(0u),
   /**
    * Reserved for future use.
    */
   @GeneratedMavEnumEntry
-  RESERVED(1L),
+  RESERVED(1u),
   /**
    * SLUGS autopilot, http://slugsuav.soe.ucsc.edu
    */
   @GeneratedMavEnumEntry
-  SLUGS(2L),
+  SLUGS(2u),
   /**
    * ArduPilot - Plane/Copter/Rover/Sub/Tracker, https://ardupilot.org
    */
   @GeneratedMavEnumEntry
-  ARDUPILOTMEGA(3L),
+  ARDUPILOTMEGA(3u),
   /**
    * OpenPilot, http://openpilot.org
    */
   @GeneratedMavEnumEntry
-  OPENPILOT(4L),
+  OPENPILOT(4u),
   /**
    * Generic autopilot only supporting simple waypoints
    */
   @GeneratedMavEnumEntry
-  GENERIC_WAYPOINTS_ONLY(5L),
+  GENERIC_WAYPOINTS_ONLY(5u),
   /**
    * Generic autopilot supporting waypoints and other simple navigation commands
    */
   @GeneratedMavEnumEntry
-  GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY(6L),
+  GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY(6u),
   /**
    * Generic autopilot supporting the full mission command set
    */
   @GeneratedMavEnumEntry
-  GENERIC_MISSION_FULL(7L),
+  GENERIC_MISSION_FULL(7u),
   /**
    * No valid autopilot, e.g. a GCS or other MAVLink component
    */
   @GeneratedMavEnumEntry
-  INVALID(8L),
+  INVALID(8u),
   /**
    * PPZ UAV - http://nongnu.org/paparazzi
    */
   @GeneratedMavEnumEntry
-  PPZ(9L),
+  PPZ(9u),
   /**
    * UAV Dev Board
    */
   @GeneratedMavEnumEntry
-  UDB(10L),
+  UDB(10u),
   /**
    * FlexiPilot
    */
   @GeneratedMavEnumEntry
-  FP(11L),
+  FP(11u),
   /**
    * PX4 Autopilot - http://px4.io/
    */
   @GeneratedMavEnumEntry
-  PX4(12L),
+  PX4(12u),
   /**
    * SMACCMPilot - http://smaccmpilot.org
    */
   @GeneratedMavEnumEntry
-  SMACCMPILOT(13L),
+  SMACCMPILOT(13u),
   /**
    * AutoQuad -- http://autoquad.org
    */
   @GeneratedMavEnumEntry
-  AUTOQUAD(14L),
+  AUTOQUAD(14u),
   /**
    * Armazila -- http://armazila.com
    */
   @GeneratedMavEnumEntry
-  ARMAZILA(15L),
+  ARMAZILA(15u),
   /**
    * Aerob -- http://aerob.ru
    */
   @GeneratedMavEnumEntry
-  AEROB(16L),
+  AEROB(16u),
   /**
    * ASLUAV autopilot -- http://www.asl.ethz.ch
    */
   @GeneratedMavEnumEntry
-  ASLUAV(17L),
+  ASLUAV(17u),
   /**
    * SmartAP Autopilot - http://sky-drones.com
    */
   @GeneratedMavEnumEntry
-  SMARTAP(18L),
+  SMARTAP(18u),
   /**
    * AirRails - http://uaventure.com
    */
   @GeneratedMavEnumEntry
-  AIRRAILS(19L),
+  AIRRAILS(19u),
   /**
    * Fusion Reflex - https://fusion.engineering
    */
   @GeneratedMavEnumEntry
-  REFLEX(20L),
+  REFLEX(20u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavAutopilot? = when (v) {
-      0L -> GENERIC
-      1L -> RESERVED
-      2L -> SLUGS
-      3L -> ARDUPILOTMEGA
-      4L -> OPENPILOT
-      5L -> GENERIC_WAYPOINTS_ONLY
-      6L -> GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY
-      7L -> GENERIC_MISSION_FULL
-      8L -> INVALID
-      9L -> PPZ
-      10L -> UDB
-      11L -> FP
-      12L -> PX4
-      13L -> SMACCMPILOT
-      14L -> AUTOQUAD
-      15L -> ARMAZILA
-      16L -> AEROB
-      17L -> ASLUAV
-      18L -> SMARTAP
-      19L -> AIRRAILS
-      20L -> REFLEX
+  public companion object : MavEnum.Companion<MavAutopilot> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavAutopilot? = when (v) {
+      0u -> GENERIC
+      1u -> RESERVED
+      2u -> SLUGS
+      3u -> ARDUPILOTMEGA
+      4u -> OPENPILOT
+      5u -> GENERIC_WAYPOINTS_ONLY
+      6u -> GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY
+      7u -> GENERIC_MISSION_FULL
+      8u -> INVALID
+      9u -> PPZ
+      10u -> UDB
+      11u -> FP
+      12u -> PX4
+      13u -> SMACCMPILOT
+      14u -> AUTOQUAD
+      15u -> ARMAZILA
+      16u -> AEROB
+      17u -> ASLUAV
+      18u -> SMARTAP
+      19u -> AIRRAILS
+      20u -> REFLEX
       else -> null
     }
   }

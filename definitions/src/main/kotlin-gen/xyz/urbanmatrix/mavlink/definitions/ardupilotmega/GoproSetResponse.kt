@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,20 +20,20 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Response from a GOPRO_COMMAND set request.
  */
 @GeneratedMavMessage(
-  id = 219,
-  crc = 162,
+  id = 219u,
+  crcExtra = -94,
 )
 public data class GoproSetResponse(
   /**
    * Command ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val cmdId: MavEnumValue<GoproCommand> = MavEnumValue.fromValue(0),
+  public val cmdId: MavEnumValue<GoproCommand> = MavEnumValue.fromValue(0u),
   /**
    * Status.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val status: MavEnumValue<GoproRequestStatus> = MavEnumValue.fromValue(0),
+  public val status: MavEnumValue<GoproRequestStatus> = MavEnumValue.fromValue(0u),
 ) : MavMessage<GoproSetResponse> {
   public override val instanceMetadata: MavMessage.Metadata<GoproSetResponse> = METADATA
 
@@ -50,9 +52,9 @@ public data class GoproSetResponse(
   }
 
   public companion object {
-    private const val ID: Int = 219
+    private const val ID: UInt = 219u
 
-    private const val CRC: Int = 162
+    private const val CRC_EXTRA: Byte = -94
 
     private const val SIZE_V1: Int = 2
 
@@ -76,7 +78,7 @@ public data class GoproSetResponse(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GoproSetResponse> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<GoproSetResponse> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GoproSetResponse> = METADATA
@@ -86,9 +88,9 @@ public data class GoproSetResponse(
   }
 
   public class Builder {
-    public var cmdId: MavEnumValue<GoproCommand> = MavEnumValue.fromValue(0)
+    public var cmdId: MavEnumValue<GoproCommand> = MavEnumValue.fromValue(0u)
 
-    public var status: MavEnumValue<GoproRequestStatus> = MavEnumValue.fromValue(0)
+    public var status: MavEnumValue<GoproRequestStatus> = MavEnumValue.fromValue(0u)
 
     public fun build(): GoproSetResponse = GoproSetResponse(
       cmdId = cmdId,

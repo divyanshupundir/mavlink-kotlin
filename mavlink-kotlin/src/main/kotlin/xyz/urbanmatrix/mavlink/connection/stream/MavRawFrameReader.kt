@@ -26,7 +26,7 @@ internal class MavRawFrameReader(
             val payloadLength = inputStream.read()
             if (payloadLength == -1) throw EOFException()
 
-            when (versionMarker) {
+            when (versionMarker.toUByte()) {
                 MavFrameType.V1.magic -> {
                     val success = inputStream.advance(
                         MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID +
@@ -45,7 +45,7 @@ internal class MavRawFrameReader(
                     val incompatibleFlags = inputStream.read()
                     if (incompatibleFlags == -1) throw EOFException()
 
-                    val signatureSize = if (incompatibleFlags == MavRawFrame.INCOMPAT_FLAG_SIGNED) {
+                    val signatureSize = if (incompatibleFlags.toUByte() == MavRawFrame.INCOMPAT_FLAG_SIGNED) {
                         MavRawFrame.SIZE_SIGNATURE
                     } else {
                         0

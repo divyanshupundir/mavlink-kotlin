@@ -2,17 +2,21 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -21,55 +25,55 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * one LOG_ENTRY message with id = 0 and num_logs = 0.
  */
 @GeneratedMavMessage(
-  id = 117,
-  crc = 128,
+  id = 117u,
+  crcExtra = -128,
 )
 public data class LogRequestList(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * First log id (0 for first available)
    */
   @GeneratedMavField(type = "uint16_t")
-  public val start: Int = 0,
+  public val start: UShort = 0u,
   /**
    * Last log id (0xffff for last available)
    */
   @GeneratedMavField(type = "uint16_t")
-  public val end: Int = 0,
+  public val end: UShort = 0u,
 ) : MavMessage<LogRequestList> {
   public override val instanceMetadata: MavMessage.Metadata<LogRequestList> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(start)
-    outputBuffer.encodeUint16(end)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt16(start)
+    outputBuffer.encodeUInt16(end)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(start)
-    outputBuffer.encodeUint16(end)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt16(start)
+    outputBuffer.encodeUInt16(end)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 117
+    private const val ID: UInt = 117u
 
-    private const val CRC: Int = 128
+    private const val CRC_EXTRA: Byte = -128
 
     private const val SIZE_V1: Int = 6
 
@@ -77,10 +81,10 @@ public data class LogRequestList(
 
     private val DESERIALIZER: MavDeserializer<LogRequestList> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val start = inputBuffer.decodeUint16()
-      val end = inputBuffer.decodeUint16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val start = inputBuffer.decodeUInt16()
+      val end = inputBuffer.decodeUInt16()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
 
       LogRequestList(
         targetSystem = targetSystem,
@@ -91,7 +95,7 @@ public data class LogRequestList(
     }
 
 
-    private val METADATA: MavMessage.Metadata<LogRequestList> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<LogRequestList> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LogRequestList> = METADATA
@@ -101,13 +105,13 @@ public data class LogRequestList(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var start: Int = 0
+    public var start: UShort = 0u
 
-    public var end: Int = 0
+    public var end: UShort = 0u
 
     public fun build(): LogRequestList = LogRequestList(
       targetSystem = targetSystem,

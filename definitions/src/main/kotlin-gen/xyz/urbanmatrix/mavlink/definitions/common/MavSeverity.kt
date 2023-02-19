@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -12,63 +12,63 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavSeverity(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * System is unusable. This is a "panic" condition.
    */
   @GeneratedMavEnumEntry
-  EMERGENCY(0L),
+  EMERGENCY(0u),
   /**
    * Action should be taken immediately. Indicates error in non-critical systems.
    */
   @GeneratedMavEnumEntry
-  ALERT(1L),
+  ALERT(1u),
   /**
    * Action must be taken immediately. Indicates failure in a primary system.
    */
   @GeneratedMavEnumEntry
-  CRITICAL(2L),
+  CRITICAL(2u),
   /**
    * Indicates an error in secondary/redundant systems.
    */
   @GeneratedMavEnumEntry
-  ERROR(3L),
+  ERROR(3u),
   /**
    * Indicates about a possible future error if this is not resolved within a given timeframe.
    * Example would be a low battery warning.
    */
   @GeneratedMavEnumEntry
-  WARNING(4L),
+  WARNING(4u),
   /**
    * An unusual event has occurred, though not an error condition. This should be investigated for
    * the root cause.
    */
   @GeneratedMavEnumEntry
-  NOTICE(5L),
+  NOTICE(5u),
   /**
    * Normal operational messages. Useful for logging. No action is required for these messages.
    */
   @GeneratedMavEnumEntry
-  INFO(6L),
+  INFO(6u),
   /**
    * Useful non-operational messages that can assist in debugging. These should not occur during
    * normal operation.
    */
   @GeneratedMavEnumEntry
-  DEBUG(7L),
+  DEBUG(7u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavSeverity? = when (v) {
-      0L -> EMERGENCY
-      1L -> ALERT
-      2L -> CRITICAL
-      3L -> ERROR
-      4L -> WARNING
-      5L -> NOTICE
-      6L -> INFO
-      7L -> DEBUG
+  public companion object : MavEnum.Companion<MavSeverity> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavSeverity? = when (v) {
+      0u -> EMERGENCY
+      1u -> ALERT
+      2u -> CRITICAL
+      3u -> ERROR
+      4u -> WARNING
+      5u -> NOTICE
+      6u -> INFO
+      7u -> DEBUG
       else -> null
     }
   }

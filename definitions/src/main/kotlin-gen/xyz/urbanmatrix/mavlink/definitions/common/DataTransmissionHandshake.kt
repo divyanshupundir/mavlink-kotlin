@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,13 +15,13 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -26,77 +29,77 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Protocol: https://mavlink.io/en/services/image_transmission.html.
  */
 @GeneratedMavMessage(
-  id = 130,
-  crc = 29,
+  id = 130u,
+  crcExtra = 29,
 )
 public data class DataTransmissionHandshake(
   /**
    * Type of requested/acknowledged data.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0u),
   /**
    * total data size (set on ACK only).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val size: Long = 0L,
+  public val size: UInt = 0u,
   /**
    * Width of a matrix or image.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val width: Int = 0,
+  public val width: UShort = 0u,
   /**
    * Height of a matrix or image.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val height: Int = 0,
+  public val height: UShort = 0u,
   /**
    * Number of packets being sent (set on ACK only).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val packets: Int = 0,
+  public val packets: UShort = 0u,
   /**
    * Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA)
    * (set on ACK only).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val payload: Int = 0,
+  public val payload: UByte = 0u,
   /**
    * JPEG quality. Values: [1-100].
    */
   @GeneratedMavField(type = "uint8_t")
-  public val jpgQuality: Int = 0,
+  public val jpgQuality: UByte = 0u,
 ) : MavMessage<DataTransmissionHandshake> {
   public override val instanceMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(size)
-    outputBuffer.encodeUint16(width)
-    outputBuffer.encodeUint16(height)
-    outputBuffer.encodeUint16(packets)
+    outputBuffer.encodeUInt32(size)
+    outputBuffer.encodeUInt16(width)
+    outputBuffer.encodeUInt16(height)
+    outputBuffer.encodeUInt16(packets)
     outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUint8(payload)
-    outputBuffer.encodeUint8(jpgQuality)
+    outputBuffer.encodeUInt8(payload)
+    outputBuffer.encodeUInt8(jpgQuality)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(size)
-    outputBuffer.encodeUint16(width)
-    outputBuffer.encodeUint16(height)
-    outputBuffer.encodeUint16(packets)
+    outputBuffer.encodeUInt32(size)
+    outputBuffer.encodeUInt16(width)
+    outputBuffer.encodeUInt16(height)
+    outputBuffer.encodeUInt16(packets)
     outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUint8(payload)
-    outputBuffer.encodeUint8(jpgQuality)
+    outputBuffer.encodeUInt8(payload)
+    outputBuffer.encodeUInt8(jpgQuality)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 130
+    private const val ID: UInt = 130u
 
-    private const val CRC: Int = 29
+    private const val CRC_EXTRA: Byte = 29
 
     private const val SIZE_V1: Int = 13
 
@@ -105,16 +108,16 @@ public data class DataTransmissionHandshake(
     private val DESERIALIZER: MavDeserializer<DataTransmissionHandshake> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val size = inputBuffer.decodeUint32()
-      val width = inputBuffer.decodeUint16()
-      val height = inputBuffer.decodeUint16()
-      val packets = inputBuffer.decodeUint16()
+      val size = inputBuffer.decodeUInt32()
+      val width = inputBuffer.decodeUInt16()
+      val height = inputBuffer.decodeUInt16()
+      val packets = inputBuffer.decodeUInt16()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavlinkDataStreamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val payload = inputBuffer.decodeUint8()
-      val jpgQuality = inputBuffer.decodeUint8()
+      val payload = inputBuffer.decodeUInt8()
+      val jpgQuality = inputBuffer.decodeUInt8()
 
       DataTransmissionHandshake(
         type = type,
@@ -129,7 +132,7 @@ public data class DataTransmissionHandshake(
 
 
     private val METADATA: MavMessage.Metadata<DataTransmissionHandshake> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
 
@@ -138,19 +141,19 @@ public data class DataTransmissionHandshake(
   }
 
   public class Builder {
-    public var type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0u)
 
-    public var size: Long = 0L
+    public var size: UInt = 0u
 
-    public var width: Int = 0
+    public var width: UShort = 0u
 
-    public var height: Int = 0
+    public var height: UShort = 0u
 
-    public var packets: Int = 0
+    public var packets: UShort = 0u
 
-    public var payload: Int = 0
+    public var payload: UByte = 0u
 
-    public var jpgQuality: Int = 0
+    public var jpgQuality: UByte = 0u
 
     public fun build(): DataTransmissionHandshake = DataTransmissionHandshake(
       type = type,

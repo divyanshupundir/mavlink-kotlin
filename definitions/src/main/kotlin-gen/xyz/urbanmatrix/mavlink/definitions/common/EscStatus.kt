@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,12 +18,12 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32Array
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -30,21 +33,21 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 291,
-  crc = 10,
+  id = 291u,
+  crcExtra = 10,
 )
 public data class EscStatus(
   /**
    * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val index: Int = 0,
+  public val index: UByte = 0u,
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Reported motor RPM from each ESC (negative for reverse rotation).
    */
@@ -65,28 +68,28 @@ public data class EscStatus(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32Array(rpm, 16)
     outputBuffer.encodeFloatArray(voltage, 16)
     outputBuffer.encodeFloatArray(current, 16)
-    outputBuffer.encodeUint8(index)
+    outputBuffer.encodeUInt8(index)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32Array(rpm, 16)
     outputBuffer.encodeFloatArray(voltage, 16)
     outputBuffer.encodeFloatArray(current, 16)
-    outputBuffer.encodeUint8(index)
+    outputBuffer.encodeUInt8(index)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 291
+    private const val ID: UInt = 291u
 
-    private const val CRC: Int = 10
+    private const val CRC_EXTRA: Byte = 10
 
     private const val SIZE_V1: Int = 57
 
@@ -94,11 +97,11 @@ public data class EscStatus(
 
     private val DESERIALIZER: MavDeserializer<EscStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val rpm = inputBuffer.decodeInt32Array(16)
       val voltage = inputBuffer.decodeFloatArray(16)
       val current = inputBuffer.decodeFloatArray(16)
-      val index = inputBuffer.decodeUint8()
+      val index = inputBuffer.decodeUInt8()
 
       EscStatus(
         index = index,
@@ -110,7 +113,7 @@ public data class EscStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<EscStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<EscStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EscStatus> = METADATA
@@ -120,9 +123,9 @@ public data class EscStatus(
   }
 
   public class Builder {
-    public var index: Int = 0
+    public var index: UByte = 0u
 
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var rpm: List<Int> = emptyList()
 

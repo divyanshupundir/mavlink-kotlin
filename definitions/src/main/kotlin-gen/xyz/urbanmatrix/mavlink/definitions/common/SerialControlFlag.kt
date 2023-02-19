@@ -1,63 +1,65 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * SERIAL_CONTROL flags (bitmask)
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class SerialControlFlag(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Set if this is a reply
    */
   @GeneratedMavEnumEntry
-  REPLY(1L),
+  REPLY(1u),
   /**
    * Set if the sender wants the receiver to send a response as another SERIAL_CONTROL message
    */
   @GeneratedMavEnumEntry
-  RESPOND(2L),
+  RESPOND(2u),
   /**
    * Set if access to the serial port should be removed from whatever driver is currently using it,
    * giving exclusive access to the SERIAL_CONTROL protocol. The port can be handed back by sending a
    * request without this flag set
    */
   @GeneratedMavEnumEntry
-  EXCLUSIVE(4L),
+  EXCLUSIVE(4u),
   /**
    * Block on writes to the serial port
    */
   @GeneratedMavEnumEntry
-  BLOCKING(8L),
+  BLOCKING(8u),
   /**
    * Send multiple replies until port is drained
    */
   @GeneratedMavEnumEntry
-  MULTI(16L),
+  MULTI(16u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): SerialControlFlag? = when (v) {
-      1L -> REPLY
-      2L -> RESPOND
-      4L -> EXCLUSIVE
-      8L -> BLOCKING
-      16L -> MULTI
+  public companion object : MavEnum.Companion<SerialControlFlag>,
+      MavBitmask.Companion<SerialControlFlag> {
+    public override fun getEntryFromValueOrNull(v: UInt): SerialControlFlag? = when (v) {
+      1u -> REPLY
+      2u -> RESPOND
+      4u -> EXCLUSIVE
+      8u -> BLOCKING
+      16u -> MULTI
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<SerialControlFlag> = buildList {
-      if (v and 1L == 1L) add(REPLY)
-      if (v and 2L == 2L) add(RESPOND)
-      if (v and 4L == 4L) add(EXCLUSIVE)
-      if (v and 8L == 8L) add(BLOCKING)
-      if (v and 16L == 16L) add(MULTI)
+    public override fun getFlagsFromValue(v: UInt): List<SerialControlFlag> = buildList {
+      if (v and 1u == 1u) add(REPLY)
+      if (v and 2u == 2u) add(RESPOND)
+      if (v and 4u == 4u) add(EXCLUSIVE)
+      if (v and 8u == 8u) add(BLOCKING)
+      if (v and 16u == 16u) add(MULTI)
     }
   }
 }

@@ -2,10 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,13 +18,13 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -30,30 +32,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * controller or other system).
  */
 @GeneratedMavMessage(
-  id = 82,
-  crc = 49,
+  id = 82u,
+  crcExtra = 49,
 )
 public data class SetAttitudeTarget(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0),
+  public val typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
@@ -92,37 +94,37 @@ public data class SetAttitudeTarget(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(bodyRollRate)
     outputBuffer.encodeFloat(bodyPitchRate)
     outputBuffer.encodeFloat(bodyYawRate)
     outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeBitmaskValue(typeMask.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(bodyRollRate)
     outputBuffer.encodeFloat(bodyPitchRate)
     outputBuffer.encodeFloat(bodyYawRate)
     outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeBitmaskValue(typeMask.value, 1)
     outputBuffer.encodeFloatArray(thrustBody, 12)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 82
+    private const val ID: UInt = 82u
 
-    private const val CRC: Int = 49
+    private const val CRC_EXTRA: Byte = 49
 
     private const val SIZE_V1: Int = 39
 
@@ -130,14 +132,14 @@ public data class SetAttitudeTarget(
 
     private val DESERIALIZER: MavDeserializer<SetAttitudeTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val q = inputBuffer.decodeFloatArray(16)
       val bodyRollRate = inputBuffer.decodeFloat()
       val bodyPitchRate = inputBuffer.decodeFloat()
       val bodyYawRate = inputBuffer.decodeFloat()
       val thrust = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
       val typeMask = inputBuffer.decodeBitmaskValue(1).let { value ->
         val flags = AttitudeTargetTypemask.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
@@ -159,8 +161,8 @@ public data class SetAttitudeTarget(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SetAttitudeTarget> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SetAttitudeTarget> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetAttitudeTarget> = METADATA
 
@@ -169,13 +171,13 @@ public data class SetAttitudeTarget(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0)
+    public var typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0u)
 
     public var q: List<Float> = emptyList()
 

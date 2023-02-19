@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Rangefinder reporting.
  */
 @GeneratedMavMessage(
-  id = 173,
-  crc = 83,
+  id = 173u,
+  crcExtra = 83,
 )
 public data class Rangefinder(
   /**
@@ -50,9 +52,9 @@ public data class Rangefinder(
   }
 
   public companion object {
-    private const val ID: Int = 173
+    private const val ID: UInt = 173u
 
-    private const val CRC: Int = 83
+    private const val CRC_EXTRA: Byte = 83
 
     private const val SIZE_V1: Int = 8
 
@@ -70,7 +72,7 @@ public data class Rangefinder(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Rangefinder> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Rangefinder> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Rangefinder> = METADATA

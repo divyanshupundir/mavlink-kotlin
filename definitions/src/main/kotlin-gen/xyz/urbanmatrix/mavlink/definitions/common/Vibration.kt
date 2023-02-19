@@ -1,31 +1,32 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Vibration levels and accelerometer clipping
  */
 @GeneratedMavMessage(
-  id = 241,
-  crc = 90,
+  id = 241u,
+  crcExtra = 90,
 )
 public data class Vibration(
   /**
@@ -33,7 +34,7 @@ public data class Vibration(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Vibration levels on X-axis
    */
@@ -53,48 +54,48 @@ public data class Vibration(
    * first accelerometer clipping count
    */
   @GeneratedMavField(type = "uint32_t")
-  public val clipping0: Long = 0L,
+  public val clipping0: UInt = 0u,
   /**
    * second accelerometer clipping count
    */
   @GeneratedMavField(type = "uint32_t")
-  public val clipping1: Long = 0L,
+  public val clipping1: UInt = 0u,
   /**
    * third accelerometer clipping count
    */
   @GeneratedMavField(type = "uint32_t")
-  public val clipping2: Long = 0L,
+  public val clipping2: UInt = 0u,
 ) : MavMessage<Vibration> {
   public override val instanceMetadata: MavMessage.Metadata<Vibration> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(vibrationX)
     outputBuffer.encodeFloat(vibrationY)
     outputBuffer.encodeFloat(vibrationZ)
-    outputBuffer.encodeUint32(clipping0)
-    outputBuffer.encodeUint32(clipping1)
-    outputBuffer.encodeUint32(clipping2)
+    outputBuffer.encodeUInt32(clipping0)
+    outputBuffer.encodeUInt32(clipping1)
+    outputBuffer.encodeUInt32(clipping2)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(vibrationX)
     outputBuffer.encodeFloat(vibrationY)
     outputBuffer.encodeFloat(vibrationZ)
-    outputBuffer.encodeUint32(clipping0)
-    outputBuffer.encodeUint32(clipping1)
-    outputBuffer.encodeUint32(clipping2)
+    outputBuffer.encodeUInt32(clipping0)
+    outputBuffer.encodeUInt32(clipping1)
+    outputBuffer.encodeUInt32(clipping2)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 241
+    private const val ID: UInt = 241u
 
-    private const val CRC: Int = 90
+    private const val CRC_EXTRA: Byte = 90
 
     private const val SIZE_V1: Int = 32
 
@@ -102,13 +103,13 @@ public data class Vibration(
 
     private val DESERIALIZER: MavDeserializer<Vibration> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val vibrationX = inputBuffer.decodeFloat()
       val vibrationY = inputBuffer.decodeFloat()
       val vibrationZ = inputBuffer.decodeFloat()
-      val clipping0 = inputBuffer.decodeUint32()
-      val clipping1 = inputBuffer.decodeUint32()
-      val clipping2 = inputBuffer.decodeUint32()
+      val clipping0 = inputBuffer.decodeUInt32()
+      val clipping1 = inputBuffer.decodeUInt32()
+      val clipping2 = inputBuffer.decodeUInt32()
 
       Vibration(
         timeUsec = timeUsec,
@@ -122,7 +123,7 @@ public data class Vibration(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Vibration> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Vibration> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Vibration> = METADATA
@@ -132,7 +133,7 @@ public data class Vibration(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var vibrationX: Float = 0F
 
@@ -140,11 +141,11 @@ public data class Vibration(
 
     public var vibrationZ: Float = 0F
 
-    public var clipping0: Long = 0L
+    public var clipping0: UInt = 0u
 
-    public var clipping1: Long = 0L
+    public var clipping1: UInt = 0u
 
-    public var clipping2: Long = 0L
+    public var clipping2: UInt = 0u
 
     public fun build(): Vibration = Vibration(
       timeUsec = timeUsec,

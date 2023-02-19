@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,10 +16,10 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,8 +27,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
  */
 @GeneratedMavMessage(
-  id = 61,
-  crc = 167,
+  id = 61u,
+  crcExtra = -89,
 )
 public data class AttitudeQuaternionCov(
   /**
@@ -34,7 +36,7 @@ public data class AttitudeQuaternionCov(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
    */
@@ -67,7 +69,7 @@ public data class AttitudeQuaternionCov(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(rollspeed)
     outputBuffer.encodeFloat(pitchspeed)
@@ -78,7 +80,7 @@ public data class AttitudeQuaternionCov(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(rollspeed)
     outputBuffer.encodeFloat(pitchspeed)
@@ -88,9 +90,9 @@ public data class AttitudeQuaternionCov(
   }
 
   public companion object {
-    private const val ID: Int = 61
+    private const val ID: UInt = 61u
 
-    private const val CRC: Int = 167
+    private const val CRC_EXTRA: Byte = -89
 
     private const val SIZE_V1: Int = 72
 
@@ -98,7 +100,7 @@ public data class AttitudeQuaternionCov(
 
     private val DESERIALIZER: MavDeserializer<AttitudeQuaternionCov> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val q = inputBuffer.decodeFloatArray(16)
       val rollspeed = inputBuffer.decodeFloat()
       val pitchspeed = inputBuffer.decodeFloat()
@@ -116,8 +118,8 @@ public data class AttitudeQuaternionCov(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AttitudeQuaternionCov> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<AttitudeQuaternionCov> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AttitudeQuaternionCov> = METADATA
 
@@ -126,7 +128,7 @@ public data class AttitudeQuaternionCov(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var q: List<Float> = emptyList()
 

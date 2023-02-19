@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -27,25 +29,25 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 275,
-  crc = 126,
+  id = 275u,
+  crcExtra = 126,
 )
 public data class CameraTrackingImageStatus(
   /**
    * Current tracking status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
+  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u),
   /**
    * Current tracking mode
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0),
+  public val trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0u),
   /**
    * Defines location of target data
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0),
+  public val targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0u),
   /**
    * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is
    * right), NAN if unknown
@@ -122,9 +124,9 @@ public data class CameraTrackingImageStatus(
   }
 
   public companion object {
-    private const val ID: Int = 275
+    private const val ID: UInt = 275u
 
-    private const val CRC: Int = 126
+    private const val CRC_EXTRA: Byte = 126
 
     private const val SIZE_V1: Int = 31
 
@@ -169,7 +171,7 @@ public data class CameraTrackingImageStatus(
 
 
     private val METADATA: MavMessage.Metadata<CameraTrackingImageStatus> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
 
@@ -178,11 +180,11 @@ public data class CameraTrackingImageStatus(
   }
 
   public class Builder {
-    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0)
+    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u)
 
-    public var trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0)
+    public var trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0u)
 
-    public var targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0)
+    public var targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0u)
 
     public var pointX: Float = 0F
 

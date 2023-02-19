@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,36 +10,36 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class CellularNetworkFailedReason(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * No error
    */
   @GeneratedMavEnumEntry
-  NONE(0L),
+  NONE(0u),
   /**
    * Error state is unknown
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(1L),
+  UNKNOWN(1u),
   /**
    * SIM is required for the modem but missing
    */
   @GeneratedMavEnumEntry
-  SIM_MISSING(2L),
+  SIM_MISSING(2u),
   /**
    * SIM is available, but not usuable for connection
    */
   @GeneratedMavEnumEntry
-  SIM_ERROR(3L),
+  SIM_ERROR(3u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): CellularNetworkFailedReason? = when (v) {
-      0L -> NONE
-      1L -> UNKNOWN
-      2L -> SIM_MISSING
-      3L -> SIM_ERROR
+  public companion object : MavEnum.Companion<CellularNetworkFailedReason> {
+    public override fun getEntryFromValueOrNull(v: UInt): CellularNetworkFailedReason? = when (v) {
+      0u -> NONE
+      1u -> UNKNOWN
+      2u -> SIM_MISSING
+      3u -> SIM_ERROR
       else -> null
     }
   }

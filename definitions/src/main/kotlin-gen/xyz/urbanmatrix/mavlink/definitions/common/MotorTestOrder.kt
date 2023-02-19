@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,30 +10,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MotorTestOrder(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Default autopilot motor test method.
    */
   @GeneratedMavEnumEntry
-  DEFAULT(0L),
+  DEFAULT(0u),
   /**
    * Motor numbers are specified as their index in a predefined vehicle-specific sequence.
    */
   @GeneratedMavEnumEntry
-  SEQUENCE(1L),
+  SEQUENCE(1u),
   /**
    * Motor numbers are specified as the output as labeled on the board.
    */
   @GeneratedMavEnumEntry
-  BOARD(2L),
+  BOARD(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MotorTestOrder? = when (v) {
-      0L -> DEFAULT
-      1L -> SEQUENCE
-      2L -> BOARD
+  public companion object : MavEnum.Companion<MotorTestOrder> {
+    public override fun getEntryFromValueOrNull(v: UInt): MotorTestOrder? = when (v) {
+      0u -> DEFAULT
+      1u -> SEQUENCE
+      2u -> BOARD
       else -> null
     }
   }

@@ -1,10 +1,11 @@
 package xyz.urbanmatrix.mavlink.definitions.minimal
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * These values encode the bit positions of the decode position. These values can be used to read
@@ -13,72 +14,73 @@ import xyz.urbanmatrix.mavlink.api.MavBitmask
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlagDecodePosition(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * First bit:  10000000
    */
   @GeneratedMavEnumEntry
-  SAFETY(128L),
+  SAFETY(128u),
   /**
    * Second bit: 01000000
    */
   @GeneratedMavEnumEntry
-  MANUAL(64L),
+  MANUAL(64u),
   /**
    * Third bit:  00100000
    */
   @GeneratedMavEnumEntry
-  HIL(32L),
+  HIL(32u),
   /**
    * Fourth bit: 00010000
    */
   @GeneratedMavEnumEntry
-  STABILIZE(16L),
+  STABILIZE(16u),
   /**
    * Fifth bit:  00001000
    */
   @GeneratedMavEnumEntry
-  GUIDED(8L),
+  GUIDED(8u),
   /**
    * Sixth bit:   00000100
    */
   @GeneratedMavEnumEntry
-  AUTO(4L),
+  AUTO(4u),
   /**
    * Seventh bit: 00000010
    */
   @GeneratedMavEnumEntry
-  TEST(2L),
+  TEST(2u),
   /**
    * Eighth bit: 00000001
    */
   @GeneratedMavEnumEntry
-  CUSTOM_MODE(1L),
+  CUSTOM_MODE(1u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavModeFlagDecodePosition? = when (v) {
-      128L -> SAFETY
-      64L -> MANUAL
-      32L -> HIL
-      16L -> STABILIZE
-      8L -> GUIDED
-      4L -> AUTO
-      2L -> TEST
-      1L -> CUSTOM_MODE
+  public companion object : MavEnum.Companion<MavModeFlagDecodePosition>,
+      MavBitmask.Companion<MavModeFlagDecodePosition> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
+      128u -> SAFETY
+      64u -> MANUAL
+      32u -> HIL
+      16u -> STABILIZE
+      8u -> GUIDED
+      4u -> AUTO
+      2u -> TEST
+      1u -> CUSTOM_MODE
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<MavModeFlagDecodePosition> = buildList {
-      if (v and 128L == 128L) add(SAFETY)
-      if (v and 64L == 64L) add(MANUAL)
-      if (v and 32L == 32L) add(HIL)
-      if (v and 16L == 16L) add(STABILIZE)
-      if (v and 8L == 8L) add(GUIDED)
-      if (v and 4L == 4L) add(AUTO)
-      if (v and 2L == 2L) add(TEST)
-      if (v and 1L == 1L) add(CUSTOM_MODE)
+    public override fun getFlagsFromValue(v: UInt): List<MavModeFlagDecodePosition> = buildList {
+      if (v and 128u == 128u) add(SAFETY)
+      if (v and 64u == 64u) add(MANUAL)
+      if (v and 32u == 32u) add(HIL)
+      if (v and 16u == 16u) add(STABILIZE)
+      if (v and 8u == 8u) add(GUIDED)
+      if (v and 4u == 4u) add(AUTO)
+      if (v and 2u == 2u) add(TEST)
+      if (v and 1u == 1u) add(CUSTOM_MODE)
     }
   }
 }

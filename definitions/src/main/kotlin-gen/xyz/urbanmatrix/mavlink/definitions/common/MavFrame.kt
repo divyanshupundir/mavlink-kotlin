@@ -1,7 +1,7 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Deprecated
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -32,24 +32,24 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavFrame(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y:
    * longitude, third value / z: positive altitude over mean sea level (MSL).
    */
   @GeneratedMavEnumEntry
-  GLOBAL(0L),
+  GLOBAL(0u),
   /**
    * NED local tangent frame (x: North, y: East, z: Down) with origin fixed relative to earth.
    */
   @GeneratedMavEnumEntry
-  LOCAL_NED(1L),
+  LOCAL_NED(1u),
   /**
    * NOT a coordinate frame, indicates a mission command.
    */
   @GeneratedMavEnumEntry
-  MISSION(2L),
+  MISSION(2u),
   /**
    *
    *           Global (WGS84) coordinate frame + altitude relative to the home position.
@@ -58,19 +58,19 @@ public enum class MavFrame(
    *         
    */
   @GeneratedMavEnumEntry
-  GLOBAL_RELATIVE_ALT(3L),
+  GLOBAL_RELATIVE_ALT(3u),
   /**
    * ENU local tangent frame (x: East, y: North, z: Up) with origin fixed relative to earth.
    */
   @GeneratedMavEnumEntry
-  LOCAL_ENU(4L),
+  LOCAL_ENU(4u),
   /**
    * Global (WGS84) coordinate frame (scaled) + MSL altitude. First value / x: latitude in
    * degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude over
    * mean sea level (MSL).
    */
   @GeneratedMavEnumEntry
-  GLOBAL_INT(5L),
+  GLOBAL_INT(5u),
   /**
    *
    *           Global (WGS84) coordinate frame (scaled) + altitude relative to the home position.
@@ -79,131 +79,131 @@ public enum class MavFrame(
    *         
    */
   @GeneratedMavEnumEntry
-  GLOBAL_RELATIVE_ALT_INT(6L),
+  GLOBAL_RELATIVE_ALT_INT(6u),
   /**
    * NED local tangent frame (x: North, y: East, z: Down) with origin that travels with the vehicle.
    */
   @GeneratedMavEnumEntry
-  LOCAL_OFFSET_NED(7L),
+  LOCAL_OFFSET_NED(7u),
   /**
    * Same as MAV_FRAME_LOCAL_NED when used to represent position values. Same as MAV_FRAME_BODY_FRD
    * when used with velocity/accelaration values.
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  BODY_NED(8L),
+  BODY_NED(8u),
   /**
    * This is the same as MAV_FRAME_BODY_FRD.
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  BODY_OFFSET_NED(9L),
+  BODY_OFFSET_NED(9u),
   /**
    * Global (WGS84) coordinate frame with AGL altitude (at the waypoint coordinate). First value /
    * x: latitude in degrees, second value / y: longitude in degrees, third value / z: positive altitude
    * in meters with 0 being at ground level in terrain model.
    */
   @GeneratedMavEnumEntry
-  GLOBAL_TERRAIN_ALT(10L),
+  GLOBAL_TERRAIN_ALT(10u),
   /**
    * Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate). First
    * value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z:
    * positive altitude in meters with 0 being at ground level in terrain model.
    */
   @GeneratedMavEnumEntry
-  GLOBAL_TERRAIN_ALT_INT(11L),
+  GLOBAL_TERRAIN_ALT_INT(11u),
   /**
    * FRD local tangent frame (x: Forward, y: Right, z: Down) with origin that travels with vehicle.
    * The forward axis is aligned to the front of the vehicle in the horizontal plane.
    */
   @GeneratedMavEnumEntry
-  BODY_FRD(12L),
+  BODY_FRD(12u),
   /**
    * MAV_FRAME_BODY_FLU - Body fixed frame of reference, Z-up (x: Forward, y: Left, z: Up).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_13(13L),
+  RESERVED_13(13u),
   /**
    * MAV_FRAME_MOCAP_NED - Odometry local coordinate frame of data given by a motion capture system,
    * Z-down (x: North, y: East, z: Down).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_14(14L),
+  RESERVED_14(14u),
   /**
    * MAV_FRAME_MOCAP_ENU - Odometry local coordinate frame of data given by a motion capture system,
    * Z-up (x: East, y: North, z: Up).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_15(15L),
+  RESERVED_15(15u),
   /**
    * MAV_FRAME_VISION_NED - Odometry local coordinate frame of data given by a vision estimation
    * system, Z-down (x: North, y: East, z: Down).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_16(16L),
+  RESERVED_16(16u),
   /**
    * MAV_FRAME_VISION_ENU - Odometry local coordinate frame of data given by a vision estimation
    * system, Z-up (x: East, y: North, z: Up).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_17(17L),
+  RESERVED_17(17u),
   /**
    * MAV_FRAME_ESTIM_NED - Odometry local coordinate frame of data given by an estimator running
    * onboard the vehicle, Z-down (x: North, y: East, z: Down).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_18(18L),
+  RESERVED_18(18u),
   /**
    * MAV_FRAME_ESTIM_ENU - Odometry local coordinate frame of data given by an estimator running
    * onboard the vehicle, Z-up (x: East, y: North, z: Up).
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
-  RESERVED_19(19L),
+  RESERVED_19(19u),
   /**
    * FRD local tangent frame (x: Forward, y: Right, z: Down) with origin fixed relative to earth.
    * The forward axis is aligned to the front of the vehicle in the horizontal plane.
    */
   @GeneratedMavEnumEntry
-  LOCAL_FRD(20L),
+  LOCAL_FRD(20u),
   /**
    * FLU local tangent frame (x: Forward, y: Left, z: Up) with origin fixed relative to earth. The
    * forward axis is aligned to the front of the vehicle in the horizontal plane.
    */
   @GeneratedMavEnumEntry
-  LOCAL_FLU(21L),
+  LOCAL_FLU(21u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavFrame? = when (v) {
-      0L -> GLOBAL
-      1L -> LOCAL_NED
-      2L -> MISSION
-      3L -> GLOBAL_RELATIVE_ALT
-      4L -> LOCAL_ENU
-      5L -> GLOBAL_INT
-      6L -> GLOBAL_RELATIVE_ALT_INT
-      7L -> LOCAL_OFFSET_NED
-      8L -> BODY_NED
-      9L -> BODY_OFFSET_NED
-      10L -> GLOBAL_TERRAIN_ALT
-      11L -> GLOBAL_TERRAIN_ALT_INT
-      12L -> BODY_FRD
-      13L -> RESERVED_13
-      14L -> RESERVED_14
-      15L -> RESERVED_15
-      16L -> RESERVED_16
-      17L -> RESERVED_17
-      18L -> RESERVED_18
-      19L -> RESERVED_19
-      20L -> LOCAL_FRD
-      21L -> LOCAL_FLU
+  public companion object : MavEnum.Companion<MavFrame> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavFrame? = when (v) {
+      0u -> GLOBAL
+      1u -> LOCAL_NED
+      2u -> MISSION
+      3u -> GLOBAL_RELATIVE_ALT
+      4u -> LOCAL_ENU
+      5u -> GLOBAL_INT
+      6u -> GLOBAL_RELATIVE_ALT_INT
+      7u -> LOCAL_OFFSET_NED
+      8u -> BODY_NED
+      9u -> BODY_OFFSET_NED
+      10u -> GLOBAL_TERRAIN_ALT
+      11u -> GLOBAL_TERRAIN_ALT_INT
+      12u -> BODY_FRD
+      13u -> RESERVED_13
+      14u -> RESERVED_14
+      15u -> RESERVED_15
+      16u -> RESERVED_16
+      17u -> RESERVED_17
+      18u -> RESERVED_18
+      19u -> RESERVED_19
+      20u -> LOCAL_FRD
+      21u -> LOCAL_FLU
       else -> null
     }
   }

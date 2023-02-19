@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,24 +10,24 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class GripperActions(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gripper release cargo.
    */
   @GeneratedMavEnumEntry
-  GRIPPER_ACTION_RELEASE(0L),
+  GRIPPER_ACTION_RELEASE(0u),
   /**
    * Gripper grab onto cargo.
    */
   @GeneratedMavEnumEntry
-  GRIPPER_ACTION_GRAB(1L),
+  GRIPPER_ACTION_GRAB(1u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): GripperActions? = when (v) {
-      0L -> GRIPPER_ACTION_RELEASE
-      1L -> GRIPPER_ACTION_GRAB
+  public companion object : MavEnum.Companion<GripperActions> {
+    public override fun getEntryFromValueOrNull(v: UInt): GripperActions? = when (v) {
+      0u -> GRIPPER_ACTION_RELEASE
+      1u -> GRIPPER_ACTION_GRAB
       else -> null
     }
   }

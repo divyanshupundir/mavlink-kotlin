@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -21,8 +23,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Response from a PARAM_EXT_SET message.
  */
 @GeneratedMavMessage(
-  id = 324,
-  crc = 132,
+  id = 324u,
+  crcExtra = -124,
 )
 public data class ParamExtAck(
   /**
@@ -41,12 +43,12 @@ public data class ParamExtAck(
    * Parameter type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0),
+  public val paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0u),
   /**
    * Result code.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val paramResult: MavEnumValue<ParamAck> = MavEnumValue.fromValue(0),
+  public val paramResult: MavEnumValue<ParamAck> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ParamExtAck> {
   public override val instanceMetadata: MavMessage.Metadata<ParamExtAck> = METADATA
 
@@ -69,9 +71,9 @@ public data class ParamExtAck(
   }
 
   public companion object {
-    private const val ID: Int = 324
+    private const val ID: UInt = 324u
 
-    private const val CRC: Int = 132
+    private const val CRC_EXTRA: Byte = -124
 
     private const val SIZE_V1: Int = 146
 
@@ -99,7 +101,7 @@ public data class ParamExtAck(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ParamExtAck> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ParamExtAck> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamExtAck> = METADATA
@@ -113,9 +115,9 @@ public data class ParamExtAck(
 
     public var paramValue: String = ""
 
-    public var paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0)
+    public var paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0u)
 
-    public var paramResult: MavEnumValue<ParamAck> = MavEnumValue.fromValue(0)
+    public var paramResult: MavEnumValue<ParamAck> = MavEnumValue.fromValue(0u)
 
     public fun build(): ParamExtAck = ParamExtAck(
       paramId = paramId,

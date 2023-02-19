@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,84 +10,84 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class PlaneMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  MANUAL(0L),
+  MANUAL(0u),
   @GeneratedMavEnumEntry
-  CIRCLE(1L),
+  CIRCLE(1u),
   @GeneratedMavEnumEntry
-  STABILIZE(2L),
+  STABILIZE(2u),
   @GeneratedMavEnumEntry
-  TRAINING(3L),
+  TRAINING(3u),
   @GeneratedMavEnumEntry
-  ACRO(4L),
+  ACRO(4u),
   @GeneratedMavEnumEntry
-  FLY_BY_WIRE_A(5L),
+  FLY_BY_WIRE_A(5u),
   @GeneratedMavEnumEntry
-  FLY_BY_WIRE_B(6L),
+  FLY_BY_WIRE_B(6u),
   @GeneratedMavEnumEntry
-  CRUISE(7L),
+  CRUISE(7u),
   @GeneratedMavEnumEntry
-  AUTOTUNE(8L),
+  AUTOTUNE(8u),
   @GeneratedMavEnumEntry
-  AUTO(10L),
+  AUTO(10u),
   @GeneratedMavEnumEntry
-  RTL(11L),
+  RTL(11u),
   @GeneratedMavEnumEntry
-  LOITER(12L),
+  LOITER(12u),
   @GeneratedMavEnumEntry
-  TAKEOFF(13L),
+  TAKEOFF(13u),
   @GeneratedMavEnumEntry
-  AVOID_ADSB(14L),
+  AVOID_ADSB(14u),
   @GeneratedMavEnumEntry
-  GUIDED(15L),
+  GUIDED(15u),
   @GeneratedMavEnumEntry
-  INITIALIZING(16L),
+  INITIALIZING(16u),
   @GeneratedMavEnumEntry
-  QSTABILIZE(17L),
+  QSTABILIZE(17u),
   @GeneratedMavEnumEntry
-  QHOVER(18L),
+  QHOVER(18u),
   @GeneratedMavEnumEntry
-  QLOITER(19L),
+  QLOITER(19u),
   @GeneratedMavEnumEntry
-  QLAND(20L),
+  QLAND(20u),
   @GeneratedMavEnumEntry
-  QRTL(21L),
+  QRTL(21u),
   @GeneratedMavEnumEntry
-  QAUTOTUNE(22L),
+  QAUTOTUNE(22u),
   @GeneratedMavEnumEntry
-  QACRO(23L),
+  QACRO(23u),
   @GeneratedMavEnumEntry
-  THERMAL(24L),
+  THERMAL(24u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): PlaneMode? = when (v) {
-      0L -> MANUAL
-      1L -> CIRCLE
-      2L -> STABILIZE
-      3L -> TRAINING
-      4L -> ACRO
-      5L -> FLY_BY_WIRE_A
-      6L -> FLY_BY_WIRE_B
-      7L -> CRUISE
-      8L -> AUTOTUNE
-      10L -> AUTO
-      11L -> RTL
-      12L -> LOITER
-      13L -> TAKEOFF
-      14L -> AVOID_ADSB
-      15L -> GUIDED
-      16L -> INITIALIZING
-      17L -> QSTABILIZE
-      18L -> QHOVER
-      19L -> QLOITER
-      20L -> QLAND
-      21L -> QRTL
-      22L -> QAUTOTUNE
-      23L -> QACRO
-      24L -> THERMAL
+  public companion object : MavEnum.Companion<PlaneMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): PlaneMode? = when (v) {
+      0u -> MANUAL
+      1u -> CIRCLE
+      2u -> STABILIZE
+      3u -> TRAINING
+      4u -> ACRO
+      5u -> FLY_BY_WIRE_A
+      6u -> FLY_BY_WIRE_B
+      7u -> CRUISE
+      8u -> AUTOTUNE
+      10u -> AUTO
+      11u -> RTL
+      12u -> LOITER
+      13u -> TAKEOFF
+      14u -> AVOID_ADSB
+      15u -> GUIDED
+      16u -> INITIALIZING
+      17u -> QSTABILIZE
+      18u -> QHOVER
+      19u -> QLOITER
+      20u -> QLAND
+      21u -> QRTL
+      22u -> QAUTOTUNE
+      23u -> QACRO
+      24u -> THERMAL
       else -> null
     }
   }

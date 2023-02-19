@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,30 +10,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class TrackerMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  MANUAL(0L),
+  MANUAL(0u),
   @GeneratedMavEnumEntry
-  STOP(1L),
+  STOP(1u),
   @GeneratedMavEnumEntry
-  SCAN(2L),
+  SCAN(2u),
   @GeneratedMavEnumEntry
-  SERVO_TEST(3L),
+  SERVO_TEST(3u),
   @GeneratedMavEnumEntry
-  AUTO(10L),
+  AUTO(10u),
   @GeneratedMavEnumEntry
-  INITIALIZING(16L),
+  INITIALIZING(16u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): TrackerMode? = when (v) {
-      0L -> MANUAL
-      1L -> STOP
-      2L -> SCAN
-      3L -> SERVO_TEST
-      10L -> AUTO
-      16L -> INITIALIZING
+  public companion object : MavEnum.Companion<TrackerMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): TrackerMode? = when (v) {
+      0u -> MANUAL
+      1u -> STOP
+      2u -> SCAN
+      3u -> SERVO_TEST
+      10u -> AUTO
+      16u -> INITIALIZING
       else -> null
     }
   }

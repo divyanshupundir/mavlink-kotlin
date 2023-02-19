@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,33 +18,33 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Current motion information from a designated system
  */
 @GeneratedMavMessage(
-  id = 144,
-  crc = 127,
+  id = 144u,
+  crcExtra = 127,
 )
 public data class FollowTarget(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timestamp: BigInteger = BigInteger.ZERO,
+  public val timestamp: ULong = 0uL,
   /**
    * bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val estCapabilities: Int = 0,
+  public val estCapabilities: UByte = 0u,
   /**
    * Latitude (WGS84)
    */
@@ -86,14 +89,14 @@ public data class FollowTarget(
    * button states or switches of a tracker device
    */
   @GeneratedMavField(type = "uint64_t")
-  public val customState: BigInteger = BigInteger.ZERO,
+  public val customState: ULong = 0uL,
 ) : MavMessage<FollowTarget> {
   public override val instanceMetadata: MavMessage.Metadata<FollowTarget> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint64(customState)
+    outputBuffer.encodeUInt64(timestamp)
+    outputBuffer.encodeUInt64(customState)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -102,14 +105,14 @@ public data class FollowTarget(
     outputBuffer.encodeFloatArray(attitudeQ, 16)
     outputBuffer.encodeFloatArray(rates, 12)
     outputBuffer.encodeFloatArray(positionCov, 12)
-    outputBuffer.encodeUint8(estCapabilities)
+    outputBuffer.encodeUInt8(estCapabilities)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint64(customState)
+    outputBuffer.encodeUInt64(timestamp)
+    outputBuffer.encodeUInt64(customState)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -118,14 +121,14 @@ public data class FollowTarget(
     outputBuffer.encodeFloatArray(attitudeQ, 16)
     outputBuffer.encodeFloatArray(rates, 12)
     outputBuffer.encodeFloatArray(positionCov, 12)
-    outputBuffer.encodeUint8(estCapabilities)
+    outputBuffer.encodeUInt8(estCapabilities)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 144
+    private const val ID: UInt = 144u
 
-    private const val CRC: Int = 127
+    private const val CRC_EXTRA: Byte = 127
 
     private const val SIZE_V1: Int = 93
 
@@ -133,8 +136,8 @@ public data class FollowTarget(
 
     private val DESERIALIZER: MavDeserializer<FollowTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUint64()
-      val customState = inputBuffer.decodeUint64()
+      val timestamp = inputBuffer.decodeUInt64()
+      val customState = inputBuffer.decodeUInt64()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -143,7 +146,7 @@ public data class FollowTarget(
       val attitudeQ = inputBuffer.decodeFloatArray(16)
       val rates = inputBuffer.decodeFloatArray(12)
       val positionCov = inputBuffer.decodeFloatArray(12)
-      val estCapabilities = inputBuffer.decodeUint8()
+      val estCapabilities = inputBuffer.decodeUInt8()
 
       FollowTarget(
         timestamp = timestamp,
@@ -161,7 +164,7 @@ public data class FollowTarget(
     }
 
 
-    private val METADATA: MavMessage.Metadata<FollowTarget> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<FollowTarget> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FollowTarget> = METADATA
@@ -171,9 +174,9 @@ public data class FollowTarget(
   }
 
   public class Builder {
-    public var timestamp: BigInteger = BigInteger.ZERO
+    public var timestamp: ULong = 0uL
 
-    public var estCapabilities: Int = 0
+    public var estCapabilities: UByte = 0u
 
     public var lat: Int = 0
 
@@ -191,7 +194,7 @@ public data class FollowTarget(
 
     public var positionCov: List<Float> = emptyList()
 
-    public var customState: BigInteger = BigInteger.ZERO
+    public var customState: ULong = 0uL
 
     public fun build(): FollowTarget = FollowTarget(
       timestamp = timestamp,

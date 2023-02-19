@@ -2,52 +2,56 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * 100 Hz gimbal torque command telemetry.
  */
 @GeneratedMavMessage(
-  id = 214,
-  crc = 69,
+  id = 214u,
+  crcExtra = 69,
 )
 public data class GimbalTorqueCmdReport(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Roll Torque Command.
    */
   @GeneratedMavField(type = "int16_t")
-  public val rlTorqueCmd: Int = 0,
+  public val rlTorqueCmd: Short = 0,
   /**
    * Elevation Torque Command.
    */
   @GeneratedMavField(type = "int16_t")
-  public val elTorqueCmd: Int = 0,
+  public val elTorqueCmd: Short = 0,
   /**
    * Azimuth Torque Command.
    */
   @GeneratedMavField(type = "int16_t")
-  public val azTorqueCmd: Int = 0,
+  public val azTorqueCmd: Short = 0,
 ) : MavMessage<GimbalTorqueCmdReport> {
   public override val instanceMetadata: MavMessage.Metadata<GimbalTorqueCmdReport> = METADATA
 
@@ -56,8 +60,8 @@ public data class GimbalTorqueCmdReport(
     outputBuffer.encodeInt16(rlTorqueCmd)
     outputBuffer.encodeInt16(elTorqueCmd)
     outputBuffer.encodeInt16(azTorqueCmd)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array()
   }
 
@@ -66,15 +70,15 @@ public data class GimbalTorqueCmdReport(
     outputBuffer.encodeInt16(rlTorqueCmd)
     outputBuffer.encodeInt16(elTorqueCmd)
     outputBuffer.encodeInt16(azTorqueCmd)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 214
+    private const val ID: UInt = 214u
 
-    private const val CRC: Int = 69
+    private const val CRC_EXTRA: Byte = 69
 
     private const val SIZE_V1: Int = 8
 
@@ -85,8 +89,8 @@ public data class GimbalTorqueCmdReport(
       val rlTorqueCmd = inputBuffer.decodeInt16()
       val elTorqueCmd = inputBuffer.decodeInt16()
       val azTorqueCmd = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
 
       GimbalTorqueCmdReport(
         targetSystem = targetSystem,
@@ -98,8 +102,8 @@ public data class GimbalTorqueCmdReport(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GimbalTorqueCmdReport> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<GimbalTorqueCmdReport> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalTorqueCmdReport> = METADATA
 
@@ -108,15 +112,15 @@ public data class GimbalTorqueCmdReport(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var rlTorqueCmd: Int = 0
+    public var rlTorqueCmd: Short = 0
 
-    public var elTorqueCmd: Int = 0
+    public var elTorqueCmd: Short = 0
 
-    public var azTorqueCmd: Int = 0
+    public var azTorqueCmd: Short = 0
 
     public fun build(): GimbalTorqueCmdReport = GimbalTorqueCmdReport(
       targetSystem = targetSystem,

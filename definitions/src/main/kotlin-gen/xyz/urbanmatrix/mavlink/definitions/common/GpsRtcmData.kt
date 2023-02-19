@@ -2,26 +2,29 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * RTCM message for injecting into the onboard GPS (used for DGPS)
  */
 @GeneratedMavMessage(
-  id = 233,
-  crc = 35,
+  id = 233u,
+  crcExtra = 35,
 )
 public data class GpsRtcmData(
   /**
@@ -35,40 +38,40 @@ public data class GpsRtcmData(
    * unreliable transport delivery order.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: Int = 0,
+  public val flags: UByte = 0u,
   /**
    * data length
    */
   @GeneratedMavField(type = "uint8_t")
-  public val len: Int = 0,
+  public val len: UByte = 0u,
   /**
    * RTCM message (may be fragmented)
    */
   @GeneratedMavField(type = "uint8_t[180]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<GpsRtcmData> {
   public override val instanceMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(flags)
-    outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint8Array(data, 180)
+    outputBuffer.encodeUInt8(flags)
+    outputBuffer.encodeUInt8(len)
+    outputBuffer.encodeUInt8Array(data, 180)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(flags)
-    outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint8Array(data, 180)
+    outputBuffer.encodeUInt8(flags)
+    outputBuffer.encodeUInt8(len)
+    outputBuffer.encodeUInt8Array(data, 180)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 233
+    private const val ID: UInt = 233u
 
-    private const val CRC: Int = 35
+    private const val CRC_EXTRA: Byte = 35
 
     private const val SIZE_V1: Int = 182
 
@@ -76,9 +79,9 @@ public data class GpsRtcmData(
 
     private val DESERIALIZER: MavDeserializer<GpsRtcmData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val flags = inputBuffer.decodeUint8()
-      val len = inputBuffer.decodeUint8()
-      val data = inputBuffer.decodeUint8Array(180)
+      val flags = inputBuffer.decodeUInt8()
+      val len = inputBuffer.decodeUInt8()
+      val data = inputBuffer.decodeUInt8Array(180)
 
       GpsRtcmData(
         flags = flags,
@@ -88,7 +91,7 @@ public data class GpsRtcmData(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GpsRtcmData> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<GpsRtcmData> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
@@ -98,11 +101,11 @@ public data class GpsRtcmData(
   }
 
   public class Builder {
-    public var flags: Int = 0
+    public var flags: UByte = 0u
 
-    public var len: Int = 0
+    public var len: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<UByte> = emptyList()
 
     public fun build(): GpsRtcmData = GpsRtcmData(
       flags = flags,

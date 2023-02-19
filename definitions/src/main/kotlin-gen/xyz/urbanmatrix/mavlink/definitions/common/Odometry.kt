@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,13 +19,13 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -30,8 +33,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
  */
 @GeneratedMavMessage(
-  id = 331,
-  crc = 91,
+  id = 331u,
+  crcExtra = 91,
 )
 public data class Odometry(
   /**
@@ -39,17 +42,17 @@ public data class Odometry(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Coordinate frame of reference for the pose data.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * Coordinate frame of reference for the velocity in free space (twist) data.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * X Position
    */
@@ -124,7 +127,7 @@ public data class Odometry(
     type = "uint8_t",
     extension = true,
   )
-  public val resetCounter: Int = 0,
+  public val resetCounter: UByte = 0u,
   /**
    * Type of estimator that is providing the odometry.
    */
@@ -132,13 +135,13 @@ public data class Odometry(
     type = "uint8_t",
     extension = true,
   )
-  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
+  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Odometry> {
   public override val instanceMetadata: MavMessage.Metadata<Odometry> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -158,7 +161,7 @@ public data class Odometry(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -173,15 +176,15 @@ public data class Odometry(
     outputBuffer.encodeFloatArray(velocityCovariance, 84)
     outputBuffer.encodeEnumValue(frameId.value, 1)
     outputBuffer.encodeEnumValue(childFrameId.value, 1)
-    outputBuffer.encodeUint8(resetCounter)
+    outputBuffer.encodeUInt8(resetCounter)
     outputBuffer.encodeEnumValue(estimatorType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 331
+    private const val ID: UInt = 331u
 
-    private const val CRC: Int = 91
+    private const val CRC_EXTRA: Byte = 91
 
     private const val SIZE_V1: Int = 230
 
@@ -189,7 +192,7 @@ public data class Odometry(
 
     private val DESERIALIZER: MavDeserializer<Odometry> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -210,7 +213,7 @@ public data class Odometry(
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val resetCounter = inputBuffer.decodeUint8()
+      val resetCounter = inputBuffer.decodeUInt8()
       val estimatorType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavEstimatorType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -238,7 +241,8 @@ public data class Odometry(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Odometry> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Odometry> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Odometry> = METADATA
 
@@ -247,11 +251,11 @@ public data class Odometry(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var frameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
-    public var childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
     public var x: Float = 0F
 
@@ -277,9 +281,9 @@ public data class Odometry(
 
     public var velocityCovariance: List<Float> = emptyList()
 
-    public var resetCounter: Int = 0
+    public var resetCounter: UByte = 0u
 
-    public var estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0)
+    public var estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u)
 
     public fun build(): Odometry = Odometry(
       timeUsec = timeUsec,

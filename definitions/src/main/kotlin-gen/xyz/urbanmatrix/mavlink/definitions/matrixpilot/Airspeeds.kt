@@ -2,69 +2,71 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.Short
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The airspeed measured by sensors and IMU
  */
 @GeneratedMavMessage(
-  id = 182,
-  crc = 154,
+  id = 182u,
+  crcExtra = -102,
 )
 public data class Airspeeds(
   /**
    * Timestamp (milliseconds since system boot)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Airspeed estimate from IMU, cm/s
    */
   @GeneratedMavField(type = "int16_t")
-  public val airspeedImu: Int = 0,
+  public val airspeedImu: Short = 0,
   /**
    * Pitot measured forward airpseed, cm/s
    */
   @GeneratedMavField(type = "int16_t")
-  public val airspeedPitot: Int = 0,
+  public val airspeedPitot: Short = 0,
   /**
    * Hot wire anenometer measured airspeed, cm/s
    */
   @GeneratedMavField(type = "int16_t")
-  public val airspeedHotWire: Int = 0,
+  public val airspeedHotWire: Short = 0,
   /**
    * Ultrasonic measured airspeed, cm/s
    */
   @GeneratedMavField(type = "int16_t")
-  public val airspeedUltrasonic: Int = 0,
+  public val airspeedUltrasonic: Short = 0,
   /**
    * Angle of attack sensor, degrees * 10
    */
   @GeneratedMavField(type = "int16_t")
-  public val aoa: Int = 0,
+  public val aoa: Short = 0,
   /**
    * Yaw angle sensor, degrees * 10
    */
   @GeneratedMavField(type = "int16_t")
-  public val aoy: Int = 0,
+  public val aoy: Short = 0,
 ) : MavMessage<Airspeeds> {
   public override val instanceMetadata: MavMessage.Metadata<Airspeeds> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt16(airspeedImu)
     outputBuffer.encodeInt16(airspeedPitot)
     outputBuffer.encodeInt16(airspeedHotWire)
@@ -76,7 +78,7 @@ public data class Airspeeds(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt16(airspeedImu)
     outputBuffer.encodeInt16(airspeedPitot)
     outputBuffer.encodeInt16(airspeedHotWire)
@@ -87,9 +89,9 @@ public data class Airspeeds(
   }
 
   public companion object {
-    private const val ID: Int = 182
+    private const val ID: UInt = 182u
 
-    private const val CRC: Int = 154
+    private const val CRC_EXTRA: Byte = -102
 
     private const val SIZE_V1: Int = 16
 
@@ -97,7 +99,7 @@ public data class Airspeeds(
 
     private val DESERIALIZER: MavDeserializer<Airspeeds> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val airspeedImu = inputBuffer.decodeInt16()
       val airspeedPitot = inputBuffer.decodeInt16()
       val airspeedHotWire = inputBuffer.decodeInt16()
@@ -117,7 +119,7 @@ public data class Airspeeds(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Airspeeds> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Airspeeds> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Airspeeds> = METADATA
@@ -127,19 +129,19 @@ public data class Airspeeds(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var airspeedImu: Int = 0
+    public var airspeedImu: Short = 0
 
-    public var airspeedPitot: Int = 0
+    public var airspeedPitot: Short = 0
 
-    public var airspeedHotWire: Int = 0
+    public var airspeedHotWire: Short = 0
 
-    public var airspeedUltrasonic: Int = 0
+    public var airspeedUltrasonic: Short = 0
 
-    public var aoa: Int = 0
+    public var aoa: Short = 0
 
-    public var aoy: Int = 0
+    public var aoy: Short = 0
 
     public fun build(): Airspeeds = Airspeeds(
       timeBootMs = timeBootMs,

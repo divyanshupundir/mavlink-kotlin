@@ -1,13 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -18,16 +20,16 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeInt8
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -43,25 +45,25 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  *         set to the sequence number of the final message in the range.
  */
 @GeneratedMavMessage(
-  id = 263,
-  crc = 133,
+  id = 263u,
+  crcExtra = -123,
 )
 public data class CameraImageCaptured(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUtc: BigInteger = BigInteger.ZERO,
+  public val timeUtc: ULong = 0uL,
   /**
    * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val cameraId: Int = 0,
+  public val cameraId: UByte = 0u,
   /**
    * Latitude where image was taken
    */
@@ -97,7 +99,7 @@ public data class CameraImageCaptured(
    * Boolean indicating success (1) or failure (0) while capturing this image.
    */
   @GeneratedMavField(type = "int8_t")
-  public val captureResult: Int = 0,
+  public val captureResult: Byte = 0,
   /**
    * URL of image taken. Either local storage or http://foo.jpg if camera provides an HTTP
    * interface.
@@ -109,15 +111,15 @@ public data class CameraImageCaptured(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUtc)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt64(timeUtc)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
     outputBuffer.encodeInt32(relativeAlt)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeInt32(imageIndex)
-    outputBuffer.encodeUint8(cameraId)
+    outputBuffer.encodeUInt8(cameraId)
     outputBuffer.encodeInt8(captureResult)
     outputBuffer.encodeString(fileUrl, 205)
     return outputBuffer.array()
@@ -125,24 +127,24 @@ public data class CameraImageCaptured(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUtc)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt64(timeUtc)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
     outputBuffer.encodeInt32(relativeAlt)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeInt32(imageIndex)
-    outputBuffer.encodeUint8(cameraId)
+    outputBuffer.encodeUInt8(cameraId)
     outputBuffer.encodeInt8(captureResult)
     outputBuffer.encodeString(fileUrl, 205)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 263
+    private const val ID: UInt = 263u
 
-    private const val CRC: Int = 133
+    private const val CRC_EXTRA: Byte = -123
 
     private const val SIZE_V1: Int = 255
 
@@ -150,15 +152,15 @@ public data class CameraImageCaptured(
 
     private val DESERIALIZER: MavDeserializer<CameraImageCaptured> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUtc = inputBuffer.decodeUint64()
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeUtc = inputBuffer.decodeUInt64()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
       val relativeAlt = inputBuffer.decodeInt32()
       val q = inputBuffer.decodeFloatArray(16)
       val imageIndex = inputBuffer.decodeInt32()
-      val cameraId = inputBuffer.decodeUint8()
+      val cameraId = inputBuffer.decodeUInt8()
       val captureResult = inputBuffer.decodeInt8()
       val fileUrl = inputBuffer.decodeString(205)
 
@@ -178,8 +180,8 @@ public data class CameraImageCaptured(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CameraImageCaptured> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<CameraImageCaptured> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
 
@@ -188,11 +190,11 @@ public data class CameraImageCaptured(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var timeUtc: BigInteger = BigInteger.ZERO
+    public var timeUtc: ULong = 0uL
 
-    public var cameraId: Int = 0
+    public var cameraId: UByte = 0u
 
     public var lat: Int = 0
 
@@ -206,7 +208,7 @@ public data class CameraImageCaptured(
 
     public var imageIndex: Int = 0
 
-    public var captureResult: Int = 0
+    public var captureResult: Byte = 0
 
     public var fileUrl: String = ""
 

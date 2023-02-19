@@ -1,12 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,15 +16,15 @@ import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -34,8 +36,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * low frequency. The UAVCAN specification is available at http://uavcan.org.
  */
 @GeneratedMavMessage(
-  id = 311,
-  crc = 95,
+  id = 311u,
+  crcExtra = 95,
 )
 public data class UavcanNodeInfo(
   /**
@@ -43,12 +45,12 @@ public data class UavcanNodeInfo(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Time since the start-up of the node.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val uptimeSec: Long = 0L,
+  public val uptimeSec: UInt = 0u,
   /**
    * Node name string. For example, "sapog.px4.io".
    */
@@ -58,67 +60,67 @@ public data class UavcanNodeInfo(
    * Hardware major version number.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val hwVersionMajor: Int = 0,
+  public val hwVersionMajor: UByte = 0u,
   /**
    * Hardware minor version number.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val hwVersionMinor: Int = 0,
+  public val hwVersionMinor: UByte = 0u,
   /**
    * Hardware unique 128-bit ID.
    */
   @GeneratedMavField(type = "uint8_t[16]")
-  public val hwUniqueId: List<Int> = emptyList(),
+  public val hwUniqueId: List<UByte> = emptyList(),
   /**
    * Software major version number.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val swVersionMajor: Int = 0,
+  public val swVersionMajor: UByte = 0u,
   /**
    * Software minor version number.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val swVersionMinor: Int = 0,
+  public val swVersionMinor: UByte = 0u,
   /**
    * Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val swVcsCommit: Long = 0L,
+  public val swVcsCommit: UInt = 0u,
 ) : MavMessage<UavcanNodeInfo> {
   public override val instanceMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint32(uptimeSec)
-    outputBuffer.encodeUint32(swVcsCommit)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt32(uptimeSec)
+    outputBuffer.encodeUInt32(swVcsCommit)
     outputBuffer.encodeString(name, 80)
-    outputBuffer.encodeUint8(hwVersionMajor)
-    outputBuffer.encodeUint8(hwVersionMinor)
-    outputBuffer.encodeUint8Array(hwUniqueId, 16)
-    outputBuffer.encodeUint8(swVersionMajor)
-    outputBuffer.encodeUint8(swVersionMinor)
+    outputBuffer.encodeUInt8(hwVersionMajor)
+    outputBuffer.encodeUInt8(hwVersionMinor)
+    outputBuffer.encodeUInt8Array(hwUniqueId, 16)
+    outputBuffer.encodeUInt8(swVersionMajor)
+    outputBuffer.encodeUInt8(swVersionMinor)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint32(uptimeSec)
-    outputBuffer.encodeUint32(swVcsCommit)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt32(uptimeSec)
+    outputBuffer.encodeUInt32(swVcsCommit)
     outputBuffer.encodeString(name, 80)
-    outputBuffer.encodeUint8(hwVersionMajor)
-    outputBuffer.encodeUint8(hwVersionMinor)
-    outputBuffer.encodeUint8Array(hwUniqueId, 16)
-    outputBuffer.encodeUint8(swVersionMajor)
-    outputBuffer.encodeUint8(swVersionMinor)
+    outputBuffer.encodeUInt8(hwVersionMajor)
+    outputBuffer.encodeUInt8(hwVersionMinor)
+    outputBuffer.encodeUInt8Array(hwUniqueId, 16)
+    outputBuffer.encodeUInt8(swVersionMajor)
+    outputBuffer.encodeUInt8(swVersionMinor)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 311
+    private const val ID: UInt = 311u
 
-    private const val CRC: Int = 95
+    private const val CRC_EXTRA: Byte = 95
 
     private const val SIZE_V1: Int = 116
 
@@ -126,15 +128,15 @@ public data class UavcanNodeInfo(
 
     private val DESERIALIZER: MavDeserializer<UavcanNodeInfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
-      val uptimeSec = inputBuffer.decodeUint32()
-      val swVcsCommit = inputBuffer.decodeUint32()
+      val timeUsec = inputBuffer.decodeUInt64()
+      val uptimeSec = inputBuffer.decodeUInt32()
+      val swVcsCommit = inputBuffer.decodeUInt32()
       val name = inputBuffer.decodeString(80)
-      val hwVersionMajor = inputBuffer.decodeUint8()
-      val hwVersionMinor = inputBuffer.decodeUint8()
-      val hwUniqueId = inputBuffer.decodeUint8Array(16)
-      val swVersionMajor = inputBuffer.decodeUint8()
-      val swVersionMinor = inputBuffer.decodeUint8()
+      val hwVersionMajor = inputBuffer.decodeUInt8()
+      val hwVersionMinor = inputBuffer.decodeUInt8()
+      val hwUniqueId = inputBuffer.decodeUInt8Array(16)
+      val swVersionMajor = inputBuffer.decodeUInt8()
+      val swVersionMinor = inputBuffer.decodeUInt8()
 
       UavcanNodeInfo(
         timeUsec = timeUsec,
@@ -150,7 +152,7 @@ public data class UavcanNodeInfo(
     }
 
 
-    private val METADATA: MavMessage.Metadata<UavcanNodeInfo> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<UavcanNodeInfo> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
@@ -160,23 +162,23 @@ public data class UavcanNodeInfo(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var uptimeSec: Long = 0L
+    public var uptimeSec: UInt = 0u
 
     public var name: String = ""
 
-    public var hwVersionMajor: Int = 0
+    public var hwVersionMajor: UByte = 0u
 
-    public var hwVersionMinor: Int = 0
+    public var hwVersionMinor: UByte = 0u
 
-    public var hwUniqueId: List<Int> = emptyList()
+    public var hwUniqueId: List<UByte> = emptyList()
 
-    public var swVersionMajor: Int = 0
+    public var swVersionMajor: UByte = 0u
 
-    public var swVersionMinor: Int = 0
+    public var swVersionMinor: UByte = 0u
 
-    public var swVcsCommit: Long = 0L
+    public var swVcsCommit: UInt = 0u
 
     public fun build(): UavcanNodeInfo = UavcanNodeInfo(
       timeUsec = timeUsec,

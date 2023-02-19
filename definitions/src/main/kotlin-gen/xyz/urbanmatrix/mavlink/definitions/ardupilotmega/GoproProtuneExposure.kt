@@ -1,144 +1,144 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class GoproProtuneExposure(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * -5.0 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  NEG_5_0(0L),
+  NEG_5_0(0u),
   /**
    * -4.5 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  NEG_4_5(1L),
+  NEG_4_5(1u),
   /**
    * -4.0 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  NEG_4_0(2L),
+  NEG_4_0(2u),
   /**
    * -3.5 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  NEG_3_5(3L),
+  NEG_3_5(3u),
   /**
    * -3.0 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  NEG_3_0(4L),
+  NEG_3_0(4u),
   /**
    * -2.5 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  NEG_2_5(5L),
+  NEG_2_5(5u),
   /**
    * -2.0 EV.
    */
   @GeneratedMavEnumEntry
-  NEG_2_0(6L),
+  NEG_2_0(6u),
   /**
    * -1.5 EV.
    */
   @GeneratedMavEnumEntry
-  NEG_1_5(7L),
+  NEG_1_5(7u),
   /**
    * -1.0 EV.
    */
   @GeneratedMavEnumEntry
-  NEG_1_0(8L),
+  NEG_1_0(8u),
   /**
    * -0.5 EV.
    */
   @GeneratedMavEnumEntry
-  NEG_0_5(9L),
+  NEG_0_5(9u),
   /**
    * 0.0 EV.
    */
   @GeneratedMavEnumEntry
-  ZERO(10L),
+  ZERO(10u),
   /**
    * +0.5 EV.
    */
   @GeneratedMavEnumEntry
-  POS_0_5(11L),
+  POS_0_5(11u),
   /**
    * +1.0 EV.
    */
   @GeneratedMavEnumEntry
-  POS_1_0(12L),
+  POS_1_0(12u),
   /**
    * +1.5 EV.
    */
   @GeneratedMavEnumEntry
-  POS_1_5(13L),
+  POS_1_5(13u),
   /**
    * +2.0 EV.
    */
   @GeneratedMavEnumEntry
-  POS_2_0(14L),
+  POS_2_0(14u),
   /**
    * +2.5 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  POS_2_5(15L),
+  POS_2_5(15u),
   /**
    * +3.0 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  POS_3_0(16L),
+  POS_3_0(16u),
   /**
    * +3.5 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  POS_3_5(17L),
+  POS_3_5(17u),
   /**
    * +4.0 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  POS_4_0(18L),
+  POS_4_0(18u),
   /**
    * +4.5 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  POS_4_5(19L),
+  POS_4_5(19u),
   /**
    * +5.0 EV (Hero 3+ Only).
    */
   @GeneratedMavEnumEntry
-  POS_5_0(20L),
+  POS_5_0(20u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): GoproProtuneExposure? = when (v) {
-      0L -> NEG_5_0
-      1L -> NEG_4_5
-      2L -> NEG_4_0
-      3L -> NEG_3_5
-      4L -> NEG_3_0
-      5L -> NEG_2_5
-      6L -> NEG_2_0
-      7L -> NEG_1_5
-      8L -> NEG_1_0
-      9L -> NEG_0_5
-      10L -> ZERO
-      11L -> POS_0_5
-      12L -> POS_1_0
-      13L -> POS_1_5
-      14L -> POS_2_0
-      15L -> POS_2_5
-      16L -> POS_3_0
-      17L -> POS_3_5
-      18L -> POS_4_0
-      19L -> POS_4_5
-      20L -> POS_5_0
+  public companion object : MavEnum.Companion<GoproProtuneExposure> {
+    public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneExposure? = when (v) {
+      0u -> NEG_5_0
+      1u -> NEG_4_5
+      2u -> NEG_4_0
+      3u -> NEG_3_5
+      4u -> NEG_3_0
+      5u -> NEG_2_5
+      6u -> NEG_2_0
+      7u -> NEG_1_5
+      8u -> NEG_1_0
+      9u -> NEG_0_5
+      10u -> ZERO
+      11u -> POS_0_5
+      12u -> POS_1_0
+      13u -> POS_1_5
+      14u -> POS_2_0
+      15u -> POS_2_5
+      16u -> POS_3_0
+      17u -> POS_3_5
+      18u -> POS_4_0
+      19u -> POS_4_5
+      20u -> POS_5_0
       else -> null
     }
   }

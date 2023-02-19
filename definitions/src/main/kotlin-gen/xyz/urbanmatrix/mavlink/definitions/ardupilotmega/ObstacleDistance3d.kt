@@ -2,10 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -17,12 +19,12 @@ import xyz.urbanmatrix.mavlink.definitions.common.MavDistanceSensor
 import xyz.urbanmatrix.mavlink.definitions.common.MavFrame
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -30,31 +32,31 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 11037,
-  crc = 130,
+  id = 11037u,
+  crcExtra = -126,
 )
 public data class ObstacleDistance3d(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Class id of the distance sensor type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0),
+  public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0u),
   /**
    * Coordinate frame of reference.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object
    * ID is unknown or cannot be determined.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val obstacleId: Int = 0,
+  public val obstacleId: UShort = 0u,
   /**
    *  X position of the obstacle.
    */
@@ -85,13 +87,13 @@ public data class ObstacleDistance3d(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeFloat(minDistance)
     outputBuffer.encodeFloat(maxDistance)
-    outputBuffer.encodeUint16(obstacleId)
+    outputBuffer.encodeUInt16(obstacleId)
     outputBuffer.encodeEnumValue(sensorType.value, 1)
     outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array()
@@ -99,22 +101,22 @@ public data class ObstacleDistance3d(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeFloat(minDistance)
     outputBuffer.encodeFloat(maxDistance)
-    outputBuffer.encodeUint16(obstacleId)
+    outputBuffer.encodeUInt16(obstacleId)
     outputBuffer.encodeEnumValue(sensorType.value, 1)
     outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 11037
+    private const val ID: UInt = 11037u
 
-    private const val CRC: Int = 130
+    private const val CRC_EXTRA: Byte = -126
 
     private const val SIZE_V1: Int = 28
 
@@ -122,13 +124,13 @@ public data class ObstacleDistance3d(
 
     private val DESERIALIZER: MavDeserializer<ObstacleDistance3d> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
       val minDistance = inputBuffer.decodeFloat()
       val maxDistance = inputBuffer.decodeFloat()
-      val obstacleId = inputBuffer.decodeUint16()
+      val obstacleId = inputBuffer.decodeUInt16()
       val sensorType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -152,8 +154,8 @@ public data class ObstacleDistance3d(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ObstacleDistance3d> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<ObstacleDistance3d> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
 
@@ -162,13 +164,13 @@ public data class ObstacleDistance3d(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0)
+    public var sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0u)
 
-    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
-    public var obstacleId: Int = 0
+    public var obstacleId: UShort = 0u
 
     public var x: Float = 0F
 

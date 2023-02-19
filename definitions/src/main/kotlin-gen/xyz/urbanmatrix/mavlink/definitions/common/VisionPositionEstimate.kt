@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,27 +17,27 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Local position/attitude estimate from a vision source.
  */
 @GeneratedMavMessage(
-  id = 102,
-  crc = 158,
+  id = 102u,
+  crcExtra = -98,
 )
 public data class VisionPositionEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)
    */
   @GeneratedMavField(type = "uint64_t")
-  public val usec: BigInteger = BigInteger.ZERO,
+  public val usec: ULong = 0uL,
   /**
    * Local X position
    */
@@ -84,13 +87,13 @@ public data class VisionPositionEstimate(
     type = "uint8_t",
     extension = true,
   )
-  public val resetCounter: Int = 0,
+  public val resetCounter: UByte = 0u,
 ) : MavMessage<VisionPositionEstimate> {
   public override val instanceMetadata: MavMessage.Metadata<VisionPositionEstimate> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeUInt64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -102,7 +105,7 @@ public data class VisionPositionEstimate(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeUInt64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -110,14 +113,14 @@ public data class VisionPositionEstimate(
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloatArray(covariance, 84)
-    outputBuffer.encodeUint8(resetCounter)
+    outputBuffer.encodeUInt8(resetCounter)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 102
+    private const val ID: UInt = 102u
 
-    private const val CRC: Int = 158
+    private const val CRC_EXTRA: Byte = -98
 
     private const val SIZE_V1: Int = 32
 
@@ -125,7 +128,7 @@ public data class VisionPositionEstimate(
 
     private val DESERIALIZER: MavDeserializer<VisionPositionEstimate> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val usec = inputBuffer.decodeUint64()
+      val usec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -133,7 +136,7 @@ public data class VisionPositionEstimate(
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
       val covariance = inputBuffer.decodeFloatArray(84)
-      val resetCounter = inputBuffer.decodeUint8()
+      val resetCounter = inputBuffer.decodeUInt8()
 
       VisionPositionEstimate(
         usec = usec,
@@ -149,8 +152,8 @@ public data class VisionPositionEstimate(
     }
 
 
-    private val METADATA: MavMessage.Metadata<VisionPositionEstimate> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<VisionPositionEstimate> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<VisionPositionEstimate> = METADATA
 
@@ -159,7 +162,7 @@ public data class VisionPositionEstimate(
   }
 
   public class Builder {
-    public var usec: BigInteger = BigInteger.ZERO
+    public var usec: ULong = 0uL
 
     public var x: Float = 0F
 
@@ -175,7 +178,7 @@ public data class VisionPositionEstimate(
 
     public var covariance: List<Float> = emptyList()
 
-    public var resetCounter: Int = 0
+    public var resetCounter: UByte = 0u
 
     public fun build(): VisionPositionEstimate = VisionPositionEstimate(
       usec = usec,

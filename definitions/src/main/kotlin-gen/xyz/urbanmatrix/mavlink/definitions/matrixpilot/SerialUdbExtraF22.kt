@@ -2,8 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -17,40 +20,40 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Backwards compatible version of SERIAL_UDB_EXTRA F22 format
  */
 @GeneratedMavMessage(
-  id = 188,
-  crc = 91,
+  id = 188u,
+  crcExtra = 91,
 )
 public data class SerialUdbExtraF22(
   /**
    * SUE X accelerometer at calibration time
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAccelXAtCalibration: Int = 0,
+  public val sueAccelXAtCalibration: Short = 0,
   /**
    * SUE Y accelerometer at calibration time
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAccelYAtCalibration: Int = 0,
+  public val sueAccelYAtCalibration: Short = 0,
   /**
    * SUE Z accelerometer at calibration time
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAccelZAtCalibration: Int = 0,
+  public val sueAccelZAtCalibration: Short = 0,
   /**
    * SUE X gyro at calibration time
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueGyroXAtCalibration: Int = 0,
+  public val sueGyroXAtCalibration: Short = 0,
   /**
    * SUE Y gyro at calibration time
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueGyroYAtCalibration: Int = 0,
+  public val sueGyroYAtCalibration: Short = 0,
   /**
    * SUE Z gyro at calibration time
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueGyroZAtCalibration: Int = 0,
+  public val sueGyroZAtCalibration: Short = 0,
 ) : MavMessage<SerialUdbExtraF22> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF22> = METADATA
 
@@ -77,9 +80,9 @@ public data class SerialUdbExtraF22(
   }
 
   public companion object {
-    private const val ID: Int = 188
+    private const val ID: UInt = 188u
 
-    private const val CRC: Int = 91
+    private const val CRC_EXTRA: Byte = 91
 
     private const val SIZE_V1: Int = 12
 
@@ -105,8 +108,8 @@ public data class SerialUdbExtraF22(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF22> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF22> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF22> = METADATA
 
@@ -115,17 +118,17 @@ public data class SerialUdbExtraF22(
   }
 
   public class Builder {
-    public var sueAccelXAtCalibration: Int = 0
+    public var sueAccelXAtCalibration: Short = 0
 
-    public var sueAccelYAtCalibration: Int = 0
+    public var sueAccelYAtCalibration: Short = 0
 
-    public var sueAccelZAtCalibration: Int = 0
+    public var sueAccelZAtCalibration: Short = 0
 
-    public var sueGyroXAtCalibration: Int = 0
+    public var sueGyroXAtCalibration: Short = 0
 
-    public var sueGyroYAtCalibration: Int = 0
+    public var sueGyroYAtCalibration: Short = 0
 
-    public var sueGyroZAtCalibration: Int = 0
+    public var sueGyroZAtCalibration: Short = 0
 
     public fun build(): SerialUdbExtraF22 = SerialUdbExtraF22(
       sueAccelXAtCalibration = sueAccelXAtCalibration,

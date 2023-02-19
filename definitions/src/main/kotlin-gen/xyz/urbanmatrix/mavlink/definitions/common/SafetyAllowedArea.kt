@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -21,8 +23,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Read out the safety zone the MAV currently assumes.
  */
 @GeneratedMavMessage(
-  id = 55,
-  crc = 3,
+  id = 55u,
+  crcExtra = 3,
 )
 public data class SafetyAllowedArea(
   /**
@@ -30,7 +32,7 @@ public data class SafetyAllowedArea(
    * handed, Z axis down.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * x position 1 / Latitude 1
    */
@@ -89,9 +91,9 @@ public data class SafetyAllowedArea(
   }
 
   public companion object {
-    private const val ID: Int = 55
+    private const val ID: UInt = 55u
 
-    private const val CRC: Int = 3
+    private const val CRC_EXTRA: Byte = 3
 
     private const val SIZE_V1: Int = 25
 
@@ -122,8 +124,8 @@ public data class SafetyAllowedArea(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SafetyAllowedArea> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SafetyAllowedArea> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SafetyAllowedArea> = METADATA
 
@@ -132,7 +134,7 @@ public data class SafetyAllowedArea(
   }
 
   public class Builder {
-    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
     public var p1x: Float = 0F
 

@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -16,11 +17,11 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -29,26 +30,26 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * being controlled this way.
  */
 @GeneratedMavMessage(
-  id = 85,
-  crc = 140,
+  id = 85u,
+  crcExtra = -116,
 )
 public data class PositionTargetLocalNed(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
    * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
    */
   @GeneratedMavField(type = "uint8_t")
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0),
+  public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
    * X Position in NED frame
    */
@@ -109,7 +110,7 @@ public data class PositionTargetLocalNed(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -128,7 +129,7 @@ public data class PositionTargetLocalNed(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -146,9 +147,9 @@ public data class PositionTargetLocalNed(
   }
 
   public companion object {
-    private const val ID: Int = 85
+    private const val ID: UInt = 85u
 
-    private const val CRC: Int = 140
+    private const val CRC_EXTRA: Byte = -116
 
     private const val SIZE_V1: Int = 51
 
@@ -156,7 +157,7 @@ public data class PositionTargetLocalNed(
 
     private val DESERIALIZER: MavDeserializer<PositionTargetLocalNed> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -196,8 +197,8 @@ public data class PositionTargetLocalNed(
     }
 
 
-    private val METADATA: MavMessage.Metadata<PositionTargetLocalNed> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<PositionTargetLocalNed> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<PositionTargetLocalNed> = METADATA
 
@@ -206,11 +207,11 @@ public data class PositionTargetLocalNed(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
-    public var typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0)
+    public var typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0u)
 
     public var x: Float = 0F
 

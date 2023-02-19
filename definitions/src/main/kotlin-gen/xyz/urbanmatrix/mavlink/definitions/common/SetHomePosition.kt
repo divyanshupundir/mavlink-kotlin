@@ -1,12 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,13 +19,13 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -44,15 +47,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 @Deprecated(message =
     "The command protocol version (MAV_CMD_DO_SET_HOME) allows a GCS to detect when setting the home position has failed.")
 @GeneratedMavMessage(
-  id = 243,
-  crc = 85,
+  id = 243u,
+  crcExtra = 85,
 )
 public data class SetHomePosition(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Latitude (WGS84)
    */
@@ -121,7 +124,7 @@ public data class SetHomePosition(
     type = "uint64_t",
     extension = true,
   )
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
 ) : MavMessage<SetHomePosition> {
   public override val instanceMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
 
@@ -137,7 +140,7 @@ public data class SetHomePosition(
     outputBuffer.encodeFloat(approachX)
     outputBuffer.encodeFloat(approachY)
     outputBuffer.encodeFloat(approachZ)
-    outputBuffer.encodeUint8(targetSystem)
+    outputBuffer.encodeUInt8(targetSystem)
     return outputBuffer.array()
   }
 
@@ -153,15 +156,15 @@ public data class SetHomePosition(
     outputBuffer.encodeFloat(approachX)
     outputBuffer.encodeFloat(approachY)
     outputBuffer.encodeFloat(approachZ)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt64(timeUsec)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 243
+    private const val ID: UInt = 243u
 
-    private const val CRC: Int = 85
+    private const val CRC_EXTRA: Byte = 85
 
     private const val SIZE_V1: Int = 53
 
@@ -179,8 +182,8 @@ public data class SetHomePosition(
       val approachX = inputBuffer.decodeFloat()
       val approachY = inputBuffer.decodeFloat()
       val approachZ = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUint8()
-      val timeUsec = inputBuffer.decodeUint64()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val timeUsec = inputBuffer.decodeUInt64()
 
       SetHomePosition(
         targetSystem = targetSystem,
@@ -199,7 +202,7 @@ public data class SetHomePosition(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SetHomePosition> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<SetHomePosition> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
@@ -209,7 +212,7 @@ public data class SetHomePosition(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
     public var latitude: Int = 0
 
@@ -231,7 +234,7 @@ public data class SetHomePosition(
 
     public var approachZ: Float = 0F
 
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public fun build(): SetHomePosition = SetHomePosition(
       targetSystem = targetSystem,

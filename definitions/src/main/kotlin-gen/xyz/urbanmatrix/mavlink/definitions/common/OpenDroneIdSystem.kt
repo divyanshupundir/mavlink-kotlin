@@ -2,10 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -17,17 +20,17 @@ import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -37,38 +40,38 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 12904,
-  crc = 77,
+  id = 12904u,
+  crcExtra = 77,
 )
 public data class OpenDroneIdSystem(
   /**
    * System ID (0 for broadcast).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID (0 for broadcast).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Only used for drone ID data received from other UAs. See detailed description at
    * https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
-  public val idOrMac: List<Int> = emptyList(),
+  public val idOrMac: List<UByte> = emptyList(),
   /**
    * Specifies the operator location type.
    */
   @GeneratedMavField(type = "uint8_t")
   public val operatorLocationType: MavEnumValue<MavOdidOperatorLocationType> =
-      MavEnumValue.fromValue(0),
+      MavEnumValue.fromValue(0u),
   /**
    * Specifies the classification type of the UA.
    */
   @GeneratedMavField(type = "uint8_t")
   public val classificationType: MavEnumValue<MavOdidClassificationType> =
-      MavEnumValue.fromValue(0),
+      MavEnumValue.fromValue(0u),
   /**
    * Latitude of the operator. If unknown: 0 (both Lat/Lon).
    */
@@ -83,12 +86,12 @@ public data class OpenDroneIdSystem(
    * Number of aircraft in the area, group or formation (default 1).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val areaCount: Int = 0,
+  public val areaCount: UShort = 0u,
   /**
    * Radius of the cylindrical area of the group or formation (default 0).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val areaRadius: Int = 0,
+  public val areaRadius: UShort = 0u,
   /**
    * Area Operations Ceiling relative to WGS84. If unknown: -1000 m.
    */
@@ -103,12 +106,12 @@ public data class OpenDroneIdSystem(
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the category of the UA.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0),
+  public val categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0u),
   /**
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class of the UA.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0),
+  public val classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0u),
   /**
    * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
    */
@@ -118,7 +121,7 @@ public data class OpenDroneIdSystem(
    * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timestamp: Long = 0L,
+  public val timestamp: UInt = 0u,
 ) : MavMessage<OpenDroneIdSystem> {
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdSystem> = METADATA
 
@@ -129,12 +132,12 @@ public data class OpenDroneIdSystem(
     outputBuffer.encodeFloat(areaCeiling)
     outputBuffer.encodeFloat(areaFloor)
     outputBuffer.encodeFloat(operatorAltitudeGeo)
-    outputBuffer.encodeUint32(timestamp)
-    outputBuffer.encodeUint16(areaCount)
-    outputBuffer.encodeUint16(areaRadius)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeUInt32(timestamp)
+    outputBuffer.encodeUInt16(areaCount)
+    outputBuffer.encodeUInt16(areaRadius)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(operatorLocationType.value, 1)
     outputBuffer.encodeEnumValue(classificationType.value, 1)
     outputBuffer.encodeEnumValue(categoryEu.value, 1)
@@ -149,12 +152,12 @@ public data class OpenDroneIdSystem(
     outputBuffer.encodeFloat(areaCeiling)
     outputBuffer.encodeFloat(areaFloor)
     outputBuffer.encodeFloat(operatorAltitudeGeo)
-    outputBuffer.encodeUint32(timestamp)
-    outputBuffer.encodeUint16(areaCount)
-    outputBuffer.encodeUint16(areaRadius)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeUInt32(timestamp)
+    outputBuffer.encodeUInt16(areaCount)
+    outputBuffer.encodeUInt16(areaRadius)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(operatorLocationType.value, 1)
     outputBuffer.encodeEnumValue(classificationType.value, 1)
     outputBuffer.encodeEnumValue(categoryEu.value, 1)
@@ -163,9 +166,9 @@ public data class OpenDroneIdSystem(
   }
 
   public companion object {
-    private const val ID: Int = 12904
+    private const val ID: UInt = 12904u
 
-    private const val CRC: Int = 77
+    private const val CRC_EXTRA: Byte = 77
 
     private const val SIZE_V1: Int = 54
 
@@ -178,12 +181,12 @@ public data class OpenDroneIdSystem(
       val areaCeiling = inputBuffer.decodeFloat()
       val areaFloor = inputBuffer.decodeFloat()
       val operatorAltitudeGeo = inputBuffer.decodeFloat()
-      val timestamp = inputBuffer.decodeUint32()
-      val areaCount = inputBuffer.decodeUint16()
-      val areaRadius = inputBuffer.decodeUint16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val idOrMac = inputBuffer.decodeUint8Array(20)
+      val timestamp = inputBuffer.decodeUInt32()
+      val areaCount = inputBuffer.decodeUInt16()
+      val areaRadius = inputBuffer.decodeUInt16()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val idOrMac = inputBuffer.decodeUInt8Array(20)
       val operatorLocationType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidOperatorLocationType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -221,8 +224,8 @@ public data class OpenDroneIdSystem(
     }
 
 
-    private val METADATA: MavMessage.Metadata<OpenDroneIdSystem> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<OpenDroneIdSystem> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdSystem> = METADATA
 
@@ -231,37 +234,37 @@ public data class OpenDroneIdSystem(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var idOrMac: List<Int> = emptyList()
+    public var idOrMac: List<UByte> = emptyList()
 
     public var operatorLocationType: MavEnumValue<MavOdidOperatorLocationType> =
-        MavEnumValue.fromValue(0)
+        MavEnumValue.fromValue(0u)
 
     public var classificationType: MavEnumValue<MavOdidClassificationType> =
-        MavEnumValue.fromValue(0)
+        MavEnumValue.fromValue(0u)
 
     public var operatorLatitude: Int = 0
 
     public var operatorLongitude: Int = 0
 
-    public var areaCount: Int = 0
+    public var areaCount: UShort = 0u
 
-    public var areaRadius: Int = 0
+    public var areaRadius: UShort = 0u
 
     public var areaCeiling: Float = 0F
 
     public var areaFloor: Float = 0F
 
-    public var categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0)
+    public var categoryEu: MavEnumValue<MavOdidCategoryEu> = MavEnumValue.fromValue(0u)
 
-    public var classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0)
+    public var classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0u)
 
     public var operatorAltitudeGeo: Float = 0F
 
-    public var timestamp: Long = 0L
+    public var timestamp: UInt = 0u
 
     public fun build(): OpenDroneIdSystem = OpenDroneIdSystem(
       targetSystem = targetSystem,

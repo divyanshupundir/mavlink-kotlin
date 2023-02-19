@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,102 +10,102 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class SerialControlDev(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * First telemetry port
    */
   @GeneratedMavEnumEntry
-  TELEM1(0L),
+  TELEM1(0u),
   /**
    * Second telemetry port
    */
   @GeneratedMavEnumEntry
-  TELEM2(1L),
+  TELEM2(1u),
   /**
    * First GPS port
    */
   @GeneratedMavEnumEntry
-  GPS1(2L),
+  GPS1(2u),
   /**
    * Second GPS port
    */
   @GeneratedMavEnumEntry
-  GPS2(3L),
+  GPS2(3u),
   /**
    * system shell
    */
   @GeneratedMavEnumEntry
-  SHELL(10L),
+  SHELL(10u),
   /**
    * SERIAL0
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL0(100L),
+  SERIAL_CONTROL_SERIAL0(100u),
   /**
    * SERIAL1
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL1(101L),
+  SERIAL_CONTROL_SERIAL1(101u),
   /**
    * SERIAL2
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL2(102L),
+  SERIAL_CONTROL_SERIAL2(102u),
   /**
    * SERIAL3
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL3(103L),
+  SERIAL_CONTROL_SERIAL3(103u),
   /**
    * SERIAL4
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL4(104L),
+  SERIAL_CONTROL_SERIAL4(104u),
   /**
    * SERIAL5
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL5(105L),
+  SERIAL_CONTROL_SERIAL5(105u),
   /**
    * SERIAL6
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL6(106L),
+  SERIAL_CONTROL_SERIAL6(106u),
   /**
    * SERIAL7
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL7(107L),
+  SERIAL_CONTROL_SERIAL7(107u),
   /**
    * SERIAL8
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL8(108L),
+  SERIAL_CONTROL_SERIAL8(108u),
   /**
    * SERIAL9
    */
   @GeneratedMavEnumEntry
-  SERIAL_CONTROL_SERIAL9(109L),
+  SERIAL_CONTROL_SERIAL9(109u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): SerialControlDev? = when (v) {
-      0L -> TELEM1
-      1L -> TELEM2
-      2L -> GPS1
-      3L -> GPS2
-      10L -> SHELL
-      100L -> SERIAL_CONTROL_SERIAL0
-      101L -> SERIAL_CONTROL_SERIAL1
-      102L -> SERIAL_CONTROL_SERIAL2
-      103L -> SERIAL_CONTROL_SERIAL3
-      104L -> SERIAL_CONTROL_SERIAL4
-      105L -> SERIAL_CONTROL_SERIAL5
-      106L -> SERIAL_CONTROL_SERIAL6
-      107L -> SERIAL_CONTROL_SERIAL7
-      108L -> SERIAL_CONTROL_SERIAL8
-      109L -> SERIAL_CONTROL_SERIAL9
+  public companion object : MavEnum.Companion<SerialControlDev> {
+    public override fun getEntryFromValueOrNull(v: UInt): SerialControlDev? = when (v) {
+      0u -> TELEM1
+      1u -> TELEM2
+      2u -> GPS1
+      3u -> GPS2
+      10u -> SHELL
+      100u -> SERIAL_CONTROL_SERIAL0
+      101u -> SERIAL_CONTROL_SERIAL1
+      102u -> SERIAL_CONTROL_SERIAL2
+      103u -> SERIAL_CONTROL_SERIAL3
+      104u -> SERIAL_CONTROL_SERIAL4
+      105u -> SERIAL_CONTROL_SERIAL5
+      106u -> SERIAL_CONTROL_SERIAL6
+      107u -> SERIAL_CONTROL_SERIAL7
+      108u -> SERIAL_CONTROL_SERIAL8
+      109u -> SERIAL_CONTROL_SERIAL9
       else -> null
     }
   }

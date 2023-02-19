@@ -29,7 +29,7 @@ internal class StreamMavConnection(
 
     private val reader = inputStream.mavRawFrameReader()
 
-    private var sequence = 0
+    private var sequence: UByte = 0u
 
     @Throws(IOException::class)
     override fun connect() {}
@@ -72,14 +72,14 @@ internal class StreamMavConnection(
         rawFrame: MavRawFrame,
     ): MavMessage.Metadata<out MavMessage<*>>? {
         val metadata = dialect.resolveMetadataOrNull(rawFrame.messageId) ?: return null
-        if (!rawFrame.validateCrc(metadata.crc)) return null
+        if (!rawFrame.validateCrc(metadata.crcExtra)) return null
         return metadata
     }
 
     @Throws(IOException::class)
     override fun <T : MavMessage<T>> sendV1(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T
     ) {
         send(
@@ -89,15 +89,15 @@ internal class StreamMavConnection(
                 componentId,
                 payload.instanceMetadata.id,
                 payload.serializeV1(),
-                payload.instanceMetadata.crc,
+                payload.instanceMetadata.crcExtra,
             )
         )
     }
 
     @Throws(IOException::class)
     override fun <T : MavMessage<T>> sendUnsignedV2(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T
     ) {
         send(
@@ -107,18 +107,18 @@ internal class StreamMavConnection(
                 componentId,
                 payload.instanceMetadata.id,
                 payload.serializeV2(),
-                payload.instanceMetadata.crc,
+                payload.instanceMetadata.crcExtra,
             )
         )
     }
 
     @Throws(IOException::class)
     override fun <T : MavMessage<T>> sendSignedV2(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T,
-        linkId: Int,
-        timestamp: Long,
+        linkId: UByte,
+        timestamp: UInt,
         secretKey: ByteArray
     ) {
         send(
@@ -128,7 +128,7 @@ internal class StreamMavConnection(
                 componentId,
                 payload.instanceMetadata.id,
                 payload.serializeV2(),
-                payload.instanceMetadata.crc,
+                payload.instanceMetadata.crcExtra,
                 linkId,
                 timestamp,
                 secretKey

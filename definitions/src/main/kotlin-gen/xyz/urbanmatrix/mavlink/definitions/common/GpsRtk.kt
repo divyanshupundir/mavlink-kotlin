@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,65 +16,65 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * RTK GPS data. Gives information on the relative baseline calculation the GPS is reporting
  */
 @GeneratedMavMessage(
-  id = 127,
-  crc = 25,
+  id = 127u,
+  crcExtra = 25,
 )
 public data class GpsRtk(
   /**
    * Time since boot of last baseline message received.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeLastBaselineMs: Long = 0L,
+  public val timeLastBaselineMs: UInt = 0u,
   /**
    * Identification of connected RTK receiver.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rtkReceiverId: Int = 0,
+  public val rtkReceiverId: UByte = 0u,
   /**
    * GPS Week Number of last baseline
    */
   @GeneratedMavField(type = "uint16_t")
-  public val wn: Int = 0,
+  public val wn: UShort = 0u,
   /**
    * GPS Time of Week of last baseline
    */
   @GeneratedMavField(type = "uint32_t")
-  public val tow: Long = 0L,
+  public val tow: UInt = 0u,
   /**
    * GPS-specific health report for RTK data.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rtkHealth: Int = 0,
+  public val rtkHealth: UByte = 0u,
   /**
    * Rate of baseline messages being received by GPS
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rtkRate: Int = 0,
+  public val rtkRate: UByte = 0u,
   /**
    * Current number of sats used for RTK calculation.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val nsats: Int = 0,
+  public val nsats: UByte = 0u,
   /**
    * Coordinate system of baseline
    */
   @GeneratedMavField(type = "uint8_t")
   public val baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
-      MavEnumValue.fromValue(0),
+      MavEnumValue.fromValue(0u),
   /**
    * Current baseline in ECEF x or NED north component.
    */
@@ -91,7 +94,7 @@ public data class GpsRtk(
    * Current estimate of baseline accuracy.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val accuracy: Long = 0L,
+  public val accuracy: UInt = 0u,
   /**
    * Current number of integer ambiguity hypotheses.
    */
@@ -102,44 +105,44 @@ public data class GpsRtk(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeLastBaselineMs)
-    outputBuffer.encodeUint32(tow)
+    outputBuffer.encodeUInt32(timeLastBaselineMs)
+    outputBuffer.encodeUInt32(tow)
     outputBuffer.encodeInt32(baselineAMm)
     outputBuffer.encodeInt32(baselineBMm)
     outputBuffer.encodeInt32(baselineCMm)
-    outputBuffer.encodeUint32(accuracy)
+    outputBuffer.encodeUInt32(accuracy)
     outputBuffer.encodeInt32(iarNumHypotheses)
-    outputBuffer.encodeUint16(wn)
-    outputBuffer.encodeUint8(rtkReceiverId)
-    outputBuffer.encodeUint8(rtkHealth)
-    outputBuffer.encodeUint8(rtkRate)
-    outputBuffer.encodeUint8(nsats)
+    outputBuffer.encodeUInt16(wn)
+    outputBuffer.encodeUInt8(rtkReceiverId)
+    outputBuffer.encodeUInt8(rtkHealth)
+    outputBuffer.encodeUInt8(rtkRate)
+    outputBuffer.encodeUInt8(nsats)
     outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeLastBaselineMs)
-    outputBuffer.encodeUint32(tow)
+    outputBuffer.encodeUInt32(timeLastBaselineMs)
+    outputBuffer.encodeUInt32(tow)
     outputBuffer.encodeInt32(baselineAMm)
     outputBuffer.encodeInt32(baselineBMm)
     outputBuffer.encodeInt32(baselineCMm)
-    outputBuffer.encodeUint32(accuracy)
+    outputBuffer.encodeUInt32(accuracy)
     outputBuffer.encodeInt32(iarNumHypotheses)
-    outputBuffer.encodeUint16(wn)
-    outputBuffer.encodeUint8(rtkReceiverId)
-    outputBuffer.encodeUint8(rtkHealth)
-    outputBuffer.encodeUint8(rtkRate)
-    outputBuffer.encodeUint8(nsats)
+    outputBuffer.encodeUInt16(wn)
+    outputBuffer.encodeUInt8(rtkReceiverId)
+    outputBuffer.encodeUInt8(rtkHealth)
+    outputBuffer.encodeUInt8(rtkRate)
+    outputBuffer.encodeUInt8(nsats)
     outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 127
+    private const val ID: UInt = 127u
 
-    private const val CRC: Int = 25
+    private const val CRC_EXTRA: Byte = 25
 
     private const val SIZE_V1: Int = 35
 
@@ -147,18 +150,18 @@ public data class GpsRtk(
 
     private val DESERIALIZER: MavDeserializer<GpsRtk> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeLastBaselineMs = inputBuffer.decodeUint32()
-      val tow = inputBuffer.decodeUint32()
+      val timeLastBaselineMs = inputBuffer.decodeUInt32()
+      val tow = inputBuffer.decodeUInt32()
       val baselineAMm = inputBuffer.decodeInt32()
       val baselineBMm = inputBuffer.decodeInt32()
       val baselineCMm = inputBuffer.decodeInt32()
-      val accuracy = inputBuffer.decodeUint32()
+      val accuracy = inputBuffer.decodeUInt32()
       val iarNumHypotheses = inputBuffer.decodeInt32()
-      val wn = inputBuffer.decodeUint16()
-      val rtkReceiverId = inputBuffer.decodeUint8()
-      val rtkHealth = inputBuffer.decodeUint8()
-      val rtkRate = inputBuffer.decodeUint8()
-      val nsats = inputBuffer.decodeUint8()
+      val wn = inputBuffer.decodeUInt16()
+      val rtkReceiverId = inputBuffer.decodeUInt8()
+      val rtkHealth = inputBuffer.decodeUInt8()
+      val rtkRate = inputBuffer.decodeUInt8()
+      val nsats = inputBuffer.decodeUInt8()
       val baselineCoordsType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = RtkBaselineCoordinateSystem.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -182,7 +185,8 @@ public data class GpsRtk(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GpsRtk> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<GpsRtk> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsRtk> = METADATA
 
@@ -191,22 +195,22 @@ public data class GpsRtk(
   }
 
   public class Builder {
-    public var timeLastBaselineMs: Long = 0L
+    public var timeLastBaselineMs: UInt = 0u
 
-    public var rtkReceiverId: Int = 0
+    public var rtkReceiverId: UByte = 0u
 
-    public var wn: Int = 0
+    public var wn: UShort = 0u
 
-    public var tow: Long = 0L
+    public var tow: UInt = 0u
 
-    public var rtkHealth: Int = 0
+    public var rtkHealth: UByte = 0u
 
-    public var rtkRate: Int = 0
+    public var rtkRate: UByte = 0u
 
-    public var nsats: Int = 0
+    public var nsats: UByte = 0u
 
     public var baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
-        MavEnumValue.fromValue(0)
+        MavEnumValue.fromValue(0u)
 
     public var baselineAMm: Int = 0
 
@@ -214,7 +218,7 @@ public data class GpsRtk(
 
     public var baselineCMm: Int = 0
 
-    public var accuracy: Long = 0L
+    public var accuracy: UInt = 0u
 
     public var iarNumHypotheses: Int = 0
 

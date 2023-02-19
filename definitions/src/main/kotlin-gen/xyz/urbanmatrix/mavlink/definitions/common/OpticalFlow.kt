@@ -1,11 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,20 +17,20 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
  */
 @GeneratedMavMessage(
-  id = 100,
-  crc = 175,
+  id = 100u,
+  crcExtra = -81,
 )
 public data class OpticalFlow(
   /**
@@ -34,22 +38,22 @@ public data class OpticalFlow(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Sensor ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sensorId: Int = 0,
+  public val sensorId: UByte = 0u,
   /**
    * Flow in x-sensor direction
    */
   @GeneratedMavField(type = "int16_t")
-  public val flowX: Int = 0,
+  public val flowX: Short = 0,
   /**
    * Flow in y-sensor direction
    */
   @GeneratedMavField(type = "int16_t")
-  public val flowY: Int = 0,
+  public val flowY: Short = 0,
   /**
    * Flow in x-sensor direction, angular-speed compensated
    */
@@ -64,7 +68,7 @@ public data class OpticalFlow(
    * Optical flow quality / confidence. 0: bad, 255: maximum quality
    */
   @GeneratedMavField(type = "uint8_t")
-  public val quality: Int = 0,
+  public val quality: UByte = 0u,
   /**
    * Ground distance. Positive value: distance known. Negative value: Unknown distance
    */
@@ -91,36 +95,36 @@ public data class OpticalFlow(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(flowCompMX)
     outputBuffer.encodeFloat(flowCompMY)
     outputBuffer.encodeFloat(groundDistance)
     outputBuffer.encodeInt16(flowX)
     outputBuffer.encodeInt16(flowY)
-    outputBuffer.encodeUint8(sensorId)
-    outputBuffer.encodeUint8(quality)
+    outputBuffer.encodeUInt8(sensorId)
+    outputBuffer.encodeUInt8(quality)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(flowCompMX)
     outputBuffer.encodeFloat(flowCompMY)
     outputBuffer.encodeFloat(groundDistance)
     outputBuffer.encodeInt16(flowX)
     outputBuffer.encodeInt16(flowY)
-    outputBuffer.encodeUint8(sensorId)
-    outputBuffer.encodeUint8(quality)
+    outputBuffer.encodeUInt8(sensorId)
+    outputBuffer.encodeUInt8(quality)
     outputBuffer.encodeFloat(flowRateX)
     outputBuffer.encodeFloat(flowRateY)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 100
+    private const val ID: UInt = 100u
 
-    private const val CRC: Int = 175
+    private const val CRC_EXTRA: Byte = -81
 
     private const val SIZE_V1: Int = 26
 
@@ -128,14 +132,14 @@ public data class OpticalFlow(
 
     private val DESERIALIZER: MavDeserializer<OpticalFlow> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val flowCompMX = inputBuffer.decodeFloat()
       val flowCompMY = inputBuffer.decodeFloat()
       val groundDistance = inputBuffer.decodeFloat()
       val flowX = inputBuffer.decodeInt16()
       val flowY = inputBuffer.decodeInt16()
-      val sensorId = inputBuffer.decodeUint8()
-      val quality = inputBuffer.decodeUint8()
+      val sensorId = inputBuffer.decodeUInt8()
+      val quality = inputBuffer.decodeUInt8()
       val flowRateX = inputBuffer.decodeFloat()
       val flowRateY = inputBuffer.decodeFloat()
 
@@ -154,7 +158,7 @@ public data class OpticalFlow(
     }
 
 
-    private val METADATA: MavMessage.Metadata<OpticalFlow> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<OpticalFlow> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpticalFlow> = METADATA
@@ -164,19 +168,19 @@ public data class OpticalFlow(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var sensorId: Int = 0
+    public var sensorId: UByte = 0u
 
-    public var flowX: Int = 0
+    public var flowX: Short = 0
 
-    public var flowY: Int = 0
+    public var flowY: Short = 0
 
     public var flowCompMX: Float = 0F
 
     public var flowCompMY: Float = 0F
 
-    public var quality: Int = 0
+    public var quality: UByte = 0u
 
     public var groundDistance: Float = 0F
 

@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -23,25 +26,25 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * calibration process.
  */
 @GeneratedMavMessage(
-  id = 150,
-  crc = 134,
+  id = 150u,
+  crcExtra = -122,
 )
 public data class SensorOffsets(
   /**
    * Magnetometer X offset.
    */
   @GeneratedMavField(type = "int16_t")
-  public val magOfsX: Int = 0,
+  public val magOfsX: Short = 0,
   /**
    * Magnetometer Y offset.
    */
   @GeneratedMavField(type = "int16_t")
-  public val magOfsY: Int = 0,
+  public val magOfsY: Short = 0,
   /**
    * Magnetometer Z offset.
    */
   @GeneratedMavField(type = "int16_t")
-  public val magOfsZ: Int = 0,
+  public val magOfsZ: Short = 0,
   /**
    * Magnetic declination.
    */
@@ -125,9 +128,9 @@ public data class SensorOffsets(
   }
 
   public companion object {
-    private const val ID: Int = 150
+    private const val ID: UInt = 150u
 
-    private const val CRC: Int = 134
+    private const val CRC_EXTRA: Byte = -122
 
     private const val SIZE_V1: Int = 42
 
@@ -165,7 +168,7 @@ public data class SensorOffsets(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SensorOffsets> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<SensorOffsets> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensorOffsets> = METADATA
@@ -175,11 +178,11 @@ public data class SensorOffsets(
   }
 
   public class Builder {
-    public var magOfsX: Int = 0
+    public var magOfsX: Short = 0
 
-    public var magOfsY: Int = 0
+    public var magOfsY: Short = 0
 
-    public var magOfsZ: Int = 0
+    public var magOfsZ: Short = 0
 
     public var magDeclination: Float = 0F
 

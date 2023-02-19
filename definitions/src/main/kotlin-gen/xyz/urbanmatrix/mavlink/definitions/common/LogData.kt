@@ -2,78 +2,81 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Reply to LOG_REQUEST_DATA
  */
 @GeneratedMavMessage(
-  id = 120,
-  crc = 134,
+  id = 120u,
+  crcExtra = -122,
 )
 public data class LogData(
   /**
    * Log id (from LOG_ENTRY reply)
    */
   @GeneratedMavField(type = "uint16_t")
-  public val id: Int = 0,
+  public val id: UShort = 0u,
   /**
    * Offset into the log
    */
   @GeneratedMavField(type = "uint32_t")
-  public val ofs: Long = 0L,
+  public val ofs: UInt = 0u,
   /**
    * Number of bytes (zero for end of log)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * log data
    */
   @GeneratedMavField(type = "uint8_t[90]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<LogData> {
   public override val instanceMetadata: MavMessage.Metadata<LogData> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(ofs)
-    outputBuffer.encodeUint16(id)
-    outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint8Array(data, 90)
+    outputBuffer.encodeUInt32(ofs)
+    outputBuffer.encodeUInt16(id)
+    outputBuffer.encodeUInt8(count)
+    outputBuffer.encodeUInt8Array(data, 90)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(ofs)
-    outputBuffer.encodeUint16(id)
-    outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint8Array(data, 90)
+    outputBuffer.encodeUInt32(ofs)
+    outputBuffer.encodeUInt16(id)
+    outputBuffer.encodeUInt8(count)
+    outputBuffer.encodeUInt8Array(data, 90)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 120
+    private const val ID: UInt = 120u
 
-    private const val CRC: Int = 134
+    private const val CRC_EXTRA: Byte = -122
 
     private const val SIZE_V1: Int = 97
 
@@ -81,10 +84,10 @@ public data class LogData(
 
     private val DESERIALIZER: MavDeserializer<LogData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val ofs = inputBuffer.decodeUint32()
-      val id = inputBuffer.decodeUint16()
-      val count = inputBuffer.decodeUint8()
-      val data = inputBuffer.decodeUint8Array(90)
+      val ofs = inputBuffer.decodeUInt32()
+      val id = inputBuffer.decodeUInt16()
+      val count = inputBuffer.decodeUInt8()
+      val data = inputBuffer.decodeUInt8Array(90)
 
       LogData(
         id = id,
@@ -95,7 +98,8 @@ public data class LogData(
     }
 
 
-    private val METADATA: MavMessage.Metadata<LogData> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<LogData> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LogData> = METADATA
 
@@ -104,13 +108,13 @@ public data class LogData(
   }
 
   public class Builder {
-    public var id: Int = 0
+    public var id: UShort = 0u
 
-    public var ofs: Long = 0L
+    public var ofs: UInt = 0u
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<UByte> = emptyList()
 
     public fun build(): LogData = LogData(
       id = id,

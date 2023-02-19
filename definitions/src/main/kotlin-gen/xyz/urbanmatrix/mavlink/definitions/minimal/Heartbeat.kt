@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.minimal
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,12 +16,12 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -29,8 +31,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html
  */
 @GeneratedMavMessage(
-  id = 0,
-  crc = 50,
+  id = 0u,
+  crcExtra = 50,
 )
 public data class Heartbeat(
   /**
@@ -39,63 +41,63 @@ public data class Heartbeat(
    * should be used in preference to component id for identifying the component type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0u),
   /**
    * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight
    * controllers.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0),
+  public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0u),
   /**
    * System mode bitmap.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0),
+  public val baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0u),
   /**
    * A bitfield for use for autopilot-specific flags
    */
   @GeneratedMavField(type = "uint32_t")
-  public val customMode: Long = 0L,
+  public val customMode: UInt = 0u,
   /**
    * System status flag.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0),
+  public val systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0u),
   /**
    * MAVLink version, not writable by user, gets added by protocol because of magic data type:
    * uint8_t_mavlink_version
    */
   @GeneratedMavField(type = "uint8_t_mavlink_version")
-  public val mavlinkVersion: Int = 0,
+  public val mavlinkVersion: UByte = 0u,
 ) : MavMessage<Heartbeat> {
   public override val instanceMetadata: MavMessage.Metadata<Heartbeat> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(customMode)
+    outputBuffer.encodeUInt32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
     outputBuffer.encodeBitmaskValue(baseMode.value, 1)
     outputBuffer.encodeEnumValue(systemStatus.value, 1)
-    outputBuffer.encodeUint8(mavlinkVersion)
+    outputBuffer.encodeUInt8(mavlinkVersion)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(customMode)
+    outputBuffer.encodeUInt32(customMode)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
     outputBuffer.encodeBitmaskValue(baseMode.value, 1)
     outputBuffer.encodeEnumValue(systemStatus.value, 1)
-    outputBuffer.encodeUint8(mavlinkVersion)
+    outputBuffer.encodeUInt8(mavlinkVersion)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 0
+    private const val ID: UInt = 0u
 
-    private const val CRC: Int = 50
+    private const val CRC_EXTRA: Byte = 50
 
     private const val SIZE_V1: Int = 9
 
@@ -103,7 +105,7 @@ public data class Heartbeat(
 
     private val DESERIALIZER: MavDeserializer<Heartbeat> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val customMode = inputBuffer.decodeUint32()
+      val customMode = inputBuffer.decodeUInt32()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -120,7 +122,7 @@ public data class Heartbeat(
         val entry = MavState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val mavlinkVersion = inputBuffer.decodeUint8()
+      val mavlinkVersion = inputBuffer.decodeUInt8()
 
       Heartbeat(
         type = type,
@@ -133,7 +135,7 @@ public data class Heartbeat(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Heartbeat> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Heartbeat> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Heartbeat> = METADATA
@@ -143,17 +145,17 @@ public data class Heartbeat(
   }
 
   public class Builder {
-    public var type: MavEnumValue<MavType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<MavType> = MavEnumValue.fromValue(0u)
 
-    public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0)
+    public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0u)
 
-    public var baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0)
+    public var baseMode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0u)
 
-    public var customMode: Long = 0L
+    public var customMode: UInt = 0u
 
-    public var systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0)
+    public var systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0u)
 
-    public var mavlinkVersion: Int = 0
+    public var mavlinkVersion: UByte = 0u
 
     public fun build(): Heartbeat = Heartbeat(
       type = type,

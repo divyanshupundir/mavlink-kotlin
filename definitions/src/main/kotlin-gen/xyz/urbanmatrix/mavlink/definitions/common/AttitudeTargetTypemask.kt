@@ -1,10 +1,11 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b00000000
@@ -12,58 +13,59 @@ import xyz.urbanmatrix.mavlink.api.MavBitmask
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AttitudeTargetTypemask(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Ignore body roll rate
    */
   @GeneratedMavEnumEntry
-  BODY_ROLL_RATE_IGNORE(1L),
+  BODY_ROLL_RATE_IGNORE(1u),
   /**
    * Ignore body pitch rate
    */
   @GeneratedMavEnumEntry
-  BODY_PITCH_RATE_IGNORE(2L),
+  BODY_PITCH_RATE_IGNORE(2u),
   /**
    * Ignore body yaw rate
    */
   @GeneratedMavEnumEntry
-  BODY_YAW_RATE_IGNORE(4L),
+  BODY_YAW_RATE_IGNORE(4u),
   /**
    * Use 3D body thrust setpoint instead of throttle
    */
   @GeneratedMavEnumEntry
-  THRUST_BODY_SET(32L),
+  THRUST_BODY_SET(32u),
   /**
    * Ignore throttle
    */
   @GeneratedMavEnumEntry
-  THROTTLE_IGNORE(64L),
+  THROTTLE_IGNORE(64u),
   /**
    * Ignore attitude
    */
   @GeneratedMavEnumEntry
-  ATTITUDE_IGNORE(128L),
+  ATTITUDE_IGNORE(128u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AttitudeTargetTypemask? = when (v) {
-      1L -> BODY_ROLL_RATE_IGNORE
-      2L -> BODY_PITCH_RATE_IGNORE
-      4L -> BODY_YAW_RATE_IGNORE
-      32L -> THRUST_BODY_SET
-      64L -> THROTTLE_IGNORE
-      128L -> ATTITUDE_IGNORE
+  public companion object : MavEnum.Companion<AttitudeTargetTypemask>,
+      MavBitmask.Companion<AttitudeTargetTypemask> {
+    public override fun getEntryFromValueOrNull(v: UInt): AttitudeTargetTypemask? = when (v) {
+      1u -> BODY_ROLL_RATE_IGNORE
+      2u -> BODY_PITCH_RATE_IGNORE
+      4u -> BODY_YAW_RATE_IGNORE
+      32u -> THRUST_BODY_SET
+      64u -> THROTTLE_IGNORE
+      128u -> ATTITUDE_IGNORE
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<AttitudeTargetTypemask> = buildList {
-      if (v and 1L == 1L) add(BODY_ROLL_RATE_IGNORE)
-      if (v and 2L == 2L) add(BODY_PITCH_RATE_IGNORE)
-      if (v and 4L == 4L) add(BODY_YAW_RATE_IGNORE)
-      if (v and 32L == 32L) add(THRUST_BODY_SET)
-      if (v and 64L == 64L) add(THROTTLE_IGNORE)
-      if (v and 128L == 128L) add(ATTITUDE_IGNORE)
+    public override fun getFlagsFromValue(v: UInt): List<AttitudeTargetTypemask> = buildList {
+      if (v and 1u == 1u) add(BODY_ROLL_RATE_IGNORE)
+      if (v and 2u == 2u) add(BODY_PITCH_RATE_IGNORE)
+      if (v and 4u == 4u) add(BODY_YAW_RATE_IGNORE)
+      if (v and 32u == 32u) add(THRUST_BODY_SET)
+      if (v and 64u == 64u) add(THROTTLE_IGNORE)
+      if (v and 128u == 128u) add(ATTITUDE_IGNORE)
     }
   }
 }

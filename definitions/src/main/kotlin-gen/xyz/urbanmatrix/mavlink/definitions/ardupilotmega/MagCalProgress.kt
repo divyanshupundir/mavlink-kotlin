@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,52 +18,52 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.definitions.common.MagCalStatus
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Reports progress of compass calibration.
  */
 @GeneratedMavMessage(
-  id = 191,
-  crc = 92,
+  id = 191u,
+  crcExtra = 92,
 )
 public data class MagCalProgress(
   /**
    * Compass being calibrated.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val compassId: Int = 0,
+  public val compassId: UByte = 0u,
   /**
    * Bitmask of compasses being calibrated.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val calMask: Int = 0,
+  public val calMask: UByte = 0u,
   /**
    * Calibration Status.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0),
+  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0u),
   /**
    * Attempt number.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val attempt: Int = 0,
+  public val attempt: UByte = 0u,
   /**
    * Completion percentage.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val completionPct: Int = 0,
+  public val completionPct: UByte = 0u,
   /**
    * Bitmask of sphere sections (see http://en.wikipedia.org/wiki/Geodesic_grid).
    */
   @GeneratedMavField(type = "uint8_t[10]")
-  public val completionMask: List<Int> = emptyList(),
+  public val completionMask: List<UByte> = emptyList(),
   /**
    * Body frame direction vector for display.
    */
@@ -84,12 +87,12 @@ public data class MagCalProgress(
     outputBuffer.encodeFloat(directionX)
     outputBuffer.encodeFloat(directionY)
     outputBuffer.encodeFloat(directionZ)
-    outputBuffer.encodeUint8(compassId)
-    outputBuffer.encodeUint8(calMask)
+    outputBuffer.encodeUInt8(compassId)
+    outputBuffer.encodeUInt8(calMask)
     outputBuffer.encodeEnumValue(calStatus.value, 1)
-    outputBuffer.encodeUint8(attempt)
-    outputBuffer.encodeUint8(completionPct)
-    outputBuffer.encodeUint8Array(completionMask, 10)
+    outputBuffer.encodeUInt8(attempt)
+    outputBuffer.encodeUInt8(completionPct)
+    outputBuffer.encodeUInt8Array(completionMask, 10)
     return outputBuffer.array()
   }
 
@@ -98,19 +101,19 @@ public data class MagCalProgress(
     outputBuffer.encodeFloat(directionX)
     outputBuffer.encodeFloat(directionY)
     outputBuffer.encodeFloat(directionZ)
-    outputBuffer.encodeUint8(compassId)
-    outputBuffer.encodeUint8(calMask)
+    outputBuffer.encodeUInt8(compassId)
+    outputBuffer.encodeUInt8(calMask)
     outputBuffer.encodeEnumValue(calStatus.value, 1)
-    outputBuffer.encodeUint8(attempt)
-    outputBuffer.encodeUint8(completionPct)
-    outputBuffer.encodeUint8Array(completionMask, 10)
+    outputBuffer.encodeUInt8(attempt)
+    outputBuffer.encodeUInt8(completionPct)
+    outputBuffer.encodeUInt8Array(completionMask, 10)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 191
+    private const val ID: UInt = 191u
 
-    private const val CRC: Int = 92
+    private const val CRC_EXTRA: Byte = 92
 
     private const val SIZE_V1: Int = 27
 
@@ -121,15 +124,15 @@ public data class MagCalProgress(
       val directionX = inputBuffer.decodeFloat()
       val directionY = inputBuffer.decodeFloat()
       val directionZ = inputBuffer.decodeFloat()
-      val compassId = inputBuffer.decodeUint8()
-      val calMask = inputBuffer.decodeUint8()
+      val compassId = inputBuffer.decodeUInt8()
+      val calMask = inputBuffer.decodeUInt8()
       val calStatus = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MagCalStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val attempt = inputBuffer.decodeUint8()
-      val completionPct = inputBuffer.decodeUint8()
-      val completionMask = inputBuffer.decodeUint8Array(10)
+      val attempt = inputBuffer.decodeUInt8()
+      val completionPct = inputBuffer.decodeUInt8()
+      val completionMask = inputBuffer.decodeUInt8Array(10)
 
       MagCalProgress(
         compassId = compassId,
@@ -145,7 +148,7 @@ public data class MagCalProgress(
     }
 
 
-    private val METADATA: MavMessage.Metadata<MagCalProgress> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<MagCalProgress> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MagCalProgress> = METADATA
@@ -155,17 +158,17 @@ public data class MagCalProgress(
   }
 
   public class Builder {
-    public var compassId: Int = 0
+    public var compassId: UByte = 0u
 
-    public var calMask: Int = 0
+    public var calMask: UByte = 0u
 
-    public var calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0)
+    public var calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0u)
 
-    public var attempt: Int = 0
+    public var attempt: UByte = 0u
 
-    public var completionPct: Int = 0
+    public var completionPct: UByte = 0u
 
-    public var completionMask: List<Int> = emptyList()
+    public var completionMask: List<UByte> = emptyList()
 
     public var directionX: Float = 0F
 

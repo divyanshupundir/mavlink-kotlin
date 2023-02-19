@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -12,7 +12,7 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class CompMetadataType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * General information about the component. General metadata includes information about other
@@ -20,42 +20,42 @@ public enum class CompMetadataType(
    * downloadable from vehicle using a MAVLink FTP URI.
    */
   @GeneratedMavEnumEntry
-  GENERAL(0L),
+  GENERAL(0u),
   /**
    * Parameter meta data.
    */
   @GeneratedMavEnumEntry
-  PARAMETER(1L),
+  PARAMETER(1u),
   /**
    * Meta data that specifies which commands and command parameters the vehicle supports. (WIP)
    */
   @GeneratedMavEnumEntry
-  COMMANDS(2L),
+  COMMANDS(2u),
   /**
    * Meta data that specifies external non-MAVLink peripherals.
    */
   @GeneratedMavEnumEntry
-  PERIPHERALS(3L),
+  PERIPHERALS(3u),
   /**
    * Meta data for the events interface.
    */
   @GeneratedMavEnumEntry
-  EVENTS(4L),
+  EVENTS(4u),
   /**
    * Meta data for actuator configuration (motors, servos and vehicle geometry) and testing.
    */
   @GeneratedMavEnumEntry
-  ACTUATORS(5L),
+  ACTUATORS(5u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): CompMetadataType? = when (v) {
-      0L -> GENERAL
-      1L -> PARAMETER
-      2L -> COMMANDS
-      3L -> PERIPHERALS
-      4L -> EVENTS
-      5L -> ACTUATORS
+  public companion object : MavEnum.Companion<CompMetadataType> {
+    public override fun getEntryFromValueOrNull(v: UInt): CompMetadataType? = when (v) {
+      0u -> GENERAL
+      1u -> PARAMETER
+      2u -> COMMANDS
+      3u -> PERIPHERALS
+      4u -> EVENTS
+      5u -> ACTUATORS
       else -> null
     }
   }

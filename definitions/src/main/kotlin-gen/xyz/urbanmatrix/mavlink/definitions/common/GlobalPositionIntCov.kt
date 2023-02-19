@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -17,12 +19,12 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -33,8 +35,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * GLOBAL_POSITION_INT message for a minimal subset.
  */
 @GeneratedMavMessage(
-  id = 63,
-  crc = 119,
+  id = 63u,
+  crcExtra = 119,
 )
 public data class GlobalPositionIntCov(
   /**
@@ -42,12 +44,12 @@ public data class GlobalPositionIntCov(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Class id of the estimator this estimate originated from.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0),
+  public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
   /**
    * Latitude
    */
@@ -95,7 +97,7 @@ public data class GlobalPositionIntCov(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
@@ -110,7 +112,7 @@ public data class GlobalPositionIntCov(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
@@ -124,9 +126,9 @@ public data class GlobalPositionIntCov(
   }
 
   public companion object {
-    private const val ID: Int = 63
+    private const val ID: UInt = 63u
 
-    private const val CRC: Int = 119
+    private const val CRC_EXTRA: Byte = 119
 
     private const val SIZE_V1: Int = 181
 
@@ -134,7 +136,7 @@ public data class GlobalPositionIntCov(
 
     private val DESERIALIZER: MavDeserializer<GlobalPositionIntCov> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
@@ -163,8 +165,8 @@ public data class GlobalPositionIntCov(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GlobalPositionIntCov> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<GlobalPositionIntCov> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GlobalPositionIntCov> = METADATA
 
@@ -173,9 +175,9 @@ public data class GlobalPositionIntCov(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0)
+    public var estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u)
 
     public var lat: Int = 0
 

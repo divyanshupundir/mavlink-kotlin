@@ -2,20 +2,21 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,20 +26,20 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
-  id = 395,
-  crc = 0,
+  id = 395u,
+  crcExtra = 0,
 )
 public data class ComponentInformation(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * CRC32 of the general metadata file (general_metadata_uri).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val generalMetadataFileCrc: Long = 0L,
+  public val generalMetadataFileCrc: UInt = 0u,
   /**
    * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be
    * compressed with xz. The file contains general component metadata, and may contain URI links for
@@ -51,7 +52,7 @@ public data class ComponentInformation(
    * CRC32 of peripherals metadata file (peripherals_metadata_uri).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val peripheralsMetadataFileCrc: Long = 0L,
+  public val peripheralsMetadataFileCrc: UInt = 0u,
   /**
    * (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS),
    * which may be compressed with xz. This contains data about "attached components" such as UAVCAN
@@ -65,9 +66,9 @@ public data class ComponentInformation(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint32(generalMetadataFileCrc)
-    outputBuffer.encodeUint32(peripheralsMetadataFileCrc)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt32(generalMetadataFileCrc)
+    outputBuffer.encodeUInt32(peripheralsMetadataFileCrc)
     outputBuffer.encodeString(generalMetadataUri, 100)
     outputBuffer.encodeString(peripheralsMetadataUri, 100)
     return outputBuffer.array()
@@ -75,18 +76,18 @@ public data class ComponentInformation(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint32(generalMetadataFileCrc)
-    outputBuffer.encodeUint32(peripheralsMetadataFileCrc)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt32(generalMetadataFileCrc)
+    outputBuffer.encodeUInt32(peripheralsMetadataFileCrc)
     outputBuffer.encodeString(generalMetadataUri, 100)
     outputBuffer.encodeString(peripheralsMetadataUri, 100)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 395
+    private const val ID: UInt = 395u
 
-    private const val CRC: Int = 0
+    private const val CRC_EXTRA: Byte = 0
 
     private const val SIZE_V1: Int = 212
 
@@ -94,9 +95,9 @@ public data class ComponentInformation(
 
     private val DESERIALIZER: MavDeserializer<ComponentInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
-      val generalMetadataFileCrc = inputBuffer.decodeUint32()
-      val peripheralsMetadataFileCrc = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
+      val generalMetadataFileCrc = inputBuffer.decodeUInt32()
+      val peripheralsMetadataFileCrc = inputBuffer.decodeUInt32()
       val generalMetadataUri = inputBuffer.decodeString(100)
       val peripheralsMetadataUri = inputBuffer.decodeString(100)
 
@@ -110,8 +111,8 @@ public data class ComponentInformation(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ComponentInformation> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<ComponentInformation> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ComponentInformation> = METADATA
 
@@ -120,13 +121,13 @@ public data class ComponentInformation(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var generalMetadataFileCrc: Long = 0L
+    public var generalMetadataFileCrc: UInt = 0u
 
     public var generalMetadataUri: String = ""
 
-    public var peripheralsMetadataFileCrc: Long = 0L
+    public var peripheralsMetadataFileCrc: UInt = 0u
 
     public var peripheralsMetadataUri: String = ""
 

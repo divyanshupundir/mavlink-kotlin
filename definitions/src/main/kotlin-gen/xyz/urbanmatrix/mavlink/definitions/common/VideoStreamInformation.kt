@@ -2,11 +2,14 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,16 +21,16 @@ import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -35,30 +38,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * indicates the video stream id: 0 for all streams, 1 for first, 2 for second, etc.
  */
 @GeneratedMavMessage(
-  id = 269,
-  crc = 109,
+  id = 269u,
+  crcExtra = 109,
 )
 public data class VideoStreamInformation(
   /**
    * Video Stream ID (1 for first, 2 for second, etc.)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val streamId: Int = 0,
+  public val streamId: UByte = 0u,
   /**
    * Number of streams available.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * Type of stream.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type: MavEnumValue<VideoStreamType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<VideoStreamType> = MavEnumValue.fromValue(0u),
   /**
    * Bitmap of stream status flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Frame rate.
    */
@@ -68,27 +71,27 @@ public data class VideoStreamInformation(
    * Horizontal resolution.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val resolutionH: Int = 0,
+  public val resolutionH: UShort = 0u,
   /**
    * Vertical resolution.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val resolutionV: Int = 0,
+  public val resolutionV: UShort = 0u,
   /**
    * Bit rate.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val bitrate: Long = 0L,
+  public val bitrate: UInt = 0u,
   /**
    * Video image rotation clockwise.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val rotation: Int = 0,
+  public val rotation: UShort = 0u,
   /**
    * Horizontal Field of view.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val hfov: Int = 0,
+  public val hfov: UShort = 0u,
   /**
    * Stream name.
    */
@@ -106,14 +109,14 @@ public data class VideoStreamInformation(
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(framerate)
-    outputBuffer.encodeUint32(bitrate)
+    outputBuffer.encodeUInt32(bitrate)
     outputBuffer.encodeBitmaskValue(flags.value, 2)
-    outputBuffer.encodeUint16(resolutionH)
-    outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint16(rotation)
-    outputBuffer.encodeUint16(hfov)
-    outputBuffer.encodeUint8(streamId)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt16(resolutionH)
+    outputBuffer.encodeUInt16(resolutionV)
+    outputBuffer.encodeUInt16(rotation)
+    outputBuffer.encodeUInt16(hfov)
+    outputBuffer.encodeUInt8(streamId)
+    outputBuffer.encodeUInt8(count)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeString(name, 32)
     outputBuffer.encodeString(uri, 160)
@@ -123,14 +126,14 @@ public data class VideoStreamInformation(
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(framerate)
-    outputBuffer.encodeUint32(bitrate)
+    outputBuffer.encodeUInt32(bitrate)
     outputBuffer.encodeBitmaskValue(flags.value, 2)
-    outputBuffer.encodeUint16(resolutionH)
-    outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint16(rotation)
-    outputBuffer.encodeUint16(hfov)
-    outputBuffer.encodeUint8(streamId)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt16(resolutionH)
+    outputBuffer.encodeUInt16(resolutionV)
+    outputBuffer.encodeUInt16(rotation)
+    outputBuffer.encodeUInt16(hfov)
+    outputBuffer.encodeUInt8(streamId)
+    outputBuffer.encodeUInt8(count)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeString(name, 32)
     outputBuffer.encodeString(uri, 160)
@@ -138,9 +141,9 @@ public data class VideoStreamInformation(
   }
 
   public companion object {
-    private const val ID: Int = 269
+    private const val ID: UInt = 269u
 
-    private const val CRC: Int = 109
+    private const val CRC_EXTRA: Byte = 109
 
     private const val SIZE_V1: Int = 213
 
@@ -149,17 +152,17 @@ public data class VideoStreamInformation(
     private val DESERIALIZER: MavDeserializer<VideoStreamInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val framerate = inputBuffer.decodeFloat()
-      val bitrate = inputBuffer.decodeUint32()
+      val bitrate = inputBuffer.decodeUInt32()
       val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
         val flags = VideoStreamStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val resolutionH = inputBuffer.decodeUint16()
-      val resolutionV = inputBuffer.decodeUint16()
-      val rotation = inputBuffer.decodeUint16()
-      val hfov = inputBuffer.decodeUint16()
-      val streamId = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint8()
+      val resolutionH = inputBuffer.decodeUInt16()
+      val resolutionV = inputBuffer.decodeUInt16()
+      val rotation = inputBuffer.decodeUInt16()
+      val hfov = inputBuffer.decodeUInt16()
+      val streamId = inputBuffer.decodeUInt8()
+      val count = inputBuffer.decodeUInt8()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = VideoStreamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -184,8 +187,8 @@ public data class VideoStreamInformation(
     }
 
 
-    private val METADATA: MavMessage.Metadata<VideoStreamInformation> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<VideoStreamInformation> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<VideoStreamInformation> = METADATA
 
@@ -194,25 +197,25 @@ public data class VideoStreamInformation(
   }
 
   public class Builder {
-    public var streamId: Int = 0
+    public var streamId: UByte = 0u
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
-    public var type: MavEnumValue<VideoStreamType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<VideoStreamType> = MavEnumValue.fromValue(0u)
 
-    public var flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0u)
 
     public var framerate: Float = 0F
 
-    public var resolutionH: Int = 0
+    public var resolutionH: UShort = 0u
 
-    public var resolutionV: Int = 0
+    public var resolutionV: UShort = 0u
 
-    public var bitrate: Long = 0L
+    public var bitrate: UInt = 0u
 
-    public var rotation: Int = 0
+    public var rotation: UShort = 0u
 
-    public var hfov: Int = 0
+    public var hfov: UShort = 0u
 
     public var name: String = ""
 

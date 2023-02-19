@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,31 +10,31 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class PrecisionLandMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Normal (non-precision) landing.
    */
   @GeneratedMavEnumEntry
-  DISABLED(0L),
+  DISABLED(0u),
   /**
    * Use precision landing if beacon detected when land command accepted, otherwise land normally.
    */
   @GeneratedMavEnumEntry
-  OPPORTUNISTIC(1L),
+  OPPORTUNISTIC(1u),
   /**
    * Use precision landing, searching for beacon if not found when land command accepted (land
    * normally if beacon cannot be found).
    */
   @GeneratedMavEnumEntry
-  REQUIRED(2L),
+  REQUIRED(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): PrecisionLandMode? = when (v) {
-      0L -> DISABLED
-      1L -> OPPORTUNISTIC
-      2L -> REQUIRED
+  public companion object : MavEnum.Companion<PrecisionLandMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): PrecisionLandMode? = when (v) {
+      0u -> DISABLED
+      1u -> OPPORTUNISTIC
+      2u -> REQUIRED
       else -> null
     }
   }

@@ -2,46 +2,48 @@ package xyz.urbanmatrix.mavlink.definitions.asluav
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * ASL-fixed-wing controller debug data
  */
 @GeneratedMavMessage(
-  id = 8005,
-  crc = 251,
+  id = 8005u,
+  crcExtra = -5,
 )
 public data class AslctrlDebug(
   /**
    *  Debug data
    */
   @GeneratedMavField(type = "uint32_t")
-  public val i321: Long = 0L,
+  public val i321: UInt = 0u,
   /**
    *  Debug data
    */
   @GeneratedMavField(type = "uint8_t")
-  public val i81: Int = 0,
+  public val i81: UByte = 0u,
   /**
    *  Debug data
    */
   @GeneratedMavField(type = "uint8_t")
-  public val i82: Int = 0,
+  public val i82: UByte = 0u,
   /**
    *  Debug data 
    */
@@ -87,7 +89,7 @@ public data class AslctrlDebug(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(i321)
+    outputBuffer.encodeUInt32(i321)
     outputBuffer.encodeFloat(f1)
     outputBuffer.encodeFloat(f2)
     outputBuffer.encodeFloat(f3)
@@ -96,14 +98,14 @@ public data class AslctrlDebug(
     outputBuffer.encodeFloat(f6)
     outputBuffer.encodeFloat(f7)
     outputBuffer.encodeFloat(f8)
-    outputBuffer.encodeUint8(i81)
-    outputBuffer.encodeUint8(i82)
+    outputBuffer.encodeUInt8(i81)
+    outputBuffer.encodeUInt8(i82)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(i321)
+    outputBuffer.encodeUInt32(i321)
     outputBuffer.encodeFloat(f1)
     outputBuffer.encodeFloat(f2)
     outputBuffer.encodeFloat(f3)
@@ -112,15 +114,15 @@ public data class AslctrlDebug(
     outputBuffer.encodeFloat(f6)
     outputBuffer.encodeFloat(f7)
     outputBuffer.encodeFloat(f8)
-    outputBuffer.encodeUint8(i81)
-    outputBuffer.encodeUint8(i82)
+    outputBuffer.encodeUInt8(i81)
+    outputBuffer.encodeUInt8(i82)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 8005
+    private const val ID: UInt = 8005u
 
-    private const val CRC: Int = 251
+    private const val CRC_EXTRA: Byte = -5
 
     private const val SIZE_V1: Int = 38
 
@@ -128,7 +130,7 @@ public data class AslctrlDebug(
 
     private val DESERIALIZER: MavDeserializer<AslctrlDebug> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val i321 = inputBuffer.decodeUint32()
+      val i321 = inputBuffer.decodeUInt32()
       val f1 = inputBuffer.decodeFloat()
       val f2 = inputBuffer.decodeFloat()
       val f3 = inputBuffer.decodeFloat()
@@ -137,8 +139,8 @@ public data class AslctrlDebug(
       val f6 = inputBuffer.decodeFloat()
       val f7 = inputBuffer.decodeFloat()
       val f8 = inputBuffer.decodeFloat()
-      val i81 = inputBuffer.decodeUint8()
-      val i82 = inputBuffer.decodeUint8()
+      val i81 = inputBuffer.decodeUInt8()
+      val i82 = inputBuffer.decodeUInt8()
 
       AslctrlDebug(
         i321 = i321,
@@ -156,7 +158,7 @@ public data class AslctrlDebug(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AslctrlDebug> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AslctrlDebug> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
@@ -166,11 +168,11 @@ public data class AslctrlDebug(
   }
 
   public class Builder {
-    public var i321: Long = 0L
+    public var i321: UInt = 0u
 
-    public var i81: Int = 0
+    public var i81: UByte = 0u
 
-    public var i82: Int = 0
+    public var i82: UByte = 0u
 
     public var f1: Float = 0F
 

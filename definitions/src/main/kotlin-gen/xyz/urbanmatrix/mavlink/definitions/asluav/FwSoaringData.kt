@@ -1,42 +1,45 @@
 package xyz.urbanmatrix.mavlink.definitions.asluav
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Fixed-wing soaring (i.e. thermal seeking) data
  */
 @GeneratedMavMessage(
-  id = 8011,
-  crc = 20,
+  id = 8011u,
+  crcExtra = 20,
 )
 public data class FwSoaringData(
   /**
    * Timestamp
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timestamp: BigInteger = BigInteger.ZERO,
+  public val timestamp: ULong = 0uL,
   /**
    * Timestamp since last mode change
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timestampmodechanged: BigInteger = BigInteger.ZERO,
+  public val timestampmodechanged: ULong = 0uL,
   /**
    * Thermal core updraft strength
    */
@@ -146,19 +149,19 @@ public data class FwSoaringData(
    * Control Mode [-]
    */
   @GeneratedMavField(type = "uint8_t")
-  public val controlmode: Int = 0,
+  public val controlmode: UByte = 0u,
   /**
    * Data valid [-]
    */
   @GeneratedMavField(type = "uint8_t")
-  public val valid: Int = 0,
+  public val valid: UByte = 0u,
 ) : MavMessage<FwSoaringData> {
   public override val instanceMetadata: MavMessage.Metadata<FwSoaringData> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint64(timestampmodechanged)
+    outputBuffer.encodeUInt64(timestamp)
+    outputBuffer.encodeUInt64(timestampmodechanged)
     outputBuffer.encodeFloat(xw)
     outputBuffer.encodeFloat(xr)
     outputBuffer.encodeFloat(xlat)
@@ -180,15 +183,15 @@ public data class FwSoaringData(
     outputBuffer.encodeFloat(tseDot)
     outputBuffer.encodeFloat(debugvar1)
     outputBuffer.encodeFloat(debugvar2)
-    outputBuffer.encodeUint8(controlmode)
-    outputBuffer.encodeUint8(valid)
+    outputBuffer.encodeUInt8(controlmode)
+    outputBuffer.encodeUInt8(valid)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint64(timestampmodechanged)
+    outputBuffer.encodeUInt64(timestamp)
+    outputBuffer.encodeUInt64(timestampmodechanged)
     outputBuffer.encodeFloat(xw)
     outputBuffer.encodeFloat(xr)
     outputBuffer.encodeFloat(xlat)
@@ -210,15 +213,15 @@ public data class FwSoaringData(
     outputBuffer.encodeFloat(tseDot)
     outputBuffer.encodeFloat(debugvar1)
     outputBuffer.encodeFloat(debugvar2)
-    outputBuffer.encodeUint8(controlmode)
-    outputBuffer.encodeUint8(valid)
+    outputBuffer.encodeUInt8(controlmode)
+    outputBuffer.encodeUInt8(valid)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 8011
+    private const val ID: UInt = 8011u
 
-    private const val CRC: Int = 20
+    private const val CRC_EXTRA: Byte = 20
 
     private const val SIZE_V1: Int = 102
 
@@ -226,8 +229,8 @@ public data class FwSoaringData(
 
     private val DESERIALIZER: MavDeserializer<FwSoaringData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUint64()
-      val timestampmodechanged = inputBuffer.decodeUint64()
+      val timestamp = inputBuffer.decodeUInt64()
+      val timestampmodechanged = inputBuffer.decodeUInt64()
       val xw = inputBuffer.decodeFloat()
       val xr = inputBuffer.decodeFloat()
       val xlat = inputBuffer.decodeFloat()
@@ -249,8 +252,8 @@ public data class FwSoaringData(
       val tseDot = inputBuffer.decodeFloat()
       val debugvar1 = inputBuffer.decodeFloat()
       val debugvar2 = inputBuffer.decodeFloat()
-      val controlmode = inputBuffer.decodeUint8()
-      val valid = inputBuffer.decodeUint8()
+      val controlmode = inputBuffer.decodeUInt8()
+      val valid = inputBuffer.decodeUInt8()
 
       FwSoaringData(
         timestamp = timestamp,
@@ -282,7 +285,7 @@ public data class FwSoaringData(
     }
 
 
-    private val METADATA: MavMessage.Metadata<FwSoaringData> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<FwSoaringData> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FwSoaringData> = METADATA
@@ -292,9 +295,9 @@ public data class FwSoaringData(
   }
 
   public class Builder {
-    public var timestamp: BigInteger = BigInteger.ZERO
+    public var timestamp: ULong = 0uL
 
-    public var timestampmodechanged: BigInteger = BigInteger.ZERO
+    public var timestampmodechanged: ULong = 0uL
 
     public var xw: Float = 0F
 
@@ -338,9 +341,9 @@ public data class FwSoaringData(
 
     public var debugvar2: Float = 0F
 
-    public var controlmode: Int = 0
+    public var controlmode: UByte = 0u
 
-    public var valid: Int = 0
+    public var valid: UByte = 0u
 
     public fun build(): FwSoaringData = FwSoaringData(
       timestamp = timestamp,

@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,10 +14,10 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,15 +25,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * a quite efficient way for testing new messages and getting experimental debug output.
  */
 @GeneratedMavMessage(
-  id = 252,
-  crc = 44,
+  id = 252u,
+  crcExtra = 44,
 )
 public data class NamedValueInt(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Name of the debug variable
    */
@@ -48,7 +49,7 @@ public data class NamedValueInt(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(value)
     outputBuffer.encodeString(name, 10)
     return outputBuffer.array()
@@ -56,16 +57,16 @@ public data class NamedValueInt(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(value)
     outputBuffer.encodeString(name, 10)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 252
+    private const val ID: UInt = 252u
 
-    private const val CRC: Int = 44
+    private const val CRC_EXTRA: Byte = 44
 
     private const val SIZE_V1: Int = 18
 
@@ -73,7 +74,7 @@ public data class NamedValueInt(
 
     private val DESERIALIZER: MavDeserializer<NamedValueInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val value = inputBuffer.decodeInt32()
       val name = inputBuffer.decodeString(10)
 
@@ -85,7 +86,7 @@ public data class NamedValueInt(
     }
 
 
-    private val METADATA: MavMessage.Metadata<NamedValueInt> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<NamedValueInt> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
@@ -95,7 +96,7 @@ public data class NamedValueInt(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var name: String = ""
 

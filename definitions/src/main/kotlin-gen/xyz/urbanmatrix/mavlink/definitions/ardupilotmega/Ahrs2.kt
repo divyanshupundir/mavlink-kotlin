@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -20,8 +22,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Status of secondary AHRS filter if available.
  */
 @GeneratedMavMessage(
-  id = 178,
-  crc = 47,
+  id = 178u,
+  crcExtra = 47,
 )
 public data class Ahrs2(
   /**
@@ -80,9 +82,9 @@ public data class Ahrs2(
   }
 
   public companion object {
-    private const val ID: Int = 178
+    private const val ID: UInt = 178u
 
-    private const val CRC: Int = 47
+    private const val CRC_EXTRA: Byte = 47
 
     private const val SIZE_V1: Int = 24
 
@@ -108,7 +110,8 @@ public data class Ahrs2(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Ahrs2> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Ahrs2> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Ahrs2> = METADATA
 

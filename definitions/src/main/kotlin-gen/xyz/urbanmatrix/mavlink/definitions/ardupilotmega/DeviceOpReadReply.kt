@@ -2,56 +2,58 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Read registers reply.
  */
 @GeneratedMavMessage(
-  id = 11001,
-  crc = 15,
+  id = 11001u,
+  crcExtra = 15,
 )
 public data class DeviceOpReadReply(
   /**
    * Request ID - copied from request.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val requestId: Long = 0L,
+  public val requestId: UInt = 0u,
   /**
    * 0 for success, anything else is failure code.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val result: Int = 0,
+  public val result: UByte = 0u,
   /**
    * Starting register.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val regstart: Int = 0,
+  public val regstart: UByte = 0u,
   /**
    * Count of bytes read.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * Reply data.
    */
   @GeneratedMavField(type = "uint8_t[128]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<UByte> = emptyList(),
   /**
    * Bank number.
    */
@@ -59,35 +61,35 @@ public data class DeviceOpReadReply(
     type = "uint8_t",
     extension = true,
   )
-  public val bank: Int = 0,
+  public val bank: UByte = 0u,
 ) : MavMessage<DeviceOpReadReply> {
   public override val instanceMetadata: MavMessage.Metadata<DeviceOpReadReply> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(requestId)
-    outputBuffer.encodeUint8(result)
-    outputBuffer.encodeUint8(regstart)
-    outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint8Array(data, 128)
+    outputBuffer.encodeUInt32(requestId)
+    outputBuffer.encodeUInt8(result)
+    outputBuffer.encodeUInt8(regstart)
+    outputBuffer.encodeUInt8(count)
+    outputBuffer.encodeUInt8Array(data, 128)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(requestId)
-    outputBuffer.encodeUint8(result)
-    outputBuffer.encodeUint8(regstart)
-    outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint8Array(data, 128)
-    outputBuffer.encodeUint8(bank)
+    outputBuffer.encodeUInt32(requestId)
+    outputBuffer.encodeUInt8(result)
+    outputBuffer.encodeUInt8(regstart)
+    outputBuffer.encodeUInt8(count)
+    outputBuffer.encodeUInt8Array(data, 128)
+    outputBuffer.encodeUInt8(bank)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 11001
+    private const val ID: UInt = 11001u
 
-    private const val CRC: Int = 15
+    private const val CRC_EXTRA: Byte = 15
 
     private const val SIZE_V1: Int = 135
 
@@ -95,12 +97,12 @@ public data class DeviceOpReadReply(
 
     private val DESERIALIZER: MavDeserializer<DeviceOpReadReply> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUint32()
-      val result = inputBuffer.decodeUint8()
-      val regstart = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint8()
-      val data = inputBuffer.decodeUint8Array(128)
-      val bank = inputBuffer.decodeUint8()
+      val requestId = inputBuffer.decodeUInt32()
+      val result = inputBuffer.decodeUInt8()
+      val regstart = inputBuffer.decodeUInt8()
+      val count = inputBuffer.decodeUInt8()
+      val data = inputBuffer.decodeUInt8Array(128)
+      val bank = inputBuffer.decodeUInt8()
 
       DeviceOpReadReply(
         requestId = requestId,
@@ -113,8 +115,8 @@ public data class DeviceOpReadReply(
     }
 
 
-    private val METADATA: MavMessage.Metadata<DeviceOpReadReply> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<DeviceOpReadReply> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DeviceOpReadReply> = METADATA
 
@@ -123,17 +125,17 @@ public data class DeviceOpReadReply(
   }
 
   public class Builder {
-    public var requestId: Long = 0L
+    public var requestId: UInt = 0u
 
-    public var result: Int = 0
+    public var result: UByte = 0u
 
-    public var regstart: Int = 0
+    public var regstart: UByte = 0u
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<UByte> = emptyList()
 
-    public var bank: Int = 0
+    public var bank: UByte = 0u
 
     public fun build(): DeviceOpReadReply = DeviceOpReadReply(
       requestId = requestId,

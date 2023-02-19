@@ -1,10 +1,11 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * Flags to report status/failure cases for a power generator (used in GENERATOR_STATUS). Note that
@@ -13,180 +14,181 @@ import xyz.urbanmatrix.mavlink.api.MavBitmask
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavGeneratorStatusFlag(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Generator is off.
    */
   @GeneratedMavEnumEntry
-  OFF(1L),
+  OFF(1u),
   /**
    * Generator is ready to start generating power.
    */
   @GeneratedMavEnumEntry
-  READY(2L),
+  READY(2u),
   /**
    * Generator is generating power.
    */
   @GeneratedMavEnumEntry
-  GENERATING(4L),
+  GENERATING(4u),
   /**
    * Generator is charging the batteries (generating enough power to charge and provide the load).
    */
   @GeneratedMavEnumEntry
-  CHARGING(8L),
+  CHARGING(8u),
   /**
    * Generator is operating at a reduced maximum power.
    */
   @GeneratedMavEnumEntry
-  REDUCED_POWER(16L),
+  REDUCED_POWER(16u),
   /**
    * Generator is providing the maximum output.
    */
   @GeneratedMavEnumEntry
-  MAXPOWER(32L),
+  MAXPOWER(32u),
   /**
    * Generator is near the maximum operating temperature, cooling is insufficient.
    */
   @GeneratedMavEnumEntry
-  OVERTEMP_WARNING(64L),
+  OVERTEMP_WARNING(64u),
   /**
    * Generator hit the maximum operating temperature and shutdown.
    */
   @GeneratedMavEnumEntry
-  OVERTEMP_FAULT(128L),
+  OVERTEMP_FAULT(128u),
   /**
    * Power electronics are near the maximum operating temperature, cooling is insufficient.
    */
   @GeneratedMavEnumEntry
-  ELECTRONICS_OVERTEMP_WARNING(256L),
+  ELECTRONICS_OVERTEMP_WARNING(256u),
   /**
    * Power electronics hit the maximum operating temperature and shutdown.
    */
   @GeneratedMavEnumEntry
-  ELECTRONICS_OVERTEMP_FAULT(512L),
+  ELECTRONICS_OVERTEMP_FAULT(512u),
   /**
    * Power electronics experienced a fault and shutdown.
    */
   @GeneratedMavEnumEntry
-  ELECTRONICS_FAULT(1024L),
+  ELECTRONICS_FAULT(1024u),
   /**
    * The power source supplying the generator failed e.g. mechanical generator stopped, tether is no
    * longer providing power, solar cell is in shade, hydrogen reaction no longer happening.
    */
   @GeneratedMavEnumEntry
-  POWERSOURCE_FAULT(2048L),
+  POWERSOURCE_FAULT(2048u),
   /**
    * Generator controller having communication problems.
    */
   @GeneratedMavEnumEntry
-  COMMUNICATION_WARNING(4096L),
+  COMMUNICATION_WARNING(4096u),
   /**
    * Power electronic or generator cooling system error.
    */
   @GeneratedMavEnumEntry
-  COOLING_WARNING(8192L),
+  COOLING_WARNING(8192u),
   /**
    * Generator controller power rail experienced a fault.
    */
   @GeneratedMavEnumEntry
-  POWER_RAIL_FAULT(16384L),
+  POWER_RAIL_FAULT(16384u),
   /**
    * Generator controller exceeded the overcurrent threshold and shutdown to prevent damage.
    */
   @GeneratedMavEnumEntry
-  OVERCURRENT_FAULT(32768L),
+  OVERCURRENT_FAULT(32768u),
   /**
    * Generator controller detected a high current going into the batteries and shutdown to prevent
    * battery damage.
    */
   @GeneratedMavEnumEntry
-  BATTERY_OVERCHARGE_CURRENT_FAULT(65536L),
+  BATTERY_OVERCHARGE_CURRENT_FAULT(65536u),
   /**
    * Generator controller exceeded it's overvoltage threshold and shutdown to prevent it exceeding
    * the voltage rating.
    */
   @GeneratedMavEnumEntry
-  OVERVOLTAGE_FAULT(131072L),
+  OVERVOLTAGE_FAULT(131072u),
   /**
    * Batteries are under voltage (generator will not start).
    */
   @GeneratedMavEnumEntry
-  BATTERY_UNDERVOLT_FAULT(262144L),
+  BATTERY_UNDERVOLT_FAULT(262144u),
   /**
    * Generator start is inhibited by e.g. a safety switch.
    */
   @GeneratedMavEnumEntry
-  START_INHIBITED(524288L),
+  START_INHIBITED(524288u),
   /**
    * Generator requires maintenance.
    */
   @GeneratedMavEnumEntry
-  MAINTENANCE_REQUIRED(1048576L),
+  MAINTENANCE_REQUIRED(1048576u),
   /**
    * Generator is not ready to generate yet.
    */
   @GeneratedMavEnumEntry
-  WARMING_UP(2097152L),
+  WARMING_UP(2097152u),
   /**
    * Generator is idle.
    */
   @GeneratedMavEnumEntry
-  IDLE(4194304L),
+  IDLE(4194304u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavGeneratorStatusFlag? = when (v) {
-      1L -> OFF
-      2L -> READY
-      4L -> GENERATING
-      8L -> CHARGING
-      16L -> REDUCED_POWER
-      32L -> MAXPOWER
-      64L -> OVERTEMP_WARNING
-      128L -> OVERTEMP_FAULT
-      256L -> ELECTRONICS_OVERTEMP_WARNING
-      512L -> ELECTRONICS_OVERTEMP_FAULT
-      1024L -> ELECTRONICS_FAULT
-      2048L -> POWERSOURCE_FAULT
-      4096L -> COMMUNICATION_WARNING
-      8192L -> COOLING_WARNING
-      16384L -> POWER_RAIL_FAULT
-      32768L -> OVERCURRENT_FAULT
-      65536L -> BATTERY_OVERCHARGE_CURRENT_FAULT
-      131072L -> OVERVOLTAGE_FAULT
-      262144L -> BATTERY_UNDERVOLT_FAULT
-      524288L -> START_INHIBITED
-      1048576L -> MAINTENANCE_REQUIRED
-      2097152L -> WARMING_UP
-      4194304L -> IDLE
+  public companion object : MavEnum.Companion<MavGeneratorStatusFlag>,
+      MavBitmask.Companion<MavGeneratorStatusFlag> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavGeneratorStatusFlag? = when (v) {
+      1u -> OFF
+      2u -> READY
+      4u -> GENERATING
+      8u -> CHARGING
+      16u -> REDUCED_POWER
+      32u -> MAXPOWER
+      64u -> OVERTEMP_WARNING
+      128u -> OVERTEMP_FAULT
+      256u -> ELECTRONICS_OVERTEMP_WARNING
+      512u -> ELECTRONICS_OVERTEMP_FAULT
+      1024u -> ELECTRONICS_FAULT
+      2048u -> POWERSOURCE_FAULT
+      4096u -> COMMUNICATION_WARNING
+      8192u -> COOLING_WARNING
+      16384u -> POWER_RAIL_FAULT
+      32768u -> OVERCURRENT_FAULT
+      65536u -> BATTERY_OVERCHARGE_CURRENT_FAULT
+      131072u -> OVERVOLTAGE_FAULT
+      262144u -> BATTERY_UNDERVOLT_FAULT
+      524288u -> START_INHIBITED
+      1048576u -> MAINTENANCE_REQUIRED
+      2097152u -> WARMING_UP
+      4194304u -> IDLE
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<MavGeneratorStatusFlag> = buildList {
-      if (v and 1L == 1L) add(OFF)
-      if (v and 2L == 2L) add(READY)
-      if (v and 4L == 4L) add(GENERATING)
-      if (v and 8L == 8L) add(CHARGING)
-      if (v and 16L == 16L) add(REDUCED_POWER)
-      if (v and 32L == 32L) add(MAXPOWER)
-      if (v and 64L == 64L) add(OVERTEMP_WARNING)
-      if (v and 128L == 128L) add(OVERTEMP_FAULT)
-      if (v and 256L == 256L) add(ELECTRONICS_OVERTEMP_WARNING)
-      if (v and 512L == 512L) add(ELECTRONICS_OVERTEMP_FAULT)
-      if (v and 1024L == 1024L) add(ELECTRONICS_FAULT)
-      if (v and 2048L == 2048L) add(POWERSOURCE_FAULT)
-      if (v and 4096L == 4096L) add(COMMUNICATION_WARNING)
-      if (v and 8192L == 8192L) add(COOLING_WARNING)
-      if (v and 16384L == 16384L) add(POWER_RAIL_FAULT)
-      if (v and 32768L == 32768L) add(OVERCURRENT_FAULT)
-      if (v and 65536L == 65536L) add(BATTERY_OVERCHARGE_CURRENT_FAULT)
-      if (v and 131072L == 131072L) add(OVERVOLTAGE_FAULT)
-      if (v and 262144L == 262144L) add(BATTERY_UNDERVOLT_FAULT)
-      if (v and 524288L == 524288L) add(START_INHIBITED)
-      if (v and 1048576L == 1048576L) add(MAINTENANCE_REQUIRED)
-      if (v and 2097152L == 2097152L) add(WARMING_UP)
-      if (v and 4194304L == 4194304L) add(IDLE)
+    public override fun getFlagsFromValue(v: UInt): List<MavGeneratorStatusFlag> = buildList {
+      if (v and 1u == 1u) add(OFF)
+      if (v and 2u == 2u) add(READY)
+      if (v and 4u == 4u) add(GENERATING)
+      if (v and 8u == 8u) add(CHARGING)
+      if (v and 16u == 16u) add(REDUCED_POWER)
+      if (v and 32u == 32u) add(MAXPOWER)
+      if (v and 64u == 64u) add(OVERTEMP_WARNING)
+      if (v and 128u == 128u) add(OVERTEMP_FAULT)
+      if (v and 256u == 256u) add(ELECTRONICS_OVERTEMP_WARNING)
+      if (v and 512u == 512u) add(ELECTRONICS_OVERTEMP_FAULT)
+      if (v and 1024u == 1024u) add(ELECTRONICS_FAULT)
+      if (v and 2048u == 2048u) add(POWERSOURCE_FAULT)
+      if (v and 4096u == 4096u) add(COMMUNICATION_WARNING)
+      if (v and 8192u == 8192u) add(COOLING_WARNING)
+      if (v and 16384u == 16384u) add(POWER_RAIL_FAULT)
+      if (v and 32768u == 32768u) add(OVERCURRENT_FAULT)
+      if (v and 65536u == 65536u) add(BATTERY_OVERCHARGE_CURRENT_FAULT)
+      if (v and 131072u == 131072u) add(OVERVOLTAGE_FAULT)
+      if (v and 262144u == 262144u) add(BATTERY_UNDERVOLT_FAULT)
+      if (v and 524288u == 524288u) add(START_INHIBITED)
+      if (v and 1048576u == 1048576u) add(MAINTENANCE_REQUIRED)
+      if (v and 2097152u == 2097152u) add(WARMING_UP)
+      if (v and 4194304u == 4194304u) add(IDLE)
     }
   }
 }

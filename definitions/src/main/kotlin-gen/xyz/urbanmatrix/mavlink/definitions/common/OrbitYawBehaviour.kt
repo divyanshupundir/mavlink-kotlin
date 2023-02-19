@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,42 +10,42 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class OrbitYawBehaviour(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Vehicle front points to the center (default).
    */
   @GeneratedMavEnumEntry
-  HOLD_FRONT_TO_CIRCLE_CENTER(0L),
+  HOLD_FRONT_TO_CIRCLE_CENTER(0u),
   /**
    * Vehicle front holds heading when message received.
    */
   @GeneratedMavEnumEntry
-  HOLD_INITIAL_HEADING(1L),
+  HOLD_INITIAL_HEADING(1u),
   /**
    * Yaw uncontrolled.
    */
   @GeneratedMavEnumEntry
-  UNCONTROLLED(2L),
+  UNCONTROLLED(2u),
   /**
    * Vehicle front follows flight path (tangential to circle).
    */
   @GeneratedMavEnumEntry
-  HOLD_FRONT_TANGENT_TO_CIRCLE(3L),
+  HOLD_FRONT_TANGENT_TO_CIRCLE(3u),
   /**
    * Yaw controlled by RC input.
    */
   @GeneratedMavEnumEntry
-  RC_CONTROLLED(4L),
+  RC_CONTROLLED(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): OrbitYawBehaviour? = when (v) {
-      0L -> HOLD_FRONT_TO_CIRCLE_CENTER
-      1L -> HOLD_INITIAL_HEADING
-      2L -> UNCONTROLLED
-      3L -> HOLD_FRONT_TANGENT_TO_CIRCLE
-      4L -> RC_CONTROLLED
+  public companion object : MavEnum.Companion<OrbitYawBehaviour> {
+    public override fun getEntryFromValueOrNull(v: UInt): OrbitYawBehaviour? = when (v) {
+      0u -> HOLD_FRONT_TO_CIRCLE_CENTER
+      1u -> HOLD_INITIAL_HEADING
+      2u -> UNCONTROLLED
+      3u -> HOLD_FRONT_TANGENT_TO_CIRCLE
+      4u -> RC_CONTROLLED
       else -> null
     }
   }

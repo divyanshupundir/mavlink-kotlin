@@ -1,7 +1,7 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Deprecated
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -14,42 +14,42 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 @Deprecated(message = "")
 @GeneratedMavEnum
 public enum class MavRoi(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Point toward of given id.
    */
   @GeneratedMavEnumEntry
-  TARGET(4L),
+  TARGET(4u),
   /**
    * Point toward fixed location.
    */
   @GeneratedMavEnumEntry
-  LOCATION(3L),
+  LOCATION(3u),
   /**
    * Point toward given waypoint.
    */
   @GeneratedMavEnumEntry
-  WPINDEX(2L),
+  WPINDEX(2u),
   /**
    * Point toward next waypoint, with optional pitch/roll/yaw offset.
    */
   @GeneratedMavEnumEntry
-  WPNEXT(1L),
+  WPNEXT(1u),
   /**
    * No region of interest.
    */
   @GeneratedMavEnumEntry
-  NONE(0L),
+  NONE(0u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavRoi? = when (v) {
-      4L -> TARGET
-      3L -> LOCATION
-      2L -> WPINDEX
-      1L -> WPNEXT
-      0L -> NONE
+  public companion object : MavEnum.Companion<MavRoi> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavRoi? = when (v) {
+      4u -> TARGET
+      3u -> LOCATION
+      2u -> WPINDEX
+      1u -> WPNEXT
+      0u -> NONE
       else -> null
     }
   }

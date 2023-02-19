@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,25 +16,25 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Global position estimate from a Vicon motion system source.
  */
 @GeneratedMavMessage(
-  id = 104,
-  crc = 56,
+  id = 104u,
+  crcExtra = 56,
 )
 public data class ViconPositionEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)
    */
   @GeneratedMavField(type = "uint64_t")
-  public val usec: BigInteger = BigInteger.ZERO,
+  public val usec: ULong = 0uL,
   /**
    * Global X position
    */
@@ -78,7 +80,7 @@ public data class ViconPositionEstimate(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeUInt64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -90,7 +92,7 @@ public data class ViconPositionEstimate(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeUInt64(usec)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -102,9 +104,9 @@ public data class ViconPositionEstimate(
   }
 
   public companion object {
-    private const val ID: Int = 104
+    private const val ID: UInt = 104u
 
-    private const val CRC: Int = 56
+    private const val CRC_EXTRA: Byte = 56
 
     private const val SIZE_V1: Int = 32
 
@@ -112,7 +114,7 @@ public data class ViconPositionEstimate(
 
     private val DESERIALIZER: MavDeserializer<ViconPositionEstimate> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val usec = inputBuffer.decodeUint64()
+      val usec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -134,8 +136,8 @@ public data class ViconPositionEstimate(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ViconPositionEstimate> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<ViconPositionEstimate> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ViconPositionEstimate> = METADATA
 
@@ -144,7 +146,7 @@ public data class ViconPositionEstimate(
   }
 
   public class Builder {
-    public var usec: BigInteger = BigInteger.ZERO
+    public var usec: ULong = 0uL
 
     public var x: Float = 0F
 

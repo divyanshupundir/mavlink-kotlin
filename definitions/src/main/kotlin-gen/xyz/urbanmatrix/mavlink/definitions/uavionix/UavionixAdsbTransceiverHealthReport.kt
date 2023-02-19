@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.uavionix
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,15 +20,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Transceiver heartbeat with health report (updated every 10s)
  */
 @GeneratedMavMessage(
-  id = 10003,
-  crc = 4,
+  id = 10003u,
+  crcExtra = 4,
 )
 public data class UavionixAdsbTransceiverHealthReport(
   /**
    * ADS-B transponder messages
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rfhealth: MavBitmaskValue<UavionixAdsbRfHealth> = MavBitmaskValue.fromValue(0),
+  public val rfhealth: MavBitmaskValue<UavionixAdsbRfHealth> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UavionixAdsbTransceiverHealthReport> {
   public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbTransceiverHealthReport> =
       METADATA
@@ -44,9 +46,9 @@ public data class UavionixAdsbTransceiverHealthReport(
   }
 
   public companion object {
-    private const val ID: Int = 10003
+    private const val ID: UInt = 10003u
 
-    private const val CRC: Int = 4
+    private const val CRC_EXTRA: Byte = 4
 
     private const val SIZE_V1: Int = 1
 
@@ -67,7 +69,7 @@ public data class UavionixAdsbTransceiverHealthReport(
 
 
     private val METADATA: MavMessage.Metadata<UavionixAdsbTransceiverHealthReport> =
-        MavMessage.Metadata(ID, CRC, DESERIALIZER)
+        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavionixAdsbTransceiverHealthReport> = METADATA
 
@@ -76,7 +78,7 @@ public data class UavionixAdsbTransceiverHealthReport(
   }
 
   public class Builder {
-    public var rfhealth: MavBitmaskValue<UavionixAdsbRfHealth> = MavBitmaskValue.fromValue(0)
+    public var rfhealth: MavBitmaskValue<UavionixAdsbRfHealth> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): UavionixAdsbTransceiverHealthReport = UavionixAdsbTransceiverHealthReport(
       rfhealth = rfhealth,

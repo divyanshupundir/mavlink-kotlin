@@ -2,10 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -15,11 +18,11 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -35,20 +38,20 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * should be re-sent if this is ACK not received.
  */
 @GeneratedMavMessage(
-  id = 23,
-  crc = 168,
+  id = 23u,
+  crcExtra = -88,
 )
 public data class ParamSet(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
    * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
@@ -65,15 +68,15 @@ public data class ParamSet(
    * Onboard parameter type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0),
+  public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ParamSet> {
   public override val instanceMetadata: MavMessage.Metadata<ParamSet> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array()
@@ -82,17 +85,17 @@ public data class ParamSet(
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 23
+    private const val ID: UInt = 23u
 
-    private const val CRC: Int = 168
+    private const val CRC_EXTRA: Byte = -88
 
     private const val SIZE_V1: Int = 23
 
@@ -101,8 +104,8 @@ public data class ParamSet(
     private val DESERIALIZER: MavDeserializer<ParamSet> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val paramValue = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
       val paramId = inputBuffer.decodeString(16)
       val paramType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavParamType.getEntryFromValueOrNull(value)
@@ -119,7 +122,8 @@ public data class ParamSet(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ParamSet> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<ParamSet> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamSet> = METADATA
 
@@ -128,15 +132,15 @@ public data class ParamSet(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
     public var paramId: String = ""
 
     public var paramValue: Float = 0F
 
-    public var paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0)
+    public var paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0u)
 
     public fun build(): ParamSet = ParamSet(
       targetSystem = targetSystem,

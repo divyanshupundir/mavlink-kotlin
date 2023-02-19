@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * TERRAIN_REPORT). Used by GCS to check if vehicle has all terrain data needed for a mission.
  */
 @GeneratedMavMessage(
-  id = 135,
-  crc = 203,
+  id = 135u,
+  crcExtra = -53,
 )
 public data class TerrainCheck(
   /**
@@ -50,9 +52,9 @@ public data class TerrainCheck(
   }
 
   public companion object {
-    private const val ID: Int = 135
+    private const val ID: UInt = 135u
 
-    private const val CRC: Int = 203
+    private const val CRC_EXTRA: Byte = -53
 
     private const val SIZE_V1: Int = 8
 
@@ -70,7 +72,7 @@ public data class TerrainCheck(
     }
 
 
-    private val METADATA: MavMessage.Metadata<TerrainCheck> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<TerrainCheck> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TerrainCheck> = METADATA

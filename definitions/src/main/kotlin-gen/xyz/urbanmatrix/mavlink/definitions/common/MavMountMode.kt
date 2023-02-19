@@ -1,7 +1,7 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
 import kotlin.Deprecated
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -13,54 +13,54 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
 @Deprecated(message = "")
 @GeneratedMavEnum
 public enum class MavMountMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gimbal tracks home position
    */
   @GeneratedMavEnumEntry
-  HOME_LOCATION(6L),
+  HOME_LOCATION(6u),
   /**
    * Gimbal tracks system with specified system ID
    */
   @GeneratedMavEnumEntry
-  SYSID_TARGET(5L),
+  SYSID_TARGET(5u),
   /**
    * Load neutral position and start to point to Lat,Lon,Alt
    */
   @GeneratedMavEnumEntry
-  GPS_POINT(4L),
+  GPS_POINT(4u),
   /**
    * Load neutral position and start RC Roll,Pitch,Yaw control with stabilization
    */
   @GeneratedMavEnumEntry
-  RC_TARGETING(3L),
+  RC_TARGETING(3u),
   /**
    * Load neutral position and start MAVLink Roll,Pitch,Yaw control with stabilization
    */
   @GeneratedMavEnumEntry
-  MAVLINK_TARGETING(2L),
+  MAVLINK_TARGETING(2u),
   /**
    * Load and keep neutral position (Roll,Pitch,Yaw) from permanent memory.
    */
   @GeneratedMavEnumEntry
-  NEUTRAL(1L),
+  NEUTRAL(1u),
   /**
    * Load and keep safe position (Roll,Pitch,Yaw) from permant memory and stop stabilization
    */
   @GeneratedMavEnumEntry
-  RETRACT(0L),
+  RETRACT(0u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavMountMode? = when (v) {
-      6L -> HOME_LOCATION
-      5L -> SYSID_TARGET
-      4L -> GPS_POINT
-      3L -> RC_TARGETING
-      2L -> MAVLINK_TARGETING
-      1L -> NEUTRAL
-      0L -> RETRACT
+  public companion object : MavEnum.Companion<MavMountMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavMountMode? = when (v) {
+      6u -> HOME_LOCATION
+      5u -> SYSID_TARGET
+      4u -> GPS_POINT
+      3u -> RC_TARGETING
+      2u -> MAVLINK_TARGETING
+      1u -> NEUTRAL
+      0u -> RETRACT
       else -> null
     }
   }

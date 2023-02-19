@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,15 +16,15 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -30,8 +33,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * available at http://uavcan.org.
  */
 @GeneratedMavMessage(
-  id = 310,
-  crc = 28,
+  id = 310u,
+  crcExtra = 28,
 )
 public data class UavcanNodeStatus(
   /**
@@ -39,61 +42,61 @@ public data class UavcanNodeStatus(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Time since the start-up of the node.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val uptimeSec: Long = 0L,
+  public val uptimeSec: UInt = 0u,
   /**
    * Generalized node health status.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0),
+  public val health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0u),
   /**
    * Generalized operating mode.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val mode: MavEnumValue<UavcanNodeMode> = MavEnumValue.fromValue(0),
+  public val mode: MavEnumValue<UavcanNodeMode> = MavEnumValue.fromValue(0u),
   /**
    * Not used currently.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val subMode: Int = 0,
+  public val subMode: UByte = 0u,
   /**
    * Vendor-specific status information.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val vendorSpecificStatusCode: Int = 0,
+  public val vendorSpecificStatusCode: UShort = 0u,
 ) : MavMessage<UavcanNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<UavcanNodeStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint32(uptimeSec)
-    outputBuffer.encodeUint16(vendorSpecificStatusCode)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt32(uptimeSec)
+    outputBuffer.encodeUInt16(vendorSpecificStatusCode)
     outputBuffer.encodeEnumValue(health.value, 1)
     outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUint8(subMode)
+    outputBuffer.encodeUInt8(subMode)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint32(uptimeSec)
-    outputBuffer.encodeUint16(vendorSpecificStatusCode)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt32(uptimeSec)
+    outputBuffer.encodeUInt16(vendorSpecificStatusCode)
     outputBuffer.encodeEnumValue(health.value, 1)
     outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUint8(subMode)
+    outputBuffer.encodeUInt8(subMode)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 310
+    private const val ID: UInt = 310u
 
-    private const val CRC: Int = 28
+    private const val CRC_EXTRA: Byte = 28
 
     private const val SIZE_V1: Int = 17
 
@@ -101,9 +104,9 @@ public data class UavcanNodeStatus(
 
     private val DESERIALIZER: MavDeserializer<UavcanNodeStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
-      val uptimeSec = inputBuffer.decodeUint32()
-      val vendorSpecificStatusCode = inputBuffer.decodeUint16()
+      val timeUsec = inputBuffer.decodeUInt64()
+      val uptimeSec = inputBuffer.decodeUInt32()
+      val vendorSpecificStatusCode = inputBuffer.decodeUInt16()
       val health = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = UavcanNodeHealth.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -112,7 +115,7 @@ public data class UavcanNodeStatus(
         val entry = UavcanNodeMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val subMode = inputBuffer.decodeUint8()
+      val subMode = inputBuffer.decodeUInt8()
 
       UavcanNodeStatus(
         timeUsec = timeUsec,
@@ -125,7 +128,7 @@ public data class UavcanNodeStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<UavcanNodeStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<UavcanNodeStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<UavcanNodeStatus> = METADATA
@@ -135,17 +138,17 @@ public data class UavcanNodeStatus(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var uptimeSec: Long = 0L
+    public var uptimeSec: UInt = 0u
 
-    public var health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0)
+    public var health: MavEnumValue<UavcanNodeHealth> = MavEnumValue.fromValue(0u)
 
-    public var mode: MavEnumValue<UavcanNodeMode> = MavEnumValue.fromValue(0)
+    public var mode: MavEnumValue<UavcanNodeMode> = MavEnumValue.fromValue(0u)
 
-    public var subMode: Int = 0
+    public var subMode: UByte = 0u
 
-    public var vendorSpecificStatusCode: Int = 0
+    public var vendorSpecificStatusCode: UShort = 0u
 
     public fun build(): UavcanNodeStatus = UavcanNodeStatus(
       timeUsec = timeUsec,

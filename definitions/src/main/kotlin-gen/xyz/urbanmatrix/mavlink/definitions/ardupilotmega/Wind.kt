@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Wind estimation.
  */
 @GeneratedMavMessage(
-  id = 168,
-  crc = 1,
+  id = 168u,
+  crcExtra = 1,
 )
 public data class Wind(
   /**
@@ -57,9 +59,9 @@ public data class Wind(
   }
 
   public companion object {
-    private const val ID: Int = 168
+    private const val ID: UInt = 168u
 
-    private const val CRC: Int = 1
+    private const val CRC_EXTRA: Byte = 1
 
     private const val SIZE_V1: Int = 12
 
@@ -79,7 +81,8 @@ public data class Wind(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Wind> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Wind> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Wind> = METADATA
 

@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -13,82 +13,82 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * System is not ready to fly, booting, calibrating, etc. No flag is set.
    */
   @GeneratedMavEnumEntry
-  PREFLIGHT(0L),
+  PREFLIGHT(0u),
   /**
    * System is allowed to be active, under assisted RC control.
    */
   @GeneratedMavEnumEntry
-  STABILIZE_DISARMED(80L),
+  STABILIZE_DISARMED(80u),
   /**
    * System is allowed to be active, under assisted RC control.
    */
   @GeneratedMavEnumEntry
-  STABILIZE_ARMED(208L),
+  STABILIZE_ARMED(208u),
   /**
    * System is allowed to be active, under manual (RC) control, no stabilization
    */
   @GeneratedMavEnumEntry
-  MANUAL_DISARMED(64L),
+  MANUAL_DISARMED(64u),
   /**
    * System is allowed to be active, under manual (RC) control, no stabilization
    */
   @GeneratedMavEnumEntry
-  MANUAL_ARMED(192L),
+  MANUAL_ARMED(192u),
   /**
    * System is allowed to be active, under autonomous control, manual setpoint
    */
   @GeneratedMavEnumEntry
-  GUIDED_DISARMED(88L),
+  GUIDED_DISARMED(88u),
   /**
    * System is allowed to be active, under autonomous control, manual setpoint
    */
   @GeneratedMavEnumEntry
-  GUIDED_ARMED(216L),
+  GUIDED_ARMED(216u),
   /**
    * System is allowed to be active, under autonomous control and navigation (the trajectory is
    * decided onboard and not pre-programmed by waypoints)
    */
   @GeneratedMavEnumEntry
-  AUTO_DISARMED(92L),
+  AUTO_DISARMED(92u),
   /**
    * System is allowed to be active, under autonomous control and navigation (the trajectory is
    * decided onboard and not pre-programmed by waypoints)
    */
   @GeneratedMavEnumEntry
-  AUTO_ARMED(220L),
+  AUTO_ARMED(220u),
   /**
    * UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for
    * developers only.
    */
   @GeneratedMavEnumEntry
-  TEST_DISARMED(66L),
+  TEST_DISARMED(66u),
   /**
    * UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for
    * developers only.
    */
   @GeneratedMavEnumEntry
-  TEST_ARMED(194L),
+  TEST_ARMED(194u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavMode? = when (v) {
-      0L -> PREFLIGHT
-      80L -> STABILIZE_DISARMED
-      208L -> STABILIZE_ARMED
-      64L -> MANUAL_DISARMED
-      192L -> MANUAL_ARMED
-      88L -> GUIDED_DISARMED
-      216L -> GUIDED_ARMED
-      92L -> AUTO_DISARMED
-      220L -> AUTO_ARMED
-      66L -> TEST_DISARMED
-      194L -> TEST_ARMED
+  public companion object : MavEnum.Companion<MavMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavMode? = when (v) {
+      0u -> PREFLIGHT
+      80u -> STABILIZE_DISARMED
+      208u -> STABILIZE_ARMED
+      64u -> MANUAL_DISARMED
+      192u -> MANUAL_ARMED
+      88u -> GUIDED_DISARMED
+      216u -> GUIDED_ARMED
+      92u -> AUTO_DISARMED
+      220u -> AUTO_ARMED
+      66u -> TEST_DISARMED
+      194u -> TEST_ARMED
       else -> null
     }
   }

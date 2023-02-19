@@ -1,12 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -16,17 +19,17 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -34,8 +37,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * position estimate of the system.
  */
 @GeneratedMavMessage(
-  id = 232,
-  crc = 151,
+  id = 232u,
+  crcExtra = -105,
 )
 public data class GpsInput(
   /**
@@ -43,32 +46,32 @@ public data class GpsInput(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * ID of the GPS for multiple GPS inputs
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gpsId: Int = 0,
+  public val gpsId: UByte = 0u,
   /**
    * Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val ignoreFlags: MavBitmaskValue<GpsInputIgnoreFlags> = MavBitmaskValue.fromValue(0),
+  public val ignoreFlags: MavBitmaskValue<GpsInputIgnoreFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * GPS time (from start of GPS week)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeWeekMs: Long = 0L,
+  public val timeWeekMs: UInt = 0u,
   /**
    * GPS week number
    */
   @GeneratedMavField(type = "uint16_t")
-  public val timeWeek: Int = 0,
+  public val timeWeek: UShort = 0u,
   /**
    * 0-1: no fix, 2: 2D fix, 3: 3D fix. 4: 3D with DGPS. 5: 3D with RTK
    */
   @GeneratedMavField(type = "uint8_t")
-  public val fixType: Int = 0,
+  public val fixType: UByte = 0u,
   /**
    * Latitude (WGS84)
    */
@@ -128,7 +131,7 @@ public data class GpsInput(
    * Number of satellites visible.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val satellitesVisible: Int = 0,
+  public val satellitesVisible: UByte = 0u,
   /**
    * Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for north
    */
@@ -136,14 +139,14 @@ public data class GpsInput(
     type = "uint16_t",
     extension = true,
   )
-  public val yaw: Int = 0,
+  public val yaw: UShort = 0u,
 ) : MavMessage<GpsInput> {
   public override val instanceMetadata: MavMessage.Metadata<GpsInput> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint32(timeWeekMs)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt32(timeWeekMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -156,17 +159,17 @@ public data class GpsInput(
     outputBuffer.encodeFloat(horizAccuracy)
     outputBuffer.encodeFloat(vertAccuracy)
     outputBuffer.encodeBitmaskValue(ignoreFlags.value, 2)
-    outputBuffer.encodeUint16(timeWeek)
-    outputBuffer.encodeUint8(gpsId)
-    outputBuffer.encodeUint8(fixType)
-    outputBuffer.encodeUint8(satellitesVisible)
+    outputBuffer.encodeUInt16(timeWeek)
+    outputBuffer.encodeUInt8(gpsId)
+    outputBuffer.encodeUInt8(fixType)
+    outputBuffer.encodeUInt8(satellitesVisible)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint32(timeWeekMs)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt32(timeWeekMs)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeFloat(alt)
@@ -179,18 +182,18 @@ public data class GpsInput(
     outputBuffer.encodeFloat(horizAccuracy)
     outputBuffer.encodeFloat(vertAccuracy)
     outputBuffer.encodeBitmaskValue(ignoreFlags.value, 2)
-    outputBuffer.encodeUint16(timeWeek)
-    outputBuffer.encodeUint8(gpsId)
-    outputBuffer.encodeUint8(fixType)
-    outputBuffer.encodeUint8(satellitesVisible)
-    outputBuffer.encodeUint16(yaw)
+    outputBuffer.encodeUInt16(timeWeek)
+    outputBuffer.encodeUInt8(gpsId)
+    outputBuffer.encodeUInt8(fixType)
+    outputBuffer.encodeUInt8(satellitesVisible)
+    outputBuffer.encodeUInt16(yaw)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 232
+    private const val ID: UInt = 232u
 
-    private const val CRC: Int = 151
+    private const val CRC_EXTRA: Byte = -105
 
     private const val SIZE_V1: Int = 63
 
@@ -198,8 +201,8 @@ public data class GpsInput(
 
     private val DESERIALIZER: MavDeserializer<GpsInput> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
-      val timeWeekMs = inputBuffer.decodeUint32()
+      val timeUsec = inputBuffer.decodeUInt64()
+      val timeWeekMs = inputBuffer.decodeUInt32()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -215,11 +218,11 @@ public data class GpsInput(
         val flags = GpsInputIgnoreFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val timeWeek = inputBuffer.decodeUint16()
-      val gpsId = inputBuffer.decodeUint8()
-      val fixType = inputBuffer.decodeUint8()
-      val satellitesVisible = inputBuffer.decodeUint8()
-      val yaw = inputBuffer.decodeUint16()
+      val timeWeek = inputBuffer.decodeUInt16()
+      val gpsId = inputBuffer.decodeUInt8()
+      val fixType = inputBuffer.decodeUInt8()
+      val satellitesVisible = inputBuffer.decodeUInt8()
+      val yaw = inputBuffer.decodeUInt16()
 
       GpsInput(
         timeUsec = timeUsec,
@@ -245,7 +248,8 @@ public data class GpsInput(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GpsInput> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<GpsInput> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsInput> = METADATA
 
@@ -254,17 +258,17 @@ public data class GpsInput(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var gpsId: Int = 0
+    public var gpsId: UByte = 0u
 
-    public var ignoreFlags: MavBitmaskValue<GpsInputIgnoreFlags> = MavBitmaskValue.fromValue(0)
+    public var ignoreFlags: MavBitmaskValue<GpsInputIgnoreFlags> = MavBitmaskValue.fromValue(0u)
 
-    public var timeWeekMs: Long = 0L
+    public var timeWeekMs: UInt = 0u
 
-    public var timeWeek: Int = 0
+    public var timeWeek: UShort = 0u
 
-    public var fixType: Int = 0
+    public var fixType: UByte = 0u
 
     public var lat: Int = 0
 
@@ -288,9 +292,9 @@ public data class GpsInput(
 
     public var vertAccuracy: Float = 0F
 
-    public var satellitesVisible: Int = 0
+    public var satellitesVisible: UByte = 0u
 
-    public var yaw: Int = 0
+    public var yaw: UShort = 0u
 
     public fun build(): GpsInput = GpsInput(
       timeUsec = timeUsec,

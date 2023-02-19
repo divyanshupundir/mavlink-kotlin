@@ -2,9 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,13 +18,13 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -33,46 +37,46 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * https://mavlink.io/en/services/mission.html.
  */
 @GeneratedMavMessage(
-  id = 73,
-  crc = 38,
+  id = 73u,
+  crcExtra = 38,
 )
 public data class MissionItemInt(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no
    * gaps in the sequence (0,1,2,3,4).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val seq: Int = 0,
+  public val seq: UShort = 0u,
   /**
    * The coordinate system of the waypoint.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * The scheduled action for the waypoint.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
   /**
    * false:0, true:1
    */
   @GeneratedMavField(type = "uint8_t")
-  public val current: Int = 0,
+  public val current: UByte = 0u,
   /**
    * Autocontinue to next waypoint
    */
   @GeneratedMavField(type = "uint8_t")
-  public val autocontinue: Int = 0,
+  public val autocontinue: UByte = 0u,
   /**
    * PARAM1, see MAV_CMD enum
    */
@@ -115,7 +119,7 @@ public data class MissionItemInt(
     type = "uint8_t",
     extension = true,
   )
-  public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0),
+  public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionItemInt> {
   public override val instanceMetadata: MavMessage.Metadata<MissionItemInt> = METADATA
 
@@ -128,13 +132,13 @@ public data class MissionItemInt(
     outputBuffer.encodeInt32(x)
     outputBuffer.encodeInt32(y)
     outputBuffer.encodeFloat(z)
-    outputBuffer.encodeUint16(seq)
+    outputBuffer.encodeUInt16(seq)
     outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeEnumValue(frame.value, 1)
-    outputBuffer.encodeUint8(current)
-    outputBuffer.encodeUint8(autocontinue)
+    outputBuffer.encodeUInt8(current)
+    outputBuffer.encodeUInt8(autocontinue)
     return outputBuffer.array()
   }
 
@@ -147,21 +151,21 @@ public data class MissionItemInt(
     outputBuffer.encodeInt32(x)
     outputBuffer.encodeInt32(y)
     outputBuffer.encodeFloat(z)
-    outputBuffer.encodeUint16(seq)
+    outputBuffer.encodeUInt16(seq)
     outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeEnumValue(frame.value, 1)
-    outputBuffer.encodeUint8(current)
-    outputBuffer.encodeUint8(autocontinue)
+    outputBuffer.encodeUInt8(current)
+    outputBuffer.encodeUInt8(autocontinue)
     outputBuffer.encodeEnumValue(missionType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 73
+    private const val ID: UInt = 73u
 
-    private const val CRC: Int = 38
+    private const val CRC_EXTRA: Byte = 38
 
     private const val SIZE_V1: Int = 37
 
@@ -176,19 +180,19 @@ public data class MissionItemInt(
       val x = inputBuffer.decodeInt32()
       val y = inputBuffer.decodeInt32()
       val z = inputBuffer.decodeFloat()
-      val seq = inputBuffer.decodeUint16()
+      val seq = inputBuffer.decodeUInt16()
       val command = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
       val frame = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val current = inputBuffer.decodeUint8()
-      val autocontinue = inputBuffer.decodeUint8()
+      val current = inputBuffer.decodeUInt8()
+      val autocontinue = inputBuffer.decodeUInt8()
       val missionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -214,7 +218,7 @@ public data class MissionItemInt(
     }
 
 
-    private val METADATA: MavMessage.Metadata<MissionItemInt> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<MissionItemInt> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MissionItemInt> = METADATA
@@ -224,19 +228,19 @@ public data class MissionItemInt(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var seq: Int = 0
+    public var seq: UShort = 0u
 
-    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
-    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u)
 
-    public var current: Int = 0
+    public var current: UByte = 0u
 
-    public var autocontinue: Int = 0
+    public var autocontinue: UByte = 0u
 
     public var param1: Float = 0F
 
@@ -252,7 +256,7 @@ public data class MissionItemInt(
 
     public var z: Float = 0F
 
-    public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0)
+    public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u)
 
     public fun build(): MissionItemInt = MissionItemInt(
       targetSystem = targetSystem,

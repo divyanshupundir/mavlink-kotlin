@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -20,8 +22,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 380,
-  crc = 232,
+  id = 380u,
+  crcExtra = -24,
 )
 public data class TimeEstimateToTarget(
   /**
@@ -79,9 +81,9 @@ public data class TimeEstimateToTarget(
   }
 
   public companion object {
-    private const val ID: Int = 380
+    private const val ID: UInt = 380u
 
-    private const val CRC: Int = 232
+    private const val CRC_EXTRA: Byte = -24
 
     private const val SIZE_V1: Int = 20
 
@@ -105,8 +107,8 @@ public data class TimeEstimateToTarget(
     }
 
 
-    private val METADATA: MavMessage.Metadata<TimeEstimateToTarget> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<TimeEstimateToTarget> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TimeEstimateToTarget> = METADATA
 

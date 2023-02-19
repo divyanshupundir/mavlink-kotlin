@@ -2,20 +2,21 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,15 +25,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 @Deprecated(message =
     "This message is being superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW. The message can still be used to communicate with legacy gimbals implementing it.")
 @GeneratedMavMessage(
-  id = 265,
-  crc = 26,
+  id = 265u,
+  crcExtra = 26,
 )
 public data class MountOrientation(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Roll in global frame (set to NaN for invalid).
    */
@@ -61,7 +62,7 @@ public data class MountOrientation(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -70,7 +71,7 @@ public data class MountOrientation(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -79,9 +80,9 @@ public data class MountOrientation(
   }
 
   public companion object {
-    private const val ID: Int = 265
+    private const val ID: UInt = 265u
 
-    private const val CRC: Int = 26
+    private const val CRC_EXTRA: Byte = 26
 
     private const val SIZE_V1: Int = 16
 
@@ -89,7 +90,7 @@ public data class MountOrientation(
 
     private val DESERIALIZER: MavDeserializer<MountOrientation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
@@ -105,7 +106,7 @@ public data class MountOrientation(
     }
 
 
-    private val METADATA: MavMessage.Metadata<MountOrientation> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<MountOrientation> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MountOrientation> = METADATA
@@ -115,7 +116,7 @@ public data class MountOrientation(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var roll: Float = 0F
 

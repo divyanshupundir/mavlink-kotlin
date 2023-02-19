@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,23 +10,23 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class ParamAck(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Parameter value ACCEPTED and SET
    */
   @GeneratedMavEnumEntry
-  ACCEPTED(0L),
+  ACCEPTED(0u),
   /**
    * Parameter value UNKNOWN/UNSUPPORTED
    */
   @GeneratedMavEnumEntry
-  VALUE_UNSUPPORTED(1L),
+  VALUE_UNSUPPORTED(1u),
   /**
    * Parameter failed to set
    */
   @GeneratedMavEnumEntry
-  FAILED(2L),
+  FAILED(2u),
   /**
    * Parameter value received but not yet set/accepted. A subsequent PARAM_ACK_TRANSACTION or
    * PARAM_EXT_ACK with the final result will follow once operation is completed. This is returned
@@ -34,15 +34,15 @@ public enum class ParamAck(
    * and does not need to be resent.
    */
   @GeneratedMavEnumEntry
-  IN_PROGRESS(3L),
+  IN_PROGRESS(3u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): ParamAck? = when (v) {
-      0L -> ACCEPTED
-      1L -> VALUE_UNSUPPORTED
-      2L -> FAILED
-      3L -> IN_PROGRESS
+  public companion object : MavEnum.Companion<ParamAck> {
+    public override fun getEntryFromValueOrNull(v: UInt): ParamAck? = when (v) {
+      0u -> ACCEPTED
+      1u -> VALUE_UNSUPPORTED
+      2u -> FAILED
+      3u -> IN_PROGRESS
       else -> null
     }
   }

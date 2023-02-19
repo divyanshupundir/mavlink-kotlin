@@ -1,10 +1,11 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of
@@ -14,100 +15,101 @@ import xyz.urbanmatrix.mavlink.api.MavBitmask
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class PositionTargetTypemask(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Ignore position x
    */
   @GeneratedMavEnumEntry
-  X_IGNORE(1L),
+  X_IGNORE(1u),
   /**
    * Ignore position y
    */
   @GeneratedMavEnumEntry
-  Y_IGNORE(2L),
+  Y_IGNORE(2u),
   /**
    * Ignore position z
    */
   @GeneratedMavEnumEntry
-  Z_IGNORE(4L),
+  Z_IGNORE(4u),
   /**
    * Ignore velocity x
    */
   @GeneratedMavEnumEntry
-  VX_IGNORE(8L),
+  VX_IGNORE(8u),
   /**
    * Ignore velocity y
    */
   @GeneratedMavEnumEntry
-  VY_IGNORE(16L),
+  VY_IGNORE(16u),
   /**
    * Ignore velocity z
    */
   @GeneratedMavEnumEntry
-  VZ_IGNORE(32L),
+  VZ_IGNORE(32u),
   /**
    * Ignore acceleration x
    */
   @GeneratedMavEnumEntry
-  AX_IGNORE(64L),
+  AX_IGNORE(64u),
   /**
    * Ignore acceleration y
    */
   @GeneratedMavEnumEntry
-  AY_IGNORE(128L),
+  AY_IGNORE(128u),
   /**
    * Ignore acceleration z
    */
   @GeneratedMavEnumEntry
-  AZ_IGNORE(256L),
+  AZ_IGNORE(256u),
   /**
    * Use force instead of acceleration
    */
   @GeneratedMavEnumEntry
-  FORCE_SET(512L),
+  FORCE_SET(512u),
   /**
    * Ignore yaw
    */
   @GeneratedMavEnumEntry
-  YAW_IGNORE(1024L),
+  YAW_IGNORE(1024u),
   /**
    * Ignore yaw rate
    */
   @GeneratedMavEnumEntry
-  YAW_RATE_IGNORE(2048L),
+  YAW_RATE_IGNORE(2048u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): PositionTargetTypemask? = when (v) {
-      1L -> X_IGNORE
-      2L -> Y_IGNORE
-      4L -> Z_IGNORE
-      8L -> VX_IGNORE
-      16L -> VY_IGNORE
-      32L -> VZ_IGNORE
-      64L -> AX_IGNORE
-      128L -> AY_IGNORE
-      256L -> AZ_IGNORE
-      512L -> FORCE_SET
-      1024L -> YAW_IGNORE
-      2048L -> YAW_RATE_IGNORE
+  public companion object : MavEnum.Companion<PositionTargetTypemask>,
+      MavBitmask.Companion<PositionTargetTypemask> {
+    public override fun getEntryFromValueOrNull(v: UInt): PositionTargetTypemask? = when (v) {
+      1u -> X_IGNORE
+      2u -> Y_IGNORE
+      4u -> Z_IGNORE
+      8u -> VX_IGNORE
+      16u -> VY_IGNORE
+      32u -> VZ_IGNORE
+      64u -> AX_IGNORE
+      128u -> AY_IGNORE
+      256u -> AZ_IGNORE
+      512u -> FORCE_SET
+      1024u -> YAW_IGNORE
+      2048u -> YAW_RATE_IGNORE
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<PositionTargetTypemask> = buildList {
-      if (v and 1L == 1L) add(X_IGNORE)
-      if (v and 2L == 2L) add(Y_IGNORE)
-      if (v and 4L == 4L) add(Z_IGNORE)
-      if (v and 8L == 8L) add(VX_IGNORE)
-      if (v and 16L == 16L) add(VY_IGNORE)
-      if (v and 32L == 32L) add(VZ_IGNORE)
-      if (v and 64L == 64L) add(AX_IGNORE)
-      if (v and 128L == 128L) add(AY_IGNORE)
-      if (v and 256L == 256L) add(AZ_IGNORE)
-      if (v and 512L == 512L) add(FORCE_SET)
-      if (v and 1024L == 1024L) add(YAW_IGNORE)
-      if (v and 2048L == 2048L) add(YAW_RATE_IGNORE)
+    public override fun getFlagsFromValue(v: UInt): List<PositionTargetTypemask> = buildList {
+      if (v and 1u == 1u) add(X_IGNORE)
+      if (v and 2u == 2u) add(Y_IGNORE)
+      if (v and 4u == 4u) add(Z_IGNORE)
+      if (v and 8u == 8u) add(VX_IGNORE)
+      if (v and 16u == 16u) add(VY_IGNORE)
+      if (v and 32u == 32u) add(VZ_IGNORE)
+      if (v and 64u == 64u) add(AX_IGNORE)
+      if (v and 128u == 128u) add(AY_IGNORE)
+      if (v and 256u == 256u) add(AZ_IGNORE)
+      if (v and 512u == 512u) add(FORCE_SET)
+      if (v and 1024u == 1024u) add(YAW_IGNORE)
+      if (v and 2048u == 2048u) add(YAW_RATE_IGNORE)
     }
   }
 }

@@ -40,19 +40,19 @@ class CoroutinesMavConnectionTest {
         launch {
             connection.connect(this)
             connection.sendUnsignedV2(
-                100, 1,
+                100u, 1u,
                 CommandLong(
-                    1,
-                    1,
+                    1u,
+                    1u,
                     MavCmd.COMPONENT_ARM_DISARM.wrap(),
                     param1 = 1f
                 )
             )
             connection.trySendUnsignedV2(
-                100, 1,
+                100u, 1u,
                 CommandLong(
-                    1,
-                    1,
+                    1u,
+                    1u,
                     MavCmd.NAV_LAND.wrap()
                 )
             )

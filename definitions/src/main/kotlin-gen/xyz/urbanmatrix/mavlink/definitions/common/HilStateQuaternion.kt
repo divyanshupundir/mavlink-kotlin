@@ -1,11 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,14 +20,14 @@ import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -31,8 +35,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * useful for high throughput applications such as hardware in the loop simulations.
  */
 @GeneratedMavMessage(
-  id = 115,
-  crc = 4,
+  id = 115u,
+  crcExtra = 4,
 )
 public data class HilStateQuaternion(
   /**
@@ -40,7 +44,7 @@ public data class HilStateQuaternion(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Vehicle attitude expressed as normalized quaternion in w, x, y, z order (with 1 0 0 0 being the
    * null-rotation)
@@ -81,48 +85,48 @@ public data class HilStateQuaternion(
    * Ground X Speed (Latitude)
    */
   @GeneratedMavField(type = "int16_t")
-  public val vx: Int = 0,
+  public val vx: Short = 0,
   /**
    * Ground Y Speed (Longitude)
    */
   @GeneratedMavField(type = "int16_t")
-  public val vy: Int = 0,
+  public val vy: Short = 0,
   /**
    * Ground Z Speed (Altitude)
    */
   @GeneratedMavField(type = "int16_t")
-  public val vz: Int = 0,
+  public val vz: Short = 0,
   /**
    * Indicated airspeed
    */
   @GeneratedMavField(type = "uint16_t")
-  public val indAirspeed: Int = 0,
+  public val indAirspeed: UShort = 0u,
   /**
    * True airspeed
    */
   @GeneratedMavField(type = "uint16_t")
-  public val trueAirspeed: Int = 0,
+  public val trueAirspeed: UShort = 0u,
   /**
    * X acceleration
    */
   @GeneratedMavField(type = "int16_t")
-  public val xacc: Int = 0,
+  public val xacc: Short = 0,
   /**
    * Y acceleration
    */
   @GeneratedMavField(type = "int16_t")
-  public val yacc: Int = 0,
+  public val yacc: Short = 0,
   /**
    * Z acceleration
    */
   @GeneratedMavField(type = "int16_t")
-  public val zacc: Int = 0,
+  public val zacc: Short = 0,
 ) : MavMessage<HilStateQuaternion> {
   public override val instanceMetadata: MavMessage.Metadata<HilStateQuaternion> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(attitudeQuaternion, 16)
     outputBuffer.encodeFloat(rollspeed)
     outputBuffer.encodeFloat(pitchspeed)
@@ -133,8 +137,8 @@ public data class HilStateQuaternion(
     outputBuffer.encodeInt16(vx)
     outputBuffer.encodeInt16(vy)
     outputBuffer.encodeInt16(vz)
-    outputBuffer.encodeUint16(indAirspeed)
-    outputBuffer.encodeUint16(trueAirspeed)
+    outputBuffer.encodeUInt16(indAirspeed)
+    outputBuffer.encodeUInt16(trueAirspeed)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
     outputBuffer.encodeInt16(zacc)
@@ -143,7 +147,7 @@ public data class HilStateQuaternion(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(attitudeQuaternion, 16)
     outputBuffer.encodeFloat(rollspeed)
     outputBuffer.encodeFloat(pitchspeed)
@@ -154,8 +158,8 @@ public data class HilStateQuaternion(
     outputBuffer.encodeInt16(vx)
     outputBuffer.encodeInt16(vy)
     outputBuffer.encodeInt16(vz)
-    outputBuffer.encodeUint16(indAirspeed)
-    outputBuffer.encodeUint16(trueAirspeed)
+    outputBuffer.encodeUInt16(indAirspeed)
+    outputBuffer.encodeUInt16(trueAirspeed)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
     outputBuffer.encodeInt16(zacc)
@@ -163,9 +167,9 @@ public data class HilStateQuaternion(
   }
 
   public companion object {
-    private const val ID: Int = 115
+    private const val ID: UInt = 115u
 
-    private const val CRC: Int = 4
+    private const val CRC_EXTRA: Byte = 4
 
     private const val SIZE_V1: Int = 64
 
@@ -173,7 +177,7 @@ public data class HilStateQuaternion(
 
     private val DESERIALIZER: MavDeserializer<HilStateQuaternion> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val attitudeQuaternion = inputBuffer.decodeFloatArray(16)
       val rollspeed = inputBuffer.decodeFloat()
       val pitchspeed = inputBuffer.decodeFloat()
@@ -184,8 +188,8 @@ public data class HilStateQuaternion(
       val vx = inputBuffer.decodeInt16()
       val vy = inputBuffer.decodeInt16()
       val vz = inputBuffer.decodeInt16()
-      val indAirspeed = inputBuffer.decodeUint16()
-      val trueAirspeed = inputBuffer.decodeUint16()
+      val indAirspeed = inputBuffer.decodeUInt16()
+      val trueAirspeed = inputBuffer.decodeUInt16()
       val xacc = inputBuffer.decodeInt16()
       val yacc = inputBuffer.decodeInt16()
       val zacc = inputBuffer.decodeInt16()
@@ -211,8 +215,8 @@ public data class HilStateQuaternion(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HilStateQuaternion> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<HilStateQuaternion> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilStateQuaternion> = METADATA
 
@@ -221,7 +225,7 @@ public data class HilStateQuaternion(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var attitudeQuaternion: List<Float> = emptyList()
 
@@ -237,21 +241,21 @@ public data class HilStateQuaternion(
 
     public var alt: Int = 0
 
-    public var vx: Int = 0
+    public var vx: Short = 0
 
-    public var vy: Int = 0
+    public var vy: Short = 0
 
-    public var vz: Int = 0
+    public var vz: Short = 0
 
-    public var indAirspeed: Int = 0
+    public var indAirspeed: UShort = 0u
 
-    public var trueAirspeed: Int = 0
+    public var trueAirspeed: UShort = 0u
 
-    public var xacc: Int = 0
+    public var xacc: Short = 0
 
-    public var yacc: Int = 0
+    public var yacc: Short = 0
 
-    public var zacc: Int = 0
+    public var zacc: Short = 0
 
     public fun build(): HilStateQuaternion = HilStateQuaternion(
       timeUsec = timeUsec,

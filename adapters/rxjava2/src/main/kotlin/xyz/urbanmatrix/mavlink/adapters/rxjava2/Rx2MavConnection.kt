@@ -19,25 +19,25 @@ public interface Rx2MavConnection {
 
     @CheckReturnValue
     public fun <T : MavMessage<T>> sendV1(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T
     ): Completable
 
     @CheckReturnValue
     public fun <T : MavMessage<T>> sendUnsignedV2(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T
     ): Completable
 
     @CheckReturnValue
     public fun <T : MavMessage<T>> sendSignedV2(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T,
-        linkId: Int,
-        timestamp: Long,
+        linkId: UByte,
+        timestamp: UInt,
         secretKey: ByteArray
     ): Completable
 }

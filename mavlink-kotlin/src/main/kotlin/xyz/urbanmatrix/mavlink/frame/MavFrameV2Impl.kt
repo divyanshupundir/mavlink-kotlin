@@ -7,21 +7,21 @@ internal data class MavFrameV2Impl<T>(
     override val message: T
 ) : MavFrameV2<T> {
 
-    override val sequence: Int get() = rawFrame.seq
+    override val sequence: UByte get() = rawFrame.seq
 
-    override val systemId: Int get() = rawFrame.systemId
+    override val systemId: UByte get() = rawFrame.systemId
 
-    override val componentId: Int get() = rawFrame.componentId
+    override val componentId: UByte get() = rawFrame.componentId
 
     override val frameBytes: ByteArray get() = rawFrame.rawBytes.clone()
 
-    override val checksum: Int get() = rawFrame.checksum
+    override val checksum: UShort get() = rawFrame.checksum
 
     override val isSigned: Boolean get() = rawFrame.isSigned
 
-    override val signatureLinkId: Int get() = rawFrame.signatureLinkId
+    override val signatureLinkId: UByte get() = rawFrame.signatureLinkId
 
-    override val signatureTimestamp: Long get() = rawFrame.signatureTimestamp
+    override val signatureTimestamp: ULong get() = rawFrame.signatureTimestamp.toULong()
 
     override val signature: ByteArray get() = rawFrame.signature
 

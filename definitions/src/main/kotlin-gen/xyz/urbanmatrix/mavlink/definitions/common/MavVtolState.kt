@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,42 +10,42 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavVtolState(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * MAV is not configured as VTOL
    */
   @GeneratedMavEnumEntry
-  UNDEFINED(0L),
+  UNDEFINED(0u),
   /**
    * VTOL is in transition from multicopter to fixed-wing
    */
   @GeneratedMavEnumEntry
-  TRANSITION_TO_FW(1L),
+  TRANSITION_TO_FW(1u),
   /**
    * VTOL is in transition from fixed-wing to multicopter
    */
   @GeneratedMavEnumEntry
-  TRANSITION_TO_MC(2L),
+  TRANSITION_TO_MC(2u),
   /**
    * VTOL is in multicopter state
    */
   @GeneratedMavEnumEntry
-  MC(3L),
+  MC(3u),
   /**
    * VTOL is in fixed-wing state
    */
   @GeneratedMavEnumEntry
-  FW(4L),
+  FW(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavVtolState? = when (v) {
-      0L -> UNDEFINED
-      1L -> TRANSITION_TO_FW
-      2L -> TRANSITION_TO_MC
-      3L -> MC
-      4L -> FW
+  public companion object : MavEnum.Companion<MavVtolState> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavVtolState? = when (v) {
+      0u -> UNDEFINED
+      1u -> TRANSITION_TO_FW
+      2u -> TRANSITION_TO_MC
+      3u -> MC
+      4u -> FW
       else -> null
     }
   }

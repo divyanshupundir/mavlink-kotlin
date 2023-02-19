@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,10 +16,10 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,8 +28,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  *         The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE.
  */
 @GeneratedMavMessage(
-  id = 336,
-  crc = 245,
+  id = 336u,
+  crcExtra = -11,
 )
 public data class CellularConfig(
   /**
@@ -34,13 +37,13 @@ public data class CellularConfig(
    * back as a response.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val enableLte: Int = 0,
+  public val enableLte: UByte = 0u,
   /**
    * Enable/disable PIN on the SIM card. 0: setting unchanged, 1: disabled, 2: enabled. Current
    * setting when sent back as a response.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val enablePin: Int = 0,
+  public val enablePin: UByte = 0u,
   /**
    * PIN sent to the SIM card. Blank when PIN is disabled. Empty when message is sent back as a
    * response.
@@ -70,45 +73,45 @@ public data class CellularConfig(
    * sent back as a response.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val roaming: Int = 0,
+  public val roaming: UByte = 0u,
   /**
    * Message acceptance response (sent back to GS).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0),
+  public val response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CellularConfig> {
   public override val instanceMetadata: MavMessage.Metadata<CellularConfig> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(enableLte)
-    outputBuffer.encodeUint8(enablePin)
+    outputBuffer.encodeUInt8(enableLte)
+    outputBuffer.encodeUInt8(enablePin)
     outputBuffer.encodeString(pin, 16)
     outputBuffer.encodeString(newPin, 16)
     outputBuffer.encodeString(apn, 32)
     outputBuffer.encodeString(puk, 16)
-    outputBuffer.encodeUint8(roaming)
+    outputBuffer.encodeUInt8(roaming)
     outputBuffer.encodeEnumValue(response.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(enableLte)
-    outputBuffer.encodeUint8(enablePin)
+    outputBuffer.encodeUInt8(enableLte)
+    outputBuffer.encodeUInt8(enablePin)
     outputBuffer.encodeString(pin, 16)
     outputBuffer.encodeString(newPin, 16)
     outputBuffer.encodeString(apn, 32)
     outputBuffer.encodeString(puk, 16)
-    outputBuffer.encodeUint8(roaming)
+    outputBuffer.encodeUInt8(roaming)
     outputBuffer.encodeEnumValue(response.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 336
+    private const val ID: UInt = 336u
 
-    private const val CRC: Int = 245
+    private const val CRC_EXTRA: Byte = -11
 
     private const val SIZE_V1: Int = 84
 
@@ -116,13 +119,13 @@ public data class CellularConfig(
 
     private val DESERIALIZER: MavDeserializer<CellularConfig> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val enableLte = inputBuffer.decodeUint8()
-      val enablePin = inputBuffer.decodeUint8()
+      val enableLte = inputBuffer.decodeUInt8()
+      val enablePin = inputBuffer.decodeUInt8()
       val pin = inputBuffer.decodeString(16)
       val newPin = inputBuffer.decodeString(16)
       val apn = inputBuffer.decodeString(32)
       val puk = inputBuffer.decodeString(16)
-      val roaming = inputBuffer.decodeUint8()
+      val roaming = inputBuffer.decodeUInt8()
       val response = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = CellularConfigResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -141,7 +144,7 @@ public data class CellularConfig(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CellularConfig> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CellularConfig> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CellularConfig> = METADATA
@@ -151,9 +154,9 @@ public data class CellularConfig(
   }
 
   public class Builder {
-    public var enableLte: Int = 0
+    public var enableLte: UByte = 0u
 
-    public var enablePin: Int = 0
+    public var enablePin: UByte = 0u
 
     public var pin: String = ""
 
@@ -163,9 +166,9 @@ public data class CellularConfig(
 
     public var puk: String = ""
 
-    public var roaming: Int = 0
+    public var roaming: UByte = 0u
 
-    public var response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0)
+    public var response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0u)
 
     public fun build(): CellularConfig = CellularConfig(
       enableLte = enableLte,

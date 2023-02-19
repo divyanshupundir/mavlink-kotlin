@@ -2,11 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -16,13 +18,13 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -32,30 +34,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * first, 2 for second, etc.
  */
 @GeneratedMavMessage(
-  id = 261,
-  crc = 179,
+  id = 261u,
+  crcExtra = -77,
 )
 public data class StorageInformation(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Storage ID (1 for first, 2 for second, etc.)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val storageId: Int = 0,
+  public val storageId: UByte = 0u,
   /**
    * Number of storage devices
    */
   @GeneratedMavField(type = "uint8_t")
-  public val storageCount: Int = 0,
+  public val storageCount: UByte = 0u,
   /**
    * Status of storage
    */
   @GeneratedMavField(type = "uint8_t")
-  public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0),
+  public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0u),
   /**
    * Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
    */
@@ -89,7 +91,7 @@ public data class StorageInformation(
     type = "uint8_t",
     extension = true,
   )
-  public val type: MavEnumValue<StorageType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<StorageType> = MavEnumValue.fromValue(0u),
   /**
    * Textual storage name to be used in UI (microSD 1, Internal Memory, etc.) This is a NULL
    * terminated string. If it is exactly 32 characters long, add a terminating NULL. If this string is
@@ -112,34 +114,34 @@ public data class StorageInformation(
     type = "uint8_t",
     extension = true,
   )
-  public val storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0),
+  public val storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u),
 ) : MavMessage<StorageInformation> {
   public override val instanceMetadata: MavMessage.Metadata<StorageInformation> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(totalCapacity)
     outputBuffer.encodeFloat(usedCapacity)
     outputBuffer.encodeFloat(availableCapacity)
     outputBuffer.encodeFloat(readSpeed)
     outputBuffer.encodeFloat(writeSpeed)
-    outputBuffer.encodeUint8(storageId)
-    outputBuffer.encodeUint8(storageCount)
+    outputBuffer.encodeUInt8(storageId)
+    outputBuffer.encodeUInt8(storageCount)
     outputBuffer.encodeEnumValue(status.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(totalCapacity)
     outputBuffer.encodeFloat(usedCapacity)
     outputBuffer.encodeFloat(availableCapacity)
     outputBuffer.encodeFloat(readSpeed)
     outputBuffer.encodeFloat(writeSpeed)
-    outputBuffer.encodeUint8(storageId)
-    outputBuffer.encodeUint8(storageCount)
+    outputBuffer.encodeUInt8(storageId)
+    outputBuffer.encodeUInt8(storageCount)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeString(name, 32)
@@ -148,9 +150,9 @@ public data class StorageInformation(
   }
 
   public companion object {
-    private const val ID: Int = 261
+    private const val ID: UInt = 261u
 
-    private const val CRC: Int = 179
+    private const val CRC_EXTRA: Byte = -77
 
     private const val SIZE_V1: Int = 27
 
@@ -158,14 +160,14 @@ public data class StorageInformation(
 
     private val DESERIALIZER: MavDeserializer<StorageInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val totalCapacity = inputBuffer.decodeFloat()
       val usedCapacity = inputBuffer.decodeFloat()
       val availableCapacity = inputBuffer.decodeFloat()
       val readSpeed = inputBuffer.decodeFloat()
       val writeSpeed = inputBuffer.decodeFloat()
-      val storageId = inputBuffer.decodeUint8()
-      val storageCount = inputBuffer.decodeUint8()
+      val storageId = inputBuffer.decodeUInt8()
+      val storageCount = inputBuffer.decodeUInt8()
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = StorageStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -197,8 +199,8 @@ public data class StorageInformation(
     }
 
 
-    private val METADATA: MavMessage.Metadata<StorageInformation> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<StorageInformation> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<StorageInformation> = METADATA
 
@@ -207,13 +209,13 @@ public data class StorageInformation(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var storageId: Int = 0
+    public var storageId: UByte = 0u
 
-    public var storageCount: Int = 0
+    public var storageCount: UByte = 0u
 
-    public var status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0)
+    public var status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0u)
 
     public var totalCapacity: Float = 0F
 
@@ -225,11 +227,11 @@ public data class StorageInformation(
 
     public var writeSpeed: Float = 0F
 
-    public var type: MavEnumValue<StorageType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<StorageType> = MavEnumValue.fromValue(0u)
 
     public var name: String = ""
 
-    public var storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0)
+    public var storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u)
 
     public fun build(): StorageInformation = StorageInformation(
       timeBootMs = timeBootMs,

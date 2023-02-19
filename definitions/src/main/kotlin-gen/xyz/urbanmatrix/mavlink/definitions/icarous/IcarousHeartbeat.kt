@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.icarous
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,15 +20,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * ICAROUS heartbeat
  */
 @GeneratedMavMessage(
-  id = 42000,
-  crc = 227,
+  id = 42000u,
+  crcExtra = -29,
 )
 public data class IcarousHeartbeat(
   /**
    * See the FMS_STATE enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val status: MavEnumValue<IcarousFmsState> = MavEnumValue.fromValue(0),
+  public val status: MavEnumValue<IcarousFmsState> = MavEnumValue.fromValue(0u),
 ) : MavMessage<IcarousHeartbeat> {
   public override val instanceMetadata: MavMessage.Metadata<IcarousHeartbeat> = METADATA
 
@@ -43,9 +45,9 @@ public data class IcarousHeartbeat(
   }
 
   public companion object {
-    private const val ID: Int = 42000
+    private const val ID: UInt = 42000u
 
-    private const val CRC: Int = 227
+    private const val CRC_EXTRA: Byte = -29
 
     private const val SIZE_V1: Int = 1
 
@@ -64,7 +66,7 @@ public data class IcarousHeartbeat(
     }
 
 
-    private val METADATA: MavMessage.Metadata<IcarousHeartbeat> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<IcarousHeartbeat> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<IcarousHeartbeat> = METADATA
@@ -74,7 +76,7 @@ public data class IcarousHeartbeat(
   }
 
   public class Builder {
-    public var status: MavEnumValue<IcarousFmsState> = MavEnumValue.fromValue(0)
+    public var status: MavEnumValue<IcarousFmsState> = MavEnumValue.fromValue(0u)
 
     public fun build(): IcarousHeartbeat = IcarousHeartbeat(
       status = status,

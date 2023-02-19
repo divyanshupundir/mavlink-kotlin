@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.uavionix
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,60 +10,61 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class UavionixAdsbOutCfgAircraftSize(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  NO_DATA(0L),
+  NO_DATA(0u),
   @GeneratedMavEnumEntry
-  L15M_W23M(1L),
+  L15M_W23M(1u),
   @GeneratedMavEnumEntry
-  L25M_W28P5M(2L),
+  L25M_W28P5M(2u),
   @GeneratedMavEnumEntry
-  L25_34M(3L),
+  L25_34M(3u),
   @GeneratedMavEnumEntry
-  L35_33M(4L),
+  L35_33M(4u),
   @GeneratedMavEnumEntry
-  L35_38M(5L),
+  L35_38M(5u),
   @GeneratedMavEnumEntry
-  L45_39P5M(6L),
+  L45_39P5M(6u),
   @GeneratedMavEnumEntry
-  L45_45M(7L),
+  L45_45M(7u),
   @GeneratedMavEnumEntry
-  L55_45M(8L),
+  L55_45M(8u),
   @GeneratedMavEnumEntry
-  L55_52M(9L),
+  L55_52M(9u),
   @GeneratedMavEnumEntry
-  L65_59P5M(10L),
+  L65_59P5M(10u),
   @GeneratedMavEnumEntry
-  L65_67M(11L),
+  L65_67M(11u),
   @GeneratedMavEnumEntry
-  L75_W72P5M(12L),
+  L75_W72P5M(12u),
   @GeneratedMavEnumEntry
-  L75_W80M(13L),
+  L75_W80M(13u),
   @GeneratedMavEnumEntry
-  L85_W80M(14L),
+  L85_W80M(14u),
   @GeneratedMavEnumEntry
-  L85_W90M(15L),
+  L85_W90M(15u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): UavionixAdsbOutCfgAircraftSize? = when (v) {
-      0L -> NO_DATA
-      1L -> L15M_W23M
-      2L -> L25M_W28P5M
-      3L -> L25_34M
-      4L -> L35_33M
-      5L -> L35_38M
-      6L -> L45_39P5M
-      7L -> L45_45M
-      8L -> L55_45M
-      9L -> L55_52M
-      10L -> L65_59P5M
-      11L -> L65_67M
-      12L -> L75_W72P5M
-      13L -> L75_W80M
-      14L -> L85_W80M
-      15L -> L85_W90M
+  public companion object : MavEnum.Companion<UavionixAdsbOutCfgAircraftSize> {
+    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgAircraftSize? = when (v)
+        {
+      0u -> NO_DATA
+      1u -> L15M_W23M
+      2u -> L25M_W28P5M
+      3u -> L25_34M
+      4u -> L35_33M
+      5u -> L35_38M
+      6u -> L45_39P5M
+      7u -> L45_45M
+      8u -> L55_45M
+      9u -> L55_52M
+      10u -> L65_59P5M
+      11u -> L65_67M
+      12u -> L75_W72P5M
+      13u -> L75_W80M
+      14u -> L85_W80M
+      15u -> L85_W90M
       else -> null
     }
   }

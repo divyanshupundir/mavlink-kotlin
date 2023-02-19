@@ -1,42 +1,45 @@
 package xyz.urbanmatrix.mavlink.definitions.asluav
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * ASL-fixed-wing controller data
  */
 @GeneratedMavMessage(
-  id = 8004,
-  crc = 172,
+  id = 8004u,
+  crcExtra = -84,
 )
 public data class AslctrlData(
   /**
    *  Timestamp
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timestamp: BigInteger = BigInteger.ZERO,
+  public val timestamp: ULong = 0uL,
   /**
    *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val aslctrlMode: Int = 0,
+  public val aslctrlMode: UByte = 0u,
   /**
    *  See sourcecode for a description of these values... 
    */
@@ -74,7 +77,7 @@ public data class AslctrlData(
   @GeneratedMavField(type = "float")
   public val airspeedref: Float = 0F,
   @GeneratedMavField(type = "uint8_t")
-  public val spoilersengaged: Int = 0,
+  public val spoilersengaged: UByte = 0u,
   /**
    * Yaw angle
    */
@@ -112,7 +115,7 @@ public data class AslctrlData(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeUInt64(timestamp)
     outputBuffer.encodeFloat(h)
     outputBuffer.encodeFloat(href)
     outputBuffer.encodeFloat(hrefT)
@@ -135,14 +138,14 @@ public data class AslctrlData(
     outputBuffer.encodeFloat(rref)
     outputBuffer.encodeFloat(uail)
     outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUint8(aslctrlMode)
-    outputBuffer.encodeUint8(spoilersengaged)
+    outputBuffer.encodeUInt8(aslctrlMode)
+    outputBuffer.encodeUInt8(spoilersengaged)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
+    outputBuffer.encodeUInt64(timestamp)
     outputBuffer.encodeFloat(h)
     outputBuffer.encodeFloat(href)
     outputBuffer.encodeFloat(hrefT)
@@ -165,15 +168,15 @@ public data class AslctrlData(
     outputBuffer.encodeFloat(rref)
     outputBuffer.encodeFloat(uail)
     outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUint8(aslctrlMode)
-    outputBuffer.encodeUint8(spoilersengaged)
+    outputBuffer.encodeUInt8(aslctrlMode)
+    outputBuffer.encodeUInt8(spoilersengaged)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 8004
+    private const val ID: UInt = 8004u
 
-    private const val CRC: Int = 172
+    private const val CRC_EXTRA: Byte = -84
 
     private const val SIZE_V1: Int = 98
 
@@ -181,7 +184,7 @@ public data class AslctrlData(
 
     private val DESERIALIZER: MavDeserializer<AslctrlData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUint64()
+      val timestamp = inputBuffer.decodeUInt64()
       val h = inputBuffer.decodeFloat()
       val href = inputBuffer.decodeFloat()
       val hrefT = inputBuffer.decodeFloat()
@@ -204,8 +207,8 @@ public data class AslctrlData(
       val rref = inputBuffer.decodeFloat()
       val uail = inputBuffer.decodeFloat()
       val urud = inputBuffer.decodeFloat()
-      val aslctrlMode = inputBuffer.decodeUint8()
-      val spoilersengaged = inputBuffer.decodeUint8()
+      val aslctrlMode = inputBuffer.decodeUInt8()
+      val spoilersengaged = inputBuffer.decodeUInt8()
 
       AslctrlData(
         timestamp = timestamp,
@@ -237,7 +240,7 @@ public data class AslctrlData(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AslctrlData> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AslctrlData> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AslctrlData> = METADATA
@@ -247,9 +250,9 @@ public data class AslctrlData(
   }
 
   public class Builder {
-    public var timestamp: BigInteger = BigInteger.ZERO
+    public var timestamp: ULong = 0uL
 
-    public var aslctrlMode: Int = 0
+    public var aslctrlMode: UByte = 0u
 
     public var h: Float = 0F
 
@@ -275,7 +278,7 @@ public data class AslctrlData(
 
     public var airspeedref: Float = 0F
 
-    public var spoilersengaged: Int = 0
+    public var spoilersengaged: UByte = 0u
 
     public var yawangle: Float = 0F
 

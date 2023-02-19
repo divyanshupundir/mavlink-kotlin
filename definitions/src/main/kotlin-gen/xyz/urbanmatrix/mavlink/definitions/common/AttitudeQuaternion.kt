@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,10 +15,10 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,15 +26,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
  */
 @GeneratedMavMessage(
-  id = 31,
-  crc = 246,
+  id = 31u,
+  crcExtra = -10,
 )
 public data class AttitudeQuaternion(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Quaternion component 1, w (1 in null-rotation)
    */
@@ -87,7 +88,7 @@ public data class AttitudeQuaternion(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
     outputBuffer.encodeFloat(q3)
@@ -100,7 +101,7 @@ public data class AttitudeQuaternion(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
     outputBuffer.encodeFloat(q3)
@@ -113,9 +114,9 @@ public data class AttitudeQuaternion(
   }
 
   public companion object {
-    private const val ID: Int = 31
+    private const val ID: UInt = 31u
 
-    private const val CRC: Int = 246
+    private const val CRC_EXTRA: Byte = -10
 
     private const val SIZE_V1: Int = 32
 
@@ -123,7 +124,7 @@ public data class AttitudeQuaternion(
 
     private val DESERIALIZER: MavDeserializer<AttitudeQuaternion> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val q1 = inputBuffer.decodeFloat()
       val q2 = inputBuffer.decodeFloat()
       val q3 = inputBuffer.decodeFloat()
@@ -147,8 +148,8 @@ public data class AttitudeQuaternion(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AttitudeQuaternion> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<AttitudeQuaternion> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AttitudeQuaternion> = METADATA
 
@@ -157,7 +158,7 @@ public data class AttitudeQuaternion(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var q1: Float = 0F
 

@@ -2,9 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,12 +17,12 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -28,15 +32,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Hz).
  */
 @GeneratedMavMessage(
-  id = 253,
-  crc = 83,
+  id = 253u,
+  crcExtra = 83,
 )
 public data class Statustext(
   /**
    * Severity of status. Relies on the definitions within RFC-5424.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val severity: MavEnumValue<MavSeverity> = MavEnumValue.fromValue(0),
+  public val severity: MavEnumValue<MavSeverity> = MavEnumValue.fromValue(0u),
   /**
    * Status text message, without null termination character
    */
@@ -51,7 +55,7 @@ public data class Statustext(
     type = "uint16_t",
     extension = true,
   )
-  public val id: Int = 0,
+  public val id: UShort = 0u,
   /**
    * This chunk's sequence number; indexing is from zero.  Any null character in the text field is
    * taken to mean this was the last chunk.
@@ -60,7 +64,7 @@ public data class Statustext(
     type = "uint8_t",
     extension = true,
   )
-  public val chunkSeq: Int = 0,
+  public val chunkSeq: UByte = 0u,
 ) : MavMessage<Statustext> {
   public override val instanceMetadata: MavMessage.Metadata<Statustext> = METADATA
 
@@ -75,15 +79,15 @@ public data class Statustext(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(severity.value, 1)
     outputBuffer.encodeString(text, 50)
-    outputBuffer.encodeUint16(id)
-    outputBuffer.encodeUint8(chunkSeq)
+    outputBuffer.encodeUInt16(id)
+    outputBuffer.encodeUInt8(chunkSeq)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 253
+    private const val ID: UInt = 253u
 
-    private const val CRC: Int = 83
+    private const val CRC_EXTRA: Byte = 83
 
     private const val SIZE_V1: Int = 51
 
@@ -96,8 +100,8 @@ public data class Statustext(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val text = inputBuffer.decodeString(50)
-      val id = inputBuffer.decodeUint16()
-      val chunkSeq = inputBuffer.decodeUint8()
+      val id = inputBuffer.decodeUInt16()
+      val chunkSeq = inputBuffer.decodeUInt8()
 
       Statustext(
         severity = severity,
@@ -108,7 +112,7 @@ public data class Statustext(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Statustext> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Statustext> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Statustext> = METADATA
@@ -118,13 +122,13 @@ public data class Statustext(
   }
 
   public class Builder {
-    public var severity: MavEnumValue<MavSeverity> = MavEnumValue.fromValue(0)
+    public var severity: MavEnumValue<MavSeverity> = MavEnumValue.fromValue(0u)
 
     public var text: String = ""
 
-    public var id: Int = 0
+    public var id: UShort = 0u
 
-    public var chunkSeq: Int = 0
+    public var chunkSeq: UByte = 0u
 
     public fun build(): Statustext = Statustext(
       severity = severity,

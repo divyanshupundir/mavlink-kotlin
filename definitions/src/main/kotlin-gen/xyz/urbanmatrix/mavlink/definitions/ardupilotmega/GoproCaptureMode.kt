@@ -1,66 +1,66 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class GoproCaptureMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Video mode.
    */
   @GeneratedMavEnumEntry
-  VIDEO(0L),
+  VIDEO(0u),
   /**
    * Photo mode.
    */
   @GeneratedMavEnumEntry
-  PHOTO(1L),
+  PHOTO(1u),
   /**
    * Burst mode, Hero 3+ only.
    */
   @GeneratedMavEnumEntry
-  BURST(2L),
+  BURST(2u),
   /**
    * Time lapse mode, Hero 3+ only.
    */
   @GeneratedMavEnumEntry
-  TIME_LAPSE(3L),
+  TIME_LAPSE(3u),
   /**
    * Multi shot mode, Hero 4 only.
    */
   @GeneratedMavEnumEntry
-  MULTI_SHOT(4L),
+  MULTI_SHOT(4u),
   /**
    * Playback mode, Hero 4 only, silver only except when LCD or HDMI is connected to black.
    */
   @GeneratedMavEnumEntry
-  PLAYBACK(5L),
+  PLAYBACK(5u),
   /**
    * Playback mode, Hero 4 only.
    */
   @GeneratedMavEnumEntry
-  SETUP(6L),
+  SETUP(6u),
   /**
    * Mode not yet known.
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(255L),
+  UNKNOWN(255u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): GoproCaptureMode? = when (v) {
-      0L -> VIDEO
-      1L -> PHOTO
-      2L -> BURST
-      3L -> TIME_LAPSE
-      4L -> MULTI_SHOT
-      5L -> PLAYBACK
-      6L -> SETUP
-      255L -> UNKNOWN
+  public companion object : MavEnum.Companion<GoproCaptureMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): GoproCaptureMode? = when (v) {
+      0u -> VIDEO
+      1u -> PHOTO
+      2u -> BURST
+      3u -> TIME_LAPSE
+      4u -> MULTI_SHOT
+      5u -> PLAYBACK
+      6u -> SETUP
+      255u -> UNKNOWN
       else -> null
     }
   }

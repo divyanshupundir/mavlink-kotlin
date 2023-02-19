@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Airspeed auto-calibration.
  */
 @GeneratedMavMessage(
-  id = 174,
-  crc = 167,
+  id = 174u,
+  crcExtra = -89,
 )
 public data class AirspeedAutocal(
   /**
@@ -120,9 +122,9 @@ public data class AirspeedAutocal(
   }
 
   public companion object {
-    private const val ID: Int = 174
+    private const val ID: UInt = 174u
 
-    private const val CRC: Int = 167
+    private const val CRC_EXTRA: Byte = -89
 
     private const val SIZE_V1: Int = 48
 
@@ -160,7 +162,7 @@ public data class AirspeedAutocal(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AirspeedAutocal> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AirspeedAutocal> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AirspeedAutocal> = METADATA

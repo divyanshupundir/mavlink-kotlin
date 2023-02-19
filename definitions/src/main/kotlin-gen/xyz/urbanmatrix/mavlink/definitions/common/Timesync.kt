@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Time synchronization message.
  */
 @GeneratedMavMessage(
-  id = 111,
-  crc = 34,
+  id = 111u,
+  crcExtra = 34,
 )
 public data class Timesync(
   /**
@@ -50,9 +52,9 @@ public data class Timesync(
   }
 
   public companion object {
-    private const val ID: Int = 111
+    private const val ID: UInt = 111u
 
-    private const val CRC: Int = 34
+    private const val CRC_EXTRA: Byte = 34
 
     private const val SIZE_V1: Int = 16
 
@@ -70,7 +72,8 @@ public data class Timesync(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Timesync> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Timesync> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Timesync> = METADATA
 

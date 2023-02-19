@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,30 +10,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class CameraTrackingStatusFlags(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Camera is not tracking
    */
   @GeneratedMavEnumEntry
-  IDLE(0L),
+  IDLE(0u),
   /**
    * Camera is tracking
    */
   @GeneratedMavEnumEntry
-  ACTIVE(1L),
+  ACTIVE(1u),
   /**
    * Camera tracking in error state
    */
   @GeneratedMavEnumEntry
-  ERROR(2L),
+  ERROR(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): CameraTrackingStatusFlags? = when (v) {
-      0L -> IDLE
-      1L -> ACTIVE
-      2L -> ERROR
+  public companion object : MavEnum.Companion<CameraTrackingStatusFlags> {
+    public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingStatusFlags? = when (v) {
+      0u -> IDLE
+      1u -> ACTIVE
+      2u -> ERROR
       else -> null
     }
   }

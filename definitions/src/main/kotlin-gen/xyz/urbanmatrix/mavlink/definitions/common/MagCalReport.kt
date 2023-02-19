@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,40 +16,40 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Reports results of completed compass calibration. Sent until MAG_CAL_ACK received.
  */
 @GeneratedMavMessage(
-  id = 192,
-  crc = 36,
+  id = 192u,
+  crcExtra = 36,
 )
 public data class MagCalReport(
   /**
    * Compass being calibrated.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val compassId: Int = 0,
+  public val compassId: UByte = 0u,
   /**
    * Bitmask of compasses being calibrated.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val calMask: Int = 0,
+  public val calMask: UByte = 0u,
   /**
    * Calibration Status.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0),
+  public val calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0u),
   /**
    * 0=requires a MAV_CMD_DO_ACCEPT_MAG_CAL, 1=saved to parameters.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val autosaved: Int = 0,
+  public val autosaved: UByte = 0u,
   /**
    * RMS milligauss residuals.
    */
@@ -112,7 +115,7 @@ public data class MagCalReport(
     type = "uint8_t",
     extension = true,
   )
-  public val oldOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0),
+  public val oldOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0u),
   /**
    * orientation after calibration.
    */
@@ -120,7 +123,7 @@ public data class MagCalReport(
     type = "uint8_t",
     extension = true,
   )
-  public val newOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0),
+  public val newOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0u),
   /**
    * field radius correction factor
    */
@@ -144,10 +147,10 @@ public data class MagCalReport(
     outputBuffer.encodeFloat(offdiagX)
     outputBuffer.encodeFloat(offdiagY)
     outputBuffer.encodeFloat(offdiagZ)
-    outputBuffer.encodeUint8(compassId)
-    outputBuffer.encodeUint8(calMask)
+    outputBuffer.encodeUInt8(compassId)
+    outputBuffer.encodeUInt8(calMask)
     outputBuffer.encodeEnumValue(calStatus.value, 1)
-    outputBuffer.encodeUint8(autosaved)
+    outputBuffer.encodeUInt8(autosaved)
     return outputBuffer.array()
   }
 
@@ -163,10 +166,10 @@ public data class MagCalReport(
     outputBuffer.encodeFloat(offdiagX)
     outputBuffer.encodeFloat(offdiagY)
     outputBuffer.encodeFloat(offdiagZ)
-    outputBuffer.encodeUint8(compassId)
-    outputBuffer.encodeUint8(calMask)
+    outputBuffer.encodeUInt8(compassId)
+    outputBuffer.encodeUInt8(calMask)
     outputBuffer.encodeEnumValue(calStatus.value, 1)
-    outputBuffer.encodeUint8(autosaved)
+    outputBuffer.encodeUInt8(autosaved)
     outputBuffer.encodeFloat(orientationConfidence)
     outputBuffer.encodeEnumValue(oldOrientation.value, 1)
     outputBuffer.encodeEnumValue(newOrientation.value, 1)
@@ -175,9 +178,9 @@ public data class MagCalReport(
   }
 
   public companion object {
-    private const val ID: Int = 192
+    private const val ID: UInt = 192u
 
-    private const val CRC: Int = 36
+    private const val CRC_EXTRA: Byte = 36
 
     private const val SIZE_V1: Int = 44
 
@@ -195,13 +198,13 @@ public data class MagCalReport(
       val offdiagX = inputBuffer.decodeFloat()
       val offdiagY = inputBuffer.decodeFloat()
       val offdiagZ = inputBuffer.decodeFloat()
-      val compassId = inputBuffer.decodeUint8()
-      val calMask = inputBuffer.decodeUint8()
+      val compassId = inputBuffer.decodeUInt8()
+      val calMask = inputBuffer.decodeUInt8()
       val calStatus = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MagCalStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val autosaved = inputBuffer.decodeUint8()
+      val autosaved = inputBuffer.decodeUInt8()
       val orientationConfidence = inputBuffer.decodeFloat()
       val oldOrientation = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavSensorOrientation.getEntryFromValueOrNull(value)
@@ -236,7 +239,7 @@ public data class MagCalReport(
     }
 
 
-    private val METADATA: MavMessage.Metadata<MagCalReport> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<MagCalReport> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MagCalReport> = METADATA
@@ -246,13 +249,13 @@ public data class MagCalReport(
   }
 
   public class Builder {
-    public var compassId: Int = 0
+    public var compassId: UByte = 0u
 
-    public var calMask: Int = 0
+    public var calMask: UByte = 0u
 
-    public var calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0)
+    public var calStatus: MavEnumValue<MagCalStatus> = MavEnumValue.fromValue(0u)
 
-    public var autosaved: Int = 0
+    public var autosaved: UByte = 0u
 
     public var fitness: Float = 0F
 
@@ -276,9 +279,9 @@ public data class MagCalReport(
 
     public var orientationConfidence: Float = 0F
 
-    public var oldOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0)
+    public var oldOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0u)
 
-    public var newOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0)
+    public var newOrientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0u)
 
     public var scaleFactor: Float = 0F
 

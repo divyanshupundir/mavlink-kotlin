@@ -2,8 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -17,15 +22,15 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeInt8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16Array
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -33,30 +38,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * this message, but may additionally send SMART_BATTERY_INFO.
  */
 @GeneratedMavMessage(
-  id = 147,
-  crc = 154,
+  id = 147u,
+  crcExtra = -102,
 )
 public data class BatteryStatus(
   /**
    * Battery ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val id: Int = 0,
+  public val id: UByte = 0u,
   /**
    * Function of the battery
    */
   @GeneratedMavField(type = "uint8_t")
-  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0),
+  public val batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0u),
   /**
    * Type (chemistry) of the battery
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0u),
   /**
    * Temperature of the battery. INT16_MAX for unknown temperature.
    */
   @GeneratedMavField(type = "int16_t")
-  public val temperature: Int = 0,
+  public val temperature: Short = 0,
   /**
    * Battery voltage of cells 1 to 10 (see voltages_ext for cells 11-14). Cells in this field above
    * the valid cell count for this battery should have the UINT16_MAX value. If individual cell
@@ -67,12 +72,12 @@ public data class BatteryStatus(
    * (UINT16_MAX - 1).
    */
   @GeneratedMavField(type = "uint16_t[10]")
-  public val voltages: List<Int> = emptyList(),
+  public val voltages: List<UShort> = emptyList(),
   /**
    * Battery current, -1: autopilot does not measure the current
    */
   @GeneratedMavField(type = "int16_t")
-  public val currentBattery: Int = 0,
+  public val currentBattery: Short = 0,
   /**
    * Consumed charge, -1: autopilot does not provide consumption estimate
    */
@@ -88,7 +93,7 @@ public data class BatteryStatus(
    * battery.
    */
   @GeneratedMavField(type = "int8_t")
-  public val batteryRemaining: Int = 0,
+  public val batteryRemaining: Byte = 0,
   /**
    * Remaining battery time, 0: autopilot does not provide remaining battery time estimate
    */
@@ -104,7 +109,7 @@ public data class BatteryStatus(
     type = "uint8_t",
     extension = true,
   )
-  public val chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0),
+  public val chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0u),
   /**
    * Battery voltages for cells 11 to 14. Cells above the valid cell count for this battery should
    * have a value of 0, where zero indicates not supported (note, this is different than for the
@@ -115,7 +120,7 @@ public data class BatteryStatus(
     type = "uint16_t[4]",
     extension = true,
   )
-  public val voltagesExt: List<Int> = emptyList(),
+  public val voltagesExt: List<UShort> = emptyList(),
   /**
    * Battery mode. Default (0) is that battery mode reporting is not supported or battery is in
    * normal-use mode.
@@ -124,7 +129,7 @@ public data class BatteryStatus(
     type = "uint8_t",
     extension = true,
   )
-  public val mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0),
+  public val mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0u),
   /**
    * Fault/health indications. These should be set when charge_state is
    * MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY (if not, fault reporting is
@@ -134,7 +139,7 @@ public data class BatteryStatus(
     type = "uint32_t",
     extension = true,
   )
-  public val faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0),
+  public val faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<BatteryStatus> {
   public override val instanceMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
 
@@ -143,9 +148,9 @@ public data class BatteryStatus(
     outputBuffer.encodeInt32(currentConsumed)
     outputBuffer.encodeInt32(energyConsumed)
     outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeUint16Array(voltages, 20)
+    outputBuffer.encodeUInt16Array(voltages, 20)
     outputBuffer.encodeInt16(currentBattery)
-    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeUInt8(id)
     outputBuffer.encodeEnumValue(batteryFunction.value, 1)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeInt8(batteryRemaining)
@@ -157,24 +162,24 @@ public data class BatteryStatus(
     outputBuffer.encodeInt32(currentConsumed)
     outputBuffer.encodeInt32(energyConsumed)
     outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeUint16Array(voltages, 20)
+    outputBuffer.encodeUInt16Array(voltages, 20)
     outputBuffer.encodeInt16(currentBattery)
-    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeUInt8(id)
     outputBuffer.encodeEnumValue(batteryFunction.value, 1)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeInt8(batteryRemaining)
     outputBuffer.encodeInt32(timeRemaining)
     outputBuffer.encodeEnumValue(chargeState.value, 1)
-    outputBuffer.encodeUint16Array(voltagesExt, 8)
+    outputBuffer.encodeUInt16Array(voltagesExt, 8)
     outputBuffer.encodeEnumValue(mode.value, 1)
     outputBuffer.encodeBitmaskValue(faultBitmask.value, 4)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 147
+    private const val ID: UInt = 147u
 
-    private const val CRC: Int = 154
+    private const val CRC_EXTRA: Byte = -102
 
     private const val SIZE_V1: Int = 36
 
@@ -185,9 +190,9 @@ public data class BatteryStatus(
       val currentConsumed = inputBuffer.decodeInt32()
       val energyConsumed = inputBuffer.decodeInt32()
       val temperature = inputBuffer.decodeInt16()
-      val voltages = inputBuffer.decodeUint16Array(20)
+      val voltages = inputBuffer.decodeUInt16Array(20)
       val currentBattery = inputBuffer.decodeInt16()
-      val id = inputBuffer.decodeUint8()
+      val id = inputBuffer.decodeUInt8()
       val batteryFunction = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavBatteryFunction.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -202,7 +207,7 @@ public data class BatteryStatus(
         val entry = MavBatteryChargeState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val voltagesExt = inputBuffer.decodeUint16Array(8)
+      val voltagesExt = inputBuffer.decodeUInt16Array(8)
       val mode = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavBatteryMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -231,7 +236,7 @@ public data class BatteryStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<BatteryStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<BatteryStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
@@ -241,33 +246,33 @@ public data class BatteryStatus(
   }
 
   public class Builder {
-    public var id: Int = 0
+    public var id: UByte = 0u
 
-    public var batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0)
+    public var batteryFunction: MavEnumValue<MavBatteryFunction> = MavEnumValue.fromValue(0u)
 
-    public var type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0u)
 
-    public var temperature: Int = 0
+    public var temperature: Short = 0
 
-    public var voltages: List<Int> = emptyList()
+    public var voltages: List<UShort> = emptyList()
 
-    public var currentBattery: Int = 0
+    public var currentBattery: Short = 0
 
     public var currentConsumed: Int = 0
 
     public var energyConsumed: Int = 0
 
-    public var batteryRemaining: Int = 0
+    public var batteryRemaining: Byte = 0
 
     public var timeRemaining: Int = 0
 
-    public var chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0)
+    public var chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0u)
 
-    public var voltagesExt: List<Int> = emptyList()
+    public var voltagesExt: List<UShort> = emptyList()
 
-    public var mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0)
+    public var mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0u)
 
-    public var faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0)
+    public var faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): BatteryStatus = BatteryStatus(
       id = id,

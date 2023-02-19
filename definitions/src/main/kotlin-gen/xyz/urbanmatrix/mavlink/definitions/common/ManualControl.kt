@@ -2,19 +2,24 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -23,29 +28,29 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * states are transmitted as individual on/off bits of a bitmask
  */
 @GeneratedMavMessage(
-  id = 69,
-  crc = 243,
+  id = 69u,
+  crcExtra = -13,
 )
 public data class ManualControl(
   /**
    * The system to be controlled.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val target: Int = 0,
+  public val target: UByte = 0u,
   /**
    * X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
    * invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and the
    * pitch of a vehicle.
    */
   @GeneratedMavField(type = "int16_t")
-  public val x: Int = 0,
+  public val x: Short = 0,
   /**
    * Y-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
    * invalid. Generally corresponds to left(-1000)-right(1000) movement on a joystick and the roll of a
    * vehicle.
    */
   @GeneratedMavField(type = "int16_t")
-  public val y: Int = 0,
+  public val y: Short = 0,
   /**
    * Z-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
    * invalid. Generally corresponds to a separate slider movement with maximum being 1000 and minimum
@@ -53,20 +58,20 @@ public data class ManualControl(
    * negative values are negative thrust.
    */
   @GeneratedMavField(type = "int16_t")
-  public val z: Int = 0,
+  public val z: Short = 0,
   /**
    * R-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
    * invalid. Generally corresponds to a twisting of the joystick, with counter-clockwise being 1000
    * and clockwise being -1000, and the yaw of a vehicle.
    */
   @GeneratedMavField(type = "int16_t")
-  public val r: Int = 0,
+  public val r: Short = 0,
   /**
    * A bitfield corresponding to the joystick buttons' 0-15 current state, 1 for pressed, 0 for
    * released. The lowest bit corresponds to Button 1.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val buttons: Int = 0,
+  public val buttons: UShort = 0u,
   /**
    * A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for pressed, 0 for
    * released. The lowest bit corresponds to Button 16.
@@ -75,7 +80,7 @@ public data class ManualControl(
     type = "uint16_t",
     extension = true,
   )
-  public val buttons2: Int = 0,
+  public val buttons2: UShort = 0u,
   /**
    * Set bits to 1 to indicate which of the following extension fields contain valid data: bit 0:
    * pitch, bit 1: roll.
@@ -84,7 +89,7 @@ public data class ManualControl(
     type = "uint8_t",
     extension = true,
   )
-  public val enabledExtensions: Int = 0,
+  public val enabledExtensions: UByte = 0u,
   /**
    * Pitch-only-axis, normalized to the range [-1000,1000]. Generally corresponds to pitch on
    * vehicles with additional degrees of freedom. Valid if bit 0 of enabled_extensions field is set.
@@ -94,7 +99,7 @@ public data class ManualControl(
     type = "int16_t",
     extension = true,
   )
-  public val s: Int = 0,
+  public val s: Short = 0,
   /**
    * Roll-only-axis, normalized to the range [-1000,1000]. Generally corresponds to roll on vehicles
    * with additional degrees of freedom. Valid if bit 1 of enabled_extensions field is set. Set to 0 if
@@ -104,7 +109,7 @@ public data class ManualControl(
     type = "int16_t",
     extension = true,
   )
-  public val t: Int = 0,
+  public val t: Short = 0,
 ) : MavMessage<ManualControl> {
   public override val instanceMetadata: MavMessage.Metadata<ManualControl> = METADATA
 
@@ -114,8 +119,8 @@ public data class ManualControl(
     outputBuffer.encodeInt16(y)
     outputBuffer.encodeInt16(z)
     outputBuffer.encodeInt16(r)
-    outputBuffer.encodeUint16(buttons)
-    outputBuffer.encodeUint8(target)
+    outputBuffer.encodeUInt16(buttons)
+    outputBuffer.encodeUInt8(target)
     return outputBuffer.array()
   }
 
@@ -125,19 +130,19 @@ public data class ManualControl(
     outputBuffer.encodeInt16(y)
     outputBuffer.encodeInt16(z)
     outputBuffer.encodeInt16(r)
-    outputBuffer.encodeUint16(buttons)
-    outputBuffer.encodeUint8(target)
-    outputBuffer.encodeUint16(buttons2)
-    outputBuffer.encodeUint8(enabledExtensions)
+    outputBuffer.encodeUInt16(buttons)
+    outputBuffer.encodeUInt8(target)
+    outputBuffer.encodeUInt16(buttons2)
+    outputBuffer.encodeUInt8(enabledExtensions)
     outputBuffer.encodeInt16(s)
     outputBuffer.encodeInt16(t)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 69
+    private const val ID: UInt = 69u
 
-    private const val CRC: Int = 243
+    private const val CRC_EXTRA: Byte = -13
 
     private const val SIZE_V1: Int = 11
 
@@ -149,10 +154,10 @@ public data class ManualControl(
       val y = inputBuffer.decodeInt16()
       val z = inputBuffer.decodeInt16()
       val r = inputBuffer.decodeInt16()
-      val buttons = inputBuffer.decodeUint16()
-      val target = inputBuffer.decodeUint8()
-      val buttons2 = inputBuffer.decodeUint16()
-      val enabledExtensions = inputBuffer.decodeUint8()
+      val buttons = inputBuffer.decodeUInt16()
+      val target = inputBuffer.decodeUInt8()
+      val buttons2 = inputBuffer.decodeUInt16()
+      val enabledExtensions = inputBuffer.decodeUInt8()
       val s = inputBuffer.decodeInt16()
       val t = inputBuffer.decodeInt16()
 
@@ -171,7 +176,7 @@ public data class ManualControl(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ManualControl> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ManualControl> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ManualControl> = METADATA
@@ -181,25 +186,25 @@ public data class ManualControl(
   }
 
   public class Builder {
-    public var target: Int = 0
+    public var target: UByte = 0u
 
-    public var x: Int = 0
+    public var x: Short = 0
 
-    public var y: Int = 0
+    public var y: Short = 0
 
-    public var z: Int = 0
+    public var z: Short = 0
 
-    public var r: Int = 0
+    public var r: Short = 0
 
-    public var buttons: Int = 0
+    public var buttons: UShort = 0u
 
-    public var buttons2: Int = 0
+    public var buttons2: UShort = 0u
 
-    public var enabledExtensions: Int = 0
+    public var enabledExtensions: UByte = 0u
 
-    public var s: Int = 0
+    public var s: Short = 0
 
-    public var t: Int = 0
+    public var t: Short = 0
 
     public fun build(): ManualControl = ManualControl(
       target = target,
