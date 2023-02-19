@@ -13,7 +13,5 @@ internal data class MavFrameV1Impl<T>(
 
     override val componentId: UByte get() = rawFrame.componentId
 
-    override val frameBytes: ByteArray get() = rawFrame.rawBytes.clone()
-
     override val checksum: UShort get() = rawFrame.checksum
 }

@@ -31,7 +31,7 @@ internal class MavRawFrameReader(
                     val success = inputStream.advance(
                         MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID +
                                 MavRawFrame.SIZE_COMP_ID + MavRawFrame.SIZE_MSG_ID_V1 +
-                            payloadLength + MavRawFrame.SIZE_CHECKSUM
+                                payloadLength + MavRawFrame.SIZE_CHECKSUM
                     )
                     if (!success) {
                         drop()

@@ -13,15 +13,13 @@ internal data class MavFrameV2Impl<T>(
 
     override val componentId: UByte get() = rawFrame.componentId
 
-    override val frameBytes: ByteArray get() = rawFrame.rawBytes.clone()
-
     override val checksum: UShort get() = rawFrame.checksum
 
     override val isSigned: Boolean get() = rawFrame.isSigned
 
     override val signatureLinkId: UByte get() = rawFrame.signatureLinkId
 
-    override val signatureTimestamp: ULong get() = rawFrame.signatureTimestamp.toULong()
+    override val signatureTimestamp: UInt get() = rawFrame.signatureTimestamp
 
     override val signature: ByteArray get() = rawFrame.signature
 
