@@ -28,11 +28,6 @@ public interface MavFrame<T> {
     public val message: T
 
     /**
-     * A copy of the original raw bytes of this frame.
-     */
-    public val frameBytes: ByteArray
-
-    /**
      * The checksum of this frame.
      */
     public val checksum: UShort
