@@ -5,6 +5,7 @@ import io.dronefleet.mavlink.common.MavCmd
 import io.dronefleet.mavlink.serialization.payload.reflection.ReflectionPayloadDeserializer
 import io.dronefleet.mavlink.serialization.payload.reflection.ReflectionPayloadSerializer
 import org.junit.jupiter.api.Test
+import kotlin.system.measureNanoTime
 
 class DroneFleetMavlinkSpeedTest {
 
@@ -42,15 +43,14 @@ class DroneFleetMavlinkSpeedTest {
         }
     }
 
-    private fun serializationStep(serializer: ReflectionPayloadSerializer, cmd: CommandLong?): Long {
-        val start = System.nanoTime()
+    private fun serializationStep(
+        serializer: ReflectionPayloadSerializer,
+        cmd: CommandLong?
+    ) = measureNanoTime {
         for (i in 1..SERIALIZATION_ITERS) {
             serializer.serialize(cmd)
         }
-        val end = System.nanoTime()
-
-        return (end - start) / 1000
-    }
+    } / 1000
 
     @Test
     fun deserialization() {
@@ -66,13 +66,12 @@ class DroneFleetMavlinkSpeedTest {
         }
     }
 
-    private fun deserializationStep(deserializer: ReflectionPayloadDeserializer, data: ByteArray?): Long {
-        val start = System.nanoTime()
+    private fun deserializationStep(
+        deserializer: ReflectionPayloadDeserializer,
+        data: ByteArray?
+    ) = measureNanoTime {
         for (i in 1..DESERIALIZATION_ITERS) {
             deserializer.deserialize(data, CommandLong::class.java)
         }
-        val end = System.nanoTime()
-
-        return (end - start) / 1000
-    }
+    } / 1000
 }

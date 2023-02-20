@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import xyz.urbanmatrix.mavlink.definitions.common.CommandLong
 import xyz.urbanmatrix.mavlink.definitions.common.MavCmd
 import xyz.urbanmatrix.mavlink.wrap
+import kotlin.system.measureNanoTime
 
 class MavlinkKotlinSpeedTest {
 
@@ -40,15 +41,11 @@ class MavlinkKotlinSpeedTest {
         }
     }
 
-    private fun serializationStep(cmd: CommandLong): Long {
-        val start = System.nanoTime()
+    private fun serializationStep(cmd: CommandLong) = measureNanoTime {
         for (i in 1..SERIALIZATION_ITERS) {
             cmd.serializeV2()
         }
-        val end = System.nanoTime()
-
-        return (end - start) / 1000
-    }
+    } / 1000
 
     @Test
     fun deserialization() {
@@ -63,12 +60,9 @@ class MavlinkKotlinSpeedTest {
         }
     }
 
-    private fun deserializationStep(data: ByteArray): Long {
-        val start = System.nanoTime()
+    private fun deserializationStep(data: ByteArray) = measureNanoTime {
         for (i in 1..DESERIALIZATION_ITERS) {
             CommandLong.classMetadata.deserializer.deserialize(data)
         }
-        val end = System.nanoTime()
-        return (end - start) / 1000
-    }
+    } / 1000
 }
