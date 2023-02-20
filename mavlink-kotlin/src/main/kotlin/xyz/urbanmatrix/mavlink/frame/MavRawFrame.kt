@@ -27,7 +27,7 @@ internal data class MavRawFrame(
         get() = if (isSigned) {
             signature.first().toUByte()
         } else {
-            UByte.MAX_VALUE
+            0u
         }
 
     val signatureTimestamp: UInt
@@ -39,7 +39,7 @@ internal data class MavRawFrame(
                 .decodeUnsignedIntegerValue(SIZE_SIGNATURE_TIMESTAMP)
                 .toUInt()
         } else {
-            UInt.MAX_VALUE
+            0u
         }
 
     fun validateCrc(crcExtra: Byte): Boolean =
@@ -187,8 +187,8 @@ internal data class MavRawFrame(
                 MavRawFrame(
                     stx = stx,
                     len = len,
-                    incompatFlags = UByte.MAX_VALUE,
-                    compatFlags = UByte.MAX_VALUE,
+                    incompatFlags = 0u,
+                    compatFlags = 0u,
                     seq = seq,
                     systemId = systemId,
                     componentId = componentId,
@@ -267,8 +267,8 @@ internal data class MavRawFrame(
             return MavRawFrame(
                 stx = MavFrameType.V1.magic,
                 len = payload.size.toUByte(),
-                incompatFlags = UByte.MAX_VALUE,
-                compatFlags = UByte.MAX_VALUE,
+                incompatFlags = 0u,
+                compatFlags = 0u,
                 seq = seq,
                 systemId = systemId,
                 componentId = componentId,

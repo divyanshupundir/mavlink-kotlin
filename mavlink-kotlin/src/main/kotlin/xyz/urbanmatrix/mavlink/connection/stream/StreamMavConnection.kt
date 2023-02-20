@@ -47,6 +47,7 @@ internal class StreamMavConnection(
 
                 val metadata = getMessageMetadataOrNull(rawFrame)
                 if (metadata == null) {
+                    System.err.println("Message not found in dialect. rawFrame=$rawFrame")
                     reader.drop()
                     continue
                 }
