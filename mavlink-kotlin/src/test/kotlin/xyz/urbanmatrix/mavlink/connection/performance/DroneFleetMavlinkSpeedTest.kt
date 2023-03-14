@@ -45,7 +45,7 @@ class DroneFleetMavlinkSpeedTest {
 
     private fun serializationStep(
         serializer: ReflectionPayloadSerializer,
-        cmd: CommandLong?
+        cmd: CommandLong
     ) = measureNanoTime {
         for (i in 1..SERIALIZATION_ITERS) {
             serializer.serialize(cmd)
@@ -68,7 +68,7 @@ class DroneFleetMavlinkSpeedTest {
 
     private fun deserializationStep(
         deserializer: ReflectionPayloadDeserializer,
-        data: ByteArray?
+        data: ByteArray
     ) = measureNanoTime {
         for (i in 1..DESERIALIZATION_ITERS) {
             deserializer.deserialize(data, CommandLong::class.java)
