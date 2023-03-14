@@ -2,9 +2,14 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -17,16 +22,16 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -35,49 +40,49 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 12901,
-  crc = 254,
+  id = 12901u,
+  crcExtra = -2,
 )
 public data class OpenDroneIdLocation(
   /**
    * System ID (0 for broadcast).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID (0 for broadcast).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Only used for drone ID data received from other UAs. See detailed description at
    * https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
-  public val idOrMac: List<Int> = emptyList(),
+  public val idOrMac: List<UByte> = emptyList(),
   /**
    * Indicates whether the unmanned aircraft is on the ground or in the air.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0),
+  public val status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0u),
   /**
    * Direction over ground (not heading, but direction of movement) measured clockwise from true
    * North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val direction: Int = 0,
+  public val direction: UShort = 0u,
   /**
    * Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use
    * 25425 cm/s.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val speedHorizontal: Int = 0,
+  public val speedHorizontal: UShort = 0u,
   /**
    * The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s,
    * use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
    */
   @GeneratedMavField(type = "int16_t")
-  public val speedVertical: Int = 0,
+  public val speedVertical: Short = 0,
   /**
    * Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
    */
@@ -103,7 +108,7 @@ public data class OpenDroneIdLocation(
    * Indicates the reference point for the height field.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0),
+  public val heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0u),
   /**
    * The current height of the unmanned aircraft above the take-off location or the ground as
    * indicated by height_reference. If unknown: -1000 m.
@@ -114,22 +119,22 @@ public data class OpenDroneIdLocation(
    * The accuracy of the horizontal position.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val horizontalAccuracy: MavEnumValue<MavOdidHorAcc> = MavEnumValue.fromValue(0),
+  public val horizontalAccuracy: MavEnumValue<MavOdidHorAcc> = MavEnumValue.fromValue(0u),
   /**
    * The accuracy of the vertical position.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val verticalAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0),
+  public val verticalAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0u),
   /**
    * The accuracy of the barometric altitude.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val barometerAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0),
+  public val barometerAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0u),
   /**
    * The accuracy of the horizontal and vertical speed.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0),
+  public val speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0u),
   /**
    * Seconds after the full hour with reference to UTC time. Typically the GPS outputs a
    * time-of-week value in milliseconds. First convert that to UTC and then convert for this field
@@ -141,7 +146,7 @@ public data class OpenDroneIdLocation(
    * The accuracy of the timestamps.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0),
+  public val timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0u),
 ) : MavMessage<OpenDroneIdLocation> {
   public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdLocation> = METADATA
 
@@ -153,12 +158,12 @@ public data class OpenDroneIdLocation(
     outputBuffer.encodeFloat(altitudeGeodetic)
     outputBuffer.encodeFloat(height)
     outputBuffer.encodeFloat(timestamp)
-    outputBuffer.encodeUint16(direction)
-    outputBuffer.encodeUint16(speedHorizontal)
+    outputBuffer.encodeUInt16(direction)
+    outputBuffer.encodeUInt16(speedHorizontal)
     outputBuffer.encodeInt16(speedVertical)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(heightReference.value, 1)
     outputBuffer.encodeEnumValue(horizontalAccuracy.value, 1)
@@ -177,12 +182,12 @@ public data class OpenDroneIdLocation(
     outputBuffer.encodeFloat(altitudeGeodetic)
     outputBuffer.encodeFloat(height)
     outputBuffer.encodeFloat(timestamp)
-    outputBuffer.encodeUint16(direction)
-    outputBuffer.encodeUint16(speedHorizontal)
+    outputBuffer.encodeUInt16(direction)
+    outputBuffer.encodeUInt16(speedHorizontal)
     outputBuffer.encodeInt16(speedVertical)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(status.value, 1)
     outputBuffer.encodeEnumValue(heightReference.value, 1)
     outputBuffer.encodeEnumValue(horizontalAccuracy.value, 1)
@@ -194,9 +199,9 @@ public data class OpenDroneIdLocation(
   }
 
   public companion object {
-    private const val ID: Int = 12901
+    private const val ID: UInt = 12901u
 
-    private const val CRC: Int = 254
+    private const val CRC_EXTRA: Byte = -2
 
     private const val SIZE_V1: Int = 59
 
@@ -210,12 +215,12 @@ public data class OpenDroneIdLocation(
       val altitudeGeodetic = inputBuffer.decodeFloat()
       val height = inputBuffer.decodeFloat()
       val timestamp = inputBuffer.decodeFloat()
-      val direction = inputBuffer.decodeUint16()
-      val speedHorizontal = inputBuffer.decodeUint16()
+      val direction = inputBuffer.decodeUInt16()
+      val speedHorizontal = inputBuffer.decodeUInt16()
       val speedVertical = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val idOrMac = inputBuffer.decodeUint8Array(20)
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val idOrMac = inputBuffer.decodeUInt8Array(20)
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -269,8 +274,8 @@ public data class OpenDroneIdLocation(
     }
 
 
-    private val METADATA: MavMessage.Metadata<OpenDroneIdLocation> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<OpenDroneIdLocation> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdLocation> = METADATA
 
@@ -279,19 +284,19 @@ public data class OpenDroneIdLocation(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var idOrMac: List<Int> = emptyList()
+    public var idOrMac: List<UByte> = emptyList()
 
-    public var status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0)
+    public var status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0u)
 
-    public var direction: Int = 0
+    public var direction: UShort = 0u
 
-    public var speedHorizontal: Int = 0
+    public var speedHorizontal: UShort = 0u
 
-    public var speedVertical: Int = 0
+    public var speedVertical: Short = 0
 
     public var latitude: Int = 0
 
@@ -301,21 +306,21 @@ public data class OpenDroneIdLocation(
 
     public var altitudeGeodetic: Float = 0F
 
-    public var heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0)
+    public var heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0u)
 
     public var height: Float = 0F
 
-    public var horizontalAccuracy: MavEnumValue<MavOdidHorAcc> = MavEnumValue.fromValue(0)
+    public var horizontalAccuracy: MavEnumValue<MavOdidHorAcc> = MavEnumValue.fromValue(0u)
 
-    public var verticalAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0)
+    public var verticalAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0u)
 
-    public var barometerAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0)
+    public var barometerAccuracy: MavEnumValue<MavOdidVerAcc> = MavEnumValue.fromValue(0u)
 
-    public var speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0)
+    public var speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0u)
 
     public var timestamp: Float = 0F
 
-    public var timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0)
+    public var timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0u)
 
     public fun build(): OpenDroneIdLocation = OpenDroneIdLocation(
       targetSystem = targetSystem,

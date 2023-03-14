@@ -2,8 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -17,40 +20,40 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Backwards compatible version of SERIAL_UDB_EXTRA F21 format
  */
 @GeneratedMavMessage(
-  id = 187,
-  crc = 134,
+  id = 187u,
+  crcExtra = -122,
 )
 public data class SerialUdbExtraF21(
   /**
    * SUE X accelerometer offset
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAccelXOffset: Int = 0,
+  public val sueAccelXOffset: Short = 0,
   /**
    * SUE Y accelerometer offset
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAccelYOffset: Int = 0,
+  public val sueAccelYOffset: Short = 0,
   /**
    * SUE Z accelerometer offset
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAccelZOffset: Int = 0,
+  public val sueAccelZOffset: Short = 0,
   /**
    * SUE X gyro offset
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueGyroXOffset: Int = 0,
+  public val sueGyroXOffset: Short = 0,
   /**
    * SUE Y gyro offset
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueGyroYOffset: Int = 0,
+  public val sueGyroYOffset: Short = 0,
   /**
    * SUE Z gyro offset
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueGyroZOffset: Int = 0,
+  public val sueGyroZOffset: Short = 0,
 ) : MavMessage<SerialUdbExtraF21> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF21> = METADATA
 
@@ -77,9 +80,9 @@ public data class SerialUdbExtraF21(
   }
 
   public companion object {
-    private const val ID: Int = 187
+    private const val ID: UInt = 187u
 
-    private const val CRC: Int = 134
+    private const val CRC_EXTRA: Byte = -122
 
     private const val SIZE_V1: Int = 12
 
@@ -105,8 +108,8 @@ public data class SerialUdbExtraF21(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF21> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF21> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF21> = METADATA
 
@@ -115,17 +118,17 @@ public data class SerialUdbExtraF21(
   }
 
   public class Builder {
-    public var sueAccelXOffset: Int = 0
+    public var sueAccelXOffset: Short = 0
 
-    public var sueAccelYOffset: Int = 0
+    public var sueAccelYOffset: Short = 0
 
-    public var sueAccelZOffset: Int = 0
+    public var sueAccelZOffset: Short = 0
 
-    public var sueGyroXOffset: Int = 0
+    public var sueGyroXOffset: Short = 0
 
-    public var sueGyroYOffset: Int = 0
+    public var sueGyroYOffset: Short = 0
 
-    public var sueGyroZOffset: Int = 0
+    public var sueGyroZOffset: Short = 0
 
     public fun build(): SerialUdbExtraF21 = SerialUdbExtraF21(
       sueAccelXOffset = sueAccelXOffset,

@@ -1,19 +1,21 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -21,8 +23,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
  */
 @GeneratedMavMessage(
-  id = 49,
-  crc = 39,
+  id = 49u,
+  crcExtra = 39,
 )
 public data class GpsGlobalOrigin(
   /**
@@ -48,7 +50,7 @@ public data class GpsGlobalOrigin(
     type = "uint64_t",
     extension = true,
   )
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
 ) : MavMessage<GpsGlobalOrigin> {
   public override val instanceMetadata: MavMessage.Metadata<GpsGlobalOrigin> = METADATA
 
@@ -65,14 +67,14 @@ public data class GpsGlobalOrigin(
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
     outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 49
+    private const val ID: UInt = 49u
 
-    private const val CRC: Int = 39
+    private const val CRC_EXTRA: Byte = 39
 
     private const val SIZE_V1: Int = 12
 
@@ -83,7 +85,7 @@ public data class GpsGlobalOrigin(
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
       val altitude = inputBuffer.decodeInt32()
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
 
       GpsGlobalOrigin(
         latitude = latitude,
@@ -94,7 +96,7 @@ public data class GpsGlobalOrigin(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GpsGlobalOrigin> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<GpsGlobalOrigin> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsGlobalOrigin> = METADATA
@@ -110,7 +112,7 @@ public data class GpsGlobalOrigin(
 
     public var altitude: Int = 0
 
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public fun build(): GpsGlobalOrigin = GpsGlobalOrigin(
       latitude = latitude,

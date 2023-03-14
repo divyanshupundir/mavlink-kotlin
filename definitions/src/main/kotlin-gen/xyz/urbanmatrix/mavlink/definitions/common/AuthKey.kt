@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -19,8 +21,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * kept simple, so transmitting the key requires an encrypted channel for true safety.
  */
 @GeneratedMavMessage(
-  id = 7,
-  crc = 119,
+  id = 7u,
+  crcExtra = 119,
 )
 public data class AuthKey(
   /**
@@ -44,9 +46,9 @@ public data class AuthKey(
   }
 
   public companion object {
-    private const val ID: Int = 7
+    private const val ID: UInt = 7u
 
-    private const val CRC: Int = 119
+    private const val CRC_EXTRA: Byte = 119
 
     private const val SIZE_V1: Int = 32
 
@@ -62,7 +64,8 @@ public data class AuthKey(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AuthKey> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<AuthKey> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AuthKey> = METADATA
 

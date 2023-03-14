@@ -1,54 +1,55 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * Enable axes that will be tuned via autotuning. Used in MAV_CMD_DO_AUTOTUNE_ENABLE.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AutotuneAxis(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Flight stack tunes axis according to its default settings.
    */
   @GeneratedMavEnumEntry
-  DEFAULT(0L),
+  DEFAULT(0u),
   /**
    * Autotune roll axis.
    */
   @GeneratedMavEnumEntry
-  ROLL(1L),
+  ROLL(1u),
   /**
    * Autotune pitch axis.
    */
   @GeneratedMavEnumEntry
-  PITCH(2L),
+  PITCH(2u),
   /**
    * Autotune yaw axis.
    */
   @GeneratedMavEnumEntry
-  YAW(4L),
+  YAW(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AutotuneAxis? = when (v) {
-      0L -> DEFAULT
-      1L -> ROLL
-      2L -> PITCH
-      4L -> YAW
+  public companion object : MavEnum.Companion<AutotuneAxis>, MavBitmask.Companion<AutotuneAxis> {
+    public override fun getEntryFromValueOrNull(v: UInt): AutotuneAxis? = when (v) {
+      0u -> DEFAULT
+      1u -> ROLL
+      2u -> PITCH
+      4u -> YAW
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<AutotuneAxis> = buildList {
-      if (v and 0L == 0L) add(DEFAULT)
-      if (v and 1L == 1L) add(ROLL)
-      if (v and 2L == 2L) add(PITCH)
-      if (v and 4L == 4L) add(YAW)
+    public override fun getFlagsFromValue(v: UInt): List<AutotuneAxis> = buildList {
+      if (v and 0u == 0u) add(DEFAULT)
+      if (v and 1u == 1u) add(ROLL)
+      if (v and 2u == 2u) add(PITCH)
+      if (v and 4u == 4u) add(YAW)
     }
   }
 }

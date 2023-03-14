@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.asluav
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Voltage and current sensor data
  */
 @GeneratedMavMessage(
-  id = 8002,
-  crc = 218,
+  id = 8002u,
+  crcExtra = -38,
 )
 public data class SensPower(
   /**
@@ -64,9 +66,9 @@ public data class SensPower(
   }
 
   public companion object {
-    private const val ID: Int = 8002
+    private const val ID: UInt = 8002u
 
-    private const val CRC: Int = 218
+    private const val CRC_EXTRA: Byte = -38
 
     private const val SIZE_V1: Int = 16
 
@@ -88,7 +90,7 @@ public data class SensPower(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SensPower> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<SensPower> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensPower> = METADATA

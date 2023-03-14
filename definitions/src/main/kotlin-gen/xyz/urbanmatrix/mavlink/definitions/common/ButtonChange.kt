@@ -2,66 +2,68 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Report button state change.
  */
 @GeneratedMavMessage(
-  id = 257,
-  crc = 131,
+  id = 257u,
+  crcExtra = -125,
 )
 public data class ButtonChange(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Time of last change of button state.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val lastChangeMs: Long = 0L,
+  public val lastChangeMs: UInt = 0u,
   /**
    * Bitmap for state of buttons.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val state: Int = 0,
+  public val state: UByte = 0u,
 ) : MavMessage<ButtonChange> {
   public override val instanceMetadata: MavMessage.Metadata<ButtonChange> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint32(lastChangeMs)
-    outputBuffer.encodeUint8(state)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt32(lastChangeMs)
+    outputBuffer.encodeUInt8(state)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint32(lastChangeMs)
-    outputBuffer.encodeUint8(state)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt32(lastChangeMs)
+    outputBuffer.encodeUInt8(state)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 257
+    private const val ID: UInt = 257u
 
-    private const val CRC: Int = 131
+    private const val CRC_EXTRA: Byte = -125
 
     private const val SIZE_V1: Int = 9
 
@@ -69,9 +71,9 @@ public data class ButtonChange(
 
     private val DESERIALIZER: MavDeserializer<ButtonChange> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
-      val lastChangeMs = inputBuffer.decodeUint32()
-      val state = inputBuffer.decodeUint8()
+      val timeBootMs = inputBuffer.decodeUInt32()
+      val lastChangeMs = inputBuffer.decodeUInt32()
+      val state = inputBuffer.decodeUInt8()
 
       ButtonChange(
         timeBootMs = timeBootMs,
@@ -81,7 +83,7 @@ public data class ButtonChange(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ButtonChange> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ButtonChange> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ButtonChange> = METADATA
@@ -91,11 +93,11 @@ public data class ButtonChange(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var lastChangeMs: Long = 0L
+    public var lastChangeMs: UInt = 0u
 
-    public var state: Int = 0
+    public var state: UByte = 0u
 
     public fun build(): ButtonChange = ButtonChange(
       timeBootMs = timeBootMs,

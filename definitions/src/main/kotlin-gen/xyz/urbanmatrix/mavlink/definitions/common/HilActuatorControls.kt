@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,10 +18,10 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.definitions.minimal.MavModeFlag
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -27,8 +29,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * HIL_CONTROLS)
  */
 @GeneratedMavMessage(
-  id = 93,
-  crc = 47,
+  id = 93u,
+  crcExtra = 47,
 )
 public data class HilActuatorControls(
   /**
@@ -36,7 +38,7 @@ public data class HilActuatorControls(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
    */
@@ -46,19 +48,19 @@ public data class HilActuatorControls(
    * System mode. Includes arming state.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0),
+  public val mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0u),
   /**
    * Flags as bitfield, 1: indicate simulation using lockstep.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val flags: BigInteger = BigInteger.ZERO,
+  public val flags: ULong = 0uL,
 ) : MavMessage<HilActuatorControls> {
   public override val instanceMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint64(flags)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt64(flags)
     outputBuffer.encodeFloatArray(controls, 64)
     outputBuffer.encodeBitmaskValue(mode.value, 1)
     return outputBuffer.array()
@@ -66,17 +68,17 @@ public data class HilActuatorControls(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint64(flags)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt64(flags)
     outputBuffer.encodeFloatArray(controls, 64)
     outputBuffer.encodeBitmaskValue(mode.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 93
+    private const val ID: UInt = 93u
 
-    private const val CRC: Int = 47
+    private const val CRC_EXTRA: Byte = 47
 
     private const val SIZE_V1: Int = 81
 
@@ -84,8 +86,8 @@ public data class HilActuatorControls(
 
     private val DESERIALIZER: MavDeserializer<HilActuatorControls> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
-      val flags = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
+      val flags = inputBuffer.decodeUInt64()
       val controls = inputBuffer.decodeFloatArray(64)
       val mode = inputBuffer.decodeBitmaskValue(1).let { value ->
         val flags = MavModeFlag.getFlagsFromValue(value)
@@ -101,8 +103,8 @@ public data class HilActuatorControls(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HilActuatorControls> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<HilActuatorControls> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
 
@@ -111,13 +113,13 @@ public data class HilActuatorControls(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var controls: List<Float> = emptyList()
 
-    public var mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0)
+    public var mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0u)
 
-    public var flags: BigInteger = BigInteger.ZERO
+    public var flags: ULong = 0uL
 
     public fun build(): HilActuatorControls = HilActuatorControls(
       timeUsec = timeUsec,

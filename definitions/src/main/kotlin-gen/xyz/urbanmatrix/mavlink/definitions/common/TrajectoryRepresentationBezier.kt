@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -13,11 +16,11 @@ import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,8 +28,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * (MAV_FRAME_LOCAL_NED).
  */
 @GeneratedMavMessage(
-  id = 333,
-  crc = 231,
+  id = 333u,
+  crcExtra = -25,
 )
 public data class TrajectoryRepresentationBezier(
   /**
@@ -34,12 +37,12 @@ public data class TrajectoryRepresentationBezier(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Number of valid control points (up-to 5 points are possible)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val validPoints: Int = 0,
+  public val validPoints: UByte = 0u,
   /**
    * X-coordinate of bezier control points. Set to NaN if not being used
    */
@@ -71,32 +74,32 @@ public data class TrajectoryRepresentationBezier(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
     outputBuffer.encodeFloatArray(posZ, 20)
     outputBuffer.encodeFloatArray(delta, 20)
     outputBuffer.encodeFloatArray(posYaw, 20)
-    outputBuffer.encodeUint8(validPoints)
+    outputBuffer.encodeUInt8(validPoints)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
     outputBuffer.encodeFloatArray(posZ, 20)
     outputBuffer.encodeFloatArray(delta, 20)
     outputBuffer.encodeFloatArray(posYaw, 20)
-    outputBuffer.encodeUint8(validPoints)
+    outputBuffer.encodeUInt8(validPoints)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 333
+    private const val ID: UInt = 333u
 
-    private const val CRC: Int = 231
+    private const val CRC_EXTRA: Byte = -25
 
     private const val SIZE_V1: Int = 109
 
@@ -105,13 +108,13 @@ public data class TrajectoryRepresentationBezier(
     private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationBezier> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val posX = inputBuffer.decodeFloatArray(20)
       val posY = inputBuffer.decodeFloatArray(20)
       val posZ = inputBuffer.decodeFloatArray(20)
       val delta = inputBuffer.decodeFloatArray(20)
       val posYaw = inputBuffer.decodeFloatArray(20)
-      val validPoints = inputBuffer.decodeUint8()
+      val validPoints = inputBuffer.decodeUInt8()
 
       TrajectoryRepresentationBezier(
         timeUsec = timeUsec,
@@ -126,7 +129,7 @@ public data class TrajectoryRepresentationBezier(
 
 
     private val METADATA: MavMessage.Metadata<TrajectoryRepresentationBezier> =
-        MavMessage.Metadata(ID, CRC, DESERIALIZER)
+        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TrajectoryRepresentationBezier> = METADATA
 
@@ -135,9 +138,9 @@ public data class TrajectoryRepresentationBezier(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var validPoints: Int = 0
+    public var validPoints: UByte = 0u
 
     public var posX: List<Float> = emptyList()
 

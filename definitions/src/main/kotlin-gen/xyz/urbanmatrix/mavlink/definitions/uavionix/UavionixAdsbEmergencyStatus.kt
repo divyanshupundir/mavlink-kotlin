@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.uavionix
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,36 +10,36 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class UavionixAdsbEmergencyStatus(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_NO_EMERGENCY(0L),
+  UAVIONIX_ADSB_OUT_NO_EMERGENCY(0u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_GENERAL_EMERGENCY(1L),
+  UAVIONIX_ADSB_OUT_GENERAL_EMERGENCY(1u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_LIFEGUARD_EMERGENCY(2L),
+  UAVIONIX_ADSB_OUT_LIFEGUARD_EMERGENCY(2u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_MINIMUM_FUEL_EMERGENCY(3L),
+  UAVIONIX_ADSB_OUT_MINIMUM_FUEL_EMERGENCY(3u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_NO_COMM_EMERGENCY(4L),
+  UAVIONIX_ADSB_OUT_NO_COMM_EMERGENCY(4u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_UNLAWFUL_INTERFERANCE_EMERGENCY(5L),
+  UAVIONIX_ADSB_OUT_UNLAWFUL_INTERFERANCE_EMERGENCY(5u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_DOWNED_AIRCRAFT_EMERGENCY(6L),
+  UAVIONIX_ADSB_OUT_DOWNED_AIRCRAFT_EMERGENCY(6u),
   @GeneratedMavEnumEntry
-  UAVIONIX_ADSB_OUT_RESERVED(7L),
+  UAVIONIX_ADSB_OUT_RESERVED(7u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): UavionixAdsbEmergencyStatus? = when (v) {
-      0L -> UAVIONIX_ADSB_OUT_NO_EMERGENCY
-      1L -> UAVIONIX_ADSB_OUT_GENERAL_EMERGENCY
-      2L -> UAVIONIX_ADSB_OUT_LIFEGUARD_EMERGENCY
-      3L -> UAVIONIX_ADSB_OUT_MINIMUM_FUEL_EMERGENCY
-      4L -> UAVIONIX_ADSB_OUT_NO_COMM_EMERGENCY
-      5L -> UAVIONIX_ADSB_OUT_UNLAWFUL_INTERFERANCE_EMERGENCY
-      6L -> UAVIONIX_ADSB_OUT_DOWNED_AIRCRAFT_EMERGENCY
-      7L -> UAVIONIX_ADSB_OUT_RESERVED
+  public companion object : MavEnum.Companion<UavionixAdsbEmergencyStatus> {
+    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbEmergencyStatus? = when (v) {
+      0u -> UAVIONIX_ADSB_OUT_NO_EMERGENCY
+      1u -> UAVIONIX_ADSB_OUT_GENERAL_EMERGENCY
+      2u -> UAVIONIX_ADSB_OUT_LIFEGUARD_EMERGENCY
+      3u -> UAVIONIX_ADSB_OUT_MINIMUM_FUEL_EMERGENCY
+      4u -> UAVIONIX_ADSB_OUT_NO_COMM_EMERGENCY
+      5u -> UAVIONIX_ADSB_OUT_UNLAWFUL_INTERFERANCE_EMERGENCY
+      6u -> UAVIONIX_ADSB_OUT_DOWNED_AIRCRAFT_EMERGENCY
+      7u -> UAVIONIX_ADSB_OUT_RESERVED
       else -> null
     }
   }

@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -21,15 +23,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * EKF Status message including flags and variances.
  */
 @GeneratedMavMessage(
-  id = 193,
-  crc = 71,
+  id = 193u,
+  crcExtra = 71,
 )
 public data class EkfStatusReport(
   /**
    * Flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavBitmaskValue<EkfStatusFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<EkfStatusFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Velocity variance.
    */
@@ -90,9 +92,9 @@ public data class EkfStatusReport(
   }
 
   public companion object {
-    private const val ID: Int = 193
+    private const val ID: UInt = 193u
 
-    private const val CRC: Int = 71
+    private const val CRC_EXTRA: Byte = 71
 
     private const val SIZE_V1: Int = 22
 
@@ -123,7 +125,7 @@ public data class EkfStatusReport(
     }
 
 
-    private val METADATA: MavMessage.Metadata<EkfStatusReport> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<EkfStatusReport> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EkfStatusReport> = METADATA
@@ -133,7 +135,7 @@ public data class EkfStatusReport(
   }
 
   public class Builder {
-    public var flags: MavBitmaskValue<EkfStatusFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<EkfStatusFlags> = MavBitmaskValue.fromValue(0u)
 
     public var velocityVariance: Float = 0F
 

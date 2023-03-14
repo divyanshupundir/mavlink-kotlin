@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,57 +10,57 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class FailureUnit(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  SENSOR_GYRO(0L),
+  SENSOR_GYRO(0u),
   @GeneratedMavEnumEntry
-  SENSOR_ACCEL(1L),
+  SENSOR_ACCEL(1u),
   @GeneratedMavEnumEntry
-  SENSOR_MAG(2L),
+  SENSOR_MAG(2u),
   @GeneratedMavEnumEntry
-  SENSOR_BARO(3L),
+  SENSOR_BARO(3u),
   @GeneratedMavEnumEntry
-  SENSOR_GPS(4L),
+  SENSOR_GPS(4u),
   @GeneratedMavEnumEntry
-  SENSOR_OPTICAL_FLOW(5L),
+  SENSOR_OPTICAL_FLOW(5u),
   @GeneratedMavEnumEntry
-  SENSOR_VIO(6L),
+  SENSOR_VIO(6u),
   @GeneratedMavEnumEntry
-  SENSOR_DISTANCE_SENSOR(7L),
+  SENSOR_DISTANCE_SENSOR(7u),
   @GeneratedMavEnumEntry
-  SENSOR_AIRSPEED(8L),
+  SENSOR_AIRSPEED(8u),
   @GeneratedMavEnumEntry
-  SYSTEM_BATTERY(100L),
+  SYSTEM_BATTERY(100u),
   @GeneratedMavEnumEntry
-  SYSTEM_MOTOR(101L),
+  SYSTEM_MOTOR(101u),
   @GeneratedMavEnumEntry
-  SYSTEM_SERVO(102L),
+  SYSTEM_SERVO(102u),
   @GeneratedMavEnumEntry
-  SYSTEM_AVOIDANCE(103L),
+  SYSTEM_AVOIDANCE(103u),
   @GeneratedMavEnumEntry
-  SYSTEM_RC_SIGNAL(104L),
+  SYSTEM_RC_SIGNAL(104u),
   @GeneratedMavEnumEntry
-  SYSTEM_MAVLINK_SIGNAL(105L),
+  SYSTEM_MAVLINK_SIGNAL(105u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): FailureUnit? = when (v) {
-      0L -> SENSOR_GYRO
-      1L -> SENSOR_ACCEL
-      2L -> SENSOR_MAG
-      3L -> SENSOR_BARO
-      4L -> SENSOR_GPS
-      5L -> SENSOR_OPTICAL_FLOW
-      6L -> SENSOR_VIO
-      7L -> SENSOR_DISTANCE_SENSOR
-      8L -> SENSOR_AIRSPEED
-      100L -> SYSTEM_BATTERY
-      101L -> SYSTEM_MOTOR
-      102L -> SYSTEM_SERVO
-      103L -> SYSTEM_AVOIDANCE
-      104L -> SYSTEM_RC_SIGNAL
-      105L -> SYSTEM_MAVLINK_SIGNAL
+  public companion object : MavEnum.Companion<FailureUnit> {
+    public override fun getEntryFromValueOrNull(v: UInt): FailureUnit? = when (v) {
+      0u -> SENSOR_GYRO
+      1u -> SENSOR_ACCEL
+      2u -> SENSOR_MAG
+      3u -> SENSOR_BARO
+      4u -> SENSOR_GPS
+      5u -> SENSOR_OPTICAL_FLOW
+      6u -> SENSOR_VIO
+      7u -> SENSOR_DISTANCE_SENSOR
+      8u -> SENSOR_AIRSPEED
+      100u -> SYSTEM_BATTERY
+      101u -> SYSTEM_MOTOR
+      102u -> SYSTEM_SERVO
+      103u -> SYSTEM_AVOIDANCE
+      104u -> SYSTEM_RC_SIGNAL
+      105u -> SYSTEM_MAVLINK_SIGNAL
       else -> null
     }
   }

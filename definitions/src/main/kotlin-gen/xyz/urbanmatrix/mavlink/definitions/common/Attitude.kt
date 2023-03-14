@@ -2,34 +2,35 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right).
  */
 @GeneratedMavMessage(
-  id = 30,
-  crc = 39,
+  id = 30u,
+  crcExtra = 39,
 )
 public data class Attitude(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Roll angle (-pi..+pi)
    */
@@ -65,7 +66,7 @@ public data class Attitude(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -77,7 +78,7 @@ public data class Attitude(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
@@ -88,9 +89,9 @@ public data class Attitude(
   }
 
   public companion object {
-    private const val ID: Int = 30
+    private const val ID: UInt = 30u
 
-    private const val CRC: Int = 39
+    private const val CRC_EXTRA: Byte = 39
 
     private const val SIZE_V1: Int = 28
 
@@ -98,7 +99,7 @@ public data class Attitude(
 
     private val DESERIALIZER: MavDeserializer<Attitude> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
@@ -118,7 +119,8 @@ public data class Attitude(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Attitude> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Attitude> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Attitude> = METADATA
 
@@ -127,7 +129,7 @@ public data class Attitude(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var roll: Float = 0F
 

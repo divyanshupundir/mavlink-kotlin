@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,336 +10,336 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class AisType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not available (default).
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(0L),
+  UNKNOWN(0u),
   @GeneratedMavEnumEntry
-  RESERVED_1(1L),
+  RESERVED_1(1u),
   @GeneratedMavEnumEntry
-  RESERVED_2(2L),
+  RESERVED_2(2u),
   @GeneratedMavEnumEntry
-  RESERVED_3(3L),
+  RESERVED_3(3u),
   @GeneratedMavEnumEntry
-  RESERVED_4(4L),
+  RESERVED_4(4u),
   @GeneratedMavEnumEntry
-  RESERVED_5(5L),
+  RESERVED_5(5u),
   @GeneratedMavEnumEntry
-  RESERVED_6(6L),
+  RESERVED_6(6u),
   @GeneratedMavEnumEntry
-  RESERVED_7(7L),
+  RESERVED_7(7u),
   @GeneratedMavEnumEntry
-  RESERVED_8(8L),
+  RESERVED_8(8u),
   @GeneratedMavEnumEntry
-  RESERVED_9(9L),
+  RESERVED_9(9u),
   @GeneratedMavEnumEntry
-  RESERVED_10(10L),
+  RESERVED_10(10u),
   @GeneratedMavEnumEntry
-  RESERVED_11(11L),
+  RESERVED_11(11u),
   @GeneratedMavEnumEntry
-  RESERVED_12(12L),
+  RESERVED_12(12u),
   @GeneratedMavEnumEntry
-  RESERVED_13(13L),
+  RESERVED_13(13u),
   @GeneratedMavEnumEntry
-  RESERVED_14(14L),
+  RESERVED_14(14u),
   @GeneratedMavEnumEntry
-  RESERVED_15(15L),
+  RESERVED_15(15u),
   @GeneratedMavEnumEntry
-  RESERVED_16(16L),
+  RESERVED_16(16u),
   @GeneratedMavEnumEntry
-  RESERVED_17(17L),
+  RESERVED_17(17u),
   @GeneratedMavEnumEntry
-  RESERVED_18(18L),
+  RESERVED_18(18u),
   @GeneratedMavEnumEntry
-  RESERVED_19(19L),
+  RESERVED_19(19u),
   /**
    * Wing In Ground effect.
    */
   @GeneratedMavEnumEntry
-  WIG(20L),
+  WIG(20u),
   @GeneratedMavEnumEntry
-  WIG_HAZARDOUS_A(21L),
+  WIG_HAZARDOUS_A(21u),
   @GeneratedMavEnumEntry
-  WIG_HAZARDOUS_B(22L),
+  WIG_HAZARDOUS_B(22u),
   @GeneratedMavEnumEntry
-  WIG_HAZARDOUS_C(23L),
+  WIG_HAZARDOUS_C(23u),
   @GeneratedMavEnumEntry
-  WIG_HAZARDOUS_D(24L),
+  WIG_HAZARDOUS_D(24u),
   @GeneratedMavEnumEntry
-  WIG_RESERVED_1(25L),
+  WIG_RESERVED_1(25u),
   @GeneratedMavEnumEntry
-  WIG_RESERVED_2(26L),
+  WIG_RESERVED_2(26u),
   @GeneratedMavEnumEntry
-  WIG_RESERVED_3(27L),
+  WIG_RESERVED_3(27u),
   @GeneratedMavEnumEntry
-  WIG_RESERVED_4(28L),
+  WIG_RESERVED_4(28u),
   @GeneratedMavEnumEntry
-  WIG_RESERVED_5(29L),
+  WIG_RESERVED_5(29u),
   @GeneratedMavEnumEntry
-  FISHING(30L),
+  FISHING(30u),
   @GeneratedMavEnumEntry
-  TOWING(31L),
+  TOWING(31u),
   /**
    * Towing: length exceeds 200m or breadth exceeds 25m.
    */
   @GeneratedMavEnumEntry
-  TOWING_LARGE(32L),
+  TOWING_LARGE(32u),
   /**
    * Dredging or other underwater ops.
    */
   @GeneratedMavEnumEntry
-  DREDGING(33L),
+  DREDGING(33u),
   @GeneratedMavEnumEntry
-  DIVING(34L),
+  DIVING(34u),
   @GeneratedMavEnumEntry
-  MILITARY(35L),
+  MILITARY(35u),
   @GeneratedMavEnumEntry
-  SAILING(36L),
+  SAILING(36u),
   @GeneratedMavEnumEntry
-  PLEASURE(37L),
+  PLEASURE(37u),
   @GeneratedMavEnumEntry
-  RESERVED_20(38L),
+  RESERVED_20(38u),
   @GeneratedMavEnumEntry
-  RESERVED_21(39L),
+  RESERVED_21(39u),
   /**
    * High Speed Craft.
    */
   @GeneratedMavEnumEntry
-  HSC(40L),
+  HSC(40u),
   @GeneratedMavEnumEntry
-  HSC_HAZARDOUS_A(41L),
+  HSC_HAZARDOUS_A(41u),
   @GeneratedMavEnumEntry
-  HSC_HAZARDOUS_B(42L),
+  HSC_HAZARDOUS_B(42u),
   @GeneratedMavEnumEntry
-  HSC_HAZARDOUS_C(43L),
+  HSC_HAZARDOUS_C(43u),
   @GeneratedMavEnumEntry
-  HSC_HAZARDOUS_D(44L),
+  HSC_HAZARDOUS_D(44u),
   @GeneratedMavEnumEntry
-  HSC_RESERVED_1(45L),
+  HSC_RESERVED_1(45u),
   @GeneratedMavEnumEntry
-  HSC_RESERVED_2(46L),
+  HSC_RESERVED_2(46u),
   @GeneratedMavEnumEntry
-  HSC_RESERVED_3(47L),
+  HSC_RESERVED_3(47u),
   @GeneratedMavEnumEntry
-  HSC_RESERVED_4(48L),
+  HSC_RESERVED_4(48u),
   @GeneratedMavEnumEntry
-  HSC_UNKNOWN(49L),
+  HSC_UNKNOWN(49u),
   @GeneratedMavEnumEntry
-  PILOT(50L),
+  PILOT(50u),
   /**
    * Search And Rescue vessel.
    */
   @GeneratedMavEnumEntry
-  SAR(51L),
+  SAR(51u),
   @GeneratedMavEnumEntry
-  TUG(52L),
+  TUG(52u),
   @GeneratedMavEnumEntry
-  PORT_TENDER(53L),
+  PORT_TENDER(53u),
   /**
    * Anti-pollution equipment.
    */
   @GeneratedMavEnumEntry
-  ANTI_POLLUTION(54L),
+  ANTI_POLLUTION(54u),
   @GeneratedMavEnumEntry
-  LAW_ENFORCEMENT(55L),
+  LAW_ENFORCEMENT(55u),
   @GeneratedMavEnumEntry
-  SPARE_LOCAL_1(56L),
+  SPARE_LOCAL_1(56u),
   @GeneratedMavEnumEntry
-  SPARE_LOCAL_2(57L),
+  SPARE_LOCAL_2(57u),
   @GeneratedMavEnumEntry
-  MEDICAL_TRANSPORT(58L),
+  MEDICAL_TRANSPORT(58u),
   /**
    * Noncombatant ship according to RR Resolution No. 18.
    */
   @GeneratedMavEnumEntry
-  NONECOMBATANT(59L),
+  NONECOMBATANT(59u),
   @GeneratedMavEnumEntry
-  PASSENGER(60L),
+  PASSENGER(60u),
   @GeneratedMavEnumEntry
-  PASSENGER_HAZARDOUS_A(61L),
+  PASSENGER_HAZARDOUS_A(61u),
   @GeneratedMavEnumEntry
-  PASSENGER_HAZARDOUS_B(62L),
+  PASSENGER_HAZARDOUS_B(62u),
   @GeneratedMavEnumEntry
-  AIS_TYPE_PASSENGER_HAZARDOUS_C(63L),
+  AIS_TYPE_PASSENGER_HAZARDOUS_C(63u),
   @GeneratedMavEnumEntry
-  PASSENGER_HAZARDOUS_D(64L),
+  PASSENGER_HAZARDOUS_D(64u),
   @GeneratedMavEnumEntry
-  PASSENGER_RESERVED_1(65L),
+  PASSENGER_RESERVED_1(65u),
   @GeneratedMavEnumEntry
-  PASSENGER_RESERVED_2(66L),
+  PASSENGER_RESERVED_2(66u),
   @GeneratedMavEnumEntry
-  PASSENGER_RESERVED_3(67L),
+  PASSENGER_RESERVED_3(67u),
   @GeneratedMavEnumEntry
-  AIS_TYPE_PASSENGER_RESERVED_4(68L),
+  AIS_TYPE_PASSENGER_RESERVED_4(68u),
   @GeneratedMavEnumEntry
-  PASSENGER_UNKNOWN(69L),
+  PASSENGER_UNKNOWN(69u),
   @GeneratedMavEnumEntry
-  CARGO(70L),
+  CARGO(70u),
   @GeneratedMavEnumEntry
-  CARGO_HAZARDOUS_A(71L),
+  CARGO_HAZARDOUS_A(71u),
   @GeneratedMavEnumEntry
-  CARGO_HAZARDOUS_B(72L),
+  CARGO_HAZARDOUS_B(72u),
   @GeneratedMavEnumEntry
-  CARGO_HAZARDOUS_C(73L),
+  CARGO_HAZARDOUS_C(73u),
   @GeneratedMavEnumEntry
-  CARGO_HAZARDOUS_D(74L),
+  CARGO_HAZARDOUS_D(74u),
   @GeneratedMavEnumEntry
-  CARGO_RESERVED_1(75L),
+  CARGO_RESERVED_1(75u),
   @GeneratedMavEnumEntry
-  CARGO_RESERVED_2(76L),
+  CARGO_RESERVED_2(76u),
   @GeneratedMavEnumEntry
-  CARGO_RESERVED_3(77L),
+  CARGO_RESERVED_3(77u),
   @GeneratedMavEnumEntry
-  CARGO_RESERVED_4(78L),
+  CARGO_RESERVED_4(78u),
   @GeneratedMavEnumEntry
-  CARGO_UNKNOWN(79L),
+  CARGO_UNKNOWN(79u),
   @GeneratedMavEnumEntry
-  TANKER(80L),
+  TANKER(80u),
   @GeneratedMavEnumEntry
-  TANKER_HAZARDOUS_A(81L),
+  TANKER_HAZARDOUS_A(81u),
   @GeneratedMavEnumEntry
-  TANKER_HAZARDOUS_B(82L),
+  TANKER_HAZARDOUS_B(82u),
   @GeneratedMavEnumEntry
-  TANKER_HAZARDOUS_C(83L),
+  TANKER_HAZARDOUS_C(83u),
   @GeneratedMavEnumEntry
-  TANKER_HAZARDOUS_D(84L),
+  TANKER_HAZARDOUS_D(84u),
   @GeneratedMavEnumEntry
-  TANKER_RESERVED_1(85L),
+  TANKER_RESERVED_1(85u),
   @GeneratedMavEnumEntry
-  TANKER_RESERVED_2(86L),
+  TANKER_RESERVED_2(86u),
   @GeneratedMavEnumEntry
-  TANKER_RESERVED_3(87L),
+  TANKER_RESERVED_3(87u),
   @GeneratedMavEnumEntry
-  TANKER_RESERVED_4(88L),
+  TANKER_RESERVED_4(88u),
   @GeneratedMavEnumEntry
-  TANKER_UNKNOWN(89L),
+  TANKER_UNKNOWN(89u),
   @GeneratedMavEnumEntry
-  OTHER(90L),
+  OTHER(90u),
   @GeneratedMavEnumEntry
-  OTHER_HAZARDOUS_A(91L),
+  OTHER_HAZARDOUS_A(91u),
   @GeneratedMavEnumEntry
-  OTHER_HAZARDOUS_B(92L),
+  OTHER_HAZARDOUS_B(92u),
   @GeneratedMavEnumEntry
-  OTHER_HAZARDOUS_C(93L),
+  OTHER_HAZARDOUS_C(93u),
   @GeneratedMavEnumEntry
-  OTHER_HAZARDOUS_D(94L),
+  OTHER_HAZARDOUS_D(94u),
   @GeneratedMavEnumEntry
-  OTHER_RESERVED_1(95L),
+  OTHER_RESERVED_1(95u),
   @GeneratedMavEnumEntry
-  OTHER_RESERVED_2(96L),
+  OTHER_RESERVED_2(96u),
   @GeneratedMavEnumEntry
-  OTHER_RESERVED_3(97L),
+  OTHER_RESERVED_3(97u),
   @GeneratedMavEnumEntry
-  OTHER_RESERVED_4(98L),
+  OTHER_RESERVED_4(98u),
   @GeneratedMavEnumEntry
-  OTHER_UNKNOWN(99L),
+  OTHER_UNKNOWN(99u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AisType? = when (v) {
-      0L -> UNKNOWN
-      1L -> RESERVED_1
-      2L -> RESERVED_2
-      3L -> RESERVED_3
-      4L -> RESERVED_4
-      5L -> RESERVED_5
-      6L -> RESERVED_6
-      7L -> RESERVED_7
-      8L -> RESERVED_8
-      9L -> RESERVED_9
-      10L -> RESERVED_10
-      11L -> RESERVED_11
-      12L -> RESERVED_12
-      13L -> RESERVED_13
-      14L -> RESERVED_14
-      15L -> RESERVED_15
-      16L -> RESERVED_16
-      17L -> RESERVED_17
-      18L -> RESERVED_18
-      19L -> RESERVED_19
-      20L -> WIG
-      21L -> WIG_HAZARDOUS_A
-      22L -> WIG_HAZARDOUS_B
-      23L -> WIG_HAZARDOUS_C
-      24L -> WIG_HAZARDOUS_D
-      25L -> WIG_RESERVED_1
-      26L -> WIG_RESERVED_2
-      27L -> WIG_RESERVED_3
-      28L -> WIG_RESERVED_4
-      29L -> WIG_RESERVED_5
-      30L -> FISHING
-      31L -> TOWING
-      32L -> TOWING_LARGE
-      33L -> DREDGING
-      34L -> DIVING
-      35L -> MILITARY
-      36L -> SAILING
-      37L -> PLEASURE
-      38L -> RESERVED_20
-      39L -> RESERVED_21
-      40L -> HSC
-      41L -> HSC_HAZARDOUS_A
-      42L -> HSC_HAZARDOUS_B
-      43L -> HSC_HAZARDOUS_C
-      44L -> HSC_HAZARDOUS_D
-      45L -> HSC_RESERVED_1
-      46L -> HSC_RESERVED_2
-      47L -> HSC_RESERVED_3
-      48L -> HSC_RESERVED_4
-      49L -> HSC_UNKNOWN
-      50L -> PILOT
-      51L -> SAR
-      52L -> TUG
-      53L -> PORT_TENDER
-      54L -> ANTI_POLLUTION
-      55L -> LAW_ENFORCEMENT
-      56L -> SPARE_LOCAL_1
-      57L -> SPARE_LOCAL_2
-      58L -> MEDICAL_TRANSPORT
-      59L -> NONECOMBATANT
-      60L -> PASSENGER
-      61L -> PASSENGER_HAZARDOUS_A
-      62L -> PASSENGER_HAZARDOUS_B
-      63L -> AIS_TYPE_PASSENGER_HAZARDOUS_C
-      64L -> PASSENGER_HAZARDOUS_D
-      65L -> PASSENGER_RESERVED_1
-      66L -> PASSENGER_RESERVED_2
-      67L -> PASSENGER_RESERVED_3
-      68L -> AIS_TYPE_PASSENGER_RESERVED_4
-      69L -> PASSENGER_UNKNOWN
-      70L -> CARGO
-      71L -> CARGO_HAZARDOUS_A
-      72L -> CARGO_HAZARDOUS_B
-      73L -> CARGO_HAZARDOUS_C
-      74L -> CARGO_HAZARDOUS_D
-      75L -> CARGO_RESERVED_1
-      76L -> CARGO_RESERVED_2
-      77L -> CARGO_RESERVED_3
-      78L -> CARGO_RESERVED_4
-      79L -> CARGO_UNKNOWN
-      80L -> TANKER
-      81L -> TANKER_HAZARDOUS_A
-      82L -> TANKER_HAZARDOUS_B
-      83L -> TANKER_HAZARDOUS_C
-      84L -> TANKER_HAZARDOUS_D
-      85L -> TANKER_RESERVED_1
-      86L -> TANKER_RESERVED_2
-      87L -> TANKER_RESERVED_3
-      88L -> TANKER_RESERVED_4
-      89L -> TANKER_UNKNOWN
-      90L -> OTHER
-      91L -> OTHER_HAZARDOUS_A
-      92L -> OTHER_HAZARDOUS_B
-      93L -> OTHER_HAZARDOUS_C
-      94L -> OTHER_HAZARDOUS_D
-      95L -> OTHER_RESERVED_1
-      96L -> OTHER_RESERVED_2
-      97L -> OTHER_RESERVED_3
-      98L -> OTHER_RESERVED_4
-      99L -> OTHER_UNKNOWN
+  public companion object : MavEnum.Companion<AisType> {
+    public override fun getEntryFromValueOrNull(v: UInt): AisType? = when (v) {
+      0u -> UNKNOWN
+      1u -> RESERVED_1
+      2u -> RESERVED_2
+      3u -> RESERVED_3
+      4u -> RESERVED_4
+      5u -> RESERVED_5
+      6u -> RESERVED_6
+      7u -> RESERVED_7
+      8u -> RESERVED_8
+      9u -> RESERVED_9
+      10u -> RESERVED_10
+      11u -> RESERVED_11
+      12u -> RESERVED_12
+      13u -> RESERVED_13
+      14u -> RESERVED_14
+      15u -> RESERVED_15
+      16u -> RESERVED_16
+      17u -> RESERVED_17
+      18u -> RESERVED_18
+      19u -> RESERVED_19
+      20u -> WIG
+      21u -> WIG_HAZARDOUS_A
+      22u -> WIG_HAZARDOUS_B
+      23u -> WIG_HAZARDOUS_C
+      24u -> WIG_HAZARDOUS_D
+      25u -> WIG_RESERVED_1
+      26u -> WIG_RESERVED_2
+      27u -> WIG_RESERVED_3
+      28u -> WIG_RESERVED_4
+      29u -> WIG_RESERVED_5
+      30u -> FISHING
+      31u -> TOWING
+      32u -> TOWING_LARGE
+      33u -> DREDGING
+      34u -> DIVING
+      35u -> MILITARY
+      36u -> SAILING
+      37u -> PLEASURE
+      38u -> RESERVED_20
+      39u -> RESERVED_21
+      40u -> HSC
+      41u -> HSC_HAZARDOUS_A
+      42u -> HSC_HAZARDOUS_B
+      43u -> HSC_HAZARDOUS_C
+      44u -> HSC_HAZARDOUS_D
+      45u -> HSC_RESERVED_1
+      46u -> HSC_RESERVED_2
+      47u -> HSC_RESERVED_3
+      48u -> HSC_RESERVED_4
+      49u -> HSC_UNKNOWN
+      50u -> PILOT
+      51u -> SAR
+      52u -> TUG
+      53u -> PORT_TENDER
+      54u -> ANTI_POLLUTION
+      55u -> LAW_ENFORCEMENT
+      56u -> SPARE_LOCAL_1
+      57u -> SPARE_LOCAL_2
+      58u -> MEDICAL_TRANSPORT
+      59u -> NONECOMBATANT
+      60u -> PASSENGER
+      61u -> PASSENGER_HAZARDOUS_A
+      62u -> PASSENGER_HAZARDOUS_B
+      63u -> AIS_TYPE_PASSENGER_HAZARDOUS_C
+      64u -> PASSENGER_HAZARDOUS_D
+      65u -> PASSENGER_RESERVED_1
+      66u -> PASSENGER_RESERVED_2
+      67u -> PASSENGER_RESERVED_3
+      68u -> AIS_TYPE_PASSENGER_RESERVED_4
+      69u -> PASSENGER_UNKNOWN
+      70u -> CARGO
+      71u -> CARGO_HAZARDOUS_A
+      72u -> CARGO_HAZARDOUS_B
+      73u -> CARGO_HAZARDOUS_C
+      74u -> CARGO_HAZARDOUS_D
+      75u -> CARGO_RESERVED_1
+      76u -> CARGO_RESERVED_2
+      77u -> CARGO_RESERVED_3
+      78u -> CARGO_RESERVED_4
+      79u -> CARGO_UNKNOWN
+      80u -> TANKER
+      81u -> TANKER_HAZARDOUS_A
+      82u -> TANKER_HAZARDOUS_B
+      83u -> TANKER_HAZARDOUS_C
+      84u -> TANKER_HAZARDOUS_D
+      85u -> TANKER_RESERVED_1
+      86u -> TANKER_RESERVED_2
+      87u -> TANKER_RESERVED_3
+      88u -> TANKER_RESERVED_4
+      89u -> TANKER_UNKNOWN
+      90u -> OTHER
+      91u -> OTHER_HAZARDOUS_A
+      92u -> OTHER_HAZARDOUS_B
+      93u -> OTHER_HAZARDOUS_C
+      94u -> OTHER_HAZARDOUS_D
+      95u -> OTHER_RESERVED_1
+      96u -> OTHER_RESERVED_2
+      97u -> OTHER_RESERVED_3
+      98u -> OTHER_RESERVED_4
+      99u -> OTHER_UNKNOWN
       else -> null
     }
   }

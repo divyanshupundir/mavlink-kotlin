@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.ualberta
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,30 +10,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class UalbertaPilotMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    *  sdf
    */
   @GeneratedMavEnumEntry
-  PILOT_MANUAL(1L),
+  PILOT_MANUAL(1u),
   /**
    *  dfs
    */
   @GeneratedMavEnumEntry
-  PILOT_AUTO(2L),
+  PILOT_AUTO(2u),
   /**
    *  Rotomotion mode 
    */
   @GeneratedMavEnumEntry
-  PILOT_ROTO(3L),
+  PILOT_ROTO(3u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): UalbertaPilotMode? = when (v) {
-      1L -> PILOT_MANUAL
-      2L -> PILOT_AUTO
-      3L -> PILOT_ROTO
+  public companion object : MavEnum.Companion<UalbertaPilotMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): UalbertaPilotMode? = when (v) {
+      1u -> PILOT_MANUAL
+      2u -> PILOT_AUTO
+      3u -> PILOT_ROTO
       else -> null
     }
   }

@@ -66,8 +66,8 @@ internal class CoroutinesMavConnectionImpl(
 
     @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendV1(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T
     ) {
         withContext(Dispatchers.IO) {
@@ -81,8 +81,8 @@ internal class CoroutinesMavConnectionImpl(
 
     @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendUnsignedV2(
-        systemId: Int,
-        componentId: Int, payload: T
+        systemId: UByte,
+        componentId: UByte, payload: T
     ) {
         withContext(Dispatchers.IO) {
             connection.sendUnsignedV2(
@@ -95,11 +95,11 @@ internal class CoroutinesMavConnectionImpl(
 
     @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendSignedV2(
-        systemId: Int,
-        componentId: Int,
+        systemId: UByte,
+        componentId: UByte,
         payload: T,
-        linkId: Int,
-        timestamp: Long,
+        linkId: UByte,
+        timestamp: UInt,
         secretKey: ByteArray
     ) {
         withContext(Dispatchers.IO) {

@@ -2,10 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -15,11 +18,11 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -29,8 +32,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * https://mavlink.io/en/services/parameter.html
  */
 @GeneratedMavMessage(
-  id = 22,
-  crc = 220,
+  id = 22u,
+  crcExtra = -36,
 )
 public data class ParamValue(
   /**
@@ -49,25 +52,25 @@ public data class ParamValue(
    * Onboard parameter type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0),
+  public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0u),
   /**
    * Total number of onboard parameters
    */
   @GeneratedMavField(type = "uint16_t")
-  public val paramCount: Int = 0,
+  public val paramCount: UShort = 0u,
   /**
    * Index of this onboard parameter
    */
   @GeneratedMavField(type = "uint16_t")
-  public val paramIndex: Int = 0,
+  public val paramIndex: UShort = 0u,
 ) : MavMessage<ParamValue> {
   public override val instanceMetadata: MavMessage.Metadata<ParamValue> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeUint16(paramCount)
-    outputBuffer.encodeUint16(paramIndex)
+    outputBuffer.encodeUInt16(paramCount)
+    outputBuffer.encodeUInt16(paramIndex)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array()
@@ -76,17 +79,17 @@ public data class ParamValue(
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeUint16(paramCount)
-    outputBuffer.encodeUint16(paramIndex)
+    outputBuffer.encodeUInt16(paramCount)
+    outputBuffer.encodeUInt16(paramIndex)
     outputBuffer.encodeString(paramId, 16)
     outputBuffer.encodeEnumValue(paramType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 22
+    private const val ID: UInt = 22u
 
-    private const val CRC: Int = 220
+    private const val CRC_EXTRA: Byte = -36
 
     private const val SIZE_V1: Int = 25
 
@@ -95,8 +98,8 @@ public data class ParamValue(
     private val DESERIALIZER: MavDeserializer<ParamValue> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val paramValue = inputBuffer.decodeFloat()
-      val paramCount = inputBuffer.decodeUint16()
-      val paramIndex = inputBuffer.decodeUint16()
+      val paramCount = inputBuffer.decodeUInt16()
+      val paramIndex = inputBuffer.decodeUInt16()
       val paramId = inputBuffer.decodeString(16)
       val paramType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavParamType.getEntryFromValueOrNull(value)
@@ -113,7 +116,7 @@ public data class ParamValue(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ParamValue> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ParamValue> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ParamValue> = METADATA
@@ -127,11 +130,11 @@ public data class ParamValue(
 
     public var paramValue: Float = 0F
 
-    public var paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0)
+    public var paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0u)
 
-    public var paramCount: Int = 0
+    public var paramCount: UShort = 0u
 
-    public var paramIndex: Int = 0
+    public var paramIndex: UShort = 0u
 
     public fun build(): ParamValue = ParamValue(
       paramId = paramId,

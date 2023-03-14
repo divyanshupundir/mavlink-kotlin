@@ -1,35 +1,37 @@
 package xyz.urbanmatrix.mavlink.definitions.ualberta
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Accelerometer and Gyro biases from the navigation filter
  */
 @GeneratedMavMessage(
-  id = 220,
-  crc = 34,
+  id = 220u,
+  crcExtra = 34,
 )
 public data class NavFilterBias(
   /**
    * Timestamp (microseconds)
    */
   @GeneratedMavField(type = "uint64_t")
-  public val usec: BigInteger = BigInteger.ZERO,
+  public val usec: ULong = 0uL,
   /**
    * b_f[0]
    */
@@ -65,7 +67,7 @@ public data class NavFilterBias(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeUInt64(usec)
     outputBuffer.encodeFloat(accel0)
     outputBuffer.encodeFloat(accel1)
     outputBuffer.encodeFloat(accel2)
@@ -77,7 +79,7 @@ public data class NavFilterBias(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(usec)
+    outputBuffer.encodeUInt64(usec)
     outputBuffer.encodeFloat(accel0)
     outputBuffer.encodeFloat(accel1)
     outputBuffer.encodeFloat(accel2)
@@ -88,9 +90,9 @@ public data class NavFilterBias(
   }
 
   public companion object {
-    private const val ID: Int = 220
+    private const val ID: UInt = 220u
 
-    private const val CRC: Int = 34
+    private const val CRC_EXTRA: Byte = 34
 
     private const val SIZE_V1: Int = 32
 
@@ -98,7 +100,7 @@ public data class NavFilterBias(
 
     private val DESERIALIZER: MavDeserializer<NavFilterBias> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val usec = inputBuffer.decodeUint64()
+      val usec = inputBuffer.decodeUInt64()
       val accel0 = inputBuffer.decodeFloat()
       val accel1 = inputBuffer.decodeFloat()
       val accel2 = inputBuffer.decodeFloat()
@@ -118,7 +120,7 @@ public data class NavFilterBias(
     }
 
 
-    private val METADATA: MavMessage.Metadata<NavFilterBias> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<NavFilterBias> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
@@ -128,7 +130,7 @@ public data class NavFilterBias(
   }
 
   public class Builder {
-    public var usec: BigInteger = BigInteger.ZERO
+    public var usec: ULong = 0uL
 
     public var accel0: Float = 0F
 

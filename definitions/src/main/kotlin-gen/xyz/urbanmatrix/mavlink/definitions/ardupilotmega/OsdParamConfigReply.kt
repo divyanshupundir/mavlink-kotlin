@@ -2,9 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,50 +13,50 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Configure OSD parameter reply.
  */
 @GeneratedMavMessage(
-  id = 11034,
-  crc = 79,
+  id = 11034u,
+  crcExtra = 79,
 )
 public data class OsdParamConfigReply(
   /**
    * Request ID - copied from request.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val requestId: Long = 0L,
+  public val requestId: UInt = 0u,
   /**
    * Config error type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0),
+  public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0u),
 ) : MavMessage<OsdParamConfigReply> {
   public override val instanceMetadata: MavMessage.Metadata<OsdParamConfigReply> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(requestId)
+    outputBuffer.encodeUInt32(requestId)
     outputBuffer.encodeEnumValue(result.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(requestId)
+    outputBuffer.encodeUInt32(requestId)
     outputBuffer.encodeEnumValue(result.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 11034
+    private const val ID: UInt = 11034u
 
-    private const val CRC: Int = 79
+    private const val CRC_EXTRA: Byte = 79
 
     private const val SIZE_V1: Int = 5
 
@@ -63,7 +64,7 @@ public data class OsdParamConfigReply(
 
     private val DESERIALIZER: MavDeserializer<OsdParamConfigReply> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUint32()
+      val requestId = inputBuffer.decodeUInt32()
       val result = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = OsdParamConfigError.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -76,8 +77,8 @@ public data class OsdParamConfigReply(
     }
 
 
-    private val METADATA: MavMessage.Metadata<OsdParamConfigReply> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<OsdParamConfigReply> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OsdParamConfigReply> = METADATA
 
@@ -86,9 +87,9 @@ public data class OsdParamConfigReply(
   }
 
   public class Builder {
-    public var requestId: Long = 0L
+    public var requestId: UInt = 0u
 
-    public var result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0)
+    public var result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0u)
 
     public fun build(): OsdParamConfigReply = OsdParamConfigReply(
       requestId = requestId,

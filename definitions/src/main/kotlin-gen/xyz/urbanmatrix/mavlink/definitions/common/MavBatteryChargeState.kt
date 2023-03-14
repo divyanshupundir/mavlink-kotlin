@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,62 +10,62 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavBatteryChargeState(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Low battery state is not provided
    */
   @GeneratedMavEnumEntry
-  UNDEFINED(0L),
+  UNDEFINED(0u),
   /**
    * Battery is not in low state. Normal operation.
    */
   @GeneratedMavEnumEntry
-  OK(1L),
+  OK(1u),
   /**
    * Battery state is low, warn and monitor close.
    */
   @GeneratedMavEnumEntry
-  LOW(2L),
+  LOW(2u),
   /**
    * Battery state is critical, return or abort immediately.
    */
   @GeneratedMavEnumEntry
-  CRITICAL(3L),
+  CRITICAL(3u),
   /**
    * Battery state is too low for ordinary abort sequence. Perform fastest possible emergency stop
    * to prevent damage.
    */
   @GeneratedMavEnumEntry
-  EMERGENCY(4L),
+  EMERGENCY(4u),
   /**
    * Battery failed, damage unavoidable. Possible causes (faults) are listed in MAV_BATTERY_FAULT.
    */
   @GeneratedMavEnumEntry
-  FAILED(5L),
+  FAILED(5u),
   /**
    * Battery is diagnosed to be defective or an error occurred, usage is discouraged / prohibited.
    * Possible causes (faults) are listed in MAV_BATTERY_FAULT.
    */
   @GeneratedMavEnumEntry
-  UNHEALTHY(6L),
+  UNHEALTHY(6u),
   /**
    * Battery is charging.
    */
   @GeneratedMavEnumEntry
-  CHARGING(7L),
+  CHARGING(7u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavBatteryChargeState? = when (v) {
-      0L -> UNDEFINED
-      1L -> OK
-      2L -> LOW
-      3L -> CRITICAL
-      4L -> EMERGENCY
-      5L -> FAILED
-      6L -> UNHEALTHY
-      7L -> CHARGING
+  public companion object : MavEnum.Companion<MavBatteryChargeState> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryChargeState? = when (v) {
+      0u -> UNDEFINED
+      1u -> OK
+      2u -> LOW
+      3u -> CRITICAL
+      4u -> EMERGENCY
+      5u -> FAILED
+      6u -> UNHEALTHY
+      7u -> CHARGING
       else -> null
     }
   }

@@ -1,35 +1,37 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Angle of Attack and Side Slip Angle.
  */
 @GeneratedMavMessage(
-  id = 11020,
-  crc = 205,
+  id = 11020u,
+  crcExtra = -51,
 )
 public data class AoaSsa(
   /**
    * Timestamp (since boot or Unix epoch).
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Angle of Attack.
    */
@@ -45,7 +47,7 @@ public data class AoaSsa(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(aoa)
     outputBuffer.encodeFloat(ssa)
     return outputBuffer.array()
@@ -53,16 +55,16 @@ public data class AoaSsa(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(aoa)
     outputBuffer.encodeFloat(ssa)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 11020
+    private const val ID: UInt = 11020u
 
-    private const val CRC: Int = 205
+    private const val CRC_EXTRA: Byte = -51
 
     private const val SIZE_V1: Int = 16
 
@@ -70,7 +72,7 @@ public data class AoaSsa(
 
     private val DESERIALIZER: MavDeserializer<AoaSsa> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val aoa = inputBuffer.decodeFloat()
       val ssa = inputBuffer.decodeFloat()
 
@@ -82,7 +84,8 @@ public data class AoaSsa(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AoaSsa> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<AoaSsa> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AoaSsa> = METADATA
 
@@ -91,7 +94,7 @@ public data class AoaSsa(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var aoa: Float = 0F
 

@@ -22,27 +22,27 @@ public suspend fun CoroutinesMavConnection.tryClose(): Boolean = runCatchingIo {
 }
 
 public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendV1(
-    systemId: Int,
-    componentId: Int,
+    systemId: UByte,
+    componentId: UByte,
     payload: T
 ): Boolean = runCatchingIo {
     sendV1(systemId, componentId, payload)
 }
 
 public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendUnsignedV2(
-    systemId: Int,
-    componentId: Int,
+    systemId: UByte,
+    componentId: UByte,
     payload: T
 ): Boolean = runCatchingIo {
     sendUnsignedV2(systemId, componentId, payload)
 }
 
 public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendSignedV2(
-    systemId: Int,
-    componentId: Int,
+    systemId: UByte,
+    componentId: UByte,
     payload: T,
-    linkId: Int,
-    timestamp: Long,
+    linkId: UByte,
+    timestamp: UInt,
     secretKey: ByteArray
 ): Boolean = runCatchingIo {
     sendSignedV2(systemId, componentId, payload, linkId, timestamp, secretKey)

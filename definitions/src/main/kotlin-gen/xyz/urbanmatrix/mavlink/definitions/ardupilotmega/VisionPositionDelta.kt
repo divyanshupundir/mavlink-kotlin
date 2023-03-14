@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,30 +16,30 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Camera vision based attitude and position deltas.
  */
 @GeneratedMavMessage(
-  id = 11011,
-  crc = 106,
+  id = 11011u,
+  crcExtra = 106,
 )
 public data class VisionPositionDelta(
   /**
    * Timestamp (synced to UNIX time or since system boot).
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Time since the last reported camera frame.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeDeltaUsec: BigInteger = BigInteger.ZERO,
+  public val timeDeltaUsec: ULong = 0uL,
   /**
    * Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD from the
    * previous MAV_FRAME_BODY_FRD.
@@ -60,8 +62,8 @@ public data class VisionPositionDelta(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint64(timeDeltaUsec)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt64(timeDeltaUsec)
     outputBuffer.encodeFloatArray(angleDelta, 12)
     outputBuffer.encodeFloatArray(positionDelta, 12)
     outputBuffer.encodeFloat(confidence)
@@ -70,8 +72,8 @@ public data class VisionPositionDelta(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
-    outputBuffer.encodeUint64(timeDeltaUsec)
+    outputBuffer.encodeUInt64(timeUsec)
+    outputBuffer.encodeUInt64(timeDeltaUsec)
     outputBuffer.encodeFloatArray(angleDelta, 12)
     outputBuffer.encodeFloatArray(positionDelta, 12)
     outputBuffer.encodeFloat(confidence)
@@ -79,9 +81,9 @@ public data class VisionPositionDelta(
   }
 
   public companion object {
-    private const val ID: Int = 11011
+    private const val ID: UInt = 11011u
 
-    private const val CRC: Int = 106
+    private const val CRC_EXTRA: Byte = 106
 
     private const val SIZE_V1: Int = 44
 
@@ -89,8 +91,8 @@ public data class VisionPositionDelta(
 
     private val DESERIALIZER: MavDeserializer<VisionPositionDelta> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
-      val timeDeltaUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
+      val timeDeltaUsec = inputBuffer.decodeUInt64()
       val angleDelta = inputBuffer.decodeFloatArray(12)
       val positionDelta = inputBuffer.decodeFloatArray(12)
       val confidence = inputBuffer.decodeFloat()
@@ -105,8 +107,8 @@ public data class VisionPositionDelta(
     }
 
 
-    private val METADATA: MavMessage.Metadata<VisionPositionDelta> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<VisionPositionDelta> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<VisionPositionDelta> = METADATA
 
@@ -115,9 +117,9 @@ public data class VisionPositionDelta(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var timeDeltaUsec: BigInteger = BigInteger.ZERO
+    public var timeDeltaUsec: ULong = 0uL
 
     public var angleDelta: List<Float> = emptyList()
 

@@ -1,10 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,14 +17,14 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -28,8 +33,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * See message GLOBAL_POSITION_INT for the global position estimate.
  */
 @GeneratedMavMessage(
-  id = 113,
-  crc = 124,
+  id = 113u,
+  crcExtra = 124,
 )
 public data class HilGps(
   /**
@@ -37,13 +42,13 @@ public data class HilGps(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field
    * unless it is at least two, so always correctly fill in the fix.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val fixType: Int = 0,
+  public val fixType: UByte = 0u,
   /**
    * Latitude (WGS84)
    */
@@ -63,43 +68,43 @@ public data class HilGps(
    * GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val eph: Int = 0,
+  public val eph: UShort = 0u,
   /**
    * GPS VDOP vertical dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val epv: Int = 0,
+  public val epv: UShort = 0u,
   /**
    * GPS ground speed. If unknown, set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val vel: Int = 0,
+  public val vel: UShort = 0u,
   /**
    * GPS velocity in north direction in earth-fixed NED frame
    */
   @GeneratedMavField(type = "int16_t")
-  public val vn: Int = 0,
+  public val vn: Short = 0,
   /**
    * GPS velocity in east direction in earth-fixed NED frame
    */
   @GeneratedMavField(type = "int16_t")
-  public val ve: Int = 0,
+  public val ve: Short = 0,
   /**
    * GPS velocity in down direction in earth-fixed NED frame
    */
   @GeneratedMavField(type = "int16_t")
-  public val vd: Int = 0,
+  public val vd: Short = 0,
   /**
    * Course over ground (NOT heading, but direction of movement), 0.0..359.99 degrees. If unknown,
    * set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cog: Int = 0,
+  public val cog: UShort = 0u,
   /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
   @GeneratedMavField(type = "uint8_t")
-  public val satellitesVisible: Int = 0,
+  public val satellitesVisible: UByte = 0u,
   /**
    * GPS ID (zero indexed). Used for multiple GPS inputs
    */
@@ -107,7 +112,7 @@ public data class HilGps(
     type = "uint8_t",
     extension = true,
   )
-  public val id: Int = 0,
+  public val id: UByte = 0u,
   /**
    * Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for north
    */
@@ -115,52 +120,52 @@ public data class HilGps(
     type = "uint16_t",
     extension = true,
   )
-  public val yaw: Int = 0,
+  public val yaw: UShort = 0u,
 ) : MavMessage<HilGps> {
   public override val instanceMetadata: MavMessage.Metadata<HilGps> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUint16(eph)
-    outputBuffer.encodeUint16(epv)
-    outputBuffer.encodeUint16(vel)
+    outputBuffer.encodeUInt16(eph)
+    outputBuffer.encodeUInt16(epv)
+    outputBuffer.encodeUInt16(vel)
     outputBuffer.encodeInt16(vn)
     outputBuffer.encodeInt16(ve)
     outputBuffer.encodeInt16(vd)
-    outputBuffer.encodeUint16(cog)
-    outputBuffer.encodeUint8(fixType)
-    outputBuffer.encodeUint8(satellitesVisible)
+    outputBuffer.encodeUInt16(cog)
+    outputBuffer.encodeUInt8(fixType)
+    outputBuffer.encodeUInt8(satellitesVisible)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUint16(eph)
-    outputBuffer.encodeUint16(epv)
-    outputBuffer.encodeUint16(vel)
+    outputBuffer.encodeUInt16(eph)
+    outputBuffer.encodeUInt16(epv)
+    outputBuffer.encodeUInt16(vel)
     outputBuffer.encodeInt16(vn)
     outputBuffer.encodeInt16(ve)
     outputBuffer.encodeInt16(vd)
-    outputBuffer.encodeUint16(cog)
-    outputBuffer.encodeUint8(fixType)
-    outputBuffer.encodeUint8(satellitesVisible)
-    outputBuffer.encodeUint8(id)
-    outputBuffer.encodeUint16(yaw)
+    outputBuffer.encodeUInt16(cog)
+    outputBuffer.encodeUInt8(fixType)
+    outputBuffer.encodeUInt8(satellitesVisible)
+    outputBuffer.encodeUInt8(id)
+    outputBuffer.encodeUInt16(yaw)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 113
+    private const val ID: UInt = 113u
 
-    private const val CRC: Int = 124
+    private const val CRC_EXTRA: Byte = 124
 
     private const val SIZE_V1: Int = 36
 
@@ -168,21 +173,21 @@ public data class HilGps(
 
     private val DESERIALIZER: MavDeserializer<HilGps> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
-      val eph = inputBuffer.decodeUint16()
-      val epv = inputBuffer.decodeUint16()
-      val vel = inputBuffer.decodeUint16()
+      val eph = inputBuffer.decodeUInt16()
+      val epv = inputBuffer.decodeUInt16()
+      val vel = inputBuffer.decodeUInt16()
       val vn = inputBuffer.decodeInt16()
       val ve = inputBuffer.decodeInt16()
       val vd = inputBuffer.decodeInt16()
-      val cog = inputBuffer.decodeUint16()
-      val fixType = inputBuffer.decodeUint8()
-      val satellitesVisible = inputBuffer.decodeUint8()
-      val id = inputBuffer.decodeUint8()
-      val yaw = inputBuffer.decodeUint16()
+      val cog = inputBuffer.decodeUInt16()
+      val fixType = inputBuffer.decodeUInt8()
+      val satellitesVisible = inputBuffer.decodeUInt8()
+      val id = inputBuffer.decodeUInt8()
+      val yaw = inputBuffer.decodeUInt16()
 
       HilGps(
         timeUsec = timeUsec,
@@ -204,7 +209,8 @@ public data class HilGps(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HilGps> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<HilGps> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilGps> = METADATA
 
@@ -213,9 +219,9 @@ public data class HilGps(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var fixType: Int = 0
+    public var fixType: UByte = 0u
 
     public var lat: Int = 0
 
@@ -223,25 +229,25 @@ public data class HilGps(
 
     public var alt: Int = 0
 
-    public var eph: Int = 0
+    public var eph: UShort = 0u
 
-    public var epv: Int = 0
+    public var epv: UShort = 0u
 
-    public var vel: Int = 0
+    public var vel: UShort = 0u
 
-    public var vn: Int = 0
+    public var vn: Short = 0
 
-    public var ve: Int = 0
+    public var ve: Short = 0
 
-    public var vd: Int = 0
+    public var vd: Short = 0
 
-    public var cog: Int = 0
+    public var cog: UShort = 0u
 
-    public var satellitesVisible: Int = 0
+    public var satellitesVisible: UByte = 0u
 
-    public var id: Int = 0
+    public var id: UByte = 0u
 
-    public var yaw: Int = 0
+    public var yaw: UShort = 0u
 
     public fun build(): HilGps = HilGps(
       timeUsec = timeUsec,

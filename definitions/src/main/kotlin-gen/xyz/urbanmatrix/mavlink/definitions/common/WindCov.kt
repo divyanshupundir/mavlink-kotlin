@@ -1,20 +1,22 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -22,8 +24,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * any covariances but instead variability and accuracy fields in terms of standard deviation (1-STD).
  */
 @GeneratedMavMessage(
-  id = 231,
-  crc = 105,
+  id = 231u,
+  crcExtra = 105,
 )
 public data class WindCov(
   /**
@@ -31,7 +33,7 @@ public data class WindCov(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Wind in North (NED) direction (NAN if unknown)
    */
@@ -77,7 +79,7 @@ public data class WindCov(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(windX)
     outputBuffer.encodeFloat(windY)
     outputBuffer.encodeFloat(windZ)
@@ -91,7 +93,7 @@ public data class WindCov(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(windX)
     outputBuffer.encodeFloat(windY)
     outputBuffer.encodeFloat(windZ)
@@ -104,9 +106,9 @@ public data class WindCov(
   }
 
   public companion object {
-    private const val ID: Int = 231
+    private const val ID: UInt = 231u
 
-    private const val CRC: Int = 105
+    private const val CRC_EXTRA: Byte = 105
 
     private const val SIZE_V1: Int = 40
 
@@ -114,7 +116,7 @@ public data class WindCov(
 
     private val DESERIALIZER: MavDeserializer<WindCov> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val windX = inputBuffer.decodeFloat()
       val windY = inputBuffer.decodeFloat()
       val windZ = inputBuffer.decodeFloat()
@@ -138,7 +140,8 @@ public data class WindCov(
     }
 
 
-    private val METADATA: MavMessage.Metadata<WindCov> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<WindCov> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WindCov> = METADATA
 
@@ -147,7 +150,7 @@ public data class WindCov(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var windX: Float = 0F
 

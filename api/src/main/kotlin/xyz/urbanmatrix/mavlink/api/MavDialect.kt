@@ -7,7 +7,7 @@ public interface MavDialect {
      * @param messageId The ID of the message to resolve.
      * @return The metadata of the message of the specified ID.
      */
-    public fun resolveMetadataOrNull(messageId: Int): MavMessage.Metadata<out MavMessage<*>>?
+    public fun resolveMetadataOrNull(messageId: UInt): MavMessage.Metadata<out MavMessage<*>>?
 
     /**
      * Checks whether this dialect supports the message of the specified ID.
@@ -16,5 +16,5 @@ public interface MavDialect {
      * @return `true` if this dialect supports the message of the specified ID,
      * or `false` otherwise.
      */
-    public fun supports(messageId: Int): Boolean
+    public fun supports(messageId: UInt): Boolean
 }

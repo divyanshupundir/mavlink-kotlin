@@ -2,18 +2,21 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -21,30 +24,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * GCS.
  */
 @GeneratedMavMessage(
-  id = 160,
-  crc = 78,
+  id = 160u,
+  crcExtra = 78,
 )
 public data class FencePoint(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Point index (first point is 1, 0 is for return point).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val idx: Int = 0,
+  public val idx: UByte = 0u,
   /**
    * Total number of points (for sanity checking).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * Latitude of point.
    */
@@ -62,10 +65,10 @@ public data class FencePoint(
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(lat)
     outputBuffer.encodeFloat(lng)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(idx)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(idx)
+    outputBuffer.encodeUInt8(count)
     return outputBuffer.array()
   }
 
@@ -73,17 +76,17 @@ public data class FencePoint(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeFloat(lat)
     outputBuffer.encodeFloat(lng)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(idx)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(idx)
+    outputBuffer.encodeUInt8(count)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 160
+    private const val ID: UInt = 160u
 
-    private const val CRC: Int = 78
+    private const val CRC_EXTRA: Byte = 78
 
     private const val SIZE_V1: Int = 12
 
@@ -93,10 +96,10 @@ public data class FencePoint(
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeFloat()
       val lng = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val idx = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val idx = inputBuffer.decodeUInt8()
+      val count = inputBuffer.decodeUInt8()
 
       FencePoint(
         targetSystem = targetSystem,
@@ -109,7 +112,7 @@ public data class FencePoint(
     }
 
 
-    private val METADATA: MavMessage.Metadata<FencePoint> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<FencePoint> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FencePoint> = METADATA
@@ -119,13 +122,13 @@ public data class FencePoint(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var idx: Int = 0
+    public var idx: UByte = 0u
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
     public var lat: Float = 0F
 

@@ -2,8 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,10 +16,10 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,30 +28,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * this request should be REJECTED!
  */
 @GeneratedMavMessage(
-  id = 38,
-  crc = 9,
+  id = 38u,
+  crcExtra = 9,
 )
 public data class MissionWritePartialList(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Start index. Must be smaller / equal to the largest index of the current onboard list.
    */
   @GeneratedMavField(type = "int16_t")
-  public val startIndex: Int = 0,
+  public val startIndex: Short = 0,
   /**
    * End index, equal or greater than start index.
    */
   @GeneratedMavField(type = "int16_t")
-  public val endIndex: Int = 0,
+  public val endIndex: Short = 0,
   /**
    * Mission type.
    */
@@ -55,7 +59,7 @@ public data class MissionWritePartialList(
     type = "uint8_t",
     extension = true,
   )
-  public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0),
+  public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionWritePartialList> {
   public override val instanceMetadata: MavMessage.Metadata<MissionWritePartialList> = METADATA
 
@@ -63,8 +67,8 @@ public data class MissionWritePartialList(
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(startIndex)
     outputBuffer.encodeInt16(endIndex)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array()
   }
 
@@ -72,16 +76,16 @@ public data class MissionWritePartialList(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt16(startIndex)
     outputBuffer.encodeInt16(endIndex)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeEnumValue(missionType.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 38
+    private const val ID: UInt = 38u
 
-    private const val CRC: Int = 9
+    private const val CRC_EXTRA: Byte = 9
 
     private const val SIZE_V1: Int = 6
 
@@ -91,8 +95,8 @@ public data class MissionWritePartialList(
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val startIndex = inputBuffer.decodeInt16()
       val endIndex = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
       val missionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -109,7 +113,7 @@ public data class MissionWritePartialList(
 
 
     private val METADATA: MavMessage.Metadata<MissionWritePartialList> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MissionWritePartialList> = METADATA
 
@@ -118,15 +122,15 @@ public data class MissionWritePartialList(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var startIndex: Int = 0
+    public var startIndex: Short = 0
 
-    public var endIndex: Int = 0
+    public var endIndex: Short = 0
 
-    public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0)
+    public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u)
 
     public fun build(): MissionWritePartialList = MissionWritePartialList(
       targetSystem = targetSystem,

@@ -1,36 +1,36 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class GimbalAxis(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gimbal yaw axis.
    */
   @GeneratedMavEnumEntry
-  YAW(0L),
+  YAW(0u),
   /**
    * Gimbal pitch axis.
    */
   @GeneratedMavEnumEntry
-  PITCH(1L),
+  PITCH(1u),
   /**
    * Gimbal roll axis.
    */
   @GeneratedMavEnumEntry
-  ROLL(2L),
+  ROLL(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): GimbalAxis? = when (v) {
-      0L -> YAW
-      1L -> PITCH
-      2L -> ROLL
+  public companion object : MavEnum.Companion<GimbalAxis> {
+    public override fun getEntryFromValueOrNull(v: UInt): GimbalAxis? = when (v) {
+      0u -> YAW
+      1u -> PITCH
+      2u -> ROLL
       else -> null
     }
   }

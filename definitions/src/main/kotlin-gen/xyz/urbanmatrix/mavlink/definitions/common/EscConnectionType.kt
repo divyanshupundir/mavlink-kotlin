@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,48 +10,48 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class EscConnectionType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Traditional PPM ESC.
    */
   @GeneratedMavEnumEntry
-  PPM(0L),
+  PPM(0u),
   /**
    * Serial Bus connected ESC.
    */
   @GeneratedMavEnumEntry
-  SERIAL(1L),
+  SERIAL(1u),
   /**
    * One Shot PPM ESC.
    */
   @GeneratedMavEnumEntry
-  ONESHOT(2L),
+  ONESHOT(2u),
   /**
    * I2C ESC.
    */
   @GeneratedMavEnumEntry
-  I2C(3L),
+  I2C(3u),
   /**
    * CAN-Bus ESC.
    */
   @GeneratedMavEnumEntry
-  CAN(4L),
+  CAN(4u),
   /**
    * DShot ESC.
    */
   @GeneratedMavEnumEntry
-  DSHOT(5L),
+  DSHOT(5u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): EscConnectionType? = when (v) {
-      0L -> PPM
-      1L -> SERIAL
-      2L -> ONESHOT
-      3L -> I2C
-      4L -> CAN
-      5L -> DSHOT
+  public companion object : MavEnum.Companion<EscConnectionType> {
+    public override fun getEntryFromValueOrNull(v: UInt): EscConnectionType? = when (v) {
+      0u -> PPM
+      1u -> SERIAL
+      2u -> ONESHOT
+      3u -> I2C
+      4u -> CAN
+      5u -> DSHOT
       else -> null
     }
   }

@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,40 +15,40 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a potential collision
  */
 @GeneratedMavMessage(
-  id = 247,
-  crc = 81,
+  id = 247u,
+  crcExtra = 81,
 )
 public data class Collision(
   /**
    * Collision data source
    */
   @GeneratedMavField(type = "uint8_t")
-  public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0),
+  public val src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0u),
   /**
    * Unique identifier, domain based on src field
    */
   @GeneratedMavField(type = "uint32_t")
-  public val id: Long = 0L,
+  public val id: UInt = 0u,
   /**
    * Action that is being taken to avoid this collision
    */
   @GeneratedMavField(type = "uint8_t")
-  public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0),
+  public val action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0u),
   /**
    * How concerned the aircraft is about this collision
    */
   @GeneratedMavField(type = "uint8_t")
-  public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0),
+  public val threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0u),
   /**
    * Estimated time until collision occurs
    */
@@ -68,7 +69,7 @@ public data class Collision(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(id)
+    outputBuffer.encodeUInt32(id)
     outputBuffer.encodeFloat(timeToMinimumDelta)
     outputBuffer.encodeFloat(altitudeMinimumDelta)
     outputBuffer.encodeFloat(horizontalMinimumDelta)
@@ -80,7 +81,7 @@ public data class Collision(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(id)
+    outputBuffer.encodeUInt32(id)
     outputBuffer.encodeFloat(timeToMinimumDelta)
     outputBuffer.encodeFloat(altitudeMinimumDelta)
     outputBuffer.encodeFloat(horizontalMinimumDelta)
@@ -91,9 +92,9 @@ public data class Collision(
   }
 
   public companion object {
-    private const val ID: Int = 247
+    private const val ID: UInt = 247u
 
-    private const val CRC: Int = 81
+    private const val CRC_EXTRA: Byte = 81
 
     private const val SIZE_V1: Int = 19
 
@@ -101,7 +102,7 @@ public data class Collision(
 
     private val DESERIALIZER: MavDeserializer<Collision> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val id = inputBuffer.decodeUint32()
+      val id = inputBuffer.decodeUInt32()
       val timeToMinimumDelta = inputBuffer.decodeFloat()
       val altitudeMinimumDelta = inputBuffer.decodeFloat()
       val horizontalMinimumDelta = inputBuffer.decodeFloat()
@@ -130,7 +131,7 @@ public data class Collision(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Collision> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Collision> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Collision> = METADATA
@@ -140,13 +141,13 @@ public data class Collision(
   }
 
   public class Builder {
-    public var src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0)
+    public var src: MavEnumValue<MavCollisionSrc> = MavEnumValue.fromValue(0u)
 
-    public var id: Long = 0L
+    public var id: UInt = 0u
 
-    public var action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0)
+    public var action: MavEnumValue<MavCollisionAction> = MavEnumValue.fromValue(0u)
 
-    public var threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0)
+    public var threatLevel: MavEnumValue<MavCollisionThreatLevel> = MavEnumValue.fromValue(0u)
 
     public var timeToMinimumDelta: Float = 0F
 

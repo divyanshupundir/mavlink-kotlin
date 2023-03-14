@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,10 +17,10 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -27,31 +30,31 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 287,
-  crc = 1,
+  id = 287u,
+  crcExtra = 1,
 )
 public data class GimbalManagerSetPitchyaw(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * High level gimbal manager flags to use.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
    * device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gimbalDeviceId: Int = 0,
+  public val gimbalDeviceId: UByte = 0u,
   /**
    * Pitch angle (positive: up, negative: down, NaN to be ignored).
    */
@@ -82,9 +85,9 @@ public data class GimbalManagerSetPitchyaw(
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(pitchRate)
     outputBuffer.encodeFloat(yawRate)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(gimbalDeviceId)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(gimbalDeviceId)
     return outputBuffer.array()
   }
 
@@ -95,16 +98,16 @@ public data class GimbalManagerSetPitchyaw(
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(pitchRate)
     outputBuffer.encodeFloat(yawRate)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(gimbalDeviceId)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(gimbalDeviceId)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 287
+    private const val ID: UInt = 287u
 
-    private const val CRC: Int = 1
+    private const val CRC_EXTRA: Byte = 1
 
     private const val SIZE_V1: Int = 23
 
@@ -120,9 +123,9 @@ public data class GimbalManagerSetPitchyaw(
       val yaw = inputBuffer.decodeFloat()
       val pitchRate = inputBuffer.decodeFloat()
       val yawRate = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val gimbalDeviceId = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val gimbalDeviceId = inputBuffer.decodeUInt8()
 
       GimbalManagerSetPitchyaw(
         targetSystem = targetSystem,
@@ -138,7 +141,7 @@ public data class GimbalManagerSetPitchyaw(
 
 
     private val METADATA: MavMessage.Metadata<GimbalManagerSetPitchyaw> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GimbalManagerSetPitchyaw> = METADATA
 
@@ -147,13 +150,13 @@ public data class GimbalManagerSetPitchyaw(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u)
 
-    public var gimbalDeviceId: Int = 0
+    public var gimbalDeviceId: UByte = 0u
 
     public var pitch: Float = 0F
 

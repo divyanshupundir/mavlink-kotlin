@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,24 +17,24 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Second GPS data.
  */
 @GeneratedMavMessage(
-  id = 124,
-  crc = 87,
+  id = 124u,
+  crcExtra = 87,
 )
 public data class Gps2Raw(
   /**
@@ -39,12 +42,12 @@ public data class Gps2Raw(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * GPS fix type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0),
+  public val fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0u),
   /**
    * Latitude (WGS84)
    */
@@ -64,38 +67,38 @@ public data class Gps2Raw(
    * GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val eph: Int = 0,
+  public val eph: UShort = 0u,
   /**
    * GPS VDOP vertical dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val epv: Int = 0,
+  public val epv: UShort = 0u,
   /**
    * GPS ground speed. If unknown, set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val vel: Int = 0,
+  public val vel: UShort = 0u,
   /**
    * Course over ground (NOT heading, but direction of movement): 0.0..359.99 degrees. If unknown,
    * set to: UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cog: Int = 0,
+  public val cog: UShort = 0u,
   /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
   @GeneratedMavField(type = "uint8_t")
-  public val satellitesVisible: Int = 0,
+  public val satellitesVisible: UByte = 0u,
   /**
    * Number of DGPS satellites
    */
   @GeneratedMavField(type = "uint8_t")
-  public val dgpsNumch: Int = 0,
+  public val dgpsNumch: UByte = 0u,
   /**
    * Age of DGPS info
    */
   @GeneratedMavField(type = "uint32_t")
-  public val dgpsAge: Long = 0L,
+  public val dgpsAge: UInt = 0u,
   /**
    * Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX if this
    * GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
@@ -104,7 +107,7 @@ public data class Gps2Raw(
     type = "uint16_t",
     extension = true,
   )
-  public val yaw: Int = 0,
+  public val yaw: UShort = 0u,
   /**
    * Altitude (above WGS84, EGM96 ellipsoid). Positive for up.
    */
@@ -120,7 +123,7 @@ public data class Gps2Raw(
     type = "uint32_t",
     extension = true,
   )
-  public val hAcc: Long = 0L,
+  public val hAcc: UInt = 0u,
   /**
    * Altitude uncertainty.
    */
@@ -128,7 +131,7 @@ public data class Gps2Raw(
     type = "uint32_t",
     extension = true,
   )
-  public val vAcc: Long = 0L,
+  public val vAcc: UInt = 0u,
   /**
    * Speed uncertainty.
    */
@@ -136,7 +139,7 @@ public data class Gps2Raw(
     type = "uint32_t",
     extension = true,
   )
-  public val velAcc: Long = 0L,
+  public val velAcc: UInt = 0u,
   /**
    * Heading / track uncertainty
    */
@@ -144,54 +147,54 @@ public data class Gps2Raw(
     type = "uint32_t",
     extension = true,
   )
-  public val hdgAcc: Long = 0L,
+  public val hdgAcc: UInt = 0u,
 ) : MavMessage<Gps2Raw> {
   public override val instanceMetadata: MavMessage.Metadata<Gps2Raw> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUint32(dgpsAge)
-    outputBuffer.encodeUint16(eph)
-    outputBuffer.encodeUint16(epv)
-    outputBuffer.encodeUint16(vel)
-    outputBuffer.encodeUint16(cog)
+    outputBuffer.encodeUInt32(dgpsAge)
+    outputBuffer.encodeUInt16(eph)
+    outputBuffer.encodeUInt16(epv)
+    outputBuffer.encodeUInt16(vel)
+    outputBuffer.encodeUInt16(cog)
     outputBuffer.encodeEnumValue(fixType.value, 1)
-    outputBuffer.encodeUint8(satellitesVisible)
-    outputBuffer.encodeUint8(dgpsNumch)
+    outputBuffer.encodeUInt8(satellitesVisible)
+    outputBuffer.encodeUInt8(dgpsNumch)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
     outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUint32(dgpsAge)
-    outputBuffer.encodeUint16(eph)
-    outputBuffer.encodeUint16(epv)
-    outputBuffer.encodeUint16(vel)
-    outputBuffer.encodeUint16(cog)
+    outputBuffer.encodeUInt32(dgpsAge)
+    outputBuffer.encodeUInt16(eph)
+    outputBuffer.encodeUInt16(epv)
+    outputBuffer.encodeUInt16(vel)
+    outputBuffer.encodeUInt16(cog)
     outputBuffer.encodeEnumValue(fixType.value, 1)
-    outputBuffer.encodeUint8(satellitesVisible)
-    outputBuffer.encodeUint8(dgpsNumch)
-    outputBuffer.encodeUint16(yaw)
+    outputBuffer.encodeUInt8(satellitesVisible)
+    outputBuffer.encodeUInt8(dgpsNumch)
+    outputBuffer.encodeUInt16(yaw)
     outputBuffer.encodeInt32(altEllipsoid)
-    outputBuffer.encodeUint32(hAcc)
-    outputBuffer.encodeUint32(vAcc)
-    outputBuffer.encodeUint32(velAcc)
-    outputBuffer.encodeUint32(hdgAcc)
+    outputBuffer.encodeUInt32(hAcc)
+    outputBuffer.encodeUInt32(vAcc)
+    outputBuffer.encodeUInt32(velAcc)
+    outputBuffer.encodeUInt32(hdgAcc)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 124
+    private const val ID: UInt = 124u
 
-    private const val CRC: Int = 87
+    private const val CRC_EXTRA: Byte = 87
 
     private const val SIZE_V1: Int = 35
 
@@ -199,27 +202,27 @@ public data class Gps2Raw(
 
     private val DESERIALIZER: MavDeserializer<Gps2Raw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt32()
-      val dgpsAge = inputBuffer.decodeUint32()
-      val eph = inputBuffer.decodeUint16()
-      val epv = inputBuffer.decodeUint16()
-      val vel = inputBuffer.decodeUint16()
-      val cog = inputBuffer.decodeUint16()
+      val dgpsAge = inputBuffer.decodeUInt32()
+      val eph = inputBuffer.decodeUInt16()
+      val epv = inputBuffer.decodeUInt16()
+      val vel = inputBuffer.decodeUInt16()
+      val cog = inputBuffer.decodeUInt16()
       val fixType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = GpsFixType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val satellitesVisible = inputBuffer.decodeUint8()
-      val dgpsNumch = inputBuffer.decodeUint8()
-      val yaw = inputBuffer.decodeUint16()
+      val satellitesVisible = inputBuffer.decodeUInt8()
+      val dgpsNumch = inputBuffer.decodeUInt8()
+      val yaw = inputBuffer.decodeUInt16()
       val altEllipsoid = inputBuffer.decodeInt32()
-      val hAcc = inputBuffer.decodeUint32()
-      val vAcc = inputBuffer.decodeUint32()
-      val velAcc = inputBuffer.decodeUint32()
-      val hdgAcc = inputBuffer.decodeUint32()
+      val hAcc = inputBuffer.decodeUInt32()
+      val vAcc = inputBuffer.decodeUInt32()
+      val velAcc = inputBuffer.decodeUInt32()
+      val hdgAcc = inputBuffer.decodeUInt32()
 
       Gps2Raw(
         timeUsec = timeUsec,
@@ -244,7 +247,8 @@ public data class Gps2Raw(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Gps2Raw> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Gps2Raw> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Gps2Raw> = METADATA
 
@@ -253,9 +257,9 @@ public data class Gps2Raw(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0)
+    public var fixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0u)
 
     public var lat: Int = 0
 
@@ -263,31 +267,31 @@ public data class Gps2Raw(
 
     public var alt: Int = 0
 
-    public var eph: Int = 0
+    public var eph: UShort = 0u
 
-    public var epv: Int = 0
+    public var epv: UShort = 0u
 
-    public var vel: Int = 0
+    public var vel: UShort = 0u
 
-    public var cog: Int = 0
+    public var cog: UShort = 0u
 
-    public var satellitesVisible: Int = 0
+    public var satellitesVisible: UByte = 0u
 
-    public var dgpsNumch: Int = 0
+    public var dgpsNumch: UByte = 0u
 
-    public var dgpsAge: Long = 0L
+    public var dgpsAge: UInt = 0u
 
-    public var yaw: Int = 0
+    public var yaw: UShort = 0u
 
     public var altEllipsoid: Int = 0
 
-    public var hAcc: Long = 0L
+    public var hAcc: UInt = 0u
 
-    public var vAcc: Long = 0L
+    public var vAcc: UInt = 0u
 
-    public var velAcc: Long = 0L
+    public var velAcc: UInt = 0u
 
-    public var hdgAcc: Long = 0L
+    public var hdgAcc: UInt = 0u
 
     public fun build(): Gps2Raw = Gps2Raw(
       timeUsec = timeUsec,

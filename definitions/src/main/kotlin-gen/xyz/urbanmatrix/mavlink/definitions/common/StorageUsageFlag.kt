@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -11,36 +11,36 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class StorageUsageFlag(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Always set to 1 (indicates STORAGE_INFORMATION.storage_usage is supported).
    */
   @GeneratedMavEnumEntry
-  SET(1L),
+  SET(1u),
   /**
    * Storage for saving photos.
    */
   @GeneratedMavEnumEntry
-  PHOTO(2L),
+  PHOTO(2u),
   /**
    * Storage for saving videos.
    */
   @GeneratedMavEnumEntry
-  VIDEO(4L),
+  VIDEO(4u),
   /**
    * Storage for saving logs.
    */
   @GeneratedMavEnumEntry
-  LOGS(8L),
+  LOGS(8u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): StorageUsageFlag? = when (v) {
-      1L -> SET
-      2L -> PHOTO
-      4L -> VIDEO
-      8L -> LOGS
+  public companion object : MavEnum.Companion<StorageUsageFlag> {
+    public override fun getEntryFromValueOrNull(v: UInt): StorageUsageFlag? = when (v) {
+      1u -> SET
+      2u -> PHOTO
+      4u -> VIDEO
+      8u -> LOGS
       else -> null
     }
   }

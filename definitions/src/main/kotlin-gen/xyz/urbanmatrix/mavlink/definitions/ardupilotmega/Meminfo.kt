@@ -2,38 +2,40 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * State of autopilot RAM.
  */
 @GeneratedMavMessage(
-  id = 152,
-  crc = 208,
+  id = 152u,
+  crcExtra = -48,
 )
 public data class Meminfo(
   /**
    * Heap top.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val brkval: Int = 0,
+  public val brkval: UShort = 0u,
   /**
    * Free memory.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val freemem: Int = 0,
+  public val freemem: UShort = 0u,
   /**
    * Free memory (32 bit).
    */
@@ -41,29 +43,29 @@ public data class Meminfo(
     type = "uint32_t",
     extension = true,
   )
-  public val freemem32: Long = 0L,
+  public val freemem32: UInt = 0u,
 ) : MavMessage<Meminfo> {
   public override val instanceMetadata: MavMessage.Metadata<Meminfo> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(brkval)
-    outputBuffer.encodeUint16(freemem)
+    outputBuffer.encodeUInt16(brkval)
+    outputBuffer.encodeUInt16(freemem)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(brkval)
-    outputBuffer.encodeUint16(freemem)
-    outputBuffer.encodeUint32(freemem32)
+    outputBuffer.encodeUInt16(brkval)
+    outputBuffer.encodeUInt16(freemem)
+    outputBuffer.encodeUInt32(freemem32)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 152
+    private const val ID: UInt = 152u
 
-    private const val CRC: Int = 208
+    private const val CRC_EXTRA: Byte = -48
 
     private const val SIZE_V1: Int = 4
 
@@ -71,9 +73,9 @@ public data class Meminfo(
 
     private val DESERIALIZER: MavDeserializer<Meminfo> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val brkval = inputBuffer.decodeUint16()
-      val freemem = inputBuffer.decodeUint16()
-      val freemem32 = inputBuffer.decodeUint32()
+      val brkval = inputBuffer.decodeUInt16()
+      val freemem = inputBuffer.decodeUInt16()
+      val freemem32 = inputBuffer.decodeUInt32()
 
       Meminfo(
         brkval = brkval,
@@ -83,7 +85,8 @@ public data class Meminfo(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Meminfo> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Meminfo> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Meminfo> = METADATA
 
@@ -92,11 +95,11 @@ public data class Meminfo(
   }
 
   public class Builder {
-    public var brkval: Int = 0
+    public var brkval: UShort = 0u
 
-    public var freemem: Int = 0
+    public var freemem: UShort = 0u
 
-    public var freemem32: Long = 0L
+    public var freemem32: UInt = 0u
 
     public fun build(): Meminfo = Meminfo(
       brkval = brkval,

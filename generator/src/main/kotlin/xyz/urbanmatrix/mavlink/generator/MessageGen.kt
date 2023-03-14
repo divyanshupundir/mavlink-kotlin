@@ -9,6 +9,7 @@ import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import xyz.urbanmatrix.mavlink.generator.models.MessageModel
 import xyz.urbanmatrix.mavlink.generator.models.sortedByPosition
+import xyz.urbanmatrix.mavlink.serialization.CrcX25
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -44,7 +45,7 @@ private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = Fu
 private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
     .addProperty(generateIdProperty())
-    .addProperty(generateCrcProperty())
+    .addProperty(generateCrcExtraProperty())
     .addProperty(generateSizeV1Property())
     .addProperty(generateSizeV2Property())
     .addProperty(generateDeserializer(packageName, enumHelper))
@@ -55,18 +56,18 @@ private fun MessageModel.generateCompanionObject(packageName: String, enumHelper
 
 private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
     .builder(GeneratedMavMessage::class)
-    .addMember("id = %L", id)
-    .addMember("crc = %L", crc)
+    .addMember("id = %Lu", id)
+    .addMember("crcExtra = %L", crcExtra)
     .build()
 
 private fun MessageModel.generateIdProperty() = PropertySpec
-    .builder("ID", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", id)
+    .builder("ID", UInt::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%Lu", id)
     .build()
 
-private fun MessageModel.generateCrcProperty() = PropertySpec
-    .builder("CRC", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", crc)
+private fun MessageModel.generateCrcExtraProperty() = PropertySpec
+    .builder("CRC_EXTRA", Byte::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%L", crcExtra)
     .build()
 
 private fun MessageModel.generateSizeV1Property() = PropertySpec
@@ -115,7 +116,7 @@ private fun MessageModel.generateMetadataProperty(packageName: String) = Propert
         MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName)),
         KModifier.PRIVATE
     )
-    .initializer("%T(ID, CRC, DESERIALIZER)", MavMessage.Metadata::class)
+    .initializer("%T(ID, CRC_EXTRA, DESERIALIZER)", MavMessage.Metadata::class)
     .build()
 
 private fun MessageModel.generateClassMetadata(packageName: String) = PropertySpec
@@ -204,7 +205,7 @@ private val truncateZerosMemberName = MemberName("xyz.urbanmatrix.mavlink.serial
 private fun MessageModel.getClassName(packageName: String): ClassName =
     ClassName(packageName, formattedName)
 
-internal val MessageModel.crc: Int
+internal val MessageModel.crcExtra: Byte
     get() {
         val crc = CrcX25().apply {
             accumulate("$name ")
@@ -224,7 +225,8 @@ internal val MessageModel.crc: Int
             }
             .onEach { crc.accumulate(it.name + " ") }
             .filterIsInstance<FieldModel.PrimitiveArray>()
-            .forEach { crc.accumulate(it.arrayLength) }
+            .forEach { crc.accumulate(it.arrayLength.toByte()) }
 
-        return crc.get() and 0xFF
+        val sum = crc.get().toInt()
+        return ((sum and 0xFF) xor (sum shr 8)).toByte()
     }

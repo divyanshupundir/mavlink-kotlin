@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,30 +10,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class FenceMitigate(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Unknown
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(0L),
+  UNKNOWN(0u),
   /**
    * No actions being taken
    */
   @GeneratedMavEnumEntry
-  NONE(1L),
+  NONE(1u),
   /**
    * Velocity limiting active to prevent breach
    */
   @GeneratedMavEnumEntry
-  VEL_LIMIT(2L),
+  VEL_LIMIT(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): FenceMitigate? = when (v) {
-      0L -> UNKNOWN
-      1L -> NONE
-      2L -> VEL_LIMIT
+  public companion object : MavEnum.Companion<FenceMitigate> {
+    public override fun getEntryFromValueOrNull(v: UInt): FenceMitigate? = when (v) {
+      0u -> UNKNOWN
+      1u -> NONE
+      2u -> VEL_LIMIT
       else -> null
     }
   }

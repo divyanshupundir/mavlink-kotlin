@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,39 +10,39 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class SubMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  STABILIZE(0L),
+  STABILIZE(0u),
   @GeneratedMavEnumEntry
-  ACRO(1L),
+  ACRO(1u),
   @GeneratedMavEnumEntry
-  ALT_HOLD(2L),
+  ALT_HOLD(2u),
   @GeneratedMavEnumEntry
-  AUTO(3L),
+  AUTO(3u),
   @GeneratedMavEnumEntry
-  GUIDED(4L),
+  GUIDED(4u),
   @GeneratedMavEnumEntry
-  CIRCLE(7L),
+  CIRCLE(7u),
   @GeneratedMavEnumEntry
-  SURFACE(9L),
+  SURFACE(9u),
   @GeneratedMavEnumEntry
-  POSHOLD(16L),
+  POSHOLD(16u),
   @GeneratedMavEnumEntry
-  MANUAL(19L),
+  MANUAL(19u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): SubMode? = when (v) {
-      0L -> STABILIZE
-      1L -> ACRO
-      2L -> ALT_HOLD
-      3L -> AUTO
-      4L -> GUIDED
-      7L -> CIRCLE
-      9L -> SURFACE
-      16L -> POSHOLD
-      19L -> MANUAL
+  public companion object : MavEnum.Companion<SubMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): SubMode? = when (v) {
+      0u -> STABILIZE
+      1u -> ACRO
+      2u -> ALT_HOLD
+      3u -> AUTO
+      4u -> GUIDED
+      7u -> CIRCLE
+      9u -> SURFACE
+      16u -> POSHOLD
+      19u -> MANUAL
       else -> null
     }
   }

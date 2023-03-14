@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,21 +19,21 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
  */
 @GeneratedMavMessage(
-  id = 149,
-  crc = 200,
+  id = 149u,
+  crcExtra = -56,
 )
 public data class LandingTarget(
   /**
@@ -38,17 +41,17 @@ public data class LandingTarget(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * The ID of the target if multiple targets are present
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetNum: Int = 0,
+  public val targetNum: UByte = 0u,
   /**
    * Coordinate frame used for following fields.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * X-axis angular offset of the target from the center of the image
    */
@@ -113,7 +116,7 @@ public data class LandingTarget(
     type = "uint8_t",
     extension = true,
   )
-  public val type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0u),
   /**
    * Boolean indicating whether the position fields (x, y, z, q, type) contain valid target position
    * information (valid: 1, invalid: 0). Default is 0 (invalid).
@@ -122,46 +125,46 @@ public data class LandingTarget(
     type = "uint8_t",
     extension = true,
   )
-  public val positionValid: Int = 0,
+  public val positionValid: UByte = 0u,
 ) : MavMessage<LandingTarget> {
   public override val instanceMetadata: MavMessage.Metadata<LandingTarget> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(angleX)
     outputBuffer.encodeFloat(angleY)
     outputBuffer.encodeFloat(distance)
     outputBuffer.encodeFloat(sizeX)
     outputBuffer.encodeFloat(sizeY)
-    outputBuffer.encodeUint8(targetNum)
+    outputBuffer.encodeUInt8(targetNum)
     outputBuffer.encodeEnumValue(frame.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(angleX)
     outputBuffer.encodeFloat(angleY)
     outputBuffer.encodeFloat(distance)
     outputBuffer.encodeFloat(sizeX)
     outputBuffer.encodeFloat(sizeY)
-    outputBuffer.encodeUint8(targetNum)
+    outputBuffer.encodeUInt8(targetNum)
     outputBuffer.encodeEnumValue(frame.value, 1)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUint8(positionValid)
+    outputBuffer.encodeUInt8(positionValid)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 149
+    private const val ID: UInt = 149u
 
-    private const val CRC: Int = 200
+    private const val CRC_EXTRA: Byte = -56
 
     private const val SIZE_V1: Int = 30
 
@@ -169,13 +172,13 @@ public data class LandingTarget(
 
     private val DESERIALIZER: MavDeserializer<LandingTarget> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val angleX = inputBuffer.decodeFloat()
       val angleY = inputBuffer.decodeFloat()
       val distance = inputBuffer.decodeFloat()
       val sizeX = inputBuffer.decodeFloat()
       val sizeY = inputBuffer.decodeFloat()
-      val targetNum = inputBuffer.decodeUint8()
+      val targetNum = inputBuffer.decodeUInt8()
       val frame = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -188,7 +191,7 @@ public data class LandingTarget(
         val entry = LandingTargetType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val positionValid = inputBuffer.decodeUint8()
+      val positionValid = inputBuffer.decodeUInt8()
 
       LandingTarget(
         timeUsec = timeUsec,
@@ -209,7 +212,7 @@ public data class LandingTarget(
     }
 
 
-    private val METADATA: MavMessage.Metadata<LandingTarget> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<LandingTarget> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LandingTarget> = METADATA
@@ -219,11 +222,11 @@ public data class LandingTarget(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var targetNum: Int = 0
+    public var targetNum: UByte = 0u
 
-    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
     public var angleX: Float = 0F
 
@@ -243,9 +246,9 @@ public data class LandingTarget(
 
     public var q: List<Float> = emptyList()
 
-    public var type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0u)
 
-    public var positionValid: Int = 0
+    public var positionValid: UByte = 0u
 
     public fun build(): LandingTarget = LandingTarget(
       timeUsec = timeUsec,

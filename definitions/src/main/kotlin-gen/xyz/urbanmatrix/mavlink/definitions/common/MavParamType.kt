@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,72 +10,72 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavParamType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * 8-bit unsigned integer
    */
   @GeneratedMavEnumEntry
-  UINT8(1L),
+  UINT8(1u),
   /**
    * 8-bit signed integer
    */
   @GeneratedMavEnumEntry
-  INT8(2L),
+  INT8(2u),
   /**
    * 16-bit unsigned integer
    */
   @GeneratedMavEnumEntry
-  UINT16(3L),
+  UINT16(3u),
   /**
    * 16-bit signed integer
    */
   @GeneratedMavEnumEntry
-  INT16(4L),
+  INT16(4u),
   /**
    * 32-bit unsigned integer
    */
   @GeneratedMavEnumEntry
-  UINT32(5L),
+  UINT32(5u),
   /**
    * 32-bit signed integer
    */
   @GeneratedMavEnumEntry
-  INT32(6L),
+  INT32(6u),
   /**
    * 64-bit unsigned integer
    */
   @GeneratedMavEnumEntry
-  UINT64(7L),
+  UINT64(7u),
   /**
    * 64-bit signed integer
    */
   @GeneratedMavEnumEntry
-  INT64(8L),
+  INT64(8u),
   /**
    * 32-bit floating-point
    */
   @GeneratedMavEnumEntry
-  REAL32(9L),
+  REAL32(9u),
   /**
    * 64-bit floating-point
    */
   @GeneratedMavEnumEntry
-  REAL64(10L),
+  REAL64(10u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavParamType? = when (v) {
-      1L -> UINT8
-      2L -> INT8
-      3L -> UINT16
-      4L -> INT16
-      5L -> UINT32
-      6L -> INT32
-      7L -> UINT64
-      8L -> INT64
-      9L -> REAL32
-      10L -> REAL64
+  public companion object : MavEnum.Companion<MavParamType> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavParamType? = when (v) {
+      1u -> UINT8
+      2u -> INT8
+      3u -> UINT16
+      4u -> INT16
+      5u -> UINT32
+      6u -> INT32
+      7u -> UINT64
+      8u -> INT64
+      9u -> REAL32
+      10u -> REAL64
       else -> null
     }
   }

@@ -1,66 +1,67 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * These flags indicate status such as data validity of each data source. Set = data valid
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AdsbFlags(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   @GeneratedMavEnumEntry
-  VALID_COORDS(1L),
+  VALID_COORDS(1u),
   @GeneratedMavEnumEntry
-  VALID_ALTITUDE(2L),
+  VALID_ALTITUDE(2u),
   @GeneratedMavEnumEntry
-  VALID_HEADING(4L),
+  VALID_HEADING(4u),
   @GeneratedMavEnumEntry
-  VALID_VELOCITY(8L),
+  VALID_VELOCITY(8u),
   @GeneratedMavEnumEntry
-  VALID_CALLSIGN(16L),
+  VALID_CALLSIGN(16u),
   @GeneratedMavEnumEntry
-  VALID_SQUAWK(32L),
+  VALID_SQUAWK(32u),
   @GeneratedMavEnumEntry
-  SIMULATED(64L),
+  SIMULATED(64u),
   @GeneratedMavEnumEntry
-  VERTICAL_VELOCITY_VALID(128L),
+  VERTICAL_VELOCITY_VALID(128u),
   @GeneratedMavEnumEntry
-  BARO_VALID(256L),
+  BARO_VALID(256u),
   @GeneratedMavEnumEntry
-  SOURCE_UAT(32768L),
+  SOURCE_UAT(32768u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AdsbFlags? = when (v) {
-      1L -> VALID_COORDS
-      2L -> VALID_ALTITUDE
-      4L -> VALID_HEADING
-      8L -> VALID_VELOCITY
-      16L -> VALID_CALLSIGN
-      32L -> VALID_SQUAWK
-      64L -> SIMULATED
-      128L -> VERTICAL_VELOCITY_VALID
-      256L -> BARO_VALID
-      32768L -> SOURCE_UAT
+  public companion object : MavEnum.Companion<AdsbFlags>, MavBitmask.Companion<AdsbFlags> {
+    public override fun getEntryFromValueOrNull(v: UInt): AdsbFlags? = when (v) {
+      1u -> VALID_COORDS
+      2u -> VALID_ALTITUDE
+      4u -> VALID_HEADING
+      8u -> VALID_VELOCITY
+      16u -> VALID_CALLSIGN
+      32u -> VALID_SQUAWK
+      64u -> SIMULATED
+      128u -> VERTICAL_VELOCITY_VALID
+      256u -> BARO_VALID
+      32768u -> SOURCE_UAT
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<AdsbFlags> = buildList {
-      if (v and 1L == 1L) add(VALID_COORDS)
-      if (v and 2L == 2L) add(VALID_ALTITUDE)
-      if (v and 4L == 4L) add(VALID_HEADING)
-      if (v and 8L == 8L) add(VALID_VELOCITY)
-      if (v and 16L == 16L) add(VALID_CALLSIGN)
-      if (v and 32L == 32L) add(VALID_SQUAWK)
-      if (v and 64L == 64L) add(SIMULATED)
-      if (v and 128L == 128L) add(VERTICAL_VELOCITY_VALID)
-      if (v and 256L == 256L) add(BARO_VALID)
-      if (v and 32768L == 32768L) add(SOURCE_UAT)
+    public override fun getFlagsFromValue(v: UInt): List<AdsbFlags> = buildList {
+      if (v and 1u == 1u) add(VALID_COORDS)
+      if (v and 2u == 2u) add(VALID_ALTITUDE)
+      if (v and 4u == 4u) add(VALID_HEADING)
+      if (v and 8u == 8u) add(VALID_VELOCITY)
+      if (v and 16u == 16u) add(VALID_CALLSIGN)
+      if (v and 32u == 32u) add(VALID_SQUAWK)
+      if (v and 64u == 64u) add(SIMULATED)
+      if (v and 128u == 128u) add(VERTICAL_VELOCITY_VALID)
+      if (v and 256u == 256u) add(BARO_VALID)
+      if (v and 32768u == 32768u) add(SOURCE_UAT)
     }
   }
 }

@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -26,15 +28,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 276,
-  crc = 18,
+  id = 276u,
+  crcExtra = 18,
 )
 public data class CameraTrackingGeoStatus(
   /**
    * Current tracking status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0),
+  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u),
   /**
    * Latitude of tracked object
    */
@@ -135,9 +137,9 @@ public data class CameraTrackingGeoStatus(
   }
 
   public companion object {
-    private const val ID: Int = 276
+    private const val ID: UInt = 276u
 
-    private const val CRC: Int = 18
+    private const val CRC_EXTRA: Byte = 18
 
     private const val SIZE_V1: Int = 49
 
@@ -181,7 +183,7 @@ public data class CameraTrackingGeoStatus(
 
 
     private val METADATA: MavMessage.Metadata<CameraTrackingGeoStatus> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraTrackingGeoStatus> = METADATA
 
@@ -190,7 +192,7 @@ public data class CameraTrackingGeoStatus(
   }
 
   public class Builder {
-    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0)
+    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u)
 
     public var lat: Int = 0
 

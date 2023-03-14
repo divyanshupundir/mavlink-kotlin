@@ -1,13 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.avssuas
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * AVSS defined command. Set PRS arm statuses.
@@ -34,7 +34,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_SET_ARM(60050L),
+  PRS_SET_ARM(60050u),
   /**
    * AVSS defined command. Gets PRS arm statuses
    *
@@ -60,7 +60,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_ARM(60051L),
+  PRS_GET_ARM(60051u),
   /**
    * AVSS defined command.  Get the PRS battery voltage in millivolts
    *
@@ -86,7 +86,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_BATTERY(60052L),
+  PRS_GET_BATTERY(60052u),
   /**
    * AVSS defined command. Get the PRS error statuses.
    *
@@ -112,7 +112,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_ERR(60053L),
+  PRS_GET_ERR(60053u),
   /**
    * AVSS defined command. Set the ATS arming altitude in meters.
    *
@@ -138,7 +138,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_SET_ARM_ALTI(60070L),
+  PRS_SET_ARM_ALTI(60070u),
   /**
    * AVSS defined command. Get the ATS arming altitude in meters.
    *
@@ -164,7 +164,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_ARM_ALTI(60071L),
+  PRS_GET_ARM_ALTI(60071u),
   /**
    * AVSS defined command. Shuts down the PRS system.
    *
@@ -190,18 +190,18 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_SHUTDOWN(60072L),
+  PRS_SHUTDOWN(60072u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavCmd? = when (v) {
-      60050L -> PRS_SET_ARM
-      60051L -> PRS_GET_ARM
-      60052L -> PRS_GET_BATTERY
-      60053L -> PRS_GET_ERR
-      60070L -> PRS_SET_ARM_ALTI
-      60071L -> PRS_GET_ARM_ALTI
-      60072L -> PRS_SHUTDOWN
+  public companion object : MavEnum.Companion<MavCmd> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+      60050u -> PRS_SET_ARM
+      60051u -> PRS_GET_ARM
+      60052u -> PRS_GET_BATTERY
+      60053u -> PRS_GET_ERR
+      60070u -> PRS_SET_ARM_ALTI
+      60071u -> PRS_GET_ARM_ALTI
+      60072u -> PRS_SHUTDOWN
       else -> null
     }
   }

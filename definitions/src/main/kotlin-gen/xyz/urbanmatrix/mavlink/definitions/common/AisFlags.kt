@@ -1,10 +1,11 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * These flags are used in the AIS_VESSEL.fields bitmask to indicate validity of data in the other
@@ -12,90 +13,90 @@ import xyz.urbanmatrix.mavlink.api.MavBitmask
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AisFlags(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 1 = Position accuracy less than 10m, 0 = position accuracy greater than 10m.
    */
   @GeneratedMavEnumEntry
-  POSITION_ACCURACY(1L),
+  POSITION_ACCURACY(1u),
   @GeneratedMavEnumEntry
-  VALID_COG(2L),
+  VALID_COG(2u),
   @GeneratedMavEnumEntry
-  VALID_VELOCITY(4L),
+  VALID_VELOCITY(4u),
   /**
    * 1 = Velocity over 52.5765m/s (102.2 knots)
    */
   @GeneratedMavEnumEntry
-  HIGH_VELOCITY(8L),
+  HIGH_VELOCITY(8u),
   @GeneratedMavEnumEntry
-  VALID_TURN_RATE(16L),
+  VALID_TURN_RATE(16u),
   /**
    * Only the sign of the returned turn rate value is valid, either greater than 5deg/30s or less
    * than -5deg/30s
    */
   @GeneratedMavEnumEntry
-  TURN_RATE_SIGN_ONLY(32L),
+  TURN_RATE_SIGN_ONLY(32u),
   @GeneratedMavEnumEntry
-  VALID_DIMENSIONS(64L),
+  VALID_DIMENSIONS(64u),
   /**
    * Distance to bow is larger than 511m
    */
   @GeneratedMavEnumEntry
-  LARGE_BOW_DIMENSION(128L),
+  LARGE_BOW_DIMENSION(128u),
   /**
    * Distance to stern is larger than 511m
    */
   @GeneratedMavEnumEntry
-  LARGE_STERN_DIMENSION(256L),
+  LARGE_STERN_DIMENSION(256u),
   /**
    * Distance to port side is larger than 63m
    */
   @GeneratedMavEnumEntry
-  LARGE_PORT_DIMENSION(512L),
+  LARGE_PORT_DIMENSION(512u),
   /**
    * Distance to starboard side is larger than 63m
    */
   @GeneratedMavEnumEntry
-  LARGE_STARBOARD_DIMENSION(1024L),
+  LARGE_STARBOARD_DIMENSION(1024u),
   @GeneratedMavEnumEntry
-  VALID_CALLSIGN(2048L),
+  VALID_CALLSIGN(2048u),
   @GeneratedMavEnumEntry
-  VALID_NAME(4096L),
+  VALID_NAME(4096u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AisFlags? = when (v) {
-      1L -> POSITION_ACCURACY
-      2L -> VALID_COG
-      4L -> VALID_VELOCITY
-      8L -> HIGH_VELOCITY
-      16L -> VALID_TURN_RATE
-      32L -> TURN_RATE_SIGN_ONLY
-      64L -> VALID_DIMENSIONS
-      128L -> LARGE_BOW_DIMENSION
-      256L -> LARGE_STERN_DIMENSION
-      512L -> LARGE_PORT_DIMENSION
-      1024L -> LARGE_STARBOARD_DIMENSION
-      2048L -> VALID_CALLSIGN
-      4096L -> VALID_NAME
+  public companion object : MavEnum.Companion<AisFlags>, MavBitmask.Companion<AisFlags> {
+    public override fun getEntryFromValueOrNull(v: UInt): AisFlags? = when (v) {
+      1u -> POSITION_ACCURACY
+      2u -> VALID_COG
+      4u -> VALID_VELOCITY
+      8u -> HIGH_VELOCITY
+      16u -> VALID_TURN_RATE
+      32u -> TURN_RATE_SIGN_ONLY
+      64u -> VALID_DIMENSIONS
+      128u -> LARGE_BOW_DIMENSION
+      256u -> LARGE_STERN_DIMENSION
+      512u -> LARGE_PORT_DIMENSION
+      1024u -> LARGE_STARBOARD_DIMENSION
+      2048u -> VALID_CALLSIGN
+      4096u -> VALID_NAME
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<AisFlags> = buildList {
-      if (v and 1L == 1L) add(POSITION_ACCURACY)
-      if (v and 2L == 2L) add(VALID_COG)
-      if (v and 4L == 4L) add(VALID_VELOCITY)
-      if (v and 8L == 8L) add(HIGH_VELOCITY)
-      if (v and 16L == 16L) add(VALID_TURN_RATE)
-      if (v and 32L == 32L) add(TURN_RATE_SIGN_ONLY)
-      if (v and 64L == 64L) add(VALID_DIMENSIONS)
-      if (v and 128L == 128L) add(LARGE_BOW_DIMENSION)
-      if (v and 256L == 256L) add(LARGE_STERN_DIMENSION)
-      if (v and 512L == 512L) add(LARGE_PORT_DIMENSION)
-      if (v and 1024L == 1024L) add(LARGE_STARBOARD_DIMENSION)
-      if (v and 2048L == 2048L) add(VALID_CALLSIGN)
-      if (v and 4096L == 4096L) add(VALID_NAME)
+    public override fun getFlagsFromValue(v: UInt): List<AisFlags> = buildList {
+      if (v and 1u == 1u) add(POSITION_ACCURACY)
+      if (v and 2u == 2u) add(VALID_COG)
+      if (v and 4u == 4u) add(VALID_VELOCITY)
+      if (v and 8u == 8u) add(HIGH_VELOCITY)
+      if (v and 16u == 16u) add(VALID_TURN_RATE)
+      if (v and 32u == 32u) add(TURN_RATE_SIGN_ONLY)
+      if (v and 64u == 64u) add(VALID_DIMENSIONS)
+      if (v and 128u == 128u) add(LARGE_BOW_DIMENSION)
+      if (v and 256u == 256u) add(LARGE_STERN_DIMENSION)
+      if (v and 512u == 512u) add(LARGE_PORT_DIMENSION)
+      if (v and 1024u == 1024u) add(LARGE_STARBOARD_DIMENSION)
+      if (v and 2048u == 2048u) add(VALID_CALLSIGN)
+      if (v and 4096u == 4096u) add(VALID_NAME)
     }
   }
 }

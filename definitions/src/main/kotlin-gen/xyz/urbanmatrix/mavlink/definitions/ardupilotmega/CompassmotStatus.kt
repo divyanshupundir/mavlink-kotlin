@@ -2,33 +2,36 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of compassmot calibration.
  */
 @GeneratedMavMessage(
-  id = 177,
-  crc = 240,
+  id = 177u,
+  crcExtra = -16,
 )
 public data class CompassmotStatus(
   /**
    * Throttle.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val throttle: Int = 0,
+  public val throttle: UShort = 0u,
   /**
    * Current.
    */
@@ -38,7 +41,7 @@ public data class CompassmotStatus(
    * Interference.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val interference: Int = 0,
+  public val interference: UShort = 0u,
   /**
    * Motor Compensation X.
    */
@@ -63,8 +66,8 @@ public data class CompassmotStatus(
     outputBuffer.encodeFloat(compensationx)
     outputBuffer.encodeFloat(compensationy)
     outputBuffer.encodeFloat(compensationz)
-    outputBuffer.encodeUint16(throttle)
-    outputBuffer.encodeUint16(interference)
+    outputBuffer.encodeUInt16(throttle)
+    outputBuffer.encodeUInt16(interference)
     return outputBuffer.array()
   }
 
@@ -74,15 +77,15 @@ public data class CompassmotStatus(
     outputBuffer.encodeFloat(compensationx)
     outputBuffer.encodeFloat(compensationy)
     outputBuffer.encodeFloat(compensationz)
-    outputBuffer.encodeUint16(throttle)
-    outputBuffer.encodeUint16(interference)
+    outputBuffer.encodeUInt16(throttle)
+    outputBuffer.encodeUInt16(interference)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 177
+    private const val ID: UInt = 177u
 
-    private const val CRC: Int = 240
+    private const val CRC_EXTRA: Byte = -16
 
     private const val SIZE_V1: Int = 20
 
@@ -94,8 +97,8 @@ public data class CompassmotStatus(
       val compensationx = inputBuffer.decodeFloat()
       val compensationy = inputBuffer.decodeFloat()
       val compensationz = inputBuffer.decodeFloat()
-      val throttle = inputBuffer.decodeUint16()
-      val interference = inputBuffer.decodeUint16()
+      val throttle = inputBuffer.decodeUInt16()
+      val interference = inputBuffer.decodeUInt16()
 
       CompassmotStatus(
         throttle = throttle,
@@ -108,7 +111,7 @@ public data class CompassmotStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CompassmotStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CompassmotStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
@@ -118,11 +121,11 @@ public data class CompassmotStatus(
   }
 
   public class Builder {
-    public var throttle: Int = 0
+    public var throttle: UShort = 0u
 
     public var current: Float = 0F
 
-    public var interference: Int = 0
+    public var interference: UShort = 0u
 
     public var compensationx: Float = 0F
 

@@ -2,33 +2,34 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The altitude measured by sensors and IMU
  */
 @GeneratedMavMessage(
-  id = 181,
-  crc = 55,
+  id = 181u,
+  crcExtra = 55,
 )
 public data class Altitudes(
   /**
    * Timestamp (milliseconds since system boot)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * GPS altitude (MSL) in meters, expressed as * 1000 (millimeters)
    */
@@ -64,7 +65,7 @@ public data class Altitudes(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(altGps)
     outputBuffer.encodeInt32(altImu)
     outputBuffer.encodeInt32(altBarometric)
@@ -76,7 +77,7 @@ public data class Altitudes(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(altGps)
     outputBuffer.encodeInt32(altImu)
     outputBuffer.encodeInt32(altBarometric)
@@ -87,9 +88,9 @@ public data class Altitudes(
   }
 
   public companion object {
-    private const val ID: Int = 181
+    private const val ID: UInt = 181u
 
-    private const val CRC: Int = 55
+    private const val CRC_EXTRA: Byte = 55
 
     private const val SIZE_V1: Int = 28
 
@@ -97,7 +98,7 @@ public data class Altitudes(
 
     private val DESERIALIZER: MavDeserializer<Altitudes> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val altGps = inputBuffer.decodeInt32()
       val altImu = inputBuffer.decodeInt32()
       val altBarometric = inputBuffer.decodeInt32()
@@ -117,7 +118,7 @@ public data class Altitudes(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Altitudes> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<Altitudes> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Altitudes> = METADATA
@@ -127,7 +128,7 @@ public data class Altitudes(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var altGps: Int = 0
 

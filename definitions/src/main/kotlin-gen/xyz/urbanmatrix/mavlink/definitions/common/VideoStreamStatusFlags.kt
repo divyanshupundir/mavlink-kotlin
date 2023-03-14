@@ -1,40 +1,42 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * Stream status flags (Bitmap)
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class VideoStreamStatusFlags(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Stream is active (running)
    */
   @GeneratedMavEnumEntry
-  RUNNING(1L),
+  RUNNING(1u),
   /**
    * Stream is thermal imaging
    */
   @GeneratedMavEnumEntry
-  THERMAL(2L),
+  THERMAL(2u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): VideoStreamStatusFlags? = when (v) {
-      1L -> RUNNING
-      2L -> THERMAL
+  public companion object : MavEnum.Companion<VideoStreamStatusFlags>,
+      MavBitmask.Companion<VideoStreamStatusFlags> {
+    public override fun getEntryFromValueOrNull(v: UInt): VideoStreamStatusFlags? = when (v) {
+      1u -> RUNNING
+      2u -> THERMAL
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<VideoStreamStatusFlags> = buildList {
-      if (v and 1L == 1L) add(RUNNING)
-      if (v and 2L == 2L) add(THERMAL)
+    public override fun getFlagsFromValue(v: UInt): List<VideoStreamStatusFlags> = buildList {
+      if (v and 1u == 1u) add(RUNNING)
+      if (v and 2u == 2u) add(THERMAL)
     }
   }
 }

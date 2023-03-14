@@ -2,20 +2,23 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,8 +27,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * 0%, 2000 microseconds: 100%.
  */
 @GeneratedMavMessage(
-  id = 36,
-  crc = 222,
+  id = 36u,
+  crcExtra = -34,
 )
 public data class ServoOutputRaw(
   /**
@@ -33,53 +36,53 @@ public data class ServoOutputRaw(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeUsec: Long = 0L,
+  public val timeUsec: UInt = 0u,
   /**
    * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
    * MAIN, 1 = AUX.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val port: Int = 0,
+  public val port: UByte = 0u,
   /**
    * Servo output 1 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo1Raw: Int = 0,
+  public val servo1Raw: UShort = 0u,
   /**
    * Servo output 2 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo2Raw: Int = 0,
+  public val servo2Raw: UShort = 0u,
   /**
    * Servo output 3 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo3Raw: Int = 0,
+  public val servo3Raw: UShort = 0u,
   /**
    * Servo output 4 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo4Raw: Int = 0,
+  public val servo4Raw: UShort = 0u,
   /**
    * Servo output 5 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo5Raw: Int = 0,
+  public val servo5Raw: UShort = 0u,
   /**
    * Servo output 6 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo6Raw: Int = 0,
+  public val servo6Raw: UShort = 0u,
   /**
    * Servo output 7 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo7Raw: Int = 0,
+  public val servo7Raw: UShort = 0u,
   /**
    * Servo output 8 value
    */
   @GeneratedMavField(type = "uint16_t")
-  public val servo8Raw: Int = 0,
+  public val servo8Raw: UShort = 0u,
   /**
    * Servo output 9 value
    */
@@ -87,7 +90,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo9Raw: Int = 0,
+  public val servo9Raw: UShort = 0u,
   /**
    * Servo output 10 value
    */
@@ -95,7 +98,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo10Raw: Int = 0,
+  public val servo10Raw: UShort = 0u,
   /**
    * Servo output 11 value
    */
@@ -103,7 +106,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo11Raw: Int = 0,
+  public val servo11Raw: UShort = 0u,
   /**
    * Servo output 12 value
    */
@@ -111,7 +114,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo12Raw: Int = 0,
+  public val servo12Raw: UShort = 0u,
   /**
    * Servo output 13 value
    */
@@ -119,7 +122,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo13Raw: Int = 0,
+  public val servo13Raw: UShort = 0u,
   /**
    * Servo output 14 value
    */
@@ -127,7 +130,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo14Raw: Int = 0,
+  public val servo14Raw: UShort = 0u,
   /**
    * Servo output 15 value
    */
@@ -135,7 +138,7 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo15Raw: Int = 0,
+  public val servo15Raw: UShort = 0u,
   /**
    * Servo output 16 value
    */
@@ -143,52 +146,52 @@ public data class ServoOutputRaw(
     type = "uint16_t",
     extension = true,
   )
-  public val servo16Raw: Int = 0,
+  public val servo16Raw: UShort = 0u,
 ) : MavMessage<ServoOutputRaw> {
   public override val instanceMetadata: MavMessage.Metadata<ServoOutputRaw> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeUsec)
-    outputBuffer.encodeUint16(servo1Raw)
-    outputBuffer.encodeUint16(servo2Raw)
-    outputBuffer.encodeUint16(servo3Raw)
-    outputBuffer.encodeUint16(servo4Raw)
-    outputBuffer.encodeUint16(servo5Raw)
-    outputBuffer.encodeUint16(servo6Raw)
-    outputBuffer.encodeUint16(servo7Raw)
-    outputBuffer.encodeUint16(servo8Raw)
-    outputBuffer.encodeUint8(port)
+    outputBuffer.encodeUInt32(timeUsec)
+    outputBuffer.encodeUInt16(servo1Raw)
+    outputBuffer.encodeUInt16(servo2Raw)
+    outputBuffer.encodeUInt16(servo3Raw)
+    outputBuffer.encodeUInt16(servo4Raw)
+    outputBuffer.encodeUInt16(servo5Raw)
+    outputBuffer.encodeUInt16(servo6Raw)
+    outputBuffer.encodeUInt16(servo7Raw)
+    outputBuffer.encodeUInt16(servo8Raw)
+    outputBuffer.encodeUInt8(port)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeUsec)
-    outputBuffer.encodeUint16(servo1Raw)
-    outputBuffer.encodeUint16(servo2Raw)
-    outputBuffer.encodeUint16(servo3Raw)
-    outputBuffer.encodeUint16(servo4Raw)
-    outputBuffer.encodeUint16(servo5Raw)
-    outputBuffer.encodeUint16(servo6Raw)
-    outputBuffer.encodeUint16(servo7Raw)
-    outputBuffer.encodeUint16(servo8Raw)
-    outputBuffer.encodeUint8(port)
-    outputBuffer.encodeUint16(servo9Raw)
-    outputBuffer.encodeUint16(servo10Raw)
-    outputBuffer.encodeUint16(servo11Raw)
-    outputBuffer.encodeUint16(servo12Raw)
-    outputBuffer.encodeUint16(servo13Raw)
-    outputBuffer.encodeUint16(servo14Raw)
-    outputBuffer.encodeUint16(servo15Raw)
-    outputBuffer.encodeUint16(servo16Raw)
+    outputBuffer.encodeUInt32(timeUsec)
+    outputBuffer.encodeUInt16(servo1Raw)
+    outputBuffer.encodeUInt16(servo2Raw)
+    outputBuffer.encodeUInt16(servo3Raw)
+    outputBuffer.encodeUInt16(servo4Raw)
+    outputBuffer.encodeUInt16(servo5Raw)
+    outputBuffer.encodeUInt16(servo6Raw)
+    outputBuffer.encodeUInt16(servo7Raw)
+    outputBuffer.encodeUInt16(servo8Raw)
+    outputBuffer.encodeUInt8(port)
+    outputBuffer.encodeUInt16(servo9Raw)
+    outputBuffer.encodeUInt16(servo10Raw)
+    outputBuffer.encodeUInt16(servo11Raw)
+    outputBuffer.encodeUInt16(servo12Raw)
+    outputBuffer.encodeUInt16(servo13Raw)
+    outputBuffer.encodeUInt16(servo14Raw)
+    outputBuffer.encodeUInt16(servo15Raw)
+    outputBuffer.encodeUInt16(servo16Raw)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 36
+    private const val ID: UInt = 36u
 
-    private const val CRC: Int = 222
+    private const val CRC_EXTRA: Byte = -34
 
     private const val SIZE_V1: Int = 21
 
@@ -196,24 +199,24 @@ public data class ServoOutputRaw(
 
     private val DESERIALIZER: MavDeserializer<ServoOutputRaw> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint32()
-      val servo1Raw = inputBuffer.decodeUint16()
-      val servo2Raw = inputBuffer.decodeUint16()
-      val servo3Raw = inputBuffer.decodeUint16()
-      val servo4Raw = inputBuffer.decodeUint16()
-      val servo5Raw = inputBuffer.decodeUint16()
-      val servo6Raw = inputBuffer.decodeUint16()
-      val servo7Raw = inputBuffer.decodeUint16()
-      val servo8Raw = inputBuffer.decodeUint16()
-      val port = inputBuffer.decodeUint8()
-      val servo9Raw = inputBuffer.decodeUint16()
-      val servo10Raw = inputBuffer.decodeUint16()
-      val servo11Raw = inputBuffer.decodeUint16()
-      val servo12Raw = inputBuffer.decodeUint16()
-      val servo13Raw = inputBuffer.decodeUint16()
-      val servo14Raw = inputBuffer.decodeUint16()
-      val servo15Raw = inputBuffer.decodeUint16()
-      val servo16Raw = inputBuffer.decodeUint16()
+      val timeUsec = inputBuffer.decodeUInt32()
+      val servo1Raw = inputBuffer.decodeUInt16()
+      val servo2Raw = inputBuffer.decodeUInt16()
+      val servo3Raw = inputBuffer.decodeUInt16()
+      val servo4Raw = inputBuffer.decodeUInt16()
+      val servo5Raw = inputBuffer.decodeUInt16()
+      val servo6Raw = inputBuffer.decodeUInt16()
+      val servo7Raw = inputBuffer.decodeUInt16()
+      val servo8Raw = inputBuffer.decodeUInt16()
+      val port = inputBuffer.decodeUInt8()
+      val servo9Raw = inputBuffer.decodeUInt16()
+      val servo10Raw = inputBuffer.decodeUInt16()
+      val servo11Raw = inputBuffer.decodeUInt16()
+      val servo12Raw = inputBuffer.decodeUInt16()
+      val servo13Raw = inputBuffer.decodeUInt16()
+      val servo14Raw = inputBuffer.decodeUInt16()
+      val servo15Raw = inputBuffer.decodeUInt16()
+      val servo16Raw = inputBuffer.decodeUInt16()
 
       ServoOutputRaw(
         timeUsec = timeUsec,
@@ -238,7 +241,7 @@ public data class ServoOutputRaw(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ServoOutputRaw> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ServoOutputRaw> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ServoOutputRaw> = METADATA
@@ -248,41 +251,41 @@ public data class ServoOutputRaw(
   }
 
   public class Builder {
-    public var timeUsec: Long = 0L
+    public var timeUsec: UInt = 0u
 
-    public var port: Int = 0
+    public var port: UByte = 0u
 
-    public var servo1Raw: Int = 0
+    public var servo1Raw: UShort = 0u
 
-    public var servo2Raw: Int = 0
+    public var servo2Raw: UShort = 0u
 
-    public var servo3Raw: Int = 0
+    public var servo3Raw: UShort = 0u
 
-    public var servo4Raw: Int = 0
+    public var servo4Raw: UShort = 0u
 
-    public var servo5Raw: Int = 0
+    public var servo5Raw: UShort = 0u
 
-    public var servo6Raw: Int = 0
+    public var servo6Raw: UShort = 0u
 
-    public var servo7Raw: Int = 0
+    public var servo7Raw: UShort = 0u
 
-    public var servo8Raw: Int = 0
+    public var servo8Raw: UShort = 0u
 
-    public var servo9Raw: Int = 0
+    public var servo9Raw: UShort = 0u
 
-    public var servo10Raw: Int = 0
+    public var servo10Raw: UShort = 0u
 
-    public var servo11Raw: Int = 0
+    public var servo11Raw: UShort = 0u
 
-    public var servo12Raw: Int = 0
+    public var servo12Raw: UShort = 0u
 
-    public var servo13Raw: Int = 0
+    public var servo13Raw: UShort = 0u
 
-    public var servo14Raw: Int = 0
+    public var servo14Raw: UShort = 0u
 
-    public var servo15Raw: Int = 0
+    public var servo15Raw: UShort = 0u
 
-    public var servo16Raw: Int = 0
+    public var servo16Raw: UShort = 0u
 
     public fun build(): ServoOutputRaw = ServoOutputRaw(
       timeUsec = timeUsec,

@@ -2,19 +2,22 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -22,55 +25,55 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
-  id = 123,
-  crc = 250,
+  id = 123u,
+  crcExtra = -6,
 )
 public data class GpsInjectData(
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Data length
    */
   @GeneratedMavField(type = "uint8_t")
-  public val len: Int = 0,
+  public val len: UByte = 0u,
   /**
    * Raw data (110 is enough for 12 satellites of RTCMv2)
    */
   @GeneratedMavField(type = "uint8_t[110]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<GpsInjectData> {
   public override val instanceMetadata: MavMessage.Metadata<GpsInjectData> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint8Array(data, 110)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(len)
+    outputBuffer.encodeUInt8Array(data, 110)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint8Array(data, 110)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(len)
+    outputBuffer.encodeUInt8Array(data, 110)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 123
+    private const val ID: UInt = 123u
 
-    private const val CRC: Int = 250
+    private const val CRC_EXTRA: Byte = -6
 
     private const val SIZE_V1: Int = 113
 
@@ -78,10 +81,10 @@ public data class GpsInjectData(
 
     private val DESERIALIZER: MavDeserializer<GpsInjectData> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val len = inputBuffer.decodeUint8()
-      val data = inputBuffer.decodeUint8Array(110)
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val len = inputBuffer.decodeUInt8()
+      val data = inputBuffer.decodeUInt8Array(110)
 
       GpsInjectData(
         targetSystem = targetSystem,
@@ -92,7 +95,7 @@ public data class GpsInjectData(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GpsInjectData> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<GpsInjectData> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GpsInjectData> = METADATA
@@ -102,13 +105,13 @@ public data class GpsInjectData(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var len: Int = 0
+    public var len: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<UByte> = emptyList()
 
     public fun build(): GpsInjectData = GpsInjectData(
       targetSystem = targetSystem,

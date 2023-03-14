@@ -2,8 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -12,11 +16,11 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16Array
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -26,69 +30,69 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * than 16 IDs can be constructed by sending multiple CAN_FILTER_MODIFY messages.
  */
 @GeneratedMavMessage(
-  id = 388,
-  crc = 8,
+  id = 388u,
+  crcExtra = 8,
 )
 public data class CanFilterModify(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * bus number
    */
   @GeneratedMavField(type = "uint8_t")
-  public val bus: Int = 0,
+  public val bus: UByte = 0u,
   /**
    * what operation to perform on the filter list. See CAN_FILTER_OP enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val operation: MavEnumValue<CanFilterOp> = MavEnumValue.fromValue(0),
+  public val operation: MavEnumValue<CanFilterOp> = MavEnumValue.fromValue(0u),
   /**
    * number of IDs in filter list
    */
   @GeneratedMavField(type = "uint8_t")
-  public val numIds: Int = 0,
+  public val numIds: UByte = 0u,
   /**
    * filter IDs, length num_ids
    */
   @GeneratedMavField(type = "uint16_t[16]")
-  public val ids: List<Int> = emptyList(),
+  public val ids: List<UShort> = emptyList(),
 ) : MavMessage<CanFilterModify> {
   public override val instanceMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16Array(ids, 32)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(bus)
+    outputBuffer.encodeUInt16Array(ids, 32)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(bus)
     outputBuffer.encodeEnumValue(operation.value, 1)
-    outputBuffer.encodeUint8(numIds)
+    outputBuffer.encodeUInt8(numIds)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16Array(ids, 32)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(bus)
+    outputBuffer.encodeUInt16Array(ids, 32)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(bus)
     outputBuffer.encodeEnumValue(operation.value, 1)
-    outputBuffer.encodeUint8(numIds)
+    outputBuffer.encodeUInt8(numIds)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 388
+    private const val ID: UInt = 388u
 
-    private const val CRC: Int = 8
+    private const val CRC_EXTRA: Byte = 8
 
     private const val SIZE_V1: Int = 37
 
@@ -96,15 +100,15 @@ public data class CanFilterModify(
 
     private val DESERIALIZER: MavDeserializer<CanFilterModify> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val ids = inputBuffer.decodeUint16Array(32)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val bus = inputBuffer.decodeUint8()
+      val ids = inputBuffer.decodeUInt16Array(32)
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val bus = inputBuffer.decodeUInt8()
       val operation = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = CanFilterOp.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val numIds = inputBuffer.decodeUint8()
+      val numIds = inputBuffer.decodeUInt8()
 
       CanFilterModify(
         targetSystem = targetSystem,
@@ -117,7 +121,7 @@ public data class CanFilterModify(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CanFilterModify> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CanFilterModify> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
@@ -127,17 +131,17 @@ public data class CanFilterModify(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var bus: Int = 0
+    public var bus: UByte = 0u
 
-    public var operation: MavEnumValue<CanFilterOp> = MavEnumValue.fromValue(0)
+    public var operation: MavEnumValue<CanFilterOp> = MavEnumValue.fromValue(0u)
 
-    public var numIds: Int = 0
+    public var numIds: UByte = 0u
 
-    public var ids: List<Int> = emptyList()
+    public var ids: List<UShort> = emptyList()
 
     public fun build(): CanFilterModify = CanFilterModify(
       targetSystem = targetSystem,

@@ -2,19 +2,20 @@ package xyz.urbanmatrix.mavlink.definitions.avssuas
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -22,15 +23,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * 0).
  */
 @GeneratedMavMessage(
-  id = 60052,
-  crc = 101,
+  id = 60052u,
+  crcExtra = 101,
 )
 public data class AvssDroneImu(
   /**
    * Timestamp (time since FC boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Quaternion component 1, w (1 in null-rotation)
    */
@@ -86,7 +87,7 @@ public data class AvssDroneImu(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
     outputBuffer.encodeFloat(q3)
@@ -102,7 +103,7 @@ public data class AvssDroneImu(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(q1)
     outputBuffer.encodeFloat(q2)
     outputBuffer.encodeFloat(q3)
@@ -117,9 +118,9 @@ public data class AvssDroneImu(
   }
 
   public companion object {
-    private const val ID: Int = 60052
+    private const val ID: UInt = 60052u
 
-    private const val CRC: Int = 101
+    private const val CRC_EXTRA: Byte = 101
 
     private const val SIZE_V1: Int = 44
 
@@ -127,7 +128,7 @@ public data class AvssDroneImu(
 
     private val DESERIALIZER: MavDeserializer<AvssDroneImu> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val q1 = inputBuffer.decodeFloat()
       val q2 = inputBuffer.decodeFloat()
       val q3 = inputBuffer.decodeFloat()
@@ -155,7 +156,7 @@ public data class AvssDroneImu(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AvssDroneImu> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AvssDroneImu> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
@@ -165,7 +166,7 @@ public data class AvssDroneImu(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var q1: Float = 0F
 

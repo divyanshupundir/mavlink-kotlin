@@ -2,8 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,9 +15,9 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -26,48 +29,48 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 80,
-  crc = 14,
+  id = 80u,
+  crcExtra = 14,
 )
 public data class CommandCancel(
   /**
    * System executing long running command. Should not be broadcast (0).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component executing long running command.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Command ID (of command to cancel).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CommandCancel> {
   public override val instanceMetadata: MavMessage.Metadata<CommandCancel> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 80
+    private const val ID: UInt = 80u
 
-    private const val CRC: Int = 14
+    private const val CRC_EXTRA: Byte = 14
 
     private const val SIZE_V1: Int = 4
 
@@ -79,8 +82,8 @@ public data class CommandCancel(
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
 
       CommandCancel(
         targetSystem = targetSystem,
@@ -90,7 +93,7 @@ public data class CommandCancel(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CommandCancel> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CommandCancel> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CommandCancel> = METADATA
@@ -100,11 +103,11 @@ public data class CommandCancel(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u)
 
     public fun build(): CommandCancel = CommandCancel(
       targetSystem = targetSystem,

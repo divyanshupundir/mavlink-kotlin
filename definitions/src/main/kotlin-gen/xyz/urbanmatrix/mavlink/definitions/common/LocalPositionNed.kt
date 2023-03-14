@@ -2,19 +2,20 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -22,15 +23,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
  */
 @GeneratedMavMessage(
-  id = 32,
-  crc = 185,
+  id = 32u,
+  crcExtra = -71,
 )
 public data class LocalPositionNed(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * X Position
    */
@@ -66,7 +67,7 @@ public data class LocalPositionNed(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -78,7 +79,7 @@ public data class LocalPositionNed(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
     outputBuffer.encodeFloat(z)
@@ -89,9 +90,9 @@ public data class LocalPositionNed(
   }
 
   public companion object {
-    private const val ID: Int = 32
+    private const val ID: UInt = 32u
 
-    private const val CRC: Int = 185
+    private const val CRC_EXTRA: Byte = -71
 
     private const val SIZE_V1: Int = 28
 
@@ -99,7 +100,7 @@ public data class LocalPositionNed(
 
     private val DESERIALIZER: MavDeserializer<LocalPositionNed> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
       val z = inputBuffer.decodeFloat()
@@ -119,7 +120,7 @@ public data class LocalPositionNed(
     }
 
 
-    private val METADATA: MavMessage.Metadata<LocalPositionNed> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<LocalPositionNed> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LocalPositionNed> = METADATA
@@ -129,7 +130,7 @@ public data class LocalPositionNed(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var x: Float = 0F
 

@@ -2,8 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -19,15 +22,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Backwards compatible version of SERIAL_UDB_EXTRA F13: format
  */
 @GeneratedMavMessage(
-  id = 177,
-  crc = 249,
+  id = 177u,
+  crcExtra = -7,
 )
 public data class SerialUdbExtraF13(
   /**
    * Serial UDB Extra GPS Week Number
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueWeekNo: Int = 0,
+  public val sueWeekNo: Short = 0,
   /**
    * Serial UDB Extra MP Origin Latitude
    */
@@ -65,9 +68,9 @@ public data class SerialUdbExtraF13(
   }
 
   public companion object {
-    private const val ID: Int = 177
+    private const val ID: UInt = 177u
 
-    private const val CRC: Int = 249
+    private const val CRC_EXTRA: Byte = -7
 
     private const val SIZE_V1: Int = 14
 
@@ -89,8 +92,8 @@ public data class SerialUdbExtraF13(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF13> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF13> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF13> = METADATA
 
@@ -99,7 +102,7 @@ public data class SerialUdbExtraF13(
   }
 
   public class Builder {
-    public var sueWeekNo: Int = 0
+    public var sueWeekNo: Short = 0
 
     public var sueLatOrigin: Int = 0
 

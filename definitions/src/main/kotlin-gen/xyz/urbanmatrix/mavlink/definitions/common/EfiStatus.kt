@@ -2,33 +2,36 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * EFI status output
  */
 @GeneratedMavMessage(
-  id = 225,
-  crc = 208,
+  id = 225u,
+  crcExtra = -48,
 )
 public data class EfiStatus(
   /**
    * EFI health status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val health: Int = 0,
+  public val health: UByte = 0u,
   /**
    * ECU index
    */
@@ -139,7 +142,7 @@ public data class EfiStatus(
     outputBuffer.encodeFloat(exhaustGasTemperature)
     outputBuffer.encodeFloat(throttleOut)
     outputBuffer.encodeFloat(ptCompensation)
-    outputBuffer.encodeUint8(health)
+    outputBuffer.encodeUInt8(health)
     return outputBuffer.array()
   }
 
@@ -161,15 +164,15 @@ public data class EfiStatus(
     outputBuffer.encodeFloat(exhaustGasTemperature)
     outputBuffer.encodeFloat(throttleOut)
     outputBuffer.encodeFloat(ptCompensation)
-    outputBuffer.encodeUint8(health)
+    outputBuffer.encodeUInt8(health)
     outputBuffer.encodeFloat(ignitionVoltage)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 225
+    private const val ID: UInt = 225u
 
-    private const val CRC: Int = 208
+    private const val CRC_EXTRA: Byte = -48
 
     private const val SIZE_V1: Int = 65
 
@@ -193,7 +196,7 @@ public data class EfiStatus(
       val exhaustGasTemperature = inputBuffer.decodeFloat()
       val throttleOut = inputBuffer.decodeFloat()
       val ptCompensation = inputBuffer.decodeFloat()
-      val health = inputBuffer.decodeUint8()
+      val health = inputBuffer.decodeUInt8()
       val ignitionVoltage = inputBuffer.decodeFloat()
 
       EfiStatus(
@@ -219,7 +222,7 @@ public data class EfiStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<EfiStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<EfiStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EfiStatus> = METADATA
@@ -229,7 +232,7 @@ public data class EfiStatus(
   }
 
   public class Builder {
-    public var health: Int = 0
+    public var health: UByte = 0u
 
     public var ecuIndex: Float = 0F
 

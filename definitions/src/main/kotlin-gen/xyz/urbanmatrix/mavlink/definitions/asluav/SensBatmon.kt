@@ -1,12 +1,16 @@
 package xyz.urbanmatrix.mavlink.definitions.asluav
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,31 +18,31 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Battery pack monitoring data for Li-Ion batteries
  */
 @GeneratedMavMessage(
-  id = 8010,
-  crc = 155,
+  id = 8010u,
+  crcExtra = -101,
 )
 public data class SensBatmon(
   /**
    * Time since system start
    */
   @GeneratedMavField(type = "uint64_t")
-  public val batmonTimestamp: BigInteger = BigInteger.ZERO,
+  public val batmonTimestamp: ULong = 0uL,
   /**
    * Battery pack temperature
    */
@@ -48,114 +52,114 @@ public data class SensBatmon(
    * Battery pack voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val voltage: Int = 0,
+  public val voltage: UShort = 0u,
   /**
    * Battery pack current
    */
   @GeneratedMavField(type = "int16_t")
-  public val current: Int = 0,
+  public val current: Short = 0,
   /**
    * Battery pack state-of-charge
    */
   @GeneratedMavField(type = "uint8_t")
-  public val soc: Int = 0,
+  public val soc: UByte = 0u,
   /**
    * Battery monitor status report bits in Hex
    */
   @GeneratedMavField(type = "uint16_t")
-  public val batterystatus: Int = 0,
+  public val batterystatus: UShort = 0u,
   /**
    * Battery monitor serial number in Hex
    */
   @GeneratedMavField(type = "uint16_t")
-  public val serialnumber: Int = 0,
+  public val serialnumber: UShort = 0u,
   /**
    * Battery monitor safetystatus report bits in Hex
    */
   @GeneratedMavField(type = "uint32_t")
-  public val safetystatus: Long = 0L,
+  public val safetystatus: UInt = 0u,
   /**
    * Battery monitor operation status report bits in Hex
    */
   @GeneratedMavField(type = "uint32_t")
-  public val operationstatus: Long = 0L,
+  public val operationstatus: UInt = 0u,
   /**
    * Battery pack cell 1 voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cellvoltage1: Int = 0,
+  public val cellvoltage1: UShort = 0u,
   /**
    * Battery pack cell 2 voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cellvoltage2: Int = 0,
+  public val cellvoltage2: UShort = 0u,
   /**
    * Battery pack cell 3 voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cellvoltage3: Int = 0,
+  public val cellvoltage3: UShort = 0u,
   /**
    * Battery pack cell 4 voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cellvoltage4: Int = 0,
+  public val cellvoltage4: UShort = 0u,
   /**
    * Battery pack cell 5 voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cellvoltage5: Int = 0,
+  public val cellvoltage5: UShort = 0u,
   /**
    * Battery pack cell 6 voltage
    */
   @GeneratedMavField(type = "uint16_t")
-  public val cellvoltage6: Int = 0,
+  public val cellvoltage6: UShort = 0u,
 ) : MavMessage<SensBatmon> {
   public override val instanceMetadata: MavMessage.Metadata<SensBatmon> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(batmonTimestamp)
+    outputBuffer.encodeUInt64(batmonTimestamp)
     outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeUint32(safetystatus)
-    outputBuffer.encodeUint32(operationstatus)
-    outputBuffer.encodeUint16(voltage)
+    outputBuffer.encodeUInt32(safetystatus)
+    outputBuffer.encodeUInt32(operationstatus)
+    outputBuffer.encodeUInt16(voltage)
     outputBuffer.encodeInt16(current)
-    outputBuffer.encodeUint16(batterystatus)
-    outputBuffer.encodeUint16(serialnumber)
-    outputBuffer.encodeUint16(cellvoltage1)
-    outputBuffer.encodeUint16(cellvoltage2)
-    outputBuffer.encodeUint16(cellvoltage3)
-    outputBuffer.encodeUint16(cellvoltage4)
-    outputBuffer.encodeUint16(cellvoltage5)
-    outputBuffer.encodeUint16(cellvoltage6)
-    outputBuffer.encodeUint8(soc)
+    outputBuffer.encodeUInt16(batterystatus)
+    outputBuffer.encodeUInt16(serialnumber)
+    outputBuffer.encodeUInt16(cellvoltage1)
+    outputBuffer.encodeUInt16(cellvoltage2)
+    outputBuffer.encodeUInt16(cellvoltage3)
+    outputBuffer.encodeUInt16(cellvoltage4)
+    outputBuffer.encodeUInt16(cellvoltage5)
+    outputBuffer.encodeUInt16(cellvoltage6)
+    outputBuffer.encodeUInt8(soc)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(batmonTimestamp)
+    outputBuffer.encodeUInt64(batmonTimestamp)
     outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeUint32(safetystatus)
-    outputBuffer.encodeUint32(operationstatus)
-    outputBuffer.encodeUint16(voltage)
+    outputBuffer.encodeUInt32(safetystatus)
+    outputBuffer.encodeUInt32(operationstatus)
+    outputBuffer.encodeUInt16(voltage)
     outputBuffer.encodeInt16(current)
-    outputBuffer.encodeUint16(batterystatus)
-    outputBuffer.encodeUint16(serialnumber)
-    outputBuffer.encodeUint16(cellvoltage1)
-    outputBuffer.encodeUint16(cellvoltage2)
-    outputBuffer.encodeUint16(cellvoltage3)
-    outputBuffer.encodeUint16(cellvoltage4)
-    outputBuffer.encodeUint16(cellvoltage5)
-    outputBuffer.encodeUint16(cellvoltage6)
-    outputBuffer.encodeUint8(soc)
+    outputBuffer.encodeUInt16(batterystatus)
+    outputBuffer.encodeUInt16(serialnumber)
+    outputBuffer.encodeUInt16(cellvoltage1)
+    outputBuffer.encodeUInt16(cellvoltage2)
+    outputBuffer.encodeUInt16(cellvoltage3)
+    outputBuffer.encodeUInt16(cellvoltage4)
+    outputBuffer.encodeUInt16(cellvoltage5)
+    outputBuffer.encodeUInt16(cellvoltage6)
+    outputBuffer.encodeUInt8(soc)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 8010
+    private const val ID: UInt = 8010u
 
-    private const val CRC: Int = 155
+    private const val CRC_EXTRA: Byte = -101
 
     private const val SIZE_V1: Int = 41
 
@@ -163,21 +167,21 @@ public data class SensBatmon(
 
     private val DESERIALIZER: MavDeserializer<SensBatmon> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val batmonTimestamp = inputBuffer.decodeUint64()
+      val batmonTimestamp = inputBuffer.decodeUInt64()
       val temperature = inputBuffer.decodeFloat()
-      val safetystatus = inputBuffer.decodeUint32()
-      val operationstatus = inputBuffer.decodeUint32()
-      val voltage = inputBuffer.decodeUint16()
+      val safetystatus = inputBuffer.decodeUInt32()
+      val operationstatus = inputBuffer.decodeUInt32()
+      val voltage = inputBuffer.decodeUInt16()
       val current = inputBuffer.decodeInt16()
-      val batterystatus = inputBuffer.decodeUint16()
-      val serialnumber = inputBuffer.decodeUint16()
-      val cellvoltage1 = inputBuffer.decodeUint16()
-      val cellvoltage2 = inputBuffer.decodeUint16()
-      val cellvoltage3 = inputBuffer.decodeUint16()
-      val cellvoltage4 = inputBuffer.decodeUint16()
-      val cellvoltage5 = inputBuffer.decodeUint16()
-      val cellvoltage6 = inputBuffer.decodeUint16()
-      val soc = inputBuffer.decodeUint8()
+      val batterystatus = inputBuffer.decodeUInt16()
+      val serialnumber = inputBuffer.decodeUInt16()
+      val cellvoltage1 = inputBuffer.decodeUInt16()
+      val cellvoltage2 = inputBuffer.decodeUInt16()
+      val cellvoltage3 = inputBuffer.decodeUInt16()
+      val cellvoltage4 = inputBuffer.decodeUInt16()
+      val cellvoltage5 = inputBuffer.decodeUInt16()
+      val cellvoltage6 = inputBuffer.decodeUInt16()
+      val soc = inputBuffer.decodeUInt8()
 
       SensBatmon(
         batmonTimestamp = batmonTimestamp,
@@ -199,7 +203,7 @@ public data class SensBatmon(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SensBatmon> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<SensBatmon> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SensBatmon> = METADATA
@@ -209,35 +213,35 @@ public data class SensBatmon(
   }
 
   public class Builder {
-    public var batmonTimestamp: BigInteger = BigInteger.ZERO
+    public var batmonTimestamp: ULong = 0uL
 
     public var temperature: Float = 0F
 
-    public var voltage: Int = 0
+    public var voltage: UShort = 0u
 
-    public var current: Int = 0
+    public var current: Short = 0
 
-    public var soc: Int = 0
+    public var soc: UByte = 0u
 
-    public var batterystatus: Int = 0
+    public var batterystatus: UShort = 0u
 
-    public var serialnumber: Int = 0
+    public var serialnumber: UShort = 0u
 
-    public var safetystatus: Long = 0L
+    public var safetystatus: UInt = 0u
 
-    public var operationstatus: Long = 0L
+    public var operationstatus: UInt = 0u
 
-    public var cellvoltage1: Int = 0
+    public var cellvoltage1: UShort = 0u
 
-    public var cellvoltage2: Int = 0
+    public var cellvoltage2: UShort = 0u
 
-    public var cellvoltage3: Int = 0
+    public var cellvoltage3: UShort = 0u
 
-    public var cellvoltage4: Int = 0
+    public var cellvoltage4: UShort = 0u
 
-    public var cellvoltage5: Int = 0
+    public var cellvoltage5: UShort = 0u
 
-    public var cellvoltage6: Int = 0
+    public var cellvoltage6: UShort = 0u
 
     public fun build(): SensBatmon = SensBatmon(
       batmonTimestamp = batmonTimestamp,

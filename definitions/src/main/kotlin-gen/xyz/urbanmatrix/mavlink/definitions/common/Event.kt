@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -12,14 +15,14 @@ import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -30,78 +33,78 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 410,
-  crc = 160,
+  id = 410u,
+  crcExtra = -96,
 )
 public data class Event(
   /**
    * Component ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val destinationComponent: Int = 0,
+  public val destinationComponent: UByte = 0u,
   /**
    * System ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val destinationSystem: Int = 0,
+  public val destinationSystem: UByte = 0u,
   /**
    * Event ID (as defined in the component metadata)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val id: Long = 0L,
+  public val id: UInt = 0u,
   /**
    * Timestamp (time since system boot when the event happened).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val eventTimeBootMs: Long = 0L,
+  public val eventTimeBootMs: UInt = 0u,
   /**
    * Sequence number.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val sequence: Int = 0,
+  public val sequence: UShort = 0u,
   /**
    * Log levels: 4 bits MSB: internal (for logging purposes), 4 bits LSB: external. Levels:
    * Emergency = 0, Alert = 1, Critical = 2, Error = 3, Warning = 4, Notice = 5, Info = 6, Debug = 7,
    * Protocol = 8, Disabled = 9
    */
   @GeneratedMavField(type = "uint8_t")
-  public val logLevels: Int = 0,
+  public val logLevels: UByte = 0u,
   /**
    * Arguments (depend on event ID).
    */
   @GeneratedMavField(type = "uint8_t[40]")
-  public val arguments: List<Int> = emptyList(),
+  public val arguments: List<UByte> = emptyList(),
 ) : MavMessage<Event> {
   public override val instanceMetadata: MavMessage.Metadata<Event> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(id)
-    outputBuffer.encodeUint32(eventTimeBootMs)
-    outputBuffer.encodeUint16(sequence)
-    outputBuffer.encodeUint8(destinationComponent)
-    outputBuffer.encodeUint8(destinationSystem)
-    outputBuffer.encodeUint8(logLevels)
-    outputBuffer.encodeUint8Array(arguments, 40)
+    outputBuffer.encodeUInt32(id)
+    outputBuffer.encodeUInt32(eventTimeBootMs)
+    outputBuffer.encodeUInt16(sequence)
+    outputBuffer.encodeUInt8(destinationComponent)
+    outputBuffer.encodeUInt8(destinationSystem)
+    outputBuffer.encodeUInt8(logLevels)
+    outputBuffer.encodeUInt8Array(arguments, 40)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(id)
-    outputBuffer.encodeUint32(eventTimeBootMs)
-    outputBuffer.encodeUint16(sequence)
-    outputBuffer.encodeUint8(destinationComponent)
-    outputBuffer.encodeUint8(destinationSystem)
-    outputBuffer.encodeUint8(logLevels)
-    outputBuffer.encodeUint8Array(arguments, 40)
+    outputBuffer.encodeUInt32(id)
+    outputBuffer.encodeUInt32(eventTimeBootMs)
+    outputBuffer.encodeUInt16(sequence)
+    outputBuffer.encodeUInt8(destinationComponent)
+    outputBuffer.encodeUInt8(destinationSystem)
+    outputBuffer.encodeUInt8(logLevels)
+    outputBuffer.encodeUInt8Array(arguments, 40)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 410
+    private const val ID: UInt = 410u
 
-    private const val CRC: Int = 160
+    private const val CRC_EXTRA: Byte = -96
 
     private const val SIZE_V1: Int = 53
 
@@ -109,13 +112,13 @@ public data class Event(
 
     private val DESERIALIZER: MavDeserializer<Event> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val id = inputBuffer.decodeUint32()
-      val eventTimeBootMs = inputBuffer.decodeUint32()
-      val sequence = inputBuffer.decodeUint16()
-      val destinationComponent = inputBuffer.decodeUint8()
-      val destinationSystem = inputBuffer.decodeUint8()
-      val logLevels = inputBuffer.decodeUint8()
-      val arguments = inputBuffer.decodeUint8Array(40)
+      val id = inputBuffer.decodeUInt32()
+      val eventTimeBootMs = inputBuffer.decodeUInt32()
+      val sequence = inputBuffer.decodeUInt16()
+      val destinationComponent = inputBuffer.decodeUInt8()
+      val destinationSystem = inputBuffer.decodeUInt8()
+      val logLevels = inputBuffer.decodeUInt8()
+      val arguments = inputBuffer.decodeUInt8Array(40)
 
       Event(
         destinationComponent = destinationComponent,
@@ -129,7 +132,8 @@ public data class Event(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Event> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Event> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Event> = METADATA
 
@@ -138,19 +142,19 @@ public data class Event(
   }
 
   public class Builder {
-    public var destinationComponent: Int = 0
+    public var destinationComponent: UByte = 0u
 
-    public var destinationSystem: Int = 0
+    public var destinationSystem: UByte = 0u
 
-    public var id: Long = 0L
+    public var id: UInt = 0u
 
-    public var eventTimeBootMs: Long = 0L
+    public var eventTimeBootMs: UInt = 0u
 
-    public var sequence: Int = 0
+    public var sequence: UShort = 0u
 
-    public var logLevels: Int = 0
+    public var logLevels: UByte = 0u
 
-    public var arguments: List<Int> = emptyList()
+    public var arguments: List<UByte> = emptyList()
 
     public fun build(): Event = Event(
       destinationComponent = destinationComponent,

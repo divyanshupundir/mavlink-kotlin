@@ -39,7 +39,7 @@ private fun MavlinkModel.generateDependencies(basePackageName: String) = buildCo
         .map {
             ClassName(
                 "$basePackageName.${it.lowercase()}",
-                "${xyz.urbanmatrix.mavlink.generator.CaseFormat.fromSnake(it).toUpperCamel()}Dialect"
+                "${CaseFormat.fromSnake(it).toUpperCamel()}Dialect"
             )
         }
         .forEach { addStatement("%T,", it) }

@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -16,11 +17,11 @@ import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -29,15 +30,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 271,
-  crc = 22,
+  id = 271u,
+  crcExtra = 22,
 )
 public data class CameraFovStatus(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Latitude of camera (INT32_MAX if unknown).
    */
@@ -91,7 +92,7 @@ public data class CameraFovStatus(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(latCamera)
     outputBuffer.encodeInt32(lonCamera)
     outputBuffer.encodeInt32(altCamera)
@@ -106,7 +107,7 @@ public data class CameraFovStatus(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(latCamera)
     outputBuffer.encodeInt32(lonCamera)
     outputBuffer.encodeInt32(altCamera)
@@ -120,9 +121,9 @@ public data class CameraFovStatus(
   }
 
   public companion object {
-    private const val ID: Int = 271
+    private const val ID: UInt = 271u
 
-    private const val CRC: Int = 22
+    private const val CRC_EXTRA: Byte = 22
 
     private const val SIZE_V1: Int = 52
 
@@ -130,7 +131,7 @@ public data class CameraFovStatus(
 
     private val DESERIALIZER: MavDeserializer<CameraFovStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val latCamera = inputBuffer.decodeInt32()
       val lonCamera = inputBuffer.decodeInt32()
       val altCamera = inputBuffer.decodeInt32()
@@ -156,7 +157,7 @@ public data class CameraFovStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CameraFovStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CameraFovStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraFovStatus> = METADATA
@@ -166,7 +167,7 @@ public data class CameraFovStatus(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var latCamera: Int = 0
 

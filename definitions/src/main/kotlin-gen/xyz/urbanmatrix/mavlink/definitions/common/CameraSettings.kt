@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,30 +15,30 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Settings of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
  */
 @GeneratedMavMessage(
-  id = 260,
-  crc = 146,
+  id = 260u,
+  crcExtra = -110,
 )
 public data class CameraSettings(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Camera mode
    */
   @GeneratedMavField(type = "uint8_t")
-  public val modeId: MavEnumValue<CameraMode> = MavEnumValue.fromValue(0),
+  public val modeId: MavEnumValue<CameraMode> = MavEnumValue.fromValue(0u),
   /**
    * Current zoom level (0.0 to 100.0, NaN if not known)
    */
@@ -59,14 +60,14 @@ public data class CameraSettings(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeEnumValue(modeId.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeEnumValue(modeId.value, 1)
     outputBuffer.encodeFloat(zoomlevel)
     outputBuffer.encodeFloat(focuslevel)
@@ -74,9 +75,9 @@ public data class CameraSettings(
   }
 
   public companion object {
-    private const val ID: Int = 260
+    private const val ID: UInt = 260u
 
-    private const val CRC: Int = 146
+    private const val CRC_EXTRA: Byte = -110
 
     private const val SIZE_V1: Int = 5
 
@@ -84,7 +85,7 @@ public data class CameraSettings(
 
     private val DESERIALIZER: MavDeserializer<CameraSettings> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val modeId = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = CameraMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -101,7 +102,7 @@ public data class CameraSettings(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CameraSettings> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CameraSettings> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraSettings> = METADATA
@@ -111,9 +112,9 @@ public data class CameraSettings(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var modeId: MavEnumValue<CameraMode> = MavEnumValue.fromValue(0)
+    public var modeId: MavEnumValue<CameraMode> = MavEnumValue.fromValue(0u)
 
     public var zoomlevel: Float = 0F
 

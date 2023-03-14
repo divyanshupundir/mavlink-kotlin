@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -21,25 +23,25 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Heartbeat from a HeroBus attached GoPro.
  */
 @GeneratedMavMessage(
-  id = 215,
-  crc = 101,
+  id = 215u,
+  crcExtra = 101,
 )
 public data class GoproHeartbeat(
   /**
    * Status.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val status: MavEnumValue<GoproHeartbeatStatus> = MavEnumValue.fromValue(0),
+  public val status: MavEnumValue<GoproHeartbeatStatus> = MavEnumValue.fromValue(0u),
   /**
    * Current capture mode.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val captureMode: MavEnumValue<GoproCaptureMode> = MavEnumValue.fromValue(0),
+  public val captureMode: MavEnumValue<GoproCaptureMode> = MavEnumValue.fromValue(0u),
   /**
    * Additional status bits.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<GoproHeartbeat> {
   public override val instanceMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
 
@@ -60,9 +62,9 @@ public data class GoproHeartbeat(
   }
 
   public companion object {
-    private const val ID: Int = 215
+    private const val ID: UInt = 215u
 
-    private const val CRC: Int = 101
+    private const val CRC_EXTRA: Byte = 101
 
     private const val SIZE_V1: Int = 3
 
@@ -91,7 +93,7 @@ public data class GoproHeartbeat(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GoproHeartbeat> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<GoproHeartbeat> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
@@ -101,11 +103,11 @@ public data class GoproHeartbeat(
   }
 
   public class Builder {
-    public var status: MavEnumValue<GoproHeartbeatStatus> = MavEnumValue.fromValue(0)
+    public var status: MavEnumValue<GoproHeartbeatStatus> = MavEnumValue.fromValue(0u)
 
-    public var captureMode: MavEnumValue<GoproCaptureMode> = MavEnumValue.fromValue(0)
+    public var captureMode: MavEnumValue<GoproCaptureMode> = MavEnumValue.fromValue(0u)
 
-    public var flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): GoproHeartbeat = GoproHeartbeat(
       status = status,

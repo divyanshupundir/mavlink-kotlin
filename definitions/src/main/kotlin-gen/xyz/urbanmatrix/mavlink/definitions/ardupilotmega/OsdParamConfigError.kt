@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,24 +10,24 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class OsdParamConfigError(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  OSD_PARAM_SUCCESS(0L),
+  OSD_PARAM_SUCCESS(0u),
   @GeneratedMavEnumEntry
-  OSD_PARAM_INVALID_SCREEN(1L),
+  OSD_PARAM_INVALID_SCREEN(1u),
   @GeneratedMavEnumEntry
-  OSD_PARAM_INVALID_PARAMETER_INDEX(2L),
+  OSD_PARAM_INVALID_PARAMETER_INDEX(2u),
   @GeneratedMavEnumEntry
-  OSD_PARAM_INVALID_PARAMETER(3L),
+  OSD_PARAM_INVALID_PARAMETER(3u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): OsdParamConfigError? = when (v) {
-      0L -> OSD_PARAM_SUCCESS
-      1L -> OSD_PARAM_INVALID_SCREEN
-      2L -> OSD_PARAM_INVALID_PARAMETER_INDEX
-      3L -> OSD_PARAM_INVALID_PARAMETER
+  public companion object : MavEnum.Companion<OsdParamConfigError> {
+    public override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigError? = when (v) {
+      0u -> OSD_PARAM_SUCCESS
+      1u -> OSD_PARAM_INVALID_SCREEN
+      2u -> OSD_PARAM_INVALID_PARAMETER_INDEX
+      3u -> OSD_PARAM_INVALID_PARAMETER
       else -> null
     }
   }

@@ -2,18 +2,22 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -21,35 +25,35 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
-  id = 151,
-  crc = 219,
+  id = 151u,
+  crcExtra = -37,
 )
 public data class SetMagOffsets(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Magnetometer X offset.
    */
   @GeneratedMavField(type = "int16_t")
-  public val magOfsX: Int = 0,
+  public val magOfsX: Short = 0,
   /**
    * Magnetometer Y offset.
    */
   @GeneratedMavField(type = "int16_t")
-  public val magOfsY: Int = 0,
+  public val magOfsY: Short = 0,
   /**
    * Magnetometer Z offset.
    */
   @GeneratedMavField(type = "int16_t")
-  public val magOfsZ: Int = 0,
+  public val magOfsZ: Short = 0,
 ) : MavMessage<SetMagOffsets> {
   public override val instanceMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
 
@@ -58,8 +62,8 @@ public data class SetMagOffsets(
     outputBuffer.encodeInt16(magOfsX)
     outputBuffer.encodeInt16(magOfsY)
     outputBuffer.encodeInt16(magOfsZ)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array()
   }
 
@@ -68,15 +72,15 @@ public data class SetMagOffsets(
     outputBuffer.encodeInt16(magOfsX)
     outputBuffer.encodeInt16(magOfsY)
     outputBuffer.encodeInt16(magOfsZ)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 151
+    private const val ID: UInt = 151u
 
-    private const val CRC: Int = 219
+    private const val CRC_EXTRA: Byte = -37
 
     private const val SIZE_V1: Int = 8
 
@@ -87,8 +91,8 @@ public data class SetMagOffsets(
       val magOfsX = inputBuffer.decodeInt16()
       val magOfsY = inputBuffer.decodeInt16()
       val magOfsZ = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
 
       SetMagOffsets(
         targetSystem = targetSystem,
@@ -100,7 +104,7 @@ public data class SetMagOffsets(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SetMagOffsets> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<SetMagOffsets> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
@@ -110,15 +114,15 @@ public data class SetMagOffsets(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var magOfsX: Int = 0
+    public var magOfsX: Short = 0
 
-    public var magOfsY: Int = 0
+    public var magOfsY: Short = 0
 
-    public var magOfsZ: Int = 0
+    public var magOfsZ: Short = 0
 
     public fun build(): SetMagOffsets = SetMagOffsets(
       targetSystem = targetSystem,

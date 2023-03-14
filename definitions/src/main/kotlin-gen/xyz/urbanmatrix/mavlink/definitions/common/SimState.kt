@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Status of simulation environment, if used
  */
 @GeneratedMavMessage(
-  id = 108,
-  crc = 32,
+  id = 108u,
+  crcExtra = 32,
 )
 public data class SimState(
   /**
@@ -183,9 +185,9 @@ public data class SimState(
   }
 
   public companion object {
-    private const val ID: Int = 108
+    private const val ID: UInt = 108u
 
-    private const val CRC: Int = 32
+    private const val CRC_EXTRA: Byte = 32
 
     private const val SIZE_V1: Int = 84
 
@@ -241,7 +243,8 @@ public data class SimState(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SimState> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SimState> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SimState> = METADATA
 

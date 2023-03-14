@@ -2,20 +2,23 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,177 +27,177 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Individual receivers/transmitters might violate this specification.
  */
 @GeneratedMavMessage(
-  id = 65,
-  crc = 118,
+  id = 65u,
+  crcExtra = 118,
 )
 public data class RcChannels(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Total number of RC channels being received. This can be larger than 18, indicating that more
    * channels are available but not given in this message. This value should be 0 when no RC channels
    * are available.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val chancount: Int = 0,
+  public val chancount: UByte = 0u,
   /**
    * RC channel 1 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan1Raw: Int = 0,
+  public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan2Raw: Int = 0,
+  public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan3Raw: Int = 0,
+  public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan4Raw: Int = 0,
+  public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan5Raw: Int = 0,
+  public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan6Raw: Int = 0,
+  public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan7Raw: Int = 0,
+  public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan8Raw: Int = 0,
+  public val chan8Raw: UShort = 0u,
   /**
    * RC channel 9 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan9Raw: Int = 0,
+  public val chan9Raw: UShort = 0u,
   /**
    * RC channel 10 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan10Raw: Int = 0,
+  public val chan10Raw: UShort = 0u,
   /**
    * RC channel 11 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan11Raw: Int = 0,
+  public val chan11Raw: UShort = 0u,
   /**
    * RC channel 12 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan12Raw: Int = 0,
+  public val chan12Raw: UShort = 0u,
   /**
    * RC channel 13 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan13Raw: Int = 0,
+  public val chan13Raw: UShort = 0u,
   /**
    * RC channel 14 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan14Raw: Int = 0,
+  public val chan14Raw: UShort = 0u,
   /**
    * RC channel 15 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan15Raw: Int = 0,
+  public val chan15Raw: UShort = 0u,
   /**
    * RC channel 16 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan16Raw: Int = 0,
+  public val chan16Raw: UShort = 0u,
   /**
    * RC channel 17 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan17Raw: Int = 0,
+  public val chan17Raw: UShort = 0u,
   /**
    * RC channel 18 value.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val chan18Raw: Int = 0,
+  public val chan18Raw: UShort = 0u,
   /**
    * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
    * invalid/unknown.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rssi: Int = 0,
+  public val rssi: UByte = 0u,
 ) : MavMessage<RcChannels> {
   public override val instanceMetadata: MavMessage.Metadata<RcChannels> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint16(chan1Raw)
-    outputBuffer.encodeUint16(chan2Raw)
-    outputBuffer.encodeUint16(chan3Raw)
-    outputBuffer.encodeUint16(chan4Raw)
-    outputBuffer.encodeUint16(chan5Raw)
-    outputBuffer.encodeUint16(chan6Raw)
-    outputBuffer.encodeUint16(chan7Raw)
-    outputBuffer.encodeUint16(chan8Raw)
-    outputBuffer.encodeUint16(chan9Raw)
-    outputBuffer.encodeUint16(chan10Raw)
-    outputBuffer.encodeUint16(chan11Raw)
-    outputBuffer.encodeUint16(chan12Raw)
-    outputBuffer.encodeUint16(chan13Raw)
-    outputBuffer.encodeUint16(chan14Raw)
-    outputBuffer.encodeUint16(chan15Raw)
-    outputBuffer.encodeUint16(chan16Raw)
-    outputBuffer.encodeUint16(chan17Raw)
-    outputBuffer.encodeUint16(chan18Raw)
-    outputBuffer.encodeUint8(chancount)
-    outputBuffer.encodeUint8(rssi)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt16(chan1Raw)
+    outputBuffer.encodeUInt16(chan2Raw)
+    outputBuffer.encodeUInt16(chan3Raw)
+    outputBuffer.encodeUInt16(chan4Raw)
+    outputBuffer.encodeUInt16(chan5Raw)
+    outputBuffer.encodeUInt16(chan6Raw)
+    outputBuffer.encodeUInt16(chan7Raw)
+    outputBuffer.encodeUInt16(chan8Raw)
+    outputBuffer.encodeUInt16(chan9Raw)
+    outputBuffer.encodeUInt16(chan10Raw)
+    outputBuffer.encodeUInt16(chan11Raw)
+    outputBuffer.encodeUInt16(chan12Raw)
+    outputBuffer.encodeUInt16(chan13Raw)
+    outputBuffer.encodeUInt16(chan14Raw)
+    outputBuffer.encodeUInt16(chan15Raw)
+    outputBuffer.encodeUInt16(chan16Raw)
+    outputBuffer.encodeUInt16(chan17Raw)
+    outputBuffer.encodeUInt16(chan18Raw)
+    outputBuffer.encodeUInt8(chancount)
+    outputBuffer.encodeUInt8(rssi)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint16(chan1Raw)
-    outputBuffer.encodeUint16(chan2Raw)
-    outputBuffer.encodeUint16(chan3Raw)
-    outputBuffer.encodeUint16(chan4Raw)
-    outputBuffer.encodeUint16(chan5Raw)
-    outputBuffer.encodeUint16(chan6Raw)
-    outputBuffer.encodeUint16(chan7Raw)
-    outputBuffer.encodeUint16(chan8Raw)
-    outputBuffer.encodeUint16(chan9Raw)
-    outputBuffer.encodeUint16(chan10Raw)
-    outputBuffer.encodeUint16(chan11Raw)
-    outputBuffer.encodeUint16(chan12Raw)
-    outputBuffer.encodeUint16(chan13Raw)
-    outputBuffer.encodeUint16(chan14Raw)
-    outputBuffer.encodeUint16(chan15Raw)
-    outputBuffer.encodeUint16(chan16Raw)
-    outputBuffer.encodeUint16(chan17Raw)
-    outputBuffer.encodeUint16(chan18Raw)
-    outputBuffer.encodeUint8(chancount)
-    outputBuffer.encodeUint8(rssi)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt16(chan1Raw)
+    outputBuffer.encodeUInt16(chan2Raw)
+    outputBuffer.encodeUInt16(chan3Raw)
+    outputBuffer.encodeUInt16(chan4Raw)
+    outputBuffer.encodeUInt16(chan5Raw)
+    outputBuffer.encodeUInt16(chan6Raw)
+    outputBuffer.encodeUInt16(chan7Raw)
+    outputBuffer.encodeUInt16(chan8Raw)
+    outputBuffer.encodeUInt16(chan9Raw)
+    outputBuffer.encodeUInt16(chan10Raw)
+    outputBuffer.encodeUInt16(chan11Raw)
+    outputBuffer.encodeUInt16(chan12Raw)
+    outputBuffer.encodeUInt16(chan13Raw)
+    outputBuffer.encodeUInt16(chan14Raw)
+    outputBuffer.encodeUInt16(chan15Raw)
+    outputBuffer.encodeUInt16(chan16Raw)
+    outputBuffer.encodeUInt16(chan17Raw)
+    outputBuffer.encodeUInt16(chan18Raw)
+    outputBuffer.encodeUInt8(chancount)
+    outputBuffer.encodeUInt8(rssi)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 65
+    private const val ID: UInt = 65u
 
-    private const val CRC: Int = 118
+    private const val CRC_EXTRA: Byte = 118
 
     private const val SIZE_V1: Int = 42
 
@@ -202,27 +205,27 @@ public data class RcChannels(
 
     private val DESERIALIZER: MavDeserializer<RcChannels> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
-      val chan1Raw = inputBuffer.decodeUint16()
-      val chan2Raw = inputBuffer.decodeUint16()
-      val chan3Raw = inputBuffer.decodeUint16()
-      val chan4Raw = inputBuffer.decodeUint16()
-      val chan5Raw = inputBuffer.decodeUint16()
-      val chan6Raw = inputBuffer.decodeUint16()
-      val chan7Raw = inputBuffer.decodeUint16()
-      val chan8Raw = inputBuffer.decodeUint16()
-      val chan9Raw = inputBuffer.decodeUint16()
-      val chan10Raw = inputBuffer.decodeUint16()
-      val chan11Raw = inputBuffer.decodeUint16()
-      val chan12Raw = inputBuffer.decodeUint16()
-      val chan13Raw = inputBuffer.decodeUint16()
-      val chan14Raw = inputBuffer.decodeUint16()
-      val chan15Raw = inputBuffer.decodeUint16()
-      val chan16Raw = inputBuffer.decodeUint16()
-      val chan17Raw = inputBuffer.decodeUint16()
-      val chan18Raw = inputBuffer.decodeUint16()
-      val chancount = inputBuffer.decodeUint8()
-      val rssi = inputBuffer.decodeUint8()
+      val timeBootMs = inputBuffer.decodeUInt32()
+      val chan1Raw = inputBuffer.decodeUInt16()
+      val chan2Raw = inputBuffer.decodeUInt16()
+      val chan3Raw = inputBuffer.decodeUInt16()
+      val chan4Raw = inputBuffer.decodeUInt16()
+      val chan5Raw = inputBuffer.decodeUInt16()
+      val chan6Raw = inputBuffer.decodeUInt16()
+      val chan7Raw = inputBuffer.decodeUInt16()
+      val chan8Raw = inputBuffer.decodeUInt16()
+      val chan9Raw = inputBuffer.decodeUInt16()
+      val chan10Raw = inputBuffer.decodeUInt16()
+      val chan11Raw = inputBuffer.decodeUInt16()
+      val chan12Raw = inputBuffer.decodeUInt16()
+      val chan13Raw = inputBuffer.decodeUInt16()
+      val chan14Raw = inputBuffer.decodeUInt16()
+      val chan15Raw = inputBuffer.decodeUInt16()
+      val chan16Raw = inputBuffer.decodeUInt16()
+      val chan17Raw = inputBuffer.decodeUInt16()
+      val chan18Raw = inputBuffer.decodeUInt16()
+      val chancount = inputBuffer.decodeUInt8()
+      val rssi = inputBuffer.decodeUInt8()
 
       RcChannels(
         timeBootMs = timeBootMs,
@@ -250,7 +253,7 @@ public data class RcChannels(
     }
 
 
-    private val METADATA: MavMessage.Metadata<RcChannels> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<RcChannels> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RcChannels> = METADATA
@@ -260,47 +263,47 @@ public data class RcChannels(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var chancount: Int = 0
+    public var chancount: UByte = 0u
 
-    public var chan1Raw: Int = 0
+    public var chan1Raw: UShort = 0u
 
-    public var chan2Raw: Int = 0
+    public var chan2Raw: UShort = 0u
 
-    public var chan3Raw: Int = 0
+    public var chan3Raw: UShort = 0u
 
-    public var chan4Raw: Int = 0
+    public var chan4Raw: UShort = 0u
 
-    public var chan5Raw: Int = 0
+    public var chan5Raw: UShort = 0u
 
-    public var chan6Raw: Int = 0
+    public var chan6Raw: UShort = 0u
 
-    public var chan7Raw: Int = 0
+    public var chan7Raw: UShort = 0u
 
-    public var chan8Raw: Int = 0
+    public var chan8Raw: UShort = 0u
 
-    public var chan9Raw: Int = 0
+    public var chan9Raw: UShort = 0u
 
-    public var chan10Raw: Int = 0
+    public var chan10Raw: UShort = 0u
 
-    public var chan11Raw: Int = 0
+    public var chan11Raw: UShort = 0u
 
-    public var chan12Raw: Int = 0
+    public var chan12Raw: UShort = 0u
 
-    public var chan13Raw: Int = 0
+    public var chan13Raw: UShort = 0u
 
-    public var chan14Raw: Int = 0
+    public var chan14Raw: UShort = 0u
 
-    public var chan15Raw: Int = 0
+    public var chan15Raw: UShort = 0u
 
-    public var chan16Raw: Int = 0
+    public var chan16Raw: UShort = 0u
 
-    public var chan17Raw: Int = 0
+    public var chan17Raw: UShort = 0u
 
-    public var chan18Raw: Int = 0
+    public var chan18Raw: UShort = 0u
 
-    public var rssi: Int = 0
+    public var rssi: UByte = 0u
 
     public fun build(): RcChannels = RcChannels(
       timeBootMs = timeBootMs,

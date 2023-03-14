@@ -7,14 +7,14 @@ public interface MavFrameV2<T> : MavFrame<T> {
     public val isSigned: Boolean
 
     /**
-     * The link ID in this frame's signature, or `-1` if this packet is not signed.
+     * The link ID in this frame's signature, or `0u` if this packet is not signed.
      */
-    public val signatureLinkId: Int
+    public val signatureLinkId: UByte
 
     /**
-     * The timestamp in this frame's signature, or `-1` if this packet is not signed.
+     * The timestamp in this frame's signature, or `0u` if this packet is not signed.
      */
-    public val signatureTimestamp: Long
+    public val signatureTimestamp: UInt
 
     /**
      * The complete signature of this message.

@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.Short
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,235 +14,235 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA - F2: Part B
  */
 @GeneratedMavMessage(
-  id = 171,
-  crc = 245,
+  id = 171u,
+  crcExtra = -11,
 )
 public data class SerialUdbExtraF2B(
   /**
    * Serial UDB Extra Time
    */
   @GeneratedMavField(type = "uint32_t")
-  public val sueTime: Long = 0L,
+  public val sueTime: UInt = 0u,
   /**
    * Serial UDB Extra PWM Input Channel 1
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput1: Int = 0,
+  public val suePwmInput1: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 2
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput2: Int = 0,
+  public val suePwmInput2: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 3
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput3: Int = 0,
+  public val suePwmInput3: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 4
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput4: Int = 0,
+  public val suePwmInput4: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 5
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput5: Int = 0,
+  public val suePwmInput5: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 6
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput6: Int = 0,
+  public val suePwmInput6: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 7
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput7: Int = 0,
+  public val suePwmInput7: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 8
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput8: Int = 0,
+  public val suePwmInput8: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 9
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput9: Int = 0,
+  public val suePwmInput9: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 10
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput10: Int = 0,
+  public val suePwmInput10: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 11
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput11: Int = 0,
+  public val suePwmInput11: Short = 0,
   /**
    * Serial UDB Extra PWM Input Channel 12
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmInput12: Int = 0,
+  public val suePwmInput12: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 1
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput1: Int = 0,
+  public val suePwmOutput1: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 2
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput2: Int = 0,
+  public val suePwmOutput2: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 3
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput3: Int = 0,
+  public val suePwmOutput3: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 4
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput4: Int = 0,
+  public val suePwmOutput4: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 5
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput5: Int = 0,
+  public val suePwmOutput5: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 6
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput6: Int = 0,
+  public val suePwmOutput6: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 7
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput7: Int = 0,
+  public val suePwmOutput7: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 8
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput8: Int = 0,
+  public val suePwmOutput8: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 9
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput9: Int = 0,
+  public val suePwmOutput9: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 10
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput10: Int = 0,
+  public val suePwmOutput10: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 11
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput11: Int = 0,
+  public val suePwmOutput11: Short = 0,
   /**
    * Serial UDB Extra PWM Output Channel 12
    */
   @GeneratedMavField(type = "int16_t")
-  public val suePwmOutput12: Int = 0,
+  public val suePwmOutput12: Short = 0,
   /**
    * Serial UDB Extra IMU Location X
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueImuLocationX: Int = 0,
+  public val sueImuLocationX: Short = 0,
   /**
    * Serial UDB Extra IMU Location Y
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueImuLocationY: Int = 0,
+  public val sueImuLocationY: Short = 0,
   /**
    * Serial UDB Extra IMU Location Z
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueImuLocationZ: Int = 0,
+  public val sueImuLocationZ: Short = 0,
   /**
    * Serial UDB Location Error Earth X
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueLocationErrorEarthX: Int = 0,
+  public val sueLocationErrorEarthX: Short = 0,
   /**
    * Serial UDB Location Error Earth Y
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueLocationErrorEarthY: Int = 0,
+  public val sueLocationErrorEarthY: Short = 0,
   /**
    * Serial UDB Location Error Earth Z
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueLocationErrorEarthZ: Int = 0,
+  public val sueLocationErrorEarthZ: Short = 0,
   /**
    * Serial UDB Extra Status Flags
    */
   @GeneratedMavField(type = "uint32_t")
-  public val sueFlags: Long = 0L,
+  public val sueFlags: UInt = 0u,
   /**
    * Serial UDB Extra Oscillator Failure Count
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueOscFails: Int = 0,
+  public val sueOscFails: Short = 0,
   /**
    * Serial UDB Extra IMU Velocity X
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueImuVelocityX: Int = 0,
+  public val sueImuVelocityX: Short = 0,
   /**
    * Serial UDB Extra IMU Velocity Y
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueImuVelocityY: Int = 0,
+  public val sueImuVelocityY: Short = 0,
   /**
    * Serial UDB Extra IMU Velocity Z
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueImuVelocityZ: Int = 0,
+  public val sueImuVelocityZ: Short = 0,
   /**
    * Serial UDB Extra Current Waypoint Goal X
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueWaypointGoalX: Int = 0,
+  public val sueWaypointGoalX: Short = 0,
   /**
    * Serial UDB Extra Current Waypoint Goal Y
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueWaypointGoalY: Int = 0,
+  public val sueWaypointGoalY: Short = 0,
   /**
    * Serial UDB Extra Current Waypoint Goal Z
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueWaypointGoalZ: Int = 0,
+  public val sueWaypointGoalZ: Short = 0,
   /**
    * Aeroforce in UDB X Axis
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAeroX: Int = 0,
+  public val sueAeroX: Short = 0,
   /**
    * Aeroforce in UDB Y Axis
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAeroY: Int = 0,
+  public val sueAeroY: Short = 0,
   /**
    * Aeroforce in UDB Z axis
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueAeroZ: Int = 0,
+  public val sueAeroZ: Short = 0,
   /**
    * SUE barometer temperature
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueBaromTemp: Int = 0,
+  public val sueBaromTemp: Short = 0,
   /**
    * SUE barometer pressure
    */
@@ -255,34 +257,34 @@ public data class SerialUdbExtraF2B(
    * SUE battery voltage
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueBatVolt: Int = 0,
+  public val sueBatVolt: Short = 0,
   /**
    * SUE battery current
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueBatAmp: Int = 0,
+  public val sueBatAmp: Short = 0,
   /**
    * SUE battery milli amp hours used
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueBatAmpHours: Int = 0,
+  public val sueBatAmpHours: Short = 0,
   /**
    * Sue autopilot desired height
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueDesiredHeight: Int = 0,
+  public val sueDesiredHeight: Short = 0,
   /**
    * Serial UDB Extra Stack Memory Free
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueMemoryStackFree: Int = 0,
+  public val sueMemoryStackFree: Short = 0,
 ) : MavMessage<SerialUdbExtraF2B> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF2B> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(sueTime)
-    outputBuffer.encodeUint32(sueFlags)
+    outputBuffer.encodeUInt32(sueTime)
+    outputBuffer.encodeUInt32(sueFlags)
     outputBuffer.encodeInt32(sueBaromPress)
     outputBuffer.encodeInt32(sueBaromAlt)
     outputBuffer.encodeInt16(suePwmInput1)
@@ -336,8 +338,8 @@ public data class SerialUdbExtraF2B(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(sueTime)
-    outputBuffer.encodeUint32(sueFlags)
+    outputBuffer.encodeUInt32(sueTime)
+    outputBuffer.encodeUInt32(sueFlags)
     outputBuffer.encodeInt32(sueBaromPress)
     outputBuffer.encodeInt32(sueBaromAlt)
     outputBuffer.encodeInt16(suePwmInput1)
@@ -390,9 +392,9 @@ public data class SerialUdbExtraF2B(
   }
 
   public companion object {
-    private const val ID: Int = 171
+    private const val ID: UInt = 171u
 
-    private const val CRC: Int = 245
+    private const val CRC_EXTRA: Byte = -11
 
     private const val SIZE_V1: Int = 108
 
@@ -400,8 +402,8 @@ public data class SerialUdbExtraF2B(
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF2B> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueTime = inputBuffer.decodeUint32()
-      val sueFlags = inputBuffer.decodeUint32()
+      val sueTime = inputBuffer.decodeUInt32()
+      val sueFlags = inputBuffer.decodeUInt32()
       val sueBaromPress = inputBuffer.decodeInt32()
       val sueBaromAlt = inputBuffer.decodeInt32()
       val suePwmInput1 = inputBuffer.decodeInt16()
@@ -506,8 +508,8 @@ public data class SerialUdbExtraF2B(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF2B> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF2B> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF2B> = METADATA
 
@@ -516,105 +518,105 @@ public data class SerialUdbExtraF2B(
   }
 
   public class Builder {
-    public var sueTime: Long = 0L
+    public var sueTime: UInt = 0u
 
-    public var suePwmInput1: Int = 0
+    public var suePwmInput1: Short = 0
 
-    public var suePwmInput2: Int = 0
+    public var suePwmInput2: Short = 0
 
-    public var suePwmInput3: Int = 0
+    public var suePwmInput3: Short = 0
 
-    public var suePwmInput4: Int = 0
+    public var suePwmInput4: Short = 0
 
-    public var suePwmInput5: Int = 0
+    public var suePwmInput5: Short = 0
 
-    public var suePwmInput6: Int = 0
+    public var suePwmInput6: Short = 0
 
-    public var suePwmInput7: Int = 0
+    public var suePwmInput7: Short = 0
 
-    public var suePwmInput8: Int = 0
+    public var suePwmInput8: Short = 0
 
-    public var suePwmInput9: Int = 0
+    public var suePwmInput9: Short = 0
 
-    public var suePwmInput10: Int = 0
+    public var suePwmInput10: Short = 0
 
-    public var suePwmInput11: Int = 0
+    public var suePwmInput11: Short = 0
 
-    public var suePwmInput12: Int = 0
+    public var suePwmInput12: Short = 0
 
-    public var suePwmOutput1: Int = 0
+    public var suePwmOutput1: Short = 0
 
-    public var suePwmOutput2: Int = 0
+    public var suePwmOutput2: Short = 0
 
-    public var suePwmOutput3: Int = 0
+    public var suePwmOutput3: Short = 0
 
-    public var suePwmOutput4: Int = 0
+    public var suePwmOutput4: Short = 0
 
-    public var suePwmOutput5: Int = 0
+    public var suePwmOutput5: Short = 0
 
-    public var suePwmOutput6: Int = 0
+    public var suePwmOutput6: Short = 0
 
-    public var suePwmOutput7: Int = 0
+    public var suePwmOutput7: Short = 0
 
-    public var suePwmOutput8: Int = 0
+    public var suePwmOutput8: Short = 0
 
-    public var suePwmOutput9: Int = 0
+    public var suePwmOutput9: Short = 0
 
-    public var suePwmOutput10: Int = 0
+    public var suePwmOutput10: Short = 0
 
-    public var suePwmOutput11: Int = 0
+    public var suePwmOutput11: Short = 0
 
-    public var suePwmOutput12: Int = 0
+    public var suePwmOutput12: Short = 0
 
-    public var sueImuLocationX: Int = 0
+    public var sueImuLocationX: Short = 0
 
-    public var sueImuLocationY: Int = 0
+    public var sueImuLocationY: Short = 0
 
-    public var sueImuLocationZ: Int = 0
+    public var sueImuLocationZ: Short = 0
 
-    public var sueLocationErrorEarthX: Int = 0
+    public var sueLocationErrorEarthX: Short = 0
 
-    public var sueLocationErrorEarthY: Int = 0
+    public var sueLocationErrorEarthY: Short = 0
 
-    public var sueLocationErrorEarthZ: Int = 0
+    public var sueLocationErrorEarthZ: Short = 0
 
-    public var sueFlags: Long = 0L
+    public var sueFlags: UInt = 0u
 
-    public var sueOscFails: Int = 0
+    public var sueOscFails: Short = 0
 
-    public var sueImuVelocityX: Int = 0
+    public var sueImuVelocityX: Short = 0
 
-    public var sueImuVelocityY: Int = 0
+    public var sueImuVelocityY: Short = 0
 
-    public var sueImuVelocityZ: Int = 0
+    public var sueImuVelocityZ: Short = 0
 
-    public var sueWaypointGoalX: Int = 0
+    public var sueWaypointGoalX: Short = 0
 
-    public var sueWaypointGoalY: Int = 0
+    public var sueWaypointGoalY: Short = 0
 
-    public var sueWaypointGoalZ: Int = 0
+    public var sueWaypointGoalZ: Short = 0
 
-    public var sueAeroX: Int = 0
+    public var sueAeroX: Short = 0
 
-    public var sueAeroY: Int = 0
+    public var sueAeroY: Short = 0
 
-    public var sueAeroZ: Int = 0
+    public var sueAeroZ: Short = 0
 
-    public var sueBaromTemp: Int = 0
+    public var sueBaromTemp: Short = 0
 
     public var sueBaromPress: Int = 0
 
     public var sueBaromAlt: Int = 0
 
-    public var sueBatVolt: Int = 0
+    public var sueBatVolt: Short = 0
 
-    public var sueBatAmp: Int = 0
+    public var sueBatAmp: Short = 0
 
-    public var sueBatAmpHours: Int = 0
+    public var sueBatAmpHours: Short = 0
 
-    public var sueDesiredHeight: Int = 0
+    public var sueDesiredHeight: Short = 0
 
-    public var sueMemoryStackFree: Int = 0
+    public var sueMemoryStackFree: Short = 0
 
     public fun build(): SerialUdbExtraF2B = SerialUdbExtraF2B(
       sueTime = sueTime,

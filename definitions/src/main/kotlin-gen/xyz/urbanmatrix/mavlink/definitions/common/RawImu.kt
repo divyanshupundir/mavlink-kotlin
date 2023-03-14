@@ -1,21 +1,25 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,8 +28,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * system debugging.
  */
 @GeneratedMavMessage(
-  id = 27,
-  crc = 144,
+  id = 27u,
+  crcExtra = -112,
 )
 public data class RawImu(
   /**
@@ -33,52 +37,52 @@ public data class RawImu(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * X acceleration (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val xacc: Int = 0,
+  public val xacc: Short = 0,
   /**
    * Y acceleration (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val yacc: Int = 0,
+  public val yacc: Short = 0,
   /**
    * Z acceleration (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val zacc: Int = 0,
+  public val zacc: Short = 0,
   /**
    * Angular speed around X axis (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val xgyro: Int = 0,
+  public val xgyro: Short = 0,
   /**
    * Angular speed around Y axis (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val ygyro: Int = 0,
+  public val ygyro: Short = 0,
   /**
    * Angular speed around Z axis (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val zgyro: Int = 0,
+  public val zgyro: Short = 0,
   /**
    * X Magnetic field (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val xmag: Int = 0,
+  public val xmag: Short = 0,
   /**
    * Y Magnetic field (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val ymag: Int = 0,
+  public val ymag: Short = 0,
   /**
    * Z Magnetic field (raw)
    */
   @GeneratedMavField(type = "int16_t")
-  public val zmag: Int = 0,
+  public val zmag: Short = 0,
   /**
    * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with
    * id=0)
@@ -87,7 +91,7 @@ public data class RawImu(
     type = "uint8_t",
     extension = true,
   )
-  public val id: Int = 0,
+  public val id: UByte = 0u,
   /**
    * Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1
    * (0.01C).
@@ -96,13 +100,13 @@ public data class RawImu(
     type = "int16_t",
     extension = true,
   )
-  public val temperature: Int = 0,
+  public val temperature: Short = 0,
 ) : MavMessage<RawImu> {
   public override val instanceMetadata: MavMessage.Metadata<RawImu> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
     outputBuffer.encodeInt16(zacc)
@@ -117,7 +121,7 @@ public data class RawImu(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeInt16(xacc)
     outputBuffer.encodeInt16(yacc)
     outputBuffer.encodeInt16(zacc)
@@ -127,15 +131,15 @@ public data class RawImu(
     outputBuffer.encodeInt16(xmag)
     outputBuffer.encodeInt16(ymag)
     outputBuffer.encodeInt16(zmag)
-    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeUInt8(id)
     outputBuffer.encodeInt16(temperature)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 27
+    private const val ID: UInt = 27u
 
-    private const val CRC: Int = 144
+    private const val CRC_EXTRA: Byte = -112
 
     private const val SIZE_V1: Int = 26
 
@@ -143,7 +147,7 @@ public data class RawImu(
 
     private val DESERIALIZER: MavDeserializer<RawImu> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val xacc = inputBuffer.decodeInt16()
       val yacc = inputBuffer.decodeInt16()
       val zacc = inputBuffer.decodeInt16()
@@ -153,7 +157,7 @@ public data class RawImu(
       val xmag = inputBuffer.decodeInt16()
       val ymag = inputBuffer.decodeInt16()
       val zmag = inputBuffer.decodeInt16()
-      val id = inputBuffer.decodeUint8()
+      val id = inputBuffer.decodeUInt8()
       val temperature = inputBuffer.decodeInt16()
 
       RawImu(
@@ -173,7 +177,8 @@ public data class RawImu(
     }
 
 
-    private val METADATA: MavMessage.Metadata<RawImu> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<RawImu> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RawImu> = METADATA
 
@@ -182,29 +187,29 @@ public data class RawImu(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var xacc: Int = 0
+    public var xacc: Short = 0
 
-    public var yacc: Int = 0
+    public var yacc: Short = 0
 
-    public var zacc: Int = 0
+    public var zacc: Short = 0
 
-    public var xgyro: Int = 0
+    public var xgyro: Short = 0
 
-    public var ygyro: Int = 0
+    public var ygyro: Short = 0
 
-    public var zgyro: Int = 0
+    public var zgyro: Short = 0
 
-    public var xmag: Int = 0
+    public var xmag: Short = 0
 
-    public var ymag: Int = 0
+    public var ymag: Short = 0
 
-    public var zmag: Int = 0
+    public var zmag: Short = 0
 
-    public var id: Int = 0
+    public var id: UByte = 0u
 
-    public var temperature: Int = 0
+    public var temperature: Short = 0
 
     public fun build(): RawImu = RawImu(
       timeUsec = timeUsec,

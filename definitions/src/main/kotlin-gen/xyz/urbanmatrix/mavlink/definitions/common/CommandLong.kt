@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,10 +16,10 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,31 +27,31 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * https://mavlink.io/en/services/command.html
  */
 @GeneratedMavMessage(
-  id = 76,
-  crc = 152,
+  id = 76u,
+  crcExtra = -104,
 )
 public data class CommandLong(
   /**
    * System which should execute the command
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component which should execute the command, 0 for all components
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Command ID (of command to send).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0),
+  public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
   /**
    * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
    * command)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val confirmation: Int = 0,
+  public val confirmation: UByte = 0u,
   /**
    * Parameter 1 (for the specific command).
    */
@@ -97,9 +100,9 @@ public data class CommandLong(
     outputBuffer.encodeFloat(param6)
     outputBuffer.encodeFloat(param7)
     outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(confirmation)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(confirmation)
     return outputBuffer.array()
   }
 
@@ -113,16 +116,16 @@ public data class CommandLong(
     outputBuffer.encodeFloat(param6)
     outputBuffer.encodeFloat(param7)
     outputBuffer.encodeEnumValue(command.value, 2)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(confirmation)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(confirmation)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 76
+    private const val ID: UInt = 76u
 
-    private const val CRC: Int = 152
+    private const val CRC_EXTRA: Byte = -104
 
     private const val SIZE_V1: Int = 33
 
@@ -141,9 +144,9 @@ public data class CommandLong(
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val confirmation = inputBuffer.decodeUint8()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val confirmation = inputBuffer.decodeUInt8()
 
       CommandLong(
         targetSystem = targetSystem,
@@ -161,7 +164,7 @@ public data class CommandLong(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CommandLong> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<CommandLong> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CommandLong> = METADATA
@@ -171,13 +174,13 @@ public data class CommandLong(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0)
+    public var command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u)
 
-    public var confirmation: Int = 0
+    public var confirmation: UByte = 0u
 
     public var param1: Float = 0F
 

@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,10 +16,10 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -32,8 +34,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * user.
  */
 @GeneratedMavMessage(
-  id = 230,
-  crc = 163,
+  id = 230u,
+  crcExtra = -93,
 )
 public data class EstimatorStatus(
   /**
@@ -41,12 +43,12 @@ public data class EstimatorStatus(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Bitmap indicating which EKF outputs are valid.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val flags: MavBitmaskValue<EstimatorStatusFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<EstimatorStatusFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Velocity innovation test ratio
    */
@@ -92,7 +94,7 @@ public data class EstimatorStatus(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(velRatio)
     outputBuffer.encodeFloat(posHorizRatio)
     outputBuffer.encodeFloat(posVertRatio)
@@ -107,7 +109,7 @@ public data class EstimatorStatus(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(velRatio)
     outputBuffer.encodeFloat(posHorizRatio)
     outputBuffer.encodeFloat(posVertRatio)
@@ -121,9 +123,9 @@ public data class EstimatorStatus(
   }
 
   public companion object {
-    private const val ID: Int = 230
+    private const val ID: UInt = 230u
 
-    private const val CRC: Int = 163
+    private const val CRC_EXTRA: Byte = -93
 
     private const val SIZE_V1: Int = 42
 
@@ -131,7 +133,7 @@ public data class EstimatorStatus(
 
     private val DESERIALIZER: MavDeserializer<EstimatorStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val velRatio = inputBuffer.decodeFloat()
       val posHorizRatio = inputBuffer.decodeFloat()
       val posVertRatio = inputBuffer.decodeFloat()
@@ -160,7 +162,7 @@ public data class EstimatorStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<EstimatorStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<EstimatorStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<EstimatorStatus> = METADATA
@@ -170,9 +172,9 @@ public data class EstimatorStatus(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var flags: MavBitmaskValue<EstimatorStatusFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<EstimatorStatusFlags> = MavBitmaskValue.fromValue(0u)
 
     public var velRatio: Float = 0F
 

@@ -2,124 +2,127 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F14: format
  */
 @GeneratedMavMessage(
-  id = 178,
-  crc = 123,
+  id = 178u,
+  crcExtra = 123,
 )
 public data class SerialUdbExtraF14(
   /**
    * Serial UDB Extra Wind Estimation Enabled
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueWindEstimation: Int = 0,
+  public val sueWindEstimation: UByte = 0u,
   /**
    * Serial UDB Extra Type of GPS Unit
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueGpsType: Int = 0,
+  public val sueGpsType: UByte = 0u,
   /**
    * Serial UDB Extra Dead Reckoning Enabled
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueDr: Int = 0,
+  public val sueDr: UByte = 0u,
   /**
    * Serial UDB Extra Type of UDB Hardware
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueBoardType: Int = 0,
+  public val sueBoardType: UByte = 0u,
   /**
    * Serial UDB Extra Type of Airframe
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueAirframe: Int = 0,
+  public val sueAirframe: UByte = 0u,
   /**
    * Serial UDB Extra Reboot Register of DSPIC
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueRcon: Int = 0,
+  public val sueRcon: Short = 0,
   /**
    * Serial UDB Extra  Last dspic Trap Flags
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrapFlags: Int = 0,
+  public val sueTrapFlags: Short = 0,
   /**
    * Serial UDB Extra Type Program Address of Last Trap
    */
   @GeneratedMavField(type = "uint32_t")
-  public val sueTrapSource: Long = 0L,
+  public val sueTrapSource: UInt = 0u,
   /**
    * Serial UDB Extra Number of Ocillator Failures
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueOscFailCount: Int = 0,
+  public val sueOscFailCount: Short = 0,
   /**
    * Serial UDB Extra UDB Internal Clock Configuration
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueClockConfig: Int = 0,
+  public val sueClockConfig: UByte = 0u,
   /**
    * Serial UDB Extra Type of Flight Plan
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueFlightPlanType: Int = 0,
+  public val sueFlightPlanType: UByte = 0u,
 ) : MavMessage<SerialUdbExtraF14> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF14> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(sueTrapSource)
+    outputBuffer.encodeUInt32(sueTrapSource)
     outputBuffer.encodeInt16(sueRcon)
     outputBuffer.encodeInt16(sueTrapFlags)
     outputBuffer.encodeInt16(sueOscFailCount)
-    outputBuffer.encodeUint8(sueWindEstimation)
-    outputBuffer.encodeUint8(sueGpsType)
-    outputBuffer.encodeUint8(sueDr)
-    outputBuffer.encodeUint8(sueBoardType)
-    outputBuffer.encodeUint8(sueAirframe)
-    outputBuffer.encodeUint8(sueClockConfig)
-    outputBuffer.encodeUint8(sueFlightPlanType)
+    outputBuffer.encodeUInt8(sueWindEstimation)
+    outputBuffer.encodeUInt8(sueGpsType)
+    outputBuffer.encodeUInt8(sueDr)
+    outputBuffer.encodeUInt8(sueBoardType)
+    outputBuffer.encodeUInt8(sueAirframe)
+    outputBuffer.encodeUInt8(sueClockConfig)
+    outputBuffer.encodeUInt8(sueFlightPlanType)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(sueTrapSource)
+    outputBuffer.encodeUInt32(sueTrapSource)
     outputBuffer.encodeInt16(sueRcon)
     outputBuffer.encodeInt16(sueTrapFlags)
     outputBuffer.encodeInt16(sueOscFailCount)
-    outputBuffer.encodeUint8(sueWindEstimation)
-    outputBuffer.encodeUint8(sueGpsType)
-    outputBuffer.encodeUint8(sueDr)
-    outputBuffer.encodeUint8(sueBoardType)
-    outputBuffer.encodeUint8(sueAirframe)
-    outputBuffer.encodeUint8(sueClockConfig)
-    outputBuffer.encodeUint8(sueFlightPlanType)
+    outputBuffer.encodeUInt8(sueWindEstimation)
+    outputBuffer.encodeUInt8(sueGpsType)
+    outputBuffer.encodeUInt8(sueDr)
+    outputBuffer.encodeUInt8(sueBoardType)
+    outputBuffer.encodeUInt8(sueAirframe)
+    outputBuffer.encodeUInt8(sueClockConfig)
+    outputBuffer.encodeUInt8(sueFlightPlanType)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 178
+    private const val ID: UInt = 178u
 
-    private const val CRC: Int = 123
+    private const val CRC_EXTRA: Byte = 123
 
     private const val SIZE_V1: Int = 17
 
@@ -127,17 +130,17 @@ public data class SerialUdbExtraF14(
 
     private val DESERIALIZER: MavDeserializer<SerialUdbExtraF14> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueTrapSource = inputBuffer.decodeUint32()
+      val sueTrapSource = inputBuffer.decodeUInt32()
       val sueRcon = inputBuffer.decodeInt16()
       val sueTrapFlags = inputBuffer.decodeInt16()
       val sueOscFailCount = inputBuffer.decodeInt16()
-      val sueWindEstimation = inputBuffer.decodeUint8()
-      val sueGpsType = inputBuffer.decodeUint8()
-      val sueDr = inputBuffer.decodeUint8()
-      val sueBoardType = inputBuffer.decodeUint8()
-      val sueAirframe = inputBuffer.decodeUint8()
-      val sueClockConfig = inputBuffer.decodeUint8()
-      val sueFlightPlanType = inputBuffer.decodeUint8()
+      val sueWindEstimation = inputBuffer.decodeUInt8()
+      val sueGpsType = inputBuffer.decodeUInt8()
+      val sueDr = inputBuffer.decodeUInt8()
+      val sueBoardType = inputBuffer.decodeUInt8()
+      val sueAirframe = inputBuffer.decodeUInt8()
+      val sueClockConfig = inputBuffer.decodeUInt8()
+      val sueFlightPlanType = inputBuffer.decodeUInt8()
 
       SerialUdbExtraF14(
         sueWindEstimation = sueWindEstimation,
@@ -155,8 +158,8 @@ public data class SerialUdbExtraF14(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF14> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF14> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF14> = METADATA
 
@@ -165,27 +168,27 @@ public data class SerialUdbExtraF14(
   }
 
   public class Builder {
-    public var sueWindEstimation: Int = 0
+    public var sueWindEstimation: UByte = 0u
 
-    public var sueGpsType: Int = 0
+    public var sueGpsType: UByte = 0u
 
-    public var sueDr: Int = 0
+    public var sueDr: UByte = 0u
 
-    public var sueBoardType: Int = 0
+    public var sueBoardType: UByte = 0u
 
-    public var sueAirframe: Int = 0
+    public var sueAirframe: UByte = 0u
 
-    public var sueRcon: Int = 0
+    public var sueRcon: Short = 0
 
-    public var sueTrapFlags: Int = 0
+    public var sueTrapFlags: Short = 0
 
-    public var sueTrapSource: Long = 0L
+    public var sueTrapSource: UInt = 0u
 
-    public var sueOscFailCount: Int = 0
+    public var sueOscFailCount: Short = 0
 
-    public var sueClockConfig: Int = 0
+    public var sueClockConfig: UByte = 0u
 
-    public var sueFlightPlanType: Int = 0
+    public var sueFlightPlanType: UByte = 0u
 
     public fun build(): SerialUdbExtraF14 = SerialUdbExtraF14(
       sueWindEstimation = sueWindEstimation,

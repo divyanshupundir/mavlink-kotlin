@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,20 +17,20 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The IMU readings in SI units in NED body frame
  */
 @GeneratedMavMessage(
-  id = 105,
-  crc = 93,
+  id = 105u,
+  crcExtra = 93,
 )
 public data class HighresImu(
   /**
@@ -35,7 +38,7 @@ public data class HighresImu(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * X acceleration
    */
@@ -105,7 +108,7 @@ public data class HighresImu(
    * Bitmap for fields that have updated since last message
    */
   @GeneratedMavField(type = "uint16_t")
-  public val fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> = MavBitmaskValue.fromValue(0),
+  public val fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with
    * id=0)
@@ -114,13 +117,13 @@ public data class HighresImu(
     type = "uint8_t",
     extension = true,
   )
-  public val id: Int = 0,
+  public val id: UByte = 0u,
 ) : MavMessage<HighresImu> {
   public override val instanceMetadata: MavMessage.Metadata<HighresImu> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(xacc)
     outputBuffer.encodeFloat(yacc)
     outputBuffer.encodeFloat(zacc)
@@ -140,7 +143,7 @@ public data class HighresImu(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(xacc)
     outputBuffer.encodeFloat(yacc)
     outputBuffer.encodeFloat(zacc)
@@ -155,14 +158,14 @@ public data class HighresImu(
     outputBuffer.encodeFloat(pressureAlt)
     outputBuffer.encodeFloat(temperature)
     outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 2)
-    outputBuffer.encodeUint8(id)
+    outputBuffer.encodeUInt8(id)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 105
+    private const val ID: UInt = 105u
 
-    private const val CRC: Int = 93
+    private const val CRC_EXTRA: Byte = 93
 
     private const val SIZE_V1: Int = 62
 
@@ -170,7 +173,7 @@ public data class HighresImu(
 
     private val DESERIALIZER: MavDeserializer<HighresImu> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val xacc = inputBuffer.decodeFloat()
       val yacc = inputBuffer.decodeFloat()
       val zacc = inputBuffer.decodeFloat()
@@ -188,7 +191,7 @@ public data class HighresImu(
         val flags = HighresImuUpdatedFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val id = inputBuffer.decodeUint8()
+      val id = inputBuffer.decodeUInt8()
 
       HighresImu(
         timeUsec = timeUsec,
@@ -211,7 +214,7 @@ public data class HighresImu(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HighresImu> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<HighresImu> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HighresImu> = METADATA
@@ -221,7 +224,7 @@ public data class HighresImu(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var xacc: Float = 0F
 
@@ -249,9 +252,10 @@ public data class HighresImu(
 
     public var temperature: Float = 0F
 
-    public var fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> = MavBitmaskValue.fromValue(0)
+    public var fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> =
+        MavBitmaskValue.fromValue(0u)
 
-    public var id: Int = 0
+    public var id: UByte = 0u
 
     public fun build(): HighresImu = HighresImu(
       timeUsec = timeUsec,

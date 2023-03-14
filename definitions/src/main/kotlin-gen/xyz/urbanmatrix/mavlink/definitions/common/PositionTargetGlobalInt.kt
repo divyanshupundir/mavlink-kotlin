@@ -2,10 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -17,12 +18,12 @@ import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -31,8 +32,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * being controlled this way.
  */
 @GeneratedMavMessage(
-  id = 87,
-  crc = 150,
+  id = 87u,
+  crcExtra = -106,
 )
 public data class PositionTargetGlobalInt(
   /**
@@ -41,18 +42,18 @@ public data class PositionTargetGlobalInt(
    * compensate processing latency.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
    * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
    */
   @GeneratedMavField(type = "uint8_t")
-  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0),
+  public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0),
+  public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
    * X Position in WGS84 frame
    */
@@ -113,7 +114,7 @@ public data class PositionTargetGlobalInt(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(latInt)
     outputBuffer.encodeInt32(lonInt)
     outputBuffer.encodeFloat(alt)
@@ -132,7 +133,7 @@ public data class PositionTargetGlobalInt(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeInt32(latInt)
     outputBuffer.encodeInt32(lonInt)
     outputBuffer.encodeFloat(alt)
@@ -150,9 +151,9 @@ public data class PositionTargetGlobalInt(
   }
 
   public companion object {
-    private const val ID: Int = 87
+    private const val ID: UInt = 87u
 
-    private const val CRC: Int = 150
+    private const val CRC_EXTRA: Byte = -106
 
     private const val SIZE_V1: Int = 51
 
@@ -160,7 +161,7 @@ public data class PositionTargetGlobalInt(
 
     private val DESERIALIZER: MavDeserializer<PositionTargetGlobalInt> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val latInt = inputBuffer.decodeInt32()
       val lonInt = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeFloat()
@@ -201,7 +202,7 @@ public data class PositionTargetGlobalInt(
 
 
     private val METADATA: MavMessage.Metadata<PositionTargetGlobalInt> = MavMessage.Metadata(ID,
-        CRC, DESERIALIZER)
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<PositionTargetGlobalInt> = METADATA
 
@@ -210,11 +211,11 @@ public data class PositionTargetGlobalInt(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0)
+    public var coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
-    public var typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0)
+    public var typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0u)
 
     public var latInt: Int = 0
 

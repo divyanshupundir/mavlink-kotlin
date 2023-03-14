@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,72 +10,72 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class AdsbEmitterType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  NO_INFO(0L),
+  NO_INFO(0u),
   @GeneratedMavEnumEntry
-  LIGHT(1L),
+  LIGHT(1u),
   @GeneratedMavEnumEntry
-  SMALL(2L),
+  SMALL(2u),
   @GeneratedMavEnumEntry
-  LARGE(3L),
+  LARGE(3u),
   @GeneratedMavEnumEntry
-  HIGH_VORTEX_LARGE(4L),
+  HIGH_VORTEX_LARGE(4u),
   @GeneratedMavEnumEntry
-  HEAVY(5L),
+  HEAVY(5u),
   @GeneratedMavEnumEntry
-  HIGHLY_MANUV(6L),
+  HIGHLY_MANUV(6u),
   @GeneratedMavEnumEntry
-  ROTOCRAFT(7L),
+  ROTOCRAFT(7u),
   @GeneratedMavEnumEntry
-  UNASSIGNED(8L),
+  UNASSIGNED(8u),
   @GeneratedMavEnumEntry
-  GLIDER(9L),
+  GLIDER(9u),
   @GeneratedMavEnumEntry
-  LIGHTER_AIR(10L),
+  LIGHTER_AIR(10u),
   @GeneratedMavEnumEntry
-  PARACHUTE(11L),
+  PARACHUTE(11u),
   @GeneratedMavEnumEntry
-  ULTRA_LIGHT(12L),
+  ULTRA_LIGHT(12u),
   @GeneratedMavEnumEntry
-  UNASSIGNED2(13L),
+  UNASSIGNED2(13u),
   @GeneratedMavEnumEntry
-  UAV(14L),
+  UAV(14u),
   @GeneratedMavEnumEntry
-  SPACE(15L),
+  SPACE(15u),
   @GeneratedMavEnumEntry
-  UNASSGINED3(16L),
+  UNASSGINED3(16u),
   @GeneratedMavEnumEntry
-  EMERGENCY_SURFACE(17L),
+  EMERGENCY_SURFACE(17u),
   @GeneratedMavEnumEntry
-  SERVICE_SURFACE(18L),
+  SERVICE_SURFACE(18u),
   @GeneratedMavEnumEntry
-  POINT_OBSTACLE(19L),
+  POINT_OBSTACLE(19u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): AdsbEmitterType? = when (v) {
-      0L -> NO_INFO
-      1L -> LIGHT
-      2L -> SMALL
-      3L -> LARGE
-      4L -> HIGH_VORTEX_LARGE
-      5L -> HEAVY
-      6L -> HIGHLY_MANUV
-      7L -> ROTOCRAFT
-      8L -> UNASSIGNED
-      9L -> GLIDER
-      10L -> LIGHTER_AIR
-      11L -> PARACHUTE
-      12L -> ULTRA_LIGHT
-      13L -> UNASSIGNED2
-      14L -> UAV
-      15L -> SPACE
-      16L -> UNASSGINED3
-      17L -> EMERGENCY_SURFACE
-      18L -> SERVICE_SURFACE
-      19L -> POINT_OBSTACLE
+  public companion object : MavEnum.Companion<AdsbEmitterType> {
+    public override fun getEntryFromValueOrNull(v: UInt): AdsbEmitterType? = when (v) {
+      0u -> NO_INFO
+      1u -> LIGHT
+      2u -> SMALL
+      3u -> LARGE
+      4u -> HIGH_VORTEX_LARGE
+      5u -> HEAVY
+      6u -> HIGHLY_MANUV
+      7u -> ROTOCRAFT
+      8u -> UNASSIGNED
+      9u -> GLIDER
+      10u -> LIGHTER_AIR
+      11u -> PARACHUTE
+      12u -> ULTRA_LIGHT
+      13u -> UNASSIGNED2
+      14u -> UAV
+      15u -> SPACE
+      16u -> UNASSGINED3
+      17u -> EMERGENCY_SURFACE
+      18u -> SERVICE_SURFACE
+      19u -> POINT_OBSTACLE
       else -> null
     }
   }

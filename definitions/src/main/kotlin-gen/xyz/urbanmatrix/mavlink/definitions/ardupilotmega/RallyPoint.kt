@@ -2,8 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,13 +18,13 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -27,30 +32,30 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * GCS.
  */
 @GeneratedMavMessage(
-  id = 175,
-  crc = 138,
+  id = 175u,
+  crcExtra = -118,
 )
 public data class RallyPoint(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Point index (first point is 0).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val idx: Int = 0,
+  public val idx: UByte = 0u,
   /**
    * Total number of points (for sanity checking).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * Latitude of point.
    */
@@ -65,22 +70,22 @@ public data class RallyPoint(
    * Transit / loiter altitude relative to home.
    */
   @GeneratedMavField(type = "int16_t")
-  public val alt: Int = 0,
+  public val alt: Short = 0,
   /**
    * Break altitude relative to home.
    */
   @GeneratedMavField(type = "int16_t")
-  public val breakAlt: Int = 0,
+  public val breakAlt: Short = 0,
   /**
    * Heading to aim for when landing.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val landDir: Int = 0,
+  public val landDir: UShort = 0u,
   /**
    * Configuration flags.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<RallyPoint> {
   public override val instanceMetadata: MavMessage.Metadata<RallyPoint> = METADATA
 
@@ -90,11 +95,11 @@ public data class RallyPoint(
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeInt16(alt)
     outputBuffer.encodeInt16(breakAlt)
-    outputBuffer.encodeUint16(landDir)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(idx)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt16(landDir)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(idx)
+    outputBuffer.encodeUInt8(count)
     outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array()
   }
@@ -105,19 +110,19 @@ public data class RallyPoint(
     outputBuffer.encodeInt32(lng)
     outputBuffer.encodeInt16(alt)
     outputBuffer.encodeInt16(breakAlt)
-    outputBuffer.encodeUint16(landDir)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(idx)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt16(landDir)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(idx)
+    outputBuffer.encodeUInt8(count)
     outputBuffer.encodeBitmaskValue(flags.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 175
+    private const val ID: UInt = 175u
 
-    private const val CRC: Int = 138
+    private const val CRC_EXTRA: Byte = -118
 
     private const val SIZE_V1: Int = 19
 
@@ -129,11 +134,11 @@ public data class RallyPoint(
       val lng = inputBuffer.decodeInt32()
       val alt = inputBuffer.decodeInt16()
       val breakAlt = inputBuffer.decodeInt16()
-      val landDir = inputBuffer.decodeUint16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val idx = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint8()
+      val landDir = inputBuffer.decodeUInt16()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val idx = inputBuffer.decodeUInt8()
+      val count = inputBuffer.decodeUInt8()
       val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
         val flags = RallyFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
@@ -154,7 +159,7 @@ public data class RallyPoint(
     }
 
 
-    private val METADATA: MavMessage.Metadata<RallyPoint> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<RallyPoint> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RallyPoint> = METADATA
@@ -164,25 +169,25 @@ public data class RallyPoint(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var idx: Int = 0
+    public var idx: UByte = 0u
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
     public var lat: Int = 0
 
     public var lng: Int = 0
 
-    public var alt: Int = 0
+    public var alt: Short = 0
 
-    public var breakAlt: Int = 0
+    public var breakAlt: Short = 0
 
-    public var landDir: Int = 0
+    public var landDir: UShort = 0u
 
-    public var flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): RallyPoint = RallyPoint(
       targetSystem = targetSystem,

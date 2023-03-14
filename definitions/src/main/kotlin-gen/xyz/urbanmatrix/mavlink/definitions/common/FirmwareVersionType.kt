@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -11,42 +11,42 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class FirmwareVersionType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * development release
    */
   @GeneratedMavEnumEntry
-  DEV(0L),
+  DEV(0u),
   /**
    * alpha release
    */
   @GeneratedMavEnumEntry
-  ALPHA(64L),
+  ALPHA(64u),
   /**
    * beta release
    */
   @GeneratedMavEnumEntry
-  BETA(128L),
+  BETA(128u),
   /**
    * release candidate
    */
   @GeneratedMavEnumEntry
-  RC(192L),
+  RC(192u),
   /**
    * official stable release
    */
   @GeneratedMavEnumEntry
-  OFFICIAL(255L),
+  OFFICIAL(255u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): FirmwareVersionType? = when (v) {
-      0L -> DEV
-      64L -> ALPHA
-      128L -> BETA
-      192L -> RC
-      255L -> OFFICIAL
+  public companion object : MavEnum.Companion<FirmwareVersionType> {
+    public override fun getEntryFromValueOrNull(v: UInt): FirmwareVersionType? = when (v) {
+      0u -> DEV
+      64u -> ALPHA
+      128u -> BETA
+      192u -> RC
+      255u -> OFFICIAL
       else -> null
     }
   }

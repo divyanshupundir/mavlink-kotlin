@@ -1,11 +1,15 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -13,13 +17,13 @@ import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16Array
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -27,8 +31,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * (MAV_FRAME_LOCAL_NED).
  */
 @GeneratedMavMessage(
-  id = 332,
-  crc = 236,
+  id = 332u,
+  crcExtra = -20,
 )
 public data class TrajectoryRepresentationWaypoints(
   /**
@@ -36,12 +40,12 @@ public data class TrajectoryRepresentationWaypoints(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Number of valid points (up-to 5 waypoints are possible)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val validPoints: Int = 0,
+  public val validPoints: UByte = 0u,
   /**
    * X-coordinate of waypoint, set to NaN if not being used
    */
@@ -101,14 +105,14 @@ public data class TrajectoryRepresentationWaypoints(
    * MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
    */
   @GeneratedMavField(type = "uint16_t[5]")
-  public val command: List<Int> = emptyList(),
+  public val command: List<UShort> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationWaypoints> {
   public override val instanceMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> =
       METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
     outputBuffer.encodeFloatArray(posZ, 20)
@@ -120,14 +124,14 @@ public data class TrajectoryRepresentationWaypoints(
     outputBuffer.encodeFloatArray(accZ, 20)
     outputBuffer.encodeFloatArray(posYaw, 20)
     outputBuffer.encodeFloatArray(velYaw, 20)
-    outputBuffer.encodeUint16Array(command, 10)
-    outputBuffer.encodeUint8(validPoints)
+    outputBuffer.encodeUInt16Array(command, 10)
+    outputBuffer.encodeUInt8(validPoints)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(posX, 20)
     outputBuffer.encodeFloatArray(posY, 20)
     outputBuffer.encodeFloatArray(posZ, 20)
@@ -139,15 +143,15 @@ public data class TrajectoryRepresentationWaypoints(
     outputBuffer.encodeFloatArray(accZ, 20)
     outputBuffer.encodeFloatArray(posYaw, 20)
     outputBuffer.encodeFloatArray(velYaw, 20)
-    outputBuffer.encodeUint16Array(command, 10)
-    outputBuffer.encodeUint8(validPoints)
+    outputBuffer.encodeUInt16Array(command, 10)
+    outputBuffer.encodeUInt8(validPoints)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 332
+    private const val ID: UInt = 332u
 
-    private const val CRC: Int = 236
+    private const val CRC_EXTRA: Byte = -20
 
     private const val SIZE_V1: Int = 239
 
@@ -156,7 +160,7 @@ public data class TrajectoryRepresentationWaypoints(
     private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationWaypoints> = MavDeserializer {
         bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val posX = inputBuffer.decodeFloatArray(20)
       val posY = inputBuffer.decodeFloatArray(20)
       val posZ = inputBuffer.decodeFloatArray(20)
@@ -168,8 +172,8 @@ public data class TrajectoryRepresentationWaypoints(
       val accZ = inputBuffer.decodeFloatArray(20)
       val posYaw = inputBuffer.decodeFloatArray(20)
       val velYaw = inputBuffer.decodeFloatArray(20)
-      val command = inputBuffer.decodeUint16Array(10)
-      val validPoints = inputBuffer.decodeUint8()
+      val command = inputBuffer.decodeUInt16Array(10)
+      val validPoints = inputBuffer.decodeUInt8()
 
       TrajectoryRepresentationWaypoints(
         timeUsec = timeUsec,
@@ -191,7 +195,7 @@ public data class TrajectoryRepresentationWaypoints(
 
 
     private val METADATA: MavMessage.Metadata<TrajectoryRepresentationWaypoints> =
-        MavMessage.Metadata(ID, CRC, DESERIALIZER)
+        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> = METADATA
 
@@ -200,9 +204,9 @@ public data class TrajectoryRepresentationWaypoints(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var validPoints: Int = 0
+    public var validPoints: UByte = 0u
 
     public var posX: List<Float> = emptyList()
 
@@ -226,7 +230,7 @@ public data class TrajectoryRepresentationWaypoints(
 
     public var velYaw: List<Float> = emptyList()
 
-    public var command: List<Int> = emptyList()
+    public var command: List<UShort> = emptyList()
 
     public fun build(): TrajectoryRepresentationWaypoints = TrajectoryRepresentationWaypoints(
       timeUsec = timeUsec,

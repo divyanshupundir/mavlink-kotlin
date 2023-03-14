@@ -2,8 +2,10 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Provides state for additional features
  */
 @GeneratedMavMessage(
-  id = 245,
-  crc = 130,
+  id = 245u,
+  crcExtra = -126,
 )
 public data class ExtendedSysState(
   /**
@@ -27,12 +29,12 @@ public data class ExtendedSysState(
    * configuration.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val vtolState: MavEnumValue<MavVtolState> = MavEnumValue.fromValue(0),
+  public val vtolState: MavEnumValue<MavVtolState> = MavEnumValue.fromValue(0u),
   /**
    * The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0),
+  public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ExtendedSysState> {
   public override val instanceMetadata: MavMessage.Metadata<ExtendedSysState> = METADATA
 
@@ -51,9 +53,9 @@ public data class ExtendedSysState(
   }
 
   public companion object {
-    private const val ID: Int = 245
+    private const val ID: UInt = 245u
 
-    private const val CRC: Int = 130
+    private const val CRC_EXTRA: Byte = -126
 
     private const val SIZE_V1: Int = 2
 
@@ -77,7 +79,7 @@ public data class ExtendedSysState(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ExtendedSysState> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ExtendedSysState> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ExtendedSysState> = METADATA
@@ -87,9 +89,9 @@ public data class ExtendedSysState(
   }
 
   public class Builder {
-    public var vtolState: MavEnumValue<MavVtolState> = MavEnumValue.fromValue(0)
+    public var vtolState: MavEnumValue<MavVtolState> = MavEnumValue.fromValue(0u)
 
-    public var landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0)
+    public var landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u)
 
     public fun build(): ExtendedSysState = ExtendedSysState(
       vtolState = vtolState,

@@ -7,13 +7,11 @@ internal data class MavFrameV1Impl<T>(
     override val message: T
 ) : MavFrameV1<T> {
 
-    override val sequence: Int get() = rawFrame.seq
+    override val sequence: UByte get() = rawFrame.seq
 
-    override val systemId: Int get() = rawFrame.systemId
+    override val systemId: UByte get() = rawFrame.systemId
 
-    override val componentId: Int get() = rawFrame.componentId
+    override val componentId: UByte get() = rawFrame.componentId
 
-    override val frameBytes: ByteArray get() = rawFrame.rawBytes.clone()
-
-    override val checksum: Int get() = rawFrame.checksum
+    override val checksum: UShort get() = rawFrame.checksum
 }

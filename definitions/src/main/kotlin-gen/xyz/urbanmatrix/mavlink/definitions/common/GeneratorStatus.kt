@@ -2,10 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.Short
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -16,34 +19,34 @@ import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Telemetry of power generation system. Alternator or mechanical generator.
  */
 @GeneratedMavMessage(
-  id = 373,
-  crc = 117,
+  id = 373u,
+  crcExtra = 117,
 )
 public data class GeneratorStatus(
   /**
    * Status flags.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val status: MavBitmaskValue<MavGeneratorStatusFlag> = MavBitmaskValue.fromValue(0),
+  public val status: MavBitmaskValue<MavGeneratorStatusFlag> = MavBitmaskValue.fromValue(0u),
   /**
    * Speed of electrical generator or alternator. UINT16_MAX: field not provided.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val generatorSpeed: Int = 0,
+  public val generatorSpeed: UShort = 0u,
   /**
    * Current into/out of battery. Positive for out. Negative for in. NaN: field not provided.
    */
@@ -70,7 +73,7 @@ public data class GeneratorStatus(
    * The temperature of the rectifier or power converter. INT16_MAX: field not provided.
    */
   @GeneratedMavField(type = "int16_t")
-  public val rectifierTemperature: Int = 0,
+  public val rectifierTemperature: Short = 0,
   /**
    * The target battery current. Positive for out. Negative for in. NaN: field not provided
    */
@@ -81,12 +84,12 @@ public data class GeneratorStatus(
    * provided.
    */
   @GeneratedMavField(type = "int16_t")
-  public val generatorTemperature: Int = 0,
+  public val generatorTemperature: Short = 0,
   /**
    * Seconds this generator has run since it was rebooted. UINT32_MAX: field not provided.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val runtime: Long = 0L,
+  public val runtime: UInt = 0u,
   /**
    * Seconds until this generator requires maintenance.  A negative value indicates maintenance is
    * past-due. INT32_MAX: field not provided.
@@ -104,9 +107,9 @@ public data class GeneratorStatus(
     outputBuffer.encodeFloat(powerGenerated)
     outputBuffer.encodeFloat(busVoltage)
     outputBuffer.encodeFloat(batCurrentSetpoint)
-    outputBuffer.encodeUint32(runtime)
+    outputBuffer.encodeUInt32(runtime)
     outputBuffer.encodeInt32(timeUntilMaintenance)
-    outputBuffer.encodeUint16(generatorSpeed)
+    outputBuffer.encodeUInt16(generatorSpeed)
     outputBuffer.encodeInt16(rectifierTemperature)
     outputBuffer.encodeInt16(generatorTemperature)
     return outputBuffer.array()
@@ -120,18 +123,18 @@ public data class GeneratorStatus(
     outputBuffer.encodeFloat(powerGenerated)
     outputBuffer.encodeFloat(busVoltage)
     outputBuffer.encodeFloat(batCurrentSetpoint)
-    outputBuffer.encodeUint32(runtime)
+    outputBuffer.encodeUInt32(runtime)
     outputBuffer.encodeInt32(timeUntilMaintenance)
-    outputBuffer.encodeUint16(generatorSpeed)
+    outputBuffer.encodeUInt16(generatorSpeed)
     outputBuffer.encodeInt16(rectifierTemperature)
     outputBuffer.encodeInt16(generatorTemperature)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 373
+    private const val ID: UInt = 373u
 
-    private const val CRC: Int = 117
+    private const val CRC_EXTRA: Byte = 117
 
     private const val SIZE_V1: Int = 42
 
@@ -148,9 +151,9 @@ public data class GeneratorStatus(
       val powerGenerated = inputBuffer.decodeFloat()
       val busVoltage = inputBuffer.decodeFloat()
       val batCurrentSetpoint = inputBuffer.decodeFloat()
-      val runtime = inputBuffer.decodeUint32()
+      val runtime = inputBuffer.decodeUInt32()
       val timeUntilMaintenance = inputBuffer.decodeInt32()
-      val generatorSpeed = inputBuffer.decodeUint16()
+      val generatorSpeed = inputBuffer.decodeUInt16()
       val rectifierTemperature = inputBuffer.decodeInt16()
       val generatorTemperature = inputBuffer.decodeInt16()
 
@@ -170,7 +173,7 @@ public data class GeneratorStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<GeneratorStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<GeneratorStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
@@ -180,9 +183,9 @@ public data class GeneratorStatus(
   }
 
   public class Builder {
-    public var status: MavBitmaskValue<MavGeneratorStatusFlag> = MavBitmaskValue.fromValue(0)
+    public var status: MavBitmaskValue<MavGeneratorStatusFlag> = MavBitmaskValue.fromValue(0u)
 
-    public var generatorSpeed: Int = 0
+    public var generatorSpeed: UShort = 0u
 
     public var batteryCurrent: Float = 0F
 
@@ -192,13 +195,13 @@ public data class GeneratorStatus(
 
     public var busVoltage: Float = 0F
 
-    public var rectifierTemperature: Int = 0
+    public var rectifierTemperature: Short = 0
 
     public var batCurrentSetpoint: Float = 0F
 
-    public var generatorTemperature: Int = 0
+    public var generatorTemperature: Short = 0
 
-    public var runtime: Long = 0L
+    public var runtime: UInt = 0u
 
     public var timeUntilMaintenance: Int = 0
 

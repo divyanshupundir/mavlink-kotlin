@@ -1,84 +1,84 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class MavTunnelPayloadType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Encoding of payload unknown.
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(0L),
+  UNKNOWN(0u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED0(200L),
+  STORM32_RESERVED0(200u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED1(201L),
+  STORM32_RESERVED1(201u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED2(202L),
+  STORM32_RESERVED2(202u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED3(203L),
+  STORM32_RESERVED3(203u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED4(204L),
+  STORM32_RESERVED4(204u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED5(205L),
+  STORM32_RESERVED5(205u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED6(206L),
+  STORM32_RESERVED6(206u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED7(207L),
+  STORM32_RESERVED7(207u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED8(208L),
+  STORM32_RESERVED8(208u),
   /**
    * Registered for STorM32 gimbal controller.
    */
   @GeneratedMavEnumEntry
-  STORM32_RESERVED9(209L),
+  STORM32_RESERVED9(209u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavTunnelPayloadType? = when (v) {
-      0L -> UNKNOWN
-      200L -> STORM32_RESERVED0
-      201L -> STORM32_RESERVED1
-      202L -> STORM32_RESERVED2
-      203L -> STORM32_RESERVED3
-      204L -> STORM32_RESERVED4
-      205L -> STORM32_RESERVED5
-      206L -> STORM32_RESERVED6
-      207L -> STORM32_RESERVED7
-      208L -> STORM32_RESERVED8
-      209L -> STORM32_RESERVED9
+  public companion object : MavEnum.Companion<MavTunnelPayloadType> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavTunnelPayloadType? = when (v) {
+      0u -> UNKNOWN
+      200u -> STORM32_RESERVED0
+      201u -> STORM32_RESERVED1
+      202u -> STORM32_RESERVED2
+      203u -> STORM32_RESERVED3
+      204u -> STORM32_RESERVED4
+      205u -> STORM32_RESERVED5
+      206u -> STORM32_RESERVED6
+      207u -> STORM32_RESERVED7
+      208u -> STORM32_RESERVED8
+      209u -> STORM32_RESERVED9
       else -> null
     }
   }

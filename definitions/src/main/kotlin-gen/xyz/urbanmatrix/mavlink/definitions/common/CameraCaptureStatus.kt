@@ -2,10 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -13,12 +15,12 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -26,26 +28,26 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * command.
  */
 @GeneratedMavMessage(
-  id = 262,
-  crc = 12,
+  id = 262u,
+  crcExtra = 12,
 )
 public data class CameraCaptureStatus(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Current status of image capturing (0: idle, 1: capture in progress, 2: interval set but idle,
    * 3: interval set and capture in progress)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val imageStatus: Int = 0,
+  public val imageStatus: UByte = 0u,
   /**
    * Current status of video capturing (0: idle, 1: capture in progress)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val videoStatus: Int = 0,
+  public val videoStatus: UByte = 0u,
   /**
    * Image capture interval
    */
@@ -56,7 +58,7 @@ public data class CameraCaptureStatus(
    * recording time and use non-zero values of this field to correct any discrepancy.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val recordingTimeMs: Long = 0L,
+  public val recordingTimeMs: UInt = 0u,
   /**
    * Available storage capacity.
    */
@@ -75,31 +77,31 @@ public data class CameraCaptureStatus(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(imageInterval)
-    outputBuffer.encodeUint32(recordingTimeMs)
+    outputBuffer.encodeUInt32(recordingTimeMs)
     outputBuffer.encodeFloat(availableCapacity)
-    outputBuffer.encodeUint8(imageStatus)
-    outputBuffer.encodeUint8(videoStatus)
+    outputBuffer.encodeUInt8(imageStatus)
+    outputBuffer.encodeUInt8(videoStatus)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(imageInterval)
-    outputBuffer.encodeUint32(recordingTimeMs)
+    outputBuffer.encodeUInt32(recordingTimeMs)
     outputBuffer.encodeFloat(availableCapacity)
-    outputBuffer.encodeUint8(imageStatus)
-    outputBuffer.encodeUint8(videoStatus)
+    outputBuffer.encodeUInt8(imageStatus)
+    outputBuffer.encodeUInt8(videoStatus)
     outputBuffer.encodeInt32(imageCount)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 262
+    private const val ID: UInt = 262u
 
-    private const val CRC: Int = 12
+    private const val CRC_EXTRA: Byte = 12
 
     private const val SIZE_V1: Int = 18
 
@@ -107,12 +109,12 @@ public data class CameraCaptureStatus(
 
     private val DESERIALIZER: MavDeserializer<CameraCaptureStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val imageInterval = inputBuffer.decodeFloat()
-      val recordingTimeMs = inputBuffer.decodeUint32()
+      val recordingTimeMs = inputBuffer.decodeUInt32()
       val availableCapacity = inputBuffer.decodeFloat()
-      val imageStatus = inputBuffer.decodeUint8()
-      val videoStatus = inputBuffer.decodeUint8()
+      val imageStatus = inputBuffer.decodeUInt8()
+      val videoStatus = inputBuffer.decodeUInt8()
       val imageCount = inputBuffer.decodeInt32()
 
       CameraCaptureStatus(
@@ -127,8 +129,8 @@ public data class CameraCaptureStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CameraCaptureStatus> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<CameraCaptureStatus> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraCaptureStatus> = METADATA
 
@@ -137,15 +139,15 @@ public data class CameraCaptureStatus(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var imageStatus: Int = 0
+    public var imageStatus: UByte = 0u
 
-    public var videoStatus: Int = 0
+    public var videoStatus: UByte = 0u
 
     public var imageInterval: Float = 0F
 
-    public var recordingTimeMs: Long = 0L
+    public var recordingTimeMs: UInt = 0u
 
     public var availableCapacity: Float = 0F
 

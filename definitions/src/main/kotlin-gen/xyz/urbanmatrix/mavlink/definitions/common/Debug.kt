@@ -2,21 +2,23 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,20 +26,20 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * plot of QGroundControl as DEBUG N.
  */
 @GeneratedMavMessage(
-  id = 254,
-  crc = 46,
+  id = 254u,
+  crcExtra = 46,
 )
 public data class Debug(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * index of debug variable
    */
   @GeneratedMavField(type = "uint8_t")
-  public val ind: Int = 0,
+  public val ind: UByte = 0u,
   /**
    * DEBUG value
    */
@@ -48,24 +50,24 @@ public data class Debug(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(value)
-    outputBuffer.encodeUint8(ind)
+    outputBuffer.encodeUInt8(ind)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(value)
-    outputBuffer.encodeUint8(ind)
+    outputBuffer.encodeUInt8(ind)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 254
+    private const val ID: UInt = 254u
 
-    private const val CRC: Int = 46
+    private const val CRC_EXTRA: Byte = 46
 
     private const val SIZE_V1: Int = 9
 
@@ -73,9 +75,9 @@ public data class Debug(
 
     private val DESERIALIZER: MavDeserializer<Debug> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val value = inputBuffer.decodeFloat()
-      val ind = inputBuffer.decodeUint8()
+      val ind = inputBuffer.decodeUInt8()
 
       Debug(
         timeBootMs = timeBootMs,
@@ -85,7 +87,8 @@ public data class Debug(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Debug> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Debug> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Debug> = METADATA
 
@@ -94,9 +97,9 @@ public data class Debug(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var ind: Int = 0
+    public var ind: UByte = 0u
 
     public var `value`: Float = 0F
 

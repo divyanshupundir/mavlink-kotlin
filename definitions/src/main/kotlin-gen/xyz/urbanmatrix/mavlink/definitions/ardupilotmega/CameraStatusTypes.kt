@@ -1,60 +1,60 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class CameraStatusTypes(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Camera heartbeat, announce camera component ID at 1Hz.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_HEARTBEAT(0L),
+  CAMERA_STATUS_TYPE_HEARTBEAT(0u),
   /**
    * Camera image triggered.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_TRIGGER(1L),
+  CAMERA_STATUS_TYPE_TRIGGER(1u),
   /**
    * Camera connection lost.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_DISCONNECT(2L),
+  CAMERA_STATUS_TYPE_DISCONNECT(2u),
   /**
    * Camera unknown error.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_ERROR(3L),
+  CAMERA_STATUS_TYPE_ERROR(3u),
   /**
    * Camera battery low. Parameter p1 shows reported voltage.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_LOWBATT(4L),
+  CAMERA_STATUS_TYPE_LOWBATT(4u),
   /**
    * Camera storage low. Parameter p1 shows reported shots remaining.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_LOWSTORE(5L),
+  CAMERA_STATUS_TYPE_LOWSTORE(5u),
   /**
    * Camera storage low. Parameter p1 shows reported video minutes remaining.
    */
   @GeneratedMavEnumEntry
-  CAMERA_STATUS_TYPE_LOWSTOREV(6L),
+  CAMERA_STATUS_TYPE_LOWSTOREV(6u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): CameraStatusTypes? = when (v) {
-      0L -> CAMERA_STATUS_TYPE_HEARTBEAT
-      1L -> CAMERA_STATUS_TYPE_TRIGGER
-      2L -> CAMERA_STATUS_TYPE_DISCONNECT
-      3L -> CAMERA_STATUS_TYPE_ERROR
-      4L -> CAMERA_STATUS_TYPE_LOWBATT
-      5L -> CAMERA_STATUS_TYPE_LOWSTORE
-      6L -> CAMERA_STATUS_TYPE_LOWSTOREV
+  public companion object : MavEnum.Companion<CameraStatusTypes> {
+    public override fun getEntryFromValueOrNull(v: UInt): CameraStatusTypes? = when (v) {
+      0u -> CAMERA_STATUS_TYPE_HEARTBEAT
+      1u -> CAMERA_STATUS_TYPE_TRIGGER
+      2u -> CAMERA_STATUS_TYPE_DISCONNECT
+      3u -> CAMERA_STATUS_TYPE_ERROR
+      4u -> CAMERA_STATUS_TYPE_LOWBATT
+      5u -> CAMERA_STATUS_TYPE_LOWSTORE
+      6u -> CAMERA_STATUS_TYPE_LOWSTOREV
       else -> null
     }
   }

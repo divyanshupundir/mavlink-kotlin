@@ -2,18 +2,22 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -21,62 +25,62 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
-  id = 66,
-  crc = 148,
+  id = 66u,
+  crcExtra = -108,
 )
 public data class RequestDataStream(
   /**
    * The target requested to send the message stream.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * The target requested to send the message stream.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * The ID of the requested data stream
    */
   @GeneratedMavField(type = "uint8_t")
-  public val reqStreamId: Int = 0,
+  public val reqStreamId: UByte = 0u,
   /**
    * The requested message rate
    */
   @GeneratedMavField(type = "uint16_t")
-  public val reqMessageRate: Int = 0,
+  public val reqMessageRate: UShort = 0u,
   /**
    * 1 to start sending, 0 to stop sending.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val startStop: Int = 0,
+  public val startStop: UByte = 0u,
 ) : MavMessage<RequestDataStream> {
   public override val instanceMetadata: MavMessage.Metadata<RequestDataStream> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(reqMessageRate)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(reqStreamId)
-    outputBuffer.encodeUint8(startStop)
+    outputBuffer.encodeUInt16(reqMessageRate)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(reqStreamId)
+    outputBuffer.encodeUInt8(startStop)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint16(reqMessageRate)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8(reqStreamId)
-    outputBuffer.encodeUint8(startStop)
+    outputBuffer.encodeUInt16(reqMessageRate)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8(reqStreamId)
+    outputBuffer.encodeUInt8(startStop)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 66
+    private const val ID: UInt = 66u
 
-    private const val CRC: Int = 148
+    private const val CRC_EXTRA: Byte = -108
 
     private const val SIZE_V1: Int = 6
 
@@ -84,11 +88,11 @@ public data class RequestDataStream(
 
     private val DESERIALIZER: MavDeserializer<RequestDataStream> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val reqMessageRate = inputBuffer.decodeUint16()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val reqStreamId = inputBuffer.decodeUint8()
-      val startStop = inputBuffer.decodeUint8()
+      val reqMessageRate = inputBuffer.decodeUInt16()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val reqStreamId = inputBuffer.decodeUInt8()
+      val startStop = inputBuffer.decodeUInt8()
 
       RequestDataStream(
         targetSystem = targetSystem,
@@ -100,8 +104,8 @@ public data class RequestDataStream(
     }
 
 
-    private val METADATA: MavMessage.Metadata<RequestDataStream> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<RequestDataStream> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<RequestDataStream> = METADATA
 
@@ -110,15 +114,15 @@ public data class RequestDataStream(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var reqStreamId: Int = 0
+    public var reqStreamId: UByte = 0u
 
-    public var reqMessageRate: Int = 0
+    public var reqMessageRate: UShort = 0u
 
-    public var startStop: Int = 0
+    public var startStop: UByte = 0u
 
     public fun build(): RequestDataStream = RequestDataStream(
       targetSystem = targetSystem,

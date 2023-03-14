@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,42 +10,42 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavBatteryType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not specified.
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(0L),
+  UNKNOWN(0u),
   /**
    * Lithium polymer battery
    */
   @GeneratedMavEnumEntry
-  LIPO(1L),
+  LIPO(1u),
   /**
    * Lithium-iron-phosphate battery
    */
   @GeneratedMavEnumEntry
-  LIFE(2L),
+  LIFE(2u),
   /**
    * Lithium-ION battery
    */
   @GeneratedMavEnumEntry
-  LION(3L),
+  LION(3u),
   /**
    * Nickel metal hydride battery
    */
   @GeneratedMavEnumEntry
-  NIMH(4L),
+  NIMH(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavBatteryType? = when (v) {
-      0L -> UNKNOWN
-      1L -> LIPO
-      2L -> LIFE
-      3L -> LION
-      4L -> NIMH
+  public companion object : MavEnum.Companion<MavBatteryType> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryType? = when (v) {
+      0u -> UNKNOWN
+      1u -> LIPO
+      2u -> LIFE
+      3u -> LION
+      4u -> NIMH
       else -> null
     }
   }

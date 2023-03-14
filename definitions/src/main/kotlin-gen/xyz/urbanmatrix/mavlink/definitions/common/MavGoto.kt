@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,36 +10,36 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavGoto(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Hold at the current position.
    */
   @GeneratedMavEnumEntry
-  DO_HOLD(0L),
+  DO_HOLD(0u),
   /**
    * Continue with the next item in mission execution.
    */
   @GeneratedMavEnumEntry
-  DO_CONTINUE(1L),
+  DO_CONTINUE(1u),
   /**
    * Hold at the current position of the system
    */
   @GeneratedMavEnumEntry
-  HOLD_AT_CURRENT_POSITION(2L),
+  HOLD_AT_CURRENT_POSITION(2u),
   /**
    * Hold at the position specified in the parameters of the DO_HOLD action
    */
   @GeneratedMavEnumEntry
-  HOLD_AT_SPECIFIED_POSITION(3L),
+  HOLD_AT_SPECIFIED_POSITION(3u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavGoto? = when (v) {
-      0L -> DO_HOLD
-      1L -> DO_CONTINUE
-      2L -> HOLD_AT_CURRENT_POSITION
-      3L -> HOLD_AT_SPECIFIED_POSITION
+  public companion object : MavEnum.Companion<MavGoto> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavGoto? = when (v) {
+      0u -> DO_HOLD
+      1u -> DO_CONTINUE
+      2u -> HOLD_AT_CURRENT_POSITION
+      3u -> HOLD_AT_SPECIFIED_POSITION
       else -> null
     }
   }

@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,66 +10,66 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class StorageType(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Storage type is not known.
    */
   @GeneratedMavEnumEntry
-  UNKNOWN(0L),
+  UNKNOWN(0u),
   /**
    * Storage type is USB device.
    */
   @GeneratedMavEnumEntry
-  USB_STICK(1L),
+  USB_STICK(1u),
   /**
    * Storage type is SD card.
    */
   @GeneratedMavEnumEntry
-  SD(2L),
+  SD(2u),
   /**
    * Storage type is microSD card.
    */
   @GeneratedMavEnumEntry
-  MICROSD(3L),
+  MICROSD(3u),
   /**
    * Storage type is CFast.
    */
   @GeneratedMavEnumEntry
-  CF(4L),
+  CF(4u),
   /**
    * Storage type is CFexpress.
    */
   @GeneratedMavEnumEntry
-  CFE(5L),
+  CFE(5u),
   /**
    * Storage type is XQD.
    */
   @GeneratedMavEnumEntry
-  XQD(6L),
+  XQD(6u),
   /**
    * Storage type is HD mass storage type.
    */
   @GeneratedMavEnumEntry
-  HD(7L),
+  HD(7u),
   /**
    * Storage type is other, not listed type.
    */
   @GeneratedMavEnumEntry
-  OTHER(254L),
+  OTHER(254u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): StorageType? = when (v) {
-      0L -> UNKNOWN
-      1L -> USB_STICK
-      2L -> SD
-      3L -> MICROSD
-      4L -> CF
-      5L -> CFE
-      6L -> XQD
-      7L -> HD
-      254L -> OTHER
+  public companion object : MavEnum.Companion<StorageType> {
+    public override fun getEntryFromValueOrNull(v: UInt): StorageType? = when (v) {
+      0u -> UNKNOWN
+      1u -> USB_STICK
+      2u -> SD
+      3u -> MICROSD
+      4u -> CF
+      5u -> CFE
+      6u -> XQD
+      7u -> HD
+      254u -> OTHER
       else -> null
     }
   }

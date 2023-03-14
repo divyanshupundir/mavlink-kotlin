@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -13,31 +16,31 @@ import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeDoubleArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeDoubleArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Cumulative distance traveled for each reported wheel.
  */
 @GeneratedMavMessage(
-  id = 9000,
-  crc = 113,
+  id = 9000u,
+  crcExtra = 113,
 )
 public data class WheelDistance(
   /**
    * Timestamp (synced to UNIX time or since system boot).
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Number of wheels reported.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * Distance reported by individual wheel encoders. Forward rotations increase values, reverse
    * rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of
@@ -50,24 +53,24 @@ public data class WheelDistance(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeDoubleArray(distance, 128)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt8(count)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeDoubleArray(distance, 128)
-    outputBuffer.encodeUint8(count)
+    outputBuffer.encodeUInt8(count)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 9000
+    private const val ID: UInt = 9000u
 
-    private const val CRC: Int = 113
+    private const val CRC_EXTRA: Byte = 113
 
     private const val SIZE_V1: Int = 137
 
@@ -75,9 +78,9 @@ public data class WheelDistance(
 
     private val DESERIALIZER: MavDeserializer<WheelDistance> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val distance = inputBuffer.decodeDoubleArray(128)
-      val count = inputBuffer.decodeUint8()
+      val count = inputBuffer.decodeUInt8()
 
       WheelDistance(
         timeUsec = timeUsec,
@@ -87,7 +90,7 @@ public data class WheelDistance(
     }
 
 
-    private val METADATA: MavMessage.Metadata<WheelDistance> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<WheelDistance> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WheelDistance> = METADATA
@@ -97,9 +100,9 @@ public data class WheelDistance(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
     public var distance: List<Double> = emptyList()
 

@@ -1,25 +1,28 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -27,104 +30,104 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 8,
-  crc = 117,
+  id = 8u,
+  crcExtra = 117,
 )
 public data class LinkNodeStatus(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timestamp: BigInteger = BigInteger.ZERO,
+  public val timestamp: ULong = 0uL,
   /**
    * Remaining free transmit buffer space
    */
   @GeneratedMavField(type = "uint8_t")
-  public val txBuf: Int = 0,
+  public val txBuf: UByte = 0u,
   /**
    * Remaining free receive buffer space
    */
   @GeneratedMavField(type = "uint8_t")
-  public val rxBuf: Int = 0,
+  public val rxBuf: UByte = 0u,
   /**
    * Transmit rate
    */
   @GeneratedMavField(type = "uint32_t")
-  public val txRate: Long = 0L,
+  public val txRate: UInt = 0u,
   /**
    * Receive rate
    */
   @GeneratedMavField(type = "uint32_t")
-  public val rxRate: Long = 0L,
+  public val rxRate: UInt = 0u,
   /**
    * Number of bytes that could not be parsed correctly.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val rxParseErr: Int = 0,
+  public val rxParseErr: UShort = 0u,
   /**
    * Transmit buffer overflows. This number wraps around as it reaches UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val txOverflows: Int = 0,
+  public val txOverflows: UShort = 0u,
   /**
    * Receive buffer overflows. This number wraps around as it reaches UINT16_MAX
    */
   @GeneratedMavField(type = "uint16_t")
-  public val rxOverflows: Int = 0,
+  public val rxOverflows: UShort = 0u,
   /**
    * Messages sent
    */
   @GeneratedMavField(type = "uint32_t")
-  public val messagesSent: Long = 0L,
+  public val messagesSent: UInt = 0u,
   /**
    * Messages received (estimated from counting seq)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val messagesReceived: Long = 0L,
+  public val messagesReceived: UInt = 0u,
   /**
    * Messages lost (estimated from counting seq)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val messagesLost: Long = 0L,
+  public val messagesLost: UInt = 0u,
 ) : MavMessage<LinkNodeStatus> {
   public override val instanceMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint32(txRate)
-    outputBuffer.encodeUint32(rxRate)
-    outputBuffer.encodeUint32(messagesSent)
-    outputBuffer.encodeUint32(messagesReceived)
-    outputBuffer.encodeUint32(messagesLost)
-    outputBuffer.encodeUint16(rxParseErr)
-    outputBuffer.encodeUint16(txOverflows)
-    outputBuffer.encodeUint16(rxOverflows)
-    outputBuffer.encodeUint8(txBuf)
-    outputBuffer.encodeUint8(rxBuf)
+    outputBuffer.encodeUInt64(timestamp)
+    outputBuffer.encodeUInt32(txRate)
+    outputBuffer.encodeUInt32(rxRate)
+    outputBuffer.encodeUInt32(messagesSent)
+    outputBuffer.encodeUInt32(messagesReceived)
+    outputBuffer.encodeUInt32(messagesLost)
+    outputBuffer.encodeUInt16(rxParseErr)
+    outputBuffer.encodeUInt16(txOverflows)
+    outputBuffer.encodeUInt16(rxOverflows)
+    outputBuffer.encodeUInt8(txBuf)
+    outputBuffer.encodeUInt8(rxBuf)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timestamp)
-    outputBuffer.encodeUint32(txRate)
-    outputBuffer.encodeUint32(rxRate)
-    outputBuffer.encodeUint32(messagesSent)
-    outputBuffer.encodeUint32(messagesReceived)
-    outputBuffer.encodeUint32(messagesLost)
-    outputBuffer.encodeUint16(rxParseErr)
-    outputBuffer.encodeUint16(txOverflows)
-    outputBuffer.encodeUint16(rxOverflows)
-    outputBuffer.encodeUint8(txBuf)
-    outputBuffer.encodeUint8(rxBuf)
+    outputBuffer.encodeUInt64(timestamp)
+    outputBuffer.encodeUInt32(txRate)
+    outputBuffer.encodeUInt32(rxRate)
+    outputBuffer.encodeUInt32(messagesSent)
+    outputBuffer.encodeUInt32(messagesReceived)
+    outputBuffer.encodeUInt32(messagesLost)
+    outputBuffer.encodeUInt16(rxParseErr)
+    outputBuffer.encodeUInt16(txOverflows)
+    outputBuffer.encodeUInt16(rxOverflows)
+    outputBuffer.encodeUInt8(txBuf)
+    outputBuffer.encodeUInt8(rxBuf)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 8
+    private const val ID: UInt = 8u
 
-    private const val CRC: Int = 117
+    private const val CRC_EXTRA: Byte = 117
 
     private const val SIZE_V1: Int = 36
 
@@ -132,17 +135,17 @@ public data class LinkNodeStatus(
 
     private val DESERIALIZER: MavDeserializer<LinkNodeStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUint64()
-      val txRate = inputBuffer.decodeUint32()
-      val rxRate = inputBuffer.decodeUint32()
-      val messagesSent = inputBuffer.decodeUint32()
-      val messagesReceived = inputBuffer.decodeUint32()
-      val messagesLost = inputBuffer.decodeUint32()
-      val rxParseErr = inputBuffer.decodeUint16()
-      val txOverflows = inputBuffer.decodeUint16()
-      val rxOverflows = inputBuffer.decodeUint16()
-      val txBuf = inputBuffer.decodeUint8()
-      val rxBuf = inputBuffer.decodeUint8()
+      val timestamp = inputBuffer.decodeUInt64()
+      val txRate = inputBuffer.decodeUInt32()
+      val rxRate = inputBuffer.decodeUInt32()
+      val messagesSent = inputBuffer.decodeUInt32()
+      val messagesReceived = inputBuffer.decodeUInt32()
+      val messagesLost = inputBuffer.decodeUInt32()
+      val rxParseErr = inputBuffer.decodeUInt16()
+      val txOverflows = inputBuffer.decodeUInt16()
+      val rxOverflows = inputBuffer.decodeUInt16()
+      val txBuf = inputBuffer.decodeUInt8()
+      val rxBuf = inputBuffer.decodeUInt8()
 
       LinkNodeStatus(
         timestamp = timestamp,
@@ -160,7 +163,7 @@ public data class LinkNodeStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<LinkNodeStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<LinkNodeStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<LinkNodeStatus> = METADATA
@@ -170,27 +173,27 @@ public data class LinkNodeStatus(
   }
 
   public class Builder {
-    public var timestamp: BigInteger = BigInteger.ZERO
+    public var timestamp: ULong = 0uL
 
-    public var txBuf: Int = 0
+    public var txBuf: UByte = 0u
 
-    public var rxBuf: Int = 0
+    public var rxBuf: UByte = 0u
 
-    public var txRate: Long = 0L
+    public var txRate: UInt = 0u
 
-    public var rxRate: Long = 0L
+    public var rxRate: UInt = 0u
 
-    public var rxParseErr: Int = 0
+    public var rxParseErr: UShort = 0u
 
-    public var txOverflows: Int = 0
+    public var txOverflows: UShort = 0u
 
-    public var rxOverflows: Int = 0
+    public var rxOverflows: UShort = 0u
 
-    public var messagesSent: Long = 0L
+    public var messagesSent: UInt = 0u
 
-    public var messagesReceived: Long = 0L
+    public var messagesReceived: UInt = 0u
 
-    public var messagesLost: Long = 0L
+    public var messagesLost: UInt = 0u
 
     public fun build(): LinkNodeStatus = LinkNodeStatus(
       timestamp = timestamp,

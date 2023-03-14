@@ -2,66 +2,69 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Data packet, size 32.
  */
 @GeneratedMavMessage(
-  id = 170,
-  crc = 73,
+  id = 170u,
+  crcExtra = 73,
 )
 public data class Data32(
   /**
    * Data type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type: Int = 0,
+  public val type: UByte = 0u,
   /**
    * Data length.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val len: Int = 0,
+  public val len: UByte = 0u,
   /**
    * Raw data.
    */
   @GeneratedMavField(type = "uint8_t[32]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<Data32> {
   public override val instanceMetadata: MavMessage.Metadata<Data32> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(type)
-    outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint8Array(data, 32)
+    outputBuffer.encodeUInt8(type)
+    outputBuffer.encodeUInt8(len)
+    outputBuffer.encodeUInt8Array(data, 32)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(type)
-    outputBuffer.encodeUint8(len)
-    outputBuffer.encodeUint8Array(data, 32)
+    outputBuffer.encodeUInt8(type)
+    outputBuffer.encodeUInt8(len)
+    outputBuffer.encodeUInt8Array(data, 32)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 170
+    private const val ID: UInt = 170u
 
-    private const val CRC: Int = 73
+    private const val CRC_EXTRA: Byte = 73
 
     private const val SIZE_V1: Int = 34
 
@@ -69,9 +72,9 @@ public data class Data32(
 
     private val DESERIALIZER: MavDeserializer<Data32> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val type = inputBuffer.decodeUint8()
-      val len = inputBuffer.decodeUint8()
-      val data = inputBuffer.decodeUint8Array(32)
+      val type = inputBuffer.decodeUInt8()
+      val len = inputBuffer.decodeUInt8()
+      val data = inputBuffer.decodeUInt8Array(32)
 
       Data32(
         type = type,
@@ -81,7 +84,8 @@ public data class Data32(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Data32> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Data32> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Data32> = METADATA
 
@@ -90,11 +94,11 @@ public data class Data32(
   }
 
   public class Builder {
-    public var type: Int = 0
+    public var type: UByte = 0u
 
-    public var len: Int = 0
+    public var len: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<UByte> = emptyList()
 
     public fun build(): Data32 = Data32(
       type = type,

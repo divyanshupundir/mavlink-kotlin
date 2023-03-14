@@ -2,17 +2,20 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -24,15 +27,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * 	This interface replaces DATA_STREAM.
  */
 @GeneratedMavMessage(
-  id = 244,
-  crc = 95,
+  id = 244u,
+  crcExtra = 95,
 )
 public data class MessageInterval(
   /**
    * The ID of the requested MAVLink message. v1.0 is limited to 254 messages.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val messageId: Int = 0,
+  public val messageId: UShort = 0u,
   /**
    * The interval between two messages. A value of -1 indicates this stream is disabled, 0 indicates
    * it is not available, > 0 indicates the interval at which it is sent.
@@ -45,21 +48,21 @@ public data class MessageInterval(
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(intervalUs)
-    outputBuffer.encodeUint16(messageId)
+    outputBuffer.encodeUInt16(messageId)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(intervalUs)
-    outputBuffer.encodeUint16(messageId)
+    outputBuffer.encodeUInt16(messageId)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 244
+    private const val ID: UInt = 244u
 
-    private const val CRC: Int = 95
+    private const val CRC_EXTRA: Byte = 95
 
     private const val SIZE_V1: Int = 6
 
@@ -68,7 +71,7 @@ public data class MessageInterval(
     private val DESERIALIZER: MavDeserializer<MessageInterval> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val intervalUs = inputBuffer.decodeInt32()
-      val messageId = inputBuffer.decodeUint16()
+      val messageId = inputBuffer.decodeUInt16()
 
       MessageInterval(
         messageId = messageId,
@@ -77,7 +80,7 @@ public data class MessageInterval(
     }
 
 
-    private val METADATA: MavMessage.Metadata<MessageInterval> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<MessageInterval> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<MessageInterval> = METADATA
@@ -87,7 +90,7 @@ public data class MessageInterval(
   }
 
   public class Builder {
-    public var messageId: Int = 0
+    public var messageId: UShort = 0u
 
     public var intervalUs: Int = 0
 

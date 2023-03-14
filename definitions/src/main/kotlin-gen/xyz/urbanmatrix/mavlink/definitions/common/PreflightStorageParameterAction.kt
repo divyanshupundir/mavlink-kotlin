@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -15,45 +15,46 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class PreflightStorageParameterAction(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Read all parameters from persistent storage. Replaces values in volatile storage.
    */
   @GeneratedMavEnumEntry
-  PARAM_READ_PERSISTENT(0L),
+  PARAM_READ_PERSISTENT(0u),
   /**
    * Write all parameter values to persistent storage (flash/EEPROM)
    */
   @GeneratedMavEnumEntry
-  PARAM_WRITE_PERSISTENT(1L),
+  PARAM_WRITE_PERSISTENT(1u),
   /**
    * Reset all user configurable parameters to their default value (including airframe selection,
    * sensor calibration data, safety settings, and so on). Does not reset values that contain operation
    * counters and vehicle computed statistics.
    */
   @GeneratedMavEnumEntry
-  PARAM_RESET_CONFIG_DEFAULT(2L),
+  PARAM_RESET_CONFIG_DEFAULT(2u),
   /**
    * Reset only sensor calibration parameters to factory defaults (or firmware default if not
    * available)
    */
   @GeneratedMavEnumEntry
-  PARAM_RESET_SENSOR_DEFAULT(3L),
+  PARAM_RESET_SENSOR_DEFAULT(3u),
   /**
    * Reset all parameters, including operation counters, to default values
    */
   @GeneratedMavEnumEntry
-  PARAM_RESET_ALL_DEFAULT(4L),
+  PARAM_RESET_ALL_DEFAULT(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): PreflightStorageParameterAction? = when (v) {
-      0L -> PARAM_READ_PERSISTENT
-      1L -> PARAM_WRITE_PERSISTENT
-      2L -> PARAM_RESET_CONFIG_DEFAULT
-      3L -> PARAM_RESET_SENSOR_DEFAULT
-      4L -> PARAM_RESET_ALL_DEFAULT
+  public companion object : MavEnum.Companion<PreflightStorageParameterAction> {
+    public override fun getEntryFromValueOrNull(v: UInt): PreflightStorageParameterAction? = when
+        (v) {
+      0u -> PARAM_READ_PERSISTENT
+      1u -> PARAM_WRITE_PERSISTENT
+      2u -> PARAM_RESET_CONFIG_DEFAULT
+      3u -> PARAM_RESET_SENSOR_DEFAULT
+      4u -> PARAM_RESET_ALL_DEFAULT
       else -> null
     }
   }

@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -22,8 +24,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * the AP. The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE
  */
 @GeneratedMavMessage(
-  id = 299,
-  crc = 19,
+  id = 299u,
+  crcExtra = 19,
 )
 public data class WifiConfigAp(
   /**
@@ -44,7 +46,7 @@ public data class WifiConfigAp(
     type = "int8_t",
     extension = true,
   )
-  public val mode: MavEnumValue<WifiConfigApMode> = MavEnumValue.fromValue(0),
+  public val mode: MavEnumValue<WifiConfigApMode> = MavEnumValue.fromValue(0u),
   /**
    * Message acceptance response (sent back to GS).
    */
@@ -52,7 +54,7 @@ public data class WifiConfigAp(
     type = "int8_t",
     extension = true,
   )
-  public val response: MavEnumValue<WifiConfigApResponse> = MavEnumValue.fromValue(0),
+  public val response: MavEnumValue<WifiConfigApResponse> = MavEnumValue.fromValue(0u),
 ) : MavMessage<WifiConfigAp> {
   public override val instanceMetadata: MavMessage.Metadata<WifiConfigAp> = METADATA
 
@@ -73,9 +75,9 @@ public data class WifiConfigAp(
   }
 
   public companion object {
-    private const val ID: Int = 299
+    private const val ID: UInt = 299u
 
-    private const val CRC: Int = 19
+    private const val CRC_EXTRA: Byte = 19
 
     private const val SIZE_V1: Int = 96
 
@@ -103,7 +105,7 @@ public data class WifiConfigAp(
     }
 
 
-    private val METADATA: MavMessage.Metadata<WifiConfigAp> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<WifiConfigAp> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WifiConfigAp> = METADATA
@@ -117,9 +119,9 @@ public data class WifiConfigAp(
 
     public var password: String = ""
 
-    public var mode: MavEnumValue<WifiConfigApMode> = MavEnumValue.fromValue(0)
+    public var mode: MavEnumValue<WifiConfigApMode> = MavEnumValue.fromValue(0u)
 
-    public var response: MavEnumValue<WifiConfigApResponse> = MavEnumValue.fromValue(0)
+    public var response: MavEnumValue<WifiConfigApResponse> = MavEnumValue.fromValue(0u)
 
     public fun build(): WifiConfigAp = WifiConfigAp(
       ssid = ssid,

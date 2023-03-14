@@ -2,10 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,54 +17,54 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Write registers for a device.
  */
 @GeneratedMavMessage(
-  id = 11002,
-  crc = 234,
+  id = 11002u,
+  crcExtra = -22,
 )
 public data class DeviceOpWrite(
   /**
    * System ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Request ID - copied to reply.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val requestId: Long = 0L,
+  public val requestId: UInt = 0u,
   /**
    * The bus type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val bustype: MavEnumValue<DeviceOpBustype> = MavEnumValue.fromValue(0),
+  public val bustype: MavEnumValue<DeviceOpBustype> = MavEnumValue.fromValue(0u),
   /**
    * Bus number.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val bus: Int = 0,
+  public val bus: UByte = 0u,
   /**
    * Bus address.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val address: Int = 0,
+  public val address: UByte = 0u,
   /**
    * Name of device on bus (for SPI).
    */
@@ -72,17 +74,17 @@ public data class DeviceOpWrite(
    * First register to write.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val regstart: Int = 0,
+  public val regstart: UByte = 0u,
   /**
    * Count of registers to write.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val count: Int = 0,
+  public val count: UByte = 0u,
   /**
    * Write data.
    */
   @GeneratedMavField(type = "uint8_t[128]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<UByte> = emptyList(),
   /**
    * Bank number.
    */
@@ -90,45 +92,45 @@ public data class DeviceOpWrite(
     type = "uint8_t",
     extension = true,
   )
-  public val bank: Int = 0,
+  public val bank: UByte = 0u,
 ) : MavMessage<DeviceOpWrite> {
   public override val instanceMetadata: MavMessage.Metadata<DeviceOpWrite> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(requestId)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt32(requestId)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeEnumValue(bustype.value, 1)
-    outputBuffer.encodeUint8(bus)
-    outputBuffer.encodeUint8(address)
+    outputBuffer.encodeUInt8(bus)
+    outputBuffer.encodeUInt8(address)
     outputBuffer.encodeString(busname, 40)
-    outputBuffer.encodeUint8(regstart)
-    outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint8Array(data, 128)
+    outputBuffer.encodeUInt8(regstart)
+    outputBuffer.encodeUInt8(count)
+    outputBuffer.encodeUInt8Array(data, 128)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(requestId)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
+    outputBuffer.encodeUInt32(requestId)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
     outputBuffer.encodeEnumValue(bustype.value, 1)
-    outputBuffer.encodeUint8(bus)
-    outputBuffer.encodeUint8(address)
+    outputBuffer.encodeUInt8(bus)
+    outputBuffer.encodeUInt8(address)
     outputBuffer.encodeString(busname, 40)
-    outputBuffer.encodeUint8(regstart)
-    outputBuffer.encodeUint8(count)
-    outputBuffer.encodeUint8Array(data, 128)
-    outputBuffer.encodeUint8(bank)
+    outputBuffer.encodeUInt8(regstart)
+    outputBuffer.encodeUInt8(count)
+    outputBuffer.encodeUInt8Array(data, 128)
+    outputBuffer.encodeUInt8(bank)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 11002
+    private const val ID: UInt = 11002u
 
-    private const val CRC: Int = 234
+    private const val CRC_EXTRA: Byte = -22
 
     private const val SIZE_V1: Int = 179
 
@@ -136,20 +138,20 @@ public data class DeviceOpWrite(
 
     private val DESERIALIZER: MavDeserializer<DeviceOpWrite> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUint32()
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
+      val requestId = inputBuffer.decodeUInt32()
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
       val bustype = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = DeviceOpBustype.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val bus = inputBuffer.decodeUint8()
-      val address = inputBuffer.decodeUint8()
+      val bus = inputBuffer.decodeUInt8()
+      val address = inputBuffer.decodeUInt8()
       val busname = inputBuffer.decodeString(40)
-      val regstart = inputBuffer.decodeUint8()
-      val count = inputBuffer.decodeUint8()
-      val data = inputBuffer.decodeUint8Array(128)
-      val bank = inputBuffer.decodeUint8()
+      val regstart = inputBuffer.decodeUInt8()
+      val count = inputBuffer.decodeUInt8()
+      val data = inputBuffer.decodeUInt8Array(128)
+      val bank = inputBuffer.decodeUInt8()
 
       DeviceOpWrite(
         targetSystem = targetSystem,
@@ -167,7 +169,7 @@ public data class DeviceOpWrite(
     }
 
 
-    private val METADATA: MavMessage.Metadata<DeviceOpWrite> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<DeviceOpWrite> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<DeviceOpWrite> = METADATA
@@ -177,27 +179,27 @@ public data class DeviceOpWrite(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var requestId: Long = 0L
+    public var requestId: UInt = 0u
 
-    public var bustype: MavEnumValue<DeviceOpBustype> = MavEnumValue.fromValue(0)
+    public var bustype: MavEnumValue<DeviceOpBustype> = MavEnumValue.fromValue(0u)
 
-    public var bus: Int = 0
+    public var bus: UByte = 0u
 
-    public var address: Int = 0
+    public var address: UByte = 0u
 
     public var busname: String = ""
 
-    public var regstart: Int = 0
+    public var regstart: UByte = 0u
 
-    public var count: Int = 0
+    public var count: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<UByte> = emptyList()
 
-    public var bank: Int = 0
+    public var bank: UByte = 0u
 
     public fun build(): DeviceOpWrite = DeviceOpWrite(
       targetSystem = targetSystem,

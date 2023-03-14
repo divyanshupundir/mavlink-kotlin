@@ -1,102 +1,102 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class GoproFrameRate(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * 12 FPS.
    */
   @GeneratedMavEnumEntry
-  _12(0L),
+  _12(0u),
   /**
    * 15 FPS.
    */
   @GeneratedMavEnumEntry
-  _15(1L),
+  _15(1u),
   /**
    * 24 FPS.
    */
   @GeneratedMavEnumEntry
-  _24(2L),
+  _24(2u),
   /**
    * 25 FPS.
    */
   @GeneratedMavEnumEntry
-  _25(3L),
+  _25(3u),
   /**
    * 30 FPS.
    */
   @GeneratedMavEnumEntry
-  _30(4L),
+  _30(4u),
   /**
    * 48 FPS.
    */
   @GeneratedMavEnumEntry
-  _48(5L),
+  _48(5u),
   /**
    * 50 FPS.
    */
   @GeneratedMavEnumEntry
-  _50(6L),
+  _50(6u),
   /**
    * 60 FPS.
    */
   @GeneratedMavEnumEntry
-  _60(7L),
+  _60(7u),
   /**
    * 80 FPS.
    */
   @GeneratedMavEnumEntry
-  _80(8L),
+  _80(8u),
   /**
    * 90 FPS.
    */
   @GeneratedMavEnumEntry
-  _90(9L),
+  _90(9u),
   /**
    * 100 FPS.
    */
   @GeneratedMavEnumEntry
-  _100(10L),
+  _100(10u),
   /**
    * 120 FPS.
    */
   @GeneratedMavEnumEntry
-  _120(11L),
+  _120(11u),
   /**
    * 240 FPS.
    */
   @GeneratedMavEnumEntry
-  _240(12L),
+  _240(12u),
   /**
    * 12.5 FPS.
    */
   @GeneratedMavEnumEntry
-  _12_5(13L),
+  _12_5(13u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): GoproFrameRate? = when (v) {
-      0L -> _12
-      1L -> _15
-      2L -> _24
-      3L -> _25
-      4L -> _30
-      5L -> _48
-      6L -> _50
-      7L -> _60
-      8L -> _80
-      9L -> _90
-      10L -> _100
-      11L -> _120
-      12L -> _240
-      13L -> _12_5
+  public companion object : MavEnum.Companion<GoproFrameRate> {
+    public override fun getEntryFromValueOrNull(v: UInt): GoproFrameRate? = when (v) {
+      0u -> _12
+      1u -> _15
+      2u -> _24
+      3u -> _25
+      4u -> _30
+      5u -> _48
+      6u -> _50
+      7u -> _60
+      8u -> _80
+      9u -> _90
+      10u -> _100
+      11u -> _120
+      12u -> _240
+      13u -> _12_5
       else -> null
     }
   }

@@ -2,9 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,18 +16,18 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * The state of the navigation and position controller.
  */
 @GeneratedMavMessage(
-  id = 62,
-  crc = 183,
+  id = 62u,
+  crcExtra = -73,
 )
 public data class NavControllerOutput(
   /**
@@ -40,17 +44,17 @@ public data class NavControllerOutput(
    * Current desired heading
    */
   @GeneratedMavField(type = "int16_t")
-  public val navBearing: Int = 0,
+  public val navBearing: Short = 0,
   /**
    * Bearing to current waypoint/target
    */
   @GeneratedMavField(type = "int16_t")
-  public val targetBearing: Int = 0,
+  public val targetBearing: Short = 0,
   /**
    * Distance to active waypoint
    */
   @GeneratedMavField(type = "uint16_t")
-  public val wpDist: Int = 0,
+  public val wpDist: UShort = 0u,
   /**
    * Current altitude error
    */
@@ -78,7 +82,7 @@ public data class NavControllerOutput(
     outputBuffer.encodeFloat(xtrackError)
     outputBuffer.encodeInt16(navBearing)
     outputBuffer.encodeInt16(targetBearing)
-    outputBuffer.encodeUint16(wpDist)
+    outputBuffer.encodeUInt16(wpDist)
     return outputBuffer.array()
   }
 
@@ -91,14 +95,14 @@ public data class NavControllerOutput(
     outputBuffer.encodeFloat(xtrackError)
     outputBuffer.encodeInt16(navBearing)
     outputBuffer.encodeInt16(targetBearing)
-    outputBuffer.encodeUint16(wpDist)
+    outputBuffer.encodeUInt16(wpDist)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 62
+    private const val ID: UInt = 62u
 
-    private const val CRC: Int = 183
+    private const val CRC_EXTRA: Byte = -73
 
     private const val SIZE_V1: Int = 26
 
@@ -113,7 +117,7 @@ public data class NavControllerOutput(
       val xtrackError = inputBuffer.decodeFloat()
       val navBearing = inputBuffer.decodeInt16()
       val targetBearing = inputBuffer.decodeInt16()
-      val wpDist = inputBuffer.decodeUint16()
+      val wpDist = inputBuffer.decodeUInt16()
 
       NavControllerOutput(
         navRoll = navRoll,
@@ -128,8 +132,8 @@ public data class NavControllerOutput(
     }
 
 
-    private val METADATA: MavMessage.Metadata<NavControllerOutput> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<NavControllerOutput> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
 
@@ -142,11 +146,11 @@ public data class NavControllerOutput(
 
     public var navPitch: Float = 0F
 
-    public var navBearing: Int = 0
+    public var navBearing: Short = 0
 
-    public var targetBearing: Int = 0
+    public var targetBearing: Short = 0
 
-    public var wpDist: Int = 0
+    public var wpDist: UShort = 0u
 
     public var altError: Float = 0F
 

@@ -2,9 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -19,48 +23,48 @@ import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
 import xyz.urbanmatrix.mavlink.serialization.decodeInt8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
 import xyz.urbanmatrix.mavlink.serialization.encodeInt8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Message appropriate for high latency connections like Iridium (version 2)
  */
 @GeneratedMavMessage(
-  id = 235,
-  crc = 179,
+  id = 235u,
+  crcExtra = -77,
 )
 public data class HighLatency2(
   /**
    * Timestamp (milliseconds since boot or Unix epoch)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timestamp: Long = 0L,
+  public val timestamp: UInt = 0u,
   /**
    * Type of the MAV (quadrotor, helicopter, etc.)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0),
+  public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0u),
   /**
    * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight
    * controllers.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0),
+  public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0u),
   /**
    * A bitfield for use for autopilot-specific flags (2 byte version).
    */
   @GeneratedMavField(type = "uint16_t")
-  public val customMode: Int = 0,
+  public val customMode: UShort = 0u,
   /**
    * Latitude
    */
@@ -75,133 +79,133 @@ public data class HighLatency2(
    * Altitude above mean sea level
    */
   @GeneratedMavField(type = "int16_t")
-  public val altitude: Int = 0,
+  public val altitude: Short = 0,
   /**
    * Altitude setpoint
    */
   @GeneratedMavField(type = "int16_t")
-  public val targetAltitude: Int = 0,
+  public val targetAltitude: Short = 0,
   /**
    * Heading
    */
   @GeneratedMavField(type = "uint8_t")
-  public val heading: Int = 0,
+  public val heading: UByte = 0u,
   /**
    * Heading setpoint
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetHeading: Int = 0,
+  public val targetHeading: UByte = 0u,
   /**
    * Distance to target waypoint or position
    */
   @GeneratedMavField(type = "uint16_t")
-  public val targetDistance: Int = 0,
+  public val targetDistance: UShort = 0u,
   /**
    * Throttle
    */
   @GeneratedMavField(type = "uint8_t")
-  public val throttle: Int = 0,
+  public val throttle: UByte = 0u,
   /**
    * Airspeed
    */
   @GeneratedMavField(type = "uint8_t")
-  public val airspeed: Int = 0,
+  public val airspeed: UByte = 0u,
   /**
    * Airspeed setpoint
    */
   @GeneratedMavField(type = "uint8_t")
-  public val airspeedSp: Int = 0,
+  public val airspeedSp: UByte = 0u,
   /**
    * Groundspeed
    */
   @GeneratedMavField(type = "uint8_t")
-  public val groundspeed: Int = 0,
+  public val groundspeed: UByte = 0u,
   /**
    * Windspeed
    */
   @GeneratedMavField(type = "uint8_t")
-  public val windspeed: Int = 0,
+  public val windspeed: UByte = 0u,
   /**
    * Wind heading
    */
   @GeneratedMavField(type = "uint8_t")
-  public val windHeading: Int = 0,
+  public val windHeading: UByte = 0u,
   /**
    * Maximum error horizontal position since last message
    */
   @GeneratedMavField(type = "uint8_t")
-  public val eph: Int = 0,
+  public val eph: UByte = 0u,
   /**
    * Maximum error vertical position since last message
    */
   @GeneratedMavField(type = "uint8_t")
-  public val epv: Int = 0,
+  public val epv: UByte = 0u,
   /**
    * Air temperature from airspeed sensor
    */
   @GeneratedMavField(type = "int8_t")
-  public val temperatureAir: Int = 0,
+  public val temperatureAir: Byte = 0,
   /**
    * Maximum climb rate magnitude since last message
    */
   @GeneratedMavField(type = "int8_t")
-  public val climbRate: Int = 0,
+  public val climbRate: Byte = 0,
   /**
    * Battery level (-1 if field not provided).
    */
   @GeneratedMavField(type = "int8_t")
-  public val battery: Int = 0,
+  public val battery: Byte = 0,
   /**
    * Current waypoint number
    */
   @GeneratedMavField(type = "uint16_t")
-  public val wpNum: Int = 0,
+  public val wpNum: UShort = 0u,
   /**
    * Bitmap of failure flags.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val failureFlags: MavBitmaskValue<HlFailureFlag> = MavBitmaskValue.fromValue(0),
+  public val failureFlags: MavBitmaskValue<HlFailureFlag> = MavBitmaskValue.fromValue(0u),
   /**
    * Field for custom payload.
    */
   @GeneratedMavField(type = "int8_t")
-  public val custom0: Int = 0,
+  public val custom0: Byte = 0,
   /**
    * Field for custom payload.
    */
   @GeneratedMavField(type = "int8_t")
-  public val custom1: Int = 0,
+  public val custom1: Byte = 0,
   /**
    * Field for custom payload.
    */
   @GeneratedMavField(type = "int8_t")
-  public val custom2: Int = 0,
+  public val custom2: Byte = 0,
 ) : MavMessage<HighLatency2> {
   public override val instanceMetadata: MavMessage.Metadata<HighLatency2> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timestamp)
+    outputBuffer.encodeUInt32(timestamp)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeUint16(customMode)
+    outputBuffer.encodeUInt16(customMode)
     outputBuffer.encodeInt16(altitude)
     outputBuffer.encodeInt16(targetAltitude)
-    outputBuffer.encodeUint16(targetDistance)
-    outputBuffer.encodeUint16(wpNum)
+    outputBuffer.encodeUInt16(targetDistance)
+    outputBuffer.encodeUInt16(wpNum)
     outputBuffer.encodeBitmaskValue(failureFlags.value, 2)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeUint8(heading)
-    outputBuffer.encodeUint8(targetHeading)
-    outputBuffer.encodeUint8(throttle)
-    outputBuffer.encodeUint8(airspeed)
-    outputBuffer.encodeUint8(airspeedSp)
-    outputBuffer.encodeUint8(groundspeed)
-    outputBuffer.encodeUint8(windspeed)
-    outputBuffer.encodeUint8(windHeading)
-    outputBuffer.encodeUint8(eph)
-    outputBuffer.encodeUint8(epv)
+    outputBuffer.encodeUInt8(heading)
+    outputBuffer.encodeUInt8(targetHeading)
+    outputBuffer.encodeUInt8(throttle)
+    outputBuffer.encodeUInt8(airspeed)
+    outputBuffer.encodeUInt8(airspeedSp)
+    outputBuffer.encodeUInt8(groundspeed)
+    outputBuffer.encodeUInt8(windspeed)
+    outputBuffer.encodeUInt8(windHeading)
+    outputBuffer.encodeUInt8(eph)
+    outputBuffer.encodeUInt8(epv)
     outputBuffer.encodeInt8(temperatureAir)
     outputBuffer.encodeInt8(climbRate)
     outputBuffer.encodeInt8(battery)
@@ -213,27 +217,27 @@ public data class HighLatency2(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timestamp)
+    outputBuffer.encodeUInt32(timestamp)
     outputBuffer.encodeInt32(latitude)
     outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeUint16(customMode)
+    outputBuffer.encodeUInt16(customMode)
     outputBuffer.encodeInt16(altitude)
     outputBuffer.encodeInt16(targetAltitude)
-    outputBuffer.encodeUint16(targetDistance)
-    outputBuffer.encodeUint16(wpNum)
+    outputBuffer.encodeUInt16(targetDistance)
+    outputBuffer.encodeUInt16(wpNum)
     outputBuffer.encodeBitmaskValue(failureFlags.value, 2)
     outputBuffer.encodeEnumValue(type.value, 1)
     outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeUint8(heading)
-    outputBuffer.encodeUint8(targetHeading)
-    outputBuffer.encodeUint8(throttle)
-    outputBuffer.encodeUint8(airspeed)
-    outputBuffer.encodeUint8(airspeedSp)
-    outputBuffer.encodeUint8(groundspeed)
-    outputBuffer.encodeUint8(windspeed)
-    outputBuffer.encodeUint8(windHeading)
-    outputBuffer.encodeUint8(eph)
-    outputBuffer.encodeUint8(epv)
+    outputBuffer.encodeUInt8(heading)
+    outputBuffer.encodeUInt8(targetHeading)
+    outputBuffer.encodeUInt8(throttle)
+    outputBuffer.encodeUInt8(airspeed)
+    outputBuffer.encodeUInt8(airspeedSp)
+    outputBuffer.encodeUInt8(groundspeed)
+    outputBuffer.encodeUInt8(windspeed)
+    outputBuffer.encodeUInt8(windHeading)
+    outputBuffer.encodeUInt8(eph)
+    outputBuffer.encodeUInt8(epv)
     outputBuffer.encodeInt8(temperatureAir)
     outputBuffer.encodeInt8(climbRate)
     outputBuffer.encodeInt8(battery)
@@ -244,9 +248,9 @@ public data class HighLatency2(
   }
 
   public companion object {
-    private const val ID: Int = 235
+    private const val ID: UInt = 235u
 
-    private const val CRC: Int = 179
+    private const val CRC_EXTRA: Byte = -77
 
     private const val SIZE_V1: Int = 42
 
@@ -254,14 +258,14 @@ public data class HighLatency2(
 
     private val DESERIALIZER: MavDeserializer<HighLatency2> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUint32()
+      val timestamp = inputBuffer.decodeUInt32()
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
-      val customMode = inputBuffer.decodeUint16()
+      val customMode = inputBuffer.decodeUInt16()
       val altitude = inputBuffer.decodeInt16()
       val targetAltitude = inputBuffer.decodeInt16()
-      val targetDistance = inputBuffer.decodeUint16()
-      val wpNum = inputBuffer.decodeUint16()
+      val targetDistance = inputBuffer.decodeUInt16()
+      val wpNum = inputBuffer.decodeUInt16()
       val failureFlags = inputBuffer.decodeBitmaskValue(2).let { value ->
         val flags = HlFailureFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
@@ -274,16 +278,16 @@ public data class HighLatency2(
         val entry = MavAutopilot.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val heading = inputBuffer.decodeUint8()
-      val targetHeading = inputBuffer.decodeUint8()
-      val throttle = inputBuffer.decodeUint8()
-      val airspeed = inputBuffer.decodeUint8()
-      val airspeedSp = inputBuffer.decodeUint8()
-      val groundspeed = inputBuffer.decodeUint8()
-      val windspeed = inputBuffer.decodeUint8()
-      val windHeading = inputBuffer.decodeUint8()
-      val eph = inputBuffer.decodeUint8()
-      val epv = inputBuffer.decodeUint8()
+      val heading = inputBuffer.decodeUInt8()
+      val targetHeading = inputBuffer.decodeUInt8()
+      val throttle = inputBuffer.decodeUInt8()
+      val airspeed = inputBuffer.decodeUInt8()
+      val airspeedSp = inputBuffer.decodeUInt8()
+      val groundspeed = inputBuffer.decodeUInt8()
+      val windspeed = inputBuffer.decodeUInt8()
+      val windHeading = inputBuffer.decodeUInt8()
+      val eph = inputBuffer.decodeUInt8()
+      val epv = inputBuffer.decodeUInt8()
       val temperatureAir = inputBuffer.decodeInt8()
       val climbRate = inputBuffer.decodeInt8()
       val battery = inputBuffer.decodeInt8()
@@ -323,7 +327,7 @@ public data class HighLatency2(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HighLatency2> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<HighLatency2> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HighLatency2> = METADATA
@@ -333,59 +337,59 @@ public data class HighLatency2(
   }
 
   public class Builder {
-    public var timestamp: Long = 0L
+    public var timestamp: UInt = 0u
 
-    public var type: MavEnumValue<MavType> = MavEnumValue.fromValue(0)
+    public var type: MavEnumValue<MavType> = MavEnumValue.fromValue(0u)
 
-    public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0)
+    public var autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0u)
 
-    public var customMode: Int = 0
+    public var customMode: UShort = 0u
 
     public var latitude: Int = 0
 
     public var longitude: Int = 0
 
-    public var altitude: Int = 0
+    public var altitude: Short = 0
 
-    public var targetAltitude: Int = 0
+    public var targetAltitude: Short = 0
 
-    public var heading: Int = 0
+    public var heading: UByte = 0u
 
-    public var targetHeading: Int = 0
+    public var targetHeading: UByte = 0u
 
-    public var targetDistance: Int = 0
+    public var targetDistance: UShort = 0u
 
-    public var throttle: Int = 0
+    public var throttle: UByte = 0u
 
-    public var airspeed: Int = 0
+    public var airspeed: UByte = 0u
 
-    public var airspeedSp: Int = 0
+    public var airspeedSp: UByte = 0u
 
-    public var groundspeed: Int = 0
+    public var groundspeed: UByte = 0u
 
-    public var windspeed: Int = 0
+    public var windspeed: UByte = 0u
 
-    public var windHeading: Int = 0
+    public var windHeading: UByte = 0u
 
-    public var eph: Int = 0
+    public var eph: UByte = 0u
 
-    public var epv: Int = 0
+    public var epv: UByte = 0u
 
-    public var temperatureAir: Int = 0
+    public var temperatureAir: Byte = 0
 
-    public var climbRate: Int = 0
+    public var climbRate: Byte = 0
 
-    public var battery: Int = 0
+    public var battery: Byte = 0
 
-    public var wpNum: Int = 0
+    public var wpNum: UShort = 0u
 
-    public var failureFlags: MavBitmaskValue<HlFailureFlag> = MavBitmaskValue.fromValue(0)
+    public var failureFlags: MavBitmaskValue<HlFailureFlag> = MavBitmaskValue.fromValue(0u)
 
-    public var custom0: Int = 0
+    public var custom0: Byte = 0
 
-    public var custom1: Int = 0
+    public var custom1: Byte = 0
 
-    public var custom2: Int = 0
+    public var custom2: Byte = 0
 
     public fun build(): HighLatency2 = HighLatency2(
       timestamp = timestamp,

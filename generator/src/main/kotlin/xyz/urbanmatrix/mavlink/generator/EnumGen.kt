@@ -7,7 +7,6 @@ import xyz.urbanmatrix.mavlink.api.MavBitmask
 import xyz.urbanmatrix.mavlink.api.MavEnum
 import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 import xyz.urbanmatrix.mavlink.generator.models.EnumModel
-import kotlin.Long
 
 internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
     val enum = TypeSpec.enumBuilder(formattedName)
@@ -30,11 +29,11 @@ internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
 
 private fun generatePrimaryConstructor() = FunSpec
     .constructorBuilder()
-    .addParameter("value", Long::class)
+    .addParameter("value", UInt::class)
     .build()
 
 private fun generateValueProperty() = PropertySpec
-    .builder("value", Long::class, KModifier.OVERRIDE)
+    .builder("value", UInt::class, KModifier.OVERRIDE)
     .initializer("value")
     .build()
 
@@ -45,18 +44,21 @@ private fun EnumModel.generateGeneratedAnnotation() = AnnotationSpec
 
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
+    .addSuperinterface(MavEnum.Companion::class.asTypeName().parameterizedBy(getClassName(packageName)))
+    .apply { if (bitmask) addSuperinterface(MavBitmask.Companion::class.asTypeName().parameterizedBy(getClassName(packageName))) }
     .addFunction(generateGetEntryFromValueOrNull(packageName))
     .apply { if (bitmask) addFunction(generateGetFlagsFromValue(packageName)) }
     .build()
 
 private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = FunSpec
     .builder("getEntryFromValueOrNull")
-    .addParameter(ParameterSpec("v", Long::class.asTypeName()))
+    .addModifiers(KModifier.OVERRIDE)
+    .addParameter(ParameterSpec("v", UInt::class.asTypeName()))
     .returns(getClassName(packageName).copy(nullable = true))
     .addCode(
         buildCodeBlock {
             beginControlFlow("return when (v) {")
-            entries.forEach { addStatement("${it.value}L -> ${it.getSimpleName(name)}") }
+            entries.forEach { addStatement("${it.value}u -> ${it.getSimpleName(name)}") }
             addStatement("else -> null")
             endControlFlow()
         }
@@ -65,12 +67,13 @@ private fun EnumModel.generateGetEntryFromValueOrNull(packageName: String) = Fun
 
 private fun EnumModel.generateGetFlagsFromValue(packageName: String) = FunSpec
     .builder("getFlagsFromValue")
-    .addParameter(ParameterSpec("v", Long::class.asTypeName()))
+    .addModifiers(KModifier.OVERRIDE)
+    .addParameter(ParameterSpec("v", UInt::class.asTypeName()))
     .returns(List::class.asTypeName().parameterizedBy(getClassName(packageName)))
     .addCode(
         buildCodeBlock {
             beginControlFlow("return buildList {")
-            entries.forEach { addStatement("if (v and ${it.value}L == ${it.value}L) add(${it.getSimpleName(name)})") }
+            entries.forEach { addStatement("if (v and ${it.value}u == ${it.value}u) add(${it.getSimpleName(name)})") }
             endControlFlow()
         }
     )

@@ -10,17 +10,17 @@ public interface MavFrame<T> {
     /**
      * The sequence of this frame.
      */
-    public val sequence: Int
+    public val sequence: UByte
 
     /**
      * The ID of the system that originated this frame.
      */
-    public val systemId: Int
+    public val systemId: UByte
 
     /**
      * The ID of the component that originated this frame.
      */
-    public val componentId: Int
+    public val componentId: UByte
 
     /**
      * The message/payload of this frame.
@@ -28,12 +28,7 @@ public interface MavFrame<T> {
     public val message: T
 
     /**
-     * A copy of the original raw bytes of this frame.
-     */
-    public val frameBytes: ByteArray
-
-    /**
      * The checksum of this frame.
      */
-    public val checksum: Int
+    public val checksum: UShort
 }

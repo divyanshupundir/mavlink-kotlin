@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,48 +10,48 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class RoverMode(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
-  MANUAL(0L),
+  MANUAL(0u),
   @GeneratedMavEnumEntry
-  ACRO(1L),
+  ACRO(1u),
   @GeneratedMavEnumEntry
-  STEERING(3L),
+  STEERING(3u),
   @GeneratedMavEnumEntry
-  HOLD(4L),
+  HOLD(4u),
   @GeneratedMavEnumEntry
-  LOITER(5L),
+  LOITER(5u),
   @GeneratedMavEnumEntry
-  FOLLOW(6L),
+  FOLLOW(6u),
   @GeneratedMavEnumEntry
-  SIMPLE(7L),
+  SIMPLE(7u),
   @GeneratedMavEnumEntry
-  AUTO(10L),
+  AUTO(10u),
   @GeneratedMavEnumEntry
-  RTL(11L),
+  RTL(11u),
   @GeneratedMavEnumEntry
-  SMART_RTL(12L),
+  SMART_RTL(12u),
   @GeneratedMavEnumEntry
-  GUIDED(15L),
+  GUIDED(15u),
   @GeneratedMavEnumEntry
-  INITIALIZING(16L),
+  INITIALIZING(16u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): RoverMode? = when (v) {
-      0L -> MANUAL
-      1L -> ACRO
-      3L -> STEERING
-      4L -> HOLD
-      5L -> LOITER
-      6L -> FOLLOW
-      7L -> SIMPLE
-      10L -> AUTO
-      11L -> RTL
-      12L -> SMART_RTL
-      15L -> GUIDED
-      16L -> INITIALIZING
+  public companion object : MavEnum.Companion<RoverMode> {
+    public override fun getEntryFromValueOrNull(v: UInt): RoverMode? = when (v) {
+      0u -> MANUAL
+      1u -> ACRO
+      3u -> STEERING
+      4u -> HOLD
+      5u -> LOITER
+      6u -> FOLLOW
+      7u -> SIMPLE
+      10u -> AUTO
+      11u -> RTL
+      12u -> SMART_RTL
+      15u -> GUIDED
+      16u -> INITIALIZING
       else -> null
     }
   }

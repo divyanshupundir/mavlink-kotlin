@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.Short
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -15,26 +18,26 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Winch status.
  */
 @GeneratedMavMessage(
-  id = 9005,
-  crc = 117,
+  id = 9005u,
+  crcExtra = 117,
 )
 public data class WinchStatus(
   /**
    * Timestamp (synced to UNIX time or since system boot).
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Length of line released. NaN if unknown
    */
@@ -65,18 +68,18 @@ public data class WinchStatus(
    * Temperature of the motor. INT16_MAX if unknown
    */
   @GeneratedMavField(type = "int16_t")
-  public val temperature: Int = 0,
+  public val temperature: Short = 0,
   /**
    * Status flags
    */
   @GeneratedMavField(type = "uint32_t")
-  public val status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0),
+  public val status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<WinchStatus> {
   public override val instanceMetadata: MavMessage.Metadata<WinchStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(lineLength)
     outputBuffer.encodeFloat(speed)
     outputBuffer.encodeFloat(tension)
@@ -89,7 +92,7 @@ public data class WinchStatus(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(lineLength)
     outputBuffer.encodeFloat(speed)
     outputBuffer.encodeFloat(tension)
@@ -101,9 +104,9 @@ public data class WinchStatus(
   }
 
   public companion object {
-    private const val ID: Int = 9005
+    private const val ID: UInt = 9005u
 
-    private const val CRC: Int = 117
+    private const val CRC_EXTRA: Byte = 117
 
     private const val SIZE_V1: Int = 34
 
@@ -111,7 +114,7 @@ public data class WinchStatus(
 
     private val DESERIALIZER: MavDeserializer<WinchStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val lineLength = inputBuffer.decodeFloat()
       val speed = inputBuffer.decodeFloat()
       val tension = inputBuffer.decodeFloat()
@@ -136,7 +139,7 @@ public data class WinchStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<WinchStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<WinchStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<WinchStatus> = METADATA
@@ -146,7 +149,7 @@ public data class WinchStatus(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var lineLength: Float = 0F
 
@@ -158,9 +161,9 @@ public data class WinchStatus(
 
     public var current: Float = 0F
 
-    public var temperature: Int = 0
+    public var temperature: Short = 0
 
-    public var status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0)
+    public var status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): WinchStatus = WinchStatus(
       timeUsec = timeUsec,

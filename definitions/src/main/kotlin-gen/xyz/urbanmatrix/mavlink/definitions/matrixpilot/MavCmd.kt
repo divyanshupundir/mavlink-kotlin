@@ -1,13 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Request storage of different parameter values and logs. This command will be only accepted if
@@ -35,12 +35,12 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  PREFLIGHT_STORAGE_ADVANCED(0L),
+  PREFLIGHT_STORAGE_ADVANCED(0u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavCmd? = when (v) {
-      0L -> PREFLIGHT_STORAGE_ADVANCED
+  public companion object : MavEnum.Companion<MavCmd> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+      0u -> PREFLIGHT_STORAGE_ADVANCED
       else -> null
     }
   }

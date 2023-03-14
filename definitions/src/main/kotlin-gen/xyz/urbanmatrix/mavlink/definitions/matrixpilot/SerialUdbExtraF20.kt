@@ -2,92 +2,96 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F20 format
  */
 @GeneratedMavMessage(
-  id = 186,
-  crc = 144,
+  id = 186u,
+  crcExtra = -112,
 )
 public data class SerialUdbExtraF20(
   /**
    * SUE Number of Input Channels
    */
   @GeneratedMavField(type = "uint8_t")
-  public val sueNumberOfInputs: Int = 0,
+  public val sueNumberOfInputs: UByte = 0u,
   /**
    * SUE UDB PWM Trim Value on Input 1
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput1: Int = 0,
+  public val sueTrimValueInput1: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 2
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput2: Int = 0,
+  public val sueTrimValueInput2: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 3
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput3: Int = 0,
+  public val sueTrimValueInput3: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 4
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput4: Int = 0,
+  public val sueTrimValueInput4: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 5
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput5: Int = 0,
+  public val sueTrimValueInput5: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 6
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput6: Int = 0,
+  public val sueTrimValueInput6: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 7
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput7: Int = 0,
+  public val sueTrimValueInput7: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 8
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput8: Int = 0,
+  public val sueTrimValueInput8: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 9
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput9: Int = 0,
+  public val sueTrimValueInput9: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 10
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput10: Int = 0,
+  public val sueTrimValueInput10: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 11
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput11: Int = 0,
+  public val sueTrimValueInput11: Short = 0,
   /**
    * SUE UDB PWM Trim Value on Input 12
    */
   @GeneratedMavField(type = "int16_t")
-  public val sueTrimValueInput12: Int = 0,
+  public val sueTrimValueInput12: Short = 0,
 ) : MavMessage<SerialUdbExtraF20> {
   public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
 
@@ -105,7 +109,7 @@ public data class SerialUdbExtraF20(
     outputBuffer.encodeInt16(sueTrimValueInput10)
     outputBuffer.encodeInt16(sueTrimValueInput11)
     outputBuffer.encodeInt16(sueTrimValueInput12)
-    outputBuffer.encodeUint8(sueNumberOfInputs)
+    outputBuffer.encodeUInt8(sueNumberOfInputs)
     return outputBuffer.array()
   }
 
@@ -123,14 +127,14 @@ public data class SerialUdbExtraF20(
     outputBuffer.encodeInt16(sueTrimValueInput10)
     outputBuffer.encodeInt16(sueTrimValueInput11)
     outputBuffer.encodeInt16(sueTrimValueInput12)
-    outputBuffer.encodeUint8(sueNumberOfInputs)
+    outputBuffer.encodeUInt8(sueNumberOfInputs)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 186
+    private const val ID: UInt = 186u
 
-    private const val CRC: Int = 144
+    private const val CRC_EXTRA: Byte = -112
 
     private const val SIZE_V1: Int = 25
 
@@ -150,7 +154,7 @@ public data class SerialUdbExtraF20(
       val sueTrimValueInput10 = inputBuffer.decodeInt16()
       val sueTrimValueInput11 = inputBuffer.decodeInt16()
       val sueTrimValueInput12 = inputBuffer.decodeInt16()
-      val sueNumberOfInputs = inputBuffer.decodeUint8()
+      val sueNumberOfInputs = inputBuffer.decodeUInt8()
 
       SerialUdbExtraF20(
         sueNumberOfInputs = sueNumberOfInputs,
@@ -170,8 +174,8 @@ public data class SerialUdbExtraF20(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF20> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF20> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
 
@@ -180,31 +184,31 @@ public data class SerialUdbExtraF20(
   }
 
   public class Builder {
-    public var sueNumberOfInputs: Int = 0
+    public var sueNumberOfInputs: UByte = 0u
 
-    public var sueTrimValueInput1: Int = 0
+    public var sueTrimValueInput1: Short = 0
 
-    public var sueTrimValueInput2: Int = 0
+    public var sueTrimValueInput2: Short = 0
 
-    public var sueTrimValueInput3: Int = 0
+    public var sueTrimValueInput3: Short = 0
 
-    public var sueTrimValueInput4: Int = 0
+    public var sueTrimValueInput4: Short = 0
 
-    public var sueTrimValueInput5: Int = 0
+    public var sueTrimValueInput5: Short = 0
 
-    public var sueTrimValueInput6: Int = 0
+    public var sueTrimValueInput6: Short = 0
 
-    public var sueTrimValueInput7: Int = 0
+    public var sueTrimValueInput7: Short = 0
 
-    public var sueTrimValueInput8: Int = 0
+    public var sueTrimValueInput8: Short = 0
 
-    public var sueTrimValueInput9: Int = 0
+    public var sueTrimValueInput9: Short = 0
 
-    public var sueTrimValueInput10: Int = 0
+    public var sueTrimValueInput10: Short = 0
 
-    public var sueTrimValueInput11: Int = 0
+    public var sueTrimValueInput11: Short = 0
 
-    public var sueTrimValueInput12: Int = 0
+    public var sueTrimValueInput12: Short = 0
 
     public fun build(): SerialUdbExtraF20 = SerialUdbExtraF20(
       sueNumberOfInputs = sueNumberOfInputs,

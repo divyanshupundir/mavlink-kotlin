@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -12,43 +15,43 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
  */
 @GeneratedMavMessage(
-  id = 162,
-  crc = 189,
+  id = 162u,
+  crcExtra = -67,
 )
 public data class FenceStatus(
   /**
    * Breach status (0 if currently inside fence, 1 if outside).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val breachStatus: Int = 0,
+  public val breachStatus: UByte = 0u,
   /**
    * Number of fence breaches.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val breachCount: Int = 0,
+  public val breachCount: UShort = 0u,
   /**
    * Last breach type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0),
+  public val breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0u),
   /**
    * Time (since boot) of last breach.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val breachTime: Long = 0L,
+  public val breachTime: UInt = 0u,
   /**
    * Active action to prevent fence breach
    */
@@ -56,33 +59,33 @@ public data class FenceStatus(
     type = "uint8_t",
     extension = true,
   )
-  public val breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0),
+  public val breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0u),
 ) : MavMessage<FenceStatus> {
   public override val instanceMetadata: MavMessage.Metadata<FenceStatus> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(breachTime)
-    outputBuffer.encodeUint16(breachCount)
-    outputBuffer.encodeUint8(breachStatus)
+    outputBuffer.encodeUInt32(breachTime)
+    outputBuffer.encodeUInt16(breachCount)
+    outputBuffer.encodeUInt8(breachStatus)
     outputBuffer.encodeEnumValue(breachType.value, 1)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(breachTime)
-    outputBuffer.encodeUint16(breachCount)
-    outputBuffer.encodeUint8(breachStatus)
+    outputBuffer.encodeUInt32(breachTime)
+    outputBuffer.encodeUInt16(breachCount)
+    outputBuffer.encodeUInt8(breachStatus)
     outputBuffer.encodeEnumValue(breachType.value, 1)
     outputBuffer.encodeEnumValue(breachMitigation.value, 1)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 162
+    private const val ID: UInt = 162u
 
-    private const val CRC: Int = 189
+    private const val CRC_EXTRA: Byte = -67
 
     private const val SIZE_V1: Int = 8
 
@@ -90,9 +93,9 @@ public data class FenceStatus(
 
     private val DESERIALIZER: MavDeserializer<FenceStatus> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val breachTime = inputBuffer.decodeUint32()
-      val breachCount = inputBuffer.decodeUint16()
-      val breachStatus = inputBuffer.decodeUint8()
+      val breachTime = inputBuffer.decodeUInt32()
+      val breachCount = inputBuffer.decodeUInt16()
+      val breachStatus = inputBuffer.decodeUInt8()
       val breachType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = FenceBreach.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -112,7 +115,7 @@ public data class FenceStatus(
     }
 
 
-    private val METADATA: MavMessage.Metadata<FenceStatus> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<FenceStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<FenceStatus> = METADATA
@@ -122,15 +125,15 @@ public data class FenceStatus(
   }
 
   public class Builder {
-    public var breachStatus: Int = 0
+    public var breachStatus: UByte = 0u
 
-    public var breachCount: Int = 0
+    public var breachCount: UShort = 0u
 
-    public var breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0)
+    public var breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0u)
 
-    public var breachTime: Long = 0L
+    public var breachTime: UInt = 0u
 
-    public var breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0)
+    public var breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0u)
 
     public fun build(): FenceStatus = FenceStatus(
       breachStatus = breachStatus,

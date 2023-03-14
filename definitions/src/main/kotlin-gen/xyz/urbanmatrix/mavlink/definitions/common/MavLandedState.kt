@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,42 +10,42 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavLandedState(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * MAV landed state is unknown
    */
   @GeneratedMavEnumEntry
-  UNDEFINED(0L),
+  UNDEFINED(0u),
   /**
    * MAV is landed (on ground)
    */
   @GeneratedMavEnumEntry
-  ON_GROUND(1L),
+  ON_GROUND(1u),
   /**
    * MAV is in air
    */
   @GeneratedMavEnumEntry
-  IN_AIR(2L),
+  IN_AIR(2u),
   /**
    * MAV currently taking off
    */
   @GeneratedMavEnumEntry
-  TAKEOFF(3L),
+  TAKEOFF(3u),
   /**
    * MAV currently landing
    */
   @GeneratedMavEnumEntry
-  LANDING(4L),
+  LANDING(4u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavLandedState? = when (v) {
-      0L -> UNDEFINED
-      1L -> ON_GROUND
-      2L -> IN_AIR
-      3L -> TAKEOFF
-      4L -> LANDING
+  public companion object : MavEnum.Companion<MavLandedState> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavLandedState? = when (v) {
+      0u -> UNDEFINED
+      1u -> ON_GROUND
+      2u -> IN_AIR
+      3u -> TAKEOFF
+      4u -> LANDING
       else -> null
     }
   }

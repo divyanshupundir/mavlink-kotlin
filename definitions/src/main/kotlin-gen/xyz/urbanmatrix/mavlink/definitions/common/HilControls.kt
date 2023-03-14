@@ -1,11 +1,14 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -14,20 +17,20 @@ import xyz.urbanmatrix.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs
  */
 @GeneratedMavMessage(
-  id = 91,
-  crc = 63,
+  id = 91u,
+  crcExtra = 63,
 )
 public data class HilControls(
   /**
@@ -35,7 +38,7 @@ public data class HilControls(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Control output -1 .. 1
    */
@@ -80,18 +83,18 @@ public data class HilControls(
    * System mode.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val mode: MavEnumValue<MavMode> = MavEnumValue.fromValue(0),
+  public val mode: MavEnumValue<MavMode> = MavEnumValue.fromValue(0u),
   /**
    * Navigation mode (MAV_NAV_MODE)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val navMode: Int = 0,
+  public val navMode: UByte = 0u,
 ) : MavMessage<HilControls> {
   public override val instanceMetadata: MavMessage.Metadata<HilControls> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(rollAilerons)
     outputBuffer.encodeFloat(pitchElevator)
     outputBuffer.encodeFloat(yawRudder)
@@ -101,13 +104,13 @@ public data class HilControls(
     outputBuffer.encodeFloat(aux3)
     outputBuffer.encodeFloat(aux4)
     outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUint8(navMode)
+    outputBuffer.encodeUInt8(navMode)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloat(rollAilerons)
     outputBuffer.encodeFloat(pitchElevator)
     outputBuffer.encodeFloat(yawRudder)
@@ -117,14 +120,14 @@ public data class HilControls(
     outputBuffer.encodeFloat(aux3)
     outputBuffer.encodeFloat(aux4)
     outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUint8(navMode)
+    outputBuffer.encodeUInt8(navMode)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 91
+    private const val ID: UInt = 91u
 
-    private const val CRC: Int = 63
+    private const val CRC_EXTRA: Byte = 63
 
     private const val SIZE_V1: Int = 42
 
@@ -132,7 +135,7 @@ public data class HilControls(
 
     private val DESERIALIZER: MavDeserializer<HilControls> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val rollAilerons = inputBuffer.decodeFloat()
       val pitchElevator = inputBuffer.decodeFloat()
       val yawRudder = inputBuffer.decodeFloat()
@@ -145,7 +148,7 @@ public data class HilControls(
         val entry = MavMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val navMode = inputBuffer.decodeUint8()
+      val navMode = inputBuffer.decodeUInt8()
 
       HilControls(
         timeUsec = timeUsec,
@@ -163,7 +166,7 @@ public data class HilControls(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HilControls> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<HilControls> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HilControls> = METADATA
@@ -173,7 +176,7 @@ public data class HilControls(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var rollAilerons: Float = 0F
 
@@ -191,9 +194,9 @@ public data class HilControls(
 
     public var aux4: Float = 0F
 
-    public var mode: MavEnumValue<MavMode> = MavEnumValue.fromValue(0)
+    public var mode: MavEnumValue<MavMode> = MavEnumValue.fromValue(0u)
 
-    public var navMode: Int = 0
+    public var navMode: UByte = 0u
 
     public fun build(): HilControls = HilControls(
       timeUsec = timeUsec,

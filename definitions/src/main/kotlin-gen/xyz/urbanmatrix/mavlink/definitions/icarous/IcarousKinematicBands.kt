@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.icarous
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -23,20 +25,20 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Kinematic multi bands (track) output from Daidalus
  */
 @GeneratedMavMessage(
-  id = 42001,
-  crc = 239,
+  id = 42001u,
+  crcExtra = -17,
 )
 public data class IcarousKinematicBands(
   /**
    * Number of track bands
    */
   @GeneratedMavField(type = "int8_t")
-  public val numbands: Int = 0,
+  public val numbands: Byte = 0,
   /**
    * See the TRACK_BAND_TYPES enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  public val type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
    */
@@ -51,7 +53,7 @@ public data class IcarousKinematicBands(
    * See the TRACK_BAND_TYPES enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  public val type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
    */
@@ -66,7 +68,7 @@ public data class IcarousKinematicBands(
    * See the TRACK_BAND_TYPES enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  public val type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
    */
@@ -81,7 +83,7 @@ public data class IcarousKinematicBands(
    * See the TRACK_BAND_TYPES enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  public val type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
    */
@@ -96,7 +98,7 @@ public data class IcarousKinematicBands(
    * See the TRACK_BAND_TYPES enum.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0),
+  public val type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
    */
@@ -153,9 +155,9 @@ public data class IcarousKinematicBands(
   }
 
   public companion object {
-    private const val ID: Int = 42001
+    private const val ID: UInt = 42001u
 
-    private const val CRC: Int = 239
+    private const val CRC_EXTRA: Byte = -17
 
     private const val SIZE_V1: Int = 46
 
@@ -216,8 +218,8 @@ public data class IcarousKinematicBands(
     }
 
 
-    private val METADATA: MavMessage.Metadata<IcarousKinematicBands> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<IcarousKinematicBands> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
 
@@ -226,33 +228,33 @@ public data class IcarousKinematicBands(
   }
 
   public class Builder {
-    public var numbands: Int = 0
+    public var numbands: Byte = 0
 
-    public var type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+    public var type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u)
 
     public var min1: Float = 0F
 
     public var max1: Float = 0F
 
-    public var type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+    public var type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u)
 
     public var min2: Float = 0F
 
     public var max2: Float = 0F
 
-    public var type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+    public var type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u)
 
     public var min3: Float = 0F
 
     public var max3: Float = 0F
 
-    public var type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+    public var type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u)
 
     public var min4: Float = 0F
 
     public var max4: Float = 0F
 
-    public var type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0)
+    public var type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u)
 
     public var min5: Float = 0F
 

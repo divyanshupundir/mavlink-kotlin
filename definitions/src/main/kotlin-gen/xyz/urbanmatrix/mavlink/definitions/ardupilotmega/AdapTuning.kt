@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -21,15 +23,15 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Adaptive Controller tuning information.
  */
 @GeneratedMavMessage(
-  id = 11010,
-  crc = 46,
+  id = 11010u,
+  crcExtra = 46,
 )
 public data class AdapTuning(
   /**
    * Axis.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0),
+  public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0u),
   /**
    * Desired rate.
    */
@@ -130,9 +132,9 @@ public data class AdapTuning(
   }
 
   public companion object {
-    private const val ID: Int = 11010
+    private const val ID: UInt = 11010u
 
-    private const val CRC: Int = 46
+    private const val CRC_EXTRA: Byte = 46
 
     private const val SIZE_V1: Int = 49
 
@@ -175,7 +177,7 @@ public data class AdapTuning(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AdapTuning> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AdapTuning> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AdapTuning> = METADATA
@@ -185,7 +187,7 @@ public data class AdapTuning(
   }
 
   public class Builder {
-    public var axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0)
+    public var axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0u)
 
     public var desired: Float = 0F
 

@@ -1,17 +1,18 @@
 package xyz.urbanmatrix.mavlink.definitions.minimal
 
-import kotlin.Long
+import kotlin.UInt
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavBitmask
+import xyz.urbanmatrix.mavlink.api.MavEnum
 
 /**
  * These flags encode the MAV mode.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlag(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 0b10000000 MAV safety set to armed. Motors are enabled / running / can start. Ready to fly.
@@ -20,70 +21,70 @@ public enum class MavModeFlag(
    * state.
    */
   @GeneratedMavEnumEntry
-  SAFETY_ARMED(128L),
+  SAFETY_ARMED(128u),
   /**
    * 0b01000000 remote control input is enabled.
    */
   @GeneratedMavEnumEntry
-  MANUAL_INPUT_ENABLED(64L),
+  MANUAL_INPUT_ENABLED(64u),
   /**
    * 0b00100000 hardware in the loop simulation. All motors / actuators are blocked, but internal
    * software is full operational.
    */
   @GeneratedMavEnumEntry
-  HIL_ENABLED(32L),
+  HIL_ENABLED(32u),
   /**
    * 0b00010000 system stabilizes electronically its attitude (and optionally position). It needs
    * however further control inputs to move around.
    */
   @GeneratedMavEnumEntry
-  STABILIZE_ENABLED(16L),
+  STABILIZE_ENABLED(16u),
   /**
    * 0b00001000 guided mode enabled, system flies waypoints / mission items.
    */
   @GeneratedMavEnumEntry
-  GUIDED_ENABLED(8L),
+  GUIDED_ENABLED(8u),
   /**
    * 0b00000100 autonomous mode enabled, system finds its own goal positions. Guided flag can be set
    * or not, depends on the actual implementation.
    */
   @GeneratedMavEnumEntry
-  AUTO_ENABLED(4L),
+  AUTO_ENABLED(4u),
   /**
    * 0b00000010 system has a test mode enabled. This flag is intended for temporary system tests and
    * should not be used for stable implementations.
    */
   @GeneratedMavEnumEntry
-  TEST_ENABLED(2L),
+  TEST_ENABLED(2u),
   /**
    * 0b00000001 Reserved for future use.
    */
   @GeneratedMavEnumEntry
-  CUSTOM_MODE_ENABLED(1L),
+  CUSTOM_MODE_ENABLED(1u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavModeFlag? = when (v) {
-      128L -> SAFETY_ARMED
-      64L -> MANUAL_INPUT_ENABLED
-      32L -> HIL_ENABLED
-      16L -> STABILIZE_ENABLED
-      8L -> GUIDED_ENABLED
-      4L -> AUTO_ENABLED
-      2L -> TEST_ENABLED
-      1L -> CUSTOM_MODE_ENABLED
+  public companion object : MavEnum.Companion<MavModeFlag>, MavBitmask.Companion<MavModeFlag> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavModeFlag? = when (v) {
+      128u -> SAFETY_ARMED
+      64u -> MANUAL_INPUT_ENABLED
+      32u -> HIL_ENABLED
+      16u -> STABILIZE_ENABLED
+      8u -> GUIDED_ENABLED
+      4u -> AUTO_ENABLED
+      2u -> TEST_ENABLED
+      1u -> CUSTOM_MODE_ENABLED
       else -> null
     }
 
-    public fun getFlagsFromValue(v: Long): List<MavModeFlag> = buildList {
-      if (v and 128L == 128L) add(SAFETY_ARMED)
-      if (v and 64L == 64L) add(MANUAL_INPUT_ENABLED)
-      if (v and 32L == 32L) add(HIL_ENABLED)
-      if (v and 16L == 16L) add(STABILIZE_ENABLED)
-      if (v and 8L == 8L) add(GUIDED_ENABLED)
-      if (v and 4L == 4L) add(AUTO_ENABLED)
-      if (v and 2L == 2L) add(TEST_ENABLED)
-      if (v and 1L == 1L) add(CUSTOM_MODE_ENABLED)
+    public override fun getFlagsFromValue(v: UInt): List<MavModeFlag> = buildList {
+      if (v and 128u == 128u) add(SAFETY_ARMED)
+      if (v and 64u == 64u) add(MANUAL_INPUT_ENABLED)
+      if (v and 32u == 32u) add(HIL_ENABLED)
+      if (v and 16u == 16u) add(STABILIZE_ENABLED)
+      if (v and 8u == 8u) add(GUIDED_ENABLED)
+      if (v and 4u == 4u) add(AUTO_ENABLED)
+      if (v and 2u == 2u) add(TEST_ENABLED)
+      if (v and 1u == 1u) add(CUSTOM_MODE_ENABLED)
     }
   }
 }

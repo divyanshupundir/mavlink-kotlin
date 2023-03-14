@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.matrixpilot
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * Backwards compatible version of SERIAL_UDB_EXTRA F7: format
  */
 @GeneratedMavMessage(
-  id = 175,
-  crc = 171,
+  id = 175u,
+  crcExtra = -85,
 )
 public data class SerialUdbExtraF7(
   /**
@@ -78,9 +80,9 @@ public data class SerialUdbExtraF7(
   }
 
   public companion object {
-    private const val ID: Int = 175
+    private const val ID: UInt = 175u
 
-    private const val CRC: Int = 171
+    private const val CRC_EXTRA: Byte = -85
 
     private const val SIZE_V1: Int = 24
 
@@ -106,7 +108,7 @@ public data class SerialUdbExtraF7(
     }
 
 
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF7> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<SerialUdbExtraF7> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<SerialUdbExtraF7> = METADATA

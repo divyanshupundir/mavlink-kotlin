@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,11 +17,11 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -39,8 +41,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  *       
  */
 @GeneratedMavMessage(
-  id = 242,
-  crc = 104,
+  id = 242u,
+  crcExtra = 104,
 )
 public data class HomePosition(
   /**
@@ -111,7 +113,7 @@ public data class HomePosition(
     type = "uint64_t",
     extension = true,
   )
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
 ) : MavMessage<HomePosition> {
   public override val instanceMetadata: MavMessage.Metadata<HomePosition> = METADATA
 
@@ -142,14 +144,14 @@ public data class HomePosition(
     outputBuffer.encodeFloat(approachX)
     outputBuffer.encodeFloat(approachY)
     outputBuffer.encodeFloat(approachZ)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 242
+    private const val ID: UInt = 242u
 
-    private const val CRC: Int = 104
+    private const val CRC_EXTRA: Byte = 104
 
     private const val SIZE_V1: Int = 52
 
@@ -167,7 +169,7 @@ public data class HomePosition(
       val approachX = inputBuffer.decodeFloat()
       val approachY = inputBuffer.decodeFloat()
       val approachZ = inputBuffer.decodeFloat()
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
 
       HomePosition(
         latitude = latitude,
@@ -185,7 +187,7 @@ public data class HomePosition(
     }
 
 
-    private val METADATA: MavMessage.Metadata<HomePosition> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<HomePosition> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<HomePosition> = METADATA
@@ -215,7 +217,7 @@ public data class HomePosition(
 
     public var approachZ: Float = 0F
 
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public fun build(): HomePosition = HomePosition(
       latitude = latitude,

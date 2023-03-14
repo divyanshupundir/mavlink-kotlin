@@ -2,36 +2,38 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
 import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Setpoint in roll, pitch, yaw and thrust from the operator
  */
 @GeneratedMavMessage(
-  id = 81,
-  crc = 106,
+  id = 81u,
+  crcExtra = 106,
 )
 public data class ManualSetpoint(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Desired roll rate
    */
@@ -56,43 +58,43 @@ public data class ManualSetpoint(
    * Flight mode switch position, 0.. 255
    */
   @GeneratedMavField(type = "uint8_t")
-  public val modeSwitch: Int = 0,
+  public val modeSwitch: UByte = 0u,
   /**
    * Override mode switch position, 0.. 255
    */
   @GeneratedMavField(type = "uint8_t")
-  public val manualOverrideSwitch: Int = 0,
+  public val manualOverrideSwitch: UByte = 0u,
 ) : MavMessage<ManualSetpoint> {
   public override val instanceMetadata: MavMessage.Metadata<ManualSetpoint> = METADATA
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeUint8(modeSwitch)
-    outputBuffer.encodeUint8(manualOverrideSwitch)
+    outputBuffer.encodeUInt8(modeSwitch)
+    outputBuffer.encodeUInt8(manualOverrideSwitch)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
+    outputBuffer.encodeUInt32(timeBootMs)
     outputBuffer.encodeFloat(roll)
     outputBuffer.encodeFloat(pitch)
     outputBuffer.encodeFloat(yaw)
     outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeUint8(modeSwitch)
-    outputBuffer.encodeUint8(manualOverrideSwitch)
+    outputBuffer.encodeUInt8(modeSwitch)
+    outputBuffer.encodeUInt8(manualOverrideSwitch)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 81
+    private const val ID: UInt = 81u
 
-    private const val CRC: Int = 106
+    private const val CRC_EXTRA: Byte = 106
 
     private const val SIZE_V1: Int = 22
 
@@ -100,13 +102,13 @@ public data class ManualSetpoint(
 
     private val DESERIALIZER: MavDeserializer<ManualSetpoint> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
       val thrust = inputBuffer.decodeFloat()
-      val modeSwitch = inputBuffer.decodeUint8()
-      val manualOverrideSwitch = inputBuffer.decodeUint8()
+      val modeSwitch = inputBuffer.decodeUInt8()
+      val manualOverrideSwitch = inputBuffer.decodeUInt8()
 
       ManualSetpoint(
         timeBootMs = timeBootMs,
@@ -120,7 +122,7 @@ public data class ManualSetpoint(
     }
 
 
-    private val METADATA: MavMessage.Metadata<ManualSetpoint> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<ManualSetpoint> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<ManualSetpoint> = METADATA
@@ -130,7 +132,7 @@ public data class ManualSetpoint(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
     public var roll: Float = 0F
 
@@ -140,9 +142,9 @@ public data class ManualSetpoint(
 
     public var thrust: Float = 0F
 
-    public var modeSwitch: Int = 0
+    public var modeSwitch: UByte = 0u
 
-    public var manualOverrideSwitch: Int = 0
+    public var manualOverrideSwitch: UByte = 0u
 
     public fun build(): ManualSetpoint = ManualSetpoint(
       timeBootMs = timeBootMs,

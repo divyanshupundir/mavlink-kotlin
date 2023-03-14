@@ -2,9 +2,11 @@ package xyz.urbanmatrix.mavlink.definitions.ardupilotmega
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
 import kotlin.Unit
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
 import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
@@ -18,8 +20,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * RPM sensor output.
  */
 @GeneratedMavMessage(
-  id = 226,
-  crc = 207,
+  id = 226u,
+  crcExtra = -49,
 )
 public data class Rpm(
   /**
@@ -50,9 +52,9 @@ public data class Rpm(
   }
 
   public companion object {
-    private const val ID: Int = 226
+    private const val ID: UInt = 226u
 
-    private const val CRC: Int = 207
+    private const val CRC_EXTRA: Byte = -49
 
     private const val SIZE_V1: Int = 8
 
@@ -70,7 +72,8 @@ public data class Rpm(
     }
 
 
-    private val METADATA: MavMessage.Metadata<Rpm> = MavMessage.Metadata(ID, CRC, DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<Rpm> = MavMessage.Metadata(ID, CRC_EXTRA,
+        DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<Rpm> = METADATA
 

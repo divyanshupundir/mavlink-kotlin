@@ -1,11 +1,13 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UInt
+import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -14,18 +16,18 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.decodeUint64
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeFloatArray
-import xyz.urbanmatrix.mavlink.serialization.encodeUint64
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt64
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Motion capture attitude and position
  */
 @GeneratedMavMessage(
-  id = 138,
-  crc = 109,
+  id = 138u,
+  crcExtra = 109,
 )
 public data class AttPosMocap(
   /**
@@ -33,7 +35,7 @@ public data class AttPosMocap(
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val timeUsec: BigInteger = BigInteger.ZERO,
+  public val timeUsec: ULong = 0uL,
   /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
    */
@@ -69,7 +71,7 @@ public data class AttPosMocap(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -79,7 +81,7 @@ public data class AttPosMocap(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint64(timeUsec)
+    outputBuffer.encodeUInt64(timeUsec)
     outputBuffer.encodeFloatArray(q, 16)
     outputBuffer.encodeFloat(x)
     outputBuffer.encodeFloat(y)
@@ -89,9 +91,9 @@ public data class AttPosMocap(
   }
 
   public companion object {
-    private const val ID: Int = 138
+    private const val ID: UInt = 138u
 
-    private const val CRC: Int = 109
+    private const val CRC_EXTRA: Byte = 109
 
     private const val SIZE_V1: Int = 36
 
@@ -99,7 +101,7 @@ public data class AttPosMocap(
 
     private val DESERIALIZER: MavDeserializer<AttPosMocap> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUint64()
+      val timeUsec = inputBuffer.decodeUInt64()
       val q = inputBuffer.decodeFloatArray(16)
       val x = inputBuffer.decodeFloat()
       val y = inputBuffer.decodeFloat()
@@ -117,7 +119,7 @@ public data class AttPosMocap(
     }
 
 
-    private val METADATA: MavMessage.Metadata<AttPosMocap> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<AttPosMocap> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<AttPosMocap> = METADATA
@@ -127,7 +129,7 @@ public data class AttPosMocap(
   }
 
   public class Builder {
-    public var timeUsec: BigInteger = BigInteger.ZERO
+    public var timeUsec: ULong = 0uL
 
     public var q: List<Float> = emptyList()
 

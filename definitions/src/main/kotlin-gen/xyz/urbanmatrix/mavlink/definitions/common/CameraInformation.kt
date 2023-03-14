@@ -2,11 +2,14 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -17,48 +20,48 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.decodeFloat
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeBitmaskValue
 import xyz.urbanmatrix.mavlink.serialization.encodeFloat
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt32
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
  * Information about a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
  */
 @GeneratedMavMessage(
-  id = 259,
-  crc = 92,
+  id = 259u,
+  crcExtra = 92,
 )
 public data class CameraInformation(
   /**
    * Timestamp (time since system boot).
    */
   @GeneratedMavField(type = "uint32_t")
-  public val timeBootMs: Long = 0L,
+  public val timeBootMs: UInt = 0u,
   /**
    * Name of the camera vendor
    */
   @GeneratedMavField(type = "uint8_t[32]")
-  public val vendorName: List<Int> = emptyList(),
+  public val vendorName: List<UByte> = emptyList(),
   /**
    * Name of the camera model
    */
   @GeneratedMavField(type = "uint8_t[32]")
-  public val modelName: List<Int> = emptyList(),
+  public val modelName: List<UByte> = emptyList(),
   /**
    * Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
    * & 0xff) << 8 | (Major & 0xff)
    */
   @GeneratedMavField(type = "uint32_t")
-  public val firmwareVersion: Long = 0L,
+  public val firmwareVersion: UInt = 0u,
   /**
    * Focal length
    */
@@ -78,27 +81,27 @@ public data class CameraInformation(
    * Horizontal image resolution
    */
   @GeneratedMavField(type = "uint16_t")
-  public val resolutionH: Int = 0,
+  public val resolutionH: UShort = 0u,
   /**
    * Vertical image resolution
    */
   @GeneratedMavField(type = "uint16_t")
-  public val resolutionV: Int = 0,
+  public val resolutionV: UShort = 0u,
   /**
    * Reserved for a lens ID
    */
   @GeneratedMavField(type = "uint8_t")
-  public val lensId: Int = 0,
+  public val lensId: UByte = 0u,
   /**
    * Bitmap of camera capability flags.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0),
+  public val flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Camera definition version (iteration)
    */
   @GeneratedMavField(type = "uint16_t")
-  public val camDefinitionVersion: Int = 0,
+  public val camDefinitionVersion: UShort = 0u,
   /**
    * Camera definition URI (if any, otherwise only basic functions will be available). HTTP-
    * (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported
@@ -113,44 +116,44 @@ public data class CameraInformation(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint32(firmwareVersion)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt32(firmwareVersion)
     outputBuffer.encodeFloat(focalLength)
     outputBuffer.encodeFloat(sensorSizeH)
     outputBuffer.encodeFloat(sensorSizeV)
     outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeUint16(resolutionH)
-    outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint16(camDefinitionVersion)
-    outputBuffer.encodeUint8Array(vendorName, 32)
-    outputBuffer.encodeUint8Array(modelName, 32)
-    outputBuffer.encodeUint8(lensId)
+    outputBuffer.encodeUInt16(resolutionH)
+    outputBuffer.encodeUInt16(resolutionV)
+    outputBuffer.encodeUInt16(camDefinitionVersion)
+    outputBuffer.encodeUInt8Array(vendorName, 32)
+    outputBuffer.encodeUInt8Array(modelName, 32)
+    outputBuffer.encodeUInt8(lensId)
     outputBuffer.encodeString(camDefinitionUri, 140)
     return outputBuffer.array()
   }
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint32(timeBootMs)
-    outputBuffer.encodeUint32(firmwareVersion)
+    outputBuffer.encodeUInt32(timeBootMs)
+    outputBuffer.encodeUInt32(firmwareVersion)
     outputBuffer.encodeFloat(focalLength)
     outputBuffer.encodeFloat(sensorSizeH)
     outputBuffer.encodeFloat(sensorSizeV)
     outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeUint16(resolutionH)
-    outputBuffer.encodeUint16(resolutionV)
-    outputBuffer.encodeUint16(camDefinitionVersion)
-    outputBuffer.encodeUint8Array(vendorName, 32)
-    outputBuffer.encodeUint8Array(modelName, 32)
-    outputBuffer.encodeUint8(lensId)
+    outputBuffer.encodeUInt16(resolutionH)
+    outputBuffer.encodeUInt16(resolutionV)
+    outputBuffer.encodeUInt16(camDefinitionVersion)
+    outputBuffer.encodeUInt8Array(vendorName, 32)
+    outputBuffer.encodeUInt8Array(modelName, 32)
+    outputBuffer.encodeUInt8(lensId)
     outputBuffer.encodeString(camDefinitionUri, 140)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 259
+    private const val ID: UInt = 259u
 
-    private const val CRC: Int = 92
+    private const val CRC_EXTRA: Byte = 92
 
     private const val SIZE_V1: Int = 235
 
@@ -158,8 +161,8 @@ public data class CameraInformation(
 
     private val DESERIALIZER: MavDeserializer<CameraInformation> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUint32()
-      val firmwareVersion = inputBuffer.decodeUint32()
+      val timeBootMs = inputBuffer.decodeUInt32()
+      val firmwareVersion = inputBuffer.decodeUInt32()
       val focalLength = inputBuffer.decodeFloat()
       val sensorSizeH = inputBuffer.decodeFloat()
       val sensorSizeV = inputBuffer.decodeFloat()
@@ -167,12 +170,12 @@ public data class CameraInformation(
         val flags = CameraCapFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val resolutionH = inputBuffer.decodeUint16()
-      val resolutionV = inputBuffer.decodeUint16()
-      val camDefinitionVersion = inputBuffer.decodeUint16()
-      val vendorName = inputBuffer.decodeUint8Array(32)
-      val modelName = inputBuffer.decodeUint8Array(32)
-      val lensId = inputBuffer.decodeUint8()
+      val resolutionH = inputBuffer.decodeUInt16()
+      val resolutionV = inputBuffer.decodeUInt16()
+      val camDefinitionVersion = inputBuffer.decodeUInt16()
+      val vendorName = inputBuffer.decodeUInt8Array(32)
+      val modelName = inputBuffer.decodeUInt8Array(32)
+      val lensId = inputBuffer.decodeUInt8()
       val camDefinitionUri = inputBuffer.decodeString(140)
 
       CameraInformation(
@@ -193,8 +196,8 @@ public data class CameraInformation(
     }
 
 
-    private val METADATA: MavMessage.Metadata<CameraInformation> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<CameraInformation> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<CameraInformation> = METADATA
 
@@ -203,13 +206,13 @@ public data class CameraInformation(
   }
 
   public class Builder {
-    public var timeBootMs: Long = 0L
+    public var timeBootMs: UInt = 0u
 
-    public var vendorName: List<Int> = emptyList()
+    public var vendorName: List<UByte> = emptyList()
 
-    public var modelName: List<Int> = emptyList()
+    public var modelName: List<UByte> = emptyList()
 
-    public var firmwareVersion: Long = 0L
+    public var firmwareVersion: UInt = 0u
 
     public var focalLength: Float = 0F
 
@@ -217,15 +220,15 @@ public data class CameraInformation(
 
     public var sensorSizeV: Float = 0F
 
-    public var resolutionH: Int = 0
+    public var resolutionH: UShort = 0u
 
-    public var resolutionV: Int = 0
+    public var resolutionV: UShort = 0u
 
-    public var lensId: Int = 0
+    public var lensId: UByte = 0u
 
-    public var flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0)
+    public var flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0u)
 
-    public var camDefinitionVersion: Int = 0
+    public var camDefinitionVersion: UShort = 0u
 
     public var camDefinitionUri: String = ""
 

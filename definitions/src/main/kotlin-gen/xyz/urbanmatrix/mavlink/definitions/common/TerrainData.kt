@@ -2,8 +2,13 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
+import kotlin.Short
+import kotlin.UByte
+import kotlin.UInt
+import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -12,12 +17,12 @@ import xyz.urbanmatrix.mavlink.api.MavDeserializer
 import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.serialization.decodeInt16Array
 import xyz.urbanmatrix.mavlink.serialization.decodeInt32
-import xyz.urbanmatrix.mavlink.serialization.decodeUint16
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.encodeInt16Array
 import xyz.urbanmatrix.mavlink.serialization.encodeInt32
-import xyz.urbanmatrix.mavlink.serialization.encodeUint16
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt16
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -25,8 +30,8 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  * TERRAIN_REQUEST. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
  */
 @GeneratedMavMessage(
-  id = 134,
-  crc = 229,
+  id = 134u,
+  crcExtra = -27,
 )
 public data class TerrainData(
   /**
@@ -43,17 +48,17 @@ public data class TerrainData(
    * Grid spacing
    */
   @GeneratedMavField(type = "uint16_t")
-  public val gridSpacing: Int = 0,
+  public val gridSpacing: UShort = 0u,
   /**
    * bit within the terrain request mask
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gridbit: Int = 0,
+  public val gridbit: UByte = 0u,
   /**
    * Terrain data MSL
    */
   @GeneratedMavField(type = "int16_t[16]")
-  public val `data`: List<Int> = emptyList(),
+  public val `data`: List<Short> = emptyList(),
 ) : MavMessage<TerrainData> {
   public override val instanceMetadata: MavMessage.Metadata<TerrainData> = METADATA
 
@@ -61,9 +66,9 @@ public data class TerrainData(
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUint16(gridSpacing)
+    outputBuffer.encodeUInt16(gridSpacing)
     outputBuffer.encodeInt16Array(data, 32)
-    outputBuffer.encodeUint8(gridbit)
+    outputBuffer.encodeUInt8(gridbit)
     return outputBuffer.array()
   }
 
@@ -71,16 +76,16 @@ public data class TerrainData(
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeInt32(lat)
     outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUint16(gridSpacing)
+    outputBuffer.encodeUInt16(gridSpacing)
     outputBuffer.encodeInt16Array(data, 32)
-    outputBuffer.encodeUint8(gridbit)
+    outputBuffer.encodeUInt8(gridbit)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 134
+    private const val ID: UInt = 134u
 
-    private const val CRC: Int = 229
+    private const val CRC_EXTRA: Byte = -27
 
     private const val SIZE_V1: Int = 43
 
@@ -90,9 +95,9 @@ public data class TerrainData(
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
-      val gridSpacing = inputBuffer.decodeUint16()
+      val gridSpacing = inputBuffer.decodeUInt16()
       val data = inputBuffer.decodeInt16Array(32)
-      val gridbit = inputBuffer.decodeUint8()
+      val gridbit = inputBuffer.decodeUInt8()
 
       TerrainData(
         lat = lat,
@@ -104,7 +109,7 @@ public data class TerrainData(
     }
 
 
-    private val METADATA: MavMessage.Metadata<TerrainData> = MavMessage.Metadata(ID, CRC,
+    private val METADATA: MavMessage.Metadata<TerrainData> = MavMessage.Metadata(ID, CRC_EXTRA,
         DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<TerrainData> = METADATA
@@ -118,11 +123,11 @@ public data class TerrainData(
 
     public var lon: Int = 0
 
-    public var gridSpacing: Int = 0
+    public var gridSpacing: UShort = 0u
 
-    public var gridbit: Int = 0
+    public var gridbit: UByte = 0u
 
-    public var `data`: List<Int> = emptyList()
+    public var `data`: List<Short> = emptyList()
 
     public fun build(): TerrainData = TerrainData(
       lat = lat,

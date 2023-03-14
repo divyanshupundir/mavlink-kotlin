@@ -1,6 +1,6 @@
 package xyz.urbanmatrix.mavlink.definitions.common
 
-import kotlin.Long
+import kotlin.UInt
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
 import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
 import xyz.urbanmatrix.mavlink.api.MavEnum
@@ -10,31 +10,31 @@ import xyz.urbanmatrix.mavlink.api.MavEnum
  */
 @GeneratedMavEnum
 public enum class MavResult(
-  public override val `value`: Long,
+  public override val `value`: UInt,
 ) : MavEnum {
   /**
    * Command is valid (is supported and has valid parameters), and was executed.
    */
   @GeneratedMavEnumEntry
-  ACCEPTED(0L),
+  ACCEPTED(0u),
   /**
    * Command is valid, but cannot be executed at this time. This is used to indicate a problem that
    * should be fixed just by waiting (e.g. a state machine is busy, can't arm because have not got GPS
    * lock, etc.). Retrying later should work.
    */
   @GeneratedMavEnumEntry
-  TEMPORARILY_REJECTED(1L),
+  TEMPORARILY_REJECTED(1u),
   /**
    * Command is invalid (is supported but has invalid parameters). Retrying same command and
    * parameters will not work.
    */
   @GeneratedMavEnumEntry
-  DENIED(2L),
+  DENIED(2u),
   /**
    * Command is not supported (unknown).
    */
   @GeneratedMavEnumEntry
-  UNSUPPORTED(3L),
+  UNSUPPORTED(3u),
   /**
    * Command is valid, but execution has failed. This is used to indicate any non-temporary or
    * unexpected problem, i.e. any problem that must be fixed before the command can succeed/be retried.
@@ -42,7 +42,7 @@ public enum class MavResult(
    * calibrated, etc.
    */
   @GeneratedMavEnumEntry
-  FAILED(4L),
+  FAILED(4u),
   /**
    * Command is valid and is being executed. This will be followed by further progress updates, i.e.
    * the component may send further COMMAND_ACK messages with result MAV_RESULT_IN_PROGRESS (at a rate
@@ -51,23 +51,23 @@ public enum class MavResult(
    * the operation.
    */
   @GeneratedMavEnumEntry
-  IN_PROGRESS(5L),
+  IN_PROGRESS(5u),
   /**
    * Command has been cancelled (as a result of receiving a COMMAND_CANCEL message).
    */
   @GeneratedMavEnumEntry
-  CANCELLED(6L),
+  CANCELLED(6u),
   ;
 
-  public companion object {
-    public fun getEntryFromValueOrNull(v: Long): MavResult? = when (v) {
-      0L -> ACCEPTED
-      1L -> TEMPORARILY_REJECTED
-      2L -> DENIED
-      3L -> UNSUPPORTED
-      4L -> FAILED
-      5L -> IN_PROGRESS
-      6L -> CANCELLED
+  public companion object : MavEnum.Companion<MavResult> {
+    public override fun getEntryFromValueOrNull(v: UInt): MavResult? = when (v) {
+      0u -> ACCEPTED
+      1u -> TEMPORARILY_REJECTED
+      2u -> DENIED
+      3u -> UNSUPPORTED
+      4u -> FAILED
+      5u -> IN_PROGRESS
+      6u -> CANCELLED
       else -> null
     }
   }

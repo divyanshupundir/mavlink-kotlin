@@ -2,9 +2,12 @@ package xyz.urbanmatrix.mavlink.definitions.common
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
+import kotlin.UByte
+import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import xyz.urbanmatrix.mavlink.api.GeneratedMavField
@@ -15,12 +18,12 @@ import xyz.urbanmatrix.mavlink.api.MavMessage
 import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.serialization.decodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.decodeString
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8
-import xyz.urbanmatrix.mavlink.serialization.decodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.decodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.encodeEnumValue
 import xyz.urbanmatrix.mavlink.serialization.encodeString
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8
-import xyz.urbanmatrix.mavlink.serialization.encodeUint8Array
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8
+import xyz.urbanmatrix.mavlink.serialization.encodeUInt8Array
 import xyz.urbanmatrix.mavlink.serialization.truncateZeros
 
 /**
@@ -32,31 +35,31 @@ import xyz.urbanmatrix.mavlink.serialization.truncateZeros
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 12903,
-  crc = 249,
+  id = 12903u,
+  crcExtra = -7,
 )
 public data class OpenDroneIdSelfId(
   /**
    * System ID (0 for broadcast).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetSystem: Int = 0,
+  public val targetSystem: UByte = 0u,
   /**
    * Component ID (0 for broadcast).
    */
   @GeneratedMavField(type = "uint8_t")
-  public val targetComponent: Int = 0,
+  public val targetComponent: UByte = 0u,
   /**
    * Only used for drone ID data received from other UAs. See detailed description at
    * https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
-  public val idOrMac: List<Int> = emptyList(),
+  public val idOrMac: List<UByte> = emptyList(),
   /**
    * Indicates the type of the description field.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0),
+  public val descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0u),
   /**
    * Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in
    * the unused portion of the field.
@@ -68,9 +71,9 @@ public data class OpenDroneIdSelfId(
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(descriptionType.value, 1)
     outputBuffer.encodeString(description, 23)
     return outputBuffer.array()
@@ -78,18 +81,18 @@ public data class OpenDroneIdSelfId(
 
   public override fun serializeV2(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUint8(targetSystem)
-    outputBuffer.encodeUint8(targetComponent)
-    outputBuffer.encodeUint8Array(idOrMac, 20)
+    outputBuffer.encodeUInt8(targetSystem)
+    outputBuffer.encodeUInt8(targetComponent)
+    outputBuffer.encodeUInt8Array(idOrMac, 20)
     outputBuffer.encodeEnumValue(descriptionType.value, 1)
     outputBuffer.encodeString(description, 23)
     return outputBuffer.array().truncateZeros()
   }
 
   public companion object {
-    private const val ID: Int = 12903
+    private const val ID: UInt = 12903u
 
-    private const val CRC: Int = 249
+    private const val CRC_EXTRA: Byte = -7
 
     private const val SIZE_V1: Int = 46
 
@@ -97,9 +100,9 @@ public data class OpenDroneIdSelfId(
 
     private val DESERIALIZER: MavDeserializer<OpenDroneIdSelfId> = MavDeserializer { bytes ->
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUint8()
-      val targetComponent = inputBuffer.decodeUint8()
-      val idOrMac = inputBuffer.decodeUint8Array(20)
+      val targetSystem = inputBuffer.decodeUInt8()
+      val targetComponent = inputBuffer.decodeUInt8()
+      val idOrMac = inputBuffer.decodeUInt8Array(20)
       val descriptionType = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidDescType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
@@ -116,8 +119,8 @@ public data class OpenDroneIdSelfId(
     }
 
 
-    private val METADATA: MavMessage.Metadata<OpenDroneIdSelfId> = MavMessage.Metadata(ID, CRC,
-        DESERIALIZER)
+    private val METADATA: MavMessage.Metadata<OpenDroneIdSelfId> = MavMessage.Metadata(ID,
+        CRC_EXTRA, DESERIALIZER)
 
     public val classMetadata: MavMessage.Metadata<OpenDroneIdSelfId> = METADATA
 
@@ -126,13 +129,13 @@ public data class OpenDroneIdSelfId(
   }
 
   public class Builder {
-    public var targetSystem: Int = 0
+    public var targetSystem: UByte = 0u
 
-    public var targetComponent: Int = 0
+    public var targetComponent: UByte = 0u
 
-    public var idOrMac: List<Int> = emptyList()
+    public var idOrMac: List<UByte> = emptyList()
 
-    public var descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0)
+    public var descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0u)
 
     public var description: String = ""
 
