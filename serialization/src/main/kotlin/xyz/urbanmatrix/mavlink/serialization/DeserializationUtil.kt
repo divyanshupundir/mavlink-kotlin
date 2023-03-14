@@ -122,7 +122,7 @@ private inline fun <T : Any> ByteBuffer.decodePrimitive(size: Int, default: T, d
         return this.decode()
     }
     val rem = ByteArray(size) { if (this.hasRemaining()) this.get() else 0 }
-    return ByteBuffer.wrap(rem).decode()
+    return ByteBuffer.wrap(rem).order(this.order()).decode()
 }
 
 private fun ByteBuffer.getUByte(): UByte = this.get().toUByte()
