@@ -5,11 +5,11 @@ object Config {
     val javaVersion = JavaVersion.VERSION_1_8
 
     object Plugin {
-        const val releaseVersion = "0.16.6-alpha"
-        const val developmentVersion = "0.16.7-alpha"
+        const val releaseVersion = "0.16.8"
+        const val developmentVersion = "0.16.9"
     }
 
     object Lib {
-        const val developmentVersion = "0.16.7-alpha"
+        const val developmentVersion = "0.16.9"
     }
 }
