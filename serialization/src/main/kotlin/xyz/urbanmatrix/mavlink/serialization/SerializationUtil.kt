@@ -55,75 +55,35 @@ public fun ByteBuffer.encodeString(value: String, length: Int) {
     }
 }
 
-public fun ByteBuffer.encodeInt8Array(arr: List<Byte>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Byte.SIZE_BYTES,
-    0,
-    ByteBuffer::encodeInt8
-)
+public fun ByteBuffer.encodeInt8Array(arr: List<Byte>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Byte.SIZE_BYTES, 0, ByteBuffer::encodeInt8)
 
-public fun ByteBuffer.encodeUInt8Array(arr: List<UByte>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / UByte.SIZE_BYTES,
-    0u,
-    ByteBuffer::encodeUInt8
-)
+public fun ByteBuffer.encodeUInt8Array(arr: List<UByte>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / UByte.SIZE_BYTES, 0u, ByteBuffer::encodeUInt8)
 
-public fun ByteBuffer.encodeInt16Array(arr: List<Short>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Short.SIZE_BYTES,
-    0,
-    ByteBuffer::encodeInt16
-)
+public fun ByteBuffer.encodeInt16Array(arr: List<Short>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Short.SIZE_BYTES, 0, ByteBuffer::encodeInt16)
 
-public fun ByteBuffer.encodeUInt16Array(arr: List<UShort>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / UShort.SIZE_BYTES,
-    0u,
-    ByteBuffer::encodeUInt16
-)
+public fun ByteBuffer.encodeUInt16Array(arr: List<UShort>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / UShort.SIZE_BYTES, 0u, ByteBuffer::encodeUInt16)
 
-public fun ByteBuffer.encodeInt32Array(arr: List<Int>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Int.SIZE_BYTES,
-    0,
-    ByteBuffer::encodeInt32
-)
+public fun ByteBuffer.encodeInt32Array(arr: List<Int>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Int.SIZE_BYTES, 0, ByteBuffer::encodeInt32)
 
-public fun ByteBuffer.encodeUInt32Array(arr: List<UInt>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Int.SIZE_BYTES,
-    0u,
-    ByteBuffer::encodeUInt32
-)
+public fun ByteBuffer.encodeUInt32Array(arr: List<UInt>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / UInt.SIZE_BYTES, 0u, ByteBuffer::encodeUInt32)
 
-public fun ByteBuffer.encodeInt64Array(arr: List<Long>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Long.SIZE_BYTES,
-    0L,
-    ByteBuffer::encodeInt64
-)
+public fun ByteBuffer.encodeInt64Array(arr: List<Long>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Long.SIZE_BYTES, 0L, ByteBuffer::encodeInt64)
 
-public fun ByteBuffer.encodeUInt64Array(arr: List<ULong>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Long.SIZE_BYTES,
-    0uL,
-    ByteBuffer::encodeUInt64
-)
+public fun ByteBuffer.encodeUInt64Array(arr: List<ULong>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / ULong.SIZE_BYTES, 0uL, ByteBuffer::encodeUInt64)
 
-public fun ByteBuffer.encodeFloatArray(arr: List<Float>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Float.SIZE_BYTES,
-    0F,
-    ByteBuffer::encodeFloat
-)
+public fun ByteBuffer.encodeFloatArray(arr: List<Float>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Float.SIZE_BYTES, 0F, ByteBuffer::encodeFloat)
 
-public fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int): Unit = encodeArray(
-    arr,
-    dataSize / Double.SIZE_BYTES,
-    0.0,
-    ByteBuffer::encodeDouble
-)
+public fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Double.SIZE_BYTES, 0.0, ByteBuffer::encodeDouble)
 
 public fun ByteBuffer.encodeEnumValue(value: UInt, dataSize: Int) {
     when (dataSize) {
