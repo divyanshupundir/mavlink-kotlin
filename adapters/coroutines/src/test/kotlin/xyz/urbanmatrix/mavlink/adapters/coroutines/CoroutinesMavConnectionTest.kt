@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test
 import xyz.urbanmatrix.mavlink.connection.tcp.TcpClientMavConnection
 import xyz.urbanmatrix.mavlink.definitions.ardupilotmega.ArdupilotmegaDialect
 import xyz.urbanmatrix.mavlink.definitions.ardupilotmega.Meminfo
-import xyz.urbanmatrix.mavlink.definitions.common.CommandLong
-import xyz.urbanmatrix.mavlink.definitions.common.CommonDialect
-import xyz.urbanmatrix.mavlink.definitions.common.GpsRawInt
-import xyz.urbanmatrix.mavlink.definitions.common.MavCmd
+import xyz.urbanmatrix.mavlink.definitions.common.*
 import xyz.urbanmatrix.mavlink.wrap
 
 class CoroutinesMavConnectionTest {
@@ -90,7 +87,7 @@ class CoroutinesMavConnectionTest {
         val connection = TcpClientMavConnection("127.0.0.1", 5790, ArdupilotmegaDialect).asCoroutine()
         connection.connect(this)
 
-        connection.mavFrame.map { it.message }.filterIsInstance<GpsRawInt>().collect {
+        connection.mavFrame.map { it.message }.filterIsInstance<ScaledImu2>().collect {
             println(it)
         }
     }
