@@ -59,9 +59,9 @@ allprojects {
 
                 developers {
                     developer {
-                        id.set("divyanshu1234")
+                        id.set("divyanshupundir")
                         name.set("Divyanshu Pundir")
-                        url.set("https://github.com/divyanshu1234/")
+                        url.set("https://github.com/divyanshupundir/")
                     }
                 }
             }
