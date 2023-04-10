@@ -41,7 +41,7 @@ allprojects {
                 description.set("A modern MAVLink library for the JVM written in Kotlin.")
                 name.set(project.name)
                 inceptionYear.set("2022")
-                url.set("https://github.com/urbanmatrix/mavlink-kotlin/")
+                url.set("https://github.com/divyanshupundir/mavlink-kotlin/")
 
                 licenses {
                     license {
@@ -52,9 +52,9 @@ allprojects {
                 }
 
                 scm {
-                    url.set("https://github.com/urbanmatrix/mavlink-kotlin/")
-                    connection.set("scm:git:git://github.com/urbanmatrix/mavlink-kotlin.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/urbanmatrix/mavlink-kotlin.git")
+                    url.set("https://github.com/divyanshupundir/mavlink-kotlin/")
+                    connection.set("scm:git:git://github.com/divyanshupundir/mavlink-kotlin.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/divyanshupundir/mavlink-kotlin.git")
                 }
 
                 developers {
