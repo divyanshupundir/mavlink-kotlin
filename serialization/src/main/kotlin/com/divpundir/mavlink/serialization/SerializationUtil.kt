@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.serialization
+package com.divpundir.mavlink.serialization
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets

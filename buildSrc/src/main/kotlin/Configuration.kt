@@ -1,7 +1,7 @@
 import org.gradle.api.JavaVersion
 
 object Config {
-    const val group = "xyz.urbanmatrix.mavlink"
+    const val group = "com.divpundir.mavlink"
     val javaVersion = JavaVersion.VERSION_1_8
 
     object Plugin {

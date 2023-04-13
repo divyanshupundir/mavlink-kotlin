@@ -9,7 +9,7 @@ import xyz.urbanmatrix.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import xyz.urbanmatrix.mavlink.generator.models.MessageModel
 import xyz.urbanmatrix.mavlink.generator.models.sortedByPosition
-import xyz.urbanmatrix.mavlink.serialization.CrcX25
+import com.divpundir.mavlink.serialization.CrcX25
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
