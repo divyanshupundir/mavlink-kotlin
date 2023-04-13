@@ -24,8 +24,8 @@ idea {
 }
 
 pluginBundle {
-    website = "https://github.com/urbanmatrix/mavlink-kotlin"
-    vcsUrl = "https://github.com/urbanmatrix/mavlink-kotlin"
+    website = "https://github.com/divyanshupundir/mavlink-kotlin"
+    vcsUrl = "https://github.com/divyanshupundir/mavlink-kotlin"
     tags = listOf("mavlink", "kotlin", "jvm", "generator")
 }
 
@@ -35,7 +35,7 @@ gradlePlugin {
             id = "${Config.group}.generator"
             displayName = "MAVLink Kotlin Generator"
             description = "Plugin for generating Kotlin implementation of MAVLink dialects."
-            implementationClass = "xyz.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorPlugin"
+            implementationClass = "com.divpundir.mavlink.generator.plugin.MavlinkGeneratorPlugin"
         }
     }
 }

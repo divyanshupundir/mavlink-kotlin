@@ -130,7 +130,7 @@ private fun FieldModel.defaultKotlinValue(enumHelper: EnumHelper): String = when
     }
 }
 
-private const val SERIALIZATION_PACKAGE = "xyz.urbanmatrix.mavlink.serialization"
+private const val SERIALIZATION_PACKAGE = "com.divpundir.mavlink.serialization"
 
 private fun FieldModel.encodeMethodName(enumHelper: EnumHelper): MemberName = when (this) {
     is FieldModel.Enum -> MemberName(

@@ -58,7 +58,7 @@ class EnumGenTest {
         """.trimIndent()
 
         val model = mapper.readValue(inp, EnumXml::class.java).toModel()
-        val fileSpec = model.generateEnumFile("com.urbanmatrix.mavlink.test")
+        val fileSpec = model.generateEnumFile("com.divpundir.mavlink.test")
 
         val s = StringBuilder()
         fileSpec.writeTo(s)
@@ -97,7 +97,7 @@ class EnumGenTest {
         """.trimIndent()
 
         val model = mapper.readValue(inp, EnumXml::class.java).toModel()
-        val fileSpec = model.generateEnumFile("com.urbanmatrix.mavlink.test")
+        val fileSpec = model.generateEnumFile("com.divpundir.mavlink.test")
 
         val s = StringBuilder()
         fileSpec.writeTo(s)
@@ -125,7 +125,7 @@ class EnumGenTest {
         """.trimIndent()
 
         val model = mapper.readValue(inp, EnumXml::class.java).toModel()
-        val fileSpec = model.generateEnumFile("com.urbanmatrix.mavlink.test")
+        val fileSpec = model.generateEnumFile("com.divpundir.mavlink.test")
 
         val s = StringBuilder()
         fileSpec.writeTo(s)
@@ -154,7 +154,7 @@ class EnumGenTest {
         """.trimIndent()
 
         val model = mapper.readValue(inp, EnumXml::class.java).toModel()
-        val fileSpec = model.generateEnumFile("com.urbanmatrix.mavlink.test")
+        val fileSpec = model.generateEnumFile("com.divpundir.mavlink.test")
 
         val s = StringBuilder()
         fileSpec.writeTo(s)

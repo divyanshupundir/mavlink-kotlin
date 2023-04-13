@@ -2,7 +2,7 @@ import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
     kotlin("jvm")
-    id("${Config.group}.generator") version Config.Plugin.releaseVersion
+    id("xyz.urbanmatrix.mavlink.generator") version Config.Plugin.releaseVersion
     idea
     id("com.vanniktech.maven.publish.base")
 }

@@ -200,7 +200,7 @@ private val MessageModel.sizeV1: Int
 private val MessageModel.sizeV2: Int
     get() = fields.sumOf { it.size }
 
-private val truncateZerosMemberName = MemberName("xyz.urbanmatrix.mavlink.serialization", "truncateZeros")
+private val truncateZerosMemberName = MemberName("com.divpundir.mavlink.serialization", "truncateZeros")
 
 private fun MessageModel.getClassName(packageName: String): ClassName =
     ClassName(packageName, formattedName)
