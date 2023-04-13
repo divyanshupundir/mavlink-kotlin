@@ -2,10 +2,10 @@ package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import xyz.urbanmatrix.mavlink.api.GeneratedMavMessage
-import xyz.urbanmatrix.mavlink.api.MavDeserializer
-import xyz.urbanmatrix.mavlink.api.MavMessage
-import xyz.urbanmatrix.mavlink.api.WorkInProgress
+import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavDeserializer
+import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
 import xyz.urbanmatrix.mavlink.generator.models.MessageModel
 import xyz.urbanmatrix.mavlink.generator.models.sortedByPosition

@@ -1,8 +1,8 @@
 package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.TypeSpec
-import xyz.urbanmatrix.mavlink.api.GeneratedMavEnumEntry
-import xyz.urbanmatrix.mavlink.api.WorkInProgress
+import com.divpundir.mavlink.api.GeneratedMavEnumEntry
+import com.divpundir.mavlink.api.WorkInProgress
 import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 
 internal fun EnumEntryModel.generateEnumConstant() = TypeSpec

@@ -2,11 +2,10 @@ package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import xyz.urbanmatrix.mavlink.api.GeneratedMavField
-import xyz.urbanmatrix.mavlink.api.MavBitmaskValue
-import xyz.urbanmatrix.mavlink.api.MavEnumValue
+import com.divpundir.mavlink.api.GeneratedMavField
+import com.divpundir.mavlink.api.MavBitmaskValue
+import com.divpundir.mavlink.api.MavEnumValue
 import xyz.urbanmatrix.mavlink.generator.models.FieldModel
-import java.math.BigInteger
 
 internal fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
     .builder(formattedName, resolveKotlinType(enumHelper))

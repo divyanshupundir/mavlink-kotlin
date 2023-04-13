@@ -4,8 +4,8 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.buildCodeBlock
-import xyz.urbanmatrix.mavlink.api.AbstractMavDialect
-import xyz.urbanmatrix.mavlink.api.GeneratedMavDialect
+import com.divpundir.mavlink.api.AbstractMavDialect
+import com.divpundir.mavlink.api.GeneratedMavDialect
 import xyz.urbanmatrix.mavlink.generator.models.MavlinkModel
 
 internal fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {

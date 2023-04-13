@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.api
+package com.divpundir.mavlink.api
 
 public abstract class AbstractMavDialect(
     private val dependencies: Set<MavDialect>,

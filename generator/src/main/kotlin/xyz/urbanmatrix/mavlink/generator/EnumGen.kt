@@ -2,9 +2,9 @@ package xyz.urbanmatrix.mavlink.generator
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import xyz.urbanmatrix.mavlink.api.GeneratedMavEnum
-import xyz.urbanmatrix.mavlink.api.MavBitmask
-import xyz.urbanmatrix.mavlink.api.MavEnum
+import com.divpundir.mavlink.api.GeneratedMavEnum
+import com.divpundir.mavlink.api.MavBitmask
+import com.divpundir.mavlink.api.MavEnum
 import xyz.urbanmatrix.mavlink.generator.models.EnumEntryModel
 import xyz.urbanmatrix.mavlink.generator.models.EnumModel
 

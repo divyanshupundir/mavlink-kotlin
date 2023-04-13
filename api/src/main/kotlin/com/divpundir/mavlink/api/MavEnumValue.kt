@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.api
+package com.divpundir.mavlink.api
 
 /**
  * Wrapper class for a [MavEnum].

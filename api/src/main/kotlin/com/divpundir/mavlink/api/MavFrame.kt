@@ -1,4 +1,4 @@
-package xyz.urbanmatrix.mavlink.api
+package com.divpundir.mavlink.api
 
 /**
  * Represents a basic Mavlink frame. The contents of this class are sufficient
