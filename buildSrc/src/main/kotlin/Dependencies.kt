@@ -15,8 +15,8 @@ object Deps {
     }
 
     object MavlinkKotlin {
-        const val api = "xyz.urbanmatrix.mavlink:api:${Config.Plugin.releaseVersion}"
-        const val serialization = "xyz.urbanmatrix.mavlink:serialization:${Config.Plugin.releaseVersion}"
+        const val api = "com.divpundir.mavlink:api:${Config.Plugin.releaseVersion}"
+        const val serialization = "com.divpundir.mavlink:serialization:${Config.Plugin.releaseVersion}"
     }
 
     const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
