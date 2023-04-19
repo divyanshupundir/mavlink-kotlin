@@ -5,10 +5,7 @@ A modern MAVLink library for the JVM written in Kotlin.
 ## Overview
 
 mavlink-kotlin was created out of the need for a type-safe, high-performance and flexible MAVLink library for the JVM.
-For an end-to-end drone tech company like UrbanMatrix Technologies, MAVLink forms the heart of communication between the
-drone, the GCS and the companion computer. Apart from our proprietary Android-based GCS, UMT LaunchPad, we have
-developed several JVM applications that run on Matrix-OS, our proprietary Linux-based OS for our Companion Computer and 
-our Management Server.
+MAVLink forms the heart of communication between the drone, the GCS and the companion computer.
 
 We had realized several problems with existing JVM MAVLink implementations. These include:
 - Performance problems at very high message rates
