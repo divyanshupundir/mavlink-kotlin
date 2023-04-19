@@ -5,10 +5,7 @@ A modern MAVLink library for the JVM written in Kotlin.
 ## Overview
 
 mavlink-kotlin was created out of the need for a type-safe, high-performance and flexible MAVLink library for the JVM.
-For an end-to-end drone tech company like UrbanMatrix Technologies, MAVLink forms the heart of communication between the
-drone, the GCS and the companion computer. Apart from our proprietary Android-based GCS, UMT LaunchPad, we have
-developed several JVM applications that run on Matrix-OS, our proprietary Linux-based OS for our Companion Computer and 
-our Management Server.
+MAVLink forms the heart of communication between the drone, the GCS and the companion computer.
 
 We had realized several problems with existing JVM MAVLink implementations. These include:
 - Performance problems at very high message rates
@@ -63,7 +60,7 @@ int, uint, float, strings/characters, arrays, etc.
 
 ### generator
 MAVLink generator Gradle Plugin that uses the `api` and the `serialization` modules to generate the MAVLink classes. 
-This plugin is available at Gradle Plugin Portal with ID `xyz.urbanmatrix.mavlink.generator`. It can be used by anyone
+This plugin is available at Gradle Plugin Portal with ID `com.divpundir.mavlink.generator`. It can be used by anyone
 to generate MAVLink classes from their own XML files. No need to fork this project.
 
 The instructions on how to use the plugin are available in the `generator` module.
@@ -96,7 +93,7 @@ Declare Maven Central repository for the dependencies, and add the `mavlink-kotl
 the dependencies block in the `build.gradle.kts`.
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:mavlink-kotlin:$version")
+implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
 ```
 
 You can either use the standard `definitions` artifact available for standard messages, or you can use the `generator`
@@ -104,14 +101,14 @@ to generate your own. The details on how to do that is available in the `generat
 standard definitions for this tutorial.
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:definitions:$version")
+implementation("com.divpundir.mavlink:definitions:$version")
 ```
 
 Pick an adapter of your preference to handle to wrap the `MavConnection` for handling streams. In this case, we will be
 using `RxJava2`.
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:rxjava2:$version")
+implementation("com.divpundir.mavlink:rxjava2:$version")
 ```
 
 The `build.gradle.kts` should look like this:
@@ -122,9 +119,9 @@ repositories {
 }
 
 dependencies { 
-    implementation("xyz.urbanmatrix.mavlink:mavlink-kotlin:$version")
-    implementation("xyz.urbanmatrix.mavlink:definitions:$version")
-    implementation("xyz.urbanmatrix.mavlink:rxjava2:$version")
+    implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
+    implementation("com.divpundir.mavlink:definitions:$version")
+    implementation("com.divpundir.mavlink:rxjava2:$version")
 }
 ```
 

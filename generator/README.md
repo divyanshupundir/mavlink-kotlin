@@ -3,7 +3,7 @@
 ## Overview
 
 MAVLink generator Gradle Plugin that uses the `api` and `serialization` modules to generate the MAVLink classes. This
-plugin is available at Gradle Plugin Portal with ID `xyz.urbanmatrix.mavlink.generator`. It can be used by anyone to generate
+plugin is available at Gradle Plugin Portal with ID `com.divpundir.mavlink.generator`. It can be used by anyone to generate
 MAVLink classes from their own XML files. No need to fork this project.
 
 ## Usage
@@ -11,7 +11,7 @@ MAVLink classes from their own XML files. No need to fork this project.
 Declare the plugin.
 ```kotlin
 plugins {
-  id("xyz.urbanmatrix.mavlink.generator") version version
+  id("com.divpundir.mavlink.generator") version version
 }
 ```
 
@@ -19,8 +19,8 @@ Include the `api` and `serialization` artifacts as a dependencies so that the ge
 classes.
 ```kotlin
 dependencies {
-    implementation("xyz.urbanmatrix.mavlink:api:$version")
-    implementation("xyz.urbanmatrix.mavlink:serialization:$version")
+    implementation("com.divpundir.mavlink:api:$version")
+    implementation("com.divpundir.mavlink:serialization:$version")
 }
 ```
 
@@ -28,7 +28,7 @@ Define the `generateMavlink` task by providing the dialect XML files using the `
 the generated sources directory using `generatedSourcesDir`. If your dialect depends on other dialect files, i.e. includes other dialects, then add them to the generation
 task as well and the standard dialects, messages and enums.
 ```kotlin
-tasks.getByName<xyz.urbanmatrix.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
+tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
     include(file("mavlink/message_definitions/v1.0/customDialect.xml"))

@@ -8,5 +8,5 @@ Implementation of the standard MAVLink messages from the official
 ## Usage
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:definitions:$version")
+implementation("com.divpundir.mavlink:definitions:$version")
 ```

@@ -9,5 +9,5 @@ the other modules given that `api` is implemented correctly.
 ## Usage
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:api:$version")
+implementation("com.divpundir.mavlink:api:$version")
 ```
