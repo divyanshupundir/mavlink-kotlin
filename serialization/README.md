@@ -9,5 +9,5 @@ int, uint, float, strings/characters, arrays, etc.
 ## Usage
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:serialization:$version")
+implementation("com.divpundir.mavlink:serialization:$version")
 ```

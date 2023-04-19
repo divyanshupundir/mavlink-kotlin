@@ -16,7 +16,7 @@ pipeline.
 ## Usage
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:mavlink-kotlin:$version")
+implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
 ```
 
 The core interface of the `mavlink-kotlin` module is `MavConnection`. It has the declarations of the basic read and

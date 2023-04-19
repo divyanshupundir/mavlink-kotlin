@@ -7,5 +7,5 @@ Kotlin Coroutines adapter for `MavConnection`.
 ## Usage
 
 ```kotlin
-implementation("xyz.urbanmatrix.mavlink:coroutines:$version")
+implementation("com.divpundir.mavlink:coroutines:$version")
 ```
