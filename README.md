@@ -97,8 +97,7 @@ implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
 ```
 
 You can either use the standard `definitions` artifact available for standard messages, or you can use the `generator`
-to generate your own. The details on how to do that is available in the `generator` module. We will be using the
-standard definitions for this tutorial.
+to generate your own. The details on how to do that is available in the `generator` module.
 
 ```kotlin
 implementation("com.divpundir.mavlink:definitions:$version")
