@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.adapters.coroutines
 
-import kotlinx.coroutines.CoroutineScope
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
+import kotlinx.coroutines.CoroutineScope
 import java.io.IOException
 
 public fun MavConnection.asCoroutine(
