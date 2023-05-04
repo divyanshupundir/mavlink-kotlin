@@ -1,8 +1,15 @@
 package com.divpundir.mavlink.adapters.coroutines
 
+import com.divpundir.mavlink.api.MavDialect
+import com.divpundir.mavlink.connection.tcp.TcpServerMavConnection
 import kotlinx.coroutines.CoroutineScope
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import java.io.IOException
 
 public fun MavConnection.asCoroutine(
@@ -53,4 +60,27 @@ private inline fun runCatchingIo(block: () -> Unit): Boolean = try {
     true
 } catch (e: IOException) {
     false
+}
+
+private fun x() {
+    val s = CoroutineScope(Dispatchers.IO)
+    val c = TcpServerMavConnection(1000, Dial).asCoroutine()
+
+    c.mavFrame
+        .map { it.message }
+//        .filterIsInstance<Heartbeat>()
+        .onEach {  }
+        .launchIn(s)
+
+}
+
+private object Dial : MavDialect {
+    override fun resolveMetadataOrNull(messageId: UInt): MavMessage.Metadata<out MavMessage<*>>? {
+        TODO("Not yet implemented")
+    }
+
+    override fun supports(messageId: UInt): Boolean {
+        TODO("Not yet implemented")
+    }
+
 }
