@@ -5,19 +5,18 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
 import io.reactivex.processors.FlowableProcessor
 import io.reactivex.processors.PublishProcessor
 import java.io.IOException
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 internal class Rx2MavConnectionImpl(
     private val connection: MavConnection,
-    private val onIoFailure: Rx2MavConnection.() -> Unit
+    private val scheduler: Scheduler,
+    private val onFailure: Rx2MavConnection.() -> Unit
 ) : Rx2MavConnection {
 
     private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
-    private val mavlinkReadThread: Executor = Executors.newSingleThreadExecutor { Thread(it, "mavlink-read-thread") }
 
     @Volatile
     private var isOpen = false
@@ -26,10 +25,10 @@ internal class Rx2MavConnectionImpl(
     override val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
         get() = mavFrameProcessor.onBackpressureBuffer().share()
 
-    override fun connect(): Completable = Completable.fromAction {
+    override fun connect() = completableSubscribeOn(scheduler) {
         connection.connect()
         isOpen = true
-        mavlinkReadThread.execute(this::processMavFrames)
+        scheduler.scheduleDirect(this::processMavFrames)
     }
 
     private fun processMavFrames() {
@@ -47,11 +46,11 @@ internal class Rx2MavConnectionImpl(
         }
 
         if (isOpen) {
-            onIoFailure()
+            onFailure()
         }
     }
 
-    override fun close(): Completable = Completable.fromAction {
+    override fun close() = completableSubscribeOn(scheduler) {
         connection.close()
         isOpen = false
     }
@@ -60,7 +59,7 @@ internal class Rx2MavConnectionImpl(
         systemId: UByte,
         componentId: UByte,
         payload: T
-    ): Completable = Completable.fromAction {
+    ) = completableSubscribeOn(scheduler) {
         connection.sendV1(
             systemId,
             componentId,
@@ -72,7 +71,7 @@ internal class Rx2MavConnectionImpl(
         systemId: UByte,
         componentId: UByte,
         payload: T
-    ): Completable = Completable.fromAction {
+    ) = completableSubscribeOn(scheduler) {
         connection.sendUnsignedV2(
             systemId,
             componentId,
@@ -87,7 +86,7 @@ internal class Rx2MavConnectionImpl(
         linkId: UByte,
         timestamp: UInt,
         secretKey: ByteArray
-    ): Completable = Completable.fromAction {
+    ) = completableSubscribeOn(scheduler) {
         connection.sendSignedV2(
             systemId,
             componentId,
@@ -97,4 +96,12 @@ internal class Rx2MavConnectionImpl(
             secretKey
         )
     }
+
 }
+
+private inline fun completableSubscribeOn(
+    scheduler: Scheduler,
+    crossinline action: () -> Unit
+): Completable = Completable.fromAction {
+    action()
+}.subscribeOn(scheduler)
