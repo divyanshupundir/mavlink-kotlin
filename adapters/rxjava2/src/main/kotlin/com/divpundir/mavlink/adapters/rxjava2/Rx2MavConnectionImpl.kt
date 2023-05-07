@@ -6,7 +6,6 @@ import com.divpundir.mavlink.connection.MavConnection
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
-import io.reactivex.processors.FlowableProcessor
 import io.reactivex.processors.PublishProcessor
 import java.io.IOException
 
@@ -16,14 +15,12 @@ internal class Rx2MavConnectionImpl(
     private val onFailure: Rx2MavConnection.() -> Unit
 ) : Rx2MavConnection {
 
-    private val mavFrameProcessor: FlowableProcessor<MavFrame<out MavMessage<*>>> = PublishProcessor.create()
-
     @Volatile
     private var isOpen = false
         @Synchronized set
 
-    override val mavFrame: Flowable<MavFrame<out MavMessage<*>>>
-        get() = mavFrameProcessor.onBackpressureBuffer().share()
+    private val _mavFrame = PublishProcessor.create<MavFrame<out MavMessage<*>>>()
+    override val mavFrame: Flowable<MavFrame<out MavMessage<*>>> = _mavFrame.onBackpressureBuffer().share()
 
     override fun connect() = completableSubscribeOn(scheduler) {
         connection.connect()
@@ -34,7 +31,7 @@ internal class Rx2MavConnectionImpl(
     private fun processMavFrames() {
         while (!Thread.currentThread().isInterrupted && isOpen) {
             try {
-                mavFrameProcessor.onNext(connection.next())
+                _mavFrame.onNext(connection.next())
             } catch (e: IOException) {
                 kotlin.runCatching { connection.close() }
                 break
