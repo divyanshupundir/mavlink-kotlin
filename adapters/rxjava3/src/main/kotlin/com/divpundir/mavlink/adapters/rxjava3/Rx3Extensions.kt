@@ -8,7 +8,7 @@ public fun MavConnection.asRx3(
     scheduler: Scheduler = Schedulers.io(),
     onFailure: Rx3MavConnection.() -> Unit = {}
 ): Rx3MavConnection = Rx3MavConnectionImpl(
-    this,
-    scheduler,
-    onFailure
+    connection = this,
+    scheduler = scheduler,
+    onFailure = onFailure
 )

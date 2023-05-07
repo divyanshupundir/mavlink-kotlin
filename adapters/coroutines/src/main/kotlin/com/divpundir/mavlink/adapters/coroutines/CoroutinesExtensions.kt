@@ -5,16 +5,18 @@ import com.divpundir.mavlink.connection.MavConnection
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
 import java.io.IOException
 
 public fun MavConnection.asCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    onIoFailure: CoroutinesMavConnection.() -> Unit = {}
+    onFailure: CoroutinesMavConnection.() -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
-    this,
-    dispatcher,
-    128,
-    onIoFailure
+    connection = this,
+    dispatcher = dispatcher,
+    extraBufferCapacity = 128,
+    onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    onFailure = onFailure
 )
 
 public suspend fun CoroutinesMavConnection.tryConnect(readerScope: CoroutineScope): Boolean = runCatchingIo {

@@ -13,6 +13,7 @@ internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
     private val dispatcher: CoroutineDispatcher,
     extraBufferCapacity: Int,
+    onBufferOverflow: BufferOverflow,
     private val onFailure: CoroutinesMavConnection.() -> Unit
 ) : CoroutinesMavConnection {
 
@@ -22,7 +23,7 @@ internal class CoroutinesMavConnectionImpl(
 
     private val _mavFrame = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
         extraBufferCapacity = extraBufferCapacity,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
+        onBufferOverflow = onBufferOverflow
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
