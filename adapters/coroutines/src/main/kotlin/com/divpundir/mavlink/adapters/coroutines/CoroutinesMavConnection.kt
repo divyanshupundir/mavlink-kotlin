@@ -1,9 +1,9 @@
 package com.divpundir.mavlink.adapters.coroutines
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharedFlow
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharedFlow
 import java.io.IOException
 
 public interface CoroutinesMavConnection {

@@ -2,13 +2,17 @@ package com.divpundir.mavlink.adapters.coroutines
 
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import java.io.IOException
 
 public fun MavConnection.asCoroutine(
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
     onIoFailure: CoroutinesMavConnection.() -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     this,
+    dispatcher,
     128,
     onIoFailure
 )
