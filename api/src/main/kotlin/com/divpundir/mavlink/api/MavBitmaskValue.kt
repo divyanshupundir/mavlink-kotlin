@@ -28,9 +28,7 @@ public class MavBitmaskValue<E : MavBitmask> private constructor(public val flag
 
         other as MavBitmaskValue<*>
 
-        if (value != other.value) return false
-
-        return true
+        return value == other.value
     }
 
     override fun hashCode(): Int {

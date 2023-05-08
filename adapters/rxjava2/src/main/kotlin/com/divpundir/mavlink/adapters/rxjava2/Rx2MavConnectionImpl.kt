@@ -93,7 +93,6 @@ internal class Rx2MavConnectionImpl(
             secretKey
         )
     }
-
 }
 
 private inline fun completableSubscribeOn(
