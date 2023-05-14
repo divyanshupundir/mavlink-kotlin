@@ -8,6 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import java.io.IOException
 
+/**
+ * A helper function to wrap a [MavConnection] as a [CoroutinesMavConnection]. The returned [CoroutinesMavConnection]
+ * uses the provided [dispatcher] to perform the IO operations of reading and sending the messages. The [onFailure]
+ * callback is invoked when an exception is thrown while reading the messages. This can be used to implement a custom
+ * reconnection strategy.
+ */
 public fun MavConnection.asCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     onFailure: CoroutinesMavConnection.() -> Unit = {}
@@ -19,14 +25,26 @@ public fun MavConnection.asCoroutine(
     onFailure = onFailure
 )
 
+/**
+ * A wrapper around [CoroutinesMavConnection.connect] that returns `true` if no exception was thrown and `false`
+ * otherwise.
+ */
 public suspend fun CoroutinesMavConnection.tryConnect(readerScope: CoroutineScope): Boolean = runCatchingIo {
     connect(readerScope)
 }
 
+/**
+ * A wrapper around [CoroutinesMavConnection.close] that returns `true` if no exception was thrown and `false`
+ * otherwise.
+ */
 public suspend fun CoroutinesMavConnection.tryClose(): Boolean = runCatchingIo {
     close()
 }
 
+/**
+ * A wrapper around [CoroutinesMavConnection.sendV1] that returns `true` if no exception was thrown and `false`
+ * otherwise.
+ */
 public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendV1(
     systemId: UByte,
     componentId: UByte,
@@ -35,6 +53,10 @@ public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendV1(
     sendV1(systemId, componentId, payload)
 }
 
+/**
+ * A wrapper around [CoroutinesMavConnection.sendUnsignedV2] that returns `true` if no exception was thrown and `false`
+ * otherwise.
+ */
 public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendUnsignedV2(
     systemId: UByte,
     componentId: UByte,
@@ -43,6 +65,10 @@ public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendUnsignedV2
     sendUnsignedV2(systemId, componentId, payload)
 }
 
+/**
+ * A wrapper around [CoroutinesMavConnection.sendSignedV2] that returns `true` if no exception was thrown and `false`
+ * otherwise.
+ */
 public suspend fun <T : MavMessage<T>> CoroutinesMavConnection.trySendSignedV2(
     systemId: UByte,
     componentId: UByte,
