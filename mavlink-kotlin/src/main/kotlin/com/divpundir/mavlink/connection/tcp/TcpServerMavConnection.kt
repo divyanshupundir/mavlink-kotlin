@@ -5,6 +5,12 @@ import com.divpundir.mavlink.connection.stream.StreamMavConnection
 import java.io.IOException
 import java.net.ServerSocket
 
+/**
+ * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] interface that acts as a TCP server endpoint.
+ *
+ * This class listens on the specified [port] for a single connection. Once a connection is established, the server
+ * socket is closed.
+ */
 public class TcpServerMavConnection(
     private val port: Int,
     private val dialect: MavDialect

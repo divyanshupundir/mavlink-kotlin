@@ -2,20 +2,32 @@ package com.divpundir.mavlink.serialization
 
 import java.nio.charset.StandardCharsets
 
+/**
+ * X25 hash calculator used for computing the MAVLink frame checksums.
+ */
 public class CrcX25 {
 
     private var crc: Int = 0xFFFF
 
+    /**
+     * Adds the given string to the hash. The string is encoded as UTF-8.
+     */
     public fun accumulate(str: String) {
         accumulate(str.toByteArray(StandardCharsets.UTF_8))
     }
 
-    public fun accumulate(bytes: ByteArray, offset: Int = 0, length: Int = bytes.size) {
-        for (i in offset until length) {
+    /**
+     * Adds the given [ByteArray] from the [start] to the [end] indices to the hash.
+     */
+    public fun accumulate(bytes: ByteArray, start: Int = 0, end: Int = bytes.size) {
+        for (i in start until end) {
             accumulate(bytes[i])
         }
     }
 
+    /**
+     * Adds the given [Byte] to the hash.
+     */
     public fun accumulate(b: Byte) {
         var bb = b.toInt()
         bb = bb xor (crc and 0xFF)
@@ -24,6 +36,9 @@ public class CrcX25 {
         crc = (crc shr 8) xor (bb shl 8) xor (bb shl 3) xor (bb shr 4)
     }
 
+    /**
+     * Returns the current hash value.
+     */
     public fun get(): UShort {
         return crc.toUShort()
     }

@@ -6,6 +6,9 @@ import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.Socket
 
+/**
+ * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] interface that acts as a TCP client endpoint.
+ */
 public class TcpClientMavConnection(
     private val host: String,
     private val port: Int,

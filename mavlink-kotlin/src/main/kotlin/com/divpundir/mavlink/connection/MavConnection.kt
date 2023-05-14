@@ -6,7 +6,7 @@ import java.io.Closeable
 import java.io.IOException
 
 /**
- * A low level connection interface to a MAVLink device.
+ * A connection interface with a MAVLink device.
  *
  * All the methods are blocking and can throw [IOException]. This is a design decision to keep the interface simple and
  * to allow the user to decide how to handle the blocking calls and the IO errors.
