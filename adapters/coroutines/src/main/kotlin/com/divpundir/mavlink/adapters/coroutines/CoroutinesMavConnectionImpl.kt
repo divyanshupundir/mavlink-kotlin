@@ -1,18 +1,20 @@
 package com.divpundir.mavlink.adapters.coroutines
 
+import com.divpundir.mavlink.api.MavFrame
+import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.connection.MavConnection
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import com.divpundir.mavlink.api.MavFrame
-import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.connection.MavConnection
 import java.io.IOException
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
+    private val dispatcher: CoroutineDispatcher,
     extraBufferCapacity: Int,
-    private val onIoFailure: CoroutinesMavConnection.() -> Unit
+    onBufferOverflow: BufferOverflow,
+    private val onFailure: CoroutinesMavConnection.() -> Unit
 ) : CoroutinesMavConnection {
 
     @Volatile
@@ -21,18 +23,18 @@ internal class CoroutinesMavConnectionImpl(
 
     private val _mavFrame = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
         extraBufferCapacity = extraBufferCapacity,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
+        onBufferOverflow = onBufferOverflow
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
     @Throws(IOException::class)
     override suspend fun connect(readerScope: CoroutineScope) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             connection.connect()
             isOpen = true
         }
 
-        readerScope.launch(Dispatchers.IO + CoroutineName("mavlink-read-coroutine")) {
+        readerScope.launch(dispatcher + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
     }
@@ -52,13 +54,13 @@ internal class CoroutinesMavConnectionImpl(
         }
 
         if (isOpen) {
-            onIoFailure()
+            onFailure()
         }
     }
 
     @Throws(IOException::class)
     override suspend fun close() {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             connection.close()
             isOpen = false
         }
@@ -70,7 +72,7 @@ internal class CoroutinesMavConnectionImpl(
         componentId: UByte,
         payload: T
     ) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             connection.sendV1(
                 systemId,
                 componentId,
@@ -84,7 +86,7 @@ internal class CoroutinesMavConnectionImpl(
         systemId: UByte,
         componentId: UByte, payload: T
     ) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             connection.sendUnsignedV2(
                 systemId,
                 componentId,
@@ -102,7 +104,7 @@ internal class CoroutinesMavConnectionImpl(
         timestamp: UInt,
         secretKey: ByteArray
     ) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             connection.sendSignedV2(
                 systemId,
                 componentId,

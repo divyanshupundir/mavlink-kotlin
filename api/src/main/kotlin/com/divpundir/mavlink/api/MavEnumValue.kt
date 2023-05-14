@@ -20,9 +20,7 @@ public class MavEnumValue<E : MavEnum> private constructor(public val entry: E?,
 
         other as MavEnumValue<*>
 
-        if (value != other.value) return false
-
-        return true
+        return value == other.value
     }
 
     override fun hashCode(): Int {
