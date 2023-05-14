@@ -1,11 +1,12 @@
 package com.divpundir.mavlink.api
 
 /**
- * Represents a basic Mavlink frame. The contents of this class are sufficient
- * for a MavlinkV1 frame.
+ * An in-memory representation a basic MAVLink frame. It contains the [MavMessage] and other wire-format metadata.
  *
- * @param <T> The type of this frame's payload.
-</T> */
+ * The contents of this class are sufficient for a MAVLinkV1 frame.
+ *
+ * @param T The type of this frame's payload.
+ */
 public interface MavFrame<T> {
     /**
      * The sequence of this frame.
