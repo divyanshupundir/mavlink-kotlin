@@ -31,7 +31,7 @@ import kotlin.collections.List
  * Write registers for a device.
  */
 @GeneratedMavMessage(
-  id = 11002u,
+  id = 11_002u,
   crcExtra = -22,
 )
 public data class DeviceOpWrite(
@@ -128,7 +128,7 @@ public data class DeviceOpWrite(
   }
 
   public companion object {
-    private const val ID: UInt = 11002u
+    private const val ID: UInt = 11_002u
 
     private const val CRC_EXTRA: Byte = -22
 

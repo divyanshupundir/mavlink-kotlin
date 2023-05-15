@@ -28,7 +28,7 @@ import kotlin.Unit
  * Read registers for a device.
  */
 @GeneratedMavMessage(
-  id = 11000u,
+  id = 11_000u,
   crcExtra = -122,
 )
 public data class DeviceOpRead(
@@ -118,7 +118,7 @@ public data class DeviceOpRead(
   }
 
   public companion object {
-    private const val ID: UInt = 11000u
+    private const val ID: UInt = 11_000u
 
     private const val CRC_EXTRA: Byte = -122
 

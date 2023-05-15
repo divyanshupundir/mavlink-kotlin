@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -68,117 +67,116 @@ public enum class MavSysStatusSensor(
    * 0x400 3D angular rate control
    */
   @GeneratedMavEnumEntry
-  ANGULAR_RATE_CONTROL(1024u),
+  ANGULAR_RATE_CONTROL(1_024u),
   /**
    * 0x800 attitude stabilization
    */
   @GeneratedMavEnumEntry
-  ATTITUDE_STABILIZATION(2048u),
+  ATTITUDE_STABILIZATION(2_048u),
   /**
    * 0x1000 yaw position
    */
   @GeneratedMavEnumEntry
-  YAW_POSITION(4096u),
+  YAW_POSITION(4_096u),
   /**
    * 0x2000 z/altitude control
    */
   @GeneratedMavEnumEntry
-  Z_ALTITUDE_CONTROL(8192u),
+  Z_ALTITUDE_CONTROL(8_192u),
   /**
    * 0x4000 x/y position control
    */
   @GeneratedMavEnumEntry
-  XY_POSITION_CONTROL(16384u),
+  XY_POSITION_CONTROL(16_384u),
   /**
    * 0x8000 motor outputs / control
    */
   @GeneratedMavEnumEntry
-  MOTOR_OUTPUTS(32768u),
+  MOTOR_OUTPUTS(32_768u),
   /**
    * 0x10000 rc receiver
    */
   @GeneratedMavEnumEntry
-  RC_RECEIVER(65536u),
+  RC_RECEIVER(65_536u),
   /**
    * 0x20000 2nd 3D gyro
    */
   @GeneratedMavEnumEntry
-  _3D_GYRO2(131072u),
+  _3D_GYRO2(131_072u),
   /**
    * 0x40000 2nd 3D accelerometer
    */
   @GeneratedMavEnumEntry
-  _3D_ACCEL2(262144u),
+  _3D_ACCEL2(262_144u),
   /**
    * 0x80000 2nd 3D magnetometer
    */
   @GeneratedMavEnumEntry
-  _3D_MAG2(524288u),
+  _3D_MAG2(524_288u),
   /**
    * 0x100000 geofence
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_GEOFENCE(1048576u),
+  MAV_SYS_STATUS_GEOFENCE(1_048_576u),
   /**
    * 0x200000 AHRS subsystem health
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_AHRS(2097152u),
+  MAV_SYS_STATUS_AHRS(2_097_152u),
   /**
    * 0x400000 Terrain subsystem health
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_TERRAIN(4194304u),
+  MAV_SYS_STATUS_TERRAIN(4_194_304u),
   /**
    * 0x800000 Motors are reversed
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_REVERSE_MOTOR(8388608u),
+  MAV_SYS_STATUS_REVERSE_MOTOR(8_388_608u),
   /**
    * 0x1000000 Logging
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_LOGGING(16777216u),
+  MAV_SYS_STATUS_LOGGING(16_777_216u),
   /**
    * 0x2000000 Battery
    */
   @GeneratedMavEnumEntry
-  BATTERY(33554432u),
+  BATTERY(33_554_432u),
   /**
    * 0x4000000 Proximity
    */
   @GeneratedMavEnumEntry
-  PROXIMITY(67108864u),
+  PROXIMITY(67_108_864u),
   /**
    * 0x8000000 Satellite Communication 
    */
   @GeneratedMavEnumEntry
-  SATCOM(134217728u),
+  SATCOM(134_217_728u),
   /**
    * 0x10000000 pre-arm check status. Always healthy when armed
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_PREARM_CHECK(268435456u),
+  MAV_SYS_STATUS_PREARM_CHECK(268_435_456u),
   /**
    * 0x20000000 Avoidance/collision prevention
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_OBSTACLE_AVOIDANCE(536870912u),
+  MAV_SYS_STATUS_OBSTACLE_AVOIDANCE(536_870_912u),
   /**
    * 0x40000000 propulsion (actuator, esc, motor or propellor)
    */
   @GeneratedMavEnumEntry
-  PROPULSION(1073741824u),
+  PROPULSION(1_073_741_824u),
   /**
    * 0x80000000 Extended bit-field are used for further sensor status bits (needs to be set in
    * onboard_control_sensors_present only)
    */
   @GeneratedMavEnumEntry
-  MAV_SYS_STATUS_EXTENSION_USED(2147483648u),
+  MAV_SYS_STATUS_EXTENSION_USED(2_147_483_648u),
   ;
 
-  public companion object : MavEnum.Companion<MavSysStatusSensor>,
-      MavBitmask.Companion<MavSysStatusSensor> {
+  public companion object : MavBitmask.Companion<MavSysStatusSensor> {
     public override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensor? = when (v) {
       1u -> _3D_GYRO
       2u -> _3D_ACCEL

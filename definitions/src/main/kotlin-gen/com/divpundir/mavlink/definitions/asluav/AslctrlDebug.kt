@@ -25,7 +25,7 @@ import kotlin.Unit
  * ASL-fixed-wing controller debug data
  */
 @GeneratedMavMessage(
-  id = 8005u,
+  id = 8_005u,
   crcExtra = -5,
 )
 public data class AslctrlDebug(
@@ -120,7 +120,7 @@ public data class AslctrlDebug(
   }
 
   public companion object {
-    private const val ID: UInt = 8005u
+    private const val ID: UInt = 8_005u
 
     private const val CRC_EXTRA: Byte = -5
 

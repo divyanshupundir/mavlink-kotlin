@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -70,74 +69,73 @@ public enum class MavGeneratorStatusFlag(
    * Power electronics experienced a fault and shutdown.
    */
   @GeneratedMavEnumEntry
-  ELECTRONICS_FAULT(1024u),
+  ELECTRONICS_FAULT(1_024u),
   /**
    * The power source supplying the generator failed e.g. mechanical generator stopped, tether is no
    * longer providing power, solar cell is in shade, hydrogen reaction no longer happening.
    */
   @GeneratedMavEnumEntry
-  POWERSOURCE_FAULT(2048u),
+  POWERSOURCE_FAULT(2_048u),
   /**
    * Generator controller having communication problems.
    */
   @GeneratedMavEnumEntry
-  COMMUNICATION_WARNING(4096u),
+  COMMUNICATION_WARNING(4_096u),
   /**
    * Power electronic or generator cooling system error.
    */
   @GeneratedMavEnumEntry
-  COOLING_WARNING(8192u),
+  COOLING_WARNING(8_192u),
   /**
    * Generator controller power rail experienced a fault.
    */
   @GeneratedMavEnumEntry
-  POWER_RAIL_FAULT(16384u),
+  POWER_RAIL_FAULT(16_384u),
   /**
    * Generator controller exceeded the overcurrent threshold and shutdown to prevent damage.
    */
   @GeneratedMavEnumEntry
-  OVERCURRENT_FAULT(32768u),
+  OVERCURRENT_FAULT(32_768u),
   /**
    * Generator controller detected a high current going into the batteries and shutdown to prevent
    * battery damage.
    */
   @GeneratedMavEnumEntry
-  BATTERY_OVERCHARGE_CURRENT_FAULT(65536u),
+  BATTERY_OVERCHARGE_CURRENT_FAULT(65_536u),
   /**
    * Generator controller exceeded it's overvoltage threshold and shutdown to prevent it exceeding
    * the voltage rating.
    */
   @GeneratedMavEnumEntry
-  OVERVOLTAGE_FAULT(131072u),
+  OVERVOLTAGE_FAULT(131_072u),
   /**
    * Batteries are under voltage (generator will not start).
    */
   @GeneratedMavEnumEntry
-  BATTERY_UNDERVOLT_FAULT(262144u),
+  BATTERY_UNDERVOLT_FAULT(262_144u),
   /**
    * Generator start is inhibited by e.g. a safety switch.
    */
   @GeneratedMavEnumEntry
-  START_INHIBITED(524288u),
+  START_INHIBITED(524_288u),
   /**
    * Generator requires maintenance.
    */
   @GeneratedMavEnumEntry
-  MAINTENANCE_REQUIRED(1048576u),
+  MAINTENANCE_REQUIRED(1_048_576u),
   /**
    * Generator is not ready to generate yet.
    */
   @GeneratedMavEnumEntry
-  WARMING_UP(2097152u),
+  WARMING_UP(2_097_152u),
   /**
    * Generator is idle.
    */
   @GeneratedMavEnumEntry
-  IDLE(4194304u),
+  IDLE(4_194_304u),
   ;
 
-  public companion object : MavEnum.Companion<MavGeneratorStatusFlag>,
-      MavBitmask.Companion<MavGeneratorStatusFlag> {
+  public companion object : MavBitmask.Companion<MavGeneratorStatusFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): MavGeneratorStatusFlag? = when (v) {
       1u -> OFF
       2u -> READY

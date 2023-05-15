@@ -25,7 +25,7 @@ import kotlin.Unit
  * Kinematic multi bands (track) output from Daidalus
  */
 @GeneratedMavMessage(
-  id = 42001u,
+  id = 42_001u,
   crcExtra = -17,
 )
 public data class IcarousKinematicBands(
@@ -155,7 +155,7 @@ public data class IcarousKinematicBands(
   }
 
   public companion object {
-    private const val ID: UInt = 42001u
+    private const val ID: UInt = 42_001u
 
     private const val CRC_EXTRA: Byte = -17
 

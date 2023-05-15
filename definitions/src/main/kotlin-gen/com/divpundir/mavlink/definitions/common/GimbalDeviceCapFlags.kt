@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -71,16 +70,15 @@ public enum class GimbalDeviceCapFlags(
    * Gimbal device supports locking to an absolute heading (often this is an option available)
    */
   @GeneratedMavEnumEntry
-  HAS_YAW_LOCK(1024u),
+  HAS_YAW_LOCK(1_024u),
   /**
    * Gimbal device supports yawing/panning infinetely (e.g. using slip disk).
    */
   @GeneratedMavEnumEntry
-  SUPPORTS_INFINITE_YAW(2048u),
+  SUPPORTS_INFINITE_YAW(2_048u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalDeviceCapFlags>,
-      MavBitmask.Companion<GimbalDeviceCapFlags> {
+  public companion object : MavBitmask.Companion<GimbalDeviceCapFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceCapFlags? = when (v) {
       1u -> HAS_RETRACT
       2u -> HAS_NEUTRAL

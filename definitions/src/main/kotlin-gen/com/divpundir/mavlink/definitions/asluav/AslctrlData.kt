@@ -26,7 +26,7 @@ import kotlin.Unit
  * ASL-fixed-wing controller data
  */
 @GeneratedMavMessage(
-  id = 8004u,
+  id = 8_004u,
   crcExtra = -84,
 )
 public data class AslctrlData(
@@ -174,7 +174,7 @@ public data class AslctrlData(
   }
 
   public companion object {
-    private const val ID: UInt = 8004u
+    private const val ID: UInt = 8_004u
 
     private const val CRC_EXTRA: Byte = -84
 

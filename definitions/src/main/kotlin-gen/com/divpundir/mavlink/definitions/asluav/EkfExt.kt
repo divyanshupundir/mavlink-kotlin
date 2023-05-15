@@ -23,7 +23,7 @@ import kotlin.Unit
  * Extended EKF state estimates for ASLUAVs
  */
 @GeneratedMavMessage(
-  id = 8007u,
+  id = 8_007u,
   crcExtra = 64,
 )
 public data class EkfExt(
@@ -90,7 +90,7 @@ public data class EkfExt(
   }
 
   public companion object {
-    private const val ID: UInt = 8007u
+    private const val ID: UInt = 8_007u
 
     private const val CRC_EXTRA: Byte = 64
 

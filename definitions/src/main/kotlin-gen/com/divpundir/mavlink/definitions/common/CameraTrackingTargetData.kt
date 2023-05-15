@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -36,8 +35,7 @@ public enum class CameraTrackingTargetData(
   IN_STATUS(4u),
   ;
 
-  public companion object : MavEnum.Companion<CameraTrackingTargetData>,
-      MavBitmask.Companion<CameraTrackingTargetData> {
+  public companion object : MavBitmask.Companion<CameraTrackingTargetData> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingTargetData? = when (v) {
       0u -> NONE
       1u -> EMBEDDED

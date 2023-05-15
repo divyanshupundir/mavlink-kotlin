@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -71,16 +70,15 @@ public enum class PositionTargetTypemask(
    * Ignore yaw
    */
   @GeneratedMavEnumEntry
-  YAW_IGNORE(1024u),
+  YAW_IGNORE(1_024u),
   /**
    * Ignore yaw rate
    */
   @GeneratedMavEnumEntry
-  YAW_RATE_IGNORE(2048u),
+  YAW_RATE_IGNORE(2_048u),
   ;
 
-  public companion object : MavEnum.Companion<PositionTargetTypemask>,
-      MavBitmask.Companion<PositionTargetTypemask> {
+  public companion object : MavBitmask.Companion<PositionTargetTypemask> {
     public override fun getEntryFromValueOrNull(v: UInt): PositionTargetTypemask? = when (v) {
       1u -> X_IGNORE
       2u -> Y_IGNORE

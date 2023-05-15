@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.Deprecated
 import kotlin.UInt
 import kotlin.collections.List
@@ -80,37 +79,37 @@ public enum class MavProtocolCapability(
    * Autopilot supports direct actuator control.
    */
   @GeneratedMavEnumEntry
-  SET_ACTUATOR_TARGET(1024u),
+  SET_ACTUATOR_TARGET(1_024u),
   /**
    * Autopilot supports the MAV_CMD_DO_FLIGHTTERMINATION command (flight termination).
    */
   @GeneratedMavEnumEntry
-  FLIGHT_TERMINATION(2048u),
+  FLIGHT_TERMINATION(2_048u),
   /**
    * Autopilot supports onboard compass calibration.
    */
   @GeneratedMavEnumEntry
-  COMPASS_CALIBRATION(4096u),
+  COMPASS_CALIBRATION(4_096u),
   /**
    * Autopilot supports MAVLink version 2.
    */
   @GeneratedMavEnumEntry
-  MAVLINK2(8192u),
+  MAVLINK2(8_192u),
   /**
    * Autopilot supports mission fence protocol.
    */
   @GeneratedMavEnumEntry
-  MISSION_FENCE(16384u),
+  MISSION_FENCE(16_384u),
   /**
    * Autopilot supports mission rally point protocol.
    */
   @GeneratedMavEnumEntry
-  MISSION_RALLY(32768u),
+  MISSION_RALLY(32_768u),
   /**
    * Reserved for future use.
    */
   @GeneratedMavEnumEntry
-  RESERVED2(65536u),
+  RESERVED2(65_536u),
   /**
    * Parameter protocol uses C-cast of parameter values to set the param_value (float) fields:
    * https://mavlink.io/en/services/parameter.html#parameter-encoding.
@@ -119,11 +118,10 @@ public enum class MavProtocolCapability(
    *         
    */
   @GeneratedMavEnumEntry
-  PARAM_ENCODE_C_CAST(131072u),
+  PARAM_ENCODE_C_CAST(131_072u),
   ;
 
-  public companion object : MavEnum.Companion<MavProtocolCapability>,
-      MavBitmask.Companion<MavProtocolCapability> {
+  public companion object : MavBitmask.Companion<MavProtocolCapability> {
     public override fun getEntryFromValueOrNull(v: UInt): MavProtocolCapability? = when (v) {
       1u -> MISSION_FLOAT
       2u -> PARAM_FLOAT

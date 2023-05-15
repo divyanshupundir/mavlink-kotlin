@@ -34,7 +34,7 @@ import kotlin.Unit
  * Battery pack monitoring data for Li-Ion batteries
  */
 @GeneratedMavMessage(
-  id = 8010u,
+  id = 8_010u,
   crcExtra = -101,
 )
 public data class SensBatmon(
@@ -157,7 +157,7 @@ public data class SensBatmon(
   }
 
   public companion object {
-    private const val ID: UInt = 8010u
+    private const val ID: UInt = 8_010u
 
     private const val CRC_EXTRA: Byte = -101
 

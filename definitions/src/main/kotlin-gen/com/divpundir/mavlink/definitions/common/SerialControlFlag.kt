@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -43,8 +42,7 @@ public enum class SerialControlFlag(
   MULTI(16u),
   ;
 
-  public companion object : MavEnum.Companion<SerialControlFlag>,
-      MavBitmask.Companion<SerialControlFlag> {
+  public companion object : MavBitmask.Companion<SerialControlFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): SerialControlFlag? = when (v) {
       1u -> REPLY
       2u -> RESPOND

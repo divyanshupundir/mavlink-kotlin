@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -70,26 +69,25 @@ public enum class GimbalManagerCapFlags(
    * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_YAW_LOCK.
    */
   @GeneratedMavEnumEntry
-  HAS_YAW_LOCK(1024u),
+  HAS_YAW_LOCK(1_024u),
   /**
    * Based on GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_INFINITE_YAW.
    */
   @GeneratedMavEnumEntry
-  SUPPORTS_INFINITE_YAW(2048u),
+  SUPPORTS_INFINITE_YAW(2_048u),
   /**
    * Gimbal manager supports to point to a local position.
    */
   @GeneratedMavEnumEntry
-  CAN_POINT_LOCATION_LOCAL(65536u),
+  CAN_POINT_LOCATION_LOCAL(65_536u),
   /**
    * Gimbal manager supports to point to a global latitude, longitude, altitude position.
    */
   @GeneratedMavEnumEntry
-  CAN_POINT_LOCATION_GLOBAL(131072u),
+  CAN_POINT_LOCATION_GLOBAL(131_072u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalManagerCapFlags>,
-      MavBitmask.Companion<GimbalManagerCapFlags> {
+  public companion object : MavBitmask.Companion<GimbalManagerCapFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalManagerCapFlags? = when (v) {
       1u -> HAS_RETRACT
       2u -> HAS_NEUTRAL

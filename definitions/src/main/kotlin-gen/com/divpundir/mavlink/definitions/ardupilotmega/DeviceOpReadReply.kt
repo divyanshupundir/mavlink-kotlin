@@ -25,7 +25,7 @@ import kotlin.collections.List
  * Read registers reply.
  */
 @GeneratedMavMessage(
-  id = 11001u,
+  id = 11_001u,
   crcExtra = 15,
 )
 public data class DeviceOpReadReply(
@@ -87,7 +87,7 @@ public data class DeviceOpReadReply(
   }
 
   public companion object {
-    private const val ID: UInt = 11001u
+    private const val ID: UInt = 11_001u
 
     private const val CRC_EXTRA: Byte = 15
 

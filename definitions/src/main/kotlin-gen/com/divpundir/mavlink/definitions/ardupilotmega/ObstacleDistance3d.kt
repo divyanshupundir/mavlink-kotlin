@@ -32,7 +32,7 @@ import kotlin.Unit
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 11037u,
+  id = 11_037u,
   crcExtra = -126,
 )
 public data class ObstacleDistance3d(
@@ -114,7 +114,7 @@ public data class ObstacleDistance3d(
   }
 
   public companion object {
-    private const val ID: UInt = 11037u
+    private const val ID: UInt = 11_037u
 
     private const val CRC_EXTRA: Byte = -126
 

@@ -24,7 +24,7 @@ import kotlin.Unit
  *  Drone position.
  */
 @GeneratedMavMessage(
-  id = 60051u,
+  id = 60_051u,
   crcExtra = -11,
 )
 public data class AvssDronePosition(
@@ -85,7 +85,7 @@ public data class AvssDronePosition(
   }
 
   public companion object {
-    private const val ID: UInt = 60051u
+    private const val ID: UInt = 60_051u
 
     private const val CRC_EXTRA: Byte = -11
 

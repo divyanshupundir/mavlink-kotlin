@@ -26,7 +26,7 @@ import kotlin.Unit
  * Monitoring of sensorpod status
  */
 @GeneratedMavMessage(
-  id = 8012u,
+  id = 8_012u,
   crcExtra = 54,
 )
 public data class SensorpodStatus(
@@ -100,7 +100,7 @@ public data class SensorpodStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 8012u
+    private const val ID: UInt = 8_012u
 
     private const val CRC_EXTRA: Byte = 54
 

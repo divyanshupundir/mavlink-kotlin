@@ -29,7 +29,7 @@ import kotlin.Unit
  * Maximum Power Point Tracker (MPPT) sensor data for solar module power performance tracking
  */
 @GeneratedMavMessage(
-  id = 8003u,
+  id = 8_003u,
   crcExtra = -25,
 )
 public data class SensMppt(
@@ -138,7 +138,7 @@ public data class SensMppt(
   }
 
   public companion object {
-    private const val ID: UInt = 8003u
+    private const val ID: UInt = 8_003u
 
     private const val CRC_EXTRA: Byte = -25
 

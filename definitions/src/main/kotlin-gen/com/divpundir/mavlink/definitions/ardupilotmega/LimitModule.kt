@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -28,7 +27,7 @@ public enum class LimitModule(
   LIMIT_ALTITUDE(4u),
   ;
 
-  public companion object : MavEnum.Companion<LimitModule>, MavBitmask.Companion<LimitModule> {
+  public companion object : MavBitmask.Companion<LimitModule> {
     public override fun getEntryFromValueOrNull(v: UInt): LimitModule? = when (v) {
       1u -> LIMIT_GPSLOCK
       2u -> LIMIT_GEOFENCE

@@ -23,7 +23,7 @@ import kotlin.Unit
  * Atmospheric sensors (temperature, humidity, ...) 
  */
 @GeneratedMavMessage(
-  id = 8009u,
+  id = 8_009u,
   crcExtra = -112,
 )
 public data class SensAtmos(
@@ -62,7 +62,7 @@ public data class SensAtmos(
   }
 
   public companion object {
-    private const val ID: UInt = 8009u
+    private const val ID: UInt = 8_009u
 
     private const val CRC_EXTRA: Byte = -112
 

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -53,8 +52,7 @@ public enum class GpsInputIgnoreFlags(
   GPS_INPUT_IGNORE_FLAG_VERTICAL_ACCURACY(128u),
   ;
 
-  public companion object : MavEnum.Companion<GpsInputIgnoreFlags>,
-      MavBitmask.Companion<GpsInputIgnoreFlags> {
+  public companion object : MavBitmask.Companion<GpsInputIgnoreFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GpsInputIgnoreFlags? = when (v) {
       1u -> GPS_INPUT_IGNORE_FLAG_ALT
       2u -> GPS_INPUT_IGNORE_FLAG_HDOP

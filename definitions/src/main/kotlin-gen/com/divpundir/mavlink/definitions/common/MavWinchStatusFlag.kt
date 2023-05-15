@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -70,11 +69,10 @@ public enum class MavWinchStatusFlag(
    * length. This is a failover state from REDELIVER if the number of attemps exceeds a threshold.
    */
   @GeneratedMavEnumEntry
-  MAV_WINCH_STATUS_ABANDON_LINE(1024u),
+  MAV_WINCH_STATUS_ABANDON_LINE(1_024u),
   ;
 
-  public companion object : MavEnum.Companion<MavWinchStatusFlag>,
-      MavBitmask.Companion<MavWinchStatusFlag> {
+  public companion object : MavBitmask.Companion<MavWinchStatusFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): MavWinchStatusFlag? = when (v) {
       1u -> MAV_WINCH_STATUS_HEALTHY
       2u -> MAV_WINCH_STATUS_FULLY_RETRACTED

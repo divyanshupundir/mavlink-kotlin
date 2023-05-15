@@ -36,7 +36,7 @@ import kotlin.Unit
  * Dynamic data used to generate ADS-B out transponder data (send at 5Hz)
  */
 @GeneratedMavMessage(
-  id = 10002u,
+  id = 10_002u,
   crcExtra = -70,
 )
 public data class UavionixAdsbOutDynamic(
@@ -168,7 +168,7 @@ public data class UavionixAdsbOutDynamic(
   }
 
   public companion object {
-    private const val ID: UInt = 10002u
+    private const val ID: UInt = 10_002u
 
     private const val CRC_EXTRA: Byte = -70
 

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -73,26 +72,25 @@ public enum class HighresImuUpdatedFlags(
    * The value in the diff_pressure field has been updated
    */
   @GeneratedMavEnumEntry
-  HIGHRES_IMU_UPDATED_DIFF_PRESSURE(1024u),
+  HIGHRES_IMU_UPDATED_DIFF_PRESSURE(1_024u),
   /**
    * The value in the pressure_alt field has been updated
    */
   @GeneratedMavEnumEntry
-  HIGHRES_IMU_UPDATED_PRESSURE_ALT(2048u),
+  HIGHRES_IMU_UPDATED_PRESSURE_ALT(2_048u),
   /**
    * The value in the temperature field has been updated
    */
   @GeneratedMavEnumEntry
-  HIGHRES_IMU_UPDATED_TEMPERATURE(4096u),
+  HIGHRES_IMU_UPDATED_TEMPERATURE(4_096u),
   /**
    * All fields in HIGHRES_IMU have been updated.
    */
   @GeneratedMavEnumEntry
-  HIGHRES_IMU_UPDATED_ALL(65535u),
+  HIGHRES_IMU_UPDATED_ALL(65_535u),
   ;
 
-  public companion object : MavEnum.Companion<HighresImuUpdatedFlags>,
-      MavBitmask.Companion<HighresImuUpdatedFlags> {
+  public companion object : MavBitmask.Companion<HighresImuUpdatedFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): HighresImuUpdatedFlags? = when (v) {
       0u -> HIGHRES_IMU_UPDATED_NONE
       1u -> HIGHRES_IMU_UPDATED_XACC

@@ -26,7 +26,7 @@ import kotlin.Unit
  * Off-board controls/commands for ASLUAVs
  */
 @GeneratedMavMessage(
-  id = 8008u,
+  id = 8_008u,
   crcExtra = -22,
 )
 public data class AslObctrl(
@@ -100,7 +100,7 @@ public data class AslObctrl(
   }
 
   public companion object {
-    private const val ID: UInt = 8008u
+    private const val ID: UInt = 8_008u
 
     private const val CRC_EXTRA: Byte = -22
 

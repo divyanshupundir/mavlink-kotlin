@@ -26,7 +26,7 @@ import kotlin.collections.List
  * Extended state information for ASLUAVs
  */
 @GeneratedMavMessage(
-  id = 8006u,
+  id = 8_006u,
   crcExtra = 97,
 )
 public data class AsluavStatus(
@@ -72,7 +72,7 @@ public data class AsluavStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 8006u
+    private const val ID: UInt = 8_006u
 
     private const val CRC_EXTRA: Byte = 97
 

@@ -33,7 +33,7 @@ import kotlin.Unit
  * thereafter)
  */
 @GeneratedMavMessage(
-  id = 10001u,
+  id = 10_001u,
   crcExtra = -47,
 )
 public data class UavionixAdsbOutCfg(
@@ -111,7 +111,7 @@ public data class UavionixAdsbOutCfg(
   }
 
   public companion object {
-    private const val ID: UInt = 10001u
+    private const val ID: UInt = 10_001u
 
     private const val CRC_EXTRA: Byte = -47
 

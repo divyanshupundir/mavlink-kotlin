@@ -20,7 +20,7 @@ import kotlin.Unit
  * Voltage and current sensor data
  */
 @GeneratedMavMessage(
-  id = 8002u,
+  id = 8_002u,
   crcExtra = -38,
 )
 public data class SensPower(
@@ -66,7 +66,7 @@ public data class SensPower(
   }
 
   public companion object {
-    private const val ID: UInt = 8002u
+    private const val ID: UInt = 8_002u
 
     private const val CRC_EXTRA: Byte = -38
 

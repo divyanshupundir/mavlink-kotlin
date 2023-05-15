@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -27,7 +26,7 @@ public enum class RallyFlags(
   LAND_IMMEDIATELY(2u),
   ;
 
-  public companion object : MavEnum.Companion<RallyFlags>, MavBitmask.Companion<RallyFlags> {
+  public companion object : MavBitmask.Companion<RallyFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): RallyFlags? = when (v) {
       1u -> FAVORABLE_WIND
       2u -> LAND_IMMEDIATELY

@@ -27,7 +27,7 @@ import kotlin.collections.List
  * Cumulative distance traveled for each reported wheel.
  */
 @GeneratedMavMessage(
-  id = 9000u,
+  id = 9_000u,
   crcExtra = 113,
 )
 public data class WheelDistance(
@@ -68,7 +68,7 @@ public data class WheelDistance(
   }
 
   public companion object {
-    private const val ID: UInt = 9000u
+    private const val ID: UInt = 9_000u
 
     private const val CRC_EXTRA: Byte = 113
 

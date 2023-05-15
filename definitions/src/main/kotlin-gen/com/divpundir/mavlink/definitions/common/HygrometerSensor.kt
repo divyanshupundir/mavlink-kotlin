@@ -26,7 +26,7 @@ import kotlin.Unit
  * Temperature and humidity from hygrometer.
  */
 @GeneratedMavMessage(
-  id = 12920u,
+  id = 12_920u,
   crcExtra = 20,
 )
 public data class HygrometerSensor(
@@ -65,7 +65,7 @@ public data class HygrometerSensor(
   }
 
   public companion object {
-    private const val ID: UInt = 12920u
+    private const val ID: UInt = 12_920u
 
     private const val CRC_EXTRA: Byte = 20
 

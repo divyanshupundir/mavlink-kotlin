@@ -26,7 +26,7 @@ import kotlin.Unit
  * Status of the SatCom link
  */
 @GeneratedMavMessage(
-  id = 8015u,
+  id = 8_015u,
   crcExtra = 23,
 )
 public data class SatcomLinkStatus(
@@ -100,7 +100,7 @@ public data class SatcomLinkStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 8015u
+    private const val ID: UInt = 8_015u
 
     private const val CRC_EXTRA: Byte = 23
 

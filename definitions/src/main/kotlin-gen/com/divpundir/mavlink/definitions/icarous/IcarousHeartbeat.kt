@@ -20,7 +20,7 @@ import kotlin.Unit
  * ICAROUS heartbeat
  */
 @GeneratedMavMessage(
-  id = 42000u,
+  id = 42_000u,
   crcExtra = -29,
 )
 public data class IcarousHeartbeat(
@@ -45,7 +45,7 @@ public data class IcarousHeartbeat(
   }
 
   public companion object {
-    private const val ID: UInt = 42000u
+    private const val ID: UInt = 42_000u
 
     private const val CRC_EXTRA: Byte = -29
 

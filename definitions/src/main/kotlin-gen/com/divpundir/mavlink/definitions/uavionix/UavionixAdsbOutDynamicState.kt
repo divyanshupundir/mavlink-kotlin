@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.uavionix
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -26,8 +25,7 @@ public enum class UavionixAdsbOutDynamicState(
   IDENT(16u),
   ;
 
-  public companion object : MavEnum.Companion<UavionixAdsbOutDynamicState>,
-      MavBitmask.Companion<UavionixAdsbOutDynamicState> {
+  public companion object : MavBitmask.Companion<UavionixAdsbOutDynamicState> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicState? = when (v) {
       1u -> INTENT_CHANGE
       2u -> AUTOPILOT_ENABLED

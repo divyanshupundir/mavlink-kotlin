@@ -35,7 +35,7 @@ import kotlin.collections.List
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 12903u,
+  id = 12_903u,
   crcExtra = -7,
 )
 public data class OpenDroneIdSelfId(
@@ -90,7 +90,7 @@ public data class OpenDroneIdSelfId(
   }
 
   public companion object {
-    private const val ID: UInt = 12903u
+    private const val ID: UInt = 12_903u
 
     private const val CRC_EXTRA: Byte = -7
 

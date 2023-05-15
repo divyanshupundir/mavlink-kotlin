@@ -16,12 +16,12 @@ public enum class MavRemoteLogDataBlockCommands(
    * UAV to stop sending DataFlash blocks.
    */
   @GeneratedMavEnumEntry
-  MAV_REMOTE_LOG_DATA_BLOCK_STOP(2147483645u),
+  MAV_REMOTE_LOG_DATA_BLOCK_STOP(2_147_483_645u),
   /**
    * UAV to start sending DataFlash blocks.
    */
   @GeneratedMavEnumEntry
-  MAV_REMOTE_LOG_DATA_BLOCK_START(2147483646u),
+  MAV_REMOTE_LOG_DATA_BLOCK_START(2_147_483_646u),
   ;
 
   public companion object : MavEnum.Companion<MavRemoteLogDataBlockCommands> {
