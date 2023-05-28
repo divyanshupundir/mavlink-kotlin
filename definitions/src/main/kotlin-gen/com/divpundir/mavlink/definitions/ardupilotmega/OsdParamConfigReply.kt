@@ -22,7 +22,7 @@ import kotlin.Unit
  * Configure OSD parameter reply.
  */
 @GeneratedMavMessage(
-  id = 11034u,
+  id = 11_034u,
   crcExtra = 79,
 )
 public data class OsdParamConfigReply(
@@ -54,7 +54,7 @@ public data class OsdParamConfigReply(
   }
 
   public companion object {
-    private const val ID: UInt = 11034u
+    private const val ID: UInt = 11_034u
 
     private const val CRC_EXTRA: Byte = 79
 

@@ -28,7 +28,7 @@ import kotlin.Unit
  * Read configured OSD parameter reply.
  */
 @GeneratedMavMessage(
-  id = 11036u,
+  id = 11_036u,
   crcExtra = -79,
 )
 public data class OsdParamShowConfigReply(
@@ -97,7 +97,7 @@ public data class OsdParamShowConfigReply(
   }
 
   public companion object {
-    private const val ID: UInt = 11036u
+    private const val ID: UInt = 11_036u
 
     private const val CRC_EXTRA: Byte = -79
 

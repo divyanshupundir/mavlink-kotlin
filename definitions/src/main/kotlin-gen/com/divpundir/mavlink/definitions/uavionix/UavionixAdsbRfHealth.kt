@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.uavionix
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -24,8 +23,7 @@ public enum class UavionixAdsbRfHealth(
   FAIL_RX(16u),
   ;
 
-  public companion object : MavEnum.Companion<UavionixAdsbRfHealth>,
-      MavBitmask.Companion<UavionixAdsbRfHealth> {
+  public companion object : MavBitmask.Companion<UavionixAdsbRfHealth> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbRfHealth? = when (v) {
       0u -> INITIALIZING
       1u -> OK

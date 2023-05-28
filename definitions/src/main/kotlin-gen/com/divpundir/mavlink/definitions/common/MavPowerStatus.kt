@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -46,8 +45,7 @@ public enum class MavPowerStatus(
   CHANGED(32u),
   ;
 
-  public companion object : MavEnum.Companion<MavPowerStatus>, MavBitmask.Companion<MavPowerStatus>
-      {
+  public companion object : MavBitmask.Companion<MavPowerStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): MavPowerStatus? = when (v) {
       1u -> BRICK_VALID
       2u -> SERVO_VALID

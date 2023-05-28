@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -22,8 +21,7 @@ public enum class MavDoRepositionFlags(
   CHANGE_MODE(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavDoRepositionFlags>,
-      MavBitmask.Companion<MavDoRepositionFlags> {
+  public companion object : MavBitmask.Companion<MavDoRepositionFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): MavDoRepositionFlags? = when (v) {
       1u -> CHANGE_MODE
       else -> null

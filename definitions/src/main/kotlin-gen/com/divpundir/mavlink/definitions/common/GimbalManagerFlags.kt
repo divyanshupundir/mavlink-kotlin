@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -42,8 +41,7 @@ public enum class GimbalManagerFlags(
   YAW_LOCK(16u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalManagerFlags>,
-      MavBitmask.Companion<GimbalManagerFlags> {
+  public companion object : MavBitmask.Companion<GimbalManagerFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalManagerFlags? = when (v) {
       1u -> RETRACT
       2u -> NEUTRAL

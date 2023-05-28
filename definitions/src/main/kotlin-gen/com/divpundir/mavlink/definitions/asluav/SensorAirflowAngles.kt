@@ -26,7 +26,7 @@ import kotlin.Unit
  * Calibrated airflow angle measurements
  */
 @GeneratedMavMessage(
-  id = 8016u,
+  id = 8_016u,
   crcExtra = -107,
 )
 public data class SensorAirflowAngles(
@@ -79,7 +79,7 @@ public data class SensorAirflowAngles(
   }
 
   public companion object {
-    private const val ID: UInt = 8016u
+    private const val ID: UInt = 8_016u
 
     private const val CRC_EXTRA: Byte = -107
 

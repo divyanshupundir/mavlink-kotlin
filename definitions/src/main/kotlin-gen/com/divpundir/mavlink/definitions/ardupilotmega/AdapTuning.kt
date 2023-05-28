@@ -23,7 +23,7 @@ import kotlin.Unit
  * Adaptive Controller tuning information.
  */
 @GeneratedMavMessage(
-  id = 11010u,
+  id = 11_010u,
   crcExtra = 46,
 )
 public data class AdapTuning(
@@ -132,7 +132,7 @@ public data class AdapTuning(
   }
 
   public companion object {
-    private const val ID: UInt = 11010u
+    private const val ID: UInt = 11_010u
 
     private const val CRC_EXTRA: Byte = 46
 

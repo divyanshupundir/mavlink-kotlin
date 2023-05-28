@@ -20,7 +20,7 @@ import kotlin.Unit
  * Transceiver heartbeat with health report (updated every 10s)
  */
 @GeneratedMavMessage(
-  id = 10003u,
+  id = 10_003u,
   crcExtra = 4,
 )
 public data class UavionixAdsbTransceiverHealthReport(
@@ -46,7 +46,7 @@ public data class UavionixAdsbTransceiverHealthReport(
   }
 
   public companion object {
-    private const val ID: UInt = 10003u
+    private const val ID: UInt = 10_003u
 
     private const val CRC_EXTRA: Byte = 4
 

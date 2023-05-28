@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -26,8 +25,7 @@ public enum class VideoStreamStatusFlags(
   THERMAL(2u),
   ;
 
-  public companion object : MavEnum.Companion<VideoStreamStatusFlags>,
-      MavBitmask.Companion<VideoStreamStatusFlags> {
+  public companion object : MavBitmask.Companion<VideoStreamStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): VideoStreamStatusFlags? = when (v) {
       1u -> RUNNING
       2u -> THERMAL

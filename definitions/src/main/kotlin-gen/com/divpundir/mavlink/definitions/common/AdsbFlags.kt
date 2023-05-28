@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -33,10 +32,10 @@ public enum class AdsbFlags(
   @GeneratedMavEnumEntry
   BARO_VALID(256u),
   @GeneratedMavEnumEntry
-  SOURCE_UAT(32768u),
+  SOURCE_UAT(32_768u),
   ;
 
-  public companion object : MavEnum.Companion<AdsbFlags>, MavBitmask.Companion<AdsbFlags> {
+  public companion object : MavBitmask.Companion<AdsbFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): AdsbFlags? = when (v) {
       1u -> VALID_COORDS
       2u -> VALID_ALTITUDE

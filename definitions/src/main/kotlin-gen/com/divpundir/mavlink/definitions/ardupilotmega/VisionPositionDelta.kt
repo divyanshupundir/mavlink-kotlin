@@ -26,7 +26,7 @@ import kotlin.collections.List
  * Camera vision based attitude and position deltas.
  */
 @GeneratedMavMessage(
-  id = 11011u,
+  id = 11_011u,
   crcExtra = 106,
 )
 public data class VisionPositionDelta(
@@ -81,7 +81,7 @@ public data class VisionPositionDelta(
   }
 
   public companion object {
-    private const val ID: UInt = 11011u
+    private const val ID: UInt = 11_011u
 
     private const val CRC_EXTRA: Byte = 106
 

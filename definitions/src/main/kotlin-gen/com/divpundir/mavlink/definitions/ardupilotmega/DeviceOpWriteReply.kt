@@ -22,7 +22,7 @@ import kotlin.Unit
  * Write registers reply.
  */
 @GeneratedMavMessage(
-  id = 11003u,
+  id = 11_003u,
   crcExtra = 64,
 )
 public data class DeviceOpWriteReply(
@@ -54,7 +54,7 @@ public data class DeviceOpWriteReply(
   }
 
   public companion object {
-    private const val ID: UInt = 11003u
+    private const val ID: UInt = 11_003u
 
     private const val CRC_EXTRA: Byte = 64
 

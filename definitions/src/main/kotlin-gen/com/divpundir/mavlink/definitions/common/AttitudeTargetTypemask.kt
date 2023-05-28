@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -47,8 +46,7 @@ public enum class AttitudeTargetTypemask(
   ATTITUDE_IGNORE(128u),
   ;
 
-  public companion object : MavEnum.Companion<AttitudeTargetTypemask>,
-      MavBitmask.Companion<AttitudeTargetTypemask> {
+  public companion object : MavBitmask.Companion<AttitudeTargetTypemask> {
     public override fun getEntryFromValueOrNull(v: UInt): AttitudeTargetTypemask? = when (v) {
       1u -> BODY_ROLL_RATE_IGNORE
       2u -> BODY_PITCH_RATE_IGNORE

@@ -24,7 +24,7 @@ import kotlin.collections.List
  * ESC Telemetry Data for ESCs 9 to 12, matching data sent by BLHeli ESCs.
  */
 @GeneratedMavMessage(
-  id = 11032u,
+  id = 11_032u,
   crcExtra = 85,
 )
 public data class EscTelemetry9To12(
@@ -84,7 +84,7 @@ public data class EscTelemetry9To12(
   }
 
   public companion object {
-    private const val ID: UInt = 11032u
+    private const val ID: UInt = 11_032u
 
     private const val CRC_EXTRA: Byte = 85
 

@@ -27,7 +27,7 @@ import kotlin.Unit
  * detecting power supply instability.
  */
 @GeneratedMavMessage(
-  id = 11039u,
+  id = 11_039u,
   crcExtra = -114,
 )
 public data class McuStatus(
@@ -80,7 +80,7 @@ public data class McuStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 11039u
+    private const val ID: UInt = 11_039u
 
     private const val CRC_EXTRA: Byte = -114
 

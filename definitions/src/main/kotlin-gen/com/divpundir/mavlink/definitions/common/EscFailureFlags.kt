@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -56,8 +55,7 @@ public enum class EscFailureFlags(
   ESC_FAILURE_GENERIC(64u),
   ;
 
-  public companion object : MavEnum.Companion<EscFailureFlags>,
-      MavBitmask.Companion<EscFailureFlags> {
+  public companion object : MavBitmask.Companion<EscFailureFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): EscFailureFlags? = when (v) {
       0u -> ESC_FAILURE_NONE
       1u -> ESC_FAILURE_OVER_CURRENT

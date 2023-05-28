@@ -22,7 +22,7 @@ import kotlin.Unit
  *  AVSS PRS system status.
  */
 @GeneratedMavMessage(
-  id = 60050u,
+  id = 60_050u,
   crcExtra = -36,
 )
 public data class AvssPrsSysStatus(
@@ -75,7 +75,7 @@ public data class AvssPrsSysStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 60050u
+    private const val ID: UInt = 60_050u
 
     private const val CRC_EXTRA: Byte = -36
 

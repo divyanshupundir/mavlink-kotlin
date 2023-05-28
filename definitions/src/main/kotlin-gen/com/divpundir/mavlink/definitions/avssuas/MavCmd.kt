@@ -34,7 +34,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_SET_ARM(60050u),
+  PRS_SET_ARM(60_050u),
   /**
    * AVSS defined command. Gets PRS arm statuses
    *
@@ -60,7 +60,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_ARM(60051u),
+  PRS_GET_ARM(60_051u),
   /**
    * AVSS defined command.  Get the PRS battery voltage in millivolts
    *
@@ -86,7 +86,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_BATTERY(60052u),
+  PRS_GET_BATTERY(60_052u),
   /**
    * AVSS defined command. Get the PRS error statuses.
    *
@@ -112,7 +112,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_ERR(60053u),
+  PRS_GET_ERR(60_053u),
   /**
    * AVSS defined command. Set the ATS arming altitude in meters.
    *
@@ -138,7 +138,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_SET_ARM_ALTI(60070u),
+  PRS_SET_ARM_ALTI(60_070u),
   /**
    * AVSS defined command. Get the ATS arming altitude in meters.
    *
@@ -164,7 +164,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_GET_ARM_ALTI(60071u),
+  PRS_GET_ARM_ALTI(60_071u),
   /**
    * AVSS defined command. Shuts down the PRS system.
    *
@@ -190,7 +190,7 @@ public enum class MavCmd(
    * User defined
    */
   @GeneratedMavEnumEntry
-  PRS_SHUTDOWN(60072u),
+  PRS_SHUTDOWN(60_072u),
   ;
 
   public companion object : MavEnum.Companion<MavCmd> {

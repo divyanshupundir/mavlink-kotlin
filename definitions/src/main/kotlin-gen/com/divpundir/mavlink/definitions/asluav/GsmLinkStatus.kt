@@ -26,7 +26,7 @@ import kotlin.Unit
  * Status of GSM modem (connected to onboard computer)
  */
 @GeneratedMavMessage(
-  id = 8014u,
+  id = 8_014u,
   crcExtra = -56,
 )
 public data class GsmLinkStatus(
@@ -93,7 +93,7 @@ public data class GsmLinkStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 8014u
+    private const val ID: UInt = 8_014u
 
     private const val CRC_EXTRA: Byte = -56
 

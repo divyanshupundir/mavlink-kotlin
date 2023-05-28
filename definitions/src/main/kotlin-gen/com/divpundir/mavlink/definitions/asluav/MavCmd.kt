@@ -34,7 +34,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  RESET_MPPT(40001u),
+  RESET_MPPT(40_001u),
   /**
    * Mission command to perform a power cycle on payload
    *
@@ -60,7 +60,7 @@ public enum class MavCmd(
    * Empty
    */
   @GeneratedMavEnumEntry
-  PAYLOAD_CONTROL(40002u),
+  PAYLOAD_CONTROL(40_002u),
   ;
 
   public companion object : MavEnum.Companion<MavCmd> {

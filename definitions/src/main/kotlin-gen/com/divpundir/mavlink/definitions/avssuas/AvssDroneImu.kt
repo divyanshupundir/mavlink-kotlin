@@ -23,7 +23,7 @@ import kotlin.Unit
  * 0).
  */
 @GeneratedMavMessage(
-  id = 60052u,
+  id = 60_052u,
   crcExtra = 101,
 )
 public data class AvssDroneImu(
@@ -118,7 +118,7 @@ public data class AvssDroneImu(
   }
 
   public companion object {
-    private const val ID: UInt = 60052u
+    private const val ID: UInt = 60_052u
 
     private const val CRC_EXTRA: Byte = 101
 

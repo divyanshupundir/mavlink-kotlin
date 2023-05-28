@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -69,16 +68,15 @@ public enum class CameraCapFlags(
    * Camera supports tracking of a selection rectangle on the camera view.
    */
   @GeneratedMavEnumEntry
-  HAS_TRACKING_RECTANGLE(1024u),
+  HAS_TRACKING_RECTANGLE(1_024u),
   /**
    * Camera supports tracking geo status (CAMERA_TRACKING_GEO_STATUS).
    */
   @GeneratedMavEnumEntry
-  HAS_TRACKING_GEO_STATUS(2048u),
+  HAS_TRACKING_GEO_STATUS(2_048u),
   ;
 
-  public companion object : MavEnum.Companion<CameraCapFlags>, MavBitmask.Companion<CameraCapFlags>
-      {
+  public companion object : MavBitmask.Companion<CameraCapFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraCapFlags? = when (v) {
       1u -> CAPTURE_VIDEO
       2u -> CAPTURE_IMAGE

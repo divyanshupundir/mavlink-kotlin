@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -61,8 +60,7 @@ public enum class GimbalDeviceErrorFlags(
   CALIBRATION_RUNNING(256u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalDeviceErrorFlags>,
-      MavBitmask.Companion<GimbalDeviceErrorFlags> {
+  public companion object : MavBitmask.Companion<GimbalDeviceErrorFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceErrorFlags? = when (v) {
       1u -> AT_ROLL_LIMIT
       2u -> AT_PITCH_LIMIT

@@ -22,7 +22,7 @@ import kotlin.Unit
  *  Drone operation mode.
  */
 @GeneratedMavMessage(
-  id = 60053u,
+  id = 60_053u,
   crcExtra = 45,
 )
 public data class AvssDroneOperationMode(
@@ -61,7 +61,7 @@ public data class AvssDroneOperationMode(
   }
 
   public companion object {
-    private const val ID: UInt = 60053u
+    private const val ID: UInt = 60_053u
 
     private const val CRC_EXTRA: Byte = 45
 

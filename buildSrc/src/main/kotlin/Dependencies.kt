@@ -1,17 +1,17 @@
 object Deps {
 
     object Jackson {
-        const val dataFormatXml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.0"
-        const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2"
+        const val dataFormatXml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0"
+        const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2"
     }
 
     object ReactiveX {
         const val rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
-        const val rxJava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
+        const val rxJava3 = "io.reactivex.rxjava3:rxjava:3.1.6"
     }
 
     object Kotlin {
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
     }
 
     object MavlinkKotlin {
@@ -19,7 +19,7 @@ object Deps {
         const val serialization = "com.divpundir.mavlink:serialization:${Config.Plugin.releaseVersion}"
     }
 
-    const val kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
+    const val kotlinPoet = "com.squareup:kotlinpoet:1.13.2"
 }
 
 object TestDeps {
@@ -29,7 +29,7 @@ object TestDeps {
     }
 
     object Jupiter {
-        private const val version = "5.8.2"
+        private const val version = "5.9.3"
         const val api = "org.junit.jupiter:junit-jupiter-api:$version"
         const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
     }

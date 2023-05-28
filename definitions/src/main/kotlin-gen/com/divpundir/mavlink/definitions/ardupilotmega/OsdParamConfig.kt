@@ -31,7 +31,7 @@ import kotlin.Unit
  * Configure an OSD parameter slot.
  */
 @GeneratedMavMessage(
-  id = 11033u,
+  id = 11_033u,
   crcExtra = -61,
 )
 public data class OsdParamConfig(
@@ -121,7 +121,7 @@ public data class OsdParamConfig(
   }
 
   public companion object {
-    private const val ID: UInt = 11033u
+    private const val ID: UInt = 11_033u
 
     private const val CRC_EXTRA: Byte = -61
 

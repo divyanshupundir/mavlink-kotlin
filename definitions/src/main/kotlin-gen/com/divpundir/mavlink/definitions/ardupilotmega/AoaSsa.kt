@@ -23,7 +23,7 @@ import kotlin.Unit
  * Angle of Attack and Side Slip Angle.
  */
 @GeneratedMavMessage(
-  id = 11020u,
+  id = 11_020u,
   crcExtra = -51,
 )
 public data class AoaSsa(
@@ -62,7 +62,7 @@ public data class AoaSsa(
   }
 
   public companion object {
-    private const val ID: UInt = 11020u
+    private const val ID: UInt = 11_020u
 
     private const val CRC_EXTRA: Byte = -51
 

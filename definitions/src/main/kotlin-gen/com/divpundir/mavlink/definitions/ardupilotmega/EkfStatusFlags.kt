@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -68,11 +67,10 @@ public enum class EkfStatusFlags(
    * Set if EKF has never been healthy.
    */
   @GeneratedMavEnumEntry
-  EKF_UNINITIALIZED(1024u),
+  EKF_UNINITIALIZED(1_024u),
   ;
 
-  public companion object : MavEnum.Companion<EkfStatusFlags>, MavBitmask.Companion<EkfStatusFlags>
-      {
+  public companion object : MavBitmask.Companion<EkfStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): EkfStatusFlags? = when (v) {
       1u -> EKF_ATTITUDE
       2u -> EKF_VELOCITY_HORIZ

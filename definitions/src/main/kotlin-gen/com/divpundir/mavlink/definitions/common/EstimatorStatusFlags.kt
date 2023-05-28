@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -71,16 +70,15 @@ public enum class EstimatorStatusFlags(
    * True if the EKF has detected a GPS glitch
    */
   @GeneratedMavEnumEntry
-  ESTIMATOR_GPS_GLITCH(1024u),
+  ESTIMATOR_GPS_GLITCH(1_024u),
   /**
    * True if the EKF has detected bad accelerometer data
    */
   @GeneratedMavEnumEntry
-  ESTIMATOR_ACCEL_ERROR(2048u),
+  ESTIMATOR_ACCEL_ERROR(2_048u),
   ;
 
-  public companion object : MavEnum.Companion<EstimatorStatusFlags>,
-      MavBitmask.Companion<EstimatorStatusFlags> {
+  public companion object : MavBitmask.Companion<EstimatorStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): EstimatorStatusFlags? = when (v) {
       1u -> ESTIMATOR_ATTITUDE
       2u -> ESTIMATOR_VELOCITY_HORIZ

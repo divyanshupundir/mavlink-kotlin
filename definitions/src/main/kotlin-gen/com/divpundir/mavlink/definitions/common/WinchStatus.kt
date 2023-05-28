@@ -29,7 +29,7 @@ import kotlin.Unit
  * Winch status.
  */
 @GeneratedMavMessage(
-  id = 9005u,
+  id = 9_005u,
   crcExtra = 117,
 )
 public data class WinchStatus(
@@ -104,7 +104,7 @@ public data class WinchStatus(
   }
 
   public companion object {
-    private const val ID: UInt = 9005u
+    private const val ID: UInt = 9_005u
 
     private const val CRC_EXTRA: Byte = 117
 

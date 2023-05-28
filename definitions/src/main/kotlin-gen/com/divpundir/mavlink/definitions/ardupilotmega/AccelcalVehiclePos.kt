@@ -22,9 +22,9 @@ public enum class AccelcalVehiclePos(
   @GeneratedMavEnumEntry
   BACK(6u),
   @GeneratedMavEnumEntry
-  SUCCESS(16777215u),
+  SUCCESS(16_777_215u),
   @GeneratedMavEnumEntry
-  FAILED(16777216u),
+  FAILED(16_777_216u),
   ;
 
   public companion object : MavEnum.Companion<AccelcalVehiclePos> {

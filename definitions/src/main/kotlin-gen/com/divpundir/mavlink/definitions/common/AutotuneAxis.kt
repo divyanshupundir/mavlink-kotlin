@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -36,7 +35,7 @@ public enum class AutotuneAxis(
   YAW(4u),
   ;
 
-  public companion object : MavEnum.Companion<AutotuneAxis>, MavBitmask.Companion<AutotuneAxis> {
+  public companion object : MavBitmask.Companion<AutotuneAxis> {
     public override fun getEntryFromValueOrNull(v: UInt): AutotuneAxis? = when (v) {
       0u -> DEFAULT
       1u -> ROLL

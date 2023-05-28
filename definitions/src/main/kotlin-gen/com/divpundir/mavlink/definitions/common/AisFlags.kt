@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -58,14 +57,14 @@ public enum class AisFlags(
    * Distance to starboard side is larger than 63m
    */
   @GeneratedMavEnumEntry
-  LARGE_STARBOARD_DIMENSION(1024u),
+  LARGE_STARBOARD_DIMENSION(1_024u),
   @GeneratedMavEnumEntry
-  VALID_CALLSIGN(2048u),
+  VALID_CALLSIGN(2_048u),
   @GeneratedMavEnumEntry
-  VALID_NAME(4096u),
+  VALID_NAME(4_096u),
   ;
 
-  public companion object : MavEnum.Companion<AisFlags>, MavBitmask.Companion<AisFlags> {
+  public companion object : MavBitmask.Companion<AisFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): AisFlags? = when (v) {
       1u -> POSITION_ACCURACY
       2u -> VALID_COG

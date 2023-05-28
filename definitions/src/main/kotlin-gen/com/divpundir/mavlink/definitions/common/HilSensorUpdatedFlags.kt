@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -73,26 +72,25 @@ public enum class HilSensorUpdatedFlags(
    * The value in the diff_pressure field has been updated
    */
   @GeneratedMavEnumEntry
-  HIL_SENSOR_UPDATED_DIFF_PRESSURE(1024u),
+  HIL_SENSOR_UPDATED_DIFF_PRESSURE(1_024u),
   /**
    * The value in the pressure_alt field has been updated
    */
   @GeneratedMavEnumEntry
-  HIL_SENSOR_UPDATED_PRESSURE_ALT(2048u),
+  HIL_SENSOR_UPDATED_PRESSURE_ALT(2_048u),
   /**
    * The value in the temperature field has been updated
    */
   @GeneratedMavEnumEntry
-  HIL_SENSOR_UPDATED_TEMPERATURE(4096u),
+  HIL_SENSOR_UPDATED_TEMPERATURE(4_096u),
   /**
    * Full reset of attitude/position/velocities/etc was performed in sim (Bit 31).
    */
   @GeneratedMavEnumEntry
-  HIL_SENSOR_UPDATED_RESET(2147483648u),
+  HIL_SENSOR_UPDATED_RESET(2_147_483_648u),
   ;
 
-  public companion object : MavEnum.Companion<HilSensorUpdatedFlags>,
-      MavBitmask.Companion<HilSensorUpdatedFlags> {
+  public companion object : MavBitmask.Companion<HilSensorUpdatedFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): HilSensorUpdatedFlags? = when (v) {
       0u -> HIL_SENSOR_UPDATED_NONE
       1u -> HIL_SENSOR_UPDATED_XACC

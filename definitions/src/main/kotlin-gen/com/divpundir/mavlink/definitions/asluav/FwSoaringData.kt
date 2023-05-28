@@ -26,7 +26,7 @@ import kotlin.Unit
  * Fixed-wing soaring (i.e. thermal seeking) data
  */
 @GeneratedMavMessage(
-  id = 8011u,
+  id = 8_011u,
   crcExtra = 20,
 )
 public data class FwSoaringData(
@@ -219,7 +219,7 @@ public data class FwSoaringData(
   }
 
   public companion object {
-    private const val ID: UInt = 8011u
+    private const val ID: UInt = 8_011u
 
     private const val CRC_EXTRA: Byte = 20
 

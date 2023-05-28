@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -68,25 +67,25 @@ public enum class HlFailureFlag(
    * Engine failure.
    */
   @GeneratedMavEnumEntry
-  ENGINE(1024u),
+  ENGINE(1_024u),
   /**
    * Geofence violation.
    */
   @GeneratedMavEnumEntry
-  GEOFENCE(2048u),
+  GEOFENCE(2_048u),
   /**
    * Estimator failure, for example measurement rejection or large variances.
    */
   @GeneratedMavEnumEntry
-  ESTIMATOR(4096u),
+  ESTIMATOR(4_096u),
   /**
    * Mission failure.
    */
   @GeneratedMavEnumEntry
-  MISSION(8192u),
+  MISSION(8_192u),
   ;
 
-  public companion object : MavEnum.Companion<HlFailureFlag>, MavBitmask.Companion<HlFailureFlag> {
+  public companion object : MavBitmask.Companion<HlFailureFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): HlFailureFlag? = when (v) {
       1u -> GPS
       2u -> DIFFERENTIAL_PRESSURE

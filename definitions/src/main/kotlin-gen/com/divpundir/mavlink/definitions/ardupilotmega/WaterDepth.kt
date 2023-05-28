@@ -27,7 +27,7 @@ import kotlin.Unit
  * Water depth
  */
 @GeneratedMavMessage(
-  id = 11038u,
+  id = 11_038u,
   crcExtra = 47,
 )
 public data class WaterDepth(
@@ -122,7 +122,7 @@ public data class WaterDepth(
   }
 
   public companion object {
-    private const val ID: UInt = 11038u
+    private const val ID: UInt = 11_038u
 
     private const val CRC_EXTRA: Byte = 47
 

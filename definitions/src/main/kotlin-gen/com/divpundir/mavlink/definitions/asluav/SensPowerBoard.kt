@@ -26,7 +26,7 @@ import kotlin.Unit
  * Monitoring of power board status
  */
 @GeneratedMavMessage(
-  id = 8013u,
+  id = 8_013u,
   crcExtra = -34,
 )
 public data class SensPowerBoard(
@@ -128,7 +128,7 @@ public data class SensPowerBoard(
   }
 
   public companion object {
-    private const val ID: UInt = 8013u
+    private const val ID: UInt = 8_013u
 
     private const val CRC_EXTRA: Byte = -34
 

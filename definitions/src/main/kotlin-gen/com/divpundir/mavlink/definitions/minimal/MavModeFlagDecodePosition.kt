@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.minimal
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
-import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -58,8 +57,7 @@ public enum class MavModeFlagDecodePosition(
   CUSTOM_MODE(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavModeFlagDecodePosition>,
-      MavBitmask.Companion<MavModeFlagDecodePosition> {
+  public companion object : MavBitmask.Companion<MavModeFlagDecodePosition> {
     public override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
       128u -> SAFETY
       64u -> MANUAL
