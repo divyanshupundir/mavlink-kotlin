@@ -45,7 +45,7 @@ private fun EnumModel.generateGeneratedAnnotation() = AnnotationSpec
 private fun EnumModel.generateCompanionObject(packageName: String) = TypeSpec
     .companionObjectBuilder()
     .apply {
-        val clazz = if (bitmask) MavBitmask.Companion::class else MavEnum.Companion::class
+        val clazz = if (bitmask) MavBitmask.MavCompanion::class else MavEnum.MavCompanion::class
         addSuperinterface(clazz.asTypeName().parameterizedBy(getClassName(packageName)))
     }
     .addFunction(generateGetEntryFromValueOrNull(packageName))

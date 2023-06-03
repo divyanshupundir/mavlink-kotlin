@@ -3,18 +3,13 @@ package com.divpundir.mavlink.api
 public interface MavDialect {
 
     /**
-     * Resolves the companion of a message by its ID.
-     *
-     * @param messageId The ID of the message to resolve.
-     * @return The metadata of the message of the specified ID.
+     * Searches the dialect and its dependencies for the [MavMessage.MavCompanion] of the given [messageId]. Returns the
+     * object if found, null otherwise.
      */
     public fun resolveCompanionOrNull(messageId: UInt): MavMessage.MavCompanion<out MavMessage<*>>?
 
     /**
-     * Checks whether this dialect supports the message of the specified ID.
-     *
-     * @param messageId The ID of the message to check support for.
-     * @return `true` if this dialect supports the message of the specified ID, or `false` otherwise.
+     * Checks whether this dialect supports the message of the specified [messageId].
      */
     public fun supports(messageId: UInt): Boolean
 }

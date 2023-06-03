@@ -5,7 +5,14 @@ package com.divpundir.mavlink.api
  */
 public interface MavBitmask : MavEnum {
 
-    public interface Companion<T : MavBitmask> : MavEnum.Companion<T> {
+    /**
+     * The companion object for a [MavBitmask].
+     */
+    public interface MavCompanion<T : MavBitmask> : MavEnum.MavCompanion<T> {
+
+        /**
+         * Returns the list of entries corresponding to the given bitmask value.
+         */
         public fun getFlagsFromValue(v: UInt): List<T>
     }
 }
