@@ -79,7 +79,7 @@ val heartbeat = Heartbeat(
 ) // Default values will be set for the unspecified parameters
 
 // Using the builder function
-val heartbeat = Heartbeat.builder {
+val heartbeat = Heartbeat {
     type = MavType.FIXED_WING.wrap()
     autopilot = MavAutopilot.PX4.wrap()
     baseMode = MavEnumValue.fromValue(200)
