@@ -68,7 +68,7 @@ private fun MavlinkModel.generateMessages(basePackageName: String) = buildCodeBl
                 it.formattedName
             )
         }
-        .forEach { addStatement("%1T.classMetadata.id to %1T.classMetadata,", it) }
+        .forEach { addStatement("%1T.id to %1T,", it) }
     unindent()
     addStatement(")")
 
