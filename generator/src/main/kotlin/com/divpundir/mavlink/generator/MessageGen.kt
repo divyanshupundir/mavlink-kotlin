@@ -48,7 +48,7 @@ private fun MessageModel.generateCompanionObject(packageName: String, enumHelper
     .addProperty(generateSizeV2Property())
     .addProperty(generateIdProperty())
     .addProperty(generateCrcExtraProperty())
-    .addFunction(generateDeserialize(packageName, enumHelper))
+    .addFunction(generateDeserializeMethod(packageName, enumHelper))
     .addFunction(generateBuilderFunction(packageName))
     .build()
 
@@ -78,7 +78,7 @@ private fun MessageModel.generateSizeV2Property() = PropertySpec
     .initializer("%L", sizeV2)
     .build()
 
-private fun MessageModel.generateDeserialize(packageName: String, enumHelper: EnumHelper) = FunSpec
+private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelper: EnumHelper) = FunSpec
     .builder("deserialize")
     .addModifiers(KModifier.OVERRIDE)
     .addParameter(ParameterSpec("bytes", ByteArray::class.asTypeName()))
@@ -164,7 +164,8 @@ private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.buil
     )
     .build()
 
-private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("builder")
+private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("invoke")
+    .addModifiers(KModifier.OPERATOR)
     .returns(getClassName(packageName))
     .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
