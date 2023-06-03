@@ -72,6 +72,8 @@ public data class Heartbeat(
 ) : MavMessage<Heartbeat> {
   public override val instanceMetadata: MavMessage.Metadata<Heartbeat> = METADATA
 
+  public val instanceCompanion: Companion = Companion
+
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
     outputBuffer.encodeUInt32(customMode)

@@ -4,6 +4,7 @@ package com.divpundir.mavlink.api
  * Represents a MAVLink v2 frame.
  */
 public interface MavFrameV2<T> : MavFrame<T> {
+
     /**
      * Flag to check if the frame is signed or not.
      */

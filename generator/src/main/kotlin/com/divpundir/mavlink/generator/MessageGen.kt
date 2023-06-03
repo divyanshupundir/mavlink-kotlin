@@ -44,6 +44,7 @@ private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = Fu
 
 private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
+    .addSuperinterface()
     .addProperty(generateIdProperty())
     .addProperty(generateCrcExtraProperty())
     .addProperty(generateSizeV1Property())
