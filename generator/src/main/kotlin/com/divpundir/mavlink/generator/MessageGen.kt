@@ -3,7 +3,6 @@ package com.divpundir.mavlink.generator
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.generator.models.FieldModel
@@ -25,7 +24,7 @@ internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: E
             if (description != null) addKdoc(description.replace("%", "%%"))
         }
         .addAnnotation(generateGeneratedAnnotation())
-        .addProperty(generateInstanceMetadata(packageName))
+        .addProperty(generateInstanceCompanion(packageName))
         .addFunction(generateSerializeV1(enumHelper))
         .addFunction(generateSerializeV2(enumHelper))
         .addType(generateCompanionObject(packageName, enumHelper))
@@ -44,14 +43,12 @@ private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = Fu
 
 private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
-    .addSuperinterface()
-    .addProperty(generateIdProperty())
-    .addProperty(generateCrcExtraProperty())
+    .addSuperinterface(MavMessage.MavCompanion::class.asClassName().parameterizedBy(getClassName(packageName)))
     .addProperty(generateSizeV1Property())
     .addProperty(generateSizeV2Property())
-    .addProperty(generateDeserializer(packageName, enumHelper))
-    .addProperty(generateMetadataProperty(packageName))
-    .addProperty(generateClassMetadata(packageName))
+    .addProperty(generateIdProperty())
+    .addProperty(generateCrcExtraProperty())
+    .addFunction(generateDeserialize(packageName, enumHelper))
     .addFunction(generateBuilderFunction(packageName))
     .build()
 
@@ -62,12 +59,12 @@ private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
     .build()
 
 private fun MessageModel.generateIdProperty() = PropertySpec
-    .builder("ID", UInt::class, KModifier.PRIVATE, KModifier.CONST)
+    .builder("id", UInt::class, KModifier.OVERRIDE)
     .initializer("%Lu", id)
     .build()
 
 private fun MessageModel.generateCrcExtraProperty() = PropertySpec
-    .builder("CRC_EXTRA", Byte::class, KModifier.PRIVATE, KModifier.CONST)
+    .builder("crcExtra", Byte::class, KModifier.OVERRIDE)
     .initializer("%L", crcExtra)
     .build()
 
@@ -81,16 +78,13 @@ private fun MessageModel.generateSizeV2Property() = PropertySpec
     .initializer("%L", sizeV2)
     .build()
 
-private fun MessageModel.generateDeserializer(packageName: String, enumHelper: EnumHelper) = PropertySpec
-    .builder(
-        "DESERIALIZER",
-        MavDeserializer::class.asClassName().parameterizedBy(getClassName(packageName)),
-        KModifier.PRIVATE
-    )
-    .initializer(
+private fun MessageModel.generateDeserialize(packageName: String, enumHelper: EnumHelper) = FunSpec
+    .builder("deserialize")
+    .addModifiers(KModifier.OVERRIDE)
+    .addParameter(ParameterSpec("bytes", ByteArray::class.asTypeName()))
+    .returns(getClassName(packageName))
+    .addCode(
         buildCodeBlock {
-            beginControlFlow("%T·{ bytes ->", MavDeserializer::class)
-
             addStatement(
                 "val inputBuffer = %T.wrap(bytes).order(%T.LITTLE_ENDIAN)",
                 ByteBuffer::class,
@@ -100,41 +94,22 @@ private fun MessageModel.generateDeserializer(packageName: String, enumHelper: E
 
             addStatement("")
 
-            addStatement("%T(", getClassName(packageName))
+            addStatement("return %T(", getClassName(packageName))
             indent()
             fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
             unindent()
             addStatement(")")
-
-            endControlFlow()
         }
     )
     .build()
 
-private fun MessageModel.generateMetadataProperty(packageName: String) = PropertySpec
+private fun MessageModel.generateInstanceCompanion(packageName: String) = PropertySpec
     .builder(
-        "METADATA",
-        MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName)),
-        KModifier.PRIVATE
-    )
-    .initializer("%T(ID, CRC_EXTRA, DESERIALIZER)", MavMessage.Metadata::class)
-    .build()
-
-private fun MessageModel.generateClassMetadata(packageName: String) = PropertySpec
-    .builder(
-        "classMetadata",
-        MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName))
-    )
-    .initializer("METADATA")
-    .build()
-
-private fun MessageModel.generateInstanceMetadata(packageName: String) = PropertySpec
-    .builder(
-        "instanceMetadata",
-        MavMessage.Metadata::class.asClassName().parameterizedBy(getClassName(packageName)),
+        "instanceCompanion",
+        MavMessage.MavCompanion::class.asClassName().parameterizedBy(getClassName(packageName)),
         KModifier.OVERRIDE
     )
-    .initializer("METADATA")
+    .initializer("Companion")
     .build()
 
 private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
