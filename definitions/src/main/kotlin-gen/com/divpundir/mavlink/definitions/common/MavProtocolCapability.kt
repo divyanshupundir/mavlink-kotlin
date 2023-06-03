@@ -121,7 +121,7 @@ public enum class MavProtocolCapability(
   PARAM_ENCODE_C_CAST(131_072u),
   ;
 
-  public companion object : MavBitmask.Companion<MavProtocolCapability> {
+  public companion object : MavBitmask.MavCompanion<MavProtocolCapability> {
     public override fun getEntryFromValueOrNull(v: UInt): MavProtocolCapability? = when (v) {
       1u -> MISSION_FLOAT
       2u -> PARAM_FLOAT

@@ -34,7 +34,7 @@ public enum class VideoStreamType(
   MPEG_TS_H264(3u),
   ;
 
-  public companion object : MavEnum.Companion<VideoStreamType> {
+  public companion object : MavEnum.MavCompanion<VideoStreamType> {
     public override fun getEntryFromValueOrNull(v: UInt): VideoStreamType? = when (v) {
       0u -> RTSP
       1u -> RTPUDP

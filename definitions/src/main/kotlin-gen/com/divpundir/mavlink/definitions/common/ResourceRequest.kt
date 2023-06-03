@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -55,7 +54,7 @@ public data class ResourceRequest(
   @GeneratedMavField(type = "uint8_t[120]")
   public val storage: List<UByte> = emptyList(),
 ) : MavMessage<ResourceRequest> {
-  public override val instanceMetadata: MavMessage.Metadata<ResourceRequest> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -77,16 +76,16 @@ public data class ResourceRequest(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 142u
-
-    private const val CRC_EXTRA: Byte = 72
-
+  public companion object : MavMessage.MavCompanion<ResourceRequest> {
     private const val SIZE_V1: Int = 243
 
     private const val SIZE_V2: Int = 243
 
-    private val DESERIALIZER: MavDeserializer<ResourceRequest> = MavDeserializer { bytes ->
+    public override val id: UInt = 142u
+
+    public override val crcExtra: Byte = 72
+
+    public override fun deserialize(bytes: ByteArray): ResourceRequest {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUInt8()
       val uriType = inputBuffer.decodeUInt8()
@@ -94,7 +93,7 @@ public data class ResourceRequest(
       val transferType = inputBuffer.decodeUInt8()
       val storage = inputBuffer.decodeUInt8Array(120)
 
-      ResourceRequest(
+      return ResourceRequest(
         requestId = requestId,
         uriType = uriType,
         uri = uri,
@@ -103,13 +102,7 @@ public data class ResourceRequest(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ResourceRequest> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ResourceRequest> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ResourceRequest =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ResourceRequest =
         Builder().apply(builderAction).build()
   }
 

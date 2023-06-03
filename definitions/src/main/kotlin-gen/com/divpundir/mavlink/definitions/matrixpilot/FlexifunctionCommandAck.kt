@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -35,7 +34,8 @@ public data class FlexifunctionCommandAck(
   @GeneratedMavField(type = "uint16_t")
   public val result: UShort = 0u,
 ) : MavMessage<FlexifunctionCommandAck> {
-  public override val instanceMetadata: MavMessage.Metadata<FlexifunctionCommandAck> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommandAck> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +51,27 @@ public data class FlexifunctionCommandAck(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 158u
-
-    private const val CRC_EXTRA: Byte = -48
-
+  public companion object : MavMessage.MavCompanion<FlexifunctionCommandAck> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 4
 
-    private val DESERIALIZER: MavDeserializer<FlexifunctionCommandAck> = MavDeserializer { bytes ->
+    public override val id: UInt = 158u
+
+    public override val crcExtra: Byte = -48
+
+    public override fun deserialize(bytes: ByteArray): FlexifunctionCommandAck {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val commandType = inputBuffer.decodeUInt16()
       val result = inputBuffer.decodeUInt16()
 
-      FlexifunctionCommandAck(
+      return FlexifunctionCommandAck(
         commandType = commandType,
         result = result,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FlexifunctionCommandAck> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FlexifunctionCommandAck> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionCommandAck =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionCommandAck =
         Builder().apply(builderAction).build()
   }
 

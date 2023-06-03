@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -57,7 +56,7 @@ public data class McuStatus(
   @GeneratedMavField(type = "uint16_t")
   public val mcuVoltageMax: UShort = 0u,
 ) : MavMessage<McuStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<McuStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<McuStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -79,16 +78,16 @@ public data class McuStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_039u
-
-    private const val CRC_EXTRA: Byte = -114
-
+  public companion object : MavMessage.MavCompanion<McuStatus> {
     private const val SIZE_V1: Int = 9
 
     private const val SIZE_V2: Int = 9
 
-    private val DESERIALIZER: MavDeserializer<McuStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_039u
+
+    public override val crcExtra: Byte = -114
+
+    public override fun deserialize(bytes: ByteArray): McuStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mcuTemperature = inputBuffer.decodeInt16()
       val mcuVoltage = inputBuffer.decodeUInt16()
@@ -96,7 +95,7 @@ public data class McuStatus(
       val mcuVoltageMax = inputBuffer.decodeUInt16()
       val id = inputBuffer.decodeUInt8()
 
-      McuStatus(
+      return McuStatus(
         id = id,
         mcuTemperature = mcuTemperature,
         mcuVoltage = mcuVoltage,
@@ -105,13 +104,7 @@ public data class McuStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<McuStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<McuStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): McuStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): McuStatus =
         Builder().apply(builderAction).build()
   }
 

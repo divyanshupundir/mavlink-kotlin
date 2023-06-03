@@ -10,9 +10,9 @@ public object AvssuasDialect : AbstractMavDialect(
     CommonDialect,
   ), 
   mapOf(
-    AvssPrsSysStatus.classMetadata.id to AvssPrsSysStatus.classMetadata,
-    AvssDronePosition.classMetadata.id to AvssDronePosition.classMetadata,
-    AvssDroneImu.classMetadata.id to AvssDroneImu.classMetadata,
-    AvssDroneOperationMode.classMetadata.id to AvssDroneOperationMode.classMetadata,
+    AvssPrsSysStatus.id to AvssPrsSysStatus,
+    AvssDronePosition.id to AvssDronePosition,
+    AvssDroneImu.id to AvssDroneImu,
+    AvssDroneOperationMode.id to AvssDroneOperationMode,
   )
 )

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -121,7 +120,7 @@ public data class MissionItemInt(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionItemInt> {
-  public override val instanceMetadata: MavMessage.Metadata<MissionItemInt> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MissionItemInt> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -162,16 +161,16 @@ public data class MissionItemInt(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 73u
-
-    private const val CRC_EXTRA: Byte = 38
-
+  public companion object : MavMessage.MavCompanion<MissionItemInt> {
     private const val SIZE_V1: Int = 37
 
     private const val SIZE_V2: Int = 38
 
-    private val DESERIALIZER: MavDeserializer<MissionItemInt> = MavDeserializer { bytes ->
+    public override val id: UInt = 73u
+
+    public override val crcExtra: Byte = 38
+
+    public override fun deserialize(bytes: ByteArray): MissionItemInt {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val param1 = inputBuffer.decodeFloat()
       val param2 = inputBuffer.decodeFloat()
@@ -198,7 +197,7 @@ public data class MissionItemInt(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      MissionItemInt(
+      return MissionItemInt(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         seq = seq,
@@ -217,13 +216,7 @@ public data class MissionItemInt(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MissionItemInt> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MissionItemInt> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MissionItemInt =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItemInt =
         Builder().apply(builderAction).build()
   }
 

@@ -31,7 +31,7 @@ public enum class NavVtolLandOptions(
   HOVER_DESCENT(2u),
   ;
 
-  public companion object : MavEnum.Companion<NavVtolLandOptions> {
+  public companion object : MavEnum.MavCompanion<NavVtolLandOptions> {
     public override fun getEntryFromValueOrNull(v: UInt): NavVtolLandOptions? = when (v) {
       0u -> DEFAULT
       1u -> FW_DESCENT

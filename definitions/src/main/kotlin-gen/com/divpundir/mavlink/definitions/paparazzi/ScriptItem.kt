@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.paparazzi
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeString
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -52,7 +51,7 @@ public data class ScriptItem(
   @GeneratedMavField(type = "char[50]")
   public val name: String = "",
 ) : MavMessage<ScriptItem> {
-  public override val instanceMetadata: MavMessage.Metadata<ScriptItem> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ScriptItem> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -72,23 +71,23 @@ public data class ScriptItem(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 180u
-
-    private const val CRC_EXTRA: Byte = -25
-
+  public companion object : MavMessage.MavCompanion<ScriptItem> {
     private const val SIZE_V1: Int = 54
 
     private const val SIZE_V2: Int = 54
 
-    private val DESERIALIZER: MavDeserializer<ScriptItem> = MavDeserializer { bytes ->
+    public override val id: UInt = 180u
+
+    public override val crcExtra: Byte = -25
+
+    public override fun deserialize(bytes: ByteArray): ScriptItem {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seq = inputBuffer.decodeUInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
       val name = inputBuffer.decodeString(50)
 
-      ScriptItem(
+      return ScriptItem(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         seq = seq,
@@ -96,13 +95,7 @@ public data class ScriptItem(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ScriptItem> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ScriptItem> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ScriptItem =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptItem =
         Builder().apply(builderAction).build()
   }
 

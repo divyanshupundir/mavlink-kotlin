@@ -51,7 +51,7 @@ public enum class MavOdidClassEu(
   CLASS_6(7u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidClassEu> {
+  public companion object : MavEnum.MavCompanion<MavOdidClassEu> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidClassEu? = when (v) {
       0u -> UNDECLARED
       1u -> CLASS_0

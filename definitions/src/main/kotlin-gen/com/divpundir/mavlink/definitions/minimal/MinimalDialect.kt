@@ -7,7 +7,7 @@ import com.divpundir.mavlink.api.GeneratedMavDialect
 public object MinimalDialect : AbstractMavDialect(
   emptySet(), 
   mapOf(
-    Heartbeat.classMetadata.id to Heartbeat.classMetadata,
-    ProtocolVersion.classMetadata.id to ProtocolVersion.classMetadata,
+    Heartbeat.id to Heartbeat,
+    ProtocolVersion.id to ProtocolVersion,
   )
 )

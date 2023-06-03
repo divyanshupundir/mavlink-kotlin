@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.uavionix
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.AdsbEmitterType
@@ -82,7 +81,7 @@ public data class UavionixAdsbOutCfg(
   @GeneratedMavField(type = "uint8_t")
   public val rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UavionixAdsbOutCfg> {
-  public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutCfg> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -110,16 +109,16 @@ public data class UavionixAdsbOutCfg(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 10_001u
-
-    private const val CRC_EXTRA: Byte = -47
-
+  public companion object : MavMessage.MavCompanion<UavionixAdsbOutCfg> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<UavionixAdsbOutCfg> = MavDeserializer { bytes ->
+    public override val id: UInt = 10_001u
+
+    public override val crcExtra: Byte = -47
+
+    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutCfg {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val icao = inputBuffer.decodeUInt32()
       val stallspeed = inputBuffer.decodeUInt16()
@@ -145,7 +144,7 @@ public data class UavionixAdsbOutCfg(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      UavionixAdsbOutCfg(
+      return UavionixAdsbOutCfg(
         icao = icao,
         callsign = callsign,
         emittertype = emittertype,
@@ -157,13 +156,7 @@ public data class UavionixAdsbOutCfg(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<UavionixAdsbOutCfg> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<UavionixAdsbOutCfg> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): UavionixAdsbOutCfg =
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfg =
         Builder().apply(builderAction).build()
   }
 

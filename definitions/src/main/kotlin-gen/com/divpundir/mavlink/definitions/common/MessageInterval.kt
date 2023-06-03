@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -43,7 +42,7 @@ public data class MessageInterval(
   @GeneratedMavField(type = "int32_t")
   public val intervalUs: Int = 0,
 ) : MavMessage<MessageInterval> {
-  public override val instanceMetadata: MavMessage.Metadata<MessageInterval> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MessageInterval> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -59,33 +58,27 @@ public data class MessageInterval(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 244u
-
-    private const val CRC_EXTRA: Byte = 95
-
+  public companion object : MavMessage.MavCompanion<MessageInterval> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<MessageInterval> = MavDeserializer { bytes ->
+    public override val id: UInt = 244u
+
+    public override val crcExtra: Byte = 95
+
+    public override fun deserialize(bytes: ByteArray): MessageInterval {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val intervalUs = inputBuffer.decodeInt32()
       val messageId = inputBuffer.decodeUInt16()
 
-      MessageInterval(
+      return MessageInterval(
         messageId = messageId,
         intervalUs = intervalUs,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MessageInterval> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MessageInterval> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MessageInterval =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MessageInterval =
         Builder().apply(builderAction).build()
   }
 

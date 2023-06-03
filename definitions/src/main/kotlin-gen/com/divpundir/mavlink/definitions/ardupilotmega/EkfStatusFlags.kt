@@ -70,7 +70,7 @@ public enum class EkfStatusFlags(
   EKF_UNINITIALIZED(1_024u),
   ;
 
-  public companion object : MavBitmask.Companion<EkfStatusFlags> {
+  public companion object : MavBitmask.MavCompanion<EkfStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): EkfStatusFlags? = when (v) {
       1u -> EKF_ATTITUDE
       2u -> EKF_VELOCITY_HORIZ

@@ -23,7 +23,7 @@ public enum class IcarousFmsState(
   LAND(5u),
   ;
 
-  public companion object : MavEnum.Companion<IcarousFmsState> {
+  public companion object : MavEnum.MavCompanion<IcarousFmsState> {
     public override fun getEntryFromValueOrNull(v: UInt): IcarousFmsState? = when (v) {
       0u -> IDLE
       1u -> TAKEOFF

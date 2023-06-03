@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -63,7 +62,7 @@ public data class DeviceOpReadReply(
   )
   public val bank: UByte = 0u,
 ) : MavMessage<DeviceOpReadReply> {
-  public override val instanceMetadata: MavMessage.Metadata<DeviceOpReadReply> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpReadReply> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -86,16 +85,16 @@ public data class DeviceOpReadReply(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_001u
-
-    private const val CRC_EXTRA: Byte = 15
-
+  public companion object : MavMessage.MavCompanion<DeviceOpReadReply> {
     private const val SIZE_V1: Int = 135
 
     private const val SIZE_V2: Int = 136
 
-    private val DESERIALIZER: MavDeserializer<DeviceOpReadReply> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_001u
+
+    public override val crcExtra: Byte = 15
+
+    public override fun deserialize(bytes: ByteArray): DeviceOpReadReply {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUInt32()
       val result = inputBuffer.decodeUInt8()
@@ -104,7 +103,7 @@ public data class DeviceOpReadReply(
       val data = inputBuffer.decodeUInt8Array(128)
       val bank = inputBuffer.decodeUInt8()
 
-      DeviceOpReadReply(
+      return DeviceOpReadReply(
         requestId = requestId,
         result = result,
         regstart = regstart,
@@ -114,13 +113,7 @@ public data class DeviceOpReadReply(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DeviceOpReadReply> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DeviceOpReadReply> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DeviceOpReadReply =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpReadReply =
         Builder().apply(builderAction).build()
   }
 

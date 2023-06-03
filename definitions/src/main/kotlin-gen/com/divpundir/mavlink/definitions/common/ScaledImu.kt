@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -87,7 +86,7 @@ public data class ScaledImu(
   )
   public val temperature: Short = 0,
 ) : MavMessage<ScaledImu> {
-  public override val instanceMetadata: MavMessage.Metadata<ScaledImu> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ScaledImu> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -120,16 +119,16 @@ public data class ScaledImu(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 26u
-
-    private const val CRC_EXTRA: Byte = -86
-
+  public companion object : MavMessage.MavCompanion<ScaledImu> {
     private const val SIZE_V1: Int = 22
 
     private const val SIZE_V2: Int = 24
 
-    private val DESERIALIZER: MavDeserializer<ScaledImu> = MavDeserializer { bytes ->
+    public override val id: UInt = 26u
+
+    public override val crcExtra: Byte = -86
+
+    public override fun deserialize(bytes: ByteArray): ScaledImu {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val xacc = inputBuffer.decodeInt16()
@@ -143,7 +142,7 @@ public data class ScaledImu(
       val zmag = inputBuffer.decodeInt16()
       val temperature = inputBuffer.decodeInt16()
 
-      ScaledImu(
+      return ScaledImu(
         timeBootMs = timeBootMs,
         xacc = xacc,
         yacc = yacc,
@@ -158,13 +157,7 @@ public data class ScaledImu(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ScaledImu> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ScaledImu> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ScaledImu =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScaledImu =
         Builder().apply(builderAction).build()
   }
 

@@ -224,7 +224,7 @@ public enum class MavSensorOrientation(
   MAV_SENSOR_ROTATION_CUSTOM(100u),
   ;
 
-  public companion object : MavEnum.Companion<MavSensorOrientation> {
+  public companion object : MavEnum.MavCompanion<MavSensorOrientation> {
     public override fun getEntryFromValueOrNull(v: UInt): MavSensorOrientation? = when (v) {
       0u -> MAV_SENSOR_ROTATION_NONE
       1u -> MAV_SENSOR_ROTATION_YAW_45

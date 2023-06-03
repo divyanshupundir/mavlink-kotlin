@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -94,7 +93,7 @@ public data class DeviceOpWrite(
   )
   public val bank: UByte = 0u,
 ) : MavMessage<DeviceOpWrite> {
-  public override val instanceMetadata: MavMessage.Metadata<DeviceOpWrite> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWrite> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -127,16 +126,16 @@ public data class DeviceOpWrite(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_002u
-
-    private const val CRC_EXTRA: Byte = -22
-
+  public companion object : MavMessage.MavCompanion<DeviceOpWrite> {
     private const val SIZE_V1: Int = 179
 
     private const val SIZE_V2: Int = 180
 
-    private val DESERIALIZER: MavDeserializer<DeviceOpWrite> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_002u
+
+    public override val crcExtra: Byte = -22
+
+    public override fun deserialize(bytes: ByteArray): DeviceOpWrite {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUInt32()
       val targetSystem = inputBuffer.decodeUInt8()
@@ -153,7 +152,7 @@ public data class DeviceOpWrite(
       val data = inputBuffer.decodeUInt8Array(128)
       val bank = inputBuffer.decodeUInt8()
 
-      DeviceOpWrite(
+      return DeviceOpWrite(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         requestId = requestId,
@@ -168,13 +167,7 @@ public data class DeviceOpWrite(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DeviceOpWrite> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DeviceOpWrite> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DeviceOpWrite =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpWrite =
         Builder().apply(builderAction).build()
   }
 

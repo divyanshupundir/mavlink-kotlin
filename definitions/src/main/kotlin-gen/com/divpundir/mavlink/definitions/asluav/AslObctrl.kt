@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -71,7 +70,7 @@ public data class AslObctrl(
   @GeneratedMavField(type = "uint8_t")
   public val obctrlStatus: UByte = 0u,
 ) : MavMessage<AslObctrl> {
-  public override val instanceMetadata: MavMessage.Metadata<AslObctrl> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AslObctrl> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -99,16 +98,16 @@ public data class AslObctrl(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_008u
-
-    private const val CRC_EXTRA: Byte = -22
-
+  public companion object : MavMessage.MavCompanion<AslObctrl> {
     private const val SIZE_V1: Int = 33
 
     private const val SIZE_V2: Int = 33
 
-    private val DESERIALIZER: MavDeserializer<AslObctrl> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_008u
+
+    public override val crcExtra: Byte = -22
+
+    public override fun deserialize(bytes: ByteArray): AslObctrl {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val uelev = inputBuffer.decodeFloat()
@@ -119,7 +118,7 @@ public data class AslObctrl(
       val urud = inputBuffer.decodeFloat()
       val obctrlStatus = inputBuffer.decodeUInt8()
 
-      AslObctrl(
+      return AslObctrl(
         timestamp = timestamp,
         uelev = uelev,
         uthrot = uthrot,
@@ -131,13 +130,7 @@ public data class AslObctrl(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AslObctrl> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AslObctrl> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AslObctrl =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AslObctrl =
         Builder().apply(builderAction).build()
   }
 

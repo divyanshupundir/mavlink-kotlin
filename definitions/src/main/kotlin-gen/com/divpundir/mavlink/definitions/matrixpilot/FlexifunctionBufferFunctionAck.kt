@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -48,8 +47,8 @@ public data class FlexifunctionBufferFunctionAck(
   @GeneratedMavField(type = "uint16_t")
   public val result: UShort = 0u,
 ) : MavMessage<FlexifunctionBufferFunctionAck> {
-  public override val instanceMetadata: MavMessage.Metadata<FlexifunctionBufferFunctionAck> =
-      METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunctionAck> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -69,24 +68,23 @@ public data class FlexifunctionBufferFunctionAck(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 153u
-
-    private const val CRC_EXTRA: Byte = 109
-
+  public companion object : MavMessage.MavCompanion<FlexifunctionBufferFunctionAck> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunctionAck> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 153u
+
+    public override val crcExtra: Byte = 109
+
+    public override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunctionAck {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val funcIndex = inputBuffer.decodeUInt16()
       val result = inputBuffer.decodeUInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      FlexifunctionBufferFunctionAck(
+      return FlexifunctionBufferFunctionAck(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         funcIndex = funcIndex,
@@ -94,13 +92,7 @@ public data class FlexifunctionBufferFunctionAck(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FlexifunctionBufferFunctionAck> =
-        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FlexifunctionBufferFunctionAck> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionBufferFunctionAck =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionBufferFunctionAck =
         Builder().apply(builderAction).build()
   }
 

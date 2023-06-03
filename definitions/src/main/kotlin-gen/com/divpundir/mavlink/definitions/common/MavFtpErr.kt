@@ -70,7 +70,7 @@ public enum class MavFtpErr(
   FILENOTFOUND(10u),
   ;
 
-  public companion object : MavEnum.Companion<MavFtpErr> {
+  public companion object : MavEnum.MavCompanion<MavFtpErr> {
     public override fun getEntryFromValueOrNull(v: UInt): MavFtpErr? = when (v) {
       0u -> NONE
       1u -> FAIL

@@ -27,7 +27,7 @@ public enum class AccelcalVehiclePos(
   FAILED(16_777_216u),
   ;
 
-  public companion object : MavEnum.Companion<AccelcalVehiclePos> {
+  public companion object : MavEnum.MavCompanion<AccelcalVehiclePos> {
     public override fun getEntryFromValueOrNull(v: UInt): AccelcalVehiclePos? = when (v) {
       1u -> LEVEL
       2u -> LEFT

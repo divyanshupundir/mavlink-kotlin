@@ -21,7 +21,7 @@ public enum class MavSysStatusSensorExtended(
   MAV_SYS_STATUS_RECOVERY_SYSTEM(1u),
   ;
 
-  public companion object : MavBitmask.Companion<MavSysStatusSensorExtended> {
+  public companion object : MavBitmask.MavCompanion<MavSysStatusSensorExtended> {
     public override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensorExtended? = when (v) {
       1u -> MAV_SYS_STATUS_RECOVERY_SYSTEM
       else -> null

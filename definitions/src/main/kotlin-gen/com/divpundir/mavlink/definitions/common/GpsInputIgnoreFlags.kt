@@ -52,7 +52,7 @@ public enum class GpsInputIgnoreFlags(
   GPS_INPUT_IGNORE_FLAG_VERTICAL_ACCURACY(128u),
   ;
 
-  public companion object : MavBitmask.Companion<GpsInputIgnoreFlags> {
+  public companion object : MavBitmask.MavCompanion<GpsInputIgnoreFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GpsInputIgnoreFlags? = when (v) {
       1u -> GPS_INPUT_IGNORE_FLAG_ALT
       2u -> GPS_INPUT_IGNORE_FLAG_HDOP

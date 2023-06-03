@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -31,7 +30,7 @@ public data class MissionCurrent(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
 ) : MavMessage<MissionCurrent> {
-  public override val instanceMetadata: MavMessage.Metadata<MissionCurrent> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MissionCurrent> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -45,31 +44,25 @@ public data class MissionCurrent(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 42u
-
-    private const val CRC_EXTRA: Byte = 28
-
+  public companion object : MavMessage.MavCompanion<MissionCurrent> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<MissionCurrent> = MavDeserializer { bytes ->
+    public override val id: UInt = 42u
+
+    public override val crcExtra: Byte = 28
+
+    public override fun deserialize(bytes: ByteArray): MissionCurrent {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seq = inputBuffer.decodeUInt16()
 
-      MissionCurrent(
+      return MissionCurrent(
         seq = seq,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MissionCurrent> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MissionCurrent> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MissionCurrent =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionCurrent =
         Builder().apply(builderAction).build()
   }
 

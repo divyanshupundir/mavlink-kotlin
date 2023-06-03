@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.minimal.MavModeFlag
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -55,7 +54,7 @@ public data class HilActuatorControls(
   @GeneratedMavField(type = "uint64_t")
   public val flags: ULong = 0uL,
 ) : MavMessage<HilActuatorControls> {
-  public override val instanceMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HilActuatorControls> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -75,16 +74,16 @@ public data class HilActuatorControls(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 93u
-
-    private const val CRC_EXTRA: Byte = 47
-
+  public companion object : MavMessage.MavCompanion<HilActuatorControls> {
     private const val SIZE_V1: Int = 81
 
     private const val SIZE_V2: Int = 81
 
-    private val DESERIALIZER: MavDeserializer<HilActuatorControls> = MavDeserializer { bytes ->
+    public override val id: UInt = 93u
+
+    public override val crcExtra: Byte = 47
+
+    public override fun deserialize(bytes: ByteArray): HilActuatorControls {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val flags = inputBuffer.decodeUInt64()
@@ -94,7 +93,7 @@ public data class HilActuatorControls(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      HilActuatorControls(
+      return HilActuatorControls(
         timeUsec = timeUsec,
         controls = controls,
         mode = mode,
@@ -102,13 +101,7 @@ public data class HilActuatorControls(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HilActuatorControls> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HilActuatorControls> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HilActuatorControls =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilActuatorControls =
         Builder().apply(builderAction).build()
   }
 

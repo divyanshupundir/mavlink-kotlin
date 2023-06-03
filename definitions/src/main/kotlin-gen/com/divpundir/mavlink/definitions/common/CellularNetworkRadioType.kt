@@ -24,7 +24,7 @@ public enum class CellularNetworkRadioType(
   LTE(4u),
   ;
 
-  public companion object : MavEnum.Companion<CellularNetworkRadioType> {
+  public companion object : MavEnum.MavCompanion<CellularNetworkRadioType> {
     public override fun getEntryFromValueOrNull(v: UInt): CellularNetworkRadioType? = when (v) {
       0u -> NONE
       1u -> GSM

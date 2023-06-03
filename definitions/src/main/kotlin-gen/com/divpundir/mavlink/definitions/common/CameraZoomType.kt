@@ -36,7 +36,7 @@ public enum class CameraZoomType(
   ZOOM_TYPE_FOCAL_LENGTH(3u),
   ;
 
-  public companion object : MavEnum.Companion<CameraZoomType> {
+  public companion object : MavEnum.MavCompanion<CameraZoomType> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraZoomType? = when (v) {
       0u -> ZOOM_TYPE_STEP
       1u -> ZOOM_TYPE_CONTINUOUS

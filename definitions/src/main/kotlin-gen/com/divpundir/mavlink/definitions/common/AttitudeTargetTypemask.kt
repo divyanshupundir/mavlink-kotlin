@@ -46,7 +46,7 @@ public enum class AttitudeTargetTypemask(
   ATTITUDE_IGNORE(128u),
   ;
 
-  public companion object : MavBitmask.Companion<AttitudeTargetTypemask> {
+  public companion object : MavBitmask.MavCompanion<AttitudeTargetTypemask> {
     public override fun getEntryFromValueOrNull(v: UInt): AttitudeTargetTypemask? = when (v) {
       1u -> BODY_ROLL_RATE_IGNORE
       2u -> BODY_PITCH_RATE_IGNORE

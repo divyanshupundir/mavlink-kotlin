@@ -49,7 +49,7 @@ public enum class DeepstallStage(
   LAND(6u),
   ;
 
-  public companion object : MavEnum.Companion<DeepstallStage> {
+  public companion object : MavEnum.MavCompanion<DeepstallStage> {
     public override fun getEntryFromValueOrNull(v: UInt): DeepstallStage? = when (v) {
       0u -> FLY_TO_LANDING
       1u -> ESTIMATE_WIND

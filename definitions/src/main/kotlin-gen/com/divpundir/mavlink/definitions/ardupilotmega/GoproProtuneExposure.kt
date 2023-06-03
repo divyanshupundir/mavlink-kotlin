@@ -116,7 +116,7 @@ public enum class GoproProtuneExposure(
   POS_5_0(20u),
   ;
 
-  public companion object : MavEnum.Companion<GoproProtuneExposure> {
+  public companion object : MavEnum.MavCompanion<GoproProtuneExposure> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneExposure? = when (v) {
       0u -> NEG_5_0
       1u -> NEG_4_5

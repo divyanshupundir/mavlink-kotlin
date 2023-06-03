@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -114,7 +113,7 @@ public data class SensBatmon(
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage6: UShort = 0u,
 ) : MavMessage<SensBatmon> {
-  public override val instanceMetadata: MavMessage.Metadata<SensBatmon> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -156,16 +155,16 @@ public data class SensBatmon(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_010u
-
-    private const val CRC_EXTRA: Byte = -101
-
+  public companion object : MavMessage.MavCompanion<SensBatmon> {
     private const val SIZE_V1: Int = 41
 
     private const val SIZE_V2: Int = 41
 
-    private val DESERIALIZER: MavDeserializer<SensBatmon> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_010u
+
+    public override val crcExtra: Byte = -101
+
+    public override fun deserialize(bytes: ByteArray): SensBatmon {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val batmonTimestamp = inputBuffer.decodeUInt64()
       val temperature = inputBuffer.decodeFloat()
@@ -183,7 +182,7 @@ public data class SensBatmon(
       val cellvoltage6 = inputBuffer.decodeUInt16()
       val soc = inputBuffer.decodeUInt8()
 
-      SensBatmon(
+      return SensBatmon(
         batmonTimestamp = batmonTimestamp,
         temperature = temperature,
         voltage = voltage,
@@ -202,13 +201,7 @@ public data class SensBatmon(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SensBatmon> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SensBatmon> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SensBatmon =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensBatmon =
         Builder().apply(builderAction).build()
   }
 

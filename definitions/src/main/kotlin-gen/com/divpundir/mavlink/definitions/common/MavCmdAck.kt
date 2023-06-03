@@ -62,7 +62,7 @@ public enum class MavCmdAck(
   ERR_Z_ALT_OUT_OF_RANGE(8u),
   ;
 
-  public companion object : MavEnum.Companion<MavCmdAck> {
+  public companion object : MavEnum.MavCompanion<MavCmdAck> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCmdAck? = when (v) {
       0u -> OK
       1u -> ERR_FAIL

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -130,7 +129,7 @@ public data class SimState(
   @GeneratedMavField(type = "float")
   public val vd: Float = 0F,
 ) : MavMessage<SimState> {
-  public override val instanceMetadata: MavMessage.Metadata<SimState> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SimState> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -184,16 +183,16 @@ public data class SimState(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 108u
-
-    private const val CRC_EXTRA: Byte = 32
-
+  public companion object : MavMessage.MavCompanion<SimState> {
     private const val SIZE_V1: Int = 84
 
     private const val SIZE_V2: Int = 84
 
-    private val DESERIALIZER: MavDeserializer<SimState> = MavDeserializer { bytes ->
+    public override val id: UInt = 108u
+
+    public override val crcExtra: Byte = 32
+
+    public override fun deserialize(bytes: ByteArray): SimState {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val q1 = inputBuffer.decodeFloat()
       val q2 = inputBuffer.decodeFloat()
@@ -217,7 +216,7 @@ public data class SimState(
       val ve = inputBuffer.decodeFloat()
       val vd = inputBuffer.decodeFloat()
 
-      SimState(
+      return SimState(
         q1 = q1,
         q2 = q2,
         q3 = q3,
@@ -242,13 +241,7 @@ public data class SimState(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SimState> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SimState> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SimState =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SimState =
         Builder().apply(builderAction).build()
   }
 

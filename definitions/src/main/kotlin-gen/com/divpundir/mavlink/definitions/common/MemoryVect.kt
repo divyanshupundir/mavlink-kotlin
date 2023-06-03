@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt8Array
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -53,7 +52,7 @@ public data class MemoryVect(
   @GeneratedMavField(type = "int8_t[32]")
   public val `value`: List<Byte> = emptyList(),
 ) : MavMessage<MemoryVect> {
-  public override val instanceMetadata: MavMessage.Metadata<MemoryVect> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MemoryVect> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -73,23 +72,23 @@ public data class MemoryVect(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 249u
-
-    private const val CRC_EXTRA: Byte = -52
-
+  public companion object : MavMessage.MavCompanion<MemoryVect> {
     private const val SIZE_V1: Int = 36
 
     private const val SIZE_V2: Int = 36
 
-    private val DESERIALIZER: MavDeserializer<MemoryVect> = MavDeserializer { bytes ->
+    public override val id: UInt = 249u
+
+    public override val crcExtra: Byte = -52
+
+    public override fun deserialize(bytes: ByteArray): MemoryVect {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val address = inputBuffer.decodeUInt16()
       val ver = inputBuffer.decodeUInt8()
       val type = inputBuffer.decodeUInt8()
       val value = inputBuffer.decodeInt8Array(32)
 
-      MemoryVect(
+      return MemoryVect(
         address = address,
         ver = ver,
         type = type,
@@ -97,13 +96,7 @@ public data class MemoryVect(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MemoryVect> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MemoryVect> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MemoryVect =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MemoryVect =
         Builder().apply(builderAction).build()
   }
 

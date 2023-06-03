@@ -41,7 +41,7 @@ public enum class LimitsState(
   LIMITS_RECOVERED(5u),
   ;
 
-  public companion object : MavEnum.Companion<LimitsState> {
+  public companion object : MavEnum.MavCompanion<LimitsState> {
     public override fun getEntryFromValueOrNull(v: UInt): LimitsState? = when (v) {
       0u -> LIMITS_INIT
       1u -> LIMITS_DISABLED

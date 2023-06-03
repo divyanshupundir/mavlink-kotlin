@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -63,7 +62,7 @@ public data class VfrHud(
   @GeneratedMavField(type = "float")
   public val climb: Float = 0F,
 ) : MavMessage<VfrHud> {
-  public override val instanceMetadata: MavMessage.Metadata<VfrHud> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -87,16 +86,16 @@ public data class VfrHud(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 74u
-
-    private const val CRC_EXTRA: Byte = 20
-
+  public companion object : MavMessage.MavCompanion<VfrHud> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<VfrHud> = MavDeserializer { bytes ->
+    public override val id: UInt = 74u
+
+    public override val crcExtra: Byte = 20
+
+    public override fun deserialize(bytes: ByteArray): VfrHud {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val airspeed = inputBuffer.decodeFloat()
       val groundspeed = inputBuffer.decodeFloat()
@@ -105,7 +104,7 @@ public data class VfrHud(
       val heading = inputBuffer.decodeInt16()
       val throttle = inputBuffer.decodeUInt16()
 
-      VfrHud(
+      return VfrHud(
         airspeed = airspeed,
         groundspeed = groundspeed,
         heading = heading,
@@ -115,13 +114,7 @@ public data class VfrHud(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<VfrHud> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<VfrHud> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): VfrHud =
+    public operator fun invoke(builderAction: Builder.() -> Unit): VfrHud =
         Builder().apply(builderAction).build()
   }
 

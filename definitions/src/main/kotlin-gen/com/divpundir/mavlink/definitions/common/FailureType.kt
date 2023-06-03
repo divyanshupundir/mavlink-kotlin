@@ -54,7 +54,7 @@ public enum class FailureType(
   INTERMITTENT(7u),
   ;
 
-  public companion object : MavEnum.Companion<FailureType> {
+  public companion object : MavEnum.MavCompanion<FailureType> {
     public override fun getEntryFromValueOrNull(v: UInt): FailureType? = when (v) {
       0u -> OK
       1u -> OFF

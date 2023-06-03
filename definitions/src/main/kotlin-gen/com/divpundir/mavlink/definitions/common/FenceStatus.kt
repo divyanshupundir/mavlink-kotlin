@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -61,7 +60,7 @@ public data class FenceStatus(
   )
   public val breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0u),
 ) : MavMessage<FenceStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<FenceStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +81,16 @@ public data class FenceStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 162u
-
-    private const val CRC_EXTRA: Byte = -67
-
+  public companion object : MavMessage.MavCompanion<FenceStatus> {
     private const val SIZE_V1: Int = 8
 
     private const val SIZE_V2: Int = 9
 
-    private val DESERIALIZER: MavDeserializer<FenceStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 162u
+
+    public override val crcExtra: Byte = -67
+
+    public override fun deserialize(bytes: ByteArray): FenceStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val breachTime = inputBuffer.decodeUInt32()
       val breachCount = inputBuffer.decodeUInt16()
@@ -105,7 +104,7 @@ public data class FenceStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      FenceStatus(
+      return FenceStatus(
         breachStatus = breachStatus,
         breachCount = breachCount,
         breachType = breachType,
@@ -114,13 +113,7 @@ public data class FenceStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FenceStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FenceStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FenceStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FenceStatus =
         Builder().apply(builderAction).build()
   }
 

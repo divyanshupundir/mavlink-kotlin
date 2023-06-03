@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ualberta
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -40,7 +39,7 @@ public data class UalbertaSysStatus(
   @GeneratedMavField(type = "uint8_t")
   public val pilot: UByte = 0u,
 ) : MavMessage<UalbertaSysStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<UalbertaSysStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<UalbertaSysStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -58,35 +57,29 @@ public data class UalbertaSysStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 222u
-
-    private const val CRC_EXTRA: Byte = 15
-
+  public companion object : MavMessage.MavCompanion<UalbertaSysStatus> {
     private const val SIZE_V1: Int = 3
 
     private const val SIZE_V2: Int = 3
 
-    private val DESERIALIZER: MavDeserializer<UalbertaSysStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 222u
+
+    public override val crcExtra: Byte = 15
+
+    public override fun deserialize(bytes: ByteArray): UalbertaSysStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mode = inputBuffer.decodeUInt8()
       val navMode = inputBuffer.decodeUInt8()
       val pilot = inputBuffer.decodeUInt8()
 
-      UalbertaSysStatus(
+      return UalbertaSysStatus(
         mode = mode,
         navMode = navMode,
         pilot = pilot,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<UalbertaSysStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<UalbertaSysStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): UalbertaSysStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): UalbertaSysStatus =
         Builder().apply(builderAction).build()
   }
 

@@ -801,7 +801,7 @@ public enum class MavCmd(
   GUIDED_CHANGE_HEADING(43_002u),
   ;
 
-  public companion object : MavEnum.Companion<MavCmd> {
+  public companion object : MavEnum.MavCompanion<MavCmd> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       215u -> DO_SET_RESUME_REPEAT_DIST
       216u -> DO_SPRAYER

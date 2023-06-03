@@ -21,7 +21,7 @@ public enum class UavionixAdsbOutRfSelect(
   TX_ENABLED(2u),
   ;
 
-  public companion object : MavBitmask.Companion<UavionixAdsbOutRfSelect> {
+  public companion object : MavBitmask.MavCompanion<UavionixAdsbOutRfSelect> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutRfSelect? = when (v) {
       0u -> STANDBY
       1u -> RX_ENABLED

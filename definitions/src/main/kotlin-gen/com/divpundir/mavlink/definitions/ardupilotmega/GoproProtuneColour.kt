@@ -21,7 +21,7 @@ public enum class GoproProtuneColour(
   NEUTRAL(1u),
   ;
 
-  public companion object : MavEnum.Companion<GoproProtuneColour> {
+  public companion object : MavEnum.MavCompanion<GoproProtuneColour> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneColour? = when (v) {
       0u -> STANDARD
       1u -> NEUTRAL

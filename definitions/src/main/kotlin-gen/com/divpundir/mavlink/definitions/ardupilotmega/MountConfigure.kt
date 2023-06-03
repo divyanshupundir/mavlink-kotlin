@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.MavMountMode
@@ -59,7 +58,7 @@ public data class MountConfigure(
   @GeneratedMavField(type = "uint8_t")
   public val stabYaw: UByte = 0u,
 ) : MavMessage<MountConfigure> {
-  public override val instanceMetadata: MavMessage.Metadata<MountConfigure> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MountConfigure> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -83,16 +82,16 @@ public data class MountConfigure(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 156u
-
-    private const val CRC_EXTRA: Byte = 19
-
+  public companion object : MavMessage.MavCompanion<MountConfigure> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<MountConfigure> = MavDeserializer { bytes ->
+    public override val id: UInt = 156u
+
+    public override val crcExtra: Byte = 19
+
+    public override fun deserialize(bytes: ByteArray): MountConfigure {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
@@ -104,7 +103,7 @@ public data class MountConfigure(
       val stabPitch = inputBuffer.decodeUInt8()
       val stabYaw = inputBuffer.decodeUInt8()
 
-      MountConfigure(
+      return MountConfigure(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         mountMode = mountMode,
@@ -114,13 +113,7 @@ public data class MountConfigure(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MountConfigure> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MountConfigure> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MountConfigure =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountConfigure =
         Builder().apply(builderAction).build()
   }
 

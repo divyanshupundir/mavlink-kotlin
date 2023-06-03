@@ -26,7 +26,7 @@ public enum class GoproFieldOfView(
   NARROW(2u),
   ;
 
-  public companion object : MavEnum.Companion<GoproFieldOfView> {
+  public companion object : MavEnum.MavCompanion<GoproFieldOfView> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproFieldOfView? = when (v) {
       0u -> WIDE
       1u -> MEDIUM

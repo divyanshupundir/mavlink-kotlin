@@ -81,7 +81,7 @@ public enum class GoproResolution(
   _4k_SUPERVIEW(13u),
   ;
 
-  public companion object : MavEnum.Companion<GoproResolution> {
+  public companion object : MavEnum.MavCompanion<GoproResolution> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproResolution? = when (v) {
       0u -> _480p
       1u -> _720p

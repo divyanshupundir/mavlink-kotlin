@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -57,7 +56,7 @@ public data class Ahrs2(
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
 ) : MavMessage<Ahrs2> {
-  public override val instanceMetadata: MavMessage.Metadata<Ahrs2> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Ahrs2> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -81,16 +80,16 @@ public data class Ahrs2(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 178u
-
-    private const val CRC_EXTRA: Byte = 47
-
+  public companion object : MavMessage.MavCompanion<Ahrs2> {
     private const val SIZE_V1: Int = 24
 
     private const val SIZE_V2: Int = 24
 
-    private val DESERIALIZER: MavDeserializer<Ahrs2> = MavDeserializer { bytes ->
+    public override val id: UInt = 178u
+
+    public override val crcExtra: Byte = 47
+
+    public override fun deserialize(bytes: ByteArray): Ahrs2 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
@@ -99,7 +98,7 @@ public data class Ahrs2(
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
 
-      Ahrs2(
+      return Ahrs2(
         roll = roll,
         pitch = pitch,
         yaw = yaw,
@@ -109,13 +108,7 @@ public data class Ahrs2(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Ahrs2> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Ahrs2> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Ahrs2 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Ahrs2 =
         Builder().apply(builderAction).build()
   }
 

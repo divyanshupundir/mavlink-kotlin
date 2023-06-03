@@ -59,7 +59,7 @@ public enum class MavSeverity(
   DEBUG(7u),
   ;
 
-  public companion object : MavEnum.Companion<MavSeverity> {
+  public companion object : MavEnum.MavCompanion<MavSeverity> {
     public override fun getEntryFromValueOrNull(v: UInt): MavSeverity? = when (v) {
       0u -> EMERGENCY
       1u -> ALERT

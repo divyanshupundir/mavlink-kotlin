@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.decodeString
@@ -45,7 +44,7 @@ public data class NamedValueInt(
   @GeneratedMavField(type = "int32_t")
   public val `value`: Int = 0,
 ) : MavMessage<NamedValueInt> {
-  public override val instanceMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<NamedValueInt> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -63,35 +62,29 @@ public data class NamedValueInt(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 252u
-
-    private const val CRC_EXTRA: Byte = 44
-
+  public companion object : MavMessage.MavCompanion<NamedValueInt> {
     private const val SIZE_V1: Int = 18
 
     private const val SIZE_V2: Int = 18
 
-    private val DESERIALIZER: MavDeserializer<NamedValueInt> = MavDeserializer { bytes ->
+    public override val id: UInt = 252u
+
+    public override val crcExtra: Byte = 44
+
+    public override fun deserialize(bytes: ByteArray): NamedValueInt {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val value = inputBuffer.decodeInt32()
       val name = inputBuffer.decodeString(10)
 
-      NamedValueInt(
+      return NamedValueInt(
         timeBootMs = timeBootMs,
         name = name,
         value = value,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<NamedValueInt> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<NamedValueInt> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): NamedValueInt =
+    public operator fun invoke(builderAction: Builder.() -> Unit): NamedValueInt =
         Builder().apply(builderAction).build()
   }
 

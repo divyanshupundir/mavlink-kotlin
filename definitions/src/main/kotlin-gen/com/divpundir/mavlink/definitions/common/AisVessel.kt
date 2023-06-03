@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -128,7 +127,7 @@ public data class AisVessel(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<AisFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<AisVessel> {
-  public override val instanceMetadata: MavMessage.Metadata<AisVessel> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AisVessel> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -174,16 +173,16 @@ public data class AisVessel(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 301u
-
-    private const val CRC_EXTRA: Byte = -13
-
+  public companion object : MavMessage.MavCompanion<AisVessel> {
     private const val SIZE_V1: Int = 58
 
     private const val SIZE_V2: Int = 58
 
-    private val DESERIALIZER: MavDeserializer<AisVessel> = MavDeserializer { bytes ->
+    public override val id: UInt = 301u
+
+    public override val crcExtra: Byte = -13
+
+    public override fun deserialize(bytes: ByteArray): AisVessel {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val mmsi = inputBuffer.decodeUInt32()
       val lat = inputBuffer.decodeInt32()
@@ -212,7 +211,7 @@ public data class AisVessel(
       val callsign = inputBuffer.decodeString(7)
       val name = inputBuffer.decodeString(20)
 
-      AisVessel(
+      return AisVessel(
         mmsi = mmsi,
         lat = lat,
         lon = lon,
@@ -233,13 +232,7 @@ public data class AisVessel(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AisVessel> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AisVessel> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AisVessel =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AisVessel =
         Builder().apply(builderAction).build()
   }
 

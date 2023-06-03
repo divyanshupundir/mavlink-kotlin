@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -53,7 +52,7 @@ public data class GimbalControl(
   @GeneratedMavField(type = "float")
   public val demandedRateZ: Float = 0F,
 ) : MavMessage<GimbalControl> {
-  public override val instanceMetadata: MavMessage.Metadata<GimbalControl> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GimbalControl> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -75,16 +74,16 @@ public data class GimbalControl(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 201u
-
-    private const val CRC_EXTRA: Byte = -51
-
+  public companion object : MavMessage.MavCompanion<GimbalControl> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 14
 
-    private val DESERIALIZER: MavDeserializer<GimbalControl> = MavDeserializer { bytes ->
+    public override val id: UInt = 201u
+
+    public override val crcExtra: Byte = -51
+
+    public override fun deserialize(bytes: ByteArray): GimbalControl {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val demandedRateX = inputBuffer.decodeFloat()
       val demandedRateY = inputBuffer.decodeFloat()
@@ -92,7 +91,7 @@ public data class GimbalControl(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      GimbalControl(
+      return GimbalControl(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         demandedRateX = demandedRateX,
@@ -101,13 +100,7 @@ public data class GimbalControl(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GimbalControl> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GimbalControl> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GimbalControl =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalControl =
         Builder().apply(builderAction).build()
   }
 

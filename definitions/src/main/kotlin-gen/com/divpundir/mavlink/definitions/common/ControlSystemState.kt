@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -117,7 +116,7 @@ public data class ControlSystemState(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<ControlSystemState> {
-  public override val instanceMetadata: MavMessage.Metadata<ControlSystemState> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -163,16 +162,16 @@ public data class ControlSystemState(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 146u
-
-    private const val CRC_EXTRA: Byte = 103
-
+  public companion object : MavMessage.MavCompanion<ControlSystemState> {
     private const val SIZE_V1: Int = 100
 
     private const val SIZE_V2: Int = 100
 
-    private val DESERIALIZER: MavDeserializer<ControlSystemState> = MavDeserializer { bytes ->
+    public override val id: UInt = 146u
+
+    public override val crcExtra: Byte = 103
+
+    public override fun deserialize(bytes: ByteArray): ControlSystemState {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val xAcc = inputBuffer.decodeFloat()
@@ -192,7 +191,7 @@ public data class ControlSystemState(
       val pitchRate = inputBuffer.decodeFloat()
       val yawRate = inputBuffer.decodeFloat()
 
-      ControlSystemState(
+      return ControlSystemState(
         timeUsec = timeUsec,
         xAcc = xAcc,
         yAcc = yAcc,
@@ -213,13 +212,7 @@ public data class ControlSystemState(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ControlSystemState> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ControlSystemState> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ControlSystemState =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ControlSystemState =
         Builder().apply(builderAction).build()
   }
 

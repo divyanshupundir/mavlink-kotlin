@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -82,7 +81,7 @@ public data class Simstate(
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
 ) : MavMessage<Simstate> {
-  public override val instanceMetadata: MavMessage.Metadata<Simstate> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -116,16 +115,16 @@ public data class Simstate(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 164u
-
-    private const val CRC_EXTRA: Byte = -102
-
+  public companion object : MavMessage.MavCompanion<Simstate> {
     private const val SIZE_V1: Int = 44
 
     private const val SIZE_V2: Int = 44
 
-    private val DESERIALIZER: MavDeserializer<Simstate> = MavDeserializer { bytes ->
+    public override val id: UInt = 164u
+
+    public override val crcExtra: Byte = -102
+
+    public override fun deserialize(bytes: ByteArray): Simstate {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val roll = inputBuffer.decodeFloat()
       val pitch = inputBuffer.decodeFloat()
@@ -139,7 +138,7 @@ public data class Simstate(
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
 
-      Simstate(
+      return Simstate(
         roll = roll,
         pitch = pitch,
         yaw = yaw,
@@ -154,13 +153,7 @@ public data class Simstate(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Simstate> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Simstate> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Simstate =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Simstate =
         Builder().apply(builderAction).build()
   }
 

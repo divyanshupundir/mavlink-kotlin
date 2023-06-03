@@ -44,7 +44,7 @@ public enum class EscConnectionType(
   DSHOT(5u),
   ;
 
-  public companion object : MavEnum.Companion<EscConnectionType> {
+  public companion object : MavEnum.MavCompanion<EscConnectionType> {
     public override fun getEntryFromValueOrNull(v: UInt): EscConnectionType? = when (v) {
       0u -> PPM
       1u -> SERIAL

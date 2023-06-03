@@ -30,7 +30,7 @@ public enum class PrecisionLandMode(
   REQUIRED(2u),
   ;
 
-  public companion object : MavEnum.Companion<PrecisionLandMode> {
+  public companion object : MavEnum.MavCompanion<PrecisionLandMode> {
     public override fun getEntryFromValueOrNull(v: UInt): PrecisionLandMode? = when (v) {
       0u -> DISABLED
       1u -> OPPORTUNISTIC

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -65,7 +64,7 @@ public data class SerialUdbExtraF19(
   @GeneratedMavField(type = "uint8_t")
   public val sueRudderReversed: UByte = 0u,
 ) : MavMessage<SerialUdbExtraF19> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF19> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF19> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -93,16 +92,16 @@ public data class SerialUdbExtraF19(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 185u
-
-    private const val CRC_EXTRA: Byte = 87
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF19> {
     private const val SIZE_V1: Int = 8
 
     private const val SIZE_V2: Int = 8
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF19> = MavDeserializer { bytes ->
+    public override val id: UInt = 185u
+
+    public override val crcExtra: Byte = 87
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF19 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueAileronOutputChannel = inputBuffer.decodeUInt8()
       val sueAileronReversed = inputBuffer.decodeUInt8()
@@ -113,7 +112,7 @@ public data class SerialUdbExtraF19(
       val sueRudderOutputChannel = inputBuffer.decodeUInt8()
       val sueRudderReversed = inputBuffer.decodeUInt8()
 
-      SerialUdbExtraF19(
+      return SerialUdbExtraF19(
         sueAileronOutputChannel = sueAileronOutputChannel,
         sueAileronReversed = sueAileronReversed,
         sueElevatorOutputChannel = sueElevatorOutputChannel,
@@ -125,13 +124,7 @@ public data class SerialUdbExtraF19(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF19> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF19> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF19 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF19 =
         Builder().apply(builderAction).build()
   }
 

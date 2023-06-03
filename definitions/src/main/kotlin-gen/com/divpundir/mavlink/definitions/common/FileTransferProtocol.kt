@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -50,7 +49,7 @@ public data class FileTransferProtocol(
   @GeneratedMavField(type = "uint8_t[251]")
   public val payload: List<UByte> = emptyList(),
 ) : MavMessage<FileTransferProtocol> {
-  public override val instanceMetadata: MavMessage.Metadata<FileTransferProtocol> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FileTransferProtocol> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -70,23 +69,23 @@ public data class FileTransferProtocol(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 110u
-
-    private const val CRC_EXTRA: Byte = 84
-
+  public companion object : MavMessage.MavCompanion<FileTransferProtocol> {
     private const val SIZE_V1: Int = 254
 
     private const val SIZE_V2: Int = 254
 
-    private val DESERIALIZER: MavDeserializer<FileTransferProtocol> = MavDeserializer { bytes ->
+    public override val id: UInt = 110u
+
+    public override val crcExtra: Byte = 84
+
+    public override fun deserialize(bytes: ByteArray): FileTransferProtocol {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetNetwork = inputBuffer.decodeUInt8()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
       val payload = inputBuffer.decodeUInt8Array(251)
 
-      FileTransferProtocol(
+      return FileTransferProtocol(
         targetNetwork = targetNetwork,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
@@ -94,13 +93,7 @@ public data class FileTransferProtocol(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FileTransferProtocol> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FileTransferProtocol> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FileTransferProtocol =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FileTransferProtocol =
         Builder().apply(builderAction).build()
   }
 

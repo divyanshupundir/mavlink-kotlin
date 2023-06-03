@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -67,7 +66,7 @@ public data class V2Extension(
   @GeneratedMavField(type = "uint8_t[249]")
   public val payload: List<UByte> = emptyList(),
 ) : MavMessage<V2Extension> {
-  public override val instanceMetadata: MavMessage.Metadata<V2Extension> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<V2Extension> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -89,16 +88,16 @@ public data class V2Extension(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 248u
-
-    private const val CRC_EXTRA: Byte = 8
-
+  public companion object : MavMessage.MavCompanion<V2Extension> {
     private const val SIZE_V1: Int = 254
 
     private const val SIZE_V2: Int = 254
 
-    private val DESERIALIZER: MavDeserializer<V2Extension> = MavDeserializer { bytes ->
+    public override val id: UInt = 248u
+
+    public override val crcExtra: Byte = 8
+
+    public override fun deserialize(bytes: ByteArray): V2Extension {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val messageType = inputBuffer.decodeUInt16()
       val targetNetwork = inputBuffer.decodeUInt8()
@@ -106,7 +105,7 @@ public data class V2Extension(
       val targetComponent = inputBuffer.decodeUInt8()
       val payload = inputBuffer.decodeUInt8Array(249)
 
-      V2Extension(
+      return V2Extension(
         targetNetwork = targetNetwork,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
@@ -115,13 +114,7 @@ public data class V2Extension(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<V2Extension> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<V2Extension> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): V2Extension =
+    public operator fun invoke(builderAction: Builder.() -> Unit): V2Extension =
         Builder().apply(builderAction).build()
   }
 

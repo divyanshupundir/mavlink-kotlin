@@ -26,7 +26,7 @@ public enum class MavAvssCommandFailureReason(
   PRS_OTM_NOT_ARMED(3u),
   ;
 
-  public companion object : MavEnum.Companion<MavAvssCommandFailureReason> {
+  public companion object : MavEnum.MavCompanion<MavAvssCommandFailureReason> {
     public override fun getEntryFromValueOrNull(v: UInt): MavAvssCommandFailureReason? = when (v) {
       1u -> PRS_NOT_STEADY
       2u -> PRS_DTM_NOT_ARMED

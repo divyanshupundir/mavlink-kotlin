@@ -52,7 +52,7 @@ public enum class SetFocusType(
   FOCUS_TYPE_AUTO_CONTINUOUS(6u),
   ;
 
-  public companion object : MavEnum.Companion<SetFocusType> {
+  public companion object : MavEnum.MavCompanion<SetFocusType> {
     public override fun getEntryFromValueOrNull(v: UInt): SetFocusType? = when (v) {
       0u -> FOCUS_TYPE_STEP
       1u -> FOCUS_TYPE_CONTINUOUS

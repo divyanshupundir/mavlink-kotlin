@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -38,7 +37,7 @@ public data class Hwstatus(
   @GeneratedMavField(type = "uint8_t")
   public val i2cerr: UByte = 0u,
 ) : MavMessage<Hwstatus> {
-  public override val instanceMetadata: MavMessage.Metadata<Hwstatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Hwstatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -54,33 +53,27 @@ public data class Hwstatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 165u
-
-    private const val CRC_EXTRA: Byte = 21
-
+  public companion object : MavMessage.MavCompanion<Hwstatus> {
     private const val SIZE_V1: Int = 3
 
     private const val SIZE_V2: Int = 3
 
-    private val DESERIALIZER: MavDeserializer<Hwstatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 165u
+
+    public override val crcExtra: Byte = 21
+
+    public override fun deserialize(bytes: ByteArray): Hwstatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vcc = inputBuffer.decodeUInt16()
       val i2cerr = inputBuffer.decodeUInt8()
 
-      Hwstatus(
+      return Hwstatus(
         vcc = vcc,
         i2cerr = i2cerr,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Hwstatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Hwstatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Hwstatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Hwstatus =
         Builder().apply(builderAction).build()
   }
 

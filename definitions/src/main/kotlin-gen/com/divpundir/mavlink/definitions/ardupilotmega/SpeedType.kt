@@ -15,7 +15,7 @@ public enum class SpeedType(
   GROUNDSPEED(1u),
   ;
 
-  public companion object : MavEnum.Companion<SpeedType> {
+  public companion object : MavEnum.MavCompanion<SpeedType> {
     public override fun getEntryFromValueOrNull(v: UInt): SpeedType? = when (v) {
       0u -> AIRSPEED
       1u -> GROUNDSPEED

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ualberta
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt16Array
@@ -56,7 +55,7 @@ public data class RadioCalibration(
   @GeneratedMavField(type = "uint16_t[5]")
   public val throttle: List<UShort> = emptyList(),
 ) : MavMessage<RadioCalibration> {
-  public override val instanceMetadata: MavMessage.Metadata<RadioCalibration> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<RadioCalibration> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -80,16 +79,16 @@ public data class RadioCalibration(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 221u
-
-    private const val CRC_EXTRA: Byte = 71
-
+  public companion object : MavMessage.MavCompanion<RadioCalibration> {
     private const val SIZE_V1: Int = 42
 
     private const val SIZE_V2: Int = 42
 
-    private val DESERIALIZER: MavDeserializer<RadioCalibration> = MavDeserializer { bytes ->
+    public override val id: UInt = 221u
+
+    public override val crcExtra: Byte = 71
+
+    public override fun deserialize(bytes: ByteArray): RadioCalibration {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val aileron = inputBuffer.decodeUInt16Array(6)
       val elevator = inputBuffer.decodeUInt16Array(6)
@@ -98,7 +97,7 @@ public data class RadioCalibration(
       val pitch = inputBuffer.decodeUInt16Array(10)
       val throttle = inputBuffer.decodeUInt16Array(10)
 
-      RadioCalibration(
+      return RadioCalibration(
         aileron = aileron,
         elevator = elevator,
         rudder = rudder,
@@ -108,13 +107,7 @@ public data class RadioCalibration(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<RadioCalibration> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<RadioCalibration> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): RadioCalibration =
+    public operator fun invoke(builderAction: Builder.() -> Unit): RadioCalibration =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -74,7 +73,7 @@ public data class IsbdLinkStatus(
   @GeneratedMavField(type = "uint8_t")
   public val rxSessionPending: UByte = 0u,
 ) : MavMessage<IsbdLinkStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<IsbdLinkStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<IsbdLinkStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -102,16 +101,16 @@ public data class IsbdLinkStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 335u
-
-    private const val CRC_EXTRA: Byte = -31
-
+  public companion object : MavMessage.MavCompanion<IsbdLinkStatus> {
     private const val SIZE_V1: Int = 24
 
     private const val SIZE_V2: Int = 24
 
-    private val DESERIALIZER: MavDeserializer<IsbdLinkStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 335u
+
+    public override val crcExtra: Byte = -31
+
+    public override fun deserialize(bytes: ByteArray): IsbdLinkStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val lastHeartbeat = inputBuffer.decodeUInt64()
@@ -122,7 +121,7 @@ public data class IsbdLinkStatus(
       val txSessionPending = inputBuffer.decodeUInt8()
       val rxSessionPending = inputBuffer.decodeUInt8()
 
-      IsbdLinkStatus(
+      return IsbdLinkStatus(
         timestamp = timestamp,
         lastHeartbeat = lastHeartbeat,
         failedSessions = failedSessions,
@@ -134,13 +133,7 @@ public data class IsbdLinkStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<IsbdLinkStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<IsbdLinkStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): IsbdLinkStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): IsbdLinkStatus =
         Builder().apply(builderAction).build()
   }
 

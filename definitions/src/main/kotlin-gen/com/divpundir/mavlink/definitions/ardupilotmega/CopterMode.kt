@@ -64,7 +64,7 @@ public enum class CopterMode(
   AUTO_RTL(27u),
   ;
 
-  public companion object : MavEnum.Companion<CopterMode> {
+  public companion object : MavEnum.MavCompanion<CopterMode> {
     public override fun getEntryFromValueOrNull(v: UInt): CopterMode? = when (v) {
       0u -> STABILIZE
       1u -> ACRO

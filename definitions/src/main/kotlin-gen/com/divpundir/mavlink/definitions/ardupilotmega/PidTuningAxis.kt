@@ -23,7 +23,7 @@ public enum class PidTuningAxis(
   PID_TUNING_LANDING(6u),
   ;
 
-  public companion object : MavEnum.Companion<PidTuningAxis> {
+  public companion object : MavEnum.MavCompanion<PidTuningAxis> {
     public override fun getEntryFromValueOrNull(v: UInt): PidTuningAxis? = when (v) {
       1u -> PID_TUNING_ROLL
       2u -> PID_TUNING_PITCH

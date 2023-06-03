@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeString
@@ -59,7 +58,7 @@ public data class ParamRequestRead(
   @GeneratedMavField(type = "int16_t")
   public val paramIndex: Short = 0,
 ) : MavMessage<ParamRequestRead> {
-  public override val instanceMetadata: MavMessage.Metadata<ParamRequestRead> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -79,23 +78,23 @@ public data class ParamRequestRead(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 20u
-
-    private const val CRC_EXTRA: Byte = -42
-
+  public companion object : MavMessage.MavCompanion<ParamRequestRead> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<ParamRequestRead> = MavDeserializer { bytes ->
+    public override val id: UInt = 20u
+
+    public override val crcExtra: Byte = -42
+
+    public override fun deserialize(bytes: ByteArray): ParamRequestRead {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val paramIndex = inputBuffer.decodeInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
       val paramId = inputBuffer.decodeString(16)
 
-      ParamRequestRead(
+      return ParamRequestRead(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         paramId = paramId,
@@ -103,13 +102,7 @@ public data class ParamRequestRead(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ParamRequestRead> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ParamRequestRead> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ParamRequestRead =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamRequestRead =
         Builder().apply(builderAction).build()
   }
 

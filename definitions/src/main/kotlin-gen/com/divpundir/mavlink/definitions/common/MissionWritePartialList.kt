@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -61,7 +60,8 @@ public data class MissionWritePartialList(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionWritePartialList> {
-  public override val instanceMetadata: MavMessage.Metadata<MissionWritePartialList> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MissionWritePartialList> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +82,16 @@ public data class MissionWritePartialList(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 38u
-
-    private const val CRC_EXTRA: Byte = 9
-
+  public companion object : MavMessage.MavCompanion<MissionWritePartialList> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 7
 
-    private val DESERIALIZER: MavDeserializer<MissionWritePartialList> = MavDeserializer { bytes ->
+    public override val id: UInt = 38u
+
+    public override val crcExtra: Byte = 9
+
+    public override fun deserialize(bytes: ByteArray): MissionWritePartialList {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val startIndex = inputBuffer.decodeInt16()
       val endIndex = inputBuffer.decodeInt16()
@@ -102,7 +102,7 @@ public data class MissionWritePartialList(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      MissionWritePartialList(
+      return MissionWritePartialList(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         startIndex = startIndex,
@@ -111,13 +111,7 @@ public data class MissionWritePartialList(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MissionWritePartialList> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MissionWritePartialList> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MissionWritePartialList =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionWritePartialList =
         Builder().apply(builderAction).build()
   }
 

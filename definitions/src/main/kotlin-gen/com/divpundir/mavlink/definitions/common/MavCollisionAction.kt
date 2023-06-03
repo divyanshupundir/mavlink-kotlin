@@ -49,7 +49,7 @@ public enum class MavCollisionAction(
   HOVER(6u),
   ;
 
-  public companion object : MavEnum.Companion<MavCollisionAction> {
+  public companion object : MavEnum.MavCompanion<MavCollisionAction> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCollisionAction? = when (v) {
       0u -> NONE
       1u -> REPORT

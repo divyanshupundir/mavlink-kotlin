@@ -39,7 +39,7 @@ public enum class MavLandedState(
   LANDING(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavLandedState> {
+  public companion object : MavEnum.MavCompanion<MavLandedState> {
     public override fun getEntryFromValueOrNull(v: UInt): MavLandedState? = when (v) {
       0u -> UNDEFINED
       1u -> ON_GROUND

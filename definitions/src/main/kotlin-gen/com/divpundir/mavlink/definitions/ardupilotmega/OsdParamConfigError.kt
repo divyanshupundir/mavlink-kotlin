@@ -22,7 +22,7 @@ public enum class OsdParamConfigError(
   OSD_PARAM_INVALID_PARAMETER(3u),
   ;
 
-  public companion object : MavEnum.Companion<OsdParamConfigError> {
+  public companion object : MavEnum.MavCompanion<OsdParamConfigError> {
     public override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigError? = when (v) {
       0u -> OSD_PARAM_SUCCESS
       1u -> OSD_PARAM_INVALID_SCREEN

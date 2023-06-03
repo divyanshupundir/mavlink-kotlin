@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -43,7 +42,7 @@ public data class Data64(
   @GeneratedMavField(type = "uint8_t[64]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<Data64> {
-  public override val instanceMetadata: MavMessage.Metadata<Data64> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Data64> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,35 +60,29 @@ public data class Data64(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 171u
-
-    private const val CRC_EXTRA: Byte = -75
-
+  public companion object : MavMessage.MavCompanion<Data64> {
     private const val SIZE_V1: Int = 66
 
     private const val SIZE_V2: Int = 66
 
-    private val DESERIALIZER: MavDeserializer<Data64> = MavDeserializer { bytes ->
+    public override val id: UInt = 171u
+
+    public override val crcExtra: Byte = -75
+
+    public override fun deserialize(bytes: ByteArray): Data64 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val type = inputBuffer.decodeUInt8()
       val len = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeUInt8Array(64)
 
-      Data64(
+      return Data64(
         type = type,
         len = len,
         data = data,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Data64> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Data64> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Data64 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Data64 =
         Builder().apply(builderAction).build()
   }
 

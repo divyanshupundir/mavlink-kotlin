@@ -39,7 +39,7 @@ public enum class MavDistanceSensor(
   UNKNOWN(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavDistanceSensor> {
+  public companion object : MavEnum.MavCompanion<MavDistanceSensor> {
     public override fun getEntryFromValueOrNull(v: UInt): MavDistanceSensor? = when (v) {
       0u -> LASER
       1u -> ULTRASOUND

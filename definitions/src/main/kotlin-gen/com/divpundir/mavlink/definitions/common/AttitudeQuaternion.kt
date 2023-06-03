@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -84,7 +83,7 @@ public data class AttitudeQuaternion(
   )
   public val reprOffsetQ: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternion> {
-  public override val instanceMetadata: MavMessage.Metadata<AttitudeQuaternion> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternion> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -113,16 +112,16 @@ public data class AttitudeQuaternion(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 31u
-
-    private const val CRC_EXTRA: Byte = -10
-
+  public companion object : MavMessage.MavCompanion<AttitudeQuaternion> {
     private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 48
 
-    private val DESERIALIZER: MavDeserializer<AttitudeQuaternion> = MavDeserializer { bytes ->
+    public override val id: UInt = 31u
+
+    public override val crcExtra: Byte = -10
+
+    public override fun deserialize(bytes: ByteArray): AttitudeQuaternion {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val q1 = inputBuffer.decodeFloat()
@@ -134,7 +133,7 @@ public data class AttitudeQuaternion(
       val yawspeed = inputBuffer.decodeFloat()
       val reprOffsetQ = inputBuffer.decodeFloatArray(16)
 
-      AttitudeQuaternion(
+      return AttitudeQuaternion(
         timeBootMs = timeBootMs,
         q1 = q1,
         q2 = q2,
@@ -147,13 +146,7 @@ public data class AttitudeQuaternion(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AttitudeQuaternion> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AttitudeQuaternion> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AttitudeQuaternion =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeQuaternion =
         Builder().apply(builderAction).build()
   }
 

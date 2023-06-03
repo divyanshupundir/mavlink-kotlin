@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeFloat
@@ -112,7 +111,7 @@ public data class CameraInformation(
   @GeneratedMavField(type = "char[140]")
   public val camDefinitionUri: String = "",
 ) : MavMessage<CameraInformation> {
-  public override val instanceMetadata: MavMessage.Metadata<CameraInformation> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CameraInformation> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -150,16 +149,16 @@ public data class CameraInformation(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 259u
-
-    private const val CRC_EXTRA: Byte = 92
-
+  public companion object : MavMessage.MavCompanion<CameraInformation> {
     private const val SIZE_V1: Int = 235
 
     private const val SIZE_V2: Int = 235
 
-    private val DESERIALIZER: MavDeserializer<CameraInformation> = MavDeserializer { bytes ->
+    public override val id: UInt = 259u
+
+    public override val crcExtra: Byte = 92
+
+    public override fun deserialize(bytes: ByteArray): CameraInformation {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val firmwareVersion = inputBuffer.decodeUInt32()
@@ -178,7 +177,7 @@ public data class CameraInformation(
       val lensId = inputBuffer.decodeUInt8()
       val camDefinitionUri = inputBuffer.decodeString(140)
 
-      CameraInformation(
+      return CameraInformation(
         timeBootMs = timeBootMs,
         vendorName = vendorName,
         modelName = modelName,
@@ -195,13 +194,7 @@ public data class CameraInformation(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CameraInformation> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CameraInformation> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CameraInformation =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraInformation =
         Builder().apply(builderAction).build()
   }
 

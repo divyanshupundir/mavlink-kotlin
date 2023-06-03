@@ -38,7 +38,7 @@ public enum class RoverMode(
   INITIALIZING(16u),
   ;
 
-  public companion object : MavEnum.Companion<RoverMode> {
+  public companion object : MavEnum.MavCompanion<RoverMode> {
     public override fun getEntryFromValueOrNull(v: UInt): RoverMode? = when (v) {
       0u -> MANUAL
       1u -> ACRO

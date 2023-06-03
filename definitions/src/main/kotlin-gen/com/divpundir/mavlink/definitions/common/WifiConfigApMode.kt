@@ -34,7 +34,7 @@ public enum class WifiConfigApMode(
   DISABLED(3u),
   ;
 
-  public companion object : MavEnum.Companion<WifiConfigApMode> {
+  public companion object : MavEnum.MavCompanion<WifiConfigApMode> {
     public override fun getEntryFromValueOrNull(v: UInt): WifiConfigApMode? = when (v) {
       0u -> UNDEFINED
       1u -> AP

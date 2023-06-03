@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ualberta
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -63,7 +62,7 @@ public data class NavFilterBias(
   @GeneratedMavField(type = "float")
   public val gyro2: Float = 0F,
 ) : MavMessage<NavFilterBias> {
-  public override val instanceMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<NavFilterBias> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -89,16 +88,16 @@ public data class NavFilterBias(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 220u
-
-    private const val CRC_EXTRA: Byte = 34
-
+  public companion object : MavMessage.MavCompanion<NavFilterBias> {
     private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 32
 
-    private val DESERIALIZER: MavDeserializer<NavFilterBias> = MavDeserializer { bytes ->
+    public override val id: UInt = 220u
+
+    public override val crcExtra: Byte = 34
+
+    public override fun deserialize(bytes: ByteArray): NavFilterBias {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val usec = inputBuffer.decodeUInt64()
       val accel0 = inputBuffer.decodeFloat()
@@ -108,7 +107,7 @@ public data class NavFilterBias(
       val gyro1 = inputBuffer.decodeFloat()
       val gyro2 = inputBuffer.decodeFloat()
 
-      NavFilterBias(
+      return NavFilterBias(
         usec = usec,
         accel0 = accel0,
         accel1 = accel1,
@@ -119,13 +118,7 @@ public data class NavFilterBias(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<NavFilterBias> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<NavFilterBias> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): NavFilterBias =
+    public operator fun invoke(builderAction: Builder.() -> Unit): NavFilterBias =
         Builder().apply(builderAction).build()
   }
 

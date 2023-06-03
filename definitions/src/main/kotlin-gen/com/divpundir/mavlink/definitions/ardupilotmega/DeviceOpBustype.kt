@@ -24,7 +24,7 @@ public enum class DeviceOpBustype(
   SPI(1u),
   ;
 
-  public companion object : MavEnum.Companion<DeviceOpBustype> {
+  public companion object : MavEnum.MavCompanion<DeviceOpBustype> {
     public override fun getEntryFromValueOrNull(v: UInt): DeviceOpBustype? = when (v) {
       0u -> I2C
       1u -> SPI

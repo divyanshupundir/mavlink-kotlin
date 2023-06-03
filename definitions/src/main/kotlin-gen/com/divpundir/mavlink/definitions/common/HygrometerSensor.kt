@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -46,7 +45,7 @@ public data class HygrometerSensor(
   @GeneratedMavField(type = "uint16_t")
   public val humidity: UShort = 0u,
 ) : MavMessage<HygrometerSensor> {
-  public override val instanceMetadata: MavMessage.Metadata<HygrometerSensor> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HygrometerSensor> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -64,35 +63,29 @@ public data class HygrometerSensor(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 12_920u
-
-    private const val CRC_EXTRA: Byte = 20
-
+  public companion object : MavMessage.MavCompanion<HygrometerSensor> {
     private const val SIZE_V1: Int = 5
 
     private const val SIZE_V2: Int = 5
 
-    private val DESERIALIZER: MavDeserializer<HygrometerSensor> = MavDeserializer { bytes ->
+    public override val id: UInt = 12_920u
+
+    public override val crcExtra: Byte = 20
+
+    public override fun deserialize(bytes: ByteArray): HygrometerSensor {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val temperature = inputBuffer.decodeInt16()
       val humidity = inputBuffer.decodeUInt16()
       val id = inputBuffer.decodeUInt8()
 
-      HygrometerSensor(
+      return HygrometerSensor(
         id = id,
         temperature = temperature,
         humidity = humidity,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HygrometerSensor> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HygrometerSensor> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HygrometerSensor =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HygrometerSensor =
         Builder().apply(builderAction).build()
   }
 

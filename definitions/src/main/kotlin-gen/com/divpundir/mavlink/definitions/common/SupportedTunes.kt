@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -43,7 +42,7 @@ public data class SupportedTunes(
   @GeneratedMavField(type = "uint32_t")
   public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0u),
 ) : MavMessage<SupportedTunes> {
-  public override val instanceMetadata: MavMessage.Metadata<SupportedTunes> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SupportedTunes> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,16 +60,16 @@ public data class SupportedTunes(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 401u
-
-    private const val CRC_EXTRA: Byte = -73
-
+  public companion object : MavMessage.MavCompanion<SupportedTunes> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<SupportedTunes> = MavDeserializer { bytes ->
+    public override val id: UInt = 401u
+
+    public override val crcExtra: Byte = -73
+
+    public override fun deserialize(bytes: ByteArray): SupportedTunes {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val format = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = TuneFormat.getEntryFromValueOrNull(value)
@@ -79,20 +78,14 @@ public data class SupportedTunes(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      SupportedTunes(
+      return SupportedTunes(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         format = format,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SupportedTunes> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SupportedTunes> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SupportedTunes =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SupportedTunes =
         Builder().apply(builderAction).build()
   }
 

@@ -24,7 +24,7 @@ public enum class AdsbAltitudeType(
   GEOMETRIC(1u),
   ;
 
-  public companion object : MavEnum.Companion<AdsbAltitudeType> {
+  public companion object : MavEnum.MavCompanion<AdsbAltitudeType> {
     public override fun getEntryFromValueOrNull(v: UInt): AdsbAltitudeType? = when (v) {
       0u -> PRESSURE_QNH
       1u -> GEOMETRIC

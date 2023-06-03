@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -62,7 +61,7 @@ public data class Airspeeds(
   @GeneratedMavField(type = "int16_t")
   public val aoy: Short = 0,
 ) : MavMessage<Airspeeds> {
-  public override val instanceMetadata: MavMessage.Metadata<Airspeeds> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Airspeeds> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -88,16 +87,16 @@ public data class Airspeeds(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 182u
-
-    private const val CRC_EXTRA: Byte = -102
-
+  public companion object : MavMessage.MavCompanion<Airspeeds> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<Airspeeds> = MavDeserializer { bytes ->
+    public override val id: UInt = 182u
+
+    public override val crcExtra: Byte = -102
+
+    public override fun deserialize(bytes: ByteArray): Airspeeds {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val airspeedImu = inputBuffer.decodeInt16()
@@ -107,7 +106,7 @@ public data class Airspeeds(
       val aoa = inputBuffer.decodeInt16()
       val aoy = inputBuffer.decodeInt16()
 
-      Airspeeds(
+      return Airspeeds(
         timeBootMs = timeBootMs,
         airspeedImu = airspeedImu,
         airspeedPitot = airspeedPitot,
@@ -118,13 +117,7 @@ public data class Airspeeds(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Airspeeds> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Airspeeds> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Airspeeds =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Airspeeds =
         Builder().apply(builderAction).build()
   }
 

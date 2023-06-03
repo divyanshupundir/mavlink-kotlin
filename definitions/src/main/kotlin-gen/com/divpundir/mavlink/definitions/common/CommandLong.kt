@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -88,7 +87,7 @@ public data class CommandLong(
   @GeneratedMavField(type = "float")
   public val param7: Float = 0F,
 ) : MavMessage<CommandLong> {
-  public override val instanceMetadata: MavMessage.Metadata<CommandLong> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CommandLong> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -122,16 +121,16 @@ public data class CommandLong(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 76u
-
-    private const val CRC_EXTRA: Byte = -104
-
+  public companion object : MavMessage.MavCompanion<CommandLong> {
     private const val SIZE_V1: Int = 33
 
     private const val SIZE_V2: Int = 33
 
-    private val DESERIALIZER: MavDeserializer<CommandLong> = MavDeserializer { bytes ->
+    public override val id: UInt = 76u
+
+    public override val crcExtra: Byte = -104
+
+    public override fun deserialize(bytes: ByteArray): CommandLong {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val param1 = inputBuffer.decodeFloat()
       val param2 = inputBuffer.decodeFloat()
@@ -148,7 +147,7 @@ public data class CommandLong(
       val targetComponent = inputBuffer.decodeUInt8()
       val confirmation = inputBuffer.decodeUInt8()
 
-      CommandLong(
+      return CommandLong(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         command = command,
@@ -163,13 +162,7 @@ public data class CommandLong(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CommandLong> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CommandLong> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CommandLong =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandLong =
         Builder().apply(builderAction).build()
   }
 

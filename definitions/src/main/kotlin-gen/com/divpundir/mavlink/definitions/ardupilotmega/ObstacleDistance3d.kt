@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -83,7 +82,7 @@ public data class ObstacleDistance3d(
   @GeneratedMavField(type = "float")
   public val maxDistance: Float = 0F,
 ) : MavMessage<ObstacleDistance3d> {
-  public override val instanceMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance3d> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -113,16 +112,16 @@ public data class ObstacleDistance3d(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_037u
-
-    private const val CRC_EXTRA: Byte = -126
-
+  public companion object : MavMessage.MavCompanion<ObstacleDistance3d> {
     private const val SIZE_V1: Int = 28
 
     private const val SIZE_V2: Int = 28
 
-    private val DESERIALIZER: MavDeserializer<ObstacleDistance3d> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_037u
+
+    public override val crcExtra: Byte = -126
+
+    public override fun deserialize(bytes: ByteArray): ObstacleDistance3d {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val x = inputBuffer.decodeFloat()
@@ -140,7 +139,7 @@ public data class ObstacleDistance3d(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      ObstacleDistance3d(
+      return ObstacleDistance3d(
         timeBootMs = timeBootMs,
         sensorType = sensorType,
         frame = frame,
@@ -153,13 +152,7 @@ public data class ObstacleDistance3d(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ObstacleDistance3d> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ObstacleDistance3d> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ObstacleDistance3d =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ObstacleDistance3d =
         Builder().apply(builderAction).build()
   }
 

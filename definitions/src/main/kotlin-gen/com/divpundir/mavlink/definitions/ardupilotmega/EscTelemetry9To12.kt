@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16Array
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -59,7 +58,7 @@ public data class EscTelemetry9To12(
   @GeneratedMavField(type = "uint16_t[4]")
   public val count: List<UShort> = emptyList(),
 ) : MavMessage<EscTelemetry9To12> {
-  public override val instanceMetadata: MavMessage.Metadata<EscTelemetry9To12> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry9To12> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -83,16 +82,16 @@ public data class EscTelemetry9To12(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_032u
-
-    private const val CRC_EXTRA: Byte = 85
-
+  public companion object : MavMessage.MavCompanion<EscTelemetry9To12> {
     private const val SIZE_V1: Int = 44
 
     private const val SIZE_V2: Int = 44
 
-    private val DESERIALIZER: MavDeserializer<EscTelemetry9To12> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_032u
+
+    public override val crcExtra: Byte = 85
+
+    public override fun deserialize(bytes: ByteArray): EscTelemetry9To12 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val voltage = inputBuffer.decodeUInt16Array(8)
       val current = inputBuffer.decodeUInt16Array(8)
@@ -101,7 +100,7 @@ public data class EscTelemetry9To12(
       val count = inputBuffer.decodeUInt16Array(8)
       val temperature = inputBuffer.decodeUInt8Array(4)
 
-      EscTelemetry9To12(
+      return EscTelemetry9To12(
         temperature = temperature,
         voltage = voltage,
         current = current,
@@ -111,13 +110,7 @@ public data class EscTelemetry9To12(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<EscTelemetry9To12> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<EscTelemetry9To12> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): EscTelemetry9To12 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): EscTelemetry9To12 =
         Builder().apply(builderAction).build()
   }
 

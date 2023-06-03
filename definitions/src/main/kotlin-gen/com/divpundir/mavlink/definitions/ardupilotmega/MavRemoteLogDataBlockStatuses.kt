@@ -24,7 +24,7 @@ public enum class MavRemoteLogDataBlockStatuses(
   MAV_REMOTE_LOG_DATA_BLOCK_ACK(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavRemoteLogDataBlockStatuses> {
+  public companion object : MavEnum.MavCompanion<MavRemoteLogDataBlockStatuses> {
     public override fun getEntryFromValueOrNull(v: UInt): MavRemoteLogDataBlockStatuses? = when (v)
         {
       0u -> MAV_REMOTE_LOG_DATA_BLOCK_NACK

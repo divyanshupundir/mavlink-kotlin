@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -51,7 +50,7 @@ public data class PlayTuneV2(
   @GeneratedMavField(type = "char[248]")
   public val tune: String = "",
 ) : MavMessage<PlayTuneV2> {
-  public override val instanceMetadata: MavMessage.Metadata<PlayTuneV2> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<PlayTuneV2> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -71,16 +70,16 @@ public data class PlayTuneV2(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 400u
-
-    private const val CRC_EXTRA: Byte = 110
-
+  public companion object : MavMessage.MavCompanion<PlayTuneV2> {
     private const val SIZE_V1: Int = 254
 
     private const val SIZE_V2: Int = 254
 
-    private val DESERIALIZER: MavDeserializer<PlayTuneV2> = MavDeserializer { bytes ->
+    public override val id: UInt = 400u
+
+    public override val crcExtra: Byte = 110
+
+    public override fun deserialize(bytes: ByteArray): PlayTuneV2 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val format = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = TuneFormat.getEntryFromValueOrNull(value)
@@ -90,7 +89,7 @@ public data class PlayTuneV2(
       val targetComponent = inputBuffer.decodeUInt8()
       val tune = inputBuffer.decodeString(248)
 
-      PlayTuneV2(
+      return PlayTuneV2(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         format = format,
@@ -98,13 +97,7 @@ public data class PlayTuneV2(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<PlayTuneV2> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<PlayTuneV2> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): PlayTuneV2 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): PlayTuneV2 =
         Builder().apply(builderAction).build()
   }
 

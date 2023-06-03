@@ -63,7 +63,7 @@ public enum class MavDataStream(
   ALL(0u),
   ;
 
-  public companion object : MavEnum.Companion<MavDataStream> {
+  public companion object : MavEnum.MavCompanion<MavDataStream> {
     public override fun getEntryFromValueOrNull(v: UInt): MavDataStream? = when (v) {
       12u -> EXTRA3
       11u -> EXTRA2

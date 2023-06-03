@@ -66,7 +66,7 @@ public enum class MavTunnelPayloadType(
   STORM32_RESERVED9(209u),
   ;
 
-  public companion object : MavEnum.Companion<MavTunnelPayloadType> {
+  public companion object : MavEnum.MavCompanion<MavTunnelPayloadType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavTunnelPayloadType? = when (v) {
       0u -> UNKNOWN
       200u -> STORM32_RESERVED0

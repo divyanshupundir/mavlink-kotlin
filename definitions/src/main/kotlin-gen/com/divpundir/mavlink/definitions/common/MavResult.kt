@@ -59,7 +59,7 @@ public enum class MavResult(
   CANCELLED(6u),
   ;
 
-  public companion object : MavEnum.Companion<MavResult> {
+  public companion object : MavEnum.MavCompanion<MavResult> {
     public override fun getEntryFromValueOrNull(v: UInt): MavResult? = when (v) {
       0u -> ACCEPTED
       1u -> TEMPORARILY_REJECTED

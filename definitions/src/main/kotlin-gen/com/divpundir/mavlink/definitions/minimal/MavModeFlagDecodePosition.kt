@@ -57,7 +57,7 @@ public enum class MavModeFlagDecodePosition(
   CUSTOM_MODE(1u),
   ;
 
-  public companion object : MavBitmask.Companion<MavModeFlagDecodePosition> {
+  public companion object : MavBitmask.MavCompanion<MavModeFlagDecodePosition> {
     public override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
       128u -> SAFETY
       64u -> MANUAL

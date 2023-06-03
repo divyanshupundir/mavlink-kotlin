@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.icarous
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -110,7 +109,7 @@ public data class IcarousKinematicBands(
   @GeneratedMavField(type = "float")
   public val max5: Float = 0F,
 ) : MavMessage<IcarousKinematicBands> {
-  public override val instanceMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -154,16 +153,16 @@ public data class IcarousKinematicBands(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 42_001u
-
-    private const val CRC_EXTRA: Byte = -17
-
+  public companion object : MavMessage.MavCompanion<IcarousKinematicBands> {
     private const val SIZE_V1: Int = 46
 
     private const val SIZE_V2: Int = 46
 
-    private val DESERIALIZER: MavDeserializer<IcarousKinematicBands> = MavDeserializer { bytes ->
+    public override val id: UInt = 42_001u
+
+    public override val crcExtra: Byte = -17
+
+    public override fun deserialize(bytes: ByteArray): IcarousKinematicBands {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val min1 = inputBuffer.decodeFloat()
       val max1 = inputBuffer.decodeFloat()
@@ -197,7 +196,7 @@ public data class IcarousKinematicBands(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      IcarousKinematicBands(
+      return IcarousKinematicBands(
         numbands = numbands,
         type1 = type1,
         min1 = min1,
@@ -217,13 +216,7 @@ public data class IcarousKinematicBands(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<IcarousKinematicBands> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<IcarousKinematicBands> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): IcarousKinematicBands =
+    public operator fun invoke(builderAction: Builder.() -> Unit): IcarousKinematicBands =
         Builder().apply(builderAction).build()
   }
 

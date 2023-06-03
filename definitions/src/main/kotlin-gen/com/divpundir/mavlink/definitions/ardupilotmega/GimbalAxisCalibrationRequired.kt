@@ -26,7 +26,7 @@ public enum class GimbalAxisCalibrationRequired(
   FALSE(2u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalAxisCalibrationRequired> {
+  public companion object : MavEnum.MavCompanion<GimbalAxisCalibrationRequired> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalAxisCalibrationRequired? = when (v)
         {
       0u -> UNKNOWN

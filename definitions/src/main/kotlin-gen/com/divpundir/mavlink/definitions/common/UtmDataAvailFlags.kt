@@ -55,7 +55,7 @@ public enum class UtmDataAvailFlags(
   NEXT_WAYPOINT_AVAILABLE(128u),
   ;
 
-  public companion object : MavBitmask.Companion<UtmDataAvailFlags> {
+  public companion object : MavBitmask.MavCompanion<UtmDataAvailFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): UtmDataAvailFlags? = when (v) {
       1u -> TIME_VALID
       2u -> UAS_ID_AVAILABLE

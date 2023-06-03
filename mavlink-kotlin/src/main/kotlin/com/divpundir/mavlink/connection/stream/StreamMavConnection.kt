@@ -45,17 +45,17 @@ internal class StreamMavConnection(
             while (true) {
                 val rawFrame = reader.next()
 
-                val metadata = getMessageMetadataOrNull(rawFrame)
-                if (metadata == null) {
+                val companion = getMessageCompanionOrNull(rawFrame)
+                if (companion == null) {
                     System.err.println("Message not found in dialect. rawFrame=$rawFrame")
                     reader.drop()
                     continue
                 }
 
                 val payload = try {
-                    metadata.deserializer.deserialize(rawFrame.payload)
+                    companion.deserialize(rawFrame.payload)
                 } catch (e: Exception) {
-                    System.err.println("Error deserializing MAVLink message. rawFrame=$rawFrame metadata=$metadata")
+                    System.err.println("Error deserializing MAVLink message. rawFrame=$rawFrame metadata=$companion")
                     reader.drop()
                     continue
                 }
@@ -69,10 +69,10 @@ internal class StreamMavConnection(
         }
     }
 
-    private fun getMessageMetadataOrNull(
+    private fun getMessageCompanionOrNull(
         rawFrame: MavRawFrame,
-    ): MavMessage.Metadata<out MavMessage<*>>? {
-        val metadata = dialect.resolveMetadataOrNull(rawFrame.messageId) ?: return null
+    ): MavMessage.MavCompanion<out MavMessage<*>>? {
+        val metadata = dialect.resolveCompanionOrNull(rawFrame.messageId) ?: return null
         if (!rawFrame.validateCrc(metadata.crcExtra)) return null
         return metadata
     }
@@ -88,9 +88,9 @@ internal class StreamMavConnection(
                 sequence++,
                 systemId,
                 componentId,
-                payload.instanceMetadata.id,
+                payload.instanceCompanion.id,
                 payload.serializeV1(),
-                payload.instanceMetadata.crcExtra,
+                payload.instanceCompanion.crcExtra,
             )
         )
     }
@@ -106,9 +106,9 @@ internal class StreamMavConnection(
                 sequence++,
                 systemId,
                 componentId,
-                payload.instanceMetadata.id,
+                payload.instanceCompanion.id,
                 payload.serializeV2(),
-                payload.instanceMetadata.crcExtra,
+                payload.instanceCompanion.crcExtra,
             )
         )
     }
@@ -127,9 +127,9 @@ internal class StreamMavConnection(
                 sequence++,
                 systemId,
                 componentId,
-                payload.instanceMetadata.id,
+                payload.instanceCompanion.id,
                 payload.serializeV2(),
-                payload.instanceMetadata.crcExtra,
+                payload.instanceCompanion.crcExtra,
                 linkId,
                 timestamp,
                 secretKey

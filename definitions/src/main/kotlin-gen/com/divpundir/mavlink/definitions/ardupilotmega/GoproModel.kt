@@ -36,7 +36,7 @@ public enum class GoproModel(
   HERO_4_BLACK(4u),
   ;
 
-  public companion object : MavEnum.Companion<GoproModel> {
+  public companion object : MavEnum.MavCompanion<GoproModel> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproModel? = when (v) {
       0u -> UNKNOWN
       1u -> HERO_3_PLUS_SILVER

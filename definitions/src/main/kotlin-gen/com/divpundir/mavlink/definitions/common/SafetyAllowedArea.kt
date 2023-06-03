@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -64,7 +63,7 @@ public data class SafetyAllowedArea(
   @GeneratedMavField(type = "float")
   public val p2z: Float = 0F,
 ) : MavMessage<SafetyAllowedArea> {
-  public override val instanceMetadata: MavMessage.Metadata<SafetyAllowedArea> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SafetyAllowedArea> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -90,16 +89,16 @@ public data class SafetyAllowedArea(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 55u
-
-    private const val CRC_EXTRA: Byte = 3
-
+  public companion object : MavMessage.MavCompanion<SafetyAllowedArea> {
     private const val SIZE_V1: Int = 25
 
     private const val SIZE_V2: Int = 25
 
-    private val DESERIALIZER: MavDeserializer<SafetyAllowedArea> = MavDeserializer { bytes ->
+    public override val id: UInt = 55u
+
+    public override val crcExtra: Byte = 3
+
+    public override fun deserialize(bytes: ByteArray): SafetyAllowedArea {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val p1x = inputBuffer.decodeFloat()
       val p1y = inputBuffer.decodeFloat()
@@ -112,7 +111,7 @@ public data class SafetyAllowedArea(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      SafetyAllowedArea(
+      return SafetyAllowedArea(
         frame = frame,
         p1x = p1x,
         p1y = p1y,
@@ -123,13 +122,7 @@ public data class SafetyAllowedArea(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SafetyAllowedArea> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SafetyAllowedArea> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SafetyAllowedArea =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SafetyAllowedArea =
         Builder().apply(builderAction).build()
   }
 

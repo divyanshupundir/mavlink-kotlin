@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -109,7 +108,7 @@ public data class AutopilotVersion(
   )
   public val uid2: List<UByte> = emptyList(),
 ) : MavMessage<AutopilotVersion> {
-  public override val instanceMetadata: MavMessage.Metadata<AutopilotVersion> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -144,16 +143,16 @@ public data class AutopilotVersion(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 148u
-
-    private const val CRC_EXTRA: Byte = -78
-
+  public companion object : MavMessage.MavCompanion<AutopilotVersion> {
     private const val SIZE_V1: Int = 60
 
     private const val SIZE_V2: Int = 78
 
-    private val DESERIALIZER: MavDeserializer<AutopilotVersion> = MavDeserializer { bytes ->
+    public override val id: UInt = 148u
+
+    public override val crcExtra: Byte = -78
+
+    public override fun deserialize(bytes: ByteArray): AutopilotVersion {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val capabilities = inputBuffer.decodeBitmaskValue(8).let { value ->
         val flags = MavProtocolCapability.getFlagsFromValue(value)
@@ -171,7 +170,7 @@ public data class AutopilotVersion(
       val osCustomVersion = inputBuffer.decodeUInt8Array(8)
       val uid2 = inputBuffer.decodeUInt8Array(18)
 
-      AutopilotVersion(
+      return AutopilotVersion(
         capabilities = capabilities,
         flightSwVersion = flightSwVersion,
         middlewareSwVersion = middlewareSwVersion,
@@ -187,13 +186,7 @@ public data class AutopilotVersion(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AutopilotVersion> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AutopilotVersion> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AutopilotVersion =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotVersion =
         Builder().apply(builderAction).build()
   }
 

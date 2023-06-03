@@ -21,7 +21,7 @@ public enum class GoproCharging(
   ENABLED(1u),
   ;
 
-  public companion object : MavEnum.Companion<GoproCharging> {
+  public companion object : MavEnum.MavCompanion<GoproCharging> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproCharging? = when (v) {
       0u -> DISABLED
       1u -> ENABLED

@@ -64,7 +64,7 @@ public enum class MavParamType(
   REAL64(10u),
   ;
 
-  public companion object : MavEnum.Companion<MavParamType> {
+  public companion object : MavEnum.MavCompanion<MavParamType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavParamType? = when (v) {
       1u -> UINT8
       2u -> INT8

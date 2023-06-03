@@ -35,7 +35,7 @@ public enum class CameraTrackingTargetData(
   IN_STATUS(4u),
   ;
 
-  public companion object : MavBitmask.Companion<CameraTrackingTargetData> {
+  public companion object : MavBitmask.MavCompanion<CameraTrackingTargetData> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingTargetData? = when (v) {
       0u -> NONE
       1u -> EMBEDDED

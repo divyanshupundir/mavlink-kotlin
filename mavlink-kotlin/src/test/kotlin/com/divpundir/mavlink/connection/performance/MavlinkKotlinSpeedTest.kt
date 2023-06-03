@@ -62,7 +62,7 @@ class MavlinkKotlinSpeedTest {
 
     private fun deserializationStep(data: ByteArray) = measureNanoTime {
         for (i in 1..DESERIALIZATION_ITERS) {
-            CommandLong.classMetadata.deserializer.deserialize(data)
+            CommandLong.deserialize(data)
         }
     } / 1000
 }

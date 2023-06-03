@@ -40,7 +40,7 @@ public enum class FirmwareVersionType(
   OFFICIAL(255u),
   ;
 
-  public companion object : MavEnum.Companion<FirmwareVersionType> {
+  public companion object : MavEnum.MavCompanion<FirmwareVersionType> {
     public override fun getEntryFromValueOrNull(v: UInt): FirmwareVersionType? = when (v) {
       0u -> DEV
       64u -> ALPHA

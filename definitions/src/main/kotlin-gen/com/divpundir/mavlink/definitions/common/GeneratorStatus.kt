@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeFloat
@@ -97,7 +96,7 @@ public data class GeneratorStatus(
   @GeneratedMavField(type = "int32_t")
   public val timeUntilMaintenance: Int = 0,
 ) : MavMessage<GeneratorStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GeneratorStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -131,16 +130,16 @@ public data class GeneratorStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 373u
-
-    private const val CRC_EXTRA: Byte = 117
-
+  public companion object : MavMessage.MavCompanion<GeneratorStatus> {
     private const val SIZE_V1: Int = 42
 
     private const val SIZE_V2: Int = 42
 
-    private val DESERIALIZER: MavDeserializer<GeneratorStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 373u
+
+    public override val crcExtra: Byte = 117
+
+    public override fun deserialize(bytes: ByteArray): GeneratorStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeBitmaskValue(8).let { value ->
         val flags = MavGeneratorStatusFlag.getFlagsFromValue(value)
@@ -157,7 +156,7 @@ public data class GeneratorStatus(
       val rectifierTemperature = inputBuffer.decodeInt16()
       val generatorTemperature = inputBuffer.decodeInt16()
 
-      GeneratorStatus(
+      return GeneratorStatus(
         status = status,
         generatorSpeed = generatorSpeed,
         batteryCurrent = batteryCurrent,
@@ -172,13 +171,7 @@ public data class GeneratorStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GeneratorStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GeneratorStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GeneratorStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GeneratorStatus =
         Builder().apply(builderAction).build()
   }
 

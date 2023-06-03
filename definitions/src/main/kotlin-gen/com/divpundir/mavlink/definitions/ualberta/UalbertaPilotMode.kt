@@ -29,7 +29,7 @@ public enum class UalbertaPilotMode(
   PILOT_ROTO(3u),
   ;
 
-  public companion object : MavEnum.Companion<UalbertaPilotMode> {
+  public companion object : MavEnum.MavCompanion<UalbertaPilotMode> {
     public override fun getEntryFromValueOrNull(v: UInt): UalbertaPilotMode? = when (v) {
       1u -> PILOT_MANUAL
       2u -> PILOT_AUTO

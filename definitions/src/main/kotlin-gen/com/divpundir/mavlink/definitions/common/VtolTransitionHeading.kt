@@ -40,7 +40,7 @@ public enum class VtolTransitionHeading(
   ANY(4u),
   ;
 
-  public companion object : MavEnum.Companion<VtolTransitionHeading> {
+  public companion object : MavEnum.MavCompanion<VtolTransitionHeading> {
     public override fun getEntryFromValueOrNull(v: UInt): VtolTransitionHeading? = when (v) {
       0u -> VEHICLE_DEFAULT
       1u -> NEXT_WAYPOINT

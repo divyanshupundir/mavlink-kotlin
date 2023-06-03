@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -41,7 +40,8 @@ public data class ChangeOperatorControlAck(
   @GeneratedMavField(type = "uint8_t")
   public val ack: UByte = 0u,
 ) : MavMessage<ChangeOperatorControlAck> {
-  public override val instanceMetadata: MavMessage.Metadata<ChangeOperatorControlAck> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControlAck> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -59,35 +59,29 @@ public data class ChangeOperatorControlAck(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 6u
-
-    private const val CRC_EXTRA: Byte = 104
-
+  public companion object : MavMessage.MavCompanion<ChangeOperatorControlAck> {
     private const val SIZE_V1: Int = 3
 
     private const val SIZE_V2: Int = 3
 
-    private val DESERIALIZER: MavDeserializer<ChangeOperatorControlAck> = MavDeserializer { bytes ->
+    public override val id: UInt = 6u
+
+    public override val crcExtra: Byte = 104
+
+    public override fun deserialize(bytes: ByteArray): ChangeOperatorControlAck {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val gcsSystemId = inputBuffer.decodeUInt8()
       val controlRequest = inputBuffer.decodeUInt8()
       val ack = inputBuffer.decodeUInt8()
 
-      ChangeOperatorControlAck(
+      return ChangeOperatorControlAck(
         gcsSystemId = gcsSystemId,
         controlRequest = controlRequest,
         ack = ack,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ChangeOperatorControlAck> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ChangeOperatorControlAck> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ChangeOperatorControlAck =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ChangeOperatorControlAck =
         Builder().apply(builderAction).build()
   }
 

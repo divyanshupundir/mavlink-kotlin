@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.avssuas
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -83,7 +82,7 @@ public data class AvssDroneImu(
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
 ) : MavMessage<AvssDroneImu> {
-  public override val instanceMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -117,16 +116,16 @@ public data class AvssDroneImu(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 60_052u
-
-    private const val CRC_EXTRA: Byte = 101
-
+  public companion object : MavMessage.MavCompanion<AvssDroneImu> {
     private const val SIZE_V1: Int = 44
 
     private const val SIZE_V2: Int = 44
 
-    private val DESERIALIZER: MavDeserializer<AvssDroneImu> = MavDeserializer { bytes ->
+    public override val id: UInt = 60_052u
+
+    public override val crcExtra: Byte = 101
+
+    public override fun deserialize(bytes: ByteArray): AvssDroneImu {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val q1 = inputBuffer.decodeFloat()
@@ -140,7 +139,7 @@ public data class AvssDroneImu(
       val ygyro = inputBuffer.decodeFloat()
       val zgyro = inputBuffer.decodeFloat()
 
-      AvssDroneImu(
+      return AvssDroneImu(
         timeBootMs = timeBootMs,
         q1 = q1,
         q2 = q2,
@@ -155,13 +154,7 @@ public data class AvssDroneImu(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AvssDroneImu> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AvssDroneImu> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AvssDroneImu =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDroneImu =
         Builder().apply(builderAction).build()
   }
 

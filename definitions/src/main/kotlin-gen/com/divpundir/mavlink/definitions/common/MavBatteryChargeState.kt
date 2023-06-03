@@ -56,7 +56,7 @@ public enum class MavBatteryChargeState(
   CHARGING(7u),
   ;
 
-  public companion object : MavEnum.Companion<MavBatteryChargeState> {
+  public companion object : MavEnum.MavCompanion<MavBatteryChargeState> {
     public override fun getEntryFromValueOrNull(v: UInt): MavBatteryChargeState? = when (v) {
       0u -> UNDEFINED
       1u -> OK

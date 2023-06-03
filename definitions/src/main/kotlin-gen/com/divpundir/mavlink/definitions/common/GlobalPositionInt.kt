@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -80,7 +79,7 @@ public data class GlobalPositionInt(
   @GeneratedMavField(type = "uint16_t")
   public val hdg: UShort = 0u,
 ) : MavMessage<GlobalPositionInt> {
-  public override val instanceMetadata: MavMessage.Metadata<GlobalPositionInt> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionInt> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -110,16 +109,16 @@ public data class GlobalPositionInt(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 33u
-
-    private const val CRC_EXTRA: Byte = 104
-
+  public companion object : MavMessage.MavCompanion<GlobalPositionInt> {
     private const val SIZE_V1: Int = 28
 
     private const val SIZE_V2: Int = 28
 
-    private val DESERIALIZER: MavDeserializer<GlobalPositionInt> = MavDeserializer { bytes ->
+    public override val id: UInt = 33u
+
+    public override val crcExtra: Byte = 104
+
+    public override fun deserialize(bytes: ByteArray): GlobalPositionInt {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val lat = inputBuffer.decodeInt32()
@@ -131,7 +130,7 @@ public data class GlobalPositionInt(
       val vz = inputBuffer.decodeInt16()
       val hdg = inputBuffer.decodeUInt16()
 
-      GlobalPositionInt(
+      return GlobalPositionInt(
         timeBootMs = timeBootMs,
         lat = lat,
         lon = lon,
@@ -144,13 +143,7 @@ public data class GlobalPositionInt(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GlobalPositionInt> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GlobalPositionInt> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GlobalPositionInt =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalPositionInt =
         Builder().apply(builderAction).build()
   }
 

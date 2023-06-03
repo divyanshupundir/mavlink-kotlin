@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -88,7 +87,7 @@ public data class SerialControl(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<SerialControl> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialControl> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -114,16 +113,16 @@ public data class SerialControl(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 126u
-
-    private const val CRC_EXTRA: Byte = -36
-
+  public companion object : MavMessage.MavCompanion<SerialControl> {
     private const val SIZE_V1: Int = 79
 
     private const val SIZE_V2: Int = 81
 
-    private val DESERIALIZER: MavDeserializer<SerialControl> = MavDeserializer { bytes ->
+    public override val id: UInt = 126u
+
+    public override val crcExtra: Byte = -36
+
+    public override fun deserialize(bytes: ByteArray): SerialControl {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val baudrate = inputBuffer.decodeUInt32()
       val timeout = inputBuffer.decodeUInt16()
@@ -140,7 +139,7 @@ public data class SerialControl(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      SerialControl(
+      return SerialControl(
         device = device,
         flags = flags,
         timeout = timeout,
@@ -152,13 +151,7 @@ public data class SerialControl(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialControl> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialControl> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialControl =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialControl =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.paparazzi
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -44,7 +43,7 @@ public data class ScriptCount(
   @GeneratedMavField(type = "uint16_t")
   public val count: UShort = 0u,
 ) : MavMessage<ScriptCount> {
-  public override val instanceMetadata: MavMessage.Metadata<ScriptCount> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ScriptCount> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -62,35 +61,29 @@ public data class ScriptCount(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 183u
-
-    private const val CRC_EXTRA: Byte = -70
-
+  public companion object : MavMessage.MavCompanion<ScriptCount> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 4
 
-    private val DESERIALIZER: MavDeserializer<ScriptCount> = MavDeserializer { bytes ->
+    public override val id: UInt = 183u
+
+    public override val crcExtra: Byte = -70
+
+    public override fun deserialize(bytes: ByteArray): ScriptCount {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val count = inputBuffer.decodeUInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      ScriptCount(
+      return ScriptCount(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         count = count,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ScriptCount> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ScriptCount> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ScriptCount =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptCount =
         Builder().apply(builderAction).build()
   }
 

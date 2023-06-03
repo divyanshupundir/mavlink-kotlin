@@ -48,7 +48,7 @@ public enum class MavModeGimbal(
   RATE_CMD_TIMEOUT(6u),
   ;
 
-  public companion object : MavEnum.Companion<MavModeGimbal> {
+  public companion object : MavEnum.MavCompanion<MavModeGimbal> {
     public override fun getEntryFromValueOrNull(v: UInt): MavModeGimbal? = when (v) {
       0u -> UNINITIALIZED
       1u -> CALIBRATING_PITCH

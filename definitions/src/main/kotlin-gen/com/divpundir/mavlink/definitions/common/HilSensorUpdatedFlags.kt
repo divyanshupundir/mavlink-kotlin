@@ -90,7 +90,7 @@ public enum class HilSensorUpdatedFlags(
   HIL_SENSOR_UPDATED_RESET(2_147_483_648u),
   ;
 
-  public companion object : MavBitmask.Companion<HilSensorUpdatedFlags> {
+  public companion object : MavBitmask.MavCompanion<HilSensorUpdatedFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): HilSensorUpdatedFlags? = when (v) {
       0u -> HIL_SENSOR_UPDATED_NONE
       1u -> HIL_SENSOR_UPDATED_XACC

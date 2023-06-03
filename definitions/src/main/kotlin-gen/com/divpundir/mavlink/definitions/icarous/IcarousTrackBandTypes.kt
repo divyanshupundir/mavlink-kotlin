@@ -17,7 +17,7 @@ public enum class IcarousTrackBandTypes(
   ICAROUS_TRACK_BAND_TYPE_RECOVERY(2u),
   ;
 
-  public companion object : MavEnum.Companion<IcarousTrackBandTypes> {
+  public companion object : MavEnum.MavCompanion<IcarousTrackBandTypes> {
     public override fun getEntryFromValueOrNull(v: UInt): IcarousTrackBandTypes? = when (v) {
       0u -> ICAROUS_TRACK_BAND_TYPE_NONE
       1u -> ICAROUS_TRACK_BAND_TYPE_NEAR

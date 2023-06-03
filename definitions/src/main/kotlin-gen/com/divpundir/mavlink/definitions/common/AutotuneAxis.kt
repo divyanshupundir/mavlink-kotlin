@@ -35,7 +35,7 @@ public enum class AutotuneAxis(
   YAW(4u),
   ;
 
-  public companion object : MavBitmask.Companion<AutotuneAxis> {
+  public companion object : MavBitmask.MavCompanion<AutotuneAxis> {
     public override fun getEntryFromValueOrNull(v: UInt): AutotuneAxis? = when (v) {
       0u -> DEFAULT
       1u -> ROLL

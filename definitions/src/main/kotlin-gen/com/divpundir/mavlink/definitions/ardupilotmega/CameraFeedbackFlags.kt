@@ -37,7 +37,7 @@ public enum class CameraFeedbackFlags(
   CAMERA_FEEDBACK_OPENLOOP(4u),
   ;
 
-  public companion object : MavEnum.Companion<CameraFeedbackFlags> {
+  public companion object : MavEnum.MavCompanion<CameraFeedbackFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraFeedbackFlags? = when (v) {
       0u -> CAMERA_FEEDBACK_PHOTO
       1u -> CAMERA_FEEDBACK_VIDEO

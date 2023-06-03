@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloatArray
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -47,7 +46,7 @@ public data class ActuatorOutputStatus(
   @GeneratedMavField(type = "float[32]")
   public val actuator: List<Float> = emptyList(),
 ) : MavMessage<ActuatorOutputStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ActuatorOutputStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -65,35 +64,29 @@ public data class ActuatorOutputStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 375u
-
-    private const val CRC_EXTRA: Byte = -5
-
+  public companion object : MavMessage.MavCompanion<ActuatorOutputStatus> {
     private const val SIZE_V1: Int = 140
 
     private const val SIZE_V2: Int = 140
 
-    private val DESERIALIZER: MavDeserializer<ActuatorOutputStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 375u
+
+    public override val crcExtra: Byte = -5
+
+    public override fun deserialize(bytes: ByteArray): ActuatorOutputStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val active = inputBuffer.decodeUInt32()
       val actuator = inputBuffer.decodeFloatArray(128)
 
-      ActuatorOutputStatus(
+      return ActuatorOutputStatus(
         timeUsec = timeUsec,
         active = active,
         actuator = actuator,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ActuatorOutputStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ActuatorOutputStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ActuatorOutputStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ActuatorOutputStatus =
         Builder().apply(builderAction).build()
   }
 

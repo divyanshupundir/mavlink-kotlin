@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt8Array
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -66,7 +65,8 @@ public data class FlexifunctionBufferFunction(
   @GeneratedMavField(type = "int8_t[48]")
   public val `data`: List<Byte> = emptyList(),
 ) : MavMessage<FlexifunctionBufferFunction> {
-  public override val instanceMetadata: MavMessage.Metadata<FlexifunctionBufferFunction> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunction> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -92,17 +92,16 @@ public data class FlexifunctionBufferFunction(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 152u
-
-    private const val CRC_EXTRA: Byte = 101
-
+  public companion object : MavMessage.MavCompanion<FlexifunctionBufferFunction> {
     private const val SIZE_V1: Int = 58
 
     private const val SIZE_V2: Int = 58
 
-    private val DESERIALIZER: MavDeserializer<FlexifunctionBufferFunction> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 152u
+
+    public override val crcExtra: Byte = 101
+
+    public override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunction {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val funcIndex = inputBuffer.decodeUInt16()
       val funcCount = inputBuffer.decodeUInt16()
@@ -112,7 +111,7 @@ public data class FlexifunctionBufferFunction(
       val targetComponent = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeInt8Array(48)
 
-      FlexifunctionBufferFunction(
+      return FlexifunctionBufferFunction(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         funcIndex = funcIndex,
@@ -123,13 +122,7 @@ public data class FlexifunctionBufferFunction(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FlexifunctionBufferFunction> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FlexifunctionBufferFunction> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionBufferFunction =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionBufferFunction =
         Builder().apply(builderAction).build()
   }
 

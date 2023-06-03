@@ -66,7 +66,7 @@ public enum class WinchActions(
   WINCH_ABANDON_LINE(8u),
   ;
 
-  public companion object : MavEnum.Companion<WinchActions> {
+  public companion object : MavEnum.MavCompanion<WinchActions> {
     public override fun getEntryFromValueOrNull(v: UInt): WinchActions? = when (v) {
       0u -> WINCH_RELAXED
       1u -> WINCH_RELATIVE_LENGTH_CONTROL

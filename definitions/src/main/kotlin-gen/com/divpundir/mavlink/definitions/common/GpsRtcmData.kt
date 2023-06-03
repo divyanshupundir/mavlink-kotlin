@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -50,7 +49,7 @@ public data class GpsRtcmData(
   @GeneratedMavField(type = "uint8_t[180]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<GpsRtcmData> {
-  public override val instanceMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GpsRtcmData> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -68,35 +67,29 @@ public data class GpsRtcmData(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 233u
-
-    private const val CRC_EXTRA: Byte = 35
-
+  public companion object : MavMessage.MavCompanion<GpsRtcmData> {
     private const val SIZE_V1: Int = 182
 
     private const val SIZE_V2: Int = 182
 
-    private val DESERIALIZER: MavDeserializer<GpsRtcmData> = MavDeserializer { bytes ->
+    public override val id: UInt = 233u
+
+    public override val crcExtra: Byte = 35
+
+    public override fun deserialize(bytes: ByteArray): GpsRtcmData {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val flags = inputBuffer.decodeUInt8()
       val len = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeUInt8Array(180)
 
-      GpsRtcmData(
+      return GpsRtcmData(
         flags = flags,
         len = len,
         data = data,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GpsRtcmData> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GpsRtcmData> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GpsRtcmData =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRtcmData =
         Builder().apply(builderAction).build()
   }
 

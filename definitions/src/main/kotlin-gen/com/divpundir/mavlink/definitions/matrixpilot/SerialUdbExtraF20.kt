@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -93,7 +92,7 @@ public data class SerialUdbExtraF20(
   @GeneratedMavField(type = "int16_t")
   public val sueTrimValueInput12: Short = 0,
 ) : MavMessage<SerialUdbExtraF20> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF20> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -131,16 +130,16 @@ public data class SerialUdbExtraF20(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 186u
-
-    private const val CRC_EXTRA: Byte = -112
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF20> {
     private const val SIZE_V1: Int = 25
 
     private const val SIZE_V2: Int = 25
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF20> = MavDeserializer { bytes ->
+    public override val id: UInt = 186u
+
+    public override val crcExtra: Byte = -112
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF20 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueTrimValueInput1 = inputBuffer.decodeInt16()
       val sueTrimValueInput2 = inputBuffer.decodeInt16()
@@ -156,7 +155,7 @@ public data class SerialUdbExtraF20(
       val sueTrimValueInput12 = inputBuffer.decodeInt16()
       val sueNumberOfInputs = inputBuffer.decodeUInt8()
 
-      SerialUdbExtraF20(
+      return SerialUdbExtraF20(
         sueNumberOfInputs = sueNumberOfInputs,
         sueTrimValueInput1 = sueTrimValueInput1,
         sueTrimValueInput2 = sueTrimValueInput2,
@@ -173,13 +172,7 @@ public data class SerialUdbExtraF20(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF20> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF20> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF20 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF20 =
         Builder().apply(builderAction).build()
   }
 

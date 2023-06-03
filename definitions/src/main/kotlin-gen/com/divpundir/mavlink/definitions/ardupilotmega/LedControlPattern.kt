@@ -26,7 +26,7 @@ public enum class LedControlPattern(
   CUSTOM(255u),
   ;
 
-  public companion object : MavEnum.Companion<LedControlPattern> {
+  public companion object : MavEnum.MavCompanion<LedControlPattern> {
     public override fun getEntryFromValueOrNull(v: UInt): LedControlPattern? = when (v) {
       0u -> OFF
       1u -> FIRMWAREUPDATE

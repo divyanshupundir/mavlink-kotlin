@@ -26,7 +26,7 @@ public enum class TrackerMode(
   INITIALIZING(16u),
   ;
 
-  public companion object : MavEnum.Companion<TrackerMode> {
+  public companion object : MavEnum.MavCompanion<TrackerMode> {
     public override fun getEntryFromValueOrNull(v: UInt): TrackerMode? = when (v) {
       0u -> MANUAL
       1u -> STOP

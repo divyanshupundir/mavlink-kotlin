@@ -57,7 +57,7 @@ public enum class FenceAction(
   LAND(7u),
   ;
 
-  public companion object : MavEnum.Companion<FenceAction> {
+  public companion object : MavEnum.MavCompanion<FenceAction> {
     public override fun getEntryFromValueOrNull(v: UInt): FenceAction? = when (v) {
       0u -> NONE
       1u -> GUIDED

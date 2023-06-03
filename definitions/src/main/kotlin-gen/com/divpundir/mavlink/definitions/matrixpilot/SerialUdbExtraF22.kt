@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.encodeInt16
@@ -55,7 +54,7 @@ public data class SerialUdbExtraF22(
   @GeneratedMavField(type = "int16_t")
   public val sueGyroZAtCalibration: Short = 0,
 ) : MavMessage<SerialUdbExtraF22> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF22> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF22> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -79,16 +78,16 @@ public data class SerialUdbExtraF22(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 188u
-
-    private const val CRC_EXTRA: Byte = 91
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF22> {
     private const val SIZE_V1: Int = 12
 
     private const val SIZE_V2: Int = 12
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF22> = MavDeserializer { bytes ->
+    public override val id: UInt = 188u
+
+    public override val crcExtra: Byte = 91
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF22 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueAccelXAtCalibration = inputBuffer.decodeInt16()
       val sueAccelYAtCalibration = inputBuffer.decodeInt16()
@@ -97,7 +96,7 @@ public data class SerialUdbExtraF22(
       val sueGyroYAtCalibration = inputBuffer.decodeInt16()
       val sueGyroZAtCalibration = inputBuffer.decodeInt16()
 
-      SerialUdbExtraF22(
+      return SerialUdbExtraF22(
         sueAccelXAtCalibration = sueAccelXAtCalibration,
         sueAccelYAtCalibration = sueAccelYAtCalibration,
         sueAccelZAtCalibration = sueAccelZAtCalibration,
@@ -107,13 +106,7 @@ public data class SerialUdbExtraF22(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF22> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF22> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF22 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF22 =
         Builder().apply(builderAction).build()
   }
 

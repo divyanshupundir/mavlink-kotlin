@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -75,7 +74,7 @@ public data class Altitude(
   @GeneratedMavField(type = "float")
   public val bottomClearance: Float = 0F,
 ) : MavMessage<Altitude> {
-  public override val instanceMetadata: MavMessage.Metadata<Altitude> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Altitude> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -101,16 +100,16 @@ public data class Altitude(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 141u
-
-    private const val CRC_EXTRA: Byte = 47
-
+  public companion object : MavMessage.MavCompanion<Altitude> {
     private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 32
 
-    private val DESERIALIZER: MavDeserializer<Altitude> = MavDeserializer { bytes ->
+    public override val id: UInt = 141u
+
+    public override val crcExtra: Byte = 47
+
+    public override fun deserialize(bytes: ByteArray): Altitude {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val altitudeMonotonic = inputBuffer.decodeFloat()
@@ -120,7 +119,7 @@ public data class Altitude(
       val altitudeTerrain = inputBuffer.decodeFloat()
       val bottomClearance = inputBuffer.decodeFloat()
 
-      Altitude(
+      return Altitude(
         timeUsec = timeUsec,
         altitudeMonotonic = altitudeMonotonic,
         altitudeAmsl = altitudeAmsl,
@@ -131,13 +130,7 @@ public data class Altitude(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Altitude> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Altitude> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Altitude =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Altitude =
         Builder().apply(builderAction).build()
   }
 

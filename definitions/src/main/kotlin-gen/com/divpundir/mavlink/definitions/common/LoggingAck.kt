@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -43,7 +42,7 @@ public data class LoggingAck(
   @GeneratedMavField(type = "uint16_t")
   public val sequence: UShort = 0u,
 ) : MavMessage<LoggingAck> {
-  public override val instanceMetadata: MavMessage.Metadata<LoggingAck> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LoggingAck> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,35 +60,29 @@ public data class LoggingAck(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 268u
-
-    private const val CRC_EXTRA: Byte = 14
-
+  public companion object : MavMessage.MavCompanion<LoggingAck> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 4
 
-    private val DESERIALIZER: MavDeserializer<LoggingAck> = MavDeserializer { bytes ->
+    public override val id: UInt = 268u
+
+    public override val crcExtra: Byte = 14
+
+    public override fun deserialize(bytes: ByteArray): LoggingAck {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sequence = inputBuffer.decodeUInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      LoggingAck(
+      return LoggingAck(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         sequence = sequence,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LoggingAck> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LoggingAck> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LoggingAck =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LoggingAck =
         Builder().apply(builderAction).build()
   }
 

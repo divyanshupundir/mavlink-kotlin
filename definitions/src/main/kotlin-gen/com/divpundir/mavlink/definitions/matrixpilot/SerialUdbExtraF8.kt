@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -60,7 +59,7 @@ public data class SerialUdbExtraF8(
   @GeneratedMavField(type = "float")
   public val sueAltHoldPitchHigh: Float = 0F,
 ) : MavMessage<SerialUdbExtraF8> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF8> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF8> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -86,16 +85,16 @@ public data class SerialUdbExtraF8(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 176u
-
-    private const val CRC_EXTRA: Byte = -114
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF8> {
     private const val SIZE_V1: Int = 28
 
     private const val SIZE_V2: Int = 28
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF8> = MavDeserializer { bytes ->
+    public override val id: UInt = 176u
+
+    public override val crcExtra: Byte = -114
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF8 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueHeightTargetMax = inputBuffer.decodeFloat()
       val sueHeightTargetMin = inputBuffer.decodeFloat()
@@ -105,7 +104,7 @@ public data class SerialUdbExtraF8(
       val sueAltHoldPitchMax = inputBuffer.decodeFloat()
       val sueAltHoldPitchHigh = inputBuffer.decodeFloat()
 
-      SerialUdbExtraF8(
+      return SerialUdbExtraF8(
         sueHeightTargetMax = sueHeightTargetMax,
         sueHeightTargetMin = sueHeightTargetMin,
         sueAltHoldThrottleMin = sueAltHoldThrottleMin,
@@ -116,13 +115,7 @@ public data class SerialUdbExtraF8(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF8> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF8> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF8 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF8 =
         Builder().apply(builderAction).build()
   }
 

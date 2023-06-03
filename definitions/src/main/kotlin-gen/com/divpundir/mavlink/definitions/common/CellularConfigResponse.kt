@@ -39,7 +39,7 @@ public enum class CellularConfigResponse(
   CELLULAR_CONFIG_BLOCKED_PUK_REQUIRED(4u),
   ;
 
-  public companion object : MavEnum.Companion<CellularConfigResponse> {
+  public companion object : MavEnum.MavCompanion<CellularConfigResponse> {
     public override fun getEntryFromValueOrNull(v: UInt): CellularConfigResponse? = when (v) {
       0u -> ACCEPTED
       1u -> APN_ERROR

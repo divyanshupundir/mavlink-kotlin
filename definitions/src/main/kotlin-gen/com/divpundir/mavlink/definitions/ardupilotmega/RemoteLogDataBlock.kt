@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -51,7 +50,7 @@ public data class RemoteLogDataBlock(
   @GeneratedMavField(type = "uint8_t[200]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<RemoteLogDataBlock> {
-  public override val instanceMetadata: MavMessage.Metadata<RemoteLogDataBlock> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<RemoteLogDataBlock> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -71,16 +70,16 @@ public data class RemoteLogDataBlock(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 184u
-
-    private const val CRC_EXTRA: Byte = -97
-
+  public companion object : MavMessage.MavCompanion<RemoteLogDataBlock> {
     private const val SIZE_V1: Int = 206
 
     private const val SIZE_V2: Int = 206
 
-    private val DESERIALIZER: MavDeserializer<RemoteLogDataBlock> = MavDeserializer { bytes ->
+    public override val id: UInt = 184u
+
+    public override val crcExtra: Byte = -97
+
+    public override fun deserialize(bytes: ByteArray): RemoteLogDataBlock {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seqno = inputBuffer.decodeEnumValue(4).let { value ->
         val entry = MavRemoteLogDataBlockCommands.getEntryFromValueOrNull(value)
@@ -90,7 +89,7 @@ public data class RemoteLogDataBlock(
       val targetComponent = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeUInt8Array(200)
 
-      RemoteLogDataBlock(
+      return RemoteLogDataBlock(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         seqno = seqno,
@@ -98,13 +97,7 @@ public data class RemoteLogDataBlock(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<RemoteLogDataBlock> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<RemoteLogDataBlock> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): RemoteLogDataBlock =
+    public operator fun invoke(builderAction: Builder.() -> Unit): RemoteLogDataBlock =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -101,7 +100,7 @@ public data class CommandInt(
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<CommandInt> {
-  public override val instanceMetadata: MavMessage.Metadata<CommandInt> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CommandInt> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -139,16 +138,16 @@ public data class CommandInt(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 75u
-
-    private const val CRC_EXTRA: Byte = -98
-
+  public companion object : MavMessage.MavCompanion<CommandInt> {
     private const val SIZE_V1: Int = 35
 
     private const val SIZE_V2: Int = 35
 
-    private val DESERIALIZER: MavDeserializer<CommandInt> = MavDeserializer { bytes ->
+    public override val id: UInt = 75u
+
+    public override val crcExtra: Byte = -98
+
+    public override fun deserialize(bytes: ByteArray): CommandInt {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val param1 = inputBuffer.decodeFloat()
       val param2 = inputBuffer.decodeFloat()
@@ -170,7 +169,7 @@ public data class CommandInt(
       val current = inputBuffer.decodeUInt8()
       val autocontinue = inputBuffer.decodeUInt8()
 
-      CommandInt(
+      return CommandInt(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         frame = frame,
@@ -187,13 +186,7 @@ public data class CommandInt(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CommandInt> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CommandInt> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CommandInt =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandInt =
         Builder().apply(builderAction).build()
   }
 

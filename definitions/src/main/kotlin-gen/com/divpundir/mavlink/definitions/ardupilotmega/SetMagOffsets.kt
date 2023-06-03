@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -55,7 +54,7 @@ public data class SetMagOffsets(
   @GeneratedMavField(type = "int16_t")
   public val magOfsZ: Short = 0,
 ) : MavMessage<SetMagOffsets> {
-  public override val instanceMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SetMagOffsets> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -77,16 +76,16 @@ public data class SetMagOffsets(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 151u
-
-    private const val CRC_EXTRA: Byte = -37
-
+  public companion object : MavMessage.MavCompanion<SetMagOffsets> {
     private const val SIZE_V1: Int = 8
 
     private const val SIZE_V2: Int = 8
 
-    private val DESERIALIZER: MavDeserializer<SetMagOffsets> = MavDeserializer { bytes ->
+    public override val id: UInt = 151u
+
+    public override val crcExtra: Byte = -37
+
+    public override fun deserialize(bytes: ByteArray): SetMagOffsets {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val magOfsX = inputBuffer.decodeInt16()
       val magOfsY = inputBuffer.decodeInt16()
@@ -94,7 +93,7 @@ public data class SetMagOffsets(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      SetMagOffsets(
+      return SetMagOffsets(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         magOfsX = magOfsX,
@@ -103,13 +102,7 @@ public data class SetMagOffsets(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SetMagOffsets> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SetMagOffsets> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SetMagOffsets =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetMagOffsets =
         Builder().apply(builderAction).build()
   }
 

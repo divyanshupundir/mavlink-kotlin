@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -58,7 +57,7 @@ public data class LedControl(
   @GeneratedMavField(type = "uint8_t[24]")
   public val customBytes: List<UByte> = emptyList(),
 ) : MavMessage<LedControl> {
-  public override val instanceMetadata: MavMessage.Metadata<LedControl> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LedControl> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +81,16 @@ public data class LedControl(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 186u
-
-    private const val CRC_EXTRA: Byte = 72
-
+  public companion object : MavMessage.MavCompanion<LedControl> {
     private const val SIZE_V1: Int = 29
 
     private const val SIZE_V2: Int = 29
 
-    private val DESERIALIZER: MavDeserializer<LedControl> = MavDeserializer { bytes ->
+    public override val id: UInt = 186u
+
+    public override val crcExtra: Byte = 72
+
+    public override fun deserialize(bytes: ByteArray): LedControl {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
@@ -100,7 +99,7 @@ public data class LedControl(
       val customLen = inputBuffer.decodeUInt8()
       val customBytes = inputBuffer.decodeUInt8Array(24)
 
-      LedControl(
+      return LedControl(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         instance = instance,
@@ -110,13 +109,7 @@ public data class LedControl(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LedControl> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LedControl> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LedControl =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LedControl =
         Builder().apply(builderAction).build()
   }
 

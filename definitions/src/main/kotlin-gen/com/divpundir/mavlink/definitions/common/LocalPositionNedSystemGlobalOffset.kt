@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -64,8 +63,8 @@ public data class LocalPositionNedSystemGlobalOffset(
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
 ) : MavMessage<LocalPositionNedSystemGlobalOffset> {
-  public override val instanceMetadata: MavMessage.Metadata<LocalPositionNedSystemGlobalOffset> =
-      METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset>
+      = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -91,17 +90,16 @@ public data class LocalPositionNedSystemGlobalOffset(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 89u
-
-    private const val CRC_EXTRA: Byte = -25
-
+  public companion object : MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset> {
     private const val SIZE_V1: Int = 28
 
     private const val SIZE_V2: Int = 28
 
-    private val DESERIALIZER: MavDeserializer<LocalPositionNedSystemGlobalOffset> =
-        MavDeserializer { bytes ->
+    public override val id: UInt = 89u
+
+    public override val crcExtra: Byte = -25
+
+    public override fun deserialize(bytes: ByteArray): LocalPositionNedSystemGlobalOffset {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val x = inputBuffer.decodeFloat()
@@ -111,7 +109,7 @@ public data class LocalPositionNedSystemGlobalOffset(
       val pitch = inputBuffer.decodeFloat()
       val yaw = inputBuffer.decodeFloat()
 
-      LocalPositionNedSystemGlobalOffset(
+      return LocalPositionNedSystemGlobalOffset(
         timeBootMs = timeBootMs,
         x = x,
         y = y,
@@ -122,14 +120,8 @@ public data class LocalPositionNedSystemGlobalOffset(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LocalPositionNedSystemGlobalOffset> =
-        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LocalPositionNedSystemGlobalOffset> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LocalPositionNedSystemGlobalOffset =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit):
+        LocalPositionNedSystemGlobalOffset = Builder().apply(builderAction).build()
   }
 
   public class Builder {

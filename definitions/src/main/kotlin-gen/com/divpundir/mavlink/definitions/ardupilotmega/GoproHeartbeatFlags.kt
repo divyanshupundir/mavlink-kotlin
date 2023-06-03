@@ -17,7 +17,7 @@ public enum class GoproHeartbeatFlags(
   GOPRO_FLAG_RECORDING(1u),
   ;
 
-  public companion object : MavBitmask.Companion<GoproHeartbeatFlags> {
+  public companion object : MavBitmask.MavCompanion<GoproHeartbeatFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproHeartbeatFlags? = when (v) {
       1u -> GOPRO_FLAG_RECORDING
       else -> null

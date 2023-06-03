@@ -59,7 +59,7 @@ public enum class StorageType(
   OTHER(254u),
   ;
 
-  public companion object : MavEnum.Companion<StorageType> {
+  public companion object : MavEnum.MavCompanion<StorageType> {
     public override fun getEntryFromValueOrNull(v: UInt): StorageType? = when (v) {
       0u -> UNKNOWN
       1u -> USB_STICK

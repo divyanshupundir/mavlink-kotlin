@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeString
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -51,7 +50,7 @@ public data class ChangeOperatorControl(
   @GeneratedMavField(type = "char[25]")
   public val passkey: String = "",
 ) : MavMessage<ChangeOperatorControl> {
-  public override val instanceMetadata: MavMessage.Metadata<ChangeOperatorControl> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -71,23 +70,23 @@ public data class ChangeOperatorControl(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 5u
-
-    private const val CRC_EXTRA: Byte = -39
-
+  public companion object : MavMessage.MavCompanion<ChangeOperatorControl> {
     private const val SIZE_V1: Int = 28
 
     private const val SIZE_V2: Int = 28
 
-    private val DESERIALIZER: MavDeserializer<ChangeOperatorControl> = MavDeserializer { bytes ->
+    public override val id: UInt = 5u
+
+    public override val crcExtra: Byte = -39
+
+    public override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val controlRequest = inputBuffer.decodeUInt8()
       val version = inputBuffer.decodeUInt8()
       val passkey = inputBuffer.decodeString(25)
 
-      ChangeOperatorControl(
+      return ChangeOperatorControl(
         targetSystem = targetSystem,
         controlRequest = controlRequest,
         version = version,
@@ -95,13 +94,7 @@ public data class ChangeOperatorControl(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ChangeOperatorControl> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ChangeOperatorControl> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ChangeOperatorControl =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ChangeOperatorControl =
         Builder().apply(builderAction).build()
   }
 

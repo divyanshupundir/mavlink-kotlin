@@ -57,7 +57,7 @@ public enum class MavState(
   FLIGHT_TERMINATION(8u),
   ;
 
-  public companion object : MavEnum.Companion<MavState> {
+  public companion object : MavEnum.MavCompanion<MavState> {
     public override fun getEntryFromValueOrNull(v: UInt): MavState? = when (v) {
       0u -> UNINIT
       1u -> BOOT

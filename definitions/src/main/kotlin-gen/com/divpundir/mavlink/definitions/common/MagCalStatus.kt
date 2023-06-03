@@ -27,7 +27,7 @@ public enum class MagCalStatus(
   MAG_CAL_BAD_RADIUS(7u),
   ;
 
-  public companion object : MavEnum.Companion<MagCalStatus> {
+  public companion object : MavEnum.MavCompanion<MagCalStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): MagCalStatus? = when (v) {
       0u -> MAG_CAL_NOT_STARTED
       1u -> MAG_CAL_WAITING_TO_START

@@ -36,7 +36,7 @@ public enum class GoproProtuneGain(
   _6400(4u),
   ;
 
-  public companion object : MavEnum.Companion<GoproProtuneGain> {
+  public companion object : MavEnum.MavCompanion<GoproProtuneGain> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneGain? = when (v) {
       0u -> _400
       1u -> _800

@@ -94,7 +94,7 @@ public enum class MavMissionResult(
   MAV_MISSION_OPERATION_CANCELLED(15u),
   ;
 
-  public companion object : MavEnum.Companion<MavMissionResult> {
+  public companion object : MavEnum.MavCompanion<MavMissionResult> {
     public override fun getEntryFromValueOrNull(v: UInt): MavMissionResult? = when (v) {
       0u -> MAV_MISSION_ACCEPTED
       1u -> MAV_MISSION_ERROR

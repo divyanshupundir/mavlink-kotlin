@@ -42,7 +42,7 @@ public enum class MavOdidAuthType(
   SPECIFIC_AUTHENTICATION(5u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidAuthType> {
+  public companion object : MavEnum.MavCompanion<MavOdidAuthType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidAuthType? = when (v) {
       0u -> NONE
       1u -> UAS_ID_SIGNATURE

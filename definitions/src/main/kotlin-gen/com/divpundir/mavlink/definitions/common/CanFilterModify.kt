@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -65,7 +64,7 @@ public data class CanFilterModify(
   @GeneratedMavField(type = "uint16_t[16]")
   public val ids: List<UShort> = emptyList(),
 ) : MavMessage<CanFilterModify> {
-  public override val instanceMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CanFilterModify> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -89,16 +88,16 @@ public data class CanFilterModify(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 388u
-
-    private const val CRC_EXTRA: Byte = 8
-
+  public companion object : MavMessage.MavCompanion<CanFilterModify> {
     private const val SIZE_V1: Int = 37
 
     private const val SIZE_V2: Int = 37
 
-    private val DESERIALIZER: MavDeserializer<CanFilterModify> = MavDeserializer { bytes ->
+    public override val id: UInt = 388u
+
+    public override val crcExtra: Byte = 8
+
+    public override fun deserialize(bytes: ByteArray): CanFilterModify {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val ids = inputBuffer.decodeUInt16Array(32)
       val targetSystem = inputBuffer.decodeUInt8()
@@ -110,7 +109,7 @@ public data class CanFilterModify(
       }
       val numIds = inputBuffer.decodeUInt8()
 
-      CanFilterModify(
+      return CanFilterModify(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         bus = bus,
@@ -120,13 +119,7 @@ public data class CanFilterModify(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CanFilterModify> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CanFilterModify> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CanFilterModify =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CanFilterModify =
         Builder().apply(builderAction).build()
   }
 

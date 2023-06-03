@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.minimal
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -70,7 +69,7 @@ public data class Heartbeat(
   @GeneratedMavField(type = "uint8_t_mavlink_version")
   public val mavlinkVersion: UByte = 0u,
 ) : MavMessage<Heartbeat> {
-  public override val instanceMetadata: MavMessage.Metadata<Heartbeat> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Heartbeat> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -94,16 +93,16 @@ public data class Heartbeat(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 0u
-
-    private const val CRC_EXTRA: Byte = 50
-
+  public companion object : MavMessage.MavCompanion<Heartbeat> {
     private const val SIZE_V1: Int = 9
 
     private const val SIZE_V2: Int = 9
 
-    private val DESERIALIZER: MavDeserializer<Heartbeat> = MavDeserializer { bytes ->
+    public override val id: UInt = 0u
+
+    public override val crcExtra: Byte = 50
+
+    public override fun deserialize(bytes: ByteArray): Heartbeat {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val customMode = inputBuffer.decodeUInt32()
       val type = inputBuffer.decodeEnumValue(1).let { value ->
@@ -124,7 +123,7 @@ public data class Heartbeat(
       }
       val mavlinkVersion = inputBuffer.decodeUInt8()
 
-      Heartbeat(
+      return Heartbeat(
         type = type,
         autopilot = autopilot,
         baseMode = baseMode,
@@ -134,13 +133,7 @@ public data class Heartbeat(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Heartbeat> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Heartbeat> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Heartbeat =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Heartbeat =
         Builder().apply(builderAction).build()
   }
 

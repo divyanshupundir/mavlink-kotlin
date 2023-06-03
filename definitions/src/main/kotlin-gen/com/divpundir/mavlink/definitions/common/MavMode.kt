@@ -76,7 +76,7 @@ public enum class MavMode(
   TEST_ARMED(194u),
   ;
 
-  public companion object : MavEnum.Companion<MavMode> {
+  public companion object : MavEnum.MavCompanion<MavMode> {
     public override fun getEntryFromValueOrNull(v: UInt): MavMode? = when (v) {
       0u -> PREFLIGHT
       80u -> STABILIZE_DISARMED

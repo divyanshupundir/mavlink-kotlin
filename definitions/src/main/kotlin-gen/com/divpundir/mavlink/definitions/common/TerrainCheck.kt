@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeInt32
@@ -35,7 +34,7 @@ public data class TerrainCheck(
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
 ) : MavMessage<TerrainCheck> {
-  public override val instanceMetadata: MavMessage.Metadata<TerrainCheck> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<TerrainCheck> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class TerrainCheck(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 135u
-
-    private const val CRC_EXTRA: Byte = -53
-
+  public companion object : MavMessage.MavCompanion<TerrainCheck> {
     private const val SIZE_V1: Int = 8
 
     private const val SIZE_V2: Int = 8
 
-    private val DESERIALIZER: MavDeserializer<TerrainCheck> = MavDeserializer { bytes ->
+    public override val id: UInt = 135u
+
+    public override val crcExtra: Byte = -53
+
+    public override fun deserialize(bytes: ByteArray): TerrainCheck {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
 
-      TerrainCheck(
+      return TerrainCheck(
         lat = lat,
         lon = lon,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<TerrainCheck> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<TerrainCheck> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): TerrainCheck =
+    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainCheck =
         Builder().apply(builderAction).build()
   }
 

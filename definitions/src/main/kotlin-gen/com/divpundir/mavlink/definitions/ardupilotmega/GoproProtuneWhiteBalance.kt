@@ -36,7 +36,7 @@ public enum class GoproProtuneWhiteBalance(
   RAW(4u),
   ;
 
-  public companion object : MavEnum.Companion<GoproProtuneWhiteBalance> {
+  public companion object : MavEnum.MavCompanion<GoproProtuneWhiteBalance> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneWhiteBalance? = when (v) {
       0u -> AUTO
       1u -> _3000K

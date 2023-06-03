@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -79,7 +78,7 @@ public data class PidTuning(
   )
   public val pdmod: Float = 0F,
 ) : MavMessage<PidTuning> {
-  public override val instanceMetadata: MavMessage.Metadata<PidTuning> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<PidTuning> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -107,16 +106,16 @@ public data class PidTuning(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 194u
-
-    private const val CRC_EXTRA: Byte = 98
-
+  public companion object : MavMessage.MavCompanion<PidTuning> {
     private const val SIZE_V1: Int = 25
 
     private const val SIZE_V2: Int = 33
 
-    private val DESERIALIZER: MavDeserializer<PidTuning> = MavDeserializer { bytes ->
+    public override val id: UInt = 194u
+
+    public override val crcExtra: Byte = 98
+
+    public override fun deserialize(bytes: ByteArray): PidTuning {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val desired = inputBuffer.decodeFloat()
       val achieved = inputBuffer.decodeFloat()
@@ -131,7 +130,7 @@ public data class PidTuning(
       val srate = inputBuffer.decodeFloat()
       val pdmod = inputBuffer.decodeFloat()
 
-      PidTuning(
+      return PidTuning(
         axis = axis,
         desired = desired,
         achieved = achieved,
@@ -144,13 +143,7 @@ public data class PidTuning(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<PidTuning> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<PidTuning> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): PidTuning =
+    public operator fun invoke(builderAction: Builder.() -> Unit): PidTuning =
         Builder().apply(builderAction).build()
   }
 

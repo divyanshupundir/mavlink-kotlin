@@ -31,7 +31,7 @@ public enum class GoproHeartbeatStatus(
   ERROR(3u),
   ;
 
-  public companion object : MavEnum.Companion<GoproHeartbeatStatus> {
+  public companion object : MavEnum.MavCompanion<GoproHeartbeatStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproHeartbeatStatus? = when (v) {
       0u -> DISCONNECTED
       1u -> INCOMPATIBLE

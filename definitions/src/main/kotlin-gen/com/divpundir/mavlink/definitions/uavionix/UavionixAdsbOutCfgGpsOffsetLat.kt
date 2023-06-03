@@ -30,7 +30,7 @@ public enum class UavionixAdsbOutCfgGpsOffsetLat(
   RIGHT_6M(7u),
   ;
 
-  public companion object : MavEnum.Companion<UavionixAdsbOutCfgGpsOffsetLat> {
+  public companion object : MavEnum.MavCompanion<UavionixAdsbOutCfgGpsOffsetLat> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgGpsOffsetLat? = when (v)
         {
       0u -> NO_DATA

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16Array
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -60,7 +59,7 @@ public data class TerrainData(
   @GeneratedMavField(type = "int16_t[16]")
   public val `data`: List<Short> = emptyList(),
 ) : MavMessage<TerrainData> {
-  public override val instanceMetadata: MavMessage.Metadata<TerrainData> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<TerrainData> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +81,16 @@ public data class TerrainData(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 134u
-
-    private const val CRC_EXTRA: Byte = -27
-
+  public companion object : MavMessage.MavCompanion<TerrainData> {
     private const val SIZE_V1: Int = 43
 
     private const val SIZE_V2: Int = 43
 
-    private val DESERIALIZER: MavDeserializer<TerrainData> = MavDeserializer { bytes ->
+    public override val id: UInt = 134u
+
+    public override val crcExtra: Byte = -27
+
+    public override fun deserialize(bytes: ByteArray): TerrainData {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
@@ -99,7 +98,7 @@ public data class TerrainData(
       val data = inputBuffer.decodeInt16Array(32)
       val gridbit = inputBuffer.decodeUInt8()
 
-      TerrainData(
+      return TerrainData(
         lat = lat,
         lon = lon,
         gridSpacing = gridSpacing,
@@ -108,13 +107,7 @@ public data class TerrainData(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<TerrainData> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<TerrainData> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): TerrainData =
+    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainData =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.paparazzi
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -44,7 +43,7 @@ public data class ScriptRequest(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
 ) : MavMessage<ScriptRequest> {
-  public override val instanceMetadata: MavMessage.Metadata<ScriptRequest> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ScriptRequest> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -62,35 +61,29 @@ public data class ScriptRequest(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 181u
-
-    private const val CRC_EXTRA: Byte = -127
-
+  public companion object : MavMessage.MavCompanion<ScriptRequest> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 4
 
-    private val DESERIALIZER: MavDeserializer<ScriptRequest> = MavDeserializer { bytes ->
+    public override val id: UInt = 181u
+
+    public override val crcExtra: Byte = -127
+
+    public override fun deserialize(bytes: ByteArray): ScriptRequest {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seq = inputBuffer.decodeUInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      ScriptRequest(
+      return ScriptRequest(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         seq = seq,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ScriptRequest> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ScriptRequest> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ScriptRequest =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptRequest =
         Builder().apply(builderAction).build()
   }
 

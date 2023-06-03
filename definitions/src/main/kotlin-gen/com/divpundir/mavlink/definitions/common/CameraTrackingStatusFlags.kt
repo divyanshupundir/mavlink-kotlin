@@ -29,7 +29,7 @@ public enum class CameraTrackingStatusFlags(
   ERROR(2u),
   ;
 
-  public companion object : MavEnum.Companion<CameraTrackingStatusFlags> {
+  public companion object : MavEnum.MavCompanion<CameraTrackingStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingStatusFlags? = when (v) {
       0u -> IDLE
       1u -> ACTIVE

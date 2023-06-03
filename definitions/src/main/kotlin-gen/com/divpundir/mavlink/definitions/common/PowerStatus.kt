@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -43,7 +42,7 @@ public data class PowerStatus(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<MavPowerStatus> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<PowerStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<PowerStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<PowerStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,16 +60,16 @@ public data class PowerStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 125u
-
-    private const val CRC_EXTRA: Byte = -53
-
+  public companion object : MavMessage.MavCompanion<PowerStatus> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<PowerStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 125u
+
+    public override val crcExtra: Byte = -53
+
+    public override fun deserialize(bytes: ByteArray): PowerStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vcc = inputBuffer.decodeUInt16()
       val vservo = inputBuffer.decodeUInt16()
@@ -79,20 +78,14 @@ public data class PowerStatus(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      PowerStatus(
+      return PowerStatus(
         vcc = vcc,
         vservo = vservo,
         flags = flags,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<PowerStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<PowerStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): PowerStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): PowerStatus =
         Builder().apply(builderAction).build()
   }
 

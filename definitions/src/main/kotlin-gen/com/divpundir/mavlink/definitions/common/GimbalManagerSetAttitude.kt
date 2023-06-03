@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -79,7 +78,8 @@ public data class GimbalManagerSetAttitude(
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<GimbalManagerSetAttitude> {
-  public override val instanceMetadata: MavMessage.Metadata<GimbalManagerSetAttitude> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetAttitude> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -107,16 +107,16 @@ public data class GimbalManagerSetAttitude(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 282u
-
-    private const val CRC_EXTRA: Byte = 123
-
+  public companion object : MavMessage.MavCompanion<GimbalManagerSetAttitude> {
     private const val SIZE_V1: Int = 35
 
     private const val SIZE_V2: Int = 35
 
-    private val DESERIALIZER: MavDeserializer<GimbalManagerSetAttitude> = MavDeserializer { bytes ->
+    public override val id: UInt = 282u
+
+    public override val crcExtra: Byte = 123
+
+    public override fun deserialize(bytes: ByteArray): GimbalManagerSetAttitude {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
@@ -130,7 +130,7 @@ public data class GimbalManagerSetAttitude(
       val targetComponent = inputBuffer.decodeUInt8()
       val gimbalDeviceId = inputBuffer.decodeUInt8()
 
-      GimbalManagerSetAttitude(
+      return GimbalManagerSetAttitude(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         flags = flags,
@@ -142,13 +142,7 @@ public data class GimbalManagerSetAttitude(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GimbalManagerSetAttitude> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GimbalManagerSetAttitude> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GimbalManagerSetAttitude =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetAttitude =
         Builder().apply(builderAction).build()
   }
 

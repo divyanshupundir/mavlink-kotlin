@@ -34,7 +34,7 @@ public enum class PreflightStorageMissionAction(
   MISSION_RESET_DEFAULT(2u),
   ;
 
-  public companion object : MavEnum.Companion<PreflightStorageMissionAction> {
+  public companion object : MavEnum.MavCompanion<PreflightStorageMissionAction> {
     public override fun getEntryFromValueOrNull(v: UInt): PreflightStorageMissionAction? = when (v)
         {
       0u -> MISSION_READ_PERSISTENT

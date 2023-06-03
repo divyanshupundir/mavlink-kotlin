@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -64,7 +63,7 @@ public data class Tunnel(
   @GeneratedMavField(type = "uint8_t[128]")
   public val payload: List<UByte> = emptyList(),
 ) : MavMessage<Tunnel> {
-  public override val instanceMetadata: MavMessage.Metadata<Tunnel> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Tunnel> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -86,16 +85,16 @@ public data class Tunnel(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 385u
-
-    private const val CRC_EXTRA: Byte = -109
-
+  public companion object : MavMessage.MavCompanion<Tunnel> {
     private const val SIZE_V1: Int = 133
 
     private const val SIZE_V2: Int = 133
 
-    private val DESERIALIZER: MavDeserializer<Tunnel> = MavDeserializer { bytes ->
+    public override val id: UInt = 385u
+
+    public override val crcExtra: Byte = -109
+
+    public override fun deserialize(bytes: ByteArray): Tunnel {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val payloadType = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavTunnelPayloadType.getEntryFromValueOrNull(value)
@@ -106,7 +105,7 @@ public data class Tunnel(
       val payloadLength = inputBuffer.decodeUInt8()
       val payload = inputBuffer.decodeUInt8Array(128)
 
-      Tunnel(
+      return Tunnel(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         payloadType = payloadType,
@@ -115,13 +114,7 @@ public data class Tunnel(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Tunnel> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Tunnel> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Tunnel =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Tunnel =
         Builder().apply(builderAction).build()
   }
 

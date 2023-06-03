@@ -10,8 +10,8 @@ public object UalbertaDialect : AbstractMavDialect(
     CommonDialect,
   ), 
   mapOf(
-    NavFilterBias.classMetadata.id to NavFilterBias.classMetadata,
-    RadioCalibration.classMetadata.id to RadioCalibration.classMetadata,
-    UalbertaSysStatus.classMetadata.id to UalbertaSysStatus.classMetadata,
+    NavFilterBias.id to NavFilterBias,
+    RadioCalibration.id to RadioCalibration,
+    UalbertaSysStatus.id to UalbertaSysStatus,
   )
 )

@@ -42,7 +42,7 @@ public enum class MavArmAuthDeniedReason(
   BAD_WEATHER(5u),
   ;
 
-  public companion object : MavEnum.Companion<MavArmAuthDeniedReason> {
+  public companion object : MavEnum.MavCompanion<MavArmAuthDeniedReason> {
     public override fun getEntryFromValueOrNull(v: UInt): MavArmAuthDeniedReason? = when (v) {
       0u -> GENERIC
       1u -> NONE

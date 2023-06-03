@@ -39,7 +39,7 @@ public enum class MavVtolState(
   FW(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavVtolState> {
+  public companion object : MavEnum.MavCompanion<MavVtolState> {
     public override fun getEntryFromValueOrNull(v: UInt): MavVtolState? = when (v) {
       0u -> UNDEFINED
       1u -> TRANSITION_TO_FW

@@ -17,7 +17,7 @@ public enum class CanFilterOp(
   CAN_FILTER_REMOVE(2u),
   ;
 
-  public companion object : MavEnum.Companion<CanFilterOp> {
+  public companion object : MavEnum.MavCompanion<CanFilterOp> {
     public override fun getEntryFromValueOrNull(v: UInt): CanFilterOp? = when (v) {
       0u -> CAN_FILTER_REPLACE
       1u -> CAN_FILTER_ADD

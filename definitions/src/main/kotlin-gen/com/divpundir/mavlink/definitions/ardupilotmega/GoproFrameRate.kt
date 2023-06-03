@@ -81,7 +81,7 @@ public enum class GoproFrameRate(
   _12_5(13u),
   ;
 
-  public companion object : MavEnum.Companion<GoproFrameRate> {
+  public companion object : MavEnum.MavCompanion<GoproFrameRate> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproFrameRate? = when (v) {
       0u -> _12
       1u -> _15

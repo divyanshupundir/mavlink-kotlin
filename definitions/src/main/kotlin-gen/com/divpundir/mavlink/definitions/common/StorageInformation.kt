@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -116,7 +115,7 @@ public data class StorageInformation(
   )
   public val storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u),
 ) : MavMessage<StorageInformation> {
-  public override val instanceMetadata: MavMessage.Metadata<StorageInformation> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -149,16 +148,16 @@ public data class StorageInformation(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 261u
-
-    private const val CRC_EXTRA: Byte = -77
-
+  public companion object : MavMessage.MavCompanion<StorageInformation> {
     private const val SIZE_V1: Int = 27
 
     private const val SIZE_V2: Int = 61
 
-    private val DESERIALIZER: MavDeserializer<StorageInformation> = MavDeserializer { bytes ->
+    public override val id: UInt = 261u
+
+    public override val crcExtra: Byte = -77
+
+    public override fun deserialize(bytes: ByteArray): StorageInformation {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val totalCapacity = inputBuffer.decodeFloat()
@@ -182,7 +181,7 @@ public data class StorageInformation(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      StorageInformation(
+      return StorageInformation(
         timeBootMs = timeBootMs,
         storageId = storageId,
         storageCount = storageCount,
@@ -198,13 +197,7 @@ public data class StorageInformation(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<StorageInformation> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<StorageInformation> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): StorageInformation =
+    public operator fun invoke(builderAction: Builder.() -> Unit): StorageInformation =
         Builder().apply(builderAction).build()
   }
 

@@ -26,7 +26,7 @@ public enum class RallyFlags(
   LAND_IMMEDIATELY(2u),
   ;
 
-  public companion object : MavBitmask.Companion<RallyFlags> {
+  public companion object : MavBitmask.MavCompanion<RallyFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): RallyFlags? = when (v) {
       1u -> FAVORABLE_WIND
       2u -> LAND_IMMEDIATELY

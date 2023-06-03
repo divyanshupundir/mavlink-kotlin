@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -109,8 +108,8 @@ public data class AutopilotStateForGimbalDevice(
   @GeneratedMavField(type = "uint8_t")
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u),
 ) : MavMessage<AutopilotStateForGimbalDevice> {
-  public override val instanceMetadata: MavMessage.Metadata<AutopilotStateForGimbalDevice> =
-      METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -146,17 +145,16 @@ public data class AutopilotStateForGimbalDevice(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 286u
-
-    private const val CRC_EXTRA: Byte = -46
-
+  public companion object : MavMessage.MavCompanion<AutopilotStateForGimbalDevice> {
     private const val SIZE_V1: Int = 53
 
     private const val SIZE_V2: Int = 53
 
-    private val DESERIALIZER: MavDeserializer<AutopilotStateForGimbalDevice> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 286u
+
+    public override val crcExtra: Byte = -46
+
+    public override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootUs = inputBuffer.decodeUInt64()
       val q = inputBuffer.decodeFloatArray(16)
@@ -177,7 +175,7 @@ public data class AutopilotStateForGimbalDevice(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      AutopilotStateForGimbalDevice(
+      return AutopilotStateForGimbalDevice(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         timeBootUs = timeBootUs,
@@ -193,13 +191,7 @@ public data class AutopilotStateForGimbalDevice(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AutopilotStateForGimbalDevice> =
-        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AutopilotStateForGimbalDevice> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AutopilotStateForGimbalDevice =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotStateForGimbalDevice =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -89,7 +88,8 @@ public data class GlobalVisionPositionEstimate(
   )
   public val resetCounter: UByte = 0u,
 ) : MavMessage<GlobalVisionPositionEstimate> {
-  public override val instanceMetadata: MavMessage.Metadata<GlobalVisionPositionEstimate> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GlobalVisionPositionEstimate> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -117,17 +117,16 @@ public data class GlobalVisionPositionEstimate(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 101u
-
-    private const val CRC_EXTRA: Byte = 102
-
+  public companion object : MavMessage.MavCompanion<GlobalVisionPositionEstimate> {
     private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 117
 
-    private val DESERIALIZER: MavDeserializer<GlobalVisionPositionEstimate> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 101u
+
+    public override val crcExtra: Byte = 102
+
+    public override fun deserialize(bytes: ByteArray): GlobalVisionPositionEstimate {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val usec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
@@ -139,7 +138,7 @@ public data class GlobalVisionPositionEstimate(
       val covariance = inputBuffer.decodeFloatArray(84)
       val resetCounter = inputBuffer.decodeUInt8()
 
-      GlobalVisionPositionEstimate(
+      return GlobalVisionPositionEstimate(
         usec = usec,
         x = x,
         y = y,
@@ -152,13 +151,7 @@ public data class GlobalVisionPositionEstimate(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GlobalVisionPositionEstimate> =
-        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GlobalVisionPositionEstimate> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GlobalVisionPositionEstimate =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalVisionPositionEstimate =
         Builder().apply(builderAction).build()
   }
 

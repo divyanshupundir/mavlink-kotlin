@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -55,7 +54,7 @@ public data class LogRequestData(
   @GeneratedMavField(type = "uint32_t")
   public val count: UInt = 0u,
 ) : MavMessage<LogRequestData> {
-  public override val instanceMetadata: MavMessage.Metadata<LogRequestData> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LogRequestData> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -77,16 +76,16 @@ public data class LogRequestData(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 119u
-
-    private const val CRC_EXTRA: Byte = 116
-
+  public companion object : MavMessage.MavCompanion<LogRequestData> {
     private const val SIZE_V1: Int = 12
 
     private const val SIZE_V2: Int = 12
 
-    private val DESERIALIZER: MavDeserializer<LogRequestData> = MavDeserializer { bytes ->
+    public override val id: UInt = 119u
+
+    public override val crcExtra: Byte = 116
+
+    public override fun deserialize(bytes: ByteArray): LogRequestData {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val ofs = inputBuffer.decodeUInt32()
       val count = inputBuffer.decodeUInt32()
@@ -94,7 +93,7 @@ public data class LogRequestData(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      LogRequestData(
+      return LogRequestData(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         id = id,
@@ -103,13 +102,7 @@ public data class LogRequestData(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LogRequestData> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LogRequestData> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LogRequestData =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogRequestData =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -43,7 +42,7 @@ public data class Data96(
   @GeneratedMavField(type = "uint8_t[96]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<Data96> {
-  public override val instanceMetadata: MavMessage.Metadata<Data96> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Data96> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,35 +60,29 @@ public data class Data96(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 172u
-
-    private const val CRC_EXTRA: Byte = 22
-
+  public companion object : MavMessage.MavCompanion<Data96> {
     private const val SIZE_V1: Int = 98
 
     private const val SIZE_V2: Int = 98
 
-    private val DESERIALIZER: MavDeserializer<Data96> = MavDeserializer { bytes ->
+    public override val id: UInt = 172u
+
+    public override val crcExtra: Byte = 22
+
+    public override fun deserialize(bytes: ByteArray): Data96 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val type = inputBuffer.decodeUInt8()
       val len = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeUInt8Array(96)
 
-      Data96(
+      return Data96(
         type = type,
         len = len,
         data = data,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Data96> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Data96> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Data96 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Data96 =
         Builder().apply(builderAction).build()
   }
 

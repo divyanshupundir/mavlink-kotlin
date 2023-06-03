@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -63,7 +62,7 @@ public data class Radio(
   @GeneratedMavField(type = "uint16_t")
   public val fixed: UShort = 0u,
 ) : MavMessage<Radio> {
-  public override val instanceMetadata: MavMessage.Metadata<Radio> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Radio> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -89,16 +88,16 @@ public data class Radio(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 166u
-
-    private const val CRC_EXTRA: Byte = 21
-
+  public companion object : MavMessage.MavCompanion<Radio> {
     private const val SIZE_V1: Int = 9
 
     private const val SIZE_V2: Int = 9
 
-    private val DESERIALIZER: MavDeserializer<Radio> = MavDeserializer { bytes ->
+    public override val id: UInt = 166u
+
+    public override val crcExtra: Byte = 21
+
+    public override fun deserialize(bytes: ByteArray): Radio {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val rxerrors = inputBuffer.decodeUInt16()
       val fixed = inputBuffer.decodeUInt16()
@@ -108,7 +107,7 @@ public data class Radio(
       val noise = inputBuffer.decodeUInt8()
       val remnoise = inputBuffer.decodeUInt8()
 
-      Radio(
+      return Radio(
         rssi = rssi,
         remrssi = remrssi,
         txbuf = txbuf,
@@ -119,13 +118,7 @@ public data class Radio(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Radio> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Radio> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Radio =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Radio =
         Builder().apply(builderAction).build()
   }
 

@@ -85,7 +85,7 @@ public enum class HlFailureFlag(
   MISSION(8_192u),
   ;
 
-  public companion object : MavBitmask.Companion<HlFailureFlag> {
+  public companion object : MavBitmask.MavCompanion<HlFailureFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): HlFailureFlag? = when (v) {
       1u -> GPS
       2u -> DIFFERENTIAL_PRESSURE

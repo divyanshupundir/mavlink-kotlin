@@ -34,7 +34,7 @@ public enum class CellularNetworkFailedReason(
   SIM_ERROR(3u),
   ;
 
-  public companion object : MavEnum.Companion<CellularNetworkFailedReason> {
+  public companion object : MavEnum.MavCompanion<CellularNetworkFailedReason> {
     public override fun getEntryFromValueOrNull(v: UInt): CellularNetworkFailedReason? = when (v) {
       0u -> NONE
       1u -> UNKNOWN

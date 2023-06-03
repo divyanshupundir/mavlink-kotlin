@@ -35,7 +35,7 @@ public enum class StorageUsageFlag(
   LOGS(8u),
   ;
 
-  public companion object : MavEnum.Companion<StorageUsageFlag> {
+  public companion object : MavEnum.MavCompanion<StorageUsageFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): StorageUsageFlag? = when (v) {
       1u -> SET
       2u -> PHOTO

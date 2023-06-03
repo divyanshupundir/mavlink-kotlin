@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -37,7 +36,7 @@ public data class OsdParamConfigReply(
   @GeneratedMavField(type = "uint8_t")
   public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0u),
 ) : MavMessage<OsdParamConfigReply> {
-  public override val instanceMetadata: MavMessage.Metadata<OsdParamConfigReply> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfigReply> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -53,16 +52,16 @@ public data class OsdParamConfigReply(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_034u
-
-    private const val CRC_EXTRA: Byte = 79
-
+  public companion object : MavMessage.MavCompanion<OsdParamConfigReply> {
     private const val SIZE_V1: Int = 5
 
     private const val SIZE_V2: Int = 5
 
-    private val DESERIALIZER: MavDeserializer<OsdParamConfigReply> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_034u
+
+    public override val crcExtra: Byte = 79
+
+    public override fun deserialize(bytes: ByteArray): OsdParamConfigReply {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUInt32()
       val result = inputBuffer.decodeEnumValue(1).let { value ->
@@ -70,19 +69,13 @@ public data class OsdParamConfigReply(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      OsdParamConfigReply(
+      return OsdParamConfigReply(
         requestId = requestId,
         result = result,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<OsdParamConfigReply> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<OsdParamConfigReply> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): OsdParamConfigReply =
+    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamConfigReply =
         Builder().apply(builderAction).build()
   }
 

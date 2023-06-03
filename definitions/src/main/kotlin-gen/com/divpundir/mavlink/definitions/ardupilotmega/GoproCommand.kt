@@ -96,7 +96,7 @@ public enum class GoproCommand(
   CHARGING(16u),
   ;
 
-  public companion object : MavEnum.Companion<GoproCommand> {
+  public companion object : MavEnum.MavCompanion<GoproCommand> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproCommand? = when (v) {
       0u -> POWER
       1u -> CAPTURE_MODE

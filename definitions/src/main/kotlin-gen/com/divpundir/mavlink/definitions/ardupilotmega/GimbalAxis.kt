@@ -26,7 +26,7 @@ public enum class GimbalAxis(
   ROLL(2u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalAxis> {
+  public companion object : MavEnum.MavCompanion<GimbalAxis> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalAxis? = when (v) {
       0u -> YAW
       1u -> PITCH

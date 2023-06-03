@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -73,7 +72,7 @@ public data class VisionSpeedEstimate(
   )
   public val resetCounter: UByte = 0u,
 ) : MavMessage<VisionSpeedEstimate> {
-  public override val instanceMetadata: MavMessage.Metadata<VisionSpeedEstimate> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<VisionSpeedEstimate> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -95,16 +94,16 @@ public data class VisionSpeedEstimate(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 103u
-
-    private const val CRC_EXTRA: Byte = -48
-
+  public companion object : MavMessage.MavCompanion<VisionSpeedEstimate> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 57
 
-    private val DESERIALIZER: MavDeserializer<VisionSpeedEstimate> = MavDeserializer { bytes ->
+    public override val id: UInt = 103u
+
+    public override val crcExtra: Byte = -48
+
+    public override fun deserialize(bytes: ByteArray): VisionSpeedEstimate {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val usec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
@@ -113,7 +112,7 @@ public data class VisionSpeedEstimate(
       val covariance = inputBuffer.decodeFloatArray(36)
       val resetCounter = inputBuffer.decodeUInt8()
 
-      VisionSpeedEstimate(
+      return VisionSpeedEstimate(
         usec = usec,
         x = x,
         y = y,
@@ -123,13 +122,7 @@ public data class VisionSpeedEstimate(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<VisionSpeedEstimate> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<VisionSpeedEstimate> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): VisionSpeedEstimate =
+    public operator fun invoke(builderAction: Builder.() -> Unit): VisionSpeedEstimate =
         Builder().apply(builderAction).build()
   }
 

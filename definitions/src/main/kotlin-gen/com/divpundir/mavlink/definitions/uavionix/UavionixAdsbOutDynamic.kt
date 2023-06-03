@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.uavionix
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -123,7 +122,7 @@ public data class UavionixAdsbOutDynamic(
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
 ) : MavMessage<UavionixAdsbOutDynamic> {
-  public override val instanceMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutDynamic> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -167,16 +166,16 @@ public data class UavionixAdsbOutDynamic(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 10_002u
-
-    private const val CRC_EXTRA: Byte = -70
-
+  public companion object : MavMessage.MavCompanion<UavionixAdsbOutDynamic> {
     private const val SIZE_V1: Int = 41
 
     private const val SIZE_V2: Int = 41
 
-    private val DESERIALIZER: MavDeserializer<UavionixAdsbOutDynamic> = MavDeserializer { bytes ->
+    public override val id: UInt = 10_002u
+
+    public override val crcExtra: Byte = -70
+
+    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutDynamic {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val utctime = inputBuffer.decodeUInt32()
       val gpslat = inputBuffer.decodeInt32()
@@ -204,7 +203,7 @@ public data class UavionixAdsbOutDynamic(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      UavionixAdsbOutDynamic(
+      return UavionixAdsbOutDynamic(
         utctime = utctime,
         gpslat = gpslat,
         gpslon = gpslon,
@@ -224,13 +223,7 @@ public data class UavionixAdsbOutDynamic(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<UavionixAdsbOutDynamic> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<UavionixAdsbOutDynamic> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): UavionixAdsbOutDynamic =
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutDynamic =
         Builder().apply(builderAction).build()
   }
 

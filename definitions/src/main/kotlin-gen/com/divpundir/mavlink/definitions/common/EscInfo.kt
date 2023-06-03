@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -92,7 +91,7 @@ public data class EscInfo(
   @GeneratedMavField(type = "int16_t[4]")
   public val temperature: List<Short> = emptyList(),
 ) : MavMessage<EscInfo> {
-  public override val instanceMetadata: MavMessage.Metadata<EscInfo> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -122,16 +121,16 @@ public data class EscInfo(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 290u
-
-    private const val CRC_EXTRA: Byte = -5
-
+  public companion object : MavMessage.MavCompanion<EscInfo> {
     private const val SIZE_V1: Int = 46
 
     private const val SIZE_V2: Int = 46
 
-    private val DESERIALIZER: MavDeserializer<EscInfo> = MavDeserializer { bytes ->
+    public override val id: UInt = 290u
+
+    public override val crcExtra: Byte = -5
+
+    public override fun deserialize(bytes: ByteArray): EscInfo {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val errorCount = inputBuffer.decodeUInt32Array(16)
@@ -146,7 +145,7 @@ public data class EscInfo(
       }
       val info = inputBuffer.decodeUInt8()
 
-      EscInfo(
+      return EscInfo(
         index = index,
         timeUsec = timeUsec,
         counter = counter,
@@ -159,13 +158,7 @@ public data class EscInfo(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<EscInfo> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<EscInfo> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): EscInfo =
+    public operator fun invoke(builderAction: Builder.() -> Unit): EscInfo =
         Builder().apply(builderAction).build()
   }
 

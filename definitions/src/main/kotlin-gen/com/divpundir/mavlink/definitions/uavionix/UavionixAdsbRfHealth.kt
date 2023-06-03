@@ -23,7 +23,7 @@ public enum class UavionixAdsbRfHealth(
   FAIL_RX(16u),
   ;
 
-  public companion object : MavBitmask.Companion<UavionixAdsbRfHealth> {
+  public companion object : MavBitmask.MavCompanion<UavionixAdsbRfHealth> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbRfHealth? = when (v) {
       0u -> INITIALIZING
       1u -> OK

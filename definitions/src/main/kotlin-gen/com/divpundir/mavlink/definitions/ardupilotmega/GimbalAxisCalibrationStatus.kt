@@ -26,7 +26,7 @@ public enum class GimbalAxisCalibrationStatus(
   FAILED(2u),
   ;
 
-  public companion object : MavEnum.Companion<GimbalAxisCalibrationStatus> {
+  public companion object : MavEnum.MavCompanion<GimbalAxisCalibrationStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalAxisCalibrationStatus? = when (v) {
       0u -> IN_PROGRESS
       1u -> SUCCEEDED

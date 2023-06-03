@@ -23,7 +23,7 @@ public enum class MavlinkDataStreamType(
   MAVLINK_DATA_STREAM_IMG_PNG(5u),
   ;
 
-  public companion object : MavEnum.Companion<MavlinkDataStreamType> {
+  public companion object : MavEnum.MavCompanion<MavlinkDataStreamType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavlinkDataStreamType? = when (v) {
       0u -> MAVLINK_DATA_STREAM_IMG_JPEG
       1u -> MAVLINK_DATA_STREAM_IMG_BMP

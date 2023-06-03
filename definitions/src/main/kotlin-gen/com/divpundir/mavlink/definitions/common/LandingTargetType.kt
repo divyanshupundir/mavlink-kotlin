@@ -35,7 +35,7 @@ public enum class LandingTargetType(
   VISION_OTHER(3u),
   ;
 
-  public companion object : MavEnum.Companion<LandingTargetType> {
+  public companion object : MavEnum.MavCompanion<LandingTargetType> {
     public override fun getEntryFromValueOrNull(v: UInt): LandingTargetType? = when (v) {
       0u -> LIGHT_BEACON
       1u -> RADIO_BEACON

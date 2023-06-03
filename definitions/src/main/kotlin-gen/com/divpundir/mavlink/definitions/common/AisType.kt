@@ -238,7 +238,7 @@ public enum class AisType(
   OTHER_UNKNOWN(99u),
   ;
 
-  public companion object : MavEnum.Companion<AisType> {
+  public companion object : MavEnum.MavCompanion<AisType> {
     public override fun getEntryFromValueOrNull(v: UInt): AisType? = when (v) {
       0u -> UNKNOWN
       1u -> RESERVED_1

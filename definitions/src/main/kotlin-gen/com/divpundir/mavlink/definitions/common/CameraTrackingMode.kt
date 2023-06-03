@@ -29,7 +29,7 @@ public enum class CameraTrackingMode(
   RECTANGLE(2u),
   ;
 
-  public companion object : MavEnum.Companion<CameraTrackingMode> {
+  public companion object : MavEnum.MavCompanion<CameraTrackingMode> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingMode? = when (v) {
       0u -> NONE
       1u -> POINT

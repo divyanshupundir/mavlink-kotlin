@@ -26,7 +26,7 @@ public enum class MavOdidOperatorLocationType(
   FIXED(2u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidOperatorLocationType> {
+  public companion object : MavEnum.MavCompanion<MavOdidOperatorLocationType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidOperatorLocationType? = when (v) {
       0u -> TAKEOFF
       1u -> LIVE_GNSS

@@ -31,7 +31,7 @@ public enum class UalbertaNavMode(
   NAV_INS_GPS(4u),
   ;
 
-  public companion object : MavEnum.Companion<UalbertaNavMode> {
+  public companion object : MavEnum.MavCompanion<UalbertaNavMode> {
     public override fun getEntryFromValueOrNull(v: UInt): UalbertaNavMode? = when (v) {
       1u -> NAV_AHRS_INIT
       2u -> NAV_AHRS

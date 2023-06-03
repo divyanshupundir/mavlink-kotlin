@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -65,7 +64,7 @@ public data class ManualSetpoint(
   @GeneratedMavField(type = "uint8_t")
   public val manualOverrideSwitch: UByte = 0u,
 ) : MavMessage<ManualSetpoint> {
-  public override val instanceMetadata: MavMessage.Metadata<ManualSetpoint> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ManualSetpoint> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -91,16 +90,16 @@ public data class ManualSetpoint(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 81u
-
-    private const val CRC_EXTRA: Byte = 106
-
+  public companion object : MavMessage.MavCompanion<ManualSetpoint> {
     private const val SIZE_V1: Int = 22
 
     private const val SIZE_V2: Int = 22
 
-    private val DESERIALIZER: MavDeserializer<ManualSetpoint> = MavDeserializer { bytes ->
+    public override val id: UInt = 81u
+
+    public override val crcExtra: Byte = 106
+
+    public override fun deserialize(bytes: ByteArray): ManualSetpoint {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val roll = inputBuffer.decodeFloat()
@@ -110,7 +109,7 @@ public data class ManualSetpoint(
       val modeSwitch = inputBuffer.decodeUInt8()
       val manualOverrideSwitch = inputBuffer.decodeUInt8()
 
-      ManualSetpoint(
+      return ManualSetpoint(
         timeBootMs = timeBootMs,
         roll = roll,
         pitch = pitch,
@@ -121,13 +120,7 @@ public data class ManualSetpoint(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ManualSetpoint> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ManualSetpoint> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ManualSetpoint =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ManualSetpoint =
         Builder().apply(builderAction).build()
   }
 

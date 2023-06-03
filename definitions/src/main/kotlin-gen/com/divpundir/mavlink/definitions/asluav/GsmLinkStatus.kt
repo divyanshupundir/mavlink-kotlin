@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -66,7 +65,7 @@ public data class GsmLinkStatus(
   @GeneratedMavField(type = "uint8_t")
   public val rsrq: UByte = 0u,
 ) : MavMessage<GsmLinkStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<GsmLinkStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GsmLinkStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -92,16 +91,16 @@ public data class GsmLinkStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_014u
-
-    private const val CRC_EXTRA: Byte = -56
-
+  public companion object : MavMessage.MavCompanion<GsmLinkStatus> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 14
 
-    private val DESERIALIZER: MavDeserializer<GsmLinkStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_014u
+
+    public override val crcExtra: Byte = -56
+
+    public override fun deserialize(bytes: ByteArray): GsmLinkStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val gsmModemType = inputBuffer.decodeEnumValue(1).let { value ->
@@ -117,7 +116,7 @@ public data class GsmLinkStatus(
       val sinrEcio = inputBuffer.decodeUInt8()
       val rsrq = inputBuffer.decodeUInt8()
 
-      GsmLinkStatus(
+      return GsmLinkStatus(
         timestamp = timestamp,
         gsmModemType = gsmModemType,
         gsmLinkType = gsmLinkType,
@@ -128,13 +127,7 @@ public data class GsmLinkStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GsmLinkStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GsmLinkStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GsmLinkStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GsmLinkStatus =
         Builder().apply(builderAction).build()
   }
 

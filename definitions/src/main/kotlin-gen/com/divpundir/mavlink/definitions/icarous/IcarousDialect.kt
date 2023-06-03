@@ -7,7 +7,7 @@ import com.divpundir.mavlink.api.GeneratedMavDialect
 public object IcarousDialect : AbstractMavDialect(
   emptySet(), 
   mapOf(
-    IcarousHeartbeat.classMetadata.id to IcarousHeartbeat.classMetadata,
-    IcarousKinematicBands.classMetadata.id to IcarousKinematicBands.classMetadata,
+    IcarousHeartbeat.id to IcarousHeartbeat,
+    IcarousKinematicBands.id to IcarousKinematicBands,
   )
 )

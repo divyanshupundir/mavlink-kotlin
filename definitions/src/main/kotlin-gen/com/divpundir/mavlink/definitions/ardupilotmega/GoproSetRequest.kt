@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -51,7 +50,7 @@ public data class GoproSetRequest(
   @GeneratedMavField(type = "uint8_t[4]")
   public val `value`: List<UByte> = emptyList(),
 ) : MavMessage<GoproSetRequest> {
-  public override val instanceMetadata: MavMessage.Metadata<GoproSetRequest> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GoproSetRequest> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -71,16 +70,16 @@ public data class GoproSetRequest(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 218u
-
-    private const val CRC_EXTRA: Byte = 17
-
+  public companion object : MavMessage.MavCompanion<GoproSetRequest> {
     private const val SIZE_V1: Int = 7
 
     private const val SIZE_V2: Int = 7
 
-    private val DESERIALIZER: MavDeserializer<GoproSetRequest> = MavDeserializer { bytes ->
+    public override val id: UInt = 218u
+
+    public override val crcExtra: Byte = 17
+
+    public override fun deserialize(bytes: ByteArray): GoproSetRequest {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
@@ -90,7 +89,7 @@ public data class GoproSetRequest(
       }
       val value = inputBuffer.decodeUInt8Array(4)
 
-      GoproSetRequest(
+      return GoproSetRequest(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         cmdId = cmdId,
@@ -98,13 +97,7 @@ public data class GoproSetRequest(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GoproSetRequest> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GoproSetRequest> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GoproSetRequest =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GoproSetRequest =
         Builder().apply(builderAction).build()
   }
 

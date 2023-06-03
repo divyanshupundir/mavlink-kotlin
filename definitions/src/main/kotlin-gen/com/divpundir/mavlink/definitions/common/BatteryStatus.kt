@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -141,7 +140,7 @@ public data class BatteryStatus(
   )
   public val faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<BatteryStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<BatteryStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -176,16 +175,16 @@ public data class BatteryStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 147u
-
-    private const val CRC_EXTRA: Byte = -102
-
+  public companion object : MavMessage.MavCompanion<BatteryStatus> {
     private const val SIZE_V1: Int = 36
 
     private const val SIZE_V2: Int = 54
 
-    private val DESERIALIZER: MavDeserializer<BatteryStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 147u
+
+    public override val crcExtra: Byte = -102
+
+    public override fun deserialize(bytes: ByteArray): BatteryStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val currentConsumed = inputBuffer.decodeInt32()
       val energyConsumed = inputBuffer.decodeInt32()
@@ -217,7 +216,7 @@ public data class BatteryStatus(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      BatteryStatus(
+      return BatteryStatus(
         id = id,
         batteryFunction = batteryFunction,
         type = type,
@@ -235,13 +234,7 @@ public data class BatteryStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<BatteryStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<BatteryStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): BatteryStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): BatteryStatus =
         Builder().apply(builderAction).build()
   }
 

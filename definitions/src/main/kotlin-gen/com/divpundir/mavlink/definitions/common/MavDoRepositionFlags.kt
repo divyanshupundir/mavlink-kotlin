@@ -21,7 +21,7 @@ public enum class MavDoRepositionFlags(
   CHANGE_MODE(1u),
   ;
 
-  public companion object : MavBitmask.Companion<MavDoRepositionFlags> {
+  public companion object : MavBitmask.MavCompanion<MavDoRepositionFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): MavDoRepositionFlags? = when (v) {
       1u -> CHANGE_MODE
       else -> null

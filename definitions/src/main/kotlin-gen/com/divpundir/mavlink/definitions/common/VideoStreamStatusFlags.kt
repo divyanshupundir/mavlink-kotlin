@@ -25,7 +25,7 @@ public enum class VideoStreamStatusFlags(
   THERMAL(2u),
   ;
 
-  public companion object : MavBitmask.Companion<VideoStreamStatusFlags> {
+  public companion object : MavBitmask.MavCompanion<VideoStreamStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): VideoStreamStatusFlags? = when (v) {
       1u -> RUNNING
       2u -> THERMAL

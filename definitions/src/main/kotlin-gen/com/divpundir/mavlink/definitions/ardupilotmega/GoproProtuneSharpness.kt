@@ -26,7 +26,7 @@ public enum class GoproProtuneSharpness(
   HIGH(2u),
   ;
 
-  public companion object : MavEnum.Companion<GoproProtuneSharpness> {
+  public companion object : MavEnum.MavCompanion<GoproProtuneSharpness> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneSharpness? = when (v) {
       0u -> LOW
       1u -> MEDIUM
