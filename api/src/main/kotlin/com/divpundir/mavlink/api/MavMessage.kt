@@ -33,4 +33,8 @@ public interface MavMessage<T : MavMessage<T>> {
         val crcExtra: Byte,
         val deserializer: MavDeserializer<T>
     )
+
+    public interface Companion<T : MavMessage<T>> {
+        public val classMetadata: Metadata<T>
+    }
 }
