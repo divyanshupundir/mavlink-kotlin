@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -43,7 +42,7 @@ public data class GoproHeartbeat(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<GoproHeartbeat> {
-  public override val instanceMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GoproHeartbeat> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,16 +60,16 @@ public data class GoproHeartbeat(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 215u
-
-    private const val CRC_EXTRA: Byte = 101
-
+  public companion object : MavMessage.MavCompanion<GoproHeartbeat> {
     private const val SIZE_V1: Int = 3
 
     private const val SIZE_V2: Int = 3
 
-    private val DESERIALIZER: MavDeserializer<GoproHeartbeat> = MavDeserializer { bytes ->
+    public override val id: UInt = 215u
+
+    public override val crcExtra: Byte = 101
+
+    public override fun deserialize(bytes: ByteArray): GoproHeartbeat {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = GoproHeartbeatStatus.getEntryFromValueOrNull(value)
@@ -85,20 +84,14 @@ public data class GoproHeartbeat(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      GoproHeartbeat(
+      return GoproHeartbeat(
         status = status,
         captureMode = captureMode,
         flags = flags,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GoproHeartbeat> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GoproHeartbeat> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GoproHeartbeat =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GoproHeartbeat =
         Builder().apply(builderAction).build()
   }
 

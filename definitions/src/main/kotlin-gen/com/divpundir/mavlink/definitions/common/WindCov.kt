@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -75,7 +74,7 @@ public data class WindCov(
   @GeneratedMavField(type = "float")
   public val vertAccuracy: Float = 0F,
 ) : MavMessage<WindCov> {
-  public override val instanceMetadata: MavMessage.Metadata<WindCov> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -105,16 +104,16 @@ public data class WindCov(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 231u
-
-    private const val CRC_EXTRA: Byte = 105
-
+  public companion object : MavMessage.MavCompanion<WindCov> {
     private const val SIZE_V1: Int = 40
 
     private const val SIZE_V2: Int = 40
 
-    private val DESERIALIZER: MavDeserializer<WindCov> = MavDeserializer { bytes ->
+    public override val id: UInt = 231u
+
+    public override val crcExtra: Byte = 105
+
+    public override fun deserialize(bytes: ByteArray): WindCov {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val windX = inputBuffer.decodeFloat()
@@ -126,7 +125,7 @@ public data class WindCov(
       val horizAccuracy = inputBuffer.decodeFloat()
       val vertAccuracy = inputBuffer.decodeFloat()
 
-      WindCov(
+      return WindCov(
         timeUsec = timeUsec,
         windX = windX,
         windY = windY,
@@ -139,13 +138,7 @@ public data class WindCov(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<WindCov> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<WindCov> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): WindCov =
+    public operator fun invoke(builderAction: Builder.() -> Unit): WindCov =
         Builder().apply(builderAction).build()
   }
 

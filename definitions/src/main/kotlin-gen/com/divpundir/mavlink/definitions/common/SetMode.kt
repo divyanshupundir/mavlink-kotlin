@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -48,7 +47,7 @@ public data class SetMode(
   @GeneratedMavField(type = "uint32_t")
   public val customMode: UInt = 0u,
 ) : MavMessage<SetMode> {
-  public override val instanceMetadata: MavMessage.Metadata<SetMode> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SetMode> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -66,16 +65,16 @@ public data class SetMode(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11u
-
-    private const val CRC_EXTRA: Byte = 89
-
+  public companion object : MavMessage.MavCompanion<SetMode> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<SetMode> = MavDeserializer { bytes ->
+    public override val id: UInt = 11u
+
+    public override val crcExtra: Byte = 89
+
+    public override fun deserialize(bytes: ByteArray): SetMode {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val customMode = inputBuffer.decodeUInt32()
       val targetSystem = inputBuffer.decodeUInt8()
@@ -84,20 +83,14 @@ public data class SetMode(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      SetMode(
+      return SetMode(
         targetSystem = targetSystem,
         baseMode = baseMode,
         customMode = customMode,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SetMode> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SetMode> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SetMode =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetMode =
         Builder().apply(builderAction).build()
   }
 

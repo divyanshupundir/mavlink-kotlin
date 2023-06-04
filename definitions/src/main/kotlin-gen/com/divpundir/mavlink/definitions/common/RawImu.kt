@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -102,7 +101,7 @@ public data class RawImu(
   )
   public val temperature: Short = 0,
 ) : MavMessage<RawImu> {
-  public override val instanceMetadata: MavMessage.Metadata<RawImu> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<RawImu> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -136,16 +135,16 @@ public data class RawImu(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 27u
-
-    private const val CRC_EXTRA: Byte = -112
-
+  public companion object : MavMessage.MavCompanion<RawImu> {
     private const val SIZE_V1: Int = 26
 
     private const val SIZE_V2: Int = 29
 
-    private val DESERIALIZER: MavDeserializer<RawImu> = MavDeserializer { bytes ->
+    public override val id: UInt = 27u
+
+    public override val crcExtra: Byte = -112
+
+    public override fun deserialize(bytes: ByteArray): RawImu {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val xacc = inputBuffer.decodeInt16()
@@ -160,7 +159,7 @@ public data class RawImu(
       val id = inputBuffer.decodeUInt8()
       val temperature = inputBuffer.decodeInt16()
 
-      RawImu(
+      return RawImu(
         timeUsec = timeUsec,
         xacc = xacc,
         yacc = yacc,
@@ -176,13 +175,7 @@ public data class RawImu(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<RawImu> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<RawImu> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): RawImu =
+    public operator fun invoke(builderAction: Builder.() -> Unit): RawImu =
         Builder().apply(builderAction).build()
   }
 

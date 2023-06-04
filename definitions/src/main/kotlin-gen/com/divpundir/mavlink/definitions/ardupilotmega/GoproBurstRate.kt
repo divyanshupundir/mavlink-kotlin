@@ -56,7 +56,7 @@ public enum class GoproBurstRate(
   _30_IN_6_SECOND(8u),
   ;
 
-  public companion object : MavEnum.Companion<GoproBurstRate> {
+  public companion object : MavEnum.MavCompanion<GoproBurstRate> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproBurstRate? = when (v) {
       0u -> _3_IN_1_SECOND
       1u -> _5_IN_1_SECOND

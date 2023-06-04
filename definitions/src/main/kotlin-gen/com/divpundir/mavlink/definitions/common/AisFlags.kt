@@ -64,7 +64,7 @@ public enum class AisFlags(
   VALID_NAME(4_096u),
   ;
 
-  public companion object : MavBitmask.Companion<AisFlags> {
+  public companion object : MavBitmask.MavCompanion<AisFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): AisFlags? = when (v) {
       1u -> POSITION_ACCURACY
       2u -> VALID_COG

@@ -69,7 +69,7 @@ public enum class MavParamExtType(
   CUSTOM(11u),
   ;
 
-  public companion object : MavEnum.Companion<MavParamExtType> {
+  public companion object : MavEnum.MavCompanion<MavParamExtType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavParamExtType? = when (v) {
       1u -> UINT8
       2u -> INT8

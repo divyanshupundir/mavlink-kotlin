@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -60,7 +59,7 @@ public data class GpsStatus(
   @GeneratedMavField(type = "uint8_t[20]")
   public val satelliteSnr: List<UByte> = emptyList(),
 ) : MavMessage<GpsStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<GpsStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GpsStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -84,16 +83,16 @@ public data class GpsStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 25u
-
-    private const val CRC_EXTRA: Byte = 23
-
+  public companion object : MavMessage.MavCompanion<GpsStatus> {
     private const val SIZE_V1: Int = 101
 
     private const val SIZE_V2: Int = 101
 
-    private val DESERIALIZER: MavDeserializer<GpsStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 25u
+
+    public override val crcExtra: Byte = 23
+
+    public override fun deserialize(bytes: ByteArray): GpsStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val satellitesVisible = inputBuffer.decodeUInt8()
       val satellitePrn = inputBuffer.decodeUInt8Array(20)
@@ -102,7 +101,7 @@ public data class GpsStatus(
       val satelliteAzimuth = inputBuffer.decodeUInt8Array(20)
       val satelliteSnr = inputBuffer.decodeUInt8Array(20)
 
-      GpsStatus(
+      return GpsStatus(
         satellitesVisible = satellitesVisible,
         satellitePrn = satellitePrn,
         satelliteUsed = satelliteUsed,
@@ -112,13 +111,7 @@ public data class GpsStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GpsStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GpsStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GpsStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsStatus =
         Builder().apply(builderAction).build()
   }
 

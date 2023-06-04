@@ -63,7 +63,7 @@ public enum class MavCmd(
   PAYLOAD_CONTROL(40_002u),
   ;
 
-  public companion object : MavEnum.Companion<MavCmd> {
+  public companion object : MavEnum.MavCompanion<MavCmd> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       40001u -> RESET_MPPT
       40002u -> PAYLOAD_CONTROL

@@ -51,7 +51,7 @@ public enum class GoproCaptureMode(
   UNKNOWN(255u),
   ;
 
-  public companion object : MavEnum.Companion<GoproCaptureMode> {
+  public companion object : MavEnum.MavCompanion<GoproCaptureMode> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproCaptureMode? = when (v) {
       0u -> VIDEO
       1u -> PHOTO

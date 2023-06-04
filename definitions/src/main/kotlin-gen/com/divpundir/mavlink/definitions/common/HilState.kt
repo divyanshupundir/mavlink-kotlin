@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -117,7 +116,7 @@ public data class HilState(
   @GeneratedMavField(type = "int16_t")
   public val zacc: Short = 0,
 ) : MavMessage<HilState> {
-  public override val instanceMetadata: MavMessage.Metadata<HilState> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HilState> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -161,16 +160,16 @@ public data class HilState(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 90u
-
-    private const val CRC_EXTRA: Byte = -73
-
+  public companion object : MavMessage.MavCompanion<HilState> {
     private const val SIZE_V1: Int = 56
 
     private const val SIZE_V2: Int = 56
 
-    private val DESERIALIZER: MavDeserializer<HilState> = MavDeserializer { bytes ->
+    public override val id: UInt = 90u
+
+    public override val crcExtra: Byte = -73
+
+    public override fun deserialize(bytes: ByteArray): HilState {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val roll = inputBuffer.decodeFloat()
@@ -189,7 +188,7 @@ public data class HilState(
       val yacc = inputBuffer.decodeInt16()
       val zacc = inputBuffer.decodeInt16()
 
-      HilState(
+      return HilState(
         timeUsec = timeUsec,
         roll = roll,
         pitch = pitch,
@@ -209,13 +208,7 @@ public data class HilState(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HilState> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HilState> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HilState =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilState =
         Builder().apply(builderAction).build()
   }
 

@@ -781,7 +781,7 @@ public enum class MavComponent(
   MAV_COMP_ID_SYSTEM_CONTROL(250u),
   ;
 
-  public companion object : MavEnum.Companion<MavComponent> {
+  public companion object : MavEnum.MavCompanion<MavComponent> {
     public override fun getEntryFromValueOrNull(v: UInt): MavComponent? = when (v) {
       0u -> MAV_COMP_ID_ALL
       1u -> MAV_COMP_ID_AUTOPILOT1

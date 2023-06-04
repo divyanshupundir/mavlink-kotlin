@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -91,7 +90,7 @@ public data class SensPowerBoard(
   @GeneratedMavField(type = "float")
   public val pwrBrdAuxAmp: Float = 0F,
 ) : MavMessage<SensPowerBoard> {
-  public override val instanceMetadata: MavMessage.Metadata<SensPowerBoard> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -127,16 +126,16 @@ public data class SensPowerBoard(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_013u
-
-    private const val CRC_EXTRA: Byte = -34
-
+  public companion object : MavMessage.MavCompanion<SensPowerBoard> {
     private const val SIZE_V1: Int = 46
 
     private const val SIZE_V2: Int = 46
 
-    private val DESERIALIZER: MavDeserializer<SensPowerBoard> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_013u
+
+    public override val crcExtra: Byte = -34
+
+    public override fun deserialize(bytes: ByteArray): SensPowerBoard {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val pwrBrdSystemVolt = inputBuffer.decodeFloat()
@@ -151,7 +150,7 @@ public data class SensPowerBoard(
       val pwrBrdStatus = inputBuffer.decodeUInt8()
       val pwrBrdLedStatus = inputBuffer.decodeUInt8()
 
-      SensPowerBoard(
+      return SensPowerBoard(
         timestamp = timestamp,
         pwrBrdStatus = pwrBrdStatus,
         pwrBrdLedStatus = pwrBrdLedStatus,
@@ -167,13 +166,7 @@ public data class SensPowerBoard(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SensPowerBoard> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SensPowerBoard> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SensPowerBoard =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensPowerBoard =
         Builder().apply(builderAction).build()
   }
 

@@ -84,7 +84,7 @@ public enum class CellularStatusFlag(
   CONNECTED(12u),
   ;
 
-  public companion object : MavEnum.Companion<CellularStatusFlag> {
+  public companion object : MavEnum.MavCompanion<CellularStatusFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): CellularStatusFlag? = when (v) {
       0u -> UNKNOWN
       1u -> FAILED

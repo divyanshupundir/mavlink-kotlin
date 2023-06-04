@@ -59,7 +59,7 @@ public enum class GpsFixType(
   PPP(8u),
   ;
 
-  public companion object : MavEnum.Companion<GpsFixType> {
+  public companion object : MavEnum.MavCompanion<GpsFixType> {
     public override fun getEntryFromValueOrNull(v: UInt): GpsFixType? = when (v) {
       0u -> NO_GPS
       1u -> NO_FIX

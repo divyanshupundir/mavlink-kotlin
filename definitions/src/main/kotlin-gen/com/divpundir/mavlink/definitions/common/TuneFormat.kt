@@ -25,7 +25,7 @@ public enum class TuneFormat(
   MML_MODERN(2u),
   ;
 
-  public companion object : MavEnum.Companion<TuneFormat> {
+  public companion object : MavEnum.MavCompanion<TuneFormat> {
     public override fun getEntryFromValueOrNull(v: UInt): TuneFormat? = when (v) {
       1u -> QBASIC1_1
       2u -> MML_MODERN

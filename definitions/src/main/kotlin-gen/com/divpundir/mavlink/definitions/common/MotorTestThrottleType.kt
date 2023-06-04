@@ -34,7 +34,7 @@ public enum class MotorTestThrottleType(
   MOTOR_TEST_COMPASS_CAL(3u),
   ;
 
-  public companion object : MavEnum.Companion<MotorTestThrottleType> {
+  public companion object : MavEnum.MavCompanion<MotorTestThrottleType> {
     public override fun getEntryFromValueOrNull(v: UInt): MotorTestThrottleType? = when (v) {
       0u -> MOTOR_TEST_THROTTLE_PERCENT
       1u -> MOTOR_TEST_THROTTLE_PWM

@@ -41,7 +41,7 @@ public enum class GimbalManagerFlags(
   YAW_LOCK(16u),
   ;
 
-  public companion object : MavBitmask.Companion<GimbalManagerFlags> {
+  public companion object : MavBitmask.MavCompanion<GimbalManagerFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalManagerFlags? = when (v) {
       1u -> RETRACT
       2u -> NEUTRAL

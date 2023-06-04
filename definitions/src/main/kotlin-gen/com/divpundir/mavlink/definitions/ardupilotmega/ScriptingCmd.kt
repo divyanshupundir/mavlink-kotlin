@@ -31,7 +31,7 @@ public enum class ScriptingCmd(
   STOP_AND_RESTART(3u),
   ;
 
-  public companion object : MavEnum.Companion<ScriptingCmd> {
+  public companion object : MavEnum.MavCompanion<ScriptingCmd> {
     public override fun getEntryFromValueOrNull(v: UInt): ScriptingCmd? = when (v) {
       0u -> REPL_START
       1u -> REPL_STOP

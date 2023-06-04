@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -51,7 +50,7 @@ public data class AsluavStatus(
   @GeneratedMavField(type = "float")
   public val motorRpm: Float = 0F,
 ) : MavMessage<AsluavStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<AsluavStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AsluavStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -71,23 +70,23 @@ public data class AsluavStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_006u
-
-    private const val CRC_EXTRA: Byte = 97
-
+  public companion object : MavMessage.MavCompanion<AsluavStatus> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 14
 
-    private val DESERIALIZER: MavDeserializer<AsluavStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_006u
+
+    public override val crcExtra: Byte = 97
+
+    public override fun deserialize(bytes: ByteArray): AsluavStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val motorRpm = inputBuffer.decodeFloat()
       val ledStatus = inputBuffer.decodeUInt8()
       val satcomStatus = inputBuffer.decodeUInt8()
       val servoStatus = inputBuffer.decodeUInt8Array(8)
 
-      AsluavStatus(
+      return AsluavStatus(
         ledStatus = ledStatus,
         satcomStatus = satcomStatus,
         servoStatus = servoStatus,
@@ -95,13 +94,7 @@ public data class AsluavStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AsluavStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AsluavStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AsluavStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AsluavStatus =
         Builder().apply(builderAction).build()
   }
 

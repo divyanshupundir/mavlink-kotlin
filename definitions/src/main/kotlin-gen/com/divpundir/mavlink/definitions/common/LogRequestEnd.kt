@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -35,7 +34,7 @@ public data class LogRequestEnd(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<LogRequestEnd> {
-  public override val instanceMetadata: MavMessage.Metadata<LogRequestEnd> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LogRequestEnd> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class LogRequestEnd(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 122u
-
-    private const val CRC_EXTRA: Byte = -53
-
+  public companion object : MavMessage.MavCompanion<LogRequestEnd> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<LogRequestEnd> = MavDeserializer { bytes ->
+    public override val id: UInt = 122u
+
+    public override val crcExtra: Byte = -53
+
+    public override fun deserialize(bytes: ByteArray): LogRequestEnd {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      LogRequestEnd(
+      return LogRequestEnd(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LogRequestEnd> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LogRequestEnd> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LogRequestEnd =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogRequestEnd =
         Builder().apply(builderAction).build()
   }
 

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeFloat
@@ -70,7 +69,7 @@ public data class AttitudeTarget(
   @GeneratedMavField(type = "float")
   public val thrust: Float = 0F,
 ) : MavMessage<AttitudeTarget> {
-  public override val instanceMetadata: MavMessage.Metadata<AttitudeTarget> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AttitudeTarget> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -96,16 +95,16 @@ public data class AttitudeTarget(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 83u
-
-    private const val CRC_EXTRA: Byte = 22
-
+  public companion object : MavMessage.MavCompanion<AttitudeTarget> {
     private const val SIZE_V1: Int = 37
 
     private const val SIZE_V2: Int = 37
 
-    private val DESERIALIZER: MavDeserializer<AttitudeTarget> = MavDeserializer { bytes ->
+    public override val id: UInt = 83u
+
+    public override val crcExtra: Byte = 22
+
+    public override fun deserialize(bytes: ByteArray): AttitudeTarget {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val q = inputBuffer.decodeFloatArray(16)
@@ -118,7 +117,7 @@ public data class AttitudeTarget(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      AttitudeTarget(
+      return AttitudeTarget(
         timeBootMs = timeBootMs,
         typeMask = typeMask,
         q = q,
@@ -129,13 +128,7 @@ public data class AttitudeTarget(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AttitudeTarget> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AttitudeTarget> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AttitudeTarget =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeTarget =
         Builder().apply(builderAction).build()
   }
 

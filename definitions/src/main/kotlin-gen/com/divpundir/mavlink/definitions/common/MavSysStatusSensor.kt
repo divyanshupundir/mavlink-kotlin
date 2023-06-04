@@ -176,7 +176,7 @@ public enum class MavSysStatusSensor(
   MAV_SYS_STATUS_EXTENSION_USED(2_147_483_648u),
   ;
 
-  public companion object : MavBitmask.Companion<MavSysStatusSensor> {
+  public companion object : MavBitmask.MavCompanion<MavSysStatusSensor> {
     public override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensor? = when (v) {
       1u -> _3D_GYRO
       2u -> _3D_ACCEL

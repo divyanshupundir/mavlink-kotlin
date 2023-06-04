@@ -45,7 +45,7 @@ public enum class MavPowerStatus(
   CHANGED(32u),
   ;
 
-  public companion object : MavBitmask.Companion<MavPowerStatus> {
+  public companion object : MavBitmask.MavCompanion<MavPowerStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): MavPowerStatus? = when (v) {
       1u -> BRICK_VALID
       2u -> SERVO_VALID

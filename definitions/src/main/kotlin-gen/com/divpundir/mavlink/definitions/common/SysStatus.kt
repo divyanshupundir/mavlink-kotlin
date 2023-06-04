@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -145,7 +144,7 @@ public data class SysStatus(
   public val onboardControlSensorsHealthExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
       MavBitmaskValue.fromValue(0u),
 ) : MavMessage<SysStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<SysStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -186,16 +185,16 @@ public data class SysStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 1u
-
-    private const val CRC_EXTRA: Byte = 124
-
+  public companion object : MavMessage.MavCompanion<SysStatus> {
     private const val SIZE_V1: Int = 31
 
     private const val SIZE_V2: Int = 43
 
-    private val DESERIALIZER: MavDeserializer<SysStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 1u
+
+    public override val crcExtra: Byte = 124
+
+    public override fun deserialize(bytes: ByteArray): SysStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val onboardControlSensorsPresent = inputBuffer.decodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensor.getFlagsFromValue(value)
@@ -232,7 +231,7 @@ public data class SysStatus(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      SysStatus(
+      return SysStatus(
         onboardControlSensorsPresent = onboardControlSensorsPresent,
         onboardControlSensorsEnabled = onboardControlSensorsEnabled,
         onboardControlSensorsHealth = onboardControlSensorsHealth,
@@ -252,13 +251,7 @@ public data class SysStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SysStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SysStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SysStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SysStatus =
         Builder().apply(builderAction).build()
   }
 

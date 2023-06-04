@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -81,7 +80,8 @@ public data class GimbalManagerInformation(
   @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
 ) : MavMessage<GimbalManagerInformation> {
-  public override val instanceMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerInformation> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -111,16 +111,16 @@ public data class GimbalManagerInformation(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 280u
-
-    private const val CRC_EXTRA: Byte = 70
-
+  public companion object : MavMessage.MavCompanion<GimbalManagerInformation> {
     private const val SIZE_V1: Int = 33
 
     private const val SIZE_V2: Int = 33
 
-    private val DESERIALIZER: MavDeserializer<GimbalManagerInformation> = MavDeserializer { bytes ->
+    public override val id: UInt = 280u
+
+    public override val crcExtra: Byte = 70
+
+    public override fun deserialize(bytes: ByteArray): GimbalManagerInformation {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val capFlags = inputBuffer.decodeBitmaskValue(4).let { value ->
@@ -135,7 +135,7 @@ public data class GimbalManagerInformation(
       val yawMax = inputBuffer.decodeFloat()
       val gimbalDeviceId = inputBuffer.decodeUInt8()
 
-      GimbalManagerInformation(
+      return GimbalManagerInformation(
         timeBootMs = timeBootMs,
         capFlags = capFlags,
         gimbalDeviceId = gimbalDeviceId,
@@ -148,13 +148,7 @@ public data class GimbalManagerInformation(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GimbalManagerInformation> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GimbalManagerInformation> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GimbalManagerInformation =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerInformation =
         Builder().apply(builderAction).build()
   }
 

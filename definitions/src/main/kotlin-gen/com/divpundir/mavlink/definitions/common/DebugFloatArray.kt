@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloatArray
 import com.divpundir.mavlink.serialization.decodeString
@@ -61,7 +60,7 @@ public data class DebugFloatArray(
   )
   public val `data`: List<Float> = emptyList(),
 ) : MavMessage<DebugFloatArray> {
-  public override val instanceMetadata: MavMessage.Metadata<DebugFloatArray> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -80,23 +79,23 @@ public data class DebugFloatArray(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 350u
-
-    private const val CRC_EXTRA: Byte = -24
-
+  public companion object : MavMessage.MavCompanion<DebugFloatArray> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 252
 
-    private val DESERIALIZER: MavDeserializer<DebugFloatArray> = MavDeserializer { bytes ->
+    public override val id: UInt = 350u
+
+    public override val crcExtra: Byte = -24
+
+    public override fun deserialize(bytes: ByteArray): DebugFloatArray {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val arrayId = inputBuffer.decodeUInt16()
       val name = inputBuffer.decodeString(10)
       val data = inputBuffer.decodeFloatArray(232)
 
-      DebugFloatArray(
+      return DebugFloatArray(
         timeUsec = timeUsec,
         name = name,
         arrayId = arrayId,
@@ -104,13 +103,7 @@ public data class DebugFloatArray(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DebugFloatArray> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DebugFloatArray> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DebugFloatArray =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DebugFloatArray =
         Builder().apply(builderAction).build()
   }
 

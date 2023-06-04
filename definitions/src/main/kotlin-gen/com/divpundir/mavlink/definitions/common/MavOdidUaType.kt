@@ -91,7 +91,7 @@ public enum class MavOdidUaType(
   OTHER(15u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidUaType> {
+  public companion object : MavEnum.MavCompanion<MavOdidUaType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidUaType? = when (v) {
       0u -> NONE
       1u -> AEROPLANE

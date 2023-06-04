@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeFloat
@@ -77,7 +76,7 @@ public data class VideoStreamStatus(
   @GeneratedMavField(type = "uint16_t")
   public val hfov: UShort = 0u,
 ) : MavMessage<VideoStreamStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -105,16 +104,16 @@ public data class VideoStreamStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 270u
-
-    private const val CRC_EXTRA: Byte = 59
-
+  public companion object : MavMessage.MavCompanion<VideoStreamStatus> {
     private const val SIZE_V1: Int = 19
 
     private const val SIZE_V2: Int = 19
 
-    private val DESERIALIZER: MavDeserializer<VideoStreamStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 270u
+
+    public override val crcExtra: Byte = 59
+
+    public override fun deserialize(bytes: ByteArray): VideoStreamStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val framerate = inputBuffer.decodeFloat()
       val bitrate = inputBuffer.decodeUInt32()
@@ -128,7 +127,7 @@ public data class VideoStreamStatus(
       val hfov = inputBuffer.decodeUInt16()
       val streamId = inputBuffer.decodeUInt8()
 
-      VideoStreamStatus(
+      return VideoStreamStatus(
         streamId = streamId,
         flags = flags,
         framerate = framerate,
@@ -140,13 +139,7 @@ public data class VideoStreamStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<VideoStreamStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<VideoStreamStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): VideoStreamStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): VideoStreamStatus =
         Builder().apply(builderAction).build()
   }
 

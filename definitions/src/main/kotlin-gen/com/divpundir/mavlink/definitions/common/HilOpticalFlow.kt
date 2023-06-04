@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -101,7 +100,7 @@ public data class HilOpticalFlow(
   @GeneratedMavField(type = "float")
   public val distance: Float = 0F,
 ) : MavMessage<HilOpticalFlow> {
-  public override val instanceMetadata: MavMessage.Metadata<HilOpticalFlow> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HilOpticalFlow> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -137,16 +136,16 @@ public data class HilOpticalFlow(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 114u
-
-    private const val CRC_EXTRA: Byte = -19
-
+  public companion object : MavMessage.MavCompanion<HilOpticalFlow> {
     private const val SIZE_V1: Int = 44
 
     private const val SIZE_V2: Int = 44
 
-    private val DESERIALIZER: MavDeserializer<HilOpticalFlow> = MavDeserializer { bytes ->
+    public override val id: UInt = 114u
+
+    public override val crcExtra: Byte = -19
+
+    public override fun deserialize(bytes: ByteArray): HilOpticalFlow {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val integrationTimeUs = inputBuffer.decodeUInt32()
@@ -161,7 +160,7 @@ public data class HilOpticalFlow(
       val sensorId = inputBuffer.decodeUInt8()
       val quality = inputBuffer.decodeUInt8()
 
-      HilOpticalFlow(
+      return HilOpticalFlow(
         timeUsec = timeUsec,
         sensorId = sensorId,
         integrationTimeUs = integrationTimeUs,
@@ -177,13 +176,7 @@ public data class HilOpticalFlow(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HilOpticalFlow> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HilOpticalFlow> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HilOpticalFlow =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilOpticalFlow =
         Builder().apply(builderAction).build()
   }
 

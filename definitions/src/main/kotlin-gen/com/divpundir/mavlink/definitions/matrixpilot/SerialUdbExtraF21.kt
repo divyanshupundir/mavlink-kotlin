@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.encodeInt16
@@ -55,7 +54,7 @@ public data class SerialUdbExtraF21(
   @GeneratedMavField(type = "int16_t")
   public val sueGyroZOffset: Short = 0,
 ) : MavMessage<SerialUdbExtraF21> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF21> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF21> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -79,16 +78,16 @@ public data class SerialUdbExtraF21(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 187u
-
-    private const val CRC_EXTRA: Byte = -122
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF21> {
     private const val SIZE_V1: Int = 12
 
     private const val SIZE_V2: Int = 12
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF21> = MavDeserializer { bytes ->
+    public override val id: UInt = 187u
+
+    public override val crcExtra: Byte = -122
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF21 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueAccelXOffset = inputBuffer.decodeInt16()
       val sueAccelYOffset = inputBuffer.decodeInt16()
@@ -97,7 +96,7 @@ public data class SerialUdbExtraF21(
       val sueGyroYOffset = inputBuffer.decodeInt16()
       val sueGyroZOffset = inputBuffer.decodeInt16()
 
-      SerialUdbExtraF21(
+      return SerialUdbExtraF21(
         sueAccelXOffset = sueAccelXOffset,
         sueAccelYOffset = sueAccelYOffset,
         sueAccelZOffset = sueAccelZOffset,
@@ -107,13 +106,7 @@ public data class SerialUdbExtraF21(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF21> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF21> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF21 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF21 =
         Builder().apply(builderAction).build()
   }
 

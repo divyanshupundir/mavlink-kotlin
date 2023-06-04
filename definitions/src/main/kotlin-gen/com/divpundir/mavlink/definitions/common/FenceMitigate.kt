@@ -29,7 +29,7 @@ public enum class FenceMitigate(
   VEL_LIMIT(2u),
   ;
 
-  public companion object : MavEnum.Companion<FenceMitigate> {
+  public companion object : MavEnum.MavCompanion<FenceMitigate> {
     public override fun getEntryFromValueOrNull(v: UInt): FenceMitigate? = when (v) {
       0u -> UNKNOWN
       1u -> NONE

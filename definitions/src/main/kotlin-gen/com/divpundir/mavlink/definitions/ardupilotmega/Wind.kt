@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -40,7 +39,7 @@ public data class Wind(
   @GeneratedMavField(type = "float")
   public val speedZ: Float = 0F,
 ) : MavMessage<Wind> {
-  public override val instanceMetadata: MavMessage.Metadata<Wind> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -58,35 +57,29 @@ public data class Wind(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 168u
-
-    private const val CRC_EXTRA: Byte = 1
-
+  public companion object : MavMessage.MavCompanion<Wind> {
     private const val SIZE_V1: Int = 12
 
     private const val SIZE_V2: Int = 12
 
-    private val DESERIALIZER: MavDeserializer<Wind> = MavDeserializer { bytes ->
+    public override val id: UInt = 168u
+
+    public override val crcExtra: Byte = 1
+
+    public override fun deserialize(bytes: ByteArray): Wind {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val direction = inputBuffer.decodeFloat()
       val speed = inputBuffer.decodeFloat()
       val speedZ = inputBuffer.decodeFloat()
 
-      Wind(
+      return Wind(
         direction = direction,
         speed = speed,
         speedZ = speedZ,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Wind> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Wind> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Wind =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Wind =
         Builder().apply(builderAction).build()
   }
 

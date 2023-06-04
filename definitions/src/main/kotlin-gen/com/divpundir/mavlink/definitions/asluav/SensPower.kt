@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -45,7 +44,7 @@ public data class SensPower(
   @GeneratedMavField(type = "float")
   public val adc121Cs2Amp: Float = 0F,
 ) : MavMessage<SensPower> {
-  public override val instanceMetadata: MavMessage.Metadata<SensPower> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -65,23 +64,23 @@ public data class SensPower(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_002u
-
-    private const val CRC_EXTRA: Byte = -38
-
+  public companion object : MavMessage.MavCompanion<SensPower> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<SensPower> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_002u
+
+    public override val crcExtra: Byte = -38
+
+    public override fun deserialize(bytes: ByteArray): SensPower {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val adc121VspbVolt = inputBuffer.decodeFloat()
       val adc121CspbAmp = inputBuffer.decodeFloat()
       val adc121Cs1Amp = inputBuffer.decodeFloat()
       val adc121Cs2Amp = inputBuffer.decodeFloat()
 
-      SensPower(
+      return SensPower(
         adc121VspbVolt = adc121VspbVolt,
         adc121CspbAmp = adc121CspbAmp,
         adc121Cs1Amp = adc121Cs1Amp,
@@ -89,13 +88,7 @@ public data class SensPower(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SensPower> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SensPower> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SensPower =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensPower =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -126,7 +125,7 @@ public data class SetHomePosition(
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<SetHomePosition> {
-  public override val instanceMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SetHomePosition> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -161,16 +160,16 @@ public data class SetHomePosition(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 243u
-
-    private const val CRC_EXTRA: Byte = 85
-
+  public companion object : MavMessage.MavCompanion<SetHomePosition> {
     private const val SIZE_V1: Int = 53
 
     private const val SIZE_V2: Int = 61
 
-    private val DESERIALIZER: MavDeserializer<SetHomePosition> = MavDeserializer { bytes ->
+    public override val id: UInt = 243u
+
+    public override val crcExtra: Byte = 85
+
+    public override fun deserialize(bytes: ByteArray): SetHomePosition {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val latitude = inputBuffer.decodeInt32()
       val longitude = inputBuffer.decodeInt32()
@@ -185,7 +184,7 @@ public data class SetHomePosition(
       val targetSystem = inputBuffer.decodeUInt8()
       val timeUsec = inputBuffer.decodeUInt64()
 
-      SetHomePosition(
+      return SetHomePosition(
         targetSystem = targetSystem,
         latitude = latitude,
         longitude = longitude,
@@ -201,13 +200,7 @@ public data class SetHomePosition(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SetHomePosition> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SetHomePosition> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SetHomePosition =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetHomePosition =
         Builder().apply(builderAction).build()
   }
 

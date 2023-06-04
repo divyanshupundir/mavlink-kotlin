@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -76,7 +75,8 @@ public data class GimbalManagerSetPitchyaw(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<GimbalManagerSetPitchyaw> {
-  public override val instanceMetadata: MavMessage.Metadata<GimbalManagerSetPitchyaw> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -104,16 +104,16 @@ public data class GimbalManagerSetPitchyaw(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 287u
-
-    private const val CRC_EXTRA: Byte = 1
-
+  public companion object : MavMessage.MavCompanion<GimbalManagerSetPitchyaw> {
     private const val SIZE_V1: Int = 23
 
     private const val SIZE_V2: Int = 23
 
-    private val DESERIALIZER: MavDeserializer<GimbalManagerSetPitchyaw> = MavDeserializer { bytes ->
+    public override val id: UInt = 287u
+
+    public override val crcExtra: Byte = 1
+
+    public override fun deserialize(bytes: ByteArray): GimbalManagerSetPitchyaw {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
@@ -127,7 +127,7 @@ public data class GimbalManagerSetPitchyaw(
       val targetComponent = inputBuffer.decodeUInt8()
       val gimbalDeviceId = inputBuffer.decodeUInt8()
 
-      GimbalManagerSetPitchyaw(
+      return GimbalManagerSetPitchyaw(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         flags = flags,
@@ -139,13 +139,7 @@ public data class GimbalManagerSetPitchyaw(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GimbalManagerSetPitchyaw> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GimbalManagerSetPitchyaw> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GimbalManagerSetPitchyaw =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetPitchyaw =
         Builder().apply(builderAction).build()
   }
 

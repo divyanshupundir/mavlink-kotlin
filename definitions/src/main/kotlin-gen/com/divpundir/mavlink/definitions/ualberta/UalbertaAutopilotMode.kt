@@ -39,7 +39,7 @@ public enum class UalbertaAutopilotMode(
   MODE_AUTO_PID_POS(5u),
   ;
 
-  public companion object : MavEnum.Companion<UalbertaAutopilotMode> {
+  public companion object : MavEnum.MavCompanion<UalbertaAutopilotMode> {
     public override fun getEntryFromValueOrNull(v: UInt): UalbertaAutopilotMode? = when (v) {
       1u -> MODE_MANUAL_DIRECT
       2u -> MODE_MANUAL_SCALED

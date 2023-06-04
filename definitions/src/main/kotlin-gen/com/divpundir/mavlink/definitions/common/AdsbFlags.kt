@@ -35,7 +35,7 @@ public enum class AdsbFlags(
   SOURCE_UAT(32_768u),
   ;
 
-  public companion object : MavBitmask.Companion<AdsbFlags> {
+  public companion object : MavBitmask.MavCompanion<AdsbFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): AdsbFlags? = when (v) {
       1u -> VALID_COORDS
       2u -> VALID_ALTITUDE

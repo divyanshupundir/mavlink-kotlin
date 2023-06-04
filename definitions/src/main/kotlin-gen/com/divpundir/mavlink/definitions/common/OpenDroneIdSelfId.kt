@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -67,7 +66,7 @@ public data class OpenDroneIdSelfId(
   @GeneratedMavField(type = "char[23]")
   public val description: String = "",
 ) : MavMessage<OpenDroneIdSelfId> {
-  public override val instanceMetadata: MavMessage.Metadata<OpenDroneIdSelfId> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSelfId> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -89,16 +88,16 @@ public data class OpenDroneIdSelfId(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 12_903u
-
-    private const val CRC_EXTRA: Byte = -7
-
+  public companion object : MavMessage.MavCompanion<OpenDroneIdSelfId> {
     private const val SIZE_V1: Int = 46
 
     private const val SIZE_V2: Int = 46
 
-    private val DESERIALIZER: MavDeserializer<OpenDroneIdSelfId> = MavDeserializer { bytes ->
+    public override val id: UInt = 12_903u
+
+    public override val crcExtra: Byte = -7
+
+    public override fun deserialize(bytes: ByteArray): OpenDroneIdSelfId {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
@@ -109,7 +108,7 @@ public data class OpenDroneIdSelfId(
       }
       val description = inputBuffer.decodeString(23)
 
-      OpenDroneIdSelfId(
+      return OpenDroneIdSelfId(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idOrMac = idOrMac,
@@ -118,13 +117,7 @@ public data class OpenDroneIdSelfId(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<OpenDroneIdSelfId> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<OpenDroneIdSelfId> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): OpenDroneIdSelfId =
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSelfId =
         Builder().apply(builderAction).build()
   }
 

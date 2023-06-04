@@ -44,7 +44,7 @@ public enum class FailureUnit(
   SYSTEM_MAVLINK_SIGNAL(105u),
   ;
 
-  public companion object : MavEnum.Companion<FailureUnit> {
+  public companion object : MavEnum.MavCompanion<FailureUnit> {
     public override fun getEntryFromValueOrNull(v: UInt): FailureUnit? = when (v) {
       0u -> SENSOR_GYRO
       1u -> SENSOR_ACCEL

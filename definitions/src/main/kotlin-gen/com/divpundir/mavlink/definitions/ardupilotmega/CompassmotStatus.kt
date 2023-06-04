@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -58,7 +57,7 @@ public data class CompassmotStatus(
   @GeneratedMavField(type = "float")
   public val compensationz: Float = 0F,
 ) : MavMessage<CompassmotStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CompassmotStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +81,16 @@ public data class CompassmotStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 177u
-
-    private const val CRC_EXTRA: Byte = -16
-
+  public companion object : MavMessage.MavCompanion<CompassmotStatus> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<CompassmotStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 177u
+
+    public override val crcExtra: Byte = -16
+
+    public override fun deserialize(bytes: ByteArray): CompassmotStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val current = inputBuffer.decodeFloat()
       val compensationx = inputBuffer.decodeFloat()
@@ -100,7 +99,7 @@ public data class CompassmotStatus(
       val throttle = inputBuffer.decodeUInt16()
       val interference = inputBuffer.decodeUInt16()
 
-      CompassmotStatus(
+      return CompassmotStatus(
         throttle = throttle,
         current = current,
         interference = interference,
@@ -110,13 +109,7 @@ public data class CompassmotStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CompassmotStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CompassmotStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CompassmotStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CompassmotStatus =
         Builder().apply(builderAction).build()
   }
 

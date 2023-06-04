@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -35,7 +34,8 @@ public data class AutopilotVersionRequest(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<AutopilotVersionRequest> {
-  public override val instanceMetadata: MavMessage.Metadata<AutopilotVersionRequest> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersionRequest> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +51,27 @@ public data class AutopilotVersionRequest(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 183u
-
-    private const val CRC_EXTRA: Byte = 85
-
+  public companion object : MavMessage.MavCompanion<AutopilotVersionRequest> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<AutopilotVersionRequest> = MavDeserializer { bytes ->
+    public override val id: UInt = 183u
+
+    public override val crcExtra: Byte = 85
+
+    public override fun deserialize(bytes: ByteArray): AutopilotVersionRequest {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      AutopilotVersionRequest(
+      return AutopilotVersionRequest(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AutopilotVersionRequest> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AutopilotVersionRequest> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AutopilotVersionRequest =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotVersionRequest =
         Builder().apply(builderAction).build()
   }
 

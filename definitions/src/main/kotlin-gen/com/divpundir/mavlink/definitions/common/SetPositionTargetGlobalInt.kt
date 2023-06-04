@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -122,7 +121,8 @@ public data class SetPositionTargetGlobalInt(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<SetPositionTargetGlobalInt> {
-  public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetGlobalInt> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SetPositionTargetGlobalInt> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -166,17 +166,16 @@ public data class SetPositionTargetGlobalInt(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 86u
-
-    private const val CRC_EXTRA: Byte = 5
-
+  public companion object : MavMessage.MavCompanion<SetPositionTargetGlobalInt> {
     private const val SIZE_V1: Int = 53
 
     private const val SIZE_V2: Int = 53
 
-    private val DESERIALIZER: MavDeserializer<SetPositionTargetGlobalInt> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 86u
+
+    public override val crcExtra: Byte = 5
+
+    public override fun deserialize(bytes: ByteArray): SetPositionTargetGlobalInt {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val latInt = inputBuffer.decodeInt32()
@@ -201,7 +200,7 @@ public data class SetPositionTargetGlobalInt(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      SetPositionTargetGlobalInt(
+      return SetPositionTargetGlobalInt(
         timeBootMs = timeBootMs,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
@@ -221,13 +220,7 @@ public data class SetPositionTargetGlobalInt(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SetPositionTargetGlobalInt> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SetPositionTargetGlobalInt> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SetPositionTargetGlobalInt =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetPositionTargetGlobalInt =
         Builder().apply(builderAction).build()
   }
 

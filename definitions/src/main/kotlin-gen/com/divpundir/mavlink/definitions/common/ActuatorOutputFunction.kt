@@ -179,7 +179,7 @@ public enum class ActuatorOutputFunction(
   SERVO16(48u),
   ;
 
-  public companion object : MavEnum.Companion<ActuatorOutputFunction> {
+  public companion object : MavEnum.MavCompanion<ActuatorOutputFunction> {
     public override fun getEntryFromValueOrNull(v: UInt): ActuatorOutputFunction? = when (v) {
       0u -> NONE
       1u -> MOTOR1

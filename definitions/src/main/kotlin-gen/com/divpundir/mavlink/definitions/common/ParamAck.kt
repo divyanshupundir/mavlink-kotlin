@@ -37,7 +37,7 @@ public enum class ParamAck(
   IN_PROGRESS(3u),
   ;
 
-  public companion object : MavEnum.Companion<ParamAck> {
+  public companion object : MavEnum.MavCompanion<ParamAck> {
     public override fun getEntryFromValueOrNull(v: UInt): ParamAck? = when (v) {
       0u -> ACCEPTED
       1u -> VALUE_UNSUPPORTED

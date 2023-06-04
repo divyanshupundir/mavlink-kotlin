@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -31,7 +30,7 @@ public data class MissionItemReached(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
 ) : MavMessage<MissionItemReached> {
-  public override val instanceMetadata: MavMessage.Metadata<MissionItemReached> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MissionItemReached> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -45,31 +44,25 @@ public data class MissionItemReached(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 46u
-
-    private const val CRC_EXTRA: Byte = 11
-
+  public companion object : MavMessage.MavCompanion<MissionItemReached> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<MissionItemReached> = MavDeserializer { bytes ->
+    public override val id: UInt = 46u
+
+    public override val crcExtra: Byte = 11
+
+    public override fun deserialize(bytes: ByteArray): MissionItemReached {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seq = inputBuffer.decodeUInt16()
 
-      MissionItemReached(
+      return MissionItemReached(
         seq = seq,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MissionItemReached> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MissionItemReached> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MissionItemReached =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItemReached =
         Builder().apply(builderAction).build()
   }
 

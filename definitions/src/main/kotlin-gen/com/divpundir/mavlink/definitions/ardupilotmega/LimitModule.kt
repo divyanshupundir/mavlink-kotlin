@@ -27,7 +27,7 @@ public enum class LimitModule(
   LIMIT_ALTITUDE(4u),
   ;
 
-  public companion object : MavBitmask.Companion<LimitModule> {
+  public companion object : MavBitmask.MavCompanion<LimitModule> {
     public override fun getEntryFromValueOrNull(v: UInt): LimitModule? = when (v) {
       1u -> LIMIT_GPSLOCK
       2u -> LIMIT_GEOFENCE

@@ -54,7 +54,7 @@ public enum class AdsbEmitterType(
   POINT_OBSTACLE(19u),
   ;
 
-  public companion object : MavEnum.Companion<AdsbEmitterType> {
+  public companion object : MavEnum.MavCompanion<AdsbEmitterType> {
     public override fun getEntryFromValueOrNull(v: UInt): AdsbEmitterType? = when (v) {
       0u -> NO_INFO
       1u -> LIGHT

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -71,7 +70,7 @@ public data class NavControllerOutput(
   @GeneratedMavField(type = "float")
   public val xtrackError: Float = 0F,
 ) : MavMessage<NavControllerOutput> {
-  public override val instanceMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -99,16 +98,16 @@ public data class NavControllerOutput(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 62u
-
-    private const val CRC_EXTRA: Byte = -73
-
+  public companion object : MavMessage.MavCompanion<NavControllerOutput> {
     private const val SIZE_V1: Int = 26
 
     private const val SIZE_V2: Int = 26
 
-    private val DESERIALIZER: MavDeserializer<NavControllerOutput> = MavDeserializer { bytes ->
+    public override val id: UInt = 62u
+
+    public override val crcExtra: Byte = -73
+
+    public override fun deserialize(bytes: ByteArray): NavControllerOutput {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val navRoll = inputBuffer.decodeFloat()
       val navPitch = inputBuffer.decodeFloat()
@@ -119,7 +118,7 @@ public data class NavControllerOutput(
       val targetBearing = inputBuffer.decodeInt16()
       val wpDist = inputBuffer.decodeUInt16()
 
-      NavControllerOutput(
+      return NavControllerOutput(
         navRoll = navRoll,
         navPitch = navPitch,
         navBearing = navBearing,
@@ -131,13 +130,7 @@ public data class NavControllerOutput(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<NavControllerOutput> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<NavControllerOutput> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): NavControllerOutput =
+    public operator fun invoke(builderAction: Builder.() -> Unit): NavControllerOutput =
         Builder().apply(builderAction).build()
   }
 

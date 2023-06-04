@@ -43,7 +43,7 @@ public enum class MavRoi(
   NONE(0u),
   ;
 
-  public companion object : MavEnum.Companion<MavRoi> {
+  public companion object : MavEnum.MavCompanion<MavRoi> {
     public override fun getEntryFromValueOrNull(v: UInt): MavRoi? = when (v) {
       4u -> TARGET
       3u -> LOCATION

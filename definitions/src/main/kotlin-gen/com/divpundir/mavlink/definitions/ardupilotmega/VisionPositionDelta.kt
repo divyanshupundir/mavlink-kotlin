@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -58,7 +57,7 @@ public data class VisionPositionDelta(
   @GeneratedMavField(type = "float")
   public val confidence: Float = 0F,
 ) : MavMessage<VisionPositionDelta> {
-  public override val instanceMetadata: MavMessage.Metadata<VisionPositionDelta> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -80,16 +79,16 @@ public data class VisionPositionDelta(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_011u
-
-    private const val CRC_EXTRA: Byte = 106
-
+  public companion object : MavMessage.MavCompanion<VisionPositionDelta> {
     private const val SIZE_V1: Int = 44
 
     private const val SIZE_V2: Int = 44
 
-    private val DESERIALIZER: MavDeserializer<VisionPositionDelta> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_011u
+
+    public override val crcExtra: Byte = 106
+
+    public override fun deserialize(bytes: ByteArray): VisionPositionDelta {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val timeDeltaUsec = inputBuffer.decodeUInt64()
@@ -97,7 +96,7 @@ public data class VisionPositionDelta(
       val positionDelta = inputBuffer.decodeFloatArray(12)
       val confidence = inputBuffer.decodeFloat()
 
-      VisionPositionDelta(
+      return VisionPositionDelta(
         timeUsec = timeUsec,
         timeDeltaUsec = timeDeltaUsec,
         angleDelta = angleDelta,
@@ -106,13 +105,7 @@ public data class VisionPositionDelta(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<VisionPositionDelta> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<VisionPositionDelta> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): VisionPositionDelta =
+    public operator fun invoke(builderAction: Builder.() -> Unit): VisionPositionDelta =
         Builder().apply(builderAction).build()
   }
 

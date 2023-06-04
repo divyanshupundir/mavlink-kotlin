@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -137,7 +136,7 @@ public data class Odometry(
   )
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Odometry> {
-  public override val instanceMetadata: MavMessage.Metadata<Odometry> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -181,16 +180,16 @@ public data class Odometry(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 331u
-
-    private const val CRC_EXTRA: Byte = 91
-
+  public companion object : MavMessage.MavCompanion<Odometry> {
     private const val SIZE_V1: Int = 230
 
     private const val SIZE_V2: Int = 232
 
-    private val DESERIALIZER: MavDeserializer<Odometry> = MavDeserializer { bytes ->
+    public override val id: UInt = 331u
+
+    public override val crcExtra: Byte = 91
+
+    public override fun deserialize(bytes: ByteArray): Odometry {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
@@ -219,7 +218,7 @@ public data class Odometry(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      Odometry(
+      return Odometry(
         timeUsec = timeUsec,
         frameId = frameId,
         childFrameId = childFrameId,
@@ -240,13 +239,7 @@ public data class Odometry(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Odometry> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Odometry> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Odometry =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Odometry =
         Builder().apply(builderAction).build()
   }
 

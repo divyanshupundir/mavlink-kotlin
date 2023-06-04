@@ -15,7 +15,7 @@ public enum class HeadingType(
   HEADING(1u),
   ;
 
-  public companion object : MavEnum.Companion<HeadingType> {
+  public companion object : MavEnum.MavCompanion<HeadingType> {
     public override fun getEntryFromValueOrNull(v: UInt): HeadingType? = when (v) {
       0u -> COURSE_OVER_GROUND
       1u -> HEADING

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -98,7 +97,8 @@ public data class CameraTrackingGeoStatus(
   @GeneratedMavField(type = "float")
   public val hdgAcc: Float = 0F,
 ) : MavMessage<CameraTrackingGeoStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<CameraTrackingGeoStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -136,16 +136,16 @@ public data class CameraTrackingGeoStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 276u
-
-    private const val CRC_EXTRA: Byte = 18
-
+  public companion object : MavMessage.MavCompanion<CameraTrackingGeoStatus> {
     private const val SIZE_V1: Int = 49
 
     private const val SIZE_V2: Int = 49
 
-    private val DESERIALIZER: MavDeserializer<CameraTrackingGeoStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 276u
+
+    public override val crcExtra: Byte = 18
+
+    public override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lon = inputBuffer.decodeInt32()
@@ -164,7 +164,7 @@ public data class CameraTrackingGeoStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      CameraTrackingGeoStatus(
+      return CameraTrackingGeoStatus(
         trackingStatus = trackingStatus,
         lat = lat,
         lon = lon,
@@ -181,13 +181,7 @@ public data class CameraTrackingGeoStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CameraTrackingGeoStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CameraTrackingGeoStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CameraTrackingGeoStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrackingGeoStatus =
         Builder().apply(builderAction).build()
   }
 

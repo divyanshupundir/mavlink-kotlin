@@ -76,7 +76,7 @@ public enum class MavOdidHorAcc(
   _1_METER(12u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidHorAcc> {
+  public companion object : MavEnum.MavCompanion<MavOdidHorAcc> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidHorAcc? = when (v) {
       0u -> UNKNOWN
       1u -> _10NM

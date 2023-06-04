@@ -34,7 +34,7 @@ public enum class UavcanNodeHealth(
   CRITICAL(3u),
   ;
 
-  public companion object : MavEnum.Companion<UavcanNodeHealth> {
+  public companion object : MavEnum.MavCompanion<UavcanNodeHealth> {
     public override fun getEntryFromValueOrNull(v: UInt): UavcanNodeHealth? = when (v) {
       0u -> OK
       1u -> WARNING

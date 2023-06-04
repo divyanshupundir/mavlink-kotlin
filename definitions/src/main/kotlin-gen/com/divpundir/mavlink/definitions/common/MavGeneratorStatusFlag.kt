@@ -135,7 +135,7 @@ public enum class MavGeneratorStatusFlag(
   IDLE(4_194_304u),
   ;
 
-  public companion object : MavBitmask.Companion<MavGeneratorStatusFlag> {
+  public companion object : MavBitmask.MavCompanion<MavGeneratorStatusFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): MavGeneratorStatusFlag? = when (v) {
       1u -> OFF
       2u -> READY

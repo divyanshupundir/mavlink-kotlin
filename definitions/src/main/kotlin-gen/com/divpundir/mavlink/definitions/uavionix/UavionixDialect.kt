@@ -10,9 +10,8 @@ public object UavionixDialect : AbstractMavDialect(
     CommonDialect,
   ), 
   mapOf(
-    UavionixAdsbOutCfg.classMetadata.id to UavionixAdsbOutCfg.classMetadata,
-    UavionixAdsbOutDynamic.classMetadata.id to UavionixAdsbOutDynamic.classMetadata,
-    UavionixAdsbTransceiverHealthReport.classMetadata.id to
-        UavionixAdsbTransceiverHealthReport.classMetadata,
+    UavionixAdsbOutCfg.id to UavionixAdsbOutCfg,
+    UavionixAdsbOutDynamic.id to UavionixAdsbOutDynamic,
+    UavionixAdsbTransceiverHealthReport.id to UavionixAdsbTransceiverHealthReport,
   )
 )

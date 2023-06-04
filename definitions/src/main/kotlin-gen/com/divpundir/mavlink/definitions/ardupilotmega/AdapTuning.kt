@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -93,7 +92,7 @@ public data class AdapTuning(
   @GeneratedMavField(type = "float")
   public val u: Float = 0F,
 ) : MavMessage<AdapTuning> {
-  public override val instanceMetadata: MavMessage.Metadata<AdapTuning> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AdapTuning> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -131,16 +130,16 @@ public data class AdapTuning(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_010u
-
-    private const val CRC_EXTRA: Byte = 46
-
+  public companion object : MavMessage.MavCompanion<AdapTuning> {
     private const val SIZE_V1: Int = 49
 
     private const val SIZE_V2: Int = 49
 
-    private val DESERIALIZER: MavDeserializer<AdapTuning> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_010u
+
+    public override val crcExtra: Byte = 46
+
+    public override fun deserialize(bytes: ByteArray): AdapTuning {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val desired = inputBuffer.decodeFloat()
       val achieved = inputBuffer.decodeFloat()
@@ -159,7 +158,7 @@ public data class AdapTuning(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      AdapTuning(
+      return AdapTuning(
         axis = axis,
         desired = desired,
         achieved = achieved,
@@ -176,13 +175,7 @@ public data class AdapTuning(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AdapTuning> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AdapTuning> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AdapTuning =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AdapTuning =
         Builder().apply(builderAction).build()
   }
 

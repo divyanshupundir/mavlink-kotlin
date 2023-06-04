@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.icarous
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -30,7 +29,7 @@ public data class IcarousHeartbeat(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<IcarousFmsState> = MavEnumValue.fromValue(0u),
 ) : MavMessage<IcarousHeartbeat> {
-  public override val instanceMetadata: MavMessage.Metadata<IcarousHeartbeat> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<IcarousHeartbeat> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -44,34 +43,28 @@ public data class IcarousHeartbeat(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 42_000u
-
-    private const val CRC_EXTRA: Byte = -29
-
+  public companion object : MavMessage.MavCompanion<IcarousHeartbeat> {
     private const val SIZE_V1: Int = 1
 
     private const val SIZE_V2: Int = 1
 
-    private val DESERIALIZER: MavDeserializer<IcarousHeartbeat> = MavDeserializer { bytes ->
+    public override val id: UInt = 42_000u
+
+    public override val crcExtra: Byte = -29
+
+    public override fun deserialize(bytes: ByteArray): IcarousHeartbeat {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val status = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = IcarousFmsState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      IcarousHeartbeat(
+      return IcarousHeartbeat(
         status = status,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<IcarousHeartbeat> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<IcarousHeartbeat> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): IcarousHeartbeat =
+    public operator fun invoke(builderAction: Builder.() -> Unit): IcarousHeartbeat =
         Builder().apply(builderAction).build()
   }
 

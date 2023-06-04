@@ -49,7 +49,7 @@ public enum class MavPreflightStorageAction(
   MAV_PFS_CMD_DO_NOTHING(6u),
   ;
 
-  public companion object : MavEnum.Companion<MavPreflightStorageAction> {
+  public companion object : MavEnum.MavCompanion<MavPreflightStorageAction> {
     public override fun getEntryFromValueOrNull(v: UInt): MavPreflightStorageAction? = when (v) {
       0u -> MAV_PFS_CMD_READ_ALL
       1u -> MAV_PFS_CMD_WRITE_ALL

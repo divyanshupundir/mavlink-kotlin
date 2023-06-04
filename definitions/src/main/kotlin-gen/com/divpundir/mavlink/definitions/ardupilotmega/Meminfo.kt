@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -45,7 +44,7 @@ public data class Meminfo(
   )
   public val freemem32: UInt = 0u,
 ) : MavMessage<Meminfo> {
-  public override val instanceMetadata: MavMessage.Metadata<Meminfo> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Meminfo> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -62,35 +61,29 @@ public data class Meminfo(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 152u
-
-    private const val CRC_EXTRA: Byte = -48
-
+  public companion object : MavMessage.MavCompanion<Meminfo> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 8
 
-    private val DESERIALIZER: MavDeserializer<Meminfo> = MavDeserializer { bytes ->
+    public override val id: UInt = 152u
+
+    public override val crcExtra: Byte = -48
+
+    public override fun deserialize(bytes: ByteArray): Meminfo {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val brkval = inputBuffer.decodeUInt16()
       val freemem = inputBuffer.decodeUInt16()
       val freemem32 = inputBuffer.decodeUInt32()
 
-      Meminfo(
+      return Meminfo(
         brkval = brkval,
         freemem = freemem,
         freemem32 = freemem32,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Meminfo> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Meminfo> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Meminfo =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Meminfo =
         Builder().apply(builderAction).build()
   }
 

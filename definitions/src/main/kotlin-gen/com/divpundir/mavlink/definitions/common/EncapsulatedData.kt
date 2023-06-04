@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8Array
@@ -40,7 +39,7 @@ public data class EncapsulatedData(
   @GeneratedMavField(type = "uint8_t[253]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<EncapsulatedData> {
-  public override val instanceMetadata: MavMessage.Metadata<EncapsulatedData> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<EncapsulatedData> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -56,33 +55,27 @@ public data class EncapsulatedData(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 131u
-
-    private const val CRC_EXTRA: Byte = -33
-
+  public companion object : MavMessage.MavCompanion<EncapsulatedData> {
     private const val SIZE_V1: Int = 255
 
     private const val SIZE_V2: Int = 255
 
-    private val DESERIALIZER: MavDeserializer<EncapsulatedData> = MavDeserializer { bytes ->
+    public override val id: UInt = 131u
+
+    public override val crcExtra: Byte = -33
+
+    public override fun deserialize(bytes: ByteArray): EncapsulatedData {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val seqnr = inputBuffer.decodeUInt16()
       val data = inputBuffer.decodeUInt8Array(253)
 
-      EncapsulatedData(
+      return EncapsulatedData(
         seqnr = seqnr,
         data = data,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<EncapsulatedData> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<EncapsulatedData> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): EncapsulatedData =
+    public operator fun invoke(builderAction: Builder.() -> Unit): EncapsulatedData =
         Builder().apply(builderAction).build()
   }
 

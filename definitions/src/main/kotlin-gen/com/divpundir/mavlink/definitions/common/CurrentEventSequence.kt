@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -41,7 +40,7 @@ public data class CurrentEventSequence(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavEnumValue<MavEventCurrentSequenceFlags> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CurrentEventSequence> {
-  public override val instanceMetadata: MavMessage.Metadata<CurrentEventSequence> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CurrentEventSequence> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -57,16 +56,16 @@ public data class CurrentEventSequence(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 411u
-
-    private const val CRC_EXTRA: Byte = 106
-
+  public companion object : MavMessage.MavCompanion<CurrentEventSequence> {
     private const val SIZE_V1: Int = 3
 
     private const val SIZE_V2: Int = 3
 
-    private val DESERIALIZER: MavDeserializer<CurrentEventSequence> = MavDeserializer { bytes ->
+    public override val id: UInt = 411u
+
+    public override val crcExtra: Byte = 106
+
+    public override fun deserialize(bytes: ByteArray): CurrentEventSequence {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sequence = inputBuffer.decodeUInt16()
       val flags = inputBuffer.decodeEnumValue(1).let { value ->
@@ -74,19 +73,13 @@ public data class CurrentEventSequence(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      CurrentEventSequence(
+      return CurrentEventSequence(
         sequence = sequence,
         flags = flags,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CurrentEventSequence> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CurrentEventSequence> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CurrentEventSequence =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CurrentEventSequence =
         Builder().apply(builderAction).build()
   }
 

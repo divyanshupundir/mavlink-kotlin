@@ -180,7 +180,7 @@ public enum class MavFrame(
   LOCAL_FLU(21u),
   ;
 
-  public companion object : MavEnum.Companion<MavFrame> {
+  public companion object : MavEnum.MavCompanion<MavFrame> {
     public override fun getEntryFromValueOrNull(v: UInt): MavFrame? = when (v) {
       0u -> GLOBAL
       1u -> LOCAL_NED

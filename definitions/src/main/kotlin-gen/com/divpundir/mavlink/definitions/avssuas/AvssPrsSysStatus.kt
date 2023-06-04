@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.avssuas
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -52,7 +51,7 @@ public data class AvssPrsSysStatus(
   @GeneratedMavField(type = "uint8_t")
   public val chargeStatus: UByte = 0u,
 ) : MavMessage<AvssPrsSysStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<AvssPrsSysStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AvssPrsSysStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -74,16 +73,16 @@ public data class AvssPrsSysStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 60_050u
-
-    private const val CRC_EXTRA: Byte = -36
-
+  public companion object : MavMessage.MavCompanion<AvssPrsSysStatus> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 14
 
-    private val DESERIALIZER: MavDeserializer<AvssPrsSysStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 60_050u
+
+    public override val crcExtra: Byte = -36
+
+    public override fun deserialize(bytes: ByteArray): AvssPrsSysStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val errorStatus = inputBuffer.decodeUInt32()
@@ -91,7 +90,7 @@ public data class AvssPrsSysStatus(
       val armStatus = inputBuffer.decodeUInt8()
       val chargeStatus = inputBuffer.decodeUInt8()
 
-      AvssPrsSysStatus(
+      return AvssPrsSysStatus(
         timeBootMs = timeBootMs,
         errorStatus = errorStatus,
         batteryStatus = batteryStatus,
@@ -100,13 +99,7 @@ public data class AvssPrsSysStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AvssPrsSysStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AvssPrsSysStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AvssPrsSysStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssPrsSysStatus =
         Builder().apply(builderAction).build()
   }
 

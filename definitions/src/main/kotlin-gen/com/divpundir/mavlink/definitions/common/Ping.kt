@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -57,7 +56,7 @@ public data class Ping(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<Ping> {
-  public override val instanceMetadata: MavMessage.Metadata<Ping> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Ping> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -77,23 +76,23 @@ public data class Ping(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 4u
-
-    private const val CRC_EXTRA: Byte = -19
-
+  public companion object : MavMessage.MavCompanion<Ping> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 14
 
-    private val DESERIALIZER: MavDeserializer<Ping> = MavDeserializer { bytes ->
+    public override val id: UInt = 4u
+
+    public override val crcExtra: Byte = -19
+
+    public override fun deserialize(bytes: ByteArray): Ping {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val seq = inputBuffer.decodeUInt32()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      Ping(
+      return Ping(
         timeUsec = timeUsec,
         seq = seq,
         targetSystem = targetSystem,
@@ -101,13 +100,7 @@ public data class Ping(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Ping> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Ping> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Ping =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Ping =
         Builder().apply(builderAction).build()
   }
 

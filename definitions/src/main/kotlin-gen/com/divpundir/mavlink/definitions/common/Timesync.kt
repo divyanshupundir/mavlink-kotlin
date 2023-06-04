@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt64
 import com.divpundir.mavlink.serialization.encodeInt64
@@ -35,7 +34,7 @@ public data class Timesync(
   @GeneratedMavField(type = "int64_t")
   public val ts1: Long = 0L,
 ) : MavMessage<Timesync> {
-  public override val instanceMetadata: MavMessage.Metadata<Timesync> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class Timesync(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 111u
-
-    private const val CRC_EXTRA: Byte = 34
-
+  public companion object : MavMessage.MavCompanion<Timesync> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<Timesync> = MavDeserializer { bytes ->
+    public override val id: UInt = 111u
+
+    public override val crcExtra: Byte = 34
+
+    public override fun deserialize(bytes: ByteArray): Timesync {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val tc1 = inputBuffer.decodeInt64()
       val ts1 = inputBuffer.decodeInt64()
 
-      Timesync(
+      return Timesync(
         tc1 = tc1,
         ts1 = ts1,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Timesync> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Timesync> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Timesync =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Timesync =
         Builder().apply(builderAction).build()
   }
 

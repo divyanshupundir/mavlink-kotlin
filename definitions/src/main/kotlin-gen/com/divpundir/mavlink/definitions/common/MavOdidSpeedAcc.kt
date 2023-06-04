@@ -36,7 +36,7 @@ public enum class MavOdidSpeedAcc(
   _0_3_METERS_PER_SECOND(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidSpeedAcc> {
+  public companion object : MavEnum.MavCompanion<MavOdidSpeedAcc> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidSpeedAcc? = when (v) {
       0u -> UNKNOWN
       1u -> _10_METERS_PER_SECOND

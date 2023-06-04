@@ -39,7 +39,7 @@ public enum class MavBatteryFunction(
   MAV_BATTERY_TYPE_PAYLOAD(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavBatteryFunction> {
+  public companion object : MavEnum.MavCompanion<MavBatteryFunction> {
     public override fun getEntryFromValueOrNull(v: UInt): MavBatteryFunction? = when (v) {
       0u -> UNKNOWN
       1u -> ALL

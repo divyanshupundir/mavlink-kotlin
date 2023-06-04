@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -37,7 +36,7 @@ public data class DeviceOpWriteReply(
   @GeneratedMavField(type = "uint8_t")
   public val result: UByte = 0u,
 ) : MavMessage<DeviceOpWriteReply> {
-  public override val instanceMetadata: MavMessage.Metadata<DeviceOpWriteReply> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWriteReply> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -53,33 +52,27 @@ public data class DeviceOpWriteReply(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_003u
-
-    private const val CRC_EXTRA: Byte = 64
-
+  public companion object : MavMessage.MavCompanion<DeviceOpWriteReply> {
     private const val SIZE_V1: Int = 5
 
     private const val SIZE_V2: Int = 5
 
-    private val DESERIALIZER: MavDeserializer<DeviceOpWriteReply> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_003u
+
+    public override val crcExtra: Byte = 64
+
+    public override fun deserialize(bytes: ByteArray): DeviceOpWriteReply {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUInt32()
       val result = inputBuffer.decodeUInt8()
 
-      DeviceOpWriteReply(
+      return DeviceOpWriteReply(
         requestId = requestId,
         result = result,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DeviceOpWriteReply> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DeviceOpWriteReply> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DeviceOpWriteReply =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpWriteReply =
         Builder().apply(builderAction).build()
   }
 

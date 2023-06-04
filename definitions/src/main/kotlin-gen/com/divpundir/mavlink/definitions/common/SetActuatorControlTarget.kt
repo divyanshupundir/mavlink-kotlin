@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloatArray
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -62,7 +61,8 @@ public data class SetActuatorControlTarget(
   @GeneratedMavField(type = "float[8]")
   public val controls: List<Float> = emptyList(),
 ) : MavMessage<SetActuatorControlTarget> {
-  public override val instanceMetadata: MavMessage.Metadata<SetActuatorControlTarget> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SetActuatorControlTarget> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -84,16 +84,16 @@ public data class SetActuatorControlTarget(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 139u
-
-    private const val CRC_EXTRA: Byte = -88
-
+  public companion object : MavMessage.MavCompanion<SetActuatorControlTarget> {
     private const val SIZE_V1: Int = 43
 
     private const val SIZE_V2: Int = 43
 
-    private val DESERIALIZER: MavDeserializer<SetActuatorControlTarget> = MavDeserializer { bytes ->
+    public override val id: UInt = 139u
+
+    public override val crcExtra: Byte = -88
+
+    public override fun deserialize(bytes: ByteArray): SetActuatorControlTarget {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val controls = inputBuffer.decodeFloatArray(32)
@@ -101,7 +101,7 @@ public data class SetActuatorControlTarget(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      SetActuatorControlTarget(
+      return SetActuatorControlTarget(
         timeUsec = timeUsec,
         groupMlx = groupMlx,
         targetSystem = targetSystem,
@@ -110,13 +110,7 @@ public data class SetActuatorControlTarget(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SetActuatorControlTarget> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SetActuatorControlTarget> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SetActuatorControlTarget =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetActuatorControlTarget =
         Builder().apply(builderAction).build()
   }
 

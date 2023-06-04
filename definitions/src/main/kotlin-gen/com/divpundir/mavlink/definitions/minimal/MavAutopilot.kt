@@ -119,7 +119,7 @@ public enum class MavAutopilot(
   REFLEX(20u),
   ;
 
-  public companion object : MavEnum.Companion<MavAutopilot> {
+  public companion object : MavEnum.MavCompanion<MavAutopilot> {
     public override fun getEntryFromValueOrNull(v: UInt): MavAutopilot? = when (v) {
       0u -> GENERIC
       1u -> RESERVED

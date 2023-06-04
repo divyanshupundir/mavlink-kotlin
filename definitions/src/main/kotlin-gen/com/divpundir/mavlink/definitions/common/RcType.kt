@@ -24,7 +24,7 @@ public enum class RcType(
   SPEKTRUM_DSMX(1u),
   ;
 
-  public companion object : MavEnum.Companion<RcType> {
+  public companion object : MavEnum.MavCompanion<RcType> {
     public override fun getEntryFromValueOrNull(v: UInt): RcType? = when (v) {
       0u -> SPEKTRUM_DSM2
       1u -> SPEKTRUM_DSMX

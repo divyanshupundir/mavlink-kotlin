@@ -76,7 +76,7 @@ public enum class CameraCapFlags(
   HAS_TRACKING_GEO_STATUS(2_048u),
   ;
 
-  public companion object : MavBitmask.Companion<CameraCapFlags> {
+  public companion object : MavBitmask.MavCompanion<CameraCapFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraCapFlags? = when (v) {
       1u -> CAPTURE_VIDEO
       2u -> CAPTURE_IMAGE

@@ -18,7 +18,7 @@ public enum class UavionixAdsbOutCfgGpsOffsetLon(
   APPLIED_BY_SENSOR(1u),
   ;
 
-  public companion object : MavEnum.Companion<UavionixAdsbOutCfgGpsOffsetLon> {
+  public companion object : MavEnum.MavCompanion<UavionixAdsbOutCfgGpsOffsetLon> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgGpsOffsetLon? = when (v)
         {
       0u -> NO_DATA

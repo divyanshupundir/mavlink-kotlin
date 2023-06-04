@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -118,7 +117,8 @@ public data class SetPositionTargetLocalNed(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<SetPositionTargetLocalNed> {
-  public override val instanceMetadata: MavMessage.Metadata<SetPositionTargetLocalNed> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SetPositionTargetLocalNed> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -162,17 +162,16 @@ public data class SetPositionTargetLocalNed(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 84u
-
-    private const val CRC_EXTRA: Byte = -113
-
+  public companion object : MavMessage.MavCompanion<SetPositionTargetLocalNed> {
     private const val SIZE_V1: Int = 53
 
     private const val SIZE_V2: Int = 53
 
-    private val DESERIALIZER: MavDeserializer<SetPositionTargetLocalNed> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 84u
+
+    public override val crcExtra: Byte = -113
+
+    public override fun deserialize(bytes: ByteArray): SetPositionTargetLocalNed {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val x = inputBuffer.decodeFloat()
@@ -197,7 +196,7 @@ public data class SetPositionTargetLocalNed(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      SetPositionTargetLocalNed(
+      return SetPositionTargetLocalNed(
         timeBootMs = timeBootMs,
         targetSystem = targetSystem,
         targetComponent = targetComponent,
@@ -217,13 +216,7 @@ public data class SetPositionTargetLocalNed(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SetPositionTargetLocalNed> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SetPositionTargetLocalNed> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SetPositionTargetLocalNed =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetPositionTargetLocalNed =
         Builder().apply(builderAction).build()
   }
 

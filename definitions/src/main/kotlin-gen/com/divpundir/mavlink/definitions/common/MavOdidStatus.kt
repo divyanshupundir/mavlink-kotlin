@@ -36,7 +36,7 @@ public enum class MavOdidStatus(
   REMOTE_ID_SYSTEM_FAILURE(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidStatus> {
+  public companion object : MavEnum.MavCompanion<MavOdidStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidStatus? = when (v) {
       0u -> UNDECLARED
       1u -> GROUND

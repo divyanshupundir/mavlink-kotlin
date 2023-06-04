@@ -34,7 +34,7 @@ public enum class MavGoto(
   HOLD_AT_SPECIFIED_POSITION(3u),
   ;
 
-  public companion object : MavEnum.Companion<MavGoto> {
+  public companion object : MavEnum.MavCompanion<MavGoto> {
     public override fun getEntryFromValueOrNull(v: UInt): MavGoto? = when (v) {
       0u -> DO_HOLD
       1u -> DO_CONTINUE

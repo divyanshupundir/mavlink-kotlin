@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -88,7 +87,8 @@ public data class GimbalDeviceAttitudeStatus(
   @GeneratedMavField(type = "uint32_t")
   public val failureFlags: MavBitmaskValue<GimbalDeviceErrorFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<GimbalDeviceAttitudeStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<GimbalDeviceAttitudeStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -118,17 +118,16 @@ public data class GimbalDeviceAttitudeStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 285u
-
-    private const val CRC_EXTRA: Byte = -119
-
+  public companion object : MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> {
     private const val SIZE_V1: Int = 40
 
     private const val SIZE_V2: Int = 40
 
-    private val DESERIALIZER: MavDeserializer<GimbalDeviceAttitudeStatus> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 285u
+
+    public override val crcExtra: Byte = -119
+
+    public override fun deserialize(bytes: ByteArray): GimbalDeviceAttitudeStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val q = inputBuffer.decodeFloatArray(16)
@@ -146,7 +145,7 @@ public data class GimbalDeviceAttitudeStatus(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      GimbalDeviceAttitudeStatus(
+      return GimbalDeviceAttitudeStatus(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         timeBootMs = timeBootMs,
@@ -159,13 +158,7 @@ public data class GimbalDeviceAttitudeStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GimbalDeviceAttitudeStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GimbalDeviceAttitudeStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GimbalDeviceAttitudeStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalDeviceAttitudeStatus =
         Builder().apply(builderAction).build()
   }
 

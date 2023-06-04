@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -66,7 +65,7 @@ public data class Vibration(
   @GeneratedMavField(type = "uint32_t")
   public val clipping2: UInt = 0u,
 ) : MavMessage<Vibration> {
-  public override val instanceMetadata: MavMessage.Metadata<Vibration> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Vibration> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -92,16 +91,16 @@ public data class Vibration(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 241u
-
-    private const val CRC_EXTRA: Byte = 90
-
+  public companion object : MavMessage.MavCompanion<Vibration> {
     private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 32
 
-    private val DESERIALIZER: MavDeserializer<Vibration> = MavDeserializer { bytes ->
+    public override val id: UInt = 241u
+
+    public override val crcExtra: Byte = 90
+
+    public override fun deserialize(bytes: ByteArray): Vibration {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val vibrationX = inputBuffer.decodeFloat()
@@ -111,7 +110,7 @@ public data class Vibration(
       val clipping1 = inputBuffer.decodeUInt32()
       val clipping2 = inputBuffer.decodeUInt32()
 
-      Vibration(
+      return Vibration(
         timeUsec = timeUsec,
         vibrationX = vibrationX,
         vibrationY = vibrationY,
@@ -122,13 +121,7 @@ public data class Vibration(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Vibration> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Vibration> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Vibration =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Vibration =
         Builder().apply(builderAction).build()
   }
 

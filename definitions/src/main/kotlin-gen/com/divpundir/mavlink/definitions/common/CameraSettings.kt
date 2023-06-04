@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -56,7 +55,7 @@ public data class CameraSettings(
   )
   public val focuslevel: Float = 0F,
 ) : MavMessage<CameraSettings> {
-  public override val instanceMetadata: MavMessage.Metadata<CameraSettings> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CameraSettings> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -74,16 +73,16 @@ public data class CameraSettings(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 260u
-
-    private const val CRC_EXTRA: Byte = -110
-
+  public companion object : MavMessage.MavCompanion<CameraSettings> {
     private const val SIZE_V1: Int = 5
 
     private const val SIZE_V2: Int = 13
 
-    private val DESERIALIZER: MavDeserializer<CameraSettings> = MavDeserializer { bytes ->
+    public override val id: UInt = 260u
+
+    public override val crcExtra: Byte = -110
+
+    public override fun deserialize(bytes: ByteArray): CameraSettings {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val modeId = inputBuffer.decodeEnumValue(1).let { value ->
@@ -93,7 +92,7 @@ public data class CameraSettings(
       val zoomlevel = inputBuffer.decodeFloat()
       val focuslevel = inputBuffer.decodeFloat()
 
-      CameraSettings(
+      return CameraSettings(
         timeBootMs = timeBootMs,
         modeId = modeId,
         zoomlevel = zoomlevel,
@@ -101,13 +100,7 @@ public data class CameraSettings(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CameraSettings> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CameraSettings> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CameraSettings =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraSettings =
         Builder().apply(builderAction).build()
   }
 

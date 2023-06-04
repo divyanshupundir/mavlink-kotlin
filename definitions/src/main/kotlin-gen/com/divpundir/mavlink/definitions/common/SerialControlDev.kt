@@ -89,7 +89,7 @@ public enum class SerialControlDev(
   SERIAL_CONTROL_SERIAL9(109u),
   ;
 
-  public companion object : MavEnum.Companion<SerialControlDev> {
+  public companion object : MavEnum.MavCompanion<SerialControlDev> {
     public override fun getEntryFromValueOrNull(v: UInt): SerialControlDev? = when (v) {
       0u -> TELEM1
       1u -> TELEM2

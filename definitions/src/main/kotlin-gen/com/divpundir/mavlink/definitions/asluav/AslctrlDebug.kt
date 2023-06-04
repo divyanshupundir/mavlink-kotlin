@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -85,7 +84,7 @@ public data class AslctrlDebug(
   @GeneratedMavField(type = "float")
   public val f8: Float = 0F,
 ) : MavMessage<AslctrlDebug> {
-  public override val instanceMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AslctrlDebug> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -119,16 +118,16 @@ public data class AslctrlDebug(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_005u
-
-    private const val CRC_EXTRA: Byte = -5
-
+  public companion object : MavMessage.MavCompanion<AslctrlDebug> {
     private const val SIZE_V1: Int = 38
 
     private const val SIZE_V2: Int = 38
 
-    private val DESERIALIZER: MavDeserializer<AslctrlDebug> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_005u
+
+    public override val crcExtra: Byte = -5
+
+    public override fun deserialize(bytes: ByteArray): AslctrlDebug {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val i321 = inputBuffer.decodeUInt32()
       val f1 = inputBuffer.decodeFloat()
@@ -142,7 +141,7 @@ public data class AslctrlDebug(
       val i81 = inputBuffer.decodeUInt8()
       val i82 = inputBuffer.decodeUInt8()
 
-      AslctrlDebug(
+      return AslctrlDebug(
         i321 = i321,
         i81 = i81,
         i82 = i82,
@@ -157,13 +156,7 @@ public data class AslctrlDebug(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AslctrlDebug> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AslctrlDebug> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AslctrlDebug =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AslctrlDebug =
         Builder().apply(builderAction).build()
   }
 

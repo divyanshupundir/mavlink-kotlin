@@ -25,7 +25,7 @@ public enum class UavionixAdsbOutDynamicState(
   IDENT(16u),
   ;
 
-  public companion object : MavBitmask.Companion<UavionixAdsbOutDynamicState> {
+  public companion object : MavBitmask.MavCompanion<UavionixAdsbOutDynamicState> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicState? = when (v) {
       1u -> INTENT_CHANGE
       2u -> AUTOPILOT_ENABLED

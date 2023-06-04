@@ -78,7 +78,7 @@ public enum class PositionTargetTypemask(
   YAW_RATE_IGNORE(2_048u),
   ;
 
-  public companion object : MavBitmask.Companion<PositionTargetTypemask> {
+  public companion object : MavBitmask.MavCompanion<PositionTargetTypemask> {
     public override fun getEntryFromValueOrNull(v: UInt): PositionTargetTypemask? = when (v) {
       1u -> X_IGNORE
       2u -> Y_IGNORE

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -43,7 +42,7 @@ public data class AoaSsa(
   @GeneratedMavField(type = "float")
   public val ssa: Float = 0F,
 ) : MavMessage<AoaSsa> {
-  public override val instanceMetadata: MavMessage.Metadata<AoaSsa> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AoaSsa> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,35 +60,29 @@ public data class AoaSsa(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_020u
-
-    private const val CRC_EXTRA: Byte = -51
-
+  public companion object : MavMessage.MavCompanion<AoaSsa> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<AoaSsa> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_020u
+
+    public override val crcExtra: Byte = -51
+
+    public override fun deserialize(bytes: ByteArray): AoaSsa {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val aoa = inputBuffer.decodeFloat()
       val ssa = inputBuffer.decodeFloat()
 
-      AoaSsa(
+      return AoaSsa(
         timeUsec = timeUsec,
         aoa = aoa,
         ssa = ssa,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AoaSsa> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AoaSsa> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AoaSsa =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AoaSsa =
         Builder().apply(builderAction).build()
   }
 

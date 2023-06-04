@@ -4,6 +4,7 @@ package com.divpundir.mavlink.api
  * Represents a MAVLink v2 frame.
  */
 public interface MavFrameV2<T> : MavFrame<T> {
+
     /**
      * Flag to check if the frame is signed or not.
      */
@@ -25,10 +26,7 @@ public interface MavFrameV2<T> : MavFrame<T> {
     public val signature: ByteArray
 
     /**
-     * Validates this frame's signature, using its own link ID and timestamp.
-     *
-     * @param secretKey The secret key to use when validating the signature.
-     * @return `true` if the signature validation passed, or `false` otherwise.
+     * Validates this frame's signature, using its own link ID, timestamp and the given [secretKey].
      */
     public fun validateSignature(secretKey: ByteArray): Boolean
 }

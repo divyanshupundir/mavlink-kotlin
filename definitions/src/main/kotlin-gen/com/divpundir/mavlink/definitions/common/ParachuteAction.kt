@@ -29,7 +29,7 @@ public enum class ParachuteAction(
   PARACHUTE_RELEASE(2u),
   ;
 
-  public companion object : MavEnum.Companion<ParachuteAction> {
+  public companion object : MavEnum.MavCompanion<ParachuteAction> {
     public override fun getEntryFromValueOrNull(v: UInt): ParachuteAction? = when (v) {
       0u -> PARACHUTE_DISABLE
       1u -> PARACHUTE_ENABLE

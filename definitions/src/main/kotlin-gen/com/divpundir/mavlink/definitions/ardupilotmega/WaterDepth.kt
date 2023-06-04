@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -87,7 +86,7 @@ public data class WaterDepth(
   @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
 ) : MavMessage<WaterDepth> {
-  public override val instanceMetadata: MavMessage.Metadata<WaterDepth> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<WaterDepth> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -121,16 +120,16 @@ public data class WaterDepth(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_038u
-
-    private const val CRC_EXTRA: Byte = 47
-
+  public companion object : MavMessage.MavCompanion<WaterDepth> {
     private const val SIZE_V1: Int = 38
 
     private const val SIZE_V2: Int = 38
 
-    private val DESERIALIZER: MavDeserializer<WaterDepth> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_038u
+
+    public override val crcExtra: Byte = 47
+
+    public override fun deserialize(bytes: ByteArray): WaterDepth {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val lat = inputBuffer.decodeInt32()
@@ -144,7 +143,7 @@ public data class WaterDepth(
       val id = inputBuffer.decodeUInt8()
       val healthy = inputBuffer.decodeUInt8()
 
-      WaterDepth(
+      return WaterDepth(
         timeBootMs = timeBootMs,
         id = id,
         healthy = healthy,
@@ -159,13 +158,7 @@ public data class WaterDepth(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<WaterDepth> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<WaterDepth> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): WaterDepth =
+    public operator fun invoke(builderAction: Builder.() -> Unit): WaterDepth =
         Builder().apply(builderAction).build()
   }
 

@@ -24,7 +24,7 @@ public enum class MavCollisionSrc(
   MAVLINK_GPS_GLOBAL_INT(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavCollisionSrc> {
+  public companion object : MavEnum.MavCompanion<MavCollisionSrc> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCollisionSrc? = when (v) {
       0u -> ADSB
       1u -> MAVLINK_GPS_GLOBAL_INT

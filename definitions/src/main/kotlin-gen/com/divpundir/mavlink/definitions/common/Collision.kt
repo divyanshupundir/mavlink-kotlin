@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -65,7 +64,7 @@ public data class Collision(
   @GeneratedMavField(type = "float")
   public val horizontalMinimumDelta: Float = 0F,
 ) : MavMessage<Collision> {
-  public override val instanceMetadata: MavMessage.Metadata<Collision> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Collision> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -91,16 +90,16 @@ public data class Collision(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 247u
-
-    private const val CRC_EXTRA: Byte = 81
-
+  public companion object : MavMessage.MavCompanion<Collision> {
     private const val SIZE_V1: Int = 19
 
     private const val SIZE_V2: Int = 19
 
-    private val DESERIALIZER: MavDeserializer<Collision> = MavDeserializer { bytes ->
+    public override val id: UInt = 247u
+
+    public override val crcExtra: Byte = 81
+
+    public override fun deserialize(bytes: ByteArray): Collision {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val id = inputBuffer.decodeUInt32()
       val timeToMinimumDelta = inputBuffer.decodeFloat()
@@ -119,7 +118,7 @@ public data class Collision(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      Collision(
+      return Collision(
         src = src,
         id = id,
         action = action,
@@ -130,13 +129,7 @@ public data class Collision(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Collision> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Collision> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Collision =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Collision =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloatArray
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -107,7 +106,7 @@ public data class CameraImageCaptured(
   @GeneratedMavField(type = "char[205]")
   public val fileUrl: String = "",
 ) : MavMessage<CameraImageCaptured> {
-  public override val instanceMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CameraImageCaptured> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -141,16 +140,16 @@ public data class CameraImageCaptured(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 263u
-
-    private const val CRC_EXTRA: Byte = -123
-
+  public companion object : MavMessage.MavCompanion<CameraImageCaptured> {
     private const val SIZE_V1: Int = 255
 
     private const val SIZE_V2: Int = 255
 
-    private val DESERIALIZER: MavDeserializer<CameraImageCaptured> = MavDeserializer { bytes ->
+    public override val id: UInt = 263u
+
+    public override val crcExtra: Byte = -123
+
+    public override fun deserialize(bytes: ByteArray): CameraImageCaptured {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUtc = inputBuffer.decodeUInt64()
       val timeBootMs = inputBuffer.decodeUInt32()
@@ -164,7 +163,7 @@ public data class CameraImageCaptured(
       val captureResult = inputBuffer.decodeInt8()
       val fileUrl = inputBuffer.decodeString(205)
 
-      CameraImageCaptured(
+      return CameraImageCaptured(
         timeBootMs = timeBootMs,
         timeUtc = timeUtc,
         cameraId = cameraId,
@@ -179,13 +178,7 @@ public data class CameraImageCaptured(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CameraImageCaptured> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CameraImageCaptured> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CameraImageCaptured =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraImageCaptured =
         Builder().apply(builderAction).build()
   }
 

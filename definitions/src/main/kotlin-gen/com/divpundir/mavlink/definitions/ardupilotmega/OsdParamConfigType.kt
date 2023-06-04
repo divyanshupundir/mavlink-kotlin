@@ -32,7 +32,7 @@ public enum class OsdParamConfigType(
   OSD_PARAM_NUM_TYPES(8u),
   ;
 
-  public companion object : MavEnum.Companion<OsdParamConfigType> {
+  public companion object : MavEnum.MavCompanion<OsdParamConfigType> {
     public override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigType? = when (v) {
       0u -> OSD_PARAM_NONE
       1u -> OSD_PARAM_SERIAL_PROTOCOL

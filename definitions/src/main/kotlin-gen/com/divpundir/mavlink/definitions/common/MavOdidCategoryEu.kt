@@ -31,7 +31,7 @@ public enum class MavOdidCategoryEu(
   CERTIFIED(3u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidCategoryEu> {
+  public companion object : MavEnum.MavCompanion<MavOdidCategoryEu> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidCategoryEu? = when (v) {
       0u -> UNDECLARED
       1u -> OPEN

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeFloat
@@ -118,7 +117,7 @@ public data class HilSensor(
   )
   public val id: UByte = 0u,
 ) : MavMessage<HilSensor> {
-  public override val instanceMetadata: MavMessage.Metadata<HilSensor> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HilSensor> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -161,16 +160,16 @@ public data class HilSensor(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 107u
-
-    private const val CRC_EXTRA: Byte = 108
-
+  public companion object : MavMessage.MavCompanion<HilSensor> {
     private const val SIZE_V1: Int = 64
 
     private const val SIZE_V2: Int = 65
 
-    private val DESERIALIZER: MavDeserializer<HilSensor> = MavDeserializer { bytes ->
+    public override val id: UInt = 107u
+
+    public override val crcExtra: Byte = 108
+
+    public override fun deserialize(bytes: ByteArray): HilSensor {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val xacc = inputBuffer.decodeFloat()
@@ -192,7 +191,7 @@ public data class HilSensor(
       }
       val id = inputBuffer.decodeUInt8()
 
-      HilSensor(
+      return HilSensor(
         timeUsec = timeUsec,
         xacc = xacc,
         yacc = yacc,
@@ -212,13 +211,7 @@ public data class HilSensor(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HilSensor> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HilSensor> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HilSensor =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilSensor =
         Builder().apply(builderAction).build()
   }
 

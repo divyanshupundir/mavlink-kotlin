@@ -87,7 +87,7 @@ public enum class GimbalManagerCapFlags(
   CAN_POINT_LOCATION_GLOBAL(131_072u),
   ;
 
-  public companion object : MavBitmask.Companion<GimbalManagerCapFlags> {
+  public companion object : MavBitmask.MavCompanion<GimbalManagerCapFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalManagerCapFlags? = when (v) {
       1u -> HAS_RETRACT
       2u -> HAS_NEUTRAL

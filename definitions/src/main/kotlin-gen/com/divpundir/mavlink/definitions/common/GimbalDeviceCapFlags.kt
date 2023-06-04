@@ -78,7 +78,7 @@ public enum class GimbalDeviceCapFlags(
   SUPPORTS_INFINITE_YAW(2_048u),
   ;
 
-  public companion object : MavBitmask.Companion<GimbalDeviceCapFlags> {
+  public companion object : MavBitmask.MavCompanion<GimbalDeviceCapFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceCapFlags? = when (v) {
       1u -> HAS_RETRACT
       2u -> HAS_NEUTRAL

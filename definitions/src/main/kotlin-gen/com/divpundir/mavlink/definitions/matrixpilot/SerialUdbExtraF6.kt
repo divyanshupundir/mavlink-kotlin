@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -50,7 +49,7 @@ public data class SerialUdbExtraF6(
   @GeneratedMavField(type = "float")
   public val sueElevatorBoost: Float = 0F,
 ) : MavMessage<SerialUdbExtraF6> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF6> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF6> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -72,16 +71,16 @@ public data class SerialUdbExtraF6(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 174u
-
-    private const val CRC_EXTRA: Byte = 54
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF6> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF6> = MavDeserializer { bytes ->
+    public override val id: UInt = 174u
+
+    public override val crcExtra: Byte = 54
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF6 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val suePitchgain = inputBuffer.decodeFloat()
       val suePitchkd = inputBuffer.decodeFloat()
@@ -89,7 +88,7 @@ public data class SerialUdbExtraF6(
       val sueRollElevMix = inputBuffer.decodeFloat()
       val sueElevatorBoost = inputBuffer.decodeFloat()
 
-      SerialUdbExtraF6(
+      return SerialUdbExtraF6(
         suePitchgain = suePitchgain,
         suePitchkd = suePitchkd,
         sueRudderElevMix = sueRudderElevMix,
@@ -98,13 +97,7 @@ public data class SerialUdbExtraF6(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF6> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF6> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF6 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF6 =
         Builder().apply(builderAction).build()
   }
 

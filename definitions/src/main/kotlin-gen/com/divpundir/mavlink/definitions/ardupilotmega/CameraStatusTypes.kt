@@ -46,7 +46,7 @@ public enum class CameraStatusTypes(
   CAMERA_STATUS_TYPE_LOWSTOREV(6u),
   ;
 
-  public companion object : MavEnum.Companion<CameraStatusTypes> {
+  public companion object : MavEnum.MavCompanion<CameraStatusTypes> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraStatusTypes? = when (v) {
       0u -> CAMERA_STATUS_TYPE_HEARTBEAT
       1u -> CAMERA_STATUS_TYPE_TRIGGER

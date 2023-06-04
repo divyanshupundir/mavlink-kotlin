@@ -55,7 +55,7 @@ public enum class EscFailureFlags(
   ESC_FAILURE_GENERIC(64u),
   ;
 
-  public companion object : MavBitmask.Companion<EscFailureFlags> {
+  public companion object : MavBitmask.MavCompanion<EscFailureFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): EscFailureFlags? = when (v) {
       0u -> ESC_FAILURE_NONE
       1u -> ESC_FAILURE_OVER_CURRENT

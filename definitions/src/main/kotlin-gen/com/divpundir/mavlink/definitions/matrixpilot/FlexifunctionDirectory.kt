@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt8Array
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -58,7 +57,7 @@ public data class FlexifunctionDirectory(
   @GeneratedMavField(type = "int8_t[48]")
   public val directoryData: List<Byte> = emptyList(),
 ) : MavMessage<FlexifunctionDirectory> {
-  public override val instanceMetadata: MavMessage.Metadata<FlexifunctionDirectory> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionDirectory> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +81,16 @@ public data class FlexifunctionDirectory(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 155u
-
-    private const val CRC_EXTRA: Byte = 12
-
+  public companion object : MavMessage.MavCompanion<FlexifunctionDirectory> {
     private const val SIZE_V1: Int = 53
 
     private const val SIZE_V2: Int = 53
 
-    private val DESERIALIZER: MavDeserializer<FlexifunctionDirectory> = MavDeserializer { bytes ->
+    public override val id: UInt = 155u
+
+    public override val crcExtra: Byte = 12
+
+    public override fun deserialize(bytes: ByteArray): FlexifunctionDirectory {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
@@ -100,7 +99,7 @@ public data class FlexifunctionDirectory(
       val count = inputBuffer.decodeUInt8()
       val directoryData = inputBuffer.decodeInt8Array(48)
 
-      FlexifunctionDirectory(
+      return FlexifunctionDirectory(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         directoryType = directoryType,
@@ -110,13 +109,7 @@ public data class FlexifunctionDirectory(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FlexifunctionDirectory> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FlexifunctionDirectory> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionDirectory =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionDirectory =
         Builder().apply(builderAction).build()
   }
 

@@ -91,7 +91,7 @@ public enum class MavOdidTimeAcc(
   _1_5_SECOND(15u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidTimeAcc> {
+  public companion object : MavEnum.MavCompanion<MavOdidTimeAcc> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidTimeAcc? = when (v) {
       0u -> UNKNOWN
       1u -> _0_1_SECOND

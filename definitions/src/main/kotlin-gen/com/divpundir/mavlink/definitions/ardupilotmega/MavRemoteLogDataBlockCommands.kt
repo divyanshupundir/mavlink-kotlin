@@ -24,7 +24,7 @@ public enum class MavRemoteLogDataBlockCommands(
   MAV_REMOTE_LOG_DATA_BLOCK_START(2_147_483_646u),
   ;
 
-  public companion object : MavEnum.Companion<MavRemoteLogDataBlockCommands> {
+  public companion object : MavEnum.MavCompanion<MavRemoteLogDataBlockCommands> {
     public override fun getEntryFromValueOrNull(v: UInt): MavRemoteLogDataBlockCommands? = when (v)
         {
       2147483645u -> MAV_REMOTE_LOG_DATA_BLOCK_STOP

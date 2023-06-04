@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -99,7 +98,7 @@ public data class LocalPositionNedCov(
   @GeneratedMavField(type = "float[45]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<LocalPositionNedCov> {
-  public override val instanceMetadata: MavMessage.Metadata<LocalPositionNedCov> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedCov> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -135,16 +134,16 @@ public data class LocalPositionNedCov(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 64u
-
-    private const val CRC_EXTRA: Byte = -65
-
+  public companion object : MavMessage.MavCompanion<LocalPositionNedCov> {
     private const val SIZE_V1: Int = 225
 
     private const val SIZE_V2: Int = 225
 
-    private val DESERIALIZER: MavDeserializer<LocalPositionNedCov> = MavDeserializer { bytes ->
+    public override val id: UInt = 64u
+
+    public override val crcExtra: Byte = -65
+
+    public override fun deserialize(bytes: ByteArray): LocalPositionNedCov {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val x = inputBuffer.decodeFloat()
@@ -162,7 +161,7 @@ public data class LocalPositionNedCov(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      LocalPositionNedCov(
+      return LocalPositionNedCov(
         timeUsec = timeUsec,
         estimatorType = estimatorType,
         x = x,
@@ -178,13 +177,7 @@ public data class LocalPositionNedCov(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LocalPositionNedCov> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LocalPositionNedCov> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LocalPositionNedCov =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LocalPositionNedCov =
         Builder().apply(builderAction).build()
   }
 

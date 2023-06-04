@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -53,7 +52,7 @@ public data class LogData(
   @GeneratedMavField(type = "uint8_t[90]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<LogData> {
-  public override val instanceMetadata: MavMessage.Metadata<LogData> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LogData> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -73,23 +72,23 @@ public data class LogData(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 120u
-
-    private const val CRC_EXTRA: Byte = -122
-
+  public companion object : MavMessage.MavCompanion<LogData> {
     private const val SIZE_V1: Int = 97
 
     private const val SIZE_V2: Int = 97
 
-    private val DESERIALIZER: MavDeserializer<LogData> = MavDeserializer { bytes ->
+    public override val id: UInt = 120u
+
+    public override val crcExtra: Byte = -122
+
+    public override fun deserialize(bytes: ByteArray): LogData {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val ofs = inputBuffer.decodeUInt32()
       val id = inputBuffer.decodeUInt16()
       val count = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeUInt8Array(90)
 
-      LogData(
+      return LogData(
         id = id,
         ofs = ofs,
         count = count,
@@ -97,13 +96,7 @@ public data class LogData(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LogData> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LogData> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LogData =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogData =
         Builder().apply(builderAction).build()
   }
 

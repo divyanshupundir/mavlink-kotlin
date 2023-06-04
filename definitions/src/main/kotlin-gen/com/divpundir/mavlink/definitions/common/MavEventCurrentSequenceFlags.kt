@@ -19,7 +19,7 @@ public enum class MavEventCurrentSequenceFlags(
   RESET(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavEventCurrentSequenceFlags> {
+  public companion object : MavEnum.MavCompanion<MavEventCurrentSequenceFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): MavEventCurrentSequenceFlags? = when (v) {
       1u -> RESET
       else -> null

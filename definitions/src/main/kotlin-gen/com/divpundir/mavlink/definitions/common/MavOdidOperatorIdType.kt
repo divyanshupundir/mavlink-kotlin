@@ -16,7 +16,7 @@ public enum class MavOdidOperatorIdType(
   CAA(0u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidOperatorIdType> {
+  public companion object : MavEnum.MavCompanion<MavOdidOperatorIdType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidOperatorIdType? = when (v) {
       0u -> CAA
       else -> null

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -75,7 +74,7 @@ public data class SerialUdbExtraF4(
   @GeneratedMavField(type = "uint8_t")
   public val sueRacingMode: UByte = 0u,
 ) : MavMessage<SerialUdbExtraF4> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF4> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF4> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -107,16 +106,16 @@ public data class SerialUdbExtraF4(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 172u
-
-    private const val CRC_EXTRA: Byte = -65
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF4> {
     private const val SIZE_V1: Int = 10
 
     private const val SIZE_V2: Int = 10
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF4> = MavDeserializer { bytes ->
+    public override val id: UInt = 172u
+
+    public override val crcExtra: Byte = -65
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF4 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val sueRollStabilizationAilerons = inputBuffer.decodeUInt8()
       val sueRollStabilizationRudder = inputBuffer.decodeUInt8()
@@ -129,7 +128,7 @@ public data class SerialUdbExtraF4(
       val sueAltitudeholdWaypoint = inputBuffer.decodeUInt8()
       val sueRacingMode = inputBuffer.decodeUInt8()
 
-      SerialUdbExtraF4(
+      return SerialUdbExtraF4(
         sueRollStabilizationAilerons = sueRollStabilizationAilerons,
         sueRollStabilizationRudder = sueRollStabilizationRudder,
         suePitchStabilization = suePitchStabilization,
@@ -143,13 +142,7 @@ public data class SerialUdbExtraF4(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF4> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF4> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF4 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF4 =
         Builder().apply(builderAction).build()
   }
 

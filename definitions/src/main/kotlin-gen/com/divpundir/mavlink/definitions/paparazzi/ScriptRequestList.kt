@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.paparazzi
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -35,7 +34,7 @@ public data class ScriptRequestList(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<ScriptRequestList> {
-  public override val instanceMetadata: MavMessage.Metadata<ScriptRequestList> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ScriptRequestList> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class ScriptRequestList(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 182u
-
-    private const val CRC_EXTRA: Byte = 115
-
+  public companion object : MavMessage.MavCompanion<ScriptRequestList> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<ScriptRequestList> = MavDeserializer { bytes ->
+    public override val id: UInt = 182u
+
+    public override val crcExtra: Byte = 115
+
+    public override fun deserialize(bytes: ByteArray): ScriptRequestList {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      ScriptRequestList(
+      return ScriptRequestList(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ScriptRequestList> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ScriptRequestList> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ScriptRequestList =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptRequestList =
         Builder().apply(builderAction).build()
   }
 

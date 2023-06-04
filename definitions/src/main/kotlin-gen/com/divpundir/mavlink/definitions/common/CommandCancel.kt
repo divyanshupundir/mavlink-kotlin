@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -49,7 +48,7 @@ public data class CommandCancel(
   @GeneratedMavField(type = "uint16_t")
   public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CommandCancel> {
-  public override val instanceMetadata: MavMessage.Metadata<CommandCancel> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CommandCancel> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -67,16 +66,16 @@ public data class CommandCancel(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 80u
-
-    private const val CRC_EXTRA: Byte = 14
-
+  public companion object : MavMessage.MavCompanion<CommandCancel> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 4
 
-    private val DESERIALIZER: MavDeserializer<CommandCancel> = MavDeserializer { bytes ->
+    public override val id: UInt = 80u
+
+    public override val crcExtra: Byte = 14
+
+    public override fun deserialize(bytes: ByteArray): CommandCancel {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val command = inputBuffer.decodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
@@ -85,20 +84,14 @@ public data class CommandCancel(
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      CommandCancel(
+      return CommandCancel(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         command = command,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CommandCancel> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CommandCancel> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CommandCancel =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandCancel =
         Builder().apply(builderAction).build()
   }
 

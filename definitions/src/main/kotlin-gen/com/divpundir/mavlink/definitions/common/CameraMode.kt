@@ -30,7 +30,7 @@ public enum class CameraMode(
   IMAGE_SURVEY(2u),
   ;
 
-  public companion object : MavEnum.Companion<CameraMode> {
+  public companion object : MavEnum.MavCompanion<CameraMode> {
     public override fun getEntryFromValueOrNull(v: UInt): CameraMode? = when (v) {
       0u -> IMAGE
       1u -> VIDEO

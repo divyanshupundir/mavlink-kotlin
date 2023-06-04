@@ -39,7 +39,7 @@ public enum class UtmFlightState(
   NOCTRL(32u),
   ;
 
-  public companion object : MavEnum.Companion<UtmFlightState> {
+  public companion object : MavEnum.MavCompanion<UtmFlightState> {
     public override fun getEntryFromValueOrNull(v: UInt): UtmFlightState? = when (v) {
       1u -> UNKNOWN
       2u -> GROUND

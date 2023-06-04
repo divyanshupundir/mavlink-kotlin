@@ -46,7 +46,7 @@ public enum class UavionixAdsbOutCfgAircraftSize(
   L85_W90M(15u),
   ;
 
-  public companion object : MavEnum.Companion<UavionixAdsbOutCfgAircraftSize> {
+  public companion object : MavEnum.MavCompanion<UavionixAdsbOutCfgAircraftSize> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgAircraftSize? = when (v)
         {
       0u -> NO_DATA

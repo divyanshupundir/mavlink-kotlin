@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -46,7 +45,7 @@ public data class Debug(
   @GeneratedMavField(type = "float")
   public val `value`: Float = 0F,
 ) : MavMessage<Debug> {
-  public override val instanceMetadata: MavMessage.Metadata<Debug> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Debug> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -64,35 +63,29 @@ public data class Debug(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 254u
-
-    private const val CRC_EXTRA: Byte = 46
-
+  public companion object : MavMessage.MavCompanion<Debug> {
     private const val SIZE_V1: Int = 9
 
     private const val SIZE_V2: Int = 9
 
-    private val DESERIALIZER: MavDeserializer<Debug> = MavDeserializer { bytes ->
+    public override val id: UInt = 254u
+
+    public override val crcExtra: Byte = 46
+
+    public override fun deserialize(bytes: ByteArray): Debug {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val value = inputBuffer.decodeFloat()
       val ind = inputBuffer.decodeUInt8()
 
-      Debug(
+      return Debug(
         timeBootMs = timeBootMs,
         ind = ind,
         value = value,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Debug> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Debug> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Debug =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Debug =
         Builder().apply(builderAction).build()
   }
 

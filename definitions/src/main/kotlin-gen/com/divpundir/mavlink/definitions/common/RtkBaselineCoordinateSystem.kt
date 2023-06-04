@@ -24,7 +24,7 @@ public enum class RtkBaselineCoordinateSystem(
   NED(1u),
   ;
 
-  public companion object : MavEnum.Companion<RtkBaselineCoordinateSystem> {
+  public companion object : MavEnum.MavCompanion<RtkBaselineCoordinateSystem> {
     public override fun getEntryFromValueOrNull(v: UInt): RtkBaselineCoordinateSystem? = when (v) {
       0u -> ECEF
       1u -> NED

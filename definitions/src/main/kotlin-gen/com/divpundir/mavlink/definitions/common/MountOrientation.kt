@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -58,7 +57,7 @@ public data class MountOrientation(
   )
   public val yawAbsolute: Float = 0F,
 ) : MavMessage<MountOrientation> {
-  public override val instanceMetadata: MavMessage.Metadata<MountOrientation> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MountOrientation> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -79,16 +78,16 @@ public data class MountOrientation(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 265u
-
-    private const val CRC_EXTRA: Byte = 26
-
+  public companion object : MavMessage.MavCompanion<MountOrientation> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<MountOrientation> = MavDeserializer { bytes ->
+    public override val id: UInt = 265u
+
+    public override val crcExtra: Byte = 26
+
+    public override fun deserialize(bytes: ByteArray): MountOrientation {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val roll = inputBuffer.decodeFloat()
@@ -96,7 +95,7 @@ public data class MountOrientation(
       val yaw = inputBuffer.decodeFloat()
       val yawAbsolute = inputBuffer.decodeFloat()
 
-      MountOrientation(
+      return MountOrientation(
         timeBootMs = timeBootMs,
         roll = roll,
         pitch = pitch,
@@ -105,13 +104,7 @@ public data class MountOrientation(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MountOrientation> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MountOrientation> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MountOrientation =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountOrientation =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeString
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -87,7 +86,7 @@ public data class UavcanNodeInfo(
   @GeneratedMavField(type = "uint32_t")
   public val swVcsCommit: UInt = 0u,
 ) : MavMessage<UavcanNodeInfo> {
-  public override val instanceMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -117,16 +116,16 @@ public data class UavcanNodeInfo(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 311u
-
-    private const val CRC_EXTRA: Byte = 95
-
+  public companion object : MavMessage.MavCompanion<UavcanNodeInfo> {
     private const val SIZE_V1: Int = 116
 
     private const val SIZE_V2: Int = 116
 
-    private val DESERIALIZER: MavDeserializer<UavcanNodeInfo> = MavDeserializer { bytes ->
+    public override val id: UInt = 311u
+
+    public override val crcExtra: Byte = 95
+
+    public override fun deserialize(bytes: ByteArray): UavcanNodeInfo {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val uptimeSec = inputBuffer.decodeUInt32()
@@ -138,7 +137,7 @@ public data class UavcanNodeInfo(
       val swVersionMajor = inputBuffer.decodeUInt8()
       val swVersionMinor = inputBuffer.decodeUInt8()
 
-      UavcanNodeInfo(
+      return UavcanNodeInfo(
         timeUsec = timeUsec,
         uptimeSec = uptimeSec,
         name = name,
@@ -151,13 +150,7 @@ public data class UavcanNodeInfo(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<UavcanNodeInfo> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<UavcanNodeInfo> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): UavcanNodeInfo =
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavcanNodeInfo =
         Builder().apply(builderAction).build()
   }
 

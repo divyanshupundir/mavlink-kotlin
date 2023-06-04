@@ -24,7 +24,7 @@ public enum class GripperActions(
   GRIPPER_ACTION_GRAB(1u),
   ;
 
-  public companion object : MavEnum.Companion<GripperActions> {
+  public companion object : MavEnum.MavCompanion<GripperActions> {
     public override fun getEntryFromValueOrNull(v: UInt): GripperActions? = when (v) {
       0u -> GRIPPER_ACTION_RELEASE
       1u -> GRIPPER_ACTION_GRAB

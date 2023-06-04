@@ -31,7 +31,7 @@ public enum class MavBatteryMode(
   HOT_SWAP(2u),
   ;
 
-  public companion object : MavEnum.Companion<MavBatteryMode> {
+  public companion object : MavEnum.MavCompanion<MavBatteryMode> {
     public override fun getEntryFromValueOrNull(v: UInt): MavBatteryMode? = when (v) {
       0u -> UNKNOWN
       1u -> AUTO_DISCHARGING

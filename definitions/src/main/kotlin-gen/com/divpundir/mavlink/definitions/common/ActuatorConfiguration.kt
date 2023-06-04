@@ -46,7 +46,7 @@ public enum class ActuatorConfiguration(
   SPIN_DIRECTION2(5u),
   ;
 
-  public companion object : MavEnum.Companion<ActuatorConfiguration> {
+  public companion object : MavEnum.MavCompanion<ActuatorConfiguration> {
     public override fun getEntryFromValueOrNull(v: UInt): ActuatorConfiguration? = when (v) {
       0u -> NONE
       1u -> BEEP

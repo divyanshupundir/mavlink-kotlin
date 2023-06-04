@@ -59,7 +59,7 @@ public enum class MavEstimatorType(
   AUTOPILOT(8u),
   ;
 
-  public companion object : MavEnum.Companion<MavEstimatorType> {
+  public companion object : MavEnum.MavCompanion<MavEstimatorType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavEstimatorType? = when (v) {
       0u -> UNKNOWN
       1u -> NAIVE

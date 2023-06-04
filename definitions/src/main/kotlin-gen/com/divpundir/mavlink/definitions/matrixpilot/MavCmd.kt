@@ -38,7 +38,7 @@ public enum class MavCmd(
   PREFLIGHT_STORAGE_ADVANCED(0u),
   ;
 
-  public companion object : MavEnum.Companion<MavCmd> {
+  public companion object : MavEnum.MavCompanion<MavCmd> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       0u -> PREFLIGHT_STORAGE_ADVANCED
       else -> null

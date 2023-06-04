@@ -21,7 +21,7 @@ public enum class GsmModemType(
   HUAWEI_E3372(1u),
   ;
 
-  public companion object : MavEnum.Companion<GsmModemType> {
+  public companion object : MavEnum.MavCompanion<GsmModemType> {
     public override fun getEntryFromValueOrNull(v: UInt): GsmModemType? = when (v) {
       0u -> UNKNOWN
       1u -> HUAWEI_E3372

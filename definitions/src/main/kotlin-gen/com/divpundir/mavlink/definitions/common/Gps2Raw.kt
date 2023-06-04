@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -149,7 +148,7 @@ public data class Gps2Raw(
   )
   public val hdgAcc: UInt = 0u,
 ) : MavMessage<Gps2Raw> {
-  public override val instanceMetadata: MavMessage.Metadata<Gps2Raw> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Gps2Raw> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -191,16 +190,16 @@ public data class Gps2Raw(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 124u
-
-    private const val CRC_EXTRA: Byte = 87
-
+  public companion object : MavMessage.MavCompanion<Gps2Raw> {
     private const val SIZE_V1: Int = 35
 
     private const val SIZE_V2: Int = 57
 
-    private val DESERIALIZER: MavDeserializer<Gps2Raw> = MavDeserializer { bytes ->
+    public override val id: UInt = 124u
+
+    public override val crcExtra: Byte = 87
+
+    public override fun deserialize(bytes: ByteArray): Gps2Raw {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val lat = inputBuffer.decodeInt32()
@@ -224,7 +223,7 @@ public data class Gps2Raw(
       val velAcc = inputBuffer.decodeUInt32()
       val hdgAcc = inputBuffer.decodeUInt32()
 
-      Gps2Raw(
+      return Gps2Raw(
         timeUsec = timeUsec,
         fixType = fixType,
         lat = lat,
@@ -246,13 +245,7 @@ public data class Gps2Raw(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Gps2Raw> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Gps2Raw> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Gps2Raw =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Gps2Raw =
         Builder().apply(builderAction).build()
   }
 

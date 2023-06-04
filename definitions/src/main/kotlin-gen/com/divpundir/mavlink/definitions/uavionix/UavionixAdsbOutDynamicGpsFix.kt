@@ -26,7 +26,7 @@ public enum class UavionixAdsbOutDynamicGpsFix(
   RTK(5u),
   ;
 
-  public companion object : MavEnum.Companion<UavionixAdsbOutDynamicGpsFix> {
+  public companion object : MavEnum.MavCompanion<UavionixAdsbOutDynamicGpsFix> {
     public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicGpsFix? = when (v) {
       0u -> NONE_0
       1u -> NONE_1

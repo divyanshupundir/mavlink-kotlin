@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -111,7 +110,7 @@ public data class ManualControl(
   )
   public val t: Short = 0,
 ) : MavMessage<ManualControl> {
-  public override val instanceMetadata: MavMessage.Metadata<ManualControl> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -139,16 +138,16 @@ public data class ManualControl(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 69u
-
-    private const val CRC_EXTRA: Byte = -13
-
+  public companion object : MavMessage.MavCompanion<ManualControl> {
     private const val SIZE_V1: Int = 11
 
     private const val SIZE_V2: Int = 18
 
-    private val DESERIALIZER: MavDeserializer<ManualControl> = MavDeserializer { bytes ->
+    public override val id: UInt = 69u
+
+    public override val crcExtra: Byte = -13
+
+    public override fun deserialize(bytes: ByteArray): ManualControl {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val x = inputBuffer.decodeInt16()
       val y = inputBuffer.decodeInt16()
@@ -161,7 +160,7 @@ public data class ManualControl(
       val s = inputBuffer.decodeInt16()
       val t = inputBuffer.decodeInt16()
 
-      ManualControl(
+      return ManualControl(
         target = target,
         x = x,
         y = y,
@@ -175,13 +174,7 @@ public data class ManualControl(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ManualControl> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ManualControl> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ManualControl =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ManualControl =
         Builder().apply(builderAction).build()
   }
 

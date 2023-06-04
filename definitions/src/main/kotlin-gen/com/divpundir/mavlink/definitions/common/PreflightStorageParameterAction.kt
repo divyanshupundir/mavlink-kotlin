@@ -47,7 +47,7 @@ public enum class PreflightStorageParameterAction(
   PARAM_RESET_ALL_DEFAULT(4u),
   ;
 
-  public companion object : MavEnum.Companion<PreflightStorageParameterAction> {
+  public companion object : MavEnum.MavCompanion<PreflightStorageParameterAction> {
     public override fun getEntryFromValueOrNull(v: UInt): PreflightStorageParameterAction? = when
         (v) {
       0u -> PARAM_READ_PERSISTENT

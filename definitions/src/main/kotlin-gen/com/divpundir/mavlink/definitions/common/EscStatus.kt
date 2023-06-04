@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeFloatArray
@@ -64,7 +63,7 @@ public data class EscStatus(
   @GeneratedMavField(type = "float[4]")
   public val current: List<Float> = emptyList(),
 ) : MavMessage<EscStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<EscStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<EscStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -86,16 +85,16 @@ public data class EscStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 291u
-
-    private const val CRC_EXTRA: Byte = 10
-
+  public companion object : MavMessage.MavCompanion<EscStatus> {
     private const val SIZE_V1: Int = 57
 
     private const val SIZE_V2: Int = 57
 
-    private val DESERIALIZER: MavDeserializer<EscStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 291u
+
+    public override val crcExtra: Byte = 10
+
+    public override fun deserialize(bytes: ByteArray): EscStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val rpm = inputBuffer.decodeInt32Array(16)
@@ -103,7 +102,7 @@ public data class EscStatus(
       val current = inputBuffer.decodeFloatArray(16)
       val index = inputBuffer.decodeUInt8()
 
-      EscStatus(
+      return EscStatus(
         index = index,
         timeUsec = timeUsec,
         rpm = rpm,
@@ -112,13 +111,7 @@ public data class EscStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<EscStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<EscStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): EscStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): EscStatus =
         Builder().apply(builderAction).build()
   }
 

@@ -37,7 +37,7 @@ public enum class MavOdidIdType(
   SPECIFIC_SESSION_ID(4u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidIdType> {
+  public companion object : MavEnum.MavCompanion<MavOdidIdType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidIdType? = when (v) {
       0u -> NONE
       1u -> SERIAL_NUMBER

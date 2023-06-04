@@ -21,7 +21,7 @@ public enum class MavOdidHeightRef(
   OVER_GROUND(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidHeightRef> {
+  public companion object : MavEnum.MavCompanion<MavOdidHeightRef> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidHeightRef? = when (v) {
       0u -> OVER_TAKEOFF
       1u -> OVER_GROUND

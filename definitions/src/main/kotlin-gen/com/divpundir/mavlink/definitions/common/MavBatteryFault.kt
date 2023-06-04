@@ -64,7 +64,7 @@ public enum class MavBatteryFault(
   BATTERY_FAULT_INCOMPATIBLE_CELLS_CONFIGURATION(256u),
   ;
 
-  public companion object : MavBitmask.Companion<MavBatteryFault> {
+  public companion object : MavBitmask.MavCompanion<MavBatteryFault> {
     public override fun getEntryFromValueOrNull(v: UInt): MavBatteryFault? = when (v) {
       1u -> DEEP_DISCHARGE
       2u -> SPIKES

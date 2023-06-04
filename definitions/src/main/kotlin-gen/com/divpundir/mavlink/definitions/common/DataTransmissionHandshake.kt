@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -70,7 +69,8 @@ public data class DataTransmissionHandshake(
   @GeneratedMavField(type = "uint8_t")
   public val jpgQuality: UByte = 0u,
 ) : MavMessage<DataTransmissionHandshake> {
-  public override val instanceMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DataTransmissionHandshake> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -96,17 +96,16 @@ public data class DataTransmissionHandshake(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 130u
-
-    private const val CRC_EXTRA: Byte = 29
-
+  public companion object : MavMessage.MavCompanion<DataTransmissionHandshake> {
     private const val SIZE_V1: Int = 13
 
     private const val SIZE_V2: Int = 13
 
-    private val DESERIALIZER: MavDeserializer<DataTransmissionHandshake> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 130u
+
+    public override val crcExtra: Byte = 29
+
+    public override fun deserialize(bytes: ByteArray): DataTransmissionHandshake {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val size = inputBuffer.decodeUInt32()
       val width = inputBuffer.decodeUInt16()
@@ -119,7 +118,7 @@ public data class DataTransmissionHandshake(
       val payload = inputBuffer.decodeUInt8()
       val jpgQuality = inputBuffer.decodeUInt8()
 
-      DataTransmissionHandshake(
+      return DataTransmissionHandshake(
         type = type,
         size = size,
         width = width,
@@ -130,13 +129,7 @@ public data class DataTransmissionHandshake(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DataTransmissionHandshake> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DataTransmissionHandshake> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DataTransmissionHandshake =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DataTransmissionHandshake =
         Builder().apply(builderAction).build()
   }
 

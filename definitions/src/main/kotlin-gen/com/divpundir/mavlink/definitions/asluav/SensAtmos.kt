@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -43,7 +42,7 @@ public data class SensAtmos(
   @GeneratedMavField(type = "float")
   public val humidity: Float = 0F,
 ) : MavMessage<SensAtmos> {
-  public override val instanceMetadata: MavMessage.Metadata<SensAtmos> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SensAtmos> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -61,35 +60,29 @@ public data class SensAtmos(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_009u
-
-    private const val CRC_EXTRA: Byte = -112
-
+  public companion object : MavMessage.MavCompanion<SensAtmos> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<SensAtmos> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_009u
+
+    public override val crcExtra: Byte = -112
+
+    public override fun deserialize(bytes: ByteArray): SensAtmos {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val tempambient = inputBuffer.decodeFloat()
       val humidity = inputBuffer.decodeFloat()
 
-      SensAtmos(
+      return SensAtmos(
         timestamp = timestamp,
         tempambient = tempambient,
         humidity = humidity,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SensAtmos> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SensAtmos> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SensAtmos =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensAtmos =
         Builder().apply(builderAction).build()
   }
 

@@ -36,7 +36,7 @@ public enum class GoproPhotoResolution(
   _12MP_WIDE(4u),
   ;
 
-  public companion object : MavEnum.Companion<GoproPhotoResolution> {
+  public companion object : MavEnum.MavCompanion<GoproPhotoResolution> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproPhotoResolution? = when (v) {
       0u -> _5MP_MEDIUM
       1u -> _7MP_MEDIUM

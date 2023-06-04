@@ -19,7 +19,7 @@ public enum class MavEventErrorReason(
   UNAVAILABLE(0u),
   ;
 
-  public companion object : MavEnum.Companion<MavEventErrorReason> {
+  public companion object : MavEnum.MavCompanion<MavEventErrorReason> {
     public override fun getEntryFromValueOrNull(v: UInt): MavEventErrorReason? = when (v) {
       0u -> UNAVAILABLE
       else -> null

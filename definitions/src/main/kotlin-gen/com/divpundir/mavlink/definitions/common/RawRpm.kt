@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -38,7 +37,7 @@ public data class RawRpm(
   @GeneratedMavField(type = "float")
   public val frequency: Float = 0F,
 ) : MavMessage<RawRpm> {
-  public override val instanceMetadata: MavMessage.Metadata<RawRpm> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<RawRpm> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -54,33 +53,27 @@ public data class RawRpm(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 339u
-
-    private const val CRC_EXTRA: Byte = -57
-
+  public companion object : MavMessage.MavCompanion<RawRpm> {
     private const val SIZE_V1: Int = 5
 
     private const val SIZE_V2: Int = 5
 
-    private val DESERIALIZER: MavDeserializer<RawRpm> = MavDeserializer { bytes ->
+    public override val id: UInt = 339u
+
+    public override val crcExtra: Byte = -57
+
+    public override fun deserialize(bytes: ByteArray): RawRpm {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val frequency = inputBuffer.decodeFloat()
       val index = inputBuffer.decodeUInt8()
 
-      RawRpm(
+      return RawRpm(
         index = index,
         frequency = frequency,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<RawRpm> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<RawRpm> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): RawRpm =
+    public operator fun invoke(builderAction: Builder.() -> Unit): RawRpm =
         Builder().apply(builderAction).build()
   }
 

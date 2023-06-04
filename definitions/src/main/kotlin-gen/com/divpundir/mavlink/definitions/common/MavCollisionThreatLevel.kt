@@ -29,7 +29,7 @@ public enum class MavCollisionThreatLevel(
   HIGH(2u),
   ;
 
-  public companion object : MavEnum.Companion<MavCollisionThreatLevel> {
+  public companion object : MavEnum.MavCompanion<MavCollisionThreatLevel> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCollisionThreatLevel? = when (v) {
       0u -> NONE
       1u -> LOW

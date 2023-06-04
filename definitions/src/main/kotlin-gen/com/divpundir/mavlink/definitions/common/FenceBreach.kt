@@ -31,7 +31,7 @@ public enum class FenceBreach(
   BOUNDARY(3u),
   ;
 
-  public companion object : MavEnum.Companion<FenceBreach> {
+  public companion object : MavEnum.MavCompanion<FenceBreach> {
     public override fun getEntryFromValueOrNull(v: UInt): FenceBreach? = when (v) {
       0u -> NONE
       1u -> MINALT

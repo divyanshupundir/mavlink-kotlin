@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -101,7 +100,7 @@ public data class GpsRtk(
   @GeneratedMavField(type = "int32_t")
   public val iarNumHypotheses: Int = 0,
 ) : MavMessage<GpsRtk> {
-  public override val instanceMetadata: MavMessage.Metadata<GpsRtk> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<GpsRtk> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -139,16 +138,16 @@ public data class GpsRtk(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 127u
-
-    private const val CRC_EXTRA: Byte = 25
-
+  public companion object : MavMessage.MavCompanion<GpsRtk> {
     private const val SIZE_V1: Int = 35
 
     private const val SIZE_V2: Int = 35
 
-    private val DESERIALIZER: MavDeserializer<GpsRtk> = MavDeserializer { bytes ->
+    public override val id: UInt = 127u
+
+    public override val crcExtra: Byte = 25
+
+    public override fun deserialize(bytes: ByteArray): GpsRtk {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeLastBaselineMs = inputBuffer.decodeUInt32()
       val tow = inputBuffer.decodeUInt32()
@@ -167,7 +166,7 @@ public data class GpsRtk(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      GpsRtk(
+      return GpsRtk(
         timeLastBaselineMs = timeLastBaselineMs,
         rtkReceiverId = rtkReceiverId,
         wn = wn,
@@ -184,13 +183,7 @@ public data class GpsRtk(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<GpsRtk> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<GpsRtk> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): GpsRtk =
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRtk =
         Builder().apply(builderAction).build()
   }
 

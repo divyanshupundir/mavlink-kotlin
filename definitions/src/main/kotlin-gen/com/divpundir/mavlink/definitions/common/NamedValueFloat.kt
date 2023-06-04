@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeString
@@ -46,7 +45,7 @@ public data class NamedValueFloat(
   @GeneratedMavField(type = "float")
   public val `value`: Float = 0F,
 ) : MavMessage<NamedValueFloat> {
-  public override val instanceMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<NamedValueFloat> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -64,35 +63,29 @@ public data class NamedValueFloat(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 251u
-
-    private const val CRC_EXTRA: Byte = -86
-
+  public companion object : MavMessage.MavCompanion<NamedValueFloat> {
     private const val SIZE_V1: Int = 18
 
     private const val SIZE_V2: Int = 18
 
-    private val DESERIALIZER: MavDeserializer<NamedValueFloat> = MavDeserializer { bytes ->
+    public override val id: UInt = 251u
+
+    public override val crcExtra: Byte = -86
+
+    public override fun deserialize(bytes: ByteArray): NamedValueFloat {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val value = inputBuffer.decodeFloat()
       val name = inputBuffer.decodeString(10)
 
-      NamedValueFloat(
+      return NamedValueFloat(
         timeBootMs = timeBootMs,
         name = name,
         value = value,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<NamedValueFloat> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<NamedValueFloat> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): NamedValueFloat =
+    public operator fun invoke(builderAction: Builder.() -> Unit): NamedValueFloat =
         Builder().apply(builderAction).build()
   }
 

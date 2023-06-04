@@ -3810,7 +3810,7 @@ public enum class MavCmd(
   CAN_FORWARD(32_000u),
   ;
 
-  public companion object : MavEnum.Companion<MavCmd> {
+  public companion object : MavEnum.MavCompanion<MavCmd> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       16u -> NAV_WAYPOINT
       17u -> NAV_LOITER_UNLIM

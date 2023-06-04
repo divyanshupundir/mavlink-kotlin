@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -35,7 +34,7 @@ public data class Rangefinder(
   @GeneratedMavField(type = "float")
   public val voltage: Float = 0F,
 ) : MavMessage<Rangefinder> {
-  public override val instanceMetadata: MavMessage.Metadata<Rangefinder> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Rangefinder> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class Rangefinder(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 173u
-
-    private const val CRC_EXTRA: Byte = 83
-
+  public companion object : MavMessage.MavCompanion<Rangefinder> {
     private const val SIZE_V1: Int = 8
 
     private const val SIZE_V2: Int = 8
 
-    private val DESERIALIZER: MavDeserializer<Rangefinder> = MavDeserializer { bytes ->
+    public override val id: UInt = 173u
+
+    public override val crcExtra: Byte = 83
+
+    public override fun deserialize(bytes: ByteArray): Rangefinder {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val distance = inputBuffer.decodeFloat()
       val voltage = inputBuffer.decodeFloat()
 
-      Rangefinder(
+      return Rangefinder(
         distance = distance,
         voltage = voltage,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Rangefinder> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Rangefinder> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Rangefinder =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Rangefinder =
         Builder().apply(builderAction).build()
   }
 

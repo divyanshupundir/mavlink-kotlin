@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -75,7 +74,7 @@ public data class Event(
   @GeneratedMavField(type = "uint8_t[40]")
   public val arguments: List<UByte> = emptyList(),
 ) : MavMessage<Event> {
-  public override val instanceMetadata: MavMessage.Metadata<Event> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Event> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -101,16 +100,16 @@ public data class Event(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 410u
-
-    private const val CRC_EXTRA: Byte = -96
-
+  public companion object : MavMessage.MavCompanion<Event> {
     private const val SIZE_V1: Int = 53
 
     private const val SIZE_V2: Int = 53
 
-    private val DESERIALIZER: MavDeserializer<Event> = MavDeserializer { bytes ->
+    public override val id: UInt = 410u
+
+    public override val crcExtra: Byte = -96
+
+    public override fun deserialize(bytes: ByteArray): Event {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val id = inputBuffer.decodeUInt32()
       val eventTimeBootMs = inputBuffer.decodeUInt32()
@@ -120,7 +119,7 @@ public data class Event(
       val logLevels = inputBuffer.decodeUInt8()
       val arguments = inputBuffer.decodeUInt8Array(40)
 
-      Event(
+      return Event(
         destinationComponent = destinationComponent,
         destinationSystem = destinationSystem,
         id = id,
@@ -131,13 +130,7 @@ public data class Event(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Event> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Event> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Event =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Event =
         Builder().apply(builderAction).build()
   }
 

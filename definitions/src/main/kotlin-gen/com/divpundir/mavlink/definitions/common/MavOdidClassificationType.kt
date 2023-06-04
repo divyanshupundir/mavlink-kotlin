@@ -21,7 +21,7 @@ public enum class MavOdidClassificationType(
   EU(1u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidClassificationType> {
+  public companion object : MavEnum.MavCompanion<MavOdidClassificationType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidClassificationType? = when (v) {
       0u -> UNDECLARED
       1u -> EU

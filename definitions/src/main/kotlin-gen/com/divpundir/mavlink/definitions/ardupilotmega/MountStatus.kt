@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.MavMountMode
@@ -64,7 +63,7 @@ public data class MountStatus(
   )
   public val mountMode: MavEnumValue<MavMountMode> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MountStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<MountStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<MountStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -87,16 +86,16 @@ public data class MountStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 158u
-
-    private const val CRC_EXTRA: Byte = -122
-
+  public companion object : MavMessage.MavCompanion<MountStatus> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 15
 
-    private val DESERIALIZER: MavDeserializer<MountStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 158u
+
+    public override val crcExtra: Byte = -122
+
+    public override fun deserialize(bytes: ByteArray): MountStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val pointingA = inputBuffer.decodeInt32()
       val pointingB = inputBuffer.decodeInt32()
@@ -108,7 +107,7 @@ public data class MountStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      MountStatus(
+      return MountStatus(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         pointingA = pointingA,
@@ -118,13 +117,7 @@ public data class MountStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<MountStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<MountStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): MountStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountStatus =
         Builder().apply(builderAction).build()
   }
 

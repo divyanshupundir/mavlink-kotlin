@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -52,7 +51,7 @@ public data class OsdParamShowConfig(
   @GeneratedMavField(type = "uint8_t")
   public val osdIndex: UByte = 0u,
 ) : MavMessage<OsdParamShowConfig> {
-  public override val instanceMetadata: MavMessage.Metadata<OsdParamShowConfig> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<OsdParamShowConfig> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -74,16 +73,16 @@ public data class OsdParamShowConfig(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 11_035u
-
-    private const val CRC_EXTRA: Byte = -128
-
+  public companion object : MavMessage.MavCompanion<OsdParamShowConfig> {
     private const val SIZE_V1: Int = 8
 
     private const val SIZE_V2: Int = 8
 
-    private val DESERIALIZER: MavDeserializer<OsdParamShowConfig> = MavDeserializer { bytes ->
+    public override val id: UInt = 11_035u
+
+    public override val crcExtra: Byte = -128
+
+    public override fun deserialize(bytes: ByteArray): OsdParamShowConfig {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val requestId = inputBuffer.decodeUInt32()
       val targetSystem = inputBuffer.decodeUInt8()
@@ -91,7 +90,7 @@ public data class OsdParamShowConfig(
       val osdScreen = inputBuffer.decodeUInt8()
       val osdIndex = inputBuffer.decodeUInt8()
 
-      OsdParamShowConfig(
+      return OsdParamShowConfig(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         requestId = requestId,
@@ -100,13 +99,7 @@ public data class OsdParamShowConfig(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<OsdParamShowConfig> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<OsdParamShowConfig> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): OsdParamShowConfig =
+    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamShowConfig =
         Builder().apply(builderAction).build()
   }
 

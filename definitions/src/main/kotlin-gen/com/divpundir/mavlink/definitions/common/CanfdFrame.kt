@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -61,7 +60,7 @@ public data class CanfdFrame(
   @GeneratedMavField(type = "uint8_t[64]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<CanfdFrame> {
-  public override val instanceMetadata: MavMessage.Metadata<CanfdFrame> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CanfdFrame> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -85,16 +84,16 @@ public data class CanfdFrame(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 387u
-
-    private const val CRC_EXTRA: Byte = 4
-
+  public companion object : MavMessage.MavCompanion<CanfdFrame> {
     private const val SIZE_V1: Int = 72
 
     private const val SIZE_V2: Int = 72
 
-    private val DESERIALIZER: MavDeserializer<CanfdFrame> = MavDeserializer { bytes ->
+    public override val id: UInt = 387u
+
+    public override val crcExtra: Byte = 4
+
+    public override fun deserialize(bytes: ByteArray): CanfdFrame {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val id = inputBuffer.decodeUInt32()
       val targetSystem = inputBuffer.decodeUInt8()
@@ -103,7 +102,7 @@ public data class CanfdFrame(
       val len = inputBuffer.decodeUInt8()
       val data = inputBuffer.decodeUInt8Array(64)
 
-      CanfdFrame(
+      return CanfdFrame(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         bus = bus,
@@ -113,13 +112,7 @@ public data class CanfdFrame(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CanfdFrame> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CanfdFrame> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CanfdFrame =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CanfdFrame =
         Builder().apply(builderAction).build()
   }
 

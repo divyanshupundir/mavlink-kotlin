@@ -52,7 +52,7 @@ public enum class MavMountMode(
   RETRACT(0u),
   ;
 
-  public companion object : MavEnum.Companion<MavMountMode> {
+  public companion object : MavEnum.MavCompanion<MavMountMode> {
     public override fun getEntryFromValueOrNull(v: UInt): MavMountMode? = when (v) {
       6u -> HOME_LOCATION
       5u -> SYSID_TARGET

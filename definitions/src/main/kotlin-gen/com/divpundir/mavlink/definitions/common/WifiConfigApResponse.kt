@@ -44,7 +44,7 @@ public enum class WifiConfigApResponse(
   PASSWORD_ERROR(5u),
   ;
 
-  public companion object : MavEnum.Companion<WifiConfigApResponse> {
+  public companion object : MavEnum.MavCompanion<WifiConfigApResponse> {
     public override fun getEntryFromValueOrNull(v: UInt): WifiConfigApResponse? = when (v) {
       0u -> UNDEFINED
       1u -> ACCEPTED

@@ -72,7 +72,7 @@ public enum class MavWinchStatusFlag(
   MAV_WINCH_STATUS_ABANDON_LINE(1_024u),
   ;
 
-  public companion object : MavBitmask.Companion<MavWinchStatusFlag> {
+  public companion object : MavBitmask.MavCompanion<MavWinchStatusFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): MavWinchStatusFlag? = when (v) {
       1u -> MAV_WINCH_STATUS_HEALTHY
       2u -> MAV_WINCH_STATUS_FULLY_RETRACTED

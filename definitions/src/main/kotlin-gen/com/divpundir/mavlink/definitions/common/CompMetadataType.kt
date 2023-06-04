@@ -48,7 +48,7 @@ public enum class CompMetadataType(
   ACTUATORS(5u),
   ;
 
-  public companion object : MavEnum.Companion<CompMetadataType> {
+  public companion object : MavEnum.MavCompanion<CompMetadataType> {
     public override fun getEntryFromValueOrNull(v: UInt): CompMetadataType? = when (v) {
       0u -> GENERAL
       1u -> PARAMETER

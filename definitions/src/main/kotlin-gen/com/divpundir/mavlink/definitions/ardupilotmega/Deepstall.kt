@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -80,7 +79,7 @@ public data class Deepstall(
   @GeneratedMavField(type = "uint8_t")
   public val stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Deepstall> {
-  public override val instanceMetadata: MavMessage.Metadata<Deepstall> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -112,16 +111,16 @@ public data class Deepstall(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 195u
-
-    private const val CRC_EXTRA: Byte = 120
-
+  public companion object : MavMessage.MavCompanion<Deepstall> {
     private const val SIZE_V1: Int = 37
 
     private const val SIZE_V2: Int = 37
 
-    private val DESERIALIZER: MavDeserializer<Deepstall> = MavDeserializer { bytes ->
+    public override val id: UInt = 195u
+
+    public override val crcExtra: Byte = 120
+
+    public override fun deserialize(bytes: ByteArray): Deepstall {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val landingLat = inputBuffer.decodeInt32()
       val landingLon = inputBuffer.decodeInt32()
@@ -137,7 +136,7 @@ public data class Deepstall(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      Deepstall(
+      return Deepstall(
         landingLat = landingLat,
         landingLon = landingLon,
         pathLat = pathLat,
@@ -151,13 +150,7 @@ public data class Deepstall(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Deepstall> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Deepstall> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Deepstall =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Deepstall =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -64,7 +63,7 @@ public data class ParamValue(
   @GeneratedMavField(type = "uint16_t")
   public val paramIndex: UShort = 0u,
 ) : MavMessage<ParamValue> {
-  public override val instanceMetadata: MavMessage.Metadata<ParamValue> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ParamValue> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -86,16 +85,16 @@ public data class ParamValue(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 22u
-
-    private const val CRC_EXTRA: Byte = -36
-
+  public companion object : MavMessage.MavCompanion<ParamValue> {
     private const val SIZE_V1: Int = 25
 
     private const val SIZE_V2: Int = 25
 
-    private val DESERIALIZER: MavDeserializer<ParamValue> = MavDeserializer { bytes ->
+    public override val id: UInt = 22u
+
+    public override val crcExtra: Byte = -36
+
+    public override fun deserialize(bytes: ByteArray): ParamValue {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val paramValue = inputBuffer.decodeFloat()
       val paramCount = inputBuffer.decodeUInt16()
@@ -106,7 +105,7 @@ public data class ParamValue(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      ParamValue(
+      return ParamValue(
         paramId = paramId,
         paramValue = paramValue,
         paramType = paramType,
@@ -115,13 +114,7 @@ public data class ParamValue(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ParamValue> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ParamValue> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ParamValue =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamValue =
         Builder().apply(builderAction).build()
   }
 

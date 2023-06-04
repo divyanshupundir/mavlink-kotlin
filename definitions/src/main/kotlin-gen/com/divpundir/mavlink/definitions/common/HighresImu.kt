@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeFloat
@@ -119,7 +118,7 @@ public data class HighresImu(
   )
   public val id: UByte = 0u,
 ) : MavMessage<HighresImu> {
-  public override val instanceMetadata: MavMessage.Metadata<HighresImu> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -162,16 +161,16 @@ public data class HighresImu(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 105u
-
-    private const val CRC_EXTRA: Byte = 93
-
+  public companion object : MavMessage.MavCompanion<HighresImu> {
     private const val SIZE_V1: Int = 62
 
     private const val SIZE_V2: Int = 63
 
-    private val DESERIALIZER: MavDeserializer<HighresImu> = MavDeserializer { bytes ->
+    public override val id: UInt = 105u
+
+    public override val crcExtra: Byte = 93
+
+    public override fun deserialize(bytes: ByteArray): HighresImu {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val xacc = inputBuffer.decodeFloat()
@@ -193,7 +192,7 @@ public data class HighresImu(
       }
       val id = inputBuffer.decodeUInt8()
 
-      HighresImu(
+      return HighresImu(
         timeUsec = timeUsec,
         xacc = xacc,
         yacc = yacc,
@@ -213,13 +212,7 @@ public data class HighresImu(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HighresImu> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HighresImu> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HighresImu =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HighresImu =
         Builder().apply(builderAction).build()
   }
 

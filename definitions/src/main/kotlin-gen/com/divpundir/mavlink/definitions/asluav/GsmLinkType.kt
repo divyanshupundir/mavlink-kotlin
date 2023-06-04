@@ -36,7 +36,7 @@ public enum class GsmLinkType(
   _4G(4u),
   ;
 
-  public companion object : MavEnum.Companion<GsmLinkType> {
+  public companion object : MavEnum.MavCompanion<GsmLinkType> {
     public override fun getEntryFromValueOrNull(v: UInt): GsmLinkType? = when (v) {
       0u -> NONE
       1u -> UNKNOWN

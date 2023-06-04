@@ -60,7 +60,7 @@ public enum class GimbalDeviceErrorFlags(
   CALIBRATION_RUNNING(256u),
   ;
 
-  public companion object : MavBitmask.Companion<GimbalDeviceErrorFlags> {
+  public companion object : MavBitmask.MavCompanion<GimbalDeviceErrorFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceErrorFlags? = when (v) {
       1u -> AT_ROLL_LIMIT
       2u -> AT_PITCH_LIMIT

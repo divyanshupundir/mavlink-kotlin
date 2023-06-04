@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -50,7 +49,7 @@ public data class SerialUdbExtraF18(
   @GeneratedMavField(type = "float")
   public val referenceSpeed: Float = 0F,
 ) : MavMessage<SerialUdbExtraF18> {
-  public override val instanceMetadata: MavMessage.Metadata<SerialUdbExtraF18> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF18> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -72,16 +71,16 @@ public data class SerialUdbExtraF18(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 184u
-
-    private const val CRC_EXTRA: Byte = 41
-
+  public companion object : MavMessage.MavCompanion<SerialUdbExtraF18> {
     private const val SIZE_V1: Int = 20
 
     private const val SIZE_V2: Int = 20
 
-    private val DESERIALIZER: MavDeserializer<SerialUdbExtraF18> = MavDeserializer { bytes ->
+    public override val id: UInt = 184u
+
+    public override val crcExtra: Byte = 41
+
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF18 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val angleOfAttackNormal = inputBuffer.decodeFloat()
       val angleOfAttackInverted = inputBuffer.decodeFloat()
@@ -89,7 +88,7 @@ public data class SerialUdbExtraF18(
       val elevatorTrimInverted = inputBuffer.decodeFloat()
       val referenceSpeed = inputBuffer.decodeFloat()
 
-      SerialUdbExtraF18(
+      return SerialUdbExtraF18(
         angleOfAttackNormal = angleOfAttackNormal,
         angleOfAttackInverted = angleOfAttackInverted,
         elevatorTrimNormal = elevatorTrimNormal,
@@ -98,13 +97,7 @@ public data class SerialUdbExtraF18(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SerialUdbExtraF18> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SerialUdbExtraF18> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SerialUdbExtraF18 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF18 =
         Builder().apply(builderAction).build()
   }
 

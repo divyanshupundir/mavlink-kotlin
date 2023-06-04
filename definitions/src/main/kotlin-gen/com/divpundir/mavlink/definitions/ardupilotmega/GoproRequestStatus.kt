@@ -21,7 +21,7 @@ public enum class GoproRequestStatus(
   GOPRO_REQUEST_FAILED(1u),
   ;
 
-  public companion object : MavEnum.Companion<GoproRequestStatus> {
+  public companion object : MavEnum.MavCompanion<GoproRequestStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproRequestStatus? = when (v) {
       0u -> GOPRO_REQUEST_SUCCESS
       1u -> GOPRO_REQUEST_FAILED

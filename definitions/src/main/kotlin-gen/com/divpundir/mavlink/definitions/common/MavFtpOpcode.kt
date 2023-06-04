@@ -104,7 +104,7 @@ public enum class MavFtpOpcode(
   NAK(129u),
   ;
 
-  public companion object : MavEnum.Companion<MavFtpOpcode> {
+  public companion object : MavEnum.MavCompanion<MavFtpOpcode> {
     public override fun getEntryFromValueOrNull(v: UInt): MavFtpOpcode? = when (v) {
       0u -> NONE
       1u -> TERMINATESESSION

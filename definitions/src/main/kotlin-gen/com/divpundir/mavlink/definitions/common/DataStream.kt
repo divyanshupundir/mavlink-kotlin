@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -45,7 +44,7 @@ public data class DataStream(
   @GeneratedMavField(type = "uint8_t")
   public val onOff: UByte = 0u,
 ) : MavMessage<DataStream> {
-  public override val instanceMetadata: MavMessage.Metadata<DataStream> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DataStream> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -63,35 +62,29 @@ public data class DataStream(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 67u
-
-    private const val CRC_EXTRA: Byte = 21
-
+  public companion object : MavMessage.MavCompanion<DataStream> {
     private const val SIZE_V1: Int = 4
 
     private const val SIZE_V2: Int = 4
 
-    private val DESERIALIZER: MavDeserializer<DataStream> = MavDeserializer { bytes ->
+    public override val id: UInt = 67u
+
+    public override val crcExtra: Byte = 21
+
+    public override fun deserialize(bytes: ByteArray): DataStream {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val messageRate = inputBuffer.decodeUInt16()
       val streamId = inputBuffer.decodeUInt8()
       val onOff = inputBuffer.decodeUInt8()
 
-      DataStream(
+      return DataStream(
         streamId = streamId,
         messageRate = messageRate,
         onOff = onOff,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DataStream> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DataStream> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DataStream =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DataStream =
         Builder().apply(builderAction).build()
   }
 

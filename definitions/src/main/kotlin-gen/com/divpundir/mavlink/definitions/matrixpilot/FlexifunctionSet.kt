@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -35,7 +34,7 @@ public data class FlexifunctionSet(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<FlexifunctionSet> {
-  public override val instanceMetadata: MavMessage.Metadata<FlexifunctionSet> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionSet> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class FlexifunctionSet(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 150u
-
-    private const val CRC_EXTRA: Byte = -75
-
+  public companion object : MavMessage.MavCompanion<FlexifunctionSet> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<FlexifunctionSet> = MavDeserializer { bytes ->
+    public override val id: UInt = 150u
+
+    public override val crcExtra: Byte = -75
+
+    public override fun deserialize(bytes: ByteArray): FlexifunctionSet {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      FlexifunctionSet(
+      return FlexifunctionSet(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FlexifunctionSet> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FlexifunctionSet> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionSet =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionSet =
         Builder().apply(builderAction).build()
   }
 

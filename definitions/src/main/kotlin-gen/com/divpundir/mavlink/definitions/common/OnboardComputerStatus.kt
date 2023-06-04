@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeInt16Array
@@ -156,7 +155,7 @@ public data class OnboardComputerStatus(
   @GeneratedMavField(type = "uint32_t[6]")
   public val linkRxMax: List<UInt> = emptyList(),
 ) : MavMessage<OnboardComputerStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<OnboardComputerStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -208,16 +207,16 @@ public data class OnboardComputerStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 390u
-
-    private const val CRC_EXTRA: Byte = -100
-
+  public companion object : MavMessage.MavCompanion<OnboardComputerStatus> {
     private const val SIZE_V1: Int = 238
 
     private const val SIZE_V2: Int = 238
 
-    private val DESERIALIZER: MavDeserializer<OnboardComputerStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 390u
+
+    public override val crcExtra: Byte = -100
+
+    public override fun deserialize(bytes: ByteArray): OnboardComputerStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val uptime = inputBuffer.decodeUInt32()
@@ -240,7 +239,7 @@ public data class OnboardComputerStatus(
       val temperatureBoard = inputBuffer.decodeInt8()
       val temperatureCore = inputBuffer.decodeInt8Array(8)
 
-      OnboardComputerStatus(
+      return OnboardComputerStatus(
         timeUsec = timeUsec,
         uptime = uptime,
         type = type,
@@ -264,13 +263,7 @@ public data class OnboardComputerStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<OnboardComputerStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<OnboardComputerStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): OnboardComputerStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): OnboardComputerStatus =
         Builder().apply(builderAction).build()
   }
 

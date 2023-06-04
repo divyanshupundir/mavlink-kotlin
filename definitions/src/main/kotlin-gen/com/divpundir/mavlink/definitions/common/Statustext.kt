@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -66,7 +65,7 @@ public data class Statustext(
   )
   public val chunkSeq: UByte = 0u,
 ) : MavMessage<Statustext> {
-  public override val instanceMetadata: MavMessage.Metadata<Statustext> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<Statustext> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -84,16 +83,16 @@ public data class Statustext(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 253u
-
-    private const val CRC_EXTRA: Byte = 83
-
+  public companion object : MavMessage.MavCompanion<Statustext> {
     private const val SIZE_V1: Int = 51
 
     private const val SIZE_V2: Int = 54
 
-    private val DESERIALIZER: MavDeserializer<Statustext> = MavDeserializer { bytes ->
+    public override val id: UInt = 253u
+
+    public override val crcExtra: Byte = 83
+
+    public override fun deserialize(bytes: ByteArray): Statustext {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val severity = inputBuffer.decodeEnumValue(1).let { value ->
         val entry = MavSeverity.getEntryFromValueOrNull(value)
@@ -103,7 +102,7 @@ public data class Statustext(
       val id = inputBuffer.decodeUInt16()
       val chunkSeq = inputBuffer.decodeUInt8()
 
-      Statustext(
+      return Statustext(
         severity = severity,
         text = text,
         id = id,
@@ -111,13 +110,7 @@ public data class Statustext(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<Statustext> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<Statustext> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): Statustext =
+    public operator fun invoke(builderAction: Builder.() -> Unit): Statustext =
         Builder().apply(builderAction).build()
   }
 

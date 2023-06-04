@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -91,7 +90,8 @@ public data class CameraTrackingImageStatus(
   @GeneratedMavField(type = "float")
   public val recBottomY: Float = 0F,
 ) : MavMessage<CameraTrackingImageStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingImageStatus> =
+      Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -123,17 +123,16 @@ public data class CameraTrackingImageStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 275u
-
-    private const val CRC_EXTRA: Byte = 126
-
+  public companion object : MavMessage.MavCompanion<CameraTrackingImageStatus> {
     private const val SIZE_V1: Int = 31
 
     private const val SIZE_V2: Int = 31
 
-    private val DESERIALIZER: MavDeserializer<CameraTrackingImageStatus> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 275u
+
+    public override val crcExtra: Byte = 126
+
+    public override fun deserialize(bytes: ByteArray): CameraTrackingImageStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val pointX = inputBuffer.decodeFloat()
       val pointY = inputBuffer.decodeFloat()
@@ -155,7 +154,7 @@ public data class CameraTrackingImageStatus(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      CameraTrackingImageStatus(
+      return CameraTrackingImageStatus(
         trackingStatus = trackingStatus,
         trackingMode = trackingMode,
         targetData = targetData,
@@ -169,13 +168,7 @@ public data class CameraTrackingImageStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CameraTrackingImageStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CameraTrackingImageStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CameraTrackingImageStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrackingImageStatus =
         Builder().apply(builderAction).build()
   }
 

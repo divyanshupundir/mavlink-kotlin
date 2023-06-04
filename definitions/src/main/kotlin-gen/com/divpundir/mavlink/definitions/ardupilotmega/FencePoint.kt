@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -59,7 +58,7 @@ public data class FencePoint(
   @GeneratedMavField(type = "float")
   public val lng: Float = 0F,
 ) : MavMessage<FencePoint> {
-  public override val instanceMetadata: MavMessage.Metadata<FencePoint> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FencePoint> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -83,16 +82,16 @@ public data class FencePoint(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 160u
-
-    private const val CRC_EXTRA: Byte = 78
-
+  public companion object : MavMessage.MavCompanion<FencePoint> {
     private const val SIZE_V1: Int = 12
 
     private const val SIZE_V2: Int = 12
 
-    private val DESERIALIZER: MavDeserializer<FencePoint> = MavDeserializer { bytes ->
+    public override val id: UInt = 160u
+
+    public override val crcExtra: Byte = 78
+
+    public override fun deserialize(bytes: ByteArray): FencePoint {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeFloat()
       val lng = inputBuffer.decodeFloat()
@@ -101,7 +100,7 @@ public data class FencePoint(
       val idx = inputBuffer.decodeUInt8()
       val count = inputBuffer.decodeUInt8()
 
-      FencePoint(
+      return FencePoint(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idx = idx,
@@ -111,13 +110,7 @@ public data class FencePoint(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FencePoint> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FencePoint> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FencePoint =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FencePoint =
         Builder().apply(builderAction).build()
   }
 

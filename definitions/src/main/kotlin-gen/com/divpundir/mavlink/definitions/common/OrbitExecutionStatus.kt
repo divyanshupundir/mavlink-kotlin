@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -70,7 +69,7 @@ public data class OrbitExecutionStatus(
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<OrbitExecutionStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<OrbitExecutionStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -94,16 +93,16 @@ public data class OrbitExecutionStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 360u
-
-    private const val CRC_EXTRA: Byte = 11
-
+  public companion object : MavMessage.MavCompanion<OrbitExecutionStatus> {
     private const val SIZE_V1: Int = 25
 
     private const val SIZE_V2: Int = 25
 
-    private val DESERIALIZER: MavDeserializer<OrbitExecutionStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 360u
+
+    public override val crcExtra: Byte = 11
+
+    public override fun deserialize(bytes: ByteArray): OrbitExecutionStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val radius = inputBuffer.decodeFloat()
@@ -115,7 +114,7 @@ public data class OrbitExecutionStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      OrbitExecutionStatus(
+      return OrbitExecutionStatus(
         timeUsec = timeUsec,
         radius = radius,
         frame = frame,
@@ -125,13 +124,7 @@ public data class OrbitExecutionStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<OrbitExecutionStatus> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<OrbitExecutionStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): OrbitExecutionStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): OrbitExecutionStatus =
         Builder().apply(builderAction).build()
   }
 

@@ -10,10 +10,10 @@ public object PaparazziDialect : AbstractMavDialect(
     CommonDialect,
   ), 
   mapOf(
-    ScriptItem.classMetadata.id to ScriptItem.classMetadata,
-    ScriptRequest.classMetadata.id to ScriptRequest.classMetadata,
-    ScriptRequestList.classMetadata.id to ScriptRequestList.classMetadata,
-    ScriptCount.classMetadata.id to ScriptCount.classMetadata,
-    ScriptCurrent.classMetadata.id to ScriptCurrent.classMetadata,
+    ScriptItem.id to ScriptItem,
+    ScriptRequest.id to ScriptRequest,
+    ScriptRequestList.id to ScriptRequestList,
+    ScriptCount.id to ScriptCount,
+    ScriptCurrent.id to ScriptCurrent,
   )
 )

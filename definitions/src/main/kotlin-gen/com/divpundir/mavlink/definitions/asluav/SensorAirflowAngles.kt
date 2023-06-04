@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -56,7 +55,7 @@ public data class SensorAirflowAngles(
   @GeneratedMavField(type = "uint8_t")
   public val sideslipValid: UByte = 0u,
 ) : MavMessage<SensorAirflowAngles> {
-  public override val instanceMetadata: MavMessage.Metadata<SensorAirflowAngles> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SensorAirflowAngles> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -78,16 +77,16 @@ public data class SensorAirflowAngles(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_016u
-
-    private const val CRC_EXTRA: Byte = -107
-
+  public companion object : MavMessage.MavCompanion<SensorAirflowAngles> {
     private const val SIZE_V1: Int = 18
 
     private const val SIZE_V2: Int = 18
 
-    private val DESERIALIZER: MavDeserializer<SensorAirflowAngles> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_016u
+
+    public override val crcExtra: Byte = -107
+
+    public override fun deserialize(bytes: ByteArray): SensorAirflowAngles {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val angleofattack = inputBuffer.decodeFloat()
@@ -95,7 +94,7 @@ public data class SensorAirflowAngles(
       val angleofattackValid = inputBuffer.decodeUInt8()
       val sideslipValid = inputBuffer.decodeUInt8()
 
-      SensorAirflowAngles(
+      return SensorAirflowAngles(
         timestamp = timestamp,
         angleofattack = angleofattack,
         angleofattackValid = angleofattackValid,
@@ -104,13 +103,7 @@ public data class SensorAirflowAngles(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SensorAirflowAngles> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SensorAirflowAngles> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SensorAirflowAngles =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensorAirflowAngles =
         Builder().apply(builderAction).build()
   }
 

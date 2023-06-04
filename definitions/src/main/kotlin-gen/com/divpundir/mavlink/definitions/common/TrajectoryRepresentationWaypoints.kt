@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloatArray
 import com.divpundir.mavlink.serialization.decodeUInt16Array
@@ -107,8 +106,8 @@ public data class TrajectoryRepresentationWaypoints(
   @GeneratedMavField(type = "uint16_t[5]")
   public val command: List<UShort> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationWaypoints> {
-  public override val instanceMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> =
-      METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationWaypoints>
+      = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -148,17 +147,16 @@ public data class TrajectoryRepresentationWaypoints(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 332u
-
-    private const val CRC_EXTRA: Byte = -20
-
+  public companion object : MavMessage.MavCompanion<TrajectoryRepresentationWaypoints> {
     private const val SIZE_V1: Int = 239
 
     private const val SIZE_V2: Int = 239
 
-    private val DESERIALIZER: MavDeserializer<TrajectoryRepresentationWaypoints> = MavDeserializer {
-        bytes ->
+    public override val id: UInt = 332u
+
+    public override val crcExtra: Byte = -20
+
+    public override fun deserialize(bytes: ByteArray): TrajectoryRepresentationWaypoints {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val posX = inputBuffer.decodeFloatArray(20)
@@ -175,7 +173,7 @@ public data class TrajectoryRepresentationWaypoints(
       val command = inputBuffer.decodeUInt16Array(10)
       val validPoints = inputBuffer.decodeUInt8()
 
-      TrajectoryRepresentationWaypoints(
+      return TrajectoryRepresentationWaypoints(
         timeUsec = timeUsec,
         validPoints = validPoints,
         posX = posX,
@@ -193,14 +191,8 @@ public data class TrajectoryRepresentationWaypoints(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<TrajectoryRepresentationWaypoints> =
-        MavMessage.Metadata(ID, CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<TrajectoryRepresentationWaypoints> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): TrajectoryRepresentationWaypoints =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TrajectoryRepresentationWaypoints
+        = Builder().apply(builderAction).build()
   }
 
   public class Builder {

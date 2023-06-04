@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeEnumValue
@@ -113,7 +112,7 @@ public data class CameraFeedback(
   )
   public val completedCaptures: UShort = 0u,
 ) : MavMessage<CameraFeedback> {
-  public override val instanceMetadata: MavMessage.Metadata<CameraFeedback> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CameraFeedback> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -152,16 +151,16 @@ public data class CameraFeedback(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 180u
-
-    private const val CRC_EXTRA: Byte = 52
-
+  public companion object : MavMessage.MavCompanion<CameraFeedback> {
     private const val SIZE_V1: Int = 45
 
     private const val SIZE_V2: Int = 47
 
-    private val DESERIALIZER: MavDeserializer<CameraFeedback> = MavDeserializer { bytes ->
+    public override val id: UInt = 180u
+
+    public override val crcExtra: Byte = 52
+
+    public override fun deserialize(bytes: ByteArray): CameraFeedback {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val lat = inputBuffer.decodeInt32()
@@ -181,7 +180,7 @@ public data class CameraFeedback(
       }
       val completedCaptures = inputBuffer.decodeUInt16()
 
-      CameraFeedback(
+      return CameraFeedback(
         timeUsec = timeUsec,
         targetSystem = targetSystem,
         camIdx = camIdx,
@@ -199,13 +198,7 @@ public data class CameraFeedback(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CameraFeedback> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CameraFeedback> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CameraFeedback =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraFeedback =
         Builder().apply(builderAction).build()
   }
 

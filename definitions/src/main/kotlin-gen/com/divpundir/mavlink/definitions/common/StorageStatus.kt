@@ -35,7 +35,7 @@ public enum class StorageStatus(
   NOT_SUPPORTED(3u),
   ;
 
-  public companion object : MavEnum.Companion<StorageStatus> {
+  public companion object : MavEnum.MavCompanion<StorageStatus> {
     public override fun getEntryFromValueOrNull(v: UInt): StorageStatus? = when (v) {
       0u -> EMPTY
       1u -> UNFORMATTED

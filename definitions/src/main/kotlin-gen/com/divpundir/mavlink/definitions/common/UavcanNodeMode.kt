@@ -39,7 +39,7 @@ public enum class UavcanNodeMode(
   OFFLINE(7u),
   ;
 
-  public companion object : MavEnum.Companion<UavcanNodeMode> {
+  public companion object : MavEnum.MavCompanion<UavcanNodeMode> {
     public override fun getEntryFromValueOrNull(v: UInt): UavcanNodeMode? = when (v) {
       0u -> OPERATIONAL
       1u -> INITIALIZATION

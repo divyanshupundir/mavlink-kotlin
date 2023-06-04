@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -59,7 +58,7 @@ public data class ScaledPressure(
   )
   public val temperaturePressDiff: Short = 0,
 ) : MavMessage<ScaledPressure> {
-  public override val instanceMetadata: MavMessage.Metadata<ScaledPressure> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -80,16 +79,16 @@ public data class ScaledPressure(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 29u
-
-    private const val CRC_EXTRA: Byte = 115
-
+  public companion object : MavMessage.MavCompanion<ScaledPressure> {
     private const val SIZE_V1: Int = 14
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<ScaledPressure> = MavDeserializer { bytes ->
+    public override val id: UInt = 29u
+
+    public override val crcExtra: Byte = 115
+
+    public override fun deserialize(bytes: ByteArray): ScaledPressure {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val pressAbs = inputBuffer.decodeFloat()
@@ -97,7 +96,7 @@ public data class ScaledPressure(
       val temperature = inputBuffer.decodeInt16()
       val temperaturePressDiff = inputBuffer.decodeInt16()
 
-      ScaledPressure(
+      return ScaledPressure(
         timeBootMs = timeBootMs,
         pressAbs = pressAbs,
         pressDiff = pressDiff,
@@ -106,13 +105,7 @@ public data class ScaledPressure(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ScaledPressure> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ScaledPressure> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ScaledPressure =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScaledPressure =
         Builder().apply(builderAction).build()
   }
 

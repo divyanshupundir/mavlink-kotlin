@@ -26,7 +26,7 @@ public enum class MavOdidDescType(
   EXTENDED_STATUS(2u),
   ;
 
-  public companion object : MavEnum.Companion<MavOdidDescType> {
+  public companion object : MavEnum.MavCompanion<MavOdidDescType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavOdidDescType? = when (v) {
       0u -> TEXT
       1u -> EMERGENCY

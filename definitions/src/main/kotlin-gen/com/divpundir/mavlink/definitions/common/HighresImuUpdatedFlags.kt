@@ -90,7 +90,7 @@ public enum class HighresImuUpdatedFlags(
   HIGHRES_IMU_UPDATED_ALL(65_535u),
   ;
 
-  public companion object : MavBitmask.Companion<HighresImuUpdatedFlags> {
+  public companion object : MavBitmask.MavCompanion<HighresImuUpdatedFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): HighresImuUpdatedFlags? = when (v) {
       0u -> HIGHRES_IMU_UPDATED_NONE
       1u -> HIGHRES_IMU_UPDATED_XACC

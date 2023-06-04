@@ -42,7 +42,7 @@ public enum class SerialControlFlag(
   MULTI(16u),
   ;
 
-  public companion object : MavBitmask.Companion<SerialControlFlag> {
+  public companion object : MavBitmask.MavCompanion<SerialControlFlag> {
     public override fun getEntryFromValueOrNull(v: UInt): SerialControlFlag? = when (v) {
       1u -> REPLY
       2u -> RESPOND

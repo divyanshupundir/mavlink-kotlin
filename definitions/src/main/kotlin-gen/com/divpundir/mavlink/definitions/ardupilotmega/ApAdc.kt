@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -55,7 +54,7 @@ public data class ApAdc(
   @GeneratedMavField(type = "uint16_t")
   public val adc6: UShort = 0u,
 ) : MavMessage<ApAdc> {
-  public override val instanceMetadata: MavMessage.Metadata<ApAdc> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ApAdc> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -79,16 +78,16 @@ public data class ApAdc(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 153u
-
-    private const val CRC_EXTRA: Byte = -68
-
+  public companion object : MavMessage.MavCompanion<ApAdc> {
     private const val SIZE_V1: Int = 12
 
     private const val SIZE_V2: Int = 12
 
-    private val DESERIALIZER: MavDeserializer<ApAdc> = MavDeserializer { bytes ->
+    public override val id: UInt = 153u
+
+    public override val crcExtra: Byte = -68
+
+    public override fun deserialize(bytes: ByteArray): ApAdc {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val adc1 = inputBuffer.decodeUInt16()
       val adc2 = inputBuffer.decodeUInt16()
@@ -97,7 +96,7 @@ public data class ApAdc(
       val adc5 = inputBuffer.decodeUInt16()
       val adc6 = inputBuffer.decodeUInt16()
 
-      ApAdc(
+      return ApAdc(
         adc1 = adc1,
         adc2 = adc2,
         adc3 = adc3,
@@ -107,13 +106,7 @@ public data class ApAdc(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ApAdc> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ApAdc> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ApAdc =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ApAdc =
         Builder().apply(builderAction).build()
   }
 

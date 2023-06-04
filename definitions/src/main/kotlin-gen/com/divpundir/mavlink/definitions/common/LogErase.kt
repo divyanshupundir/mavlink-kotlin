@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -35,7 +34,7 @@ public data class LogErase(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<LogErase> {
-  public override val instanceMetadata: MavMessage.Metadata<LogErase> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LogErase> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -51,33 +50,27 @@ public data class LogErase(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 121u
-
-    private const val CRC_EXTRA: Byte = -19
-
+  public companion object : MavMessage.MavCompanion<LogErase> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<LogErase> = MavDeserializer { bytes ->
+    public override val id: UInt = 121u
+
+    public override val crcExtra: Byte = -19
+
+    public override fun deserialize(bytes: ByteArray): LogErase {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      LogErase(
+      return LogErase(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LogErase> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LogErase> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LogErase =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogErase =
         Builder().apply(builderAction).build()
   }
 

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -36,7 +35,7 @@ public data class ParamRequestList(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<ParamRequestList> {
-  public override val instanceMetadata: MavMessage.Metadata<ParamRequestList> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ParamRequestList> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -52,33 +51,27 @@ public data class ParamRequestList(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 21u
-
-    private const val CRC_EXTRA: Byte = -97
-
+  public companion object : MavMessage.MavCompanion<ParamRequestList> {
     private const val SIZE_V1: Int = 2
 
     private const val SIZE_V2: Int = 2
 
-    private val DESERIALIZER: MavDeserializer<ParamRequestList> = MavDeserializer { bytes ->
+    public override val id: UInt = 21u
+
+    public override val crcExtra: Byte = -97
+
+    public override fun deserialize(bytes: ByteArray): ParamRequestList {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      ParamRequestList(
+      return ParamRequestList(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ParamRequestList> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ParamRequestList> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ParamRequestList =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamRequestList =
         Builder().apply(builderAction).build()
   }
 

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
@@ -78,7 +77,7 @@ public data class LimitsStatus(
   @GeneratedMavField(type = "uint8_t")
   public val modsTriggered: MavBitmaskValue<LimitModule> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<LimitsStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<LimitsStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<LimitsStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -108,16 +107,16 @@ public data class LimitsStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 167u
-
-    private const val CRC_EXTRA: Byte = -112
-
+  public companion object : MavMessage.MavCompanion<LimitsStatus> {
     private const val SIZE_V1: Int = 22
 
     private const val SIZE_V2: Int = 22
 
-    private val DESERIALIZER: MavDeserializer<LimitsStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 167u
+
+    public override val crcExtra: Byte = -112
+
+    public override fun deserialize(bytes: ByteArray): LimitsStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lastTrigger = inputBuffer.decodeUInt32()
       val lastAction = inputBuffer.decodeUInt32()
@@ -141,7 +140,7 @@ public data class LimitsStatus(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      LimitsStatus(
+      return LimitsStatus(
         limitsState = limitsState,
         lastTrigger = lastTrigger,
         lastAction = lastAction,
@@ -154,13 +153,7 @@ public data class LimitsStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<LimitsStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<LimitsStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): LimitsStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): LimitsStatus =
         Builder().apply(builderAction).build()
   }
 

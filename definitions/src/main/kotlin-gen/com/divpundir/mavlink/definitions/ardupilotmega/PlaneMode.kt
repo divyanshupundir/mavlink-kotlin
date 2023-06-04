@@ -62,7 +62,7 @@ public enum class PlaneMode(
   THERMAL(24u),
   ;
 
-  public companion object : MavEnum.Companion<PlaneMode> {
+  public companion object : MavEnum.MavCompanion<PlaneMode> {
     public override fun getEntryFromValueOrNull(v: UInt): PlaneMode? = when (v) {
       0u -> MANUAL
       1u -> CIRCLE

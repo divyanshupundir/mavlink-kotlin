@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeDoubleArray
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -49,7 +48,7 @@ public data class WheelDistance(
   @GeneratedMavField(type = "double[16]")
   public val distance: List<Double> = emptyList(),
 ) : MavMessage<WheelDistance> {
-  public override val instanceMetadata: MavMessage.Metadata<WheelDistance> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -67,35 +66,29 @@ public data class WheelDistance(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 9_000u
-
-    private const val CRC_EXTRA: Byte = 113
-
+  public companion object : MavMessage.MavCompanion<WheelDistance> {
     private const val SIZE_V1: Int = 137
 
     private const val SIZE_V2: Int = 137
 
-    private val DESERIALIZER: MavDeserializer<WheelDistance> = MavDeserializer { bytes ->
+    public override val id: UInt = 9_000u
+
+    public override val crcExtra: Byte = 113
+
+    public override fun deserialize(bytes: ByteArray): WheelDistance {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeUsec = inputBuffer.decodeUInt64()
       val distance = inputBuffer.decodeDoubleArray(128)
       val count = inputBuffer.decodeUInt8()
 
-      WheelDistance(
+      return WheelDistance(
         timeUsec = timeUsec,
         count = count,
         distance = distance,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<WheelDistance> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<WheelDistance> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): WheelDistance =
+    public operator fun invoke(builderAction: Builder.() -> Unit): WheelDistance =
         Builder().apply(builderAction).build()
   }
 

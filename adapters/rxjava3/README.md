@@ -37,7 +37,6 @@ println("Connected")
 
 // Non-blocking
 connection.connect()
-    .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe(
         { println("connected") },
@@ -69,7 +68,7 @@ connection.mavFrame
 connection.mavFrame
     .map { it.message }
     .ofType(Heartbeat::class.java)
-    .observeOn(AndroidSchedulers.mainThread()) // No need for subscribeOn as frames are read on the mavlink-read-thread
+    .observeOn(AndroidSchedulers.mainThread())
     .subscribe(
         { println("autopilot: ${it.autopilot}, type: ${it.type}") },
         Throwable::printStackTrace
@@ -93,7 +92,7 @@ val heartbeat = Heartbeat(
 ) // Default values will be set for the unspecified parameters
 
 // Using the builder function
-val heartbeat = Heartbeat.builder {
+val heartbeat = Heartbeat {
     type = MavType.FIXED_WING.wrap()
     autopilot = MavAutopilot.PX4.wrap()
     baseMode = MavEnumValue.fromValue(200)
@@ -146,7 +145,6 @@ println("Heartbeat sent")
 
 // Non-blocking
 completable
-    .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe(
         { println("Heartbeat sent") },
@@ -164,7 +162,6 @@ println("Closed")
 
 // Non-blocking
 connection.close()
-    .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe(
         { println("Closed") },

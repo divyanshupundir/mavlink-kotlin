@@ -17,7 +17,7 @@ public enum class GoproVideoSettingsFlags(
   GOPRO_VIDEO_SETTINGS_TV_MODE(1u),
   ;
 
-  public companion object : MavBitmask.Companion<GoproVideoSettingsFlags> {
+  public companion object : MavBitmask.MavCompanion<GoproVideoSettingsFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): GoproVideoSettingsFlags? = when (v) {
       1u -> GOPRO_VIDEO_SETTINGS_TV_MODE
       else -> null

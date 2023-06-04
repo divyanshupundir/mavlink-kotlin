@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.minimal
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -60,7 +59,7 @@ public data class ProtocolVersion(
   @GeneratedMavField(type = "uint8_t[8]")
   public val libraryVersionHash: List<UByte> = emptyList(),
 ) : MavMessage<ProtocolVersion> {
-  public override val instanceMetadata: MavMessage.Metadata<ProtocolVersion> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ProtocolVersion> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -82,16 +81,16 @@ public data class ProtocolVersion(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 300u
-
-    private const val CRC_EXTRA: Byte = -39
-
+  public companion object : MavMessage.MavCompanion<ProtocolVersion> {
     private const val SIZE_V1: Int = 22
 
     private const val SIZE_V2: Int = 22
 
-    private val DESERIALIZER: MavDeserializer<ProtocolVersion> = MavDeserializer { bytes ->
+    public override val id: UInt = 300u
+
+    public override val crcExtra: Byte = -39
+
+    public override fun deserialize(bytes: ByteArray): ProtocolVersion {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val version = inputBuffer.decodeUInt16()
       val minVersion = inputBuffer.decodeUInt16()
@@ -99,7 +98,7 @@ public data class ProtocolVersion(
       val specVersionHash = inputBuffer.decodeUInt8Array(8)
       val libraryVersionHash = inputBuffer.decodeUInt8Array(8)
 
-      ProtocolVersion(
+      return ProtocolVersion(
         version = version,
         minVersion = minVersion,
         maxVersion = maxVersion,
@@ -108,13 +107,7 @@ public data class ProtocolVersion(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ProtocolVersion> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ProtocolVersion> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ProtocolVersion =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ProtocolVersion =
         Builder().apply(builderAction).build()
   }
 

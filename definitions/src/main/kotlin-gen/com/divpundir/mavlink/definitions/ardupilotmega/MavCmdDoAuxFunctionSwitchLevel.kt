@@ -26,7 +26,7 @@ public enum class MavCmdDoAuxFunctionSwitchLevel(
   HIGH(2u),
   ;
 
-  public companion object : MavEnum.Companion<MavCmdDoAuxFunctionSwitchLevel> {
+  public companion object : MavEnum.MavCompanion<MavCmdDoAuxFunctionSwitchLevel> {
     public override fun getEntryFromValueOrNull(v: UInt): MavCmdDoAuxFunctionSwitchLevel? = when (v)
         {
       0u -> LOW

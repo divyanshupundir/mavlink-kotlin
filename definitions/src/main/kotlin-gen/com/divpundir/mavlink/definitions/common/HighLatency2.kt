@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.minimal.MavAutopilot
@@ -181,7 +180,7 @@ public data class HighLatency2(
   @GeneratedMavField(type = "int8_t")
   public val custom2: Byte = 0,
 ) : MavMessage<HighLatency2> {
-  public override val instanceMetadata: MavMessage.Metadata<HighLatency2> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<HighLatency2> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -247,16 +246,16 @@ public data class HighLatency2(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 235u
-
-    private const val CRC_EXTRA: Byte = -77
-
+  public companion object : MavMessage.MavCompanion<HighLatency2> {
     private const val SIZE_V1: Int = 42
 
     private const val SIZE_V2: Int = 42
 
-    private val DESERIALIZER: MavDeserializer<HighLatency2> = MavDeserializer { bytes ->
+    public override val id: UInt = 235u
+
+    public override val crcExtra: Byte = -77
+
+    public override fun deserialize(bytes: ByteArray): HighLatency2 {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt32()
       val latitude = inputBuffer.decodeInt32()
@@ -295,7 +294,7 @@ public data class HighLatency2(
       val custom1 = inputBuffer.decodeInt8()
       val custom2 = inputBuffer.decodeInt8()
 
-      HighLatency2(
+      return HighLatency2(
         timestamp = timestamp,
         type = type,
         autopilot = autopilot,
@@ -326,13 +325,7 @@ public data class HighLatency2(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<HighLatency2> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<HighLatency2> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): HighLatency2 =
+    public operator fun invoke(builderAction: Builder.() -> Unit): HighLatency2 =
         Builder().apply(builderAction).build()
   }
 

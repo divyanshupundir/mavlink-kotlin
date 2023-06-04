@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.MavCmd
@@ -117,7 +116,7 @@ public data class CommandIntStamped(
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<CommandIntStamped> {
-  public override val instanceMetadata: MavMessage.Metadata<CommandIntStamped> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<CommandIntStamped> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -159,16 +158,16 @@ public data class CommandIntStamped(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 223u
-
-    private const val CRC_EXTRA: Byte = 119
-
+  public companion object : MavMessage.MavCompanion<CommandIntStamped> {
     private const val SIZE_V1: Int = 47
 
     private const val SIZE_V2: Int = 47
 
-    private val DESERIALIZER: MavDeserializer<CommandIntStamped> = MavDeserializer { bytes ->
+    public override val id: UInt = 223u
+
+    public override val crcExtra: Byte = 119
+
+    public override fun deserialize(bytes: ByteArray): CommandIntStamped {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val vehicleTimestamp = inputBuffer.decodeUInt64()
       val utcTime = inputBuffer.decodeUInt32()
@@ -192,7 +191,7 @@ public data class CommandIntStamped(
       val current = inputBuffer.decodeUInt8()
       val autocontinue = inputBuffer.decodeUInt8()
 
-      CommandIntStamped(
+      return CommandIntStamped(
         utcTime = utcTime,
         vehicleTimestamp = vehicleTimestamp,
         targetSystem = targetSystem,
@@ -211,13 +210,7 @@ public data class CommandIntStamped(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<CommandIntStamped> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<CommandIntStamped> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): CommandIntStamped =
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandIntStamped =
         Builder().apply(builderAction).build()
   }
 

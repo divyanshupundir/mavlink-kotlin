@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeString
@@ -60,7 +59,7 @@ public data class ComponentMetadata(
   @GeneratedMavField(type = "char[100]")
   public val uri: String = "",
 ) : MavMessage<ComponentMetadata> {
-  public override val instanceMetadata: MavMessage.Metadata<ComponentMetadata> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ComponentMetadata> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -78,35 +77,29 @@ public data class ComponentMetadata(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 397u
-
-    private const val CRC_EXTRA: Byte = -74
-
+  public companion object : MavMessage.MavCompanion<ComponentMetadata> {
     private const val SIZE_V1: Int = 108
 
     private const val SIZE_V2: Int = 108
 
-    private val DESERIALIZER: MavDeserializer<ComponentMetadata> = MavDeserializer { bytes ->
+    public override val id: UInt = 397u
+
+    public override val crcExtra: Byte = -74
+
+    public override fun deserialize(bytes: ByteArray): ComponentMetadata {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val fileCrc = inputBuffer.decodeUInt32()
       val uri = inputBuffer.decodeString(100)
 
-      ComponentMetadata(
+      return ComponentMetadata(
         timeBootMs = timeBootMs,
         fileCrc = fileCrc,
         uri = uri,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ComponentMetadata> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ComponentMetadata> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ComponentMetadata =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentMetadata =
         Builder().apply(builderAction).build()
   }
 

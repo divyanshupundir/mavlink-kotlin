@@ -78,7 +78,7 @@ public enum class EstimatorStatusFlags(
   ESTIMATOR_ACCEL_ERROR(2_048u),
   ;
 
-  public companion object : MavBitmask.Companion<EstimatorStatusFlags> {
+  public companion object : MavBitmask.MavCompanion<EstimatorStatusFlags> {
     public override fun getEntryFromValueOrNull(v: UInt): EstimatorStatusFlags? = when (v) {
       1u -> ESTIMATOR_ATTITUDE
       2u -> ESTIMATOR_VELOCITY_HORIZ

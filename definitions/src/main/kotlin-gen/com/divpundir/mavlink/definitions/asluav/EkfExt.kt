@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -63,7 +62,7 @@ public data class EkfExt(
   @GeneratedMavField(type = "float")
   public val alpha: Float = 0F,
 ) : MavMessage<EkfExt> {
-  public override val instanceMetadata: MavMessage.Metadata<EkfExt> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<EkfExt> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -89,16 +88,16 @@ public data class EkfExt(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_007u
-
-    private const val CRC_EXTRA: Byte = 64
-
+  public companion object : MavMessage.MavCompanion<EkfExt> {
     private const val SIZE_V1: Int = 32
 
     private const val SIZE_V2: Int = 32
 
-    private val DESERIALIZER: MavDeserializer<EkfExt> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_007u
+
+    public override val crcExtra: Byte = 64
+
+    public override fun deserialize(bytes: ByteArray): EkfExt {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val windspeed = inputBuffer.decodeFloat()
@@ -108,7 +107,7 @@ public data class EkfExt(
       val beta = inputBuffer.decodeFloat()
       val alpha = inputBuffer.decodeFloat()
 
-      EkfExt(
+      return EkfExt(
         timestamp = timestamp,
         windspeed = windspeed,
         winddir = winddir,
@@ -119,13 +118,7 @@ public data class EkfExt(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<EkfExt> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<EkfExt> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): EkfExt =
+    public operator fun invoke(builderAction: Builder.() -> Unit): EkfExt =
         Builder().apply(builderAction).build()
   }
 

@@ -35,7 +35,7 @@ public enum class MavMissionType(
   ALL(255u),
   ;
 
-  public companion object : MavEnum.Companion<MavMissionType> {
+  public companion object : MavEnum.MavCompanion<MavMissionType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavMissionType? = when (v) {
       0u -> MISSION
       1u -> FENCE

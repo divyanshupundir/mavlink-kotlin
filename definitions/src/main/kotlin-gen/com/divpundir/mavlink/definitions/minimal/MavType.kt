@@ -237,7 +237,7 @@ public enum class MavType(
   WINCH(42u),
   ;
 
-  public companion object : MavEnum.Companion<MavType> {
+  public companion object : MavEnum.MavCompanion<MavType> {
     public override fun getEntryFromValueOrNull(v: UInt): MavType? = when (v) {
       0u -> GENERIC
       1u -> FIXED_WING

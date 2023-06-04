@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeUInt16
@@ -87,7 +86,7 @@ public data class DigicamConfigure(
   @GeneratedMavField(type = "float")
   public val extraValue: Float = 0F,
 ) : MavMessage<DigicamConfigure> {
-  public override val instanceMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<DigicamConfigure> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -121,16 +120,16 @@ public data class DigicamConfigure(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 154u
-
-    private const val CRC_EXTRA: Byte = 84
-
+  public companion object : MavMessage.MavCompanion<DigicamConfigure> {
     private const val SIZE_V1: Int = 15
 
     private const val SIZE_V2: Int = 15
 
-    private val DESERIALIZER: MavDeserializer<DigicamConfigure> = MavDeserializer { bytes ->
+    public override val id: UInt = 154u
+
+    public override val crcExtra: Byte = 84
+
+    public override fun deserialize(bytes: ByteArray): DigicamConfigure {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val extraValue = inputBuffer.decodeFloat()
       val shutterSpeed = inputBuffer.decodeUInt16()
@@ -144,7 +143,7 @@ public data class DigicamConfigure(
       val engineCutOff = inputBuffer.decodeUInt8()
       val extraParam = inputBuffer.decodeUInt8()
 
-      DigicamConfigure(
+      return DigicamConfigure(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         mode = mode,
@@ -159,13 +158,7 @@ public data class DigicamConfigure(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<DigicamConfigure> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<DigicamConfigure> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): DigicamConfigure =
+    public operator fun invoke(builderAction: Builder.() -> Unit): DigicamConfigure =
         Builder().apply(builderAction).build()
   }
 

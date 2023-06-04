@@ -36,7 +36,7 @@ public enum class AvssHorseflyOperationMode(
   MODE_HORSEFLY_DROP(4u),
   ;
 
-  public companion object : MavEnum.Companion<AvssHorseflyOperationMode> {
+  public companion object : MavEnum.MavCompanion<AvssHorseflyOperationMode> {
     public override fun getEntryFromValueOrNull(v: UInt): AvssHorseflyOperationMode? = when (v) {
       0u -> MODE_HORSEFLY_MANUAL_CTRL
       1u -> MODE_HORSEFLY_AUTO_TAKEOFF

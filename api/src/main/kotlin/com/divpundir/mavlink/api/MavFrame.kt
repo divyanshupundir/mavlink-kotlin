@@ -8,6 +8,7 @@ package com.divpundir.mavlink.api
  * @param T The type of this frame's payload.
  */
 public interface MavFrame<T> {
+
     /**
      * The sequence of this frame.
      */

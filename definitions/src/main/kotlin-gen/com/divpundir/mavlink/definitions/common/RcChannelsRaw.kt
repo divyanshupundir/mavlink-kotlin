@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt32
@@ -89,7 +88,7 @@ public data class RcChannelsRaw(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannelsRaw> {
-  public override val instanceMetadata: MavMessage.Metadata<RcChannelsRaw> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -123,16 +122,16 @@ public data class RcChannelsRaw(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 35u
-
-    private const val CRC_EXTRA: Byte = -12
-
+  public companion object : MavMessage.MavCompanion<RcChannelsRaw> {
     private const val SIZE_V1: Int = 22
 
     private const val SIZE_V2: Int = 22
 
-    private val DESERIALIZER: MavDeserializer<RcChannelsRaw> = MavDeserializer { bytes ->
+    public override val id: UInt = 35u
+
+    public override val crcExtra: Byte = -12
+
+    public override fun deserialize(bytes: ByteArray): RcChannelsRaw {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val chan1Raw = inputBuffer.decodeUInt16()
@@ -146,7 +145,7 @@ public data class RcChannelsRaw(
       val port = inputBuffer.decodeUInt8()
       val rssi = inputBuffer.decodeUInt8()
 
-      RcChannelsRaw(
+      return RcChannelsRaw(
         timeBootMs = timeBootMs,
         port = port,
         chan1Raw = chan1Raw,
@@ -161,13 +160,7 @@ public data class RcChannelsRaw(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<RcChannelsRaw> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<RcChannelsRaw> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): RcChannelsRaw =
+    public operator fun invoke(builderAction: Builder.() -> Unit): RcChannelsRaw =
         Builder().apply(builderAction).build()
   }
 

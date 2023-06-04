@@ -32,7 +32,7 @@ public enum class SubMode(
   MANUAL(19u),
   ;
 
-  public companion object : MavEnum.Companion<SubMode> {
+  public companion object : MavEnum.MavCompanion<SubMode> {
     public override fun getEntryFromValueOrNull(v: UInt): SubMode? = when (v) {
       0u -> STABILIZE
       1u -> ACRO

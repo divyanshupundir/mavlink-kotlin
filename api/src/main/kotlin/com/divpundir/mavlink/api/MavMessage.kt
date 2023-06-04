@@ -8,11 +8,9 @@ package com.divpundir.mavlink.api
 public interface MavMessage<T : MavMessage<T>> {
 
     /**
-     * The instance property which returns [Metadata] of this class.
-     *
-     * The generated messages also have a static classMetadata property, which returns the same object.
+     * The instance property which returns [MavCompanion] of this class.
      */
-    public val instanceMetadata: Metadata<T>
+    public val instanceCompanion: MavCompanion<T>
 
     /**
      * Serializes the message to a [ByteArray] according to MAVLink v1 scheme. Extensions are not serialized.
@@ -26,11 +24,11 @@ public interface MavMessage<T : MavMessage<T>> {
     public fun serializeV2(): ByteArray
 
     /**
-     * Contains the MAVLink metadata for the message and also a [MavDeserializer] object.
+     * The companion object for a [MavMessage], which contains the MAVLink metadata and the [MavDeserializer]
+     * implementation for the message.
      */
-    public data class Metadata<T : MavMessage<T>>(
-        val id: UInt,
-        val crcExtra: Byte,
-        val deserializer: MavDeserializer<T>
-    )
+    public interface MavCompanion<T : MavMessage<T>> : MavDeserializer<T> {
+        public val id: UInt
+        public val crcExtra: Byte
+    }
 }

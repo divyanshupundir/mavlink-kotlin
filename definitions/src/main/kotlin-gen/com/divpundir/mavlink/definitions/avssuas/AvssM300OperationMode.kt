@@ -81,7 +81,7 @@ public enum class AvssM300OperationMode(
   MODE_M300_ENGINE_START(41u),
   ;
 
-  public companion object : MavEnum.Companion<AvssM300OperationMode> {
+  public companion object : MavEnum.MavCompanion<AvssM300OperationMode> {
     public override fun getEntryFromValueOrNull(v: UInt): AvssM300OperationMode? = when (v) {
       0u -> MODE_M300_MANUAL_CTRL
       1u -> MODE_M300_ATTITUDE

@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -42,7 +41,7 @@ public data class ButtonChange(
   @GeneratedMavField(type = "uint8_t")
   public val state: UByte = 0u,
 ) : MavMessage<ButtonChange> {
-  public override val instanceMetadata: MavMessage.Metadata<ButtonChange> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<ButtonChange> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -60,35 +59,29 @@ public data class ButtonChange(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 257u
-
-    private const val CRC_EXTRA: Byte = -125
-
+  public companion object : MavMessage.MavCompanion<ButtonChange> {
     private const val SIZE_V1: Int = 9
 
     private const val SIZE_V2: Int = 9
 
-    private val DESERIALIZER: MavDeserializer<ButtonChange> = MavDeserializer { bytes ->
+    public override val id: UInt = 257u
+
+    public override val crcExtra: Byte = -125
+
+    public override fun deserialize(bytes: ByteArray): ButtonChange {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val lastChangeMs = inputBuffer.decodeUInt32()
       val state = inputBuffer.decodeUInt8()
 
-      ButtonChange(
+      return ButtonChange(
         timeBootMs = timeBootMs,
         lastChangeMs = lastChangeMs,
         state = state,
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<ButtonChange> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<ButtonChange> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): ButtonChange =
+    public operator fun invoke(builderAction: Builder.() -> Unit): ButtonChange =
         Builder().apply(builderAction).build()
   }
 

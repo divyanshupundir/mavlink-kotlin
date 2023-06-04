@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.matrixpilot
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.decodeUInt8
@@ -48,7 +47,7 @@ public data class FlexifunctionReadReq(
   @GeneratedMavField(type = "int16_t")
   public val dataIndex: Short = 0,
 ) : MavMessage<FlexifunctionReadReq> {
-  public override val instanceMetadata: MavMessage.Metadata<FlexifunctionReadReq> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionReadReq> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -68,23 +67,23 @@ public data class FlexifunctionReadReq(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 151u
-
-    private const val CRC_EXTRA: Byte = 26
-
+  public companion object : MavMessage.MavCompanion<FlexifunctionReadReq> {
     private const val SIZE_V1: Int = 6
 
     private const val SIZE_V2: Int = 6
 
-    private val DESERIALIZER: MavDeserializer<FlexifunctionReadReq> = MavDeserializer { bytes ->
+    public override val id: UInt = 151u
+
+    public override val crcExtra: Byte = 26
+
+    public override fun deserialize(bytes: ByteArray): FlexifunctionReadReq {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val readReqType = inputBuffer.decodeInt16()
       val dataIndex = inputBuffer.decodeInt16()
       val targetSystem = inputBuffer.decodeUInt8()
       val targetComponent = inputBuffer.decodeUInt8()
 
-      FlexifunctionReadReq(
+      return FlexifunctionReadReq(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         readReqType = readReqType,
@@ -92,13 +91,7 @@ public data class FlexifunctionReadReq(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<FlexifunctionReadReq> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<FlexifunctionReadReq> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): FlexifunctionReadReq =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionReadReq =
         Builder().apply(builderAction).build()
   }
 

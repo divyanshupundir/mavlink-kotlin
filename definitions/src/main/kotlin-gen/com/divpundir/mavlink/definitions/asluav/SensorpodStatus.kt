@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.asluav
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.decodeUInt64
@@ -71,7 +70,7 @@ public data class SensorpodStatus(
   @GeneratedMavField(type = "uint16_t")
   public val freeSpace: UShort = 0u,
 ) : MavMessage<SensorpodStatus> {
-  public override val instanceMetadata: MavMessage.Metadata<SensorpodStatus> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<SensorpodStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -99,16 +98,16 @@ public data class SensorpodStatus(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 8_012u
-
-    private const val CRC_EXTRA: Byte = 54
-
+  public companion object : MavMessage.MavCompanion<SensorpodStatus> {
     private const val SIZE_V1: Int = 16
 
     private const val SIZE_V2: Int = 16
 
-    private val DESERIALIZER: MavDeserializer<SensorpodStatus> = MavDeserializer { bytes ->
+    public override val id: UInt = 8_012u
+
+    public override val crcExtra: Byte = 54
+
+    public override fun deserialize(bytes: ByteArray): SensorpodStatus {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timestamp = inputBuffer.decodeUInt64()
       val freeSpace = inputBuffer.decodeUInt16()
@@ -119,7 +118,7 @@ public data class SensorpodStatus(
       val recordingNodesCount = inputBuffer.decodeUInt8()
       val cpuTemp = inputBuffer.decodeUInt8()
 
-      SensorpodStatus(
+      return SensorpodStatus(
         timestamp = timestamp,
         visensorRate1 = visensorRate1,
         visensorRate2 = visensorRate2,
@@ -131,13 +130,7 @@ public data class SensorpodStatus(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<SensorpodStatus> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<SensorpodStatus> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): SensorpodStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensorpodStatus =
         Builder().apply(builderAction).build()
   }
 

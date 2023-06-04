@@ -2,7 +2,6 @@ package com.divpundir.mavlink.definitions.avssuas
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.decodeInt32
@@ -60,7 +59,7 @@ public data class AvssDronePosition(
   @GeneratedMavField(type = "float")
   public val barometerAlt: Float = 0F,
 ) : MavMessage<AvssDronePosition> {
-  public override val instanceMetadata: MavMessage.Metadata<AvssDronePosition> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<AvssDronePosition> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -84,16 +83,16 @@ public data class AvssDronePosition(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 60_051u
-
-    private const val CRC_EXTRA: Byte = -11
-
+  public companion object : MavMessage.MavCompanion<AvssDronePosition> {
     private const val SIZE_V1: Int = 24
 
     private const val SIZE_V2: Int = 24
 
-    private val DESERIALIZER: MavDeserializer<AvssDronePosition> = MavDeserializer { bytes ->
+    public override val id: UInt = 60_051u
+
+    public override val crcExtra: Byte = -11
+
+    public override fun deserialize(bytes: ByteArray): AvssDronePosition {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val timeBootMs = inputBuffer.decodeUInt32()
       val lat = inputBuffer.decodeInt32()
@@ -102,7 +101,7 @@ public data class AvssDronePosition(
       val groundAlt = inputBuffer.decodeFloat()
       val barometerAlt = inputBuffer.decodeFloat()
 
-      AvssDronePosition(
+      return AvssDronePosition(
         timeBootMs = timeBootMs,
         lat = lat,
         lon = lon,
@@ -112,13 +111,7 @@ public data class AvssDronePosition(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<AvssDronePosition> = MavMessage.Metadata(ID,
-        CRC_EXTRA, DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<AvssDronePosition> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): AvssDronePosition =
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDronePosition =
         Builder().apply(builderAction).build()
   }
 

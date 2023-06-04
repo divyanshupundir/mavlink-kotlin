@@ -29,7 +29,7 @@ public enum class MotorTestOrder(
   BOARD(2u),
   ;
 
-  public companion object : MavEnum.Companion<MotorTestOrder> {
+  public companion object : MavEnum.MavCompanion<MotorTestOrder> {
     public override fun getEntryFromValueOrNull(v: UInt): MotorTestOrder? = when (v) {
       0u -> DEFAULT
       1u -> SEQUENCE

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.api.MavDeserializer
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.decodeInt16
@@ -87,7 +86,7 @@ public data class RallyPoint(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<RallyPoint> {
-  public override val instanceMetadata: MavMessage.Metadata<RallyPoint> = METADATA
+  public override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
 
   public override fun serializeV1(): ByteArray {
     val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
@@ -119,16 +118,16 @@ public data class RallyPoint(
     return outputBuffer.array().truncateZeros()
   }
 
-  public companion object {
-    private const val ID: UInt = 175u
-
-    private const val CRC_EXTRA: Byte = -118
-
+  public companion object : MavMessage.MavCompanion<RallyPoint> {
     private const val SIZE_V1: Int = 19
 
     private const val SIZE_V2: Int = 19
 
-    private val DESERIALIZER: MavDeserializer<RallyPoint> = MavDeserializer { bytes ->
+    public override val id: UInt = 175u
+
+    public override val crcExtra: Byte = -118
+
+    public override fun deserialize(bytes: ByteArray): RallyPoint {
       val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
       val lat = inputBuffer.decodeInt32()
       val lng = inputBuffer.decodeInt32()
@@ -144,7 +143,7 @@ public data class RallyPoint(
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
-      RallyPoint(
+      return RallyPoint(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         idx = idx,
@@ -158,13 +157,7 @@ public data class RallyPoint(
       )
     }
 
-
-    private val METADATA: MavMessage.Metadata<RallyPoint> = MavMessage.Metadata(ID, CRC_EXTRA,
-        DESERIALIZER)
-
-    public val classMetadata: MavMessage.Metadata<RallyPoint> = METADATA
-
-    public fun builder(builderAction: Builder.() -> Unit): RallyPoint =
+    public operator fun invoke(builderAction: Builder.() -> Unit): RallyPoint =
         Builder().apply(builderAction).build()
   }
 
