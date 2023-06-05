@@ -130,7 +130,7 @@ Use the `close` method to close the connection.
 
 ```kotlin
 viewModelScope.launch {
-    connection.close().blockingAwait()
+    connection.close()
     println("Closed")
 }
 ```
