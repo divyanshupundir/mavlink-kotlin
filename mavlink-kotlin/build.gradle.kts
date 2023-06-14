@@ -19,6 +19,8 @@ dependencies {
     api(Deps.MavlinkKotlin.api)
     api(Deps.MavlinkKotlin.serialization)
 
+    implementation("com.squareup.okio:okio:3.3.0")
+
     testImplementation(project(":definitions"))
     testImplementation(TestDeps.DroneFleet.mavlink)
 
