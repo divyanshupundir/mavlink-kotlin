@@ -9,6 +9,9 @@ import com.divpundir.mavlink.definitions.minimal.MavAutopilot
 import com.divpundir.mavlink.definitions.minimal.MavState
 import com.divpundir.mavlink.definitions.minimal.MavType
 import com.divpundir.mavlink.wrap
+import okio.buffer
+import okio.sink
+import okio.source
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
@@ -21,8 +24,8 @@ class StreamMavConnectionTest {
         socket.connect(InetSocketAddress("127.0.0.1", 5760))
 
         val connection = StreamMavConnection(
-            socket.getInputStream(),
-            socket.getOutputStream(),
+            socket.getInputStream().source().buffer(),
+            socket.getOutputStream().sink().buffer(),
             socket,
             CommonDialect
         )
@@ -41,8 +44,8 @@ class StreamMavConnectionTest {
         server.close()
 
         val connection = StreamMavConnection(
-            socket.getInputStream(),
-            socket.getOutputStream(),
+            socket.getInputStream().source().buffer(),
+            socket.getOutputStream().sink().buffer(),
             socket,
             CommonDialect
         )

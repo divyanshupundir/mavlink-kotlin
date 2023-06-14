@@ -2,6 +2,9 @@ package com.divpundir.mavlink.connection.tcp
 
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.connection.stream.StreamMavConnection
+import okio.buffer
+import okio.sink
+import okio.source
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -31,8 +34,8 @@ public class TcpClientMavConnection(
                 }
                 state = State.Open(
                     StreamMavConnection(
-                        socket.getInputStream(),
-                        socket.getOutputStream(),
+                        socket.source().buffer(),
+                        socket.sink().buffer(),
                         socket,
                         dialect
                     )

@@ -15,19 +15,19 @@ internal class MavRawFrameReader(
         while (!Thread.currentThread().isInterrupted) {
             val peeked = source.peek()
 
-            if (!peeked.request(MavRawFrame.SIZE_STX.toLong())) {
+            if (!peeked.request(1)) {
                 source.skip(1)
                 continue
             }
-            val versionMarker = peeked.readByte().toUByte()
+            val versionMarker = peeked.readByte()
 
-            if (!peeked.request(MavRawFrame.SIZE_LEN.toLong())) {
+            if (!peeked.request(1)) {
                 source.skip(1)
                 continue
             }
             val payloadLength = peeked.readByte()
 
-            when (versionMarker) {
+            when (versionMarker.toUByte()) {
                 MavFrameType.V1.magic -> {
                     val remainingLength = MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID +
                             MavRawFrame.SIZE_MSG_ID_V1 + payloadLength + MavRawFrame.SIZE_CHECKSUM
@@ -43,11 +43,11 @@ internal class MavRawFrameReader(
                 }
 
                 MavFrameType.V2.magic -> {
-                    if (!peeked.request(MavRawFrame.SIZE_INCOMPAT_FLAGS.toLong())) {
+                    if (!peeked.request(1)) {
                         source.skip(1)
                         continue
                     }
-                    val incompatibleFlags = source.readByte()
+                    val incompatibleFlags = peeked.readByte()
 
                     val signatureSize = if (incompatibleFlags.toUByte() == MavRawFrame.INCOMPAT_FLAG_SIGNED) {
                         MavRawFrame.SIZE_SIGNATURE
@@ -76,10 +76,6 @@ internal class MavRawFrameReader(
             }
         }
 
-        throw IOException()
-    }
-
-    fun drop() {
-        source.skip(1)
+        throw EOFException()
     }
 }
