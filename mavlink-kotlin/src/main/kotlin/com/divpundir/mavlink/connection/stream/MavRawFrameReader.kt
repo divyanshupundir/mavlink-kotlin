@@ -18,15 +18,15 @@ internal class MavRawFrameReader(
                     val peeked = source.peek()
                     val payloadSize = peeked.readByte()
 
-                    val remainingSize = MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID +
-                            MavRawFrame.SIZE_MSG_ID_V1 + payloadSize + MavRawFrame.SIZE_CHECKSUM
+                    val remainingSize = MavRawFrame.Sizes.SEQ + MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID +
+                            MavRawFrame.Sizes.MSG_ID_V1 + payloadSize + MavRawFrame.Sizes.CHECKSUM
 
                     if (!peeked.request(remainingSize.toLong())) {
                         source.skip(1)
                         continue
                     }
 
-                    val totalLength = MavRawFrame.SIZE_STX + MavRawFrame.SIZE_LEN + remainingSize.toLong()
+                    val totalLength = MavRawFrame.Sizes.STX + MavRawFrame.Sizes.LEN + remainingSize.toLong()
 
                     return MavRawFrame.fromV1Bytes(source.readByteArray(totalLength))
                 }
@@ -37,21 +37,21 @@ internal class MavRawFrameReader(
                     val incompatibleFlags = peeked.readByte()
 
                     val signatureSize = if (incompatibleFlags.toUByte() == MavRawFrame.Flags.INCOMPAT_SIGNED) {
-                        MavRawFrame.SIZE_SIGNATURE
+                        MavRawFrame.Sizes.SIGNATURE
                     } else {
                         0
                     }
 
-                    val remainingSize = MavRawFrame.SIZE_COMPAT_FLAGS + MavRawFrame.SIZE_SEQ +
-                            MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID + MavRawFrame.SIZE_MSG_ID_V2 +
-                            payloadSize + MavRawFrame.SIZE_CHECKSUM + signatureSize
+                    val remainingSize = MavRawFrame.Sizes.COMPAT_FLAGS + MavRawFrame.Sizes.SEQ +
+                            MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V2 +
+                            payloadSize + MavRawFrame.Sizes.CHECKSUM + signatureSize
 
                     if (!peeked.request(remainingSize.toLong())) {
                         source.skip(1)
                         continue
                     }
 
-                    val totalSize = MavRawFrame.SIZE_STX + MavRawFrame.SIZE_LEN + MavRawFrame.SIZE_INCOMPAT_FLAGS +
+                    val totalSize = MavRawFrame.Sizes.STX + MavRawFrame.Sizes.LEN + MavRawFrame.Sizes.INCOMPAT_FLAGS +
                             remainingSize.toLong()
 
                     return MavRawFrame.fromV2Bytes(source.readByteArray(totalSize))

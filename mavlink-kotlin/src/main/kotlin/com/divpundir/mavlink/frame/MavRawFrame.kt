@@ -35,8 +35,8 @@ internal data class MavRawFrame(
             ByteBuffer
                 .wrap(signature)
                 .order(ByteOrder.LITTLE_ENDIAN)
-                .position(SIZE_SIGNATURE_LINK_ID)
-                .decodeUnsignedIntegerValue(SIZE_SIGNATURE_TIMESTAMP)
+                .position(Sizes.SIGNATURE_LINK_ID)
+                .decodeUnsignedIntegerValue(Sizes.SIGNATURE_TIMESTAMP)
                 .toUInt()
         } else {
             0u
@@ -99,37 +99,36 @@ internal data class MavRawFrame(
         const val INCOMPAT_SIGNED: UByte = 0x01u
     }
 
+    object Sizes {
+        const val STX = 1
+        const val LEN = 1
+        const val INCOMPAT_FLAGS = 1
+        const val COMPAT_FLAGS = 1
+        const val SEQ = 1
+        const val SYS_ID = 1
+        const val COMP_ID = 1
+
+        const val MSG_ID_V1 = 1
+        const val MSG_ID_V2 = 3
+
+        const val CHECKSUM = 2
+
+        const val SIGNATURE_LINK_ID = 1
+        const val SIGNATURE_TIMESTAMP = 6
+        const val SIGNATURE_DATA = 6
+
+        const val SIGNATURE = SIGNATURE_LINK_ID + SIGNATURE_TIMESTAMP + SIGNATURE_DATA
+    }
+
     companion object {
-
-        const val SIZE_STX = 1
-        const val SIZE_LEN = 1
-        const val SIZE_INCOMPAT_FLAGS = 1
-        const val SIZE_COMPAT_FLAGS = 1
-        const val SIZE_SEQ = 1
-        const val SIZE_SYS_ID = 1
-        const val SIZE_COMP_ID = 1
-
-        const val SIZE_MSG_ID_V1 = 1
-        const val SIZE_MSG_ID_V2 = 3
-
-        const val SIZE_CHECKSUM = 2
-
-        const val SIZE_SIGNATURE_LINK_ID = 1
-        const val SIZE_SIGNATURE_TIMESTAMP = 6
-        const val SIZE_SIGNATURE_DATA = 6
-
-        const val SIZE_SIGNATURE = SIZE_SIGNATURE_LINK_ID +
-            SIZE_SIGNATURE_TIMESTAMP + SIZE_SIGNATURE_DATA
 
         @Throws(Exception::class)
         private fun ByteArray.generateChecksum(crcExtra: Byte): UShort {
             val frameSizeTillMsgId: Int = when (this.first().toUByte()) {
-                Stx.V1 -> SIZE_STX + SIZE_LEN +
-                    SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V1
+                Stx.V1 -> Sizes.STX + Sizes.LEN + Sizes.SEQ + Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1
 
-                Stx.V2 -> SIZE_STX + SIZE_LEN +
-                    SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
-                    SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2
+                Stx.V2 -> Sizes.STX + Sizes.LEN + Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS + Sizes.SEQ +
+                        Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2
 
                 else -> throw IllegalArgumentException("Not a MAVLink frame")
             }
@@ -157,23 +156,21 @@ internal data class MavRawFrame(
 
             val payloadLength = this[1].toUByte().toInt()
 
-            val frameSizeTillCrc = SIZE_STX + SIZE_LEN +
-                SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
-                SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
-                payloadLength + SIZE_CHECKSUM
+            val frameSizeTillCrc = Sizes.STX + Sizes.LEN + Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS + Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 + payloadLength + Sizes.CHECKSUM
 
-            val signatureBuffer = ByteBuffer.allocate(SIZE_SIGNATURE)
-            signatureBuffer.encodeIntegerValue(linkId.toLong(), SIZE_SIGNATURE_LINK_ID)
-            signatureBuffer.encodeIntegerValue(timestamp.toLong(), SIZE_SIGNATURE_TIMESTAMP)
+            val signatureBuffer = ByteBuffer.allocate(Sizes.SIGNATURE)
+            signatureBuffer.encodeIntegerValue(linkId.toLong(), Sizes.SIGNATURE_LINK_ID)
+            signatureBuffer.encodeIntegerValue(timestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
 
             val hash = with(MessageDigest.getInstance("SHA-256")) {
                 update(secretKey)
                 update(this@generateSignature, 0, frameSizeTillCrc)
-                update(signatureBuffer.array(), 0, SIZE_SIGNATURE_LINK_ID + SIZE_SIGNATURE_TIMESTAMP)
+                update(signatureBuffer.array(), 0, Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP)
                 digest()
             }
 
-            signatureBuffer.put(hash, 0, SIZE_SIGNATURE_DATA)
+            signatureBuffer.put(hash, 0, Sizes.SIGNATURE_DATA)
             return signatureBuffer.array()
         }
 
@@ -215,14 +212,14 @@ internal data class MavRawFrame(
                 val seq = decodeUInt8()
                 val systemId = decodeUInt8()
                 val componentId = decodeUInt8()
-                val messageId = decodeUnsignedIntegerValue(SIZE_MSG_ID_V2).toUInt()
+                val messageId = decodeUnsignedIntegerValue(Sizes.MSG_ID_V2).toUInt()
                 val payload = ByteArray(len.toInt()).also { get(it) }
                 val checksum = decodeUInt16()
                 val signature = if (incompatFlags == Flags.INCOMPAT_SIGNED) {
-                    if (remaining() < SIZE_SIGNATURE) {
+                    if (remaining() < Sizes.SIGNATURE) {
                         ByteArray(0)
                     } else {
-                        ByteArray(SIZE_SIGNATURE).also { get(it) }
+                        ByteArray(Sizes.SIGNATURE).also { get(it) }
                     }
                 } else {
                     ByteArray(0)
@@ -252,9 +249,8 @@ internal data class MavRawFrame(
             payload: ByteArray,
             crcExtra: Byte
         ): MavRawFrame {
-            val frameLength = SIZE_STX + SIZE_LEN + SIZE_SEQ +
-                SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V1 +
-                payload.size + SIZE_CHECKSUM
+            val frameLength = Sizes.STX + Sizes.LEN + Sizes.SEQ + Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1 +
+                    payload.size + Sizes.CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUInt8(Stx.V1)
@@ -293,9 +289,8 @@ internal data class MavRawFrame(
             payload: ByteArray,
             crcExtra: Byte
         ): MavRawFrame {
-            val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
-                SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
-                payload.size + SIZE_CHECKSUM
+            val frameLength = Sizes.STX + Sizes.LEN + Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS + Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 + payload.size + Sizes.CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUInt8(Stx.V2)
@@ -305,7 +300,7 @@ internal data class MavRawFrame(
                 encodeUInt8(seq)
                 encodeUInt8(systemId)
                 encodeUInt8(componentId)
-                encodeIntegerValue(messageId.toLong(), SIZE_MSG_ID_V2)
+                encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
                 put(payload)
             }
 
@@ -339,9 +334,8 @@ internal data class MavRawFrame(
             timestamp: UInt,
             secretKey: ByteArray
         ): MavRawFrame {
-            val frameLength = SIZE_STX + SIZE_LEN + SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
-                SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2 +
-                payload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
+            val frameLength = Sizes.STX + Sizes.LEN + Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS + Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 + payload.size + Sizes.CHECKSUM + Sizes.SIGNATURE
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUInt8(Stx.V2)
@@ -351,7 +345,7 @@ internal data class MavRawFrame(
                 encodeUInt8(seq)
                 encodeUInt8(systemId)
                 encodeUInt8(componentId)
-                encodeIntegerValue(messageId.toLong(), SIZE_MSG_ID_V2)
+                encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
                 put(payload)
             }
 
