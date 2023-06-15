@@ -5,7 +5,6 @@ import com.divpundir.mavlink.frame.MavRawFrame
 import okio.BufferedSource
 import java.io.EOFException
 import java.io.IOException
-import java.io.InputStream
 
 internal class MavRawFrameReader(
     private val source: BufferedSource
@@ -13,40 +12,29 @@ internal class MavRawFrameReader(
     @Throws(IOException::class)
     fun next(): MavRawFrame {
         while (!Thread.currentThread().isInterrupted) {
-            val peeked = source.peek()
-
-            if (!peeked.request(1)) {
-                source.skip(1)
-                continue
-            }
-            val versionMarker = peeked.readByte()
-
-            if (!peeked.request(1)) {
-                source.skip(1)
-                continue
-            }
-            val payloadLength = peeked.readByte()
+            val versionMarker = source.readByte()
 
             when (versionMarker.toUByte()) {
                 MavFrameType.V1.magic -> {
-                    val remainingLength = MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID +
-                            MavRawFrame.SIZE_MSG_ID_V1 + payloadLength + MavRawFrame.SIZE_CHECKSUM
+                    val peeked = source.peek()
+                    val payloadSize = peeked.readByte()
 
-                    if (!peeked.request(remainingLength.toLong())) {
+                    val remainingSize = MavRawFrame.SIZE_SEQ + MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID +
+                            MavRawFrame.SIZE_MSG_ID_V1 + payloadSize + MavRawFrame.SIZE_CHECKSUM
+
+                    if (!peeked.request(remainingSize.toLong())) {
                         source.skip(1)
                         continue
                     }
 
-                    val totalLength = MavRawFrame.SIZE_STX + MavRawFrame.SIZE_LEN + remainingLength.toLong()
+                    val totalLength = MavRawFrame.SIZE_STX + MavRawFrame.SIZE_LEN + remainingSize.toLong()
 
                     return MavRawFrame.fromV1Bytes(source.readByteArray(totalLength))
                 }
 
                 MavFrameType.V2.magic -> {
-                    if (!peeked.request(1)) {
-                        source.skip(1)
-                        continue
-                    }
+                    val peeked = source.peek()
+                    val payloadSize = peeked.readByte()
                     val incompatibleFlags = peeked.readByte()
 
                     val signatureSize = if (incompatibleFlags.toUByte() == MavRawFrame.INCOMPAT_FLAG_SIGNED) {
@@ -55,19 +43,19 @@ internal class MavRawFrameReader(
                         0
                     }
 
-                    val remainingLength = MavRawFrame.SIZE_COMPAT_FLAGS + MavRawFrame.SIZE_SEQ +
+                    val remainingSize = MavRawFrame.SIZE_COMPAT_FLAGS + MavRawFrame.SIZE_SEQ +
                             MavRawFrame.SIZE_SYS_ID + MavRawFrame.SIZE_COMP_ID + MavRawFrame.SIZE_MSG_ID_V2 +
-                            payloadLength + MavRawFrame.SIZE_CHECKSUM + signatureSize
+                            payloadSize + MavRawFrame.SIZE_CHECKSUM + signatureSize
 
-                    if (!peeked.request(remainingLength.toLong())) {
+                    if (!peeked.request(remainingSize.toLong())) {
                         source.skip(1)
                         continue
                     }
 
-                    val totalLength = MavRawFrame.SIZE_STX + MavRawFrame.SIZE_LEN + MavRawFrame.SIZE_INCOMPAT_FLAGS +
-                            remainingLength.toLong()
+                    val totalSize = MavRawFrame.SIZE_STX + MavRawFrame.SIZE_LEN + MavRawFrame.SIZE_INCOMPAT_FLAGS +
+                            remainingSize.toLong()
 
-                    return MavRawFrame.fromV2Bytes(source.readByteArray(totalLength))
+                    return MavRawFrame.fromV2Bytes(source.readByteArray(totalSize))
                 }
 
                 else -> {
