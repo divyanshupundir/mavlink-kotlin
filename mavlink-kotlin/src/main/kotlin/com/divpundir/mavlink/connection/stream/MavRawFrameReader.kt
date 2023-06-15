@@ -1,6 +1,5 @@
 package com.divpundir.mavlink.connection.stream
 
-import com.divpundir.mavlink.frame.MavFrameType
 import com.divpundir.mavlink.frame.MavRawFrame
 import okio.BufferedSource
 import java.io.EOFException
@@ -15,7 +14,7 @@ internal class MavRawFrameReader(
             val versionMarker = source.readByte()
 
             when (versionMarker.toUByte()) {
-                MavFrameType.V1.magic -> {
+                MavRawFrame.Stx.V1 -> {
                     val peeked = source.peek()
                     val payloadSize = peeked.readByte()
 
@@ -32,7 +31,7 @@ internal class MavRawFrameReader(
                     return MavRawFrame.fromV1Bytes(source.readByteArray(totalLength))
                 }
 
-                MavFrameType.V2.magic -> {
+                MavRawFrame.Stx.V2 -> {
                     val peeked = source.peek()
                     val payloadSize = peeked.readByte()
                     val incompatibleFlags = peeked.readByte()

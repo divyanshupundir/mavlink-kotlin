@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
-import com.divpundir.mavlink.frame.MavFrameType
 import com.divpundir.mavlink.frame.MavFrameV1Impl
 import com.divpundir.mavlink.frame.MavFrameV2Impl
 import com.divpundir.mavlink.frame.MavRawFrame
@@ -58,8 +57,8 @@ internal class StreamMavConnection(
                 }
 
                 return when (rawFrame.stx) {
-                    MavFrameType.V1.magic -> MavFrameV1Impl(rawFrame, payload)
-                    MavFrameType.V2.magic -> MavFrameV2Impl(rawFrame, payload)
+                    MavRawFrame.Stx.V1 -> MavFrameV1Impl(rawFrame, payload)
+                    MavRawFrame.Stx.V2 -> MavFrameV2Impl(rawFrame, payload)
                     else -> throw IllegalStateException()
                 }
             }

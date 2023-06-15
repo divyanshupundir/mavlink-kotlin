@@ -71,9 +71,7 @@ internal data class MavRawFrame(
         if (!payload.contentEquals(other.payload)) return false
         if (checksum != other.checksum) return false
         if (!signature.contentEquals(other.signature)) return false
-        if (!rawBytes.contentEquals(other.rawBytes)) return false
-
-        return true
+        return rawBytes.contentEquals(other.rawBytes)
     }
 
     override fun hashCode(): Int {
@@ -90,6 +88,11 @@ internal data class MavRawFrame(
         result = 31 * result + signature.contentHashCode()
         result = 31 * result + rawBytes.contentHashCode()
         return result
+    }
+
+    object Stx {
+        const val V1: UByte = 0xFEu
+        const val V2: UByte = 0xFDu
     }
 
     object Flags {
@@ -121,10 +124,10 @@ internal data class MavRawFrame(
         @Throws(Exception::class)
         private fun ByteArray.generateChecksum(crcExtra: Byte): UShort {
             val frameSizeTillMsgId: Int = when (this.first().toUByte()) {
-                MavFrameType.V1.magic -> SIZE_STX + SIZE_LEN +
+                Stx.V1 -> SIZE_STX + SIZE_LEN +
                     SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V1
 
-                MavFrameType.V2.magic -> SIZE_STX + SIZE_LEN +
+                Stx.V2 -> SIZE_STX + SIZE_LEN +
                     SIZE_INCOMPAT_FLAGS + SIZE_COMPAT_FLAGS +
                     SIZE_SEQ + SIZE_SYS_ID + SIZE_COMP_ID + SIZE_MSG_ID_V2
 
@@ -148,7 +151,7 @@ internal data class MavRawFrame(
             timestamp: UInt,
             secretKey: ByteArray
         ): ByteArray {
-            if (this[0].toUByte() != MavFrameType.V2.magic || this[2].toUByte() != Flags.INCOMPAT_SIGNED) {
+            if (this[0].toUByte() != Stx.V2 || this[2].toUByte() != Flags.INCOMPAT_SIGNED) {
                 return ByteArray(0)
             }
 
@@ -254,7 +257,7 @@ internal data class MavRawFrame(
                 payload.size + SIZE_CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
-                encodeUInt8(MavFrameType.V1.magic)
+                encodeUInt8(Stx.V1)
                 encodeUInt8(payload.size.toUByte())
                 encodeUInt8(seq)
                 encodeUInt8(systemId)
@@ -267,7 +270,7 @@ internal data class MavRawFrame(
             rawBuffer.encodeUInt16(checksum)
 
             return MavRawFrame(
-                stx = MavFrameType.V1.magic,
+                stx = Stx.V1,
                 len = payload.size.toUByte(),
                 incompatFlags = 0u,
                 compatFlags = 0u,
@@ -295,7 +298,7 @@ internal data class MavRawFrame(
                 payload.size + SIZE_CHECKSUM
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
-                encodeUInt8(MavFrameType.V2.magic)
+                encodeUInt8(Stx.V2)
                 encodeUInt8(payload.size.toUByte())
                 encodeUInt8(0u)
                 encodeUInt8(0u)
@@ -310,7 +313,7 @@ internal data class MavRawFrame(
             rawBuffer.encodeUInt16(checksum)
 
             return MavRawFrame(
-                stx = MavFrameType.V2.magic,
+                stx = Stx.V2,
                 len = payload.size.toUByte(),
                 incompatFlags = 0u,
                 compatFlags = 0u,
@@ -341,7 +344,7 @@ internal data class MavRawFrame(
                 payload.size + SIZE_CHECKSUM + SIZE_SIGNATURE
 
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
-                encodeUInt8(MavFrameType.V2.magic)
+                encodeUInt8(Stx.V2)
                 encodeUInt8(payload.size.toUByte())
                 encodeUInt8(Flags.INCOMPAT_SIGNED)
                 encodeUInt8(0u)
@@ -359,7 +362,7 @@ internal data class MavRawFrame(
             rawBuffer.put(signature)
 
             return MavRawFrame(
-                stx = MavFrameType.V2.magic,
+                stx = Stx.V2,
                 len = payload.size.toUByte(),
                 incompatFlags = Flags.INCOMPAT_SIGNED,
                 compatFlags = 0u,
