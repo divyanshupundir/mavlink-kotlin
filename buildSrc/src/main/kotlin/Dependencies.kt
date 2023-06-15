@@ -20,6 +20,7 @@ object Deps {
     }
 
     const val kotlinPoet = "com.squareup:kotlinpoet:1.13.2"
+    const val okio = "com.squareup.okio:okio:3.3.0"
 }
 
 object TestDeps {
