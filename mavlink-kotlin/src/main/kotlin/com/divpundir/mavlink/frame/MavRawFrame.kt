@@ -21,7 +21,7 @@ internal data class MavRawFrame(
     val rawBytes: ByteArray
 ) {
     val isSigned: Boolean
-        get() = incompatFlags == INCOMPAT_FLAG_SIGNED
+        get() = incompatFlags == Flags.INCOMPAT_SIGNED
 
     val signatureLinkId: UByte
         get() = if (isSigned) {
@@ -92,6 +92,10 @@ internal data class MavRawFrame(
         return result
     }
 
+    object Flags {
+        const val INCOMPAT_SIGNED: UByte = 0x01u
+    }
+
     companion object {
 
         const val SIZE_STX = 1
@@ -113,8 +117,6 @@ internal data class MavRawFrame(
 
         const val SIZE_SIGNATURE = SIZE_SIGNATURE_LINK_ID +
             SIZE_SIGNATURE_TIMESTAMP + SIZE_SIGNATURE_DATA
-
-        const val INCOMPAT_FLAG_SIGNED: UByte = 0x01u
 
         @Throws(Exception::class)
         private fun ByteArray.generateChecksum(crcExtra: Byte): UShort {
@@ -146,7 +148,7 @@ internal data class MavRawFrame(
             timestamp: UInt,
             secretKey: ByteArray
         ): ByteArray {
-            if (this[0].toUByte() != MavFrameType.V2.magic || this[2].toUByte() != INCOMPAT_FLAG_SIGNED) {
+            if (this[0].toUByte() != MavFrameType.V2.magic || this[2].toUByte() != Flags.INCOMPAT_SIGNED) {
                 return ByteArray(0)
             }
 
@@ -213,7 +215,7 @@ internal data class MavRawFrame(
                 val messageId = decodeUnsignedIntegerValue(SIZE_MSG_ID_V2).toUInt()
                 val payload = ByteArray(len.toInt()).also { get(it) }
                 val checksum = decodeUInt16()
-                val signature = if (incompatFlags == INCOMPAT_FLAG_SIGNED) {
+                val signature = if (incompatFlags == Flags.INCOMPAT_SIGNED) {
                     if (remaining() < SIZE_SIGNATURE) {
                         ByteArray(0)
                     } else {
@@ -341,7 +343,7 @@ internal data class MavRawFrame(
             val rawBuffer = with(ByteBuffer.allocate(frameLength).order(ByteOrder.LITTLE_ENDIAN)) {
                 encodeUInt8(MavFrameType.V2.magic)
                 encodeUInt8(payload.size.toUByte())
-                encodeUInt8(INCOMPAT_FLAG_SIGNED)
+                encodeUInt8(Flags.INCOMPAT_SIGNED)
                 encodeUInt8(0u)
                 encodeUInt8(seq)
                 encodeUInt8(systemId)
@@ -359,7 +361,7 @@ internal data class MavRawFrame(
             return MavRawFrame(
                 stx = MavFrameType.V2.magic,
                 len = payload.size.toUByte(),
-                incompatFlags = INCOMPAT_FLAG_SIGNED,
+                incompatFlags = Flags.INCOMPAT_SIGNED,
                 compatFlags = 0u,
                 seq = seq,
                 systemId = systemId,
