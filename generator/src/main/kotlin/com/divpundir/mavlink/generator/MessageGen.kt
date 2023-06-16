@@ -1,7 +1,5 @@
 package com.divpundir.mavlink.generator
 
-import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
@@ -9,8 +7,9 @@ import com.divpundir.mavlink.generator.models.FieldModel
 import com.divpundir.mavlink.generator.models.MessageModel
 import com.divpundir.mavlink.generator.models.sortedByPosition
 import com.divpundir.mavlink.serialization.CrcX25
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import okio.Buffer
 
 internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
@@ -81,19 +80,12 @@ private fun MessageModel.generateSizeV2Property() = PropertySpec
 private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelper: EnumHelper) = FunSpec
     .builder("deserialize")
     .addModifiers(KModifier.OVERRIDE)
-    .addParameter(ParameterSpec("bytes", ByteArray::class.asTypeName()))
+    .addParameter(ParameterSpec("buffer", Buffer::class.asTypeName()))
     .returns(getClassName(packageName))
     .addCode(
         buildCodeBlock {
-            addStatement(
-                "val inputBuffer = %T.wrap(bytes).order(%T.LITTLE_ENDIAN)",
-                ByteBuffer::class,
-                ByteOrder::class
-            )
-            fields.sorted().forEach { add(it.generateDeserializeStatement("inputBuffer", enumHelper)) }
-
+            fields.sorted().forEach { add(it.generateDeserializeStatement("buffer", enumHelper)) }
             addStatement("")
-
             addStatement("return %T(", getClassName(packageName))
             indent()
             fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
@@ -115,16 +107,12 @@ private fun MessageModel.generateInstanceCompanion(packageName: String) = Proper
 private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
-    .returns(ByteArray::class)
+    .returns(Buffer::class)
     .addCode(
         buildCodeBlock {
-            addStatement(
-                "val outputBuffer = %T.allocate(SIZE_V1).order(%T.LITTLE_ENDIAN)",
-                ByteBuffer::class,
-                ByteOrder::class
-            )
+            addStatement("val outputBuffer = %T()", Buffer::class)
             fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
-            addStatement("return outputBuffer.array()")
+            addStatement("return outputBuffer")
         }
     )
     .build()
@@ -132,16 +120,12 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
 private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV2")
     .addModifiers(KModifier.OVERRIDE)
-    .returns(ByteArray::class)
+    .returns(Buffer::class)
     .addCode(
         buildCodeBlock {
-            addStatement(
-                "val outputBuffer = %T.allocate(SIZE_V2).order(%T.LITTLE_ENDIAN)",
-                ByteBuffer::class,
-                ByteOrder::class
-            )
+            addStatement("val outputBuffer = %T()", Buffer::class)
             fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
-            addStatement("return outputBuffer.array().%M()", truncateZerosMemberName)
+            addStatement("return outputBuffer.%M()", truncateZerosMemberName)
         }
     )
     .build()

@@ -42,8 +42,10 @@ gradlePlugin {
 
 dependencies {
     implementation(gradleApi())
+
     implementation(project(":api"))
     implementation(project(":serialization"))
+    implementation(Deps.okio)
 
     implementation(Deps.Jackson.dataFormatXml)
     implementation(Deps.Jackson.moduleKotlin)
