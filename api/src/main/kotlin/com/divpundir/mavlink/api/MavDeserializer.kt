@@ -1,15 +1,16 @@
 package com.divpundir.mavlink.api
 
+import okio.Buffer
+
 public fun interface MavDeserializer<T> {
 
     /**
-     * Deserializes a [ByteArray] as a MAVLink message. Note that these bytes are not the entire MAVLink frame, but only
-     * its payload.
+     * Deserializes the given [buffer] as a MAVLink message. Note that these bytes are not the entire MAVLink frame, but
+     * only its payload.
      *
-     * @param bytes The MAVLink message in the form of bytes.
      * @throws MavDeserializationException if the data is corrupt or doesn't correspond to the MAVLink message
-     * associated with this [MavDeserializer]
+     * associated with this [MavDeserializer].
      */
     @Throws(MavDeserializationException::class)
-    public fun deserialize(bytes: ByteArray): T
+    public fun deserialize(buffer: Buffer): T
 }
