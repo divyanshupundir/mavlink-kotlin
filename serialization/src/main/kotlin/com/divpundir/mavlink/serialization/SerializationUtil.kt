@@ -1,184 +1,176 @@
 package com.divpundir.mavlink.serialization
 
-import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
+import okio.Buffer
 
 /**
- * Writes the given [Byte]/Int8 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Byte]/Int8 to the buffer's current position, and then increments the position.
  */
-public fun ByteBuffer.encodeInt8(value: Byte) {
-    if (this.remaining() >= Byte.SIZE_BYTES) this.put(value)
+public fun Buffer.encodeInt8(value: Byte) {
+    this.writeByte(value.toInt())
 }
 
 /**
- * Writes the given [UByte]/UInt8 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [UByte]/UInt8 to the buffer's current position, and then increments the position.
  */
-public fun ByteBuffer.encodeUInt8(value: UByte) {
-    if (this.remaining() >= UByte.SIZE_BYTES) this.put(value.toByte())
+public fun Buffer.encodeUInt8(value: UByte) {
+    this.writeByte(value.toInt())
 }
 
 /**
- * Writes the given [Short]/Int16 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Short]/Int16 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeInt16(value: Short) {
-    if (this.remaining() >= Short.SIZE_BYTES) this.putShort(value)
+public fun Buffer.encodeInt16(value: Short) {
+    this.writeShortLe(value.toInt())
 }
 
 /**
- * Writes the given [UShort]/UInt16 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [UShort]/UInt16 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeUInt16(value: UShort) {
-    if (this.remaining() >= UShort.SIZE_BYTES) this.putShort(value.toShort())
+public fun Buffer.encodeUInt16(value: UShort) {
+    this.writeShortLe(value.toInt())
 }
 
 /**
- * Writes the given [Int]/Int32 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Int]/Int32 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeInt32(value: Int) {
-    if (this.remaining() >= Int.SIZE_BYTES) this.putInt(value)
+public fun Buffer.encodeInt32(value: Int) {
+    this.writeIntLe(value)
 }
 
 /**
- * Writes the given [UInt]/UInt32 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [UInt]/UInt32 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeUInt32(value: UInt) {
-    if (this.remaining() >= UInt.SIZE_BYTES) this.putInt(value.toInt())
+public fun Buffer.encodeUInt32(value: UInt) {
+    this.writeIntLe(value.toInt())
 }
 
 /**
- * Writes the given [Long]/Int64 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Long]/Int64 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeInt64(value: Long) {
-    if (this.remaining() >= Long.SIZE_BYTES) this.putLong(value)
+public fun Buffer.encodeInt64(value: Long) {
+    this.writeLongLe(value)
 }
 
 /**
- * Writes the given [ULong]/UInt64 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [ULong]/UInt64 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeUInt64(value: ULong) {
-    if (this.remaining() >= ULong.SIZE_BYTES) this.putLong(value.toLong())
+public fun Buffer.encodeUInt64(value: ULong) {
+    this.writeLongLe(value.toLong())
 }
 
 /**
- * Writes the given [Float]/Float32 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Float]/Float32 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeFloat(value: Float) {
-    if (this.remaining() >= Float.SIZE_BYTES) this.putFloat(value)
+public fun Buffer.encodeFloat(value: Float) {
+    this.writeIntLe(value.toBits())
 }
 
 /**
- * Writes the given [Double]/Float64 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Double]/Float64 to the buffer's current position in little-endian order, and then increments the
+ * position.
  */
-public fun ByteBuffer.encodeDouble(value: Double) {
-    if (this.remaining() >= Double.SIZE_BYTES) this.putDouble(value)
+public fun Buffer.encodeDouble(value: Double) {
+    this.writeLongLe(value.toBits())
 }
 
 /**
- * Writes the given [Char]/UInt64 to the buffer's current position, and then increments the position. Does nothing if
- * there is not enough space in the buffer.
+ * Writes the given [Char]/UInt64 to the buffer's current position, and then increments the position.
  */
-public fun ByteBuffer.encodeChar(value: Char) {
-    if (this.remaining() >= Byte.SIZE_BYTES) this.put(value.code.toByte())
+public fun Buffer.encodeChar(value: Char) {
+    this.writeByte(value.code)
 }
 
 /**
- * Writes the given [String] to the buffer's current position, and then increments the position. If there [String] is
- * shorter than the [length] parameter then empty characters are encoded. Does nothing if there is not enough space in
- * the buffer.
+ * Writes the given [String] to the buffer's current position, and then increments the position. If the encoded [String]
+ * is shorter than the [length] parameter then the remaining positions are filled with empty characters.
  */
-public fun ByteBuffer.encodeString(value: String, length: Int) {
-    val data = value.toByteArray(charset = StandardCharsets.UTF_8)
-
-    for (i in 0 until length) {
-        if (this.hasRemaining()) this.put(if (i < data.size) data[i] else 0)
-    }
+public fun Buffer.encodeString(value: String, length: Int) {
+    val data = value.toByteArray(charset = Charsets.UTF_8).copyOf(newSize = length)
+    this.write(data)
 }
 
 /**
  * Encodes the given [List] of [Byte]/Int8 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeInt8Array(arr: List<Byte>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / Byte.SIZE_BYTES, 0, ByteBuffer::encodeInt8)
+public fun Buffer.encodeInt8Array(arr: List<Byte>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Byte.SIZE_BYTES, 0, Buffer::encodeInt8)
 
 /**
  * Encodes the given [List] of [UByte]/UInt8 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeUInt8Array(arr: List<UByte>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / UByte.SIZE_BYTES, 0u, ByteBuffer::encodeUInt8)
+public fun Buffer.encodeUInt8Array(arr: List<UByte>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / UByte.SIZE_BYTES, 0u, Buffer::encodeUInt8)
 
 /**
  * Encodes the given [List] of [Short]/Int16 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeInt16Array(arr: List<Short>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / Short.SIZE_BYTES, 0, ByteBuffer::encodeInt16)
+public fun Buffer.encodeInt16Array(arr: List<Short>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Short.SIZE_BYTES, 0, Buffer::encodeInt16)
 
 /**
  * Encodes the given [List] of [UShort]/UInt16 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeUInt16Array(arr: List<UShort>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / UShort.SIZE_BYTES, 0u, ByteBuffer::encodeUInt16)
+public fun Buffer.encodeUInt16Array(arr: List<UShort>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / UShort.SIZE_BYTES, 0u, Buffer::encodeUInt16)
 
 /**
  * Encodes the given [List] of [Int]/Int32 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeInt32Array(arr: List<Int>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / Int.SIZE_BYTES, 0, ByteBuffer::encodeInt32)
+public fun Buffer.encodeInt32Array(arr: List<Int>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Int.SIZE_BYTES, 0, Buffer::encodeInt32)
 
 /**
  * Encodes the given [List] of [UInt]/UInt32 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeUInt32Array(arr: List<UInt>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / UInt.SIZE_BYTES, 0u, ByteBuffer::encodeUInt32)
+public fun Buffer.encodeUInt32Array(arr: List<UInt>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / UInt.SIZE_BYTES, 0u, Buffer::encodeUInt32)
 
 /**
  * Encodes the given [List] of [Long]/Int64 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeInt64Array(arr: List<Long>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / Long.SIZE_BYTES, 0L, ByteBuffer::encodeInt64)
+public fun Buffer.encodeInt64Array(arr: List<Long>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Long.SIZE_BYTES, 0L, Buffer::encodeInt64)
 
 /**
  * Encodes the given [List] of [ULong]/UInt64 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeUInt64Array(arr: List<ULong>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / ULong.SIZE_BYTES, 0uL, ByteBuffer::encodeUInt64)
+public fun Buffer.encodeUInt64Array(arr: List<ULong>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / ULong.SIZE_BYTES, 0uL, Buffer::encodeUInt64)
 
 /**
  * Encodes the given [List] of [Float]/Float32 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeFloatArray(arr: List<Float>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / Float.SIZE_BYTES, 0F, ByteBuffer::encodeFloat)
+public fun Buffer.encodeFloatArray(arr: List<Float>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Float.SIZE_BYTES, 0F, Buffer::encodeFloat)
 
 /**
  * Encodes the given [List] of [Double]/Float64 into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeDoubleArray(arr: List<Double>, dataSize: Int): Unit =
-    encodeArray(arr, dataSize / Double.SIZE_BYTES, 0.0, ByteBuffer::encodeDouble)
+public fun Buffer.encodeDoubleArray(arr: List<Double>, dataSize: Int): Unit =
+    encodeArray(arr, dataSize / Double.SIZE_BYTES, 0.0, Buffer::encodeDouble)
 
 /**
  * Encodes the given [UInt] MAVLink enum value into a [ByteArray] of size [dataSize], writes it to the buffer's current
- * position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeEnumValue(value: UInt, dataSize: Int) {
+public fun Buffer.encodeEnumValue(value: UInt, dataSize: Int) {
     when (dataSize) {
         UByte.SIZE_BYTES -> encodeUInt8(value.toUByte())
         UShort.SIZE_BYTES -> encodeUInt16(value.toUShort())
@@ -189,9 +181,9 @@ public fun ByteBuffer.encodeEnumValue(value: UInt, dataSize: Int) {
 
 /**
  * Encodes the given [UInt] MAVLink bitmask value into a [ByteArray] of size [dataSize], writes it to the buffer's
- * current position, and then increments the position. Does nothing if there is not enough space in the buffer.
+ * current position in little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeBitmaskValue(value: UInt, dataSize: Int) {
+public fun Buffer.encodeBitmaskValue(value: UInt, dataSize: Int) {
     when (dataSize) {
         UByte.SIZE_BYTES -> encodeUInt8(value.toUByte())
         UShort.SIZE_BYTES -> encodeUInt16(value.toUShort())
@@ -201,32 +193,39 @@ public fun ByteBuffer.encodeBitmaskValue(value: UInt, dataSize: Int) {
 }
 
 /**
- * Encodes the given [Long] into a [ByteArray] of size [dataSize], writes it to the buffer's current position, and then
- * increments the position. Does nothing if there is not enough space in the buffer.
+ * Encodes the given [Long] into a [ByteArray] of size [dataSize], writes it to the buffer's current position in
+ * little-endian order, and then increments the position.
  */
-public fun ByteBuffer.encodeIntegerValue(value: Long, dataSize: Int) {
+public fun Buffer.encodeIntegerValue(value: Long, dataSize: Int) {
     for (shift in 0 until dataSize) {
-        if (this.hasRemaining()) this.put(((value shr (shift * 8)) and 0xFF).toByte())
+        this.writeByte(((value shr (shift * 8)) and 0xFF).toInt())
     }
 }
 
 /**
- * Returns a new [ByteArray] with all the trailing zeros removed.
+ * Returns a new [Buffer] with all the trailing zeros removed.
  */
-public fun ByteArray.truncateZeros(): ByteArray {
-    for (index in lastIndex downTo 0) {
-        if (this[index] != 0.toByte()) {
-            return this.copyOfRange(0, index + 1)
+public fun Buffer.truncateZeros(): Buffer {
+    var trailingZeroCount = 0
+    for (i in this.size - 1 downTo 0) {
+        if (this[i] == 0.toByte()) {
+            trailingZeroCount++
+        } else {
+            break
         }
     }
-    return ByteArray(0)
+
+    val truncatedBuffer = Buffer()
+    this.copyTo(truncatedBuffer, offset = 0, byteCount = (this.size - trailingZeroCount))
+
+    return truncatedBuffer
 }
 
-private inline fun <T : Any> ByteBuffer.encodeArray(
+private inline fun <T : Any> Buffer.encodeArray(
     arr: List<T>,
     elementCount: Int,
     defaultValue: T,
-    encode: ByteBuffer.(T) -> Unit
+    encode: Buffer.(T) -> Unit
 ) {
     for (i in 0 until elementCount) this.encode(if (i < arr.size) arr[i] else defaultValue)
 }
