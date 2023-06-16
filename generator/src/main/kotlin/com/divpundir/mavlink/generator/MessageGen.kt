@@ -10,6 +10,7 @@ import com.divpundir.mavlink.serialization.CrcX25
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import okio.Buffer
+import okio.BufferedSource
 
 internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
@@ -80,11 +81,11 @@ private fun MessageModel.generateSizeV2Property() = PropertySpec
 private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelper: EnumHelper) = FunSpec
     .builder("deserialize")
     .addModifiers(KModifier.OVERRIDE)
-    .addParameter(ParameterSpec("buffer", Buffer::class.asTypeName()))
+    .addParameter(ParameterSpec("source", BufferedSource::class.asTypeName()))
     .returns(getClassName(packageName))
     .addCode(
         buildCodeBlock {
-            fields.sorted().forEach { add(it.generateDeserializeStatement("buffer", enumHelper)) }
+            fields.sorted().forEach { add(it.generateDeserializeStatement("source", enumHelper)) }
             addStatement("")
             addStatement("return %T(", getClassName(packageName))
             indent()
@@ -107,7 +108,7 @@ private fun MessageModel.generateInstanceCompanion(packageName: String) = Proper
 private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
-    .returns(Buffer::class)
+    .returns(BufferedSource::class)
     .addCode(
         buildCodeBlock {
             addStatement("val outputBuffer = %T()", Buffer::class)
@@ -120,7 +121,7 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
 private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV2")
     .addModifiers(KModifier.OVERRIDE)
-    .returns(Buffer::class)
+    .returns(BufferedSource::class)
     .addCode(
         buildCodeBlock {
             addStatement("val outputBuffer = %T()", Buffer::class)
