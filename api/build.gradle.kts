@@ -17,6 +17,7 @@ tasks.test {
 
 dependencies {
     implementation(Deps.okio)
+    implementation(Deps.Kotlin.immutableCollections)
 
     testImplementation(TestDeps.Jupiter.api)
     testRuntimeOnly(TestDeps.Jupiter.engine)
