@@ -111,9 +111,9 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .returns(BufferedSource::class)
     .addCode(
         buildCodeBlock {
-            addStatement("val outputBuffer = %T()", Buffer::class)
-            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
-            addStatement("return outputBuffer")
+            addStatement("val output = %T()", Buffer::class)
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("output", enumHelper)) }
+            addStatement("return output")
         }
     )
     .build()
@@ -124,9 +124,10 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .returns(BufferedSource::class)
     .addCode(
         buildCodeBlock {
-            addStatement("val outputBuffer = %T()", Buffer::class)
-            fields.sorted().forEach { add(it.generateSerializeStatement("outputBuffer", enumHelper)) }
-            addStatement("return outputBuffer.%M()", truncateZerosMemberName)
+            addStatement("val output = %T()", Buffer::class)
+            fields.sorted().forEach { add(it.generateSerializeStatement("output", enumHelper)) }
+            addStatement("output.%M()", truncateZerosMemberName)
+            addStatement("return output")
         }
     )
     .build()

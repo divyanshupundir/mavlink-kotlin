@@ -204,22 +204,23 @@ public fun BufferedSink.encodeIntegerValue(value: Long, dataSize: Int) {
 }
 
 /**
- * Returns a new [Buffer] with all the trailing zeros removed.
+ * Removes the trailing zeros from this [Buffer].
  */
-public fun BufferedSink.truncateZeros(): BufferedSink {
+public fun Buffer.truncateZeros() {
     var trailingZeroCount = 0
-    for (i in this.buffer.size - 1 downTo 0) {
-        if (this.buffer[i] == 0.toByte()) {
+    for (i in this.size - 1 downTo 0) {
+        if (this[i] == 0.toByte()) {
             trailingZeroCount++
         } else {
             break
         }
     }
 
-    val truncatedBuffer = Buffer()
-    this.buffer.copyTo(truncatedBuffer, offset = 0, byteCount = (this.buffer.size - trailingZeroCount))
+    val truncated = Buffer()
+    truncated.write(this.buffer, byteCount = this.buffer.size - trailingZeroCount)
 
-    return truncatedBuffer
+    this.buffer.clear()
+    this.buffer.writeAll(truncated)
 }
 
 private inline fun <T : Any> BufferedSink.encodeArray(
