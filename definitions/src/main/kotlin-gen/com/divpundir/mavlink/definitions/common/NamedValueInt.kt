@@ -10,14 +10,13 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but
@@ -46,20 +45,21 @@ public data class NamedValueInt(
 ) : MavMessage<NamedValueInt> {
   public override val instanceCompanion: MavMessage.MavCompanion<NamedValueInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeInt32(value)
-    outputBuffer.encodeString(name, 10)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeInt32(value)
+    output.encodeString(name, 10)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeInt32(value)
-    outputBuffer.encodeString(name, 10)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeInt32(value)
+    output.encodeString(name, 10)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<NamedValueInt> {
@@ -71,11 +71,10 @@ public data class NamedValueInt(
 
     public override val crcExtra: Byte = 44
 
-    public override fun deserialize(bytes: ByteArray): NamedValueInt {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val value = inputBuffer.decodeInt32()
-      val name = inputBuffer.decodeString(10)
+    public override fun deserialize(source: BufferedSource): NamedValueInt {
+      val timeBootMs = source.decodeUInt32()
+      val value = source.decodeInt32()
+      val name = source.decodeString(10)
 
       return NamedValueInt(
         timeBootMs = timeBootMs,

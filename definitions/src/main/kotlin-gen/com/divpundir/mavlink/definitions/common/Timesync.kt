@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt64
 import com.divpundir.mavlink.serialization.encodeInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Time synchronization message.
@@ -36,18 +35,19 @@ public data class Timesync(
 ) : MavMessage<Timesync> {
   public override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt64(tc1)
-    outputBuffer.encodeInt64(ts1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt64(tc1)
+    output.encodeInt64(ts1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt64(tc1)
-    outputBuffer.encodeInt64(ts1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt64(tc1)
+    output.encodeInt64(ts1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Timesync> {
@@ -59,10 +59,9 @@ public data class Timesync(
 
     public override val crcExtra: Byte = 34
 
-    public override fun deserialize(bytes: ByteArray): Timesync {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val tc1 = inputBuffer.decodeInt64()
-      val ts1 = inputBuffer.decodeInt64()
+    public override fun deserialize(source: BufferedSource): Timesync {
+      val tc1 = source.decodeInt64()
+      val ts1 = source.decodeInt64()
 
       return Timesync(
         tc1 = tc1,

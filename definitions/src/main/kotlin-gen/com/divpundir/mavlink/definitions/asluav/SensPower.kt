@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Voltage and current sensor data
@@ -46,22 +45,23 @@ public data class SensPower(
 ) : MavMessage<SensPower> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(adc121VspbVolt)
-    outputBuffer.encodeFloat(adc121CspbAmp)
-    outputBuffer.encodeFloat(adc121Cs1Amp)
-    outputBuffer.encodeFloat(adc121Cs2Amp)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(adc121VspbVolt)
+    output.encodeFloat(adc121CspbAmp)
+    output.encodeFloat(adc121Cs1Amp)
+    output.encodeFloat(adc121Cs2Amp)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(adc121VspbVolt)
-    outputBuffer.encodeFloat(adc121CspbAmp)
-    outputBuffer.encodeFloat(adc121Cs1Amp)
-    outputBuffer.encodeFloat(adc121Cs2Amp)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(adc121VspbVolt)
+    output.encodeFloat(adc121CspbAmp)
+    output.encodeFloat(adc121Cs1Amp)
+    output.encodeFloat(adc121Cs2Amp)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensPower> {
@@ -73,12 +73,11 @@ public data class SensPower(
 
     public override val crcExtra: Byte = -38
 
-    public override fun deserialize(bytes: ByteArray): SensPower {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val adc121VspbVolt = inputBuffer.decodeFloat()
-      val adc121CspbAmp = inputBuffer.decodeFloat()
-      val adc121Cs1Amp = inputBuffer.decodeFloat()
-      val adc121Cs2Amp = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): SensPower {
+      val adc121VspbVolt = source.decodeFloat()
+      val adc121CspbAmp = source.decodeFloat()
+      val adc121Cs1Amp = source.decodeFloat()
+      val adc121Cs2Amp = source.decodeFloat()
 
       return SensPower(
         adc121VspbVolt = adc121VspbVolt,

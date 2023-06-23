@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt64
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Atmospheric sensors (temperature, humidity, ...) 
@@ -44,20 +43,21 @@ public data class SensAtmos(
 ) : MavMessage<SensAtmos> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensAtmos> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(tempambient)
-    outputBuffer.encodeFloat(humidity)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(tempambient)
+    output.encodeFloat(humidity)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(tempambient)
-    outputBuffer.encodeFloat(humidity)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(tempambient)
+    output.encodeFloat(humidity)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensAtmos> {
@@ -69,11 +69,10 @@ public data class SensAtmos(
 
     public override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): SensAtmos {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val tempambient = inputBuffer.decodeFloat()
-      val humidity = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): SensAtmos {
+      val timestamp = source.decodeUInt64()
+      val tempambient = source.decodeFloat()
+      val humidity = source.decodeFloat()
 
       return SensAtmos(
         timestamp = timestamp,

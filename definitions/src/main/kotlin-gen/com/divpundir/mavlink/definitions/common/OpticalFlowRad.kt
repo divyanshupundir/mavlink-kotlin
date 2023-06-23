@@ -14,10 +14,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -25,6 +22,8 @@ import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Optical flow from an angular rate flow sensor (e.g. PX4FLOW or mouse sensor)
@@ -102,38 +101,39 @@ public data class OpticalFlowRad(
 ) : MavMessage<OpticalFlowRad> {
   public override val instanceCompanion: MavMessage.MavCompanion<OpticalFlowRad> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(integrationTimeUs)
-    outputBuffer.encodeFloat(integratedX)
-    outputBuffer.encodeFloat(integratedY)
-    outputBuffer.encodeFloat(integratedXgyro)
-    outputBuffer.encodeFloat(integratedYgyro)
-    outputBuffer.encodeFloat(integratedZgyro)
-    outputBuffer.encodeUInt32(timeDeltaDistanceUs)
-    outputBuffer.encodeFloat(distance)
-    outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeUInt8(sensorId)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32(integrationTimeUs)
+    output.encodeFloat(integratedX)
+    output.encodeFloat(integratedY)
+    output.encodeFloat(integratedXgyro)
+    output.encodeFloat(integratedYgyro)
+    output.encodeFloat(integratedZgyro)
+    output.encodeUInt32(timeDeltaDistanceUs)
+    output.encodeFloat(distance)
+    output.encodeInt16(temperature)
+    output.encodeUInt8(sensorId)
+    output.encodeUInt8(quality)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(integrationTimeUs)
-    outputBuffer.encodeFloat(integratedX)
-    outputBuffer.encodeFloat(integratedY)
-    outputBuffer.encodeFloat(integratedXgyro)
-    outputBuffer.encodeFloat(integratedYgyro)
-    outputBuffer.encodeFloat(integratedZgyro)
-    outputBuffer.encodeUInt32(timeDeltaDistanceUs)
-    outputBuffer.encodeFloat(distance)
-    outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeUInt8(sensorId)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32(integrationTimeUs)
+    output.encodeFloat(integratedX)
+    output.encodeFloat(integratedY)
+    output.encodeFloat(integratedXgyro)
+    output.encodeFloat(integratedYgyro)
+    output.encodeFloat(integratedZgyro)
+    output.encodeUInt32(timeDeltaDistanceUs)
+    output.encodeFloat(distance)
+    output.encodeInt16(temperature)
+    output.encodeUInt8(sensorId)
+    output.encodeUInt8(quality)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OpticalFlowRad> {
@@ -145,20 +145,19 @@ public data class OpticalFlowRad(
 
     public override val crcExtra: Byte = -118
 
-    public override fun deserialize(bytes: ByteArray): OpticalFlowRad {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val integrationTimeUs = inputBuffer.decodeUInt32()
-      val integratedX = inputBuffer.decodeFloat()
-      val integratedY = inputBuffer.decodeFloat()
-      val integratedXgyro = inputBuffer.decodeFloat()
-      val integratedYgyro = inputBuffer.decodeFloat()
-      val integratedZgyro = inputBuffer.decodeFloat()
-      val timeDeltaDistanceUs = inputBuffer.decodeUInt32()
-      val distance = inputBuffer.decodeFloat()
-      val temperature = inputBuffer.decodeInt16()
-      val sensorId = inputBuffer.decodeUInt8()
-      val quality = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): OpticalFlowRad {
+      val timeUsec = source.decodeUInt64()
+      val integrationTimeUs = source.decodeUInt32()
+      val integratedX = source.decodeFloat()
+      val integratedY = source.decodeFloat()
+      val integratedXgyro = source.decodeFloat()
+      val integratedYgyro = source.decodeFloat()
+      val integratedZgyro = source.decodeFloat()
+      val timeDeltaDistanceUs = source.decodeUInt32()
+      val distance = source.decodeFloat()
+      val temperature = source.decodeInt16()
+      val sensorId = source.decodeUInt8()
+      val quality = source.decodeUInt8()
 
       return OpticalFlowRad(
         timeUsec = timeUsec,

@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -23,6 +20,8 @@ import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
@@ -86,32 +85,33 @@ public data class ParamMapRc(
 ) : MavMessage<ParamMapRc> {
   public override val instanceCompanion: MavMessage.MavCompanion<ParamMapRc> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(paramValue0)
-    outputBuffer.encodeFloat(scale)
-    outputBuffer.encodeFloat(paramValueMin)
-    outputBuffer.encodeFloat(paramValueMax)
-    outputBuffer.encodeInt16(paramIndex)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeUInt8(parameterRcChannelIndex)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(paramValue0)
+    output.encodeFloat(scale)
+    output.encodeFloat(paramValueMin)
+    output.encodeFloat(paramValueMax)
+    output.encodeInt16(paramIndex)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(paramId, 16)
+    output.encodeUInt8(parameterRcChannelIndex)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(paramValue0)
-    outputBuffer.encodeFloat(scale)
-    outputBuffer.encodeFloat(paramValueMin)
-    outputBuffer.encodeFloat(paramValueMax)
-    outputBuffer.encodeInt16(paramIndex)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeUInt8(parameterRcChannelIndex)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(paramValue0)
+    output.encodeFloat(scale)
+    output.encodeFloat(paramValueMin)
+    output.encodeFloat(paramValueMax)
+    output.encodeInt16(paramIndex)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(paramId, 16)
+    output.encodeUInt8(parameterRcChannelIndex)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ParamMapRc> {
@@ -123,17 +123,16 @@ public data class ParamMapRc(
 
     public override val crcExtra: Byte = 78
 
-    public override fun deserialize(bytes: ByteArray): ParamMapRc {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val paramValue0 = inputBuffer.decodeFloat()
-      val scale = inputBuffer.decodeFloat()
-      val paramValueMin = inputBuffer.decodeFloat()
-      val paramValueMax = inputBuffer.decodeFloat()
-      val paramIndex = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val paramId = inputBuffer.decodeString(16)
-      val parameterRcChannelIndex = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): ParamMapRc {
+      val paramValue0 = source.decodeFloat()
+      val scale = source.decodeFloat()
+      val paramValueMin = source.decodeFloat()
+      val paramValueMax = source.decodeFloat()
+      val paramIndex = source.decodeInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val paramId = source.decodeString(16)
+      val parameterRcChannelIndex = source.decodeUInt8()
 
       return ParamMapRc(
         targetSystem = targetSystem,

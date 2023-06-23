@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * State of autopilot RAM.
@@ -46,19 +45,20 @@ public data class Meminfo(
 ) : MavMessage<Meminfo> {
   public override val instanceCompanion: MavMessage.MavCompanion<Meminfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(brkval)
-    outputBuffer.encodeUInt16(freemem)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(brkval)
+    output.encodeUInt16(freemem)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(brkval)
-    outputBuffer.encodeUInt16(freemem)
-    outputBuffer.encodeUInt32(freemem32)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(brkval)
+    output.encodeUInt16(freemem)
+    output.encodeUInt32(freemem32)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Meminfo> {
@@ -70,11 +70,10 @@ public data class Meminfo(
 
     public override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): Meminfo {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val brkval = inputBuffer.decodeUInt16()
-      val freemem = inputBuffer.decodeUInt16()
-      val freemem32 = inputBuffer.decodeUInt32()
+    public override fun deserialize(source: BufferedSource): Meminfo {
+      val brkval = source.decodeUInt16()
+      val freemem = source.decodeUInt16()
+      val freemem32 = source.decodeUInt32()
 
       return Meminfo(
         brkval = brkval,

@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
@@ -56,24 +55,25 @@ public data class ResourceRequest(
 ) : MavMessage<ResourceRequest> {
   public override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(requestId)
-    outputBuffer.encodeUInt8(uriType)
-    outputBuffer.encodeUInt8Array(uri, 120)
-    outputBuffer.encodeUInt8(transferType)
-    outputBuffer.encodeUInt8Array(storage, 120)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(requestId)
+    output.encodeUInt8(uriType)
+    output.encodeUInt8Array(uri, 120)
+    output.encodeUInt8(transferType)
+    output.encodeUInt8Array(storage, 120)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(requestId)
-    outputBuffer.encodeUInt8(uriType)
-    outputBuffer.encodeUInt8Array(uri, 120)
-    outputBuffer.encodeUInt8(transferType)
-    outputBuffer.encodeUInt8Array(storage, 120)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(requestId)
+    output.encodeUInt8(uriType)
+    output.encodeUInt8Array(uri, 120)
+    output.encodeUInt8(transferType)
+    output.encodeUInt8Array(storage, 120)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ResourceRequest> {
@@ -85,13 +85,12 @@ public data class ResourceRequest(
 
     public override val crcExtra: Byte = 72
 
-    public override fun deserialize(bytes: ByteArray): ResourceRequest {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUInt8()
-      val uriType = inputBuffer.decodeUInt8()
-      val uri = inputBuffer.decodeUInt8Array(120)
-      val transferType = inputBuffer.decodeUInt8()
-      val storage = inputBuffer.decodeUInt8Array(120)
+    public override fun deserialize(source: BufferedSource): ResourceRequest {
+      val requestId = source.decodeUInt8()
+      val uriType = source.decodeUInt8()
+      val uri = source.decodeUInt8Array(120)
+      val transferType = source.decodeUInt8()
+      val storage = source.decodeUInt8Array(120)
 
       return ResourceRequest(
         requestId = requestId,

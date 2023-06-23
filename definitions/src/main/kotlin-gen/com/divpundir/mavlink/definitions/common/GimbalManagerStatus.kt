@@ -12,14 +12,13 @@ import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Current status about a high level gimbal manager. This message should be broadcast at a low
@@ -69,28 +68,29 @@ public data class GimbalManagerStatus(
 ) : MavMessage<GimbalManagerStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeUInt8(gimbalDeviceId)
-    outputBuffer.encodeUInt8(primaryControlSysid)
-    outputBuffer.encodeUInt8(primaryControlCompid)
-    outputBuffer.encodeUInt8(secondaryControlSysid)
-    outputBuffer.encodeUInt8(secondaryControlCompid)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeBitmaskValue(flags.value, 4)
+    output.encodeUInt8(gimbalDeviceId)
+    output.encodeUInt8(primaryControlSysid)
+    output.encodeUInt8(primaryControlCompid)
+    output.encodeUInt8(secondaryControlSysid)
+    output.encodeUInt8(secondaryControlCompid)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeUInt8(gimbalDeviceId)
-    outputBuffer.encodeUInt8(primaryControlSysid)
-    outputBuffer.encodeUInt8(primaryControlCompid)
-    outputBuffer.encodeUInt8(secondaryControlSysid)
-    outputBuffer.encodeUInt8(secondaryControlCompid)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeBitmaskValue(flags.value, 4)
+    output.encodeUInt8(gimbalDeviceId)
+    output.encodeUInt8(primaryControlSysid)
+    output.encodeUInt8(primaryControlCompid)
+    output.encodeUInt8(secondaryControlSysid)
+    output.encodeUInt8(secondaryControlCompid)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GimbalManagerStatus> {
@@ -102,18 +102,17 @@ public data class GimbalManagerStatus(
 
     public override val crcExtra: Byte = 48
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(source: BufferedSource): GimbalManagerStatus {
+      val timeBootMs = source.decodeUInt32()
+      val flags = source.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val gimbalDeviceId = inputBuffer.decodeUInt8()
-      val primaryControlSysid = inputBuffer.decodeUInt8()
-      val primaryControlCompid = inputBuffer.decodeUInt8()
-      val secondaryControlSysid = inputBuffer.decodeUInt8()
-      val secondaryControlCompid = inputBuffer.decodeUInt8()
+      val gimbalDeviceId = source.decodeUInt8()
+      val primaryControlSysid = source.decodeUInt8()
+      val primaryControlCompid = source.decodeUInt8()
+      val secondaryControlSysid = source.decodeUInt8()
+      val secondaryControlCompid = source.decodeUInt8()
 
       return GimbalManagerStatus(
         timeBootMs = timeBootMs,

@@ -14,15 +14,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Vehicle status report that is sent out while orbit execution is in progress (see
@@ -71,26 +70,27 @@ public data class OrbitExecutionStatus(
 ) : MavMessage<OrbitExecutionStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<OrbitExecutionStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(radius)
-    outputBuffer.encodeInt32(x)
-    outputBuffer.encodeInt32(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(radius)
+    output.encodeInt32(x)
+    output.encodeInt32(y)
+    output.encodeFloat(z)
+    output.encodeEnumValue(frame.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(radius)
-    outputBuffer.encodeInt32(x)
-    outputBuffer.encodeInt32(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(radius)
+    output.encodeInt32(x)
+    output.encodeInt32(y)
+    output.encodeFloat(z)
+    output.encodeEnumValue(frame.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OrbitExecutionStatus> {
@@ -102,14 +102,13 @@ public data class OrbitExecutionStatus(
 
     public override val crcExtra: Byte = 11
 
-    public override fun deserialize(bytes: ByteArray): OrbitExecutionStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val radius = inputBuffer.decodeFloat()
-      val x = inputBuffer.decodeInt32()
-      val y = inputBuffer.decodeInt32()
-      val z = inputBuffer.decodeFloat()
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): OrbitExecutionStatus {
+      val timeUsec = source.decodeUInt64()
+      val radius = source.decodeFloat()
+      val x = source.decodeInt32()
+      val y = source.decodeInt32()
+      val z = source.decodeFloat()
+      val frame = source.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

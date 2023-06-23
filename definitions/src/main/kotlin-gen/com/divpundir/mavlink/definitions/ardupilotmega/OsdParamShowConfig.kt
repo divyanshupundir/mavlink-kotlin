@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Read a configured an OSD parameter slot.
@@ -53,24 +52,25 @@ public data class OsdParamShowConfig(
 ) : MavMessage<OsdParamShowConfig> {
   public override val instanceCompanion: MavMessage.MavCompanion<OsdParamShowConfig> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(osdScreen)
-    outputBuffer.encodeUInt8(osdIndex)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(requestId)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(osdScreen)
+    output.encodeUInt8(osdIndex)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(osdScreen)
-    outputBuffer.encodeUInt8(osdIndex)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(requestId)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(osdScreen)
+    output.encodeUInt8(osdIndex)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OsdParamShowConfig> {
@@ -82,13 +82,12 @@ public data class OsdParamShowConfig(
 
     public override val crcExtra: Byte = -128
 
-    public override fun deserialize(bytes: ByteArray): OsdParamShowConfig {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUInt32()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val osdScreen = inputBuffer.decodeUInt8()
-      val osdIndex = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): OsdParamShowConfig {
+      val requestId = source.decodeUInt32()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val osdScreen = source.decodeUInt8()
+      val osdIndex = source.decodeUInt8()
 
       return OsdParamShowConfig(
         targetSystem = targetSystem,

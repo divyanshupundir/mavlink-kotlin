@@ -15,16 +15,15 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Information about a storage medium. This message is sent in response to a request with
@@ -117,35 +116,36 @@ public data class StorageInformation(
 ) : MavMessage<StorageInformation> {
   public override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(totalCapacity)
-    outputBuffer.encodeFloat(usedCapacity)
-    outputBuffer.encodeFloat(availableCapacity)
-    outputBuffer.encodeFloat(readSpeed)
-    outputBuffer.encodeFloat(writeSpeed)
-    outputBuffer.encodeUInt8(storageId)
-    outputBuffer.encodeUInt8(storageCount)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(totalCapacity)
+    output.encodeFloat(usedCapacity)
+    output.encodeFloat(availableCapacity)
+    output.encodeFloat(readSpeed)
+    output.encodeFloat(writeSpeed)
+    output.encodeUInt8(storageId)
+    output.encodeUInt8(storageCount)
+    output.encodeEnumValue(status.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(totalCapacity)
-    outputBuffer.encodeFloat(usedCapacity)
-    outputBuffer.encodeFloat(availableCapacity)
-    outputBuffer.encodeFloat(readSpeed)
-    outputBuffer.encodeFloat(writeSpeed)
-    outputBuffer.encodeUInt8(storageId)
-    outputBuffer.encodeUInt8(storageCount)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeString(name, 32)
-    outputBuffer.encodeEnumValue(storageUsage.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(totalCapacity)
+    output.encodeFloat(usedCapacity)
+    output.encodeFloat(availableCapacity)
+    output.encodeFloat(readSpeed)
+    output.encodeFloat(writeSpeed)
+    output.encodeUInt8(storageId)
+    output.encodeUInt8(storageCount)
+    output.encodeEnumValue(status.value, 1)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeString(name, 32)
+    output.encodeEnumValue(storageUsage.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<StorageInformation> {
@@ -157,26 +157,25 @@ public data class StorageInformation(
 
     public override val crcExtra: Byte = -77
 
-    public override fun deserialize(bytes: ByteArray): StorageInformation {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val totalCapacity = inputBuffer.decodeFloat()
-      val usedCapacity = inputBuffer.decodeFloat()
-      val availableCapacity = inputBuffer.decodeFloat()
-      val readSpeed = inputBuffer.decodeFloat()
-      val writeSpeed = inputBuffer.decodeFloat()
-      val storageId = inputBuffer.decodeUInt8()
-      val storageCount = inputBuffer.decodeUInt8()
-      val status = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): StorageInformation {
+      val timeBootMs = source.decodeUInt32()
+      val totalCapacity = source.decodeFloat()
+      val usedCapacity = source.decodeFloat()
+      val availableCapacity = source.decodeFloat()
+      val readSpeed = source.decodeFloat()
+      val writeSpeed = source.decodeFloat()
+      val storageId = source.decodeUInt8()
+      val storageCount = source.decodeUInt8()
+      val status = source.decodeEnumValue(1).let { value ->
         val entry = StorageStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val type = source.decodeEnumValue(1).let { value ->
         val entry = StorageType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val name = inputBuffer.decodeString(32)
-      val storageUsage = inputBuffer.decodeEnumValue(1).let { value ->
+      val name = source.decodeString(32)
+      val storageUsage = source.decodeEnumValue(1).let { value ->
         val entry = StorageUsageFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

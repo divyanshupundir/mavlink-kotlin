@@ -10,10 +10,7 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -21,6 +18,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Set the vehicle attitude and body angular rates.
@@ -53,20 +52,21 @@ public data class ActuatorControlTarget(
 ) : MavMessage<ActuatorControlTarget> {
   public override val instanceCompanion: MavMessage.MavCompanion<ActuatorControlTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloatArray(controls, 32)
-    outputBuffer.encodeUInt8(groupMlx)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloatArray(controls, 32)
+    output.encodeUInt8(groupMlx)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloatArray(controls, 32)
-    outputBuffer.encodeUInt8(groupMlx)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloatArray(controls, 32)
+    output.encodeUInt8(groupMlx)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ActuatorControlTarget> {
@@ -78,11 +78,10 @@ public data class ActuatorControlTarget(
 
     public override val crcExtra: Byte = -75
 
-    public override fun deserialize(bytes: ByteArray): ActuatorControlTarget {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val controls = inputBuffer.decodeFloatArray(32)
-      val groupMlx = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): ActuatorControlTarget {
+      val timeUsec = source.decodeUInt64()
+      val controls = source.decodeFloatArray(32)
+      val groupMlx = source.decodeUInt8()
 
       return ActuatorControlTarget(
         timeUsec = timeUsec,

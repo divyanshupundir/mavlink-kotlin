@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request the information of the mission item with the sequence number seq. The response of the
@@ -57,21 +56,22 @@ public data class MissionRequestInt(
 ) : MavMessage<MissionRequestInt> {
   public override val instanceCompanion: MavMessage.MavCompanion<MissionRequestInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seq)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(seq)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seq)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeEnumValue(missionType.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(seq)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeEnumValue(missionType.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<MissionRequestInt> {
@@ -83,12 +83,11 @@ public data class MissionRequestInt(
 
     public override val crcExtra: Byte = -60
 
-    public override fun deserialize(bytes: ByteArray): MissionRequestInt {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val seq = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val missionType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): MissionRequestInt {
+      val seq = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val missionType = source.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

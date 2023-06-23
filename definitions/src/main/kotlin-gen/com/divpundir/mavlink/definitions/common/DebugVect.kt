@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * To debug something using a named 3D vector.
@@ -58,24 +57,25 @@ public data class DebugVect(
 ) : MavMessage<DebugVect> {
   public override val instanceCompanion: MavMessage.MavCompanion<DebugVect> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeString(name, 10)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeString(name, 10)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeString(name, 10)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeString(name, 10)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<DebugVect> {
@@ -87,13 +87,12 @@ public data class DebugVect(
 
     public override val crcExtra: Byte = 49
 
-    public override fun deserialize(bytes: ByteArray): DebugVect {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val name = inputBuffer.decodeString(10)
+    public override fun deserialize(source: BufferedSource): DebugVect {
+      val timeUsec = source.decodeUInt64()
+      val x = source.decodeFloat()
+      val y = source.decodeFloat()
+      val z = source.decodeFloat()
+      val name = source.decodeString(10)
 
       return DebugVect(
         name = name,

@@ -17,10 +17,7 @@ import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -29,6 +26,8 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Obstacle distances in front of the sensor, starting from the left in increment degrees to the
@@ -106,29 +105,30 @@ public data class ObstacleDistance(
 ) : MavMessage<ObstacleDistance> {
   public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt16Array(distances, 144)
-    outputBuffer.encodeUInt16(minDistance)
-    outputBuffer.encodeUInt16(maxDistance)
-    outputBuffer.encodeEnumValue(sensorType.value, 1)
-    outputBuffer.encodeUInt8(increment)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt16Array(distances, 144)
+    output.encodeUInt16(minDistance)
+    output.encodeUInt16(maxDistance)
+    output.encodeEnumValue(sensorType.value, 1)
+    output.encodeUInt8(increment)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt16Array(distances, 144)
-    outputBuffer.encodeUInt16(minDistance)
-    outputBuffer.encodeUInt16(maxDistance)
-    outputBuffer.encodeEnumValue(sensorType.value, 1)
-    outputBuffer.encodeUInt8(increment)
-    outputBuffer.encodeFloat(incrementF)
-    outputBuffer.encodeFloat(angleOffset)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt16Array(distances, 144)
+    output.encodeUInt16(minDistance)
+    output.encodeUInt16(maxDistance)
+    output.encodeEnumValue(sensorType.value, 1)
+    output.encodeUInt8(increment)
+    output.encodeFloat(incrementF)
+    output.encodeFloat(angleOffset)
+    output.encodeEnumValue(frame.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ObstacleDistance> {
@@ -140,20 +140,19 @@ public data class ObstacleDistance(
 
     public override val crcExtra: Byte = 23
 
-    public override fun deserialize(bytes: ByteArray): ObstacleDistance {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val distances = inputBuffer.decodeUInt16Array(144)
-      val minDistance = inputBuffer.decodeUInt16()
-      val maxDistance = inputBuffer.decodeUInt16()
-      val sensorType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): ObstacleDistance {
+      val timeUsec = source.decodeUInt64()
+      val distances = source.decodeUInt16Array(144)
+      val minDistance = source.decodeUInt16()
+      val maxDistance = source.decodeUInt16()
+      val sensorType = source.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val increment = inputBuffer.decodeUInt8()
-      val incrementF = inputBuffer.decodeFloat()
-      val angleOffset = inputBuffer.decodeFloat()
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+      val increment = source.decodeUInt8()
+      val incrementF = source.decodeFloat()
+      val angleOffset = source.decodeFloat()
+      val frame = source.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

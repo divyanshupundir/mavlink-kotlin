@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The offset in X, Y, Z and yaw between the LOCAL_POSITION_NED messages of MAV X and the global
@@ -66,28 +65,29 @@ public data class LocalPositionNedSystemGlobalOffset(
   public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset>
       = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset> {
@@ -99,15 +99,14 @@ public data class LocalPositionNedSystemGlobalOffset(
 
     public override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): LocalPositionNedSystemGlobalOffset {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val roll = inputBuffer.decodeFloat()
-      val pitch = inputBuffer.decodeFloat()
-      val yaw = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): LocalPositionNedSystemGlobalOffset {
+      val timeBootMs = source.decodeUInt32()
+      val x = source.decodeFloat()
+      val y = source.decodeFloat()
+      val z = source.decodeFloat()
+      val roll = source.decodeFloat()
+      val pitch = source.decodeFloat()
+      val yaw = source.decodeFloat()
 
       return LocalPositionNedSystemGlobalOffset(
         timeBootMs = timeBootMs,

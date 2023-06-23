@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  *
@@ -61,20 +60,21 @@ public data class ComponentMetadata(
 ) : MavMessage<ComponentMetadata> {
   public override val instanceCompanion: MavMessage.MavCompanion<ComponentMetadata> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeUInt32(fileCrc)
-    outputBuffer.encodeString(uri, 100)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeUInt32(fileCrc)
+    output.encodeString(uri, 100)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeUInt32(fileCrc)
-    outputBuffer.encodeString(uri, 100)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeUInt32(fileCrc)
+    output.encodeString(uri, 100)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ComponentMetadata> {
@@ -86,11 +86,10 @@ public data class ComponentMetadata(
 
     public override val crcExtra: Byte = -74
 
-    public override fun deserialize(bytes: ByteArray): ComponentMetadata {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val fileCrc = inputBuffer.decodeUInt32()
-      val uri = inputBuffer.decodeString(100)
+    public override fun deserialize(source: BufferedSource): ComponentMetadata {
+      val timeBootMs = source.decodeUInt32()
+      val fileCrc = source.decodeUInt32()
+      val uri = source.decodeString(100)
 
       return ComponentMetadata(
         timeBootMs = timeBootMs,

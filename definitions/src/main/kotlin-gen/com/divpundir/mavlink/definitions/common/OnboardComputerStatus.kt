@@ -21,10 +21,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
@@ -32,6 +29,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Hardware status sent by an onboard computer.
@@ -157,54 +156,55 @@ public data class OnboardComputerStatus(
 ) : MavMessage<OnboardComputerStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<OnboardComputerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(uptime)
-    outputBuffer.encodeUInt32(ramUsage)
-    outputBuffer.encodeUInt32(ramTotal)
-    outputBuffer.encodeUInt32Array(storageType, 16)
-    outputBuffer.encodeUInt32Array(storageUsage, 16)
-    outputBuffer.encodeUInt32Array(storageTotal, 16)
-    outputBuffer.encodeUInt32Array(linkType, 24)
-    outputBuffer.encodeUInt32Array(linkTxRate, 24)
-    outputBuffer.encodeUInt32Array(linkRxRate, 24)
-    outputBuffer.encodeUInt32Array(linkTxMax, 24)
-    outputBuffer.encodeUInt32Array(linkRxMax, 24)
-    outputBuffer.encodeInt16Array(fanSpeed, 8)
-    outputBuffer.encodeUInt8(type)
-    outputBuffer.encodeUInt8Array(cpuCores, 8)
-    outputBuffer.encodeUInt8Array(cpuCombined, 10)
-    outputBuffer.encodeUInt8Array(gpuCores, 4)
-    outputBuffer.encodeUInt8Array(gpuCombined, 10)
-    outputBuffer.encodeInt8(temperatureBoard)
-    outputBuffer.encodeInt8Array(temperatureCore, 8)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32(uptime)
+    output.encodeUInt32(ramUsage)
+    output.encodeUInt32(ramTotal)
+    output.encodeUInt32Array(storageType, 16)
+    output.encodeUInt32Array(storageUsage, 16)
+    output.encodeUInt32Array(storageTotal, 16)
+    output.encodeUInt32Array(linkType, 24)
+    output.encodeUInt32Array(linkTxRate, 24)
+    output.encodeUInt32Array(linkRxRate, 24)
+    output.encodeUInt32Array(linkTxMax, 24)
+    output.encodeUInt32Array(linkRxMax, 24)
+    output.encodeInt16Array(fanSpeed, 8)
+    output.encodeUInt8(type)
+    output.encodeUInt8Array(cpuCores, 8)
+    output.encodeUInt8Array(cpuCombined, 10)
+    output.encodeUInt8Array(gpuCores, 4)
+    output.encodeUInt8Array(gpuCombined, 10)
+    output.encodeInt8(temperatureBoard)
+    output.encodeInt8Array(temperatureCore, 8)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(uptime)
-    outputBuffer.encodeUInt32(ramUsage)
-    outputBuffer.encodeUInt32(ramTotal)
-    outputBuffer.encodeUInt32Array(storageType, 16)
-    outputBuffer.encodeUInt32Array(storageUsage, 16)
-    outputBuffer.encodeUInt32Array(storageTotal, 16)
-    outputBuffer.encodeUInt32Array(linkType, 24)
-    outputBuffer.encodeUInt32Array(linkTxRate, 24)
-    outputBuffer.encodeUInt32Array(linkRxRate, 24)
-    outputBuffer.encodeUInt32Array(linkTxMax, 24)
-    outputBuffer.encodeUInt32Array(linkRxMax, 24)
-    outputBuffer.encodeInt16Array(fanSpeed, 8)
-    outputBuffer.encodeUInt8(type)
-    outputBuffer.encodeUInt8Array(cpuCores, 8)
-    outputBuffer.encodeUInt8Array(cpuCombined, 10)
-    outputBuffer.encodeUInt8Array(gpuCores, 4)
-    outputBuffer.encodeUInt8Array(gpuCombined, 10)
-    outputBuffer.encodeInt8(temperatureBoard)
-    outputBuffer.encodeInt8Array(temperatureCore, 8)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32(uptime)
+    output.encodeUInt32(ramUsage)
+    output.encodeUInt32(ramTotal)
+    output.encodeUInt32Array(storageType, 16)
+    output.encodeUInt32Array(storageUsage, 16)
+    output.encodeUInt32Array(storageTotal, 16)
+    output.encodeUInt32Array(linkType, 24)
+    output.encodeUInt32Array(linkTxRate, 24)
+    output.encodeUInt32Array(linkRxRate, 24)
+    output.encodeUInt32Array(linkTxMax, 24)
+    output.encodeUInt32Array(linkRxMax, 24)
+    output.encodeInt16Array(fanSpeed, 8)
+    output.encodeUInt8(type)
+    output.encodeUInt8Array(cpuCores, 8)
+    output.encodeUInt8Array(cpuCombined, 10)
+    output.encodeUInt8Array(gpuCores, 4)
+    output.encodeUInt8Array(gpuCombined, 10)
+    output.encodeInt8(temperatureBoard)
+    output.encodeInt8Array(temperatureCore, 8)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OnboardComputerStatus> {
@@ -216,28 +216,27 @@ public data class OnboardComputerStatus(
 
     public override val crcExtra: Byte = -100
 
-    public override fun deserialize(bytes: ByteArray): OnboardComputerStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val uptime = inputBuffer.decodeUInt32()
-      val ramUsage = inputBuffer.decodeUInt32()
-      val ramTotal = inputBuffer.decodeUInt32()
-      val storageType = inputBuffer.decodeUInt32Array(16)
-      val storageUsage = inputBuffer.decodeUInt32Array(16)
-      val storageTotal = inputBuffer.decodeUInt32Array(16)
-      val linkType = inputBuffer.decodeUInt32Array(24)
-      val linkTxRate = inputBuffer.decodeUInt32Array(24)
-      val linkRxRate = inputBuffer.decodeUInt32Array(24)
-      val linkTxMax = inputBuffer.decodeUInt32Array(24)
-      val linkRxMax = inputBuffer.decodeUInt32Array(24)
-      val fanSpeed = inputBuffer.decodeInt16Array(8)
-      val type = inputBuffer.decodeUInt8()
-      val cpuCores = inputBuffer.decodeUInt8Array(8)
-      val cpuCombined = inputBuffer.decodeUInt8Array(10)
-      val gpuCores = inputBuffer.decodeUInt8Array(4)
-      val gpuCombined = inputBuffer.decodeUInt8Array(10)
-      val temperatureBoard = inputBuffer.decodeInt8()
-      val temperatureCore = inputBuffer.decodeInt8Array(8)
+    public override fun deserialize(source: BufferedSource): OnboardComputerStatus {
+      val timeUsec = source.decodeUInt64()
+      val uptime = source.decodeUInt32()
+      val ramUsage = source.decodeUInt32()
+      val ramTotal = source.decodeUInt32()
+      val storageType = source.decodeUInt32Array(16)
+      val storageUsage = source.decodeUInt32Array(16)
+      val storageTotal = source.decodeUInt32Array(16)
+      val linkType = source.decodeUInt32Array(24)
+      val linkTxRate = source.decodeUInt32Array(24)
+      val linkRxRate = source.decodeUInt32Array(24)
+      val linkTxMax = source.decodeUInt32Array(24)
+      val linkRxMax = source.decodeUInt32Array(24)
+      val fanSpeed = source.decodeInt16Array(8)
+      val type = source.decodeUInt8()
+      val cpuCores = source.decodeUInt8Array(8)
+      val cpuCombined = source.decodeUInt8Array(10)
+      val gpuCores = source.decodeUInt8Array(4)
+      val gpuCombined = source.decodeUInt8Array(10)
+      val temperatureBoard = source.decodeInt8()
+      val temperatureCore = source.decodeInt8Array(8)
 
       return OnboardComputerStatus(
         timeUsec = timeUsec,

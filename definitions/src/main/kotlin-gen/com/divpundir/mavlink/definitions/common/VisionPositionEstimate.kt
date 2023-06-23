@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -23,6 +20,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Local position/attitude estimate from a vision source.
@@ -90,30 +89,31 @@ public data class VisionPositionEstimate(
 ) : MavMessage<VisionPositionEstimate> {
   public override val instanceCompanion: MavMessage.MavCompanion<VisionPositionEstimate> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(usec)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(usec)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(usec)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloatArray(covariance, 84)
-    outputBuffer.encodeUInt8(resetCounter)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(usec)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    output.encodeFloatArray(covariance, 84)
+    output.encodeUInt8(resetCounter)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<VisionPositionEstimate> {
@@ -125,17 +125,16 @@ public data class VisionPositionEstimate(
 
     public override val crcExtra: Byte = -98
 
-    public override fun deserialize(bytes: ByteArray): VisionPositionEstimate {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val usec = inputBuffer.decodeUInt64()
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val roll = inputBuffer.decodeFloat()
-      val pitch = inputBuffer.decodeFloat()
-      val yaw = inputBuffer.decodeFloat()
-      val covariance = inputBuffer.decodeFloatArray(84)
-      val resetCounter = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): VisionPositionEstimate {
+      val usec = source.decodeUInt64()
+      val x = source.decodeFloat()
+      val y = source.decodeFloat()
+      val z = source.decodeFloat()
+      val roll = source.decodeFloat()
+      val pitch = source.decodeFloat()
+      val yaw = source.decodeFloat()
+      val covariance = source.decodeFloatArray(84)
+      val resetCounter = source.decodeUInt8()
 
       return VisionPositionEstimate(
         usec = usec,

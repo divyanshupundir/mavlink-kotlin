@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F20 format
@@ -94,40 +93,41 @@ public data class SerialUdbExtraF20(
 ) : MavMessage<SerialUdbExtraF20> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF20> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(sueTrimValueInput1)
-    outputBuffer.encodeInt16(sueTrimValueInput2)
-    outputBuffer.encodeInt16(sueTrimValueInput3)
-    outputBuffer.encodeInt16(sueTrimValueInput4)
-    outputBuffer.encodeInt16(sueTrimValueInput5)
-    outputBuffer.encodeInt16(sueTrimValueInput6)
-    outputBuffer.encodeInt16(sueTrimValueInput7)
-    outputBuffer.encodeInt16(sueTrimValueInput8)
-    outputBuffer.encodeInt16(sueTrimValueInput9)
-    outputBuffer.encodeInt16(sueTrimValueInput10)
-    outputBuffer.encodeInt16(sueTrimValueInput11)
-    outputBuffer.encodeInt16(sueTrimValueInput12)
-    outputBuffer.encodeUInt8(sueNumberOfInputs)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(sueTrimValueInput1)
+    output.encodeInt16(sueTrimValueInput2)
+    output.encodeInt16(sueTrimValueInput3)
+    output.encodeInt16(sueTrimValueInput4)
+    output.encodeInt16(sueTrimValueInput5)
+    output.encodeInt16(sueTrimValueInput6)
+    output.encodeInt16(sueTrimValueInput7)
+    output.encodeInt16(sueTrimValueInput8)
+    output.encodeInt16(sueTrimValueInput9)
+    output.encodeInt16(sueTrimValueInput10)
+    output.encodeInt16(sueTrimValueInput11)
+    output.encodeInt16(sueTrimValueInput12)
+    output.encodeUInt8(sueNumberOfInputs)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(sueTrimValueInput1)
-    outputBuffer.encodeInt16(sueTrimValueInput2)
-    outputBuffer.encodeInt16(sueTrimValueInput3)
-    outputBuffer.encodeInt16(sueTrimValueInput4)
-    outputBuffer.encodeInt16(sueTrimValueInput5)
-    outputBuffer.encodeInt16(sueTrimValueInput6)
-    outputBuffer.encodeInt16(sueTrimValueInput7)
-    outputBuffer.encodeInt16(sueTrimValueInput8)
-    outputBuffer.encodeInt16(sueTrimValueInput9)
-    outputBuffer.encodeInt16(sueTrimValueInput10)
-    outputBuffer.encodeInt16(sueTrimValueInput11)
-    outputBuffer.encodeInt16(sueTrimValueInput12)
-    outputBuffer.encodeUInt8(sueNumberOfInputs)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(sueTrimValueInput1)
+    output.encodeInt16(sueTrimValueInput2)
+    output.encodeInt16(sueTrimValueInput3)
+    output.encodeInt16(sueTrimValueInput4)
+    output.encodeInt16(sueTrimValueInput5)
+    output.encodeInt16(sueTrimValueInput6)
+    output.encodeInt16(sueTrimValueInput7)
+    output.encodeInt16(sueTrimValueInput8)
+    output.encodeInt16(sueTrimValueInput9)
+    output.encodeInt16(sueTrimValueInput10)
+    output.encodeInt16(sueTrimValueInput11)
+    output.encodeInt16(sueTrimValueInput12)
+    output.encodeUInt8(sueNumberOfInputs)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF20> {
@@ -139,21 +139,20 @@ public data class SerialUdbExtraF20(
 
     public override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF20 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueTrimValueInput1 = inputBuffer.decodeInt16()
-      val sueTrimValueInput2 = inputBuffer.decodeInt16()
-      val sueTrimValueInput3 = inputBuffer.decodeInt16()
-      val sueTrimValueInput4 = inputBuffer.decodeInt16()
-      val sueTrimValueInput5 = inputBuffer.decodeInt16()
-      val sueTrimValueInput6 = inputBuffer.decodeInt16()
-      val sueTrimValueInput7 = inputBuffer.decodeInt16()
-      val sueTrimValueInput8 = inputBuffer.decodeInt16()
-      val sueTrimValueInput9 = inputBuffer.decodeInt16()
-      val sueTrimValueInput10 = inputBuffer.decodeInt16()
-      val sueTrimValueInput11 = inputBuffer.decodeInt16()
-      val sueTrimValueInput12 = inputBuffer.decodeInt16()
-      val sueNumberOfInputs = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF20 {
+      val sueTrimValueInput1 = source.decodeInt16()
+      val sueTrimValueInput2 = source.decodeInt16()
+      val sueTrimValueInput3 = source.decodeInt16()
+      val sueTrimValueInput4 = source.decodeInt16()
+      val sueTrimValueInput5 = source.decodeInt16()
+      val sueTrimValueInput6 = source.decodeInt16()
+      val sueTrimValueInput7 = source.decodeInt16()
+      val sueTrimValueInput8 = source.decodeInt16()
+      val sueTrimValueInput9 = source.decodeInt16()
+      val sueTrimValueInput10 = source.decodeInt16()
+      val sueTrimValueInput11 = source.decodeInt16()
+      val sueTrimValueInput12 = source.decodeInt16()
+      val sueNumberOfInputs = source.decodeUInt8()
 
       return SerialUdbExtraF20(
         sueNumberOfInputs = sueNumberOfInputs,

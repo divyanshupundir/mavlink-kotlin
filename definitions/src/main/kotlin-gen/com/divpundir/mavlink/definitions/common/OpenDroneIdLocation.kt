@@ -20,10 +20,7 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -32,6 +29,8 @@ import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The
@@ -149,52 +148,53 @@ public data class OpenDroneIdLocation(
 ) : MavMessage<OpenDroneIdLocation> {
   public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdLocation> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeFloat(altitudeBarometric)
-    outputBuffer.encodeFloat(altitudeGeodetic)
-    outputBuffer.encodeFloat(height)
-    outputBuffer.encodeFloat(timestamp)
-    outputBuffer.encodeUInt16(direction)
-    outputBuffer.encodeUInt16(speedHorizontal)
-    outputBuffer.encodeInt16(speedVertical)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(idOrMac, 20)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(heightReference.value, 1)
-    outputBuffer.encodeEnumValue(horizontalAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(verticalAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(barometerAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(speedAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(timestampAccuracy.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeFloat(altitudeBarometric)
+    output.encodeFloat(altitudeGeodetic)
+    output.encodeFloat(height)
+    output.encodeFloat(timestamp)
+    output.encodeUInt16(direction)
+    output.encodeUInt16(speedHorizontal)
+    output.encodeInt16(speedVertical)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(idOrMac, 20)
+    output.encodeEnumValue(status.value, 1)
+    output.encodeEnumValue(heightReference.value, 1)
+    output.encodeEnumValue(horizontalAccuracy.value, 1)
+    output.encodeEnumValue(verticalAccuracy.value, 1)
+    output.encodeEnumValue(barometerAccuracy.value, 1)
+    output.encodeEnumValue(speedAccuracy.value, 1)
+    output.encodeEnumValue(timestampAccuracy.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeFloat(altitudeBarometric)
-    outputBuffer.encodeFloat(altitudeGeodetic)
-    outputBuffer.encodeFloat(height)
-    outputBuffer.encodeFloat(timestamp)
-    outputBuffer.encodeUInt16(direction)
-    outputBuffer.encodeUInt16(speedHorizontal)
-    outputBuffer.encodeInt16(speedVertical)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(idOrMac, 20)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(heightReference.value, 1)
-    outputBuffer.encodeEnumValue(horizontalAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(verticalAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(barometerAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(speedAccuracy.value, 1)
-    outputBuffer.encodeEnumValue(timestampAccuracy.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeFloat(altitudeBarometric)
+    output.encodeFloat(altitudeGeodetic)
+    output.encodeFloat(height)
+    output.encodeFloat(timestamp)
+    output.encodeUInt16(direction)
+    output.encodeUInt16(speedHorizontal)
+    output.encodeInt16(speedVertical)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(idOrMac, 20)
+    output.encodeEnumValue(status.value, 1)
+    output.encodeEnumValue(heightReference.value, 1)
+    output.encodeEnumValue(horizontalAccuracy.value, 1)
+    output.encodeEnumValue(verticalAccuracy.value, 1)
+    output.encodeEnumValue(barometerAccuracy.value, 1)
+    output.encodeEnumValue(speedAccuracy.value, 1)
+    output.encodeEnumValue(timestampAccuracy.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OpenDroneIdLocation> {
@@ -206,45 +206,44 @@ public data class OpenDroneIdLocation(
 
     public override val crcExtra: Byte = -2
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdLocation {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val latitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val altitudeBarometric = inputBuffer.decodeFloat()
-      val altitudeGeodetic = inputBuffer.decodeFloat()
-      val height = inputBuffer.decodeFloat()
-      val timestamp = inputBuffer.decodeFloat()
-      val direction = inputBuffer.decodeUInt16()
-      val speedHorizontal = inputBuffer.decodeUInt16()
-      val speedVertical = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val idOrMac = inputBuffer.decodeUInt8Array(20)
-      val status = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): OpenDroneIdLocation {
+      val latitude = source.decodeInt32()
+      val longitude = source.decodeInt32()
+      val altitudeBarometric = source.decodeFloat()
+      val altitudeGeodetic = source.decodeFloat()
+      val height = source.decodeFloat()
+      val timestamp = source.decodeFloat()
+      val direction = source.decodeUInt16()
+      val speedHorizontal = source.decodeUInt16()
+      val speedVertical = source.decodeInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val idOrMac = source.decodeUInt8Array(20)
+      val status = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val heightReference = inputBuffer.decodeEnumValue(1).let { value ->
+      val heightReference = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidHeightRef.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val horizontalAccuracy = inputBuffer.decodeEnumValue(1).let { value ->
+      val horizontalAccuracy = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidHorAcc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val verticalAccuracy = inputBuffer.decodeEnumValue(1).let { value ->
+      val verticalAccuracy = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidVerAcc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val barometerAccuracy = inputBuffer.decodeEnumValue(1).let { value ->
+      val barometerAccuracy = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidVerAcc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val speedAccuracy = inputBuffer.decodeEnumValue(1).let { value ->
+      val speedAccuracy = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidSpeedAcc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val timestampAccuracy = inputBuffer.decodeEnumValue(1).let { value ->
+      val timestampAccuracy = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidTimeAcc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

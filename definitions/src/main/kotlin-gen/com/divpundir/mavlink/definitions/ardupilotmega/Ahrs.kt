@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Status of DCM attitude estimator.
@@ -61,28 +60,29 @@ public data class Ahrs(
 ) : MavMessage<Ahrs> {
   public override val instanceCompanion: MavMessage.MavCompanion<Ahrs> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(omegaix)
-    outputBuffer.encodeFloat(omegaiy)
-    outputBuffer.encodeFloat(omegaiz)
-    outputBuffer.encodeFloat(accelWeight)
-    outputBuffer.encodeFloat(renormVal)
-    outputBuffer.encodeFloat(errorRp)
-    outputBuffer.encodeFloat(errorYaw)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(omegaix)
+    output.encodeFloat(omegaiy)
+    output.encodeFloat(omegaiz)
+    output.encodeFloat(accelWeight)
+    output.encodeFloat(renormVal)
+    output.encodeFloat(errorRp)
+    output.encodeFloat(errorYaw)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(omegaix)
-    outputBuffer.encodeFloat(omegaiy)
-    outputBuffer.encodeFloat(omegaiz)
-    outputBuffer.encodeFloat(accelWeight)
-    outputBuffer.encodeFloat(renormVal)
-    outputBuffer.encodeFloat(errorRp)
-    outputBuffer.encodeFloat(errorYaw)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(omegaix)
+    output.encodeFloat(omegaiy)
+    output.encodeFloat(omegaiz)
+    output.encodeFloat(accelWeight)
+    output.encodeFloat(renormVal)
+    output.encodeFloat(errorRp)
+    output.encodeFloat(errorYaw)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Ahrs> {
@@ -94,15 +94,14 @@ public data class Ahrs(
 
     public override val crcExtra: Byte = 127
 
-    public override fun deserialize(bytes: ByteArray): Ahrs {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val omegaix = inputBuffer.decodeFloat()
-      val omegaiy = inputBuffer.decodeFloat()
-      val omegaiz = inputBuffer.decodeFloat()
-      val accelWeight = inputBuffer.decodeFloat()
-      val renormVal = inputBuffer.decodeFloat()
-      val errorRp = inputBuffer.decodeFloat()
-      val errorYaw = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): Ahrs {
+      val omegaix = source.decodeFloat()
+      val omegaiy = source.decodeFloat()
+      val omegaiz = source.decodeFloat()
+      val accelWeight = source.decodeFloat()
+      val renormVal = source.decodeFloat()
+      val errorRp = source.decodeFloat()
+      val errorYaw = source.decodeFloat()
 
       return Ahrs(
         omegaix = omegaix,

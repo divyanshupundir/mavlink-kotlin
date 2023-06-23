@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
@@ -60,26 +59,27 @@ public data class FencePoint(
 ) : MavMessage<FencePoint> {
   public override val instanceCompanion: MavMessage.MavCompanion<FencePoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(lat)
-    outputBuffer.encodeFloat(lng)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(idx)
-    outputBuffer.encodeUInt8(count)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(lat)
+    output.encodeFloat(lng)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(idx)
+    output.encodeUInt8(count)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(lat)
-    outputBuffer.encodeFloat(lng)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(idx)
-    outputBuffer.encodeUInt8(count)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(lat)
+    output.encodeFloat(lng)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(idx)
+    output.encodeUInt8(count)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<FencePoint> {
@@ -91,14 +91,13 @@ public data class FencePoint(
 
     public override val crcExtra: Byte = 78
 
-    public override fun deserialize(bytes: ByteArray): FencePoint {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val lat = inputBuffer.decodeFloat()
-      val lng = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val idx = inputBuffer.decodeUInt8()
-      val count = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): FencePoint {
+      val lat = source.decodeFloat()
+      val lng = source.decodeFloat()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val idx = source.decodeUInt8()
+      val count = source.decodeUInt8()
 
       return FencePoint(
         targetSystem = targetSystem,

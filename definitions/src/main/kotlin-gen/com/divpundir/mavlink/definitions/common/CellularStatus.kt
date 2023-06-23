@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Report current used cellular network status
@@ -67,28 +66,29 @@ public data class CellularStatus(
 ) : MavMessage<CellularStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<CellularStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(mcc)
-    outputBuffer.encodeUInt16(mnc)
-    outputBuffer.encodeUInt16(lac)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(failureReason.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(mcc)
+    output.encodeUInt16(mnc)
+    output.encodeUInt16(lac)
+    output.encodeEnumValue(status.value, 1)
+    output.encodeEnumValue(failureReason.value, 1)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeUInt8(quality)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(mcc)
-    outputBuffer.encodeUInt16(mnc)
-    outputBuffer.encodeUInt16(lac)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(failureReason.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(mcc)
+    output.encodeUInt16(mnc)
+    output.encodeUInt16(lac)
+    output.encodeEnumValue(status.value, 1)
+    output.encodeEnumValue(failureReason.value, 1)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeUInt8(quality)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CellularStatus> {
@@ -100,24 +100,23 @@ public data class CellularStatus(
 
     public override val crcExtra: Byte = 72
 
-    public override fun deserialize(bytes: ByteArray): CellularStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mcc = inputBuffer.decodeUInt16()
-      val mnc = inputBuffer.decodeUInt16()
-      val lac = inputBuffer.decodeUInt16()
-      val status = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): CellularStatus {
+      val mcc = source.decodeUInt16()
+      val mnc = source.decodeUInt16()
+      val lac = source.decodeUInt16()
+      val status = source.decodeEnumValue(1).let { value ->
         val entry = CellularStatusFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val failureReason = inputBuffer.decodeEnumValue(1).let { value ->
+      val failureReason = source.decodeEnumValue(1).let { value ->
         val entry = CellularNetworkFailedReason.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val type = source.decodeEnumValue(1).let { value ->
         val entry = CellularNetworkRadioType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val quality = inputBuffer.decodeUInt8()
+      val quality = source.decodeUInt8()
 
       return CellularStatus(
         status = status,

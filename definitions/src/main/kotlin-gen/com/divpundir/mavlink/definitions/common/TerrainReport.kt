@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Streamed from drone to report progress of terrain map download (initiated by TERRAIN_REQUEST), or
@@ -68,28 +67,29 @@ public data class TerrainReport(
 ) : MavMessage<TerrainReport> {
   public override val instanceCompanion: MavMessage.MavCompanion<TerrainReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeFloat(terrainHeight)
-    outputBuffer.encodeFloat(currentHeight)
-    outputBuffer.encodeUInt16(spacing)
-    outputBuffer.encodeUInt16(pending)
-    outputBuffer.encodeUInt16(loaded)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeFloat(terrainHeight)
+    output.encodeFloat(currentHeight)
+    output.encodeUInt16(spacing)
+    output.encodeUInt16(pending)
+    output.encodeUInt16(loaded)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeFloat(terrainHeight)
-    outputBuffer.encodeFloat(currentHeight)
-    outputBuffer.encodeUInt16(spacing)
-    outputBuffer.encodeUInt16(pending)
-    outputBuffer.encodeUInt16(loaded)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeFloat(terrainHeight)
+    output.encodeFloat(currentHeight)
+    output.encodeUInt16(spacing)
+    output.encodeUInt16(pending)
+    output.encodeUInt16(loaded)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<TerrainReport> {
@@ -101,15 +101,14 @@ public data class TerrainReport(
 
     public override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): TerrainReport {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val terrainHeight = inputBuffer.decodeFloat()
-      val currentHeight = inputBuffer.decodeFloat()
-      val spacing = inputBuffer.decodeUInt16()
-      val pending = inputBuffer.decodeUInt16()
-      val loaded = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): TerrainReport {
+      val lat = source.decodeInt32()
+      val lon = source.decodeInt32()
+      val terrainHeight = source.decodeFloat()
+      val currentHeight = source.decodeFloat()
+      val spacing = source.decodeUInt16()
+      val pending = source.decodeUInt16()
+      val loaded = source.decodeUInt16()
 
       return TerrainReport(
         lat = lat,

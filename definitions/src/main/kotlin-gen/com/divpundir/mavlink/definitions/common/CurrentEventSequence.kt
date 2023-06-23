@@ -10,14 +10,13 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Regular broadcast for the current latest event sequence number for a component. This is used to
@@ -42,18 +41,19 @@ public data class CurrentEventSequence(
 ) : MavMessage<CurrentEventSequence> {
   public override val instanceCompanion: MavMessage.MavCompanion<CurrentEventSequence> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeEnumValue(flags.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(sequence)
+    output.encodeEnumValue(flags.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeEnumValue(flags.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(sequence)
+    output.encodeEnumValue(flags.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CurrentEventSequence> {
@@ -65,10 +65,9 @@ public data class CurrentEventSequence(
 
     public override val crcExtra: Byte = 106
 
-    public override fun deserialize(bytes: ByteArray): CurrentEventSequence {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sequence = inputBuffer.decodeUInt16()
-      val flags = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): CurrentEventSequence {
+      val sequence = source.decodeUInt16()
+      val flags = source.decodeEnumValue(1).let { value ->
         val entry = MavEventCurrentSequenceFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

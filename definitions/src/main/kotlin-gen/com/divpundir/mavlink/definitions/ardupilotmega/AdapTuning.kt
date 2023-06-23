@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Adaptive Controller tuning information.
@@ -94,40 +93,41 @@ public data class AdapTuning(
 ) : MavMessage<AdapTuning> {
   public override val instanceCompanion: MavMessage.MavCompanion<AdapTuning> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(desired)
-    outputBuffer.encodeFloat(achieved)
-    outputBuffer.encodeFloat(error)
-    outputBuffer.encodeFloat(theta)
-    outputBuffer.encodeFloat(omega)
-    outputBuffer.encodeFloat(sigma)
-    outputBuffer.encodeFloat(thetaDot)
-    outputBuffer.encodeFloat(omegaDot)
-    outputBuffer.encodeFloat(sigmaDot)
-    outputBuffer.encodeFloat(f)
-    outputBuffer.encodeFloat(fDot)
-    outputBuffer.encodeFloat(u)
-    outputBuffer.encodeEnumValue(axis.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(desired)
+    output.encodeFloat(achieved)
+    output.encodeFloat(error)
+    output.encodeFloat(theta)
+    output.encodeFloat(omega)
+    output.encodeFloat(sigma)
+    output.encodeFloat(thetaDot)
+    output.encodeFloat(omegaDot)
+    output.encodeFloat(sigmaDot)
+    output.encodeFloat(f)
+    output.encodeFloat(fDot)
+    output.encodeFloat(u)
+    output.encodeEnumValue(axis.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(desired)
-    outputBuffer.encodeFloat(achieved)
-    outputBuffer.encodeFloat(error)
-    outputBuffer.encodeFloat(theta)
-    outputBuffer.encodeFloat(omega)
-    outputBuffer.encodeFloat(sigma)
-    outputBuffer.encodeFloat(thetaDot)
-    outputBuffer.encodeFloat(omegaDot)
-    outputBuffer.encodeFloat(sigmaDot)
-    outputBuffer.encodeFloat(f)
-    outputBuffer.encodeFloat(fDot)
-    outputBuffer.encodeFloat(u)
-    outputBuffer.encodeEnumValue(axis.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(desired)
+    output.encodeFloat(achieved)
+    output.encodeFloat(error)
+    output.encodeFloat(theta)
+    output.encodeFloat(omega)
+    output.encodeFloat(sigma)
+    output.encodeFloat(thetaDot)
+    output.encodeFloat(omegaDot)
+    output.encodeFloat(sigmaDot)
+    output.encodeFloat(f)
+    output.encodeFloat(fDot)
+    output.encodeFloat(u)
+    output.encodeEnumValue(axis.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<AdapTuning> {
@@ -139,21 +139,20 @@ public data class AdapTuning(
 
     public override val crcExtra: Byte = 46
 
-    public override fun deserialize(bytes: ByteArray): AdapTuning {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val desired = inputBuffer.decodeFloat()
-      val achieved = inputBuffer.decodeFloat()
-      val error = inputBuffer.decodeFloat()
-      val theta = inputBuffer.decodeFloat()
-      val omega = inputBuffer.decodeFloat()
-      val sigma = inputBuffer.decodeFloat()
-      val thetaDot = inputBuffer.decodeFloat()
-      val omegaDot = inputBuffer.decodeFloat()
-      val sigmaDot = inputBuffer.decodeFloat()
-      val f = inputBuffer.decodeFloat()
-      val fDot = inputBuffer.decodeFloat()
-      val u = inputBuffer.decodeFloat()
-      val axis = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): AdapTuning {
+      val desired = source.decodeFloat()
+      val achieved = source.decodeFloat()
+      val error = source.decodeFloat()
+      val theta = source.decodeFloat()
+      val omega = source.decodeFloat()
+      val sigma = source.decodeFloat()
+      val thetaDot = source.decodeFloat()
+      val omegaDot = source.decodeFloat()
+      val sigmaDot = source.decodeFloat()
+      val f = source.decodeFloat()
+      val fDot = source.decodeFloat()
+      val u = source.decodeFloat()
+      val axis = source.decodeEnumValue(1).let { value ->
         val entry = PidTuningAxis.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

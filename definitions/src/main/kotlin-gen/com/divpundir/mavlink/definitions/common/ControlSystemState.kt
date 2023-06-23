@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The smoothed, monotonic system state used to feed the control loops of the system.
@@ -118,48 +117,49 @@ public data class ControlSystemState(
 ) : MavMessage<ControlSystemState> {
   public override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(xAcc)
-    outputBuffer.encodeFloat(yAcc)
-    outputBuffer.encodeFloat(zAcc)
-    outputBuffer.encodeFloat(xVel)
-    outputBuffer.encodeFloat(yVel)
-    outputBuffer.encodeFloat(zVel)
-    outputBuffer.encodeFloat(xPos)
-    outputBuffer.encodeFloat(yPos)
-    outputBuffer.encodeFloat(zPos)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloatArray(velVariance, 12)
-    outputBuffer.encodeFloatArray(posVariance, 12)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(rollRate)
-    outputBuffer.encodeFloat(pitchRate)
-    outputBuffer.encodeFloat(yawRate)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(xAcc)
+    output.encodeFloat(yAcc)
+    output.encodeFloat(zAcc)
+    output.encodeFloat(xVel)
+    output.encodeFloat(yVel)
+    output.encodeFloat(zVel)
+    output.encodeFloat(xPos)
+    output.encodeFloat(yPos)
+    output.encodeFloat(zPos)
+    output.encodeFloat(airspeed)
+    output.encodeFloatArray(velVariance, 12)
+    output.encodeFloatArray(posVariance, 12)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(rollRate)
+    output.encodeFloat(pitchRate)
+    output.encodeFloat(yawRate)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(xAcc)
-    outputBuffer.encodeFloat(yAcc)
-    outputBuffer.encodeFloat(zAcc)
-    outputBuffer.encodeFloat(xVel)
-    outputBuffer.encodeFloat(yVel)
-    outputBuffer.encodeFloat(zVel)
-    outputBuffer.encodeFloat(xPos)
-    outputBuffer.encodeFloat(yPos)
-    outputBuffer.encodeFloat(zPos)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloatArray(velVariance, 12)
-    outputBuffer.encodeFloatArray(posVariance, 12)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(rollRate)
-    outputBuffer.encodeFloat(pitchRate)
-    outputBuffer.encodeFloat(yawRate)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(xAcc)
+    output.encodeFloat(yAcc)
+    output.encodeFloat(zAcc)
+    output.encodeFloat(xVel)
+    output.encodeFloat(yVel)
+    output.encodeFloat(zVel)
+    output.encodeFloat(xPos)
+    output.encodeFloat(yPos)
+    output.encodeFloat(zPos)
+    output.encodeFloat(airspeed)
+    output.encodeFloatArray(velVariance, 12)
+    output.encodeFloatArray(posVariance, 12)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(rollRate)
+    output.encodeFloat(pitchRate)
+    output.encodeFloat(yawRate)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ControlSystemState> {
@@ -171,25 +171,24 @@ public data class ControlSystemState(
 
     public override val crcExtra: Byte = 103
 
-    public override fun deserialize(bytes: ByteArray): ControlSystemState {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val xAcc = inputBuffer.decodeFloat()
-      val yAcc = inputBuffer.decodeFloat()
-      val zAcc = inputBuffer.decodeFloat()
-      val xVel = inputBuffer.decodeFloat()
-      val yVel = inputBuffer.decodeFloat()
-      val zVel = inputBuffer.decodeFloat()
-      val xPos = inputBuffer.decodeFloat()
-      val yPos = inputBuffer.decodeFloat()
-      val zPos = inputBuffer.decodeFloat()
-      val airspeed = inputBuffer.decodeFloat()
-      val velVariance = inputBuffer.decodeFloatArray(12)
-      val posVariance = inputBuffer.decodeFloatArray(12)
-      val q = inputBuffer.decodeFloatArray(16)
-      val rollRate = inputBuffer.decodeFloat()
-      val pitchRate = inputBuffer.decodeFloat()
-      val yawRate = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): ControlSystemState {
+      val timeUsec = source.decodeUInt64()
+      val xAcc = source.decodeFloat()
+      val yAcc = source.decodeFloat()
+      val zAcc = source.decodeFloat()
+      val xVel = source.decodeFloat()
+      val yVel = source.decodeFloat()
+      val zVel = source.decodeFloat()
+      val xPos = source.decodeFloat()
+      val yPos = source.decodeFloat()
+      val zPos = source.decodeFloat()
+      val airspeed = source.decodeFloat()
+      val velVariance = source.decodeFloatArray(12)
+      val posVariance = source.decodeFloatArray(12)
+      val q = source.decodeFloatArray(16)
+      val rollRate = source.decodeFloat()
+      val pitchRate = source.decodeFloat()
+      val yawRate = source.decodeFloat()
 
       return ControlSystemState(
         timeUsec = timeUsec,

@@ -13,10 +13,7 @@ import com.divpundir.mavlink.serialization.encodeInt32Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -24,6 +21,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * ESC information for higher rate streaming. Recommended streaming rate is ~10 Hz. Information that
@@ -65,24 +64,25 @@ public data class EscStatus(
 ) : MavMessage<EscStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<EscStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt32Array(rpm, 16)
-    outputBuffer.encodeFloatArray(voltage, 16)
-    outputBuffer.encodeFloatArray(current, 16)
-    outputBuffer.encodeUInt8(index)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeInt32Array(rpm, 16)
+    output.encodeFloatArray(voltage, 16)
+    output.encodeFloatArray(current, 16)
+    output.encodeUInt8(index)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt32Array(rpm, 16)
-    outputBuffer.encodeFloatArray(voltage, 16)
-    outputBuffer.encodeFloatArray(current, 16)
-    outputBuffer.encodeUInt8(index)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeInt32Array(rpm, 16)
+    output.encodeFloatArray(voltage, 16)
+    output.encodeFloatArray(current, 16)
+    output.encodeUInt8(index)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<EscStatus> {
@@ -94,13 +94,12 @@ public data class EscStatus(
 
     public override val crcExtra: Byte = 10
 
-    public override fun deserialize(bytes: ByteArray): EscStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val rpm = inputBuffer.decodeInt32Array(16)
-      val voltage = inputBuffer.decodeFloatArray(16)
-      val current = inputBuffer.decodeFloatArray(16)
-      val index = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): EscStatus {
+      val timeUsec = source.decodeUInt64()
+      val rpm = source.decodeInt32Array(16)
+      val voltage = source.decodeFloatArray(16)
+      val current = source.decodeFloatArray(16)
+      val index = source.decodeUInt8()
 
       return EscStatus(
         index = index,

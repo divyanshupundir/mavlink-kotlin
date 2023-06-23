@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Status of secondary AHRS filter if available.
@@ -58,26 +57,27 @@ public data class Ahrs2(
 ) : MavMessage<Ahrs2> {
   public override val instanceCompanion: MavMessage.MavCompanion<Ahrs2> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloat(altitude)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lng)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    output.encodeFloat(altitude)
+    output.encodeInt32(lat)
+    output.encodeInt32(lng)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloat(altitude)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lng)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    output.encodeFloat(altitude)
+    output.encodeInt32(lat)
+    output.encodeInt32(lng)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Ahrs2> {
@@ -89,14 +89,13 @@ public data class Ahrs2(
 
     public override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): Ahrs2 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val roll = inputBuffer.decodeFloat()
-      val pitch = inputBuffer.decodeFloat()
-      val yaw = inputBuffer.decodeFloat()
-      val altitude = inputBuffer.decodeFloat()
-      val lat = inputBuffer.decodeInt32()
-      val lng = inputBuffer.decodeInt32()
+    public override fun deserialize(source: BufferedSource): Ahrs2 {
+      val roll = source.decodeFloat()
+      val pitch = source.decodeFloat()
+      val yaw = source.decodeFloat()
+      val altitude = source.decodeFloat()
+      val lat = source.decodeInt32()
+      val lng = source.decodeInt32()
 
       return Ahrs2(
         roll = roll,

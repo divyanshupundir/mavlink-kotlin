@@ -15,10 +15,7 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -26,6 +23,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Camera Event.
@@ -83,32 +82,33 @@ public data class CameraStatus(
 ) : MavMessage<CameraStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(p1)
-    outputBuffer.encodeFloat(p2)
-    outputBuffer.encodeFloat(p3)
-    outputBuffer.encodeFloat(p4)
-    outputBuffer.encodeUInt16(imgIdx)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(camIdx)
-    outputBuffer.encodeEnumValue(eventId.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(p1)
+    output.encodeFloat(p2)
+    output.encodeFloat(p3)
+    output.encodeFloat(p4)
+    output.encodeUInt16(imgIdx)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(camIdx)
+    output.encodeEnumValue(eventId.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(p1)
-    outputBuffer.encodeFloat(p2)
-    outputBuffer.encodeFloat(p3)
-    outputBuffer.encodeFloat(p4)
-    outputBuffer.encodeUInt16(imgIdx)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(camIdx)
-    outputBuffer.encodeEnumValue(eventId.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(p1)
+    output.encodeFloat(p2)
+    output.encodeFloat(p3)
+    output.encodeFloat(p4)
+    output.encodeUInt16(imgIdx)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(camIdx)
+    output.encodeEnumValue(eventId.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CameraStatus> {
@@ -120,17 +120,16 @@ public data class CameraStatus(
 
     public override val crcExtra: Byte = -67
 
-    public override fun deserialize(bytes: ByteArray): CameraStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val p1 = inputBuffer.decodeFloat()
-      val p2 = inputBuffer.decodeFloat()
-      val p3 = inputBuffer.decodeFloat()
-      val p4 = inputBuffer.decodeFloat()
-      val imgIdx = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val camIdx = inputBuffer.decodeUInt8()
-      val eventId = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): CameraStatus {
+      val timeUsec = source.decodeUInt64()
+      val p1 = source.decodeFloat()
+      val p2 = source.decodeFloat()
+      val p3 = source.decodeFloat()
+      val p4 = source.decodeFloat()
+      val imgIdx = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val camIdx = source.decodeUInt8()
+      val eventId = source.decodeEnumValue(1).let { value ->
         val entry = CameraStatusTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

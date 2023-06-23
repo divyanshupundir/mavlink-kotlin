@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Message encoding a mission script item. This message is emitted upon a request for the next
@@ -53,22 +52,23 @@ public data class ScriptItem(
 ) : MavMessage<ScriptItem> {
   public override val instanceCompanion: MavMessage.MavCompanion<ScriptItem> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seq)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(name, 50)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(seq)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(name, 50)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seq)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(name, 50)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(seq)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(name, 50)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ScriptItem> {
@@ -80,12 +80,11 @@ public data class ScriptItem(
 
     public override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): ScriptItem {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val seq = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val name = inputBuffer.decodeString(50)
+    public override fun deserialize(source: BufferedSource): ScriptItem {
+      val seq = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val name = source.decodeString(50)
 
       return ScriptItem(
         targetSystem = targetSystem,

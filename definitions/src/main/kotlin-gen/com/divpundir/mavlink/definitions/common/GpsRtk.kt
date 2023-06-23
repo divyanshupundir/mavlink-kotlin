@@ -15,15 +15,14 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * RTK GPS data. Gives information on the relative baseline calculation the GPS is reporting
@@ -102,40 +101,41 @@ public data class GpsRtk(
 ) : MavMessage<GpsRtk> {
   public override val instanceCompanion: MavMessage.MavCompanion<GpsRtk> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeLastBaselineMs)
-    outputBuffer.encodeUInt32(tow)
-    outputBuffer.encodeInt32(baselineAMm)
-    outputBuffer.encodeInt32(baselineBMm)
-    outputBuffer.encodeInt32(baselineCMm)
-    outputBuffer.encodeUInt32(accuracy)
-    outputBuffer.encodeInt32(iarNumHypotheses)
-    outputBuffer.encodeUInt16(wn)
-    outputBuffer.encodeUInt8(rtkReceiverId)
-    outputBuffer.encodeUInt8(rtkHealth)
-    outputBuffer.encodeUInt8(rtkRate)
-    outputBuffer.encodeUInt8(nsats)
-    outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeLastBaselineMs)
+    output.encodeUInt32(tow)
+    output.encodeInt32(baselineAMm)
+    output.encodeInt32(baselineBMm)
+    output.encodeInt32(baselineCMm)
+    output.encodeUInt32(accuracy)
+    output.encodeInt32(iarNumHypotheses)
+    output.encodeUInt16(wn)
+    output.encodeUInt8(rtkReceiverId)
+    output.encodeUInt8(rtkHealth)
+    output.encodeUInt8(rtkRate)
+    output.encodeUInt8(nsats)
+    output.encodeEnumValue(baselineCoordsType.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeLastBaselineMs)
-    outputBuffer.encodeUInt32(tow)
-    outputBuffer.encodeInt32(baselineAMm)
-    outputBuffer.encodeInt32(baselineBMm)
-    outputBuffer.encodeInt32(baselineCMm)
-    outputBuffer.encodeUInt32(accuracy)
-    outputBuffer.encodeInt32(iarNumHypotheses)
-    outputBuffer.encodeUInt16(wn)
-    outputBuffer.encodeUInt8(rtkReceiverId)
-    outputBuffer.encodeUInt8(rtkHealth)
-    outputBuffer.encodeUInt8(rtkRate)
-    outputBuffer.encodeUInt8(nsats)
-    outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeLastBaselineMs)
+    output.encodeUInt32(tow)
+    output.encodeInt32(baselineAMm)
+    output.encodeInt32(baselineBMm)
+    output.encodeInt32(baselineCMm)
+    output.encodeUInt32(accuracy)
+    output.encodeInt32(iarNumHypotheses)
+    output.encodeUInt16(wn)
+    output.encodeUInt8(rtkReceiverId)
+    output.encodeUInt8(rtkHealth)
+    output.encodeUInt8(rtkRate)
+    output.encodeUInt8(nsats)
+    output.encodeEnumValue(baselineCoordsType.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GpsRtk> {
@@ -147,21 +147,20 @@ public data class GpsRtk(
 
     public override val crcExtra: Byte = 25
 
-    public override fun deserialize(bytes: ByteArray): GpsRtk {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeLastBaselineMs = inputBuffer.decodeUInt32()
-      val tow = inputBuffer.decodeUInt32()
-      val baselineAMm = inputBuffer.decodeInt32()
-      val baselineBMm = inputBuffer.decodeInt32()
-      val baselineCMm = inputBuffer.decodeInt32()
-      val accuracy = inputBuffer.decodeUInt32()
-      val iarNumHypotheses = inputBuffer.decodeInt32()
-      val wn = inputBuffer.decodeUInt16()
-      val rtkReceiverId = inputBuffer.decodeUInt8()
-      val rtkHealth = inputBuffer.decodeUInt8()
-      val rtkRate = inputBuffer.decodeUInt8()
-      val nsats = inputBuffer.decodeUInt8()
-      val baselineCoordsType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): GpsRtk {
+      val timeLastBaselineMs = source.decodeUInt32()
+      val tow = source.decodeUInt32()
+      val baselineAMm = source.decodeInt32()
+      val baselineBMm = source.decodeInt32()
+      val baselineCMm = source.decodeInt32()
+      val accuracy = source.decodeUInt32()
+      val iarNumHypotheses = source.decodeInt32()
+      val wn = source.decodeUInt16()
+      val rtkReceiverId = source.decodeUInt8()
+      val rtkHealth = source.decodeUInt8()
+      val rtkRate = source.decodeUInt8()
+      val nsats = source.decodeUInt8()
+      val baselineCoordsType = source.decodeEnumValue(1).let { value ->
         val entry = RtkBaselineCoordinateSystem.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

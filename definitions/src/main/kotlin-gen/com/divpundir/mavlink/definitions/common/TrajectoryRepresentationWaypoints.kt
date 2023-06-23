@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -24,6 +21,8 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Describe a trajectory using an array of up-to 5 waypoints in the local frame
@@ -109,42 +108,43 @@ public data class TrajectoryRepresentationWaypoints(
   public override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationWaypoints>
       = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloatArray(posX, 20)
-    outputBuffer.encodeFloatArray(posY, 20)
-    outputBuffer.encodeFloatArray(posZ, 20)
-    outputBuffer.encodeFloatArray(velX, 20)
-    outputBuffer.encodeFloatArray(velY, 20)
-    outputBuffer.encodeFloatArray(velZ, 20)
-    outputBuffer.encodeFloatArray(accX, 20)
-    outputBuffer.encodeFloatArray(accY, 20)
-    outputBuffer.encodeFloatArray(accZ, 20)
-    outputBuffer.encodeFloatArray(posYaw, 20)
-    outputBuffer.encodeFloatArray(velYaw, 20)
-    outputBuffer.encodeUInt16Array(command, 10)
-    outputBuffer.encodeUInt8(validPoints)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloatArray(posX, 20)
+    output.encodeFloatArray(posY, 20)
+    output.encodeFloatArray(posZ, 20)
+    output.encodeFloatArray(velX, 20)
+    output.encodeFloatArray(velY, 20)
+    output.encodeFloatArray(velZ, 20)
+    output.encodeFloatArray(accX, 20)
+    output.encodeFloatArray(accY, 20)
+    output.encodeFloatArray(accZ, 20)
+    output.encodeFloatArray(posYaw, 20)
+    output.encodeFloatArray(velYaw, 20)
+    output.encodeUInt16Array(command, 10)
+    output.encodeUInt8(validPoints)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloatArray(posX, 20)
-    outputBuffer.encodeFloatArray(posY, 20)
-    outputBuffer.encodeFloatArray(posZ, 20)
-    outputBuffer.encodeFloatArray(velX, 20)
-    outputBuffer.encodeFloatArray(velY, 20)
-    outputBuffer.encodeFloatArray(velZ, 20)
-    outputBuffer.encodeFloatArray(accX, 20)
-    outputBuffer.encodeFloatArray(accY, 20)
-    outputBuffer.encodeFloatArray(accZ, 20)
-    outputBuffer.encodeFloatArray(posYaw, 20)
-    outputBuffer.encodeFloatArray(velYaw, 20)
-    outputBuffer.encodeUInt16Array(command, 10)
-    outputBuffer.encodeUInt8(validPoints)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloatArray(posX, 20)
+    output.encodeFloatArray(posY, 20)
+    output.encodeFloatArray(posZ, 20)
+    output.encodeFloatArray(velX, 20)
+    output.encodeFloatArray(velY, 20)
+    output.encodeFloatArray(velZ, 20)
+    output.encodeFloatArray(accX, 20)
+    output.encodeFloatArray(accY, 20)
+    output.encodeFloatArray(accZ, 20)
+    output.encodeFloatArray(posYaw, 20)
+    output.encodeFloatArray(velYaw, 20)
+    output.encodeUInt16Array(command, 10)
+    output.encodeUInt8(validPoints)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<TrajectoryRepresentationWaypoints> {
@@ -156,22 +156,21 @@ public data class TrajectoryRepresentationWaypoints(
 
     public override val crcExtra: Byte = -20
 
-    public override fun deserialize(bytes: ByteArray): TrajectoryRepresentationWaypoints {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val posX = inputBuffer.decodeFloatArray(20)
-      val posY = inputBuffer.decodeFloatArray(20)
-      val posZ = inputBuffer.decodeFloatArray(20)
-      val velX = inputBuffer.decodeFloatArray(20)
-      val velY = inputBuffer.decodeFloatArray(20)
-      val velZ = inputBuffer.decodeFloatArray(20)
-      val accX = inputBuffer.decodeFloatArray(20)
-      val accY = inputBuffer.decodeFloatArray(20)
-      val accZ = inputBuffer.decodeFloatArray(20)
-      val posYaw = inputBuffer.decodeFloatArray(20)
-      val velYaw = inputBuffer.decodeFloatArray(20)
-      val command = inputBuffer.decodeUInt16Array(10)
-      val validPoints = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): TrajectoryRepresentationWaypoints {
+      val timeUsec = source.decodeUInt64()
+      val posX = source.decodeFloatArray(20)
+      val posY = source.decodeFloatArray(20)
+      val posZ = source.decodeFloatArray(20)
+      val velX = source.decodeFloatArray(20)
+      val velY = source.decodeFloatArray(20)
+      val velZ = source.decodeFloatArray(20)
+      val accX = source.decodeFloatArray(20)
+      val accY = source.decodeFloatArray(20)
+      val accZ = source.decodeFloatArray(20)
+      val posYaw = source.decodeFloatArray(20)
+      val velYaw = source.decodeFloatArray(20)
+      val command = source.decodeUInt16Array(10)
+      val validPoints = source.decodeUInt8()
 
       return TrajectoryRepresentationWaypoints(
         timeUsec = timeUsec,

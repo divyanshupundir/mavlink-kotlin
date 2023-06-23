@@ -6,13 +6,12 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request that the vehicle report terrain height at the given location (expected response is a
@@ -36,18 +35,19 @@ public data class TerrainCheck(
 ) : MavMessage<TerrainCheck> {
   public override val instanceCompanion: MavMessage.MavCompanion<TerrainCheck> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<TerrainCheck> {
@@ -59,10 +59,9 @@ public data class TerrainCheck(
 
     public override val crcExtra: Byte = -53
 
-    public override fun deserialize(bytes: ByteArray): TerrainCheck {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
+    public override fun deserialize(source: BufferedSource): TerrainCheck {
+      val lat = source.decodeInt32()
+      val lon = source.decodeInt32()
 
       return TerrainCheck(
         lat = lat,

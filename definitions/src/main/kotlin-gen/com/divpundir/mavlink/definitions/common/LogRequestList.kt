@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request a list of available logs. On some systems calling this may stop on-board logging until
@@ -51,22 +50,23 @@ public data class LogRequestList(
 ) : MavMessage<LogRequestList> {
   public override val instanceCompanion: MavMessage.MavCompanion<LogRequestList> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(start)
-    outputBuffer.encodeUInt16(end)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(start)
+    output.encodeUInt16(end)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(start)
-    outputBuffer.encodeUInt16(end)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(start)
+    output.encodeUInt16(end)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<LogRequestList> {
@@ -78,12 +78,11 @@ public data class LogRequestList(
 
     public override val crcExtra: Byte = -128
 
-    public override fun deserialize(bytes: ByteArray): LogRequestList {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val start = inputBuffer.decodeUInt16()
-      val end = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): LogRequestList {
+      val start = source.decodeUInt16()
+      val end = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
 
       return LogRequestList(
         targetSystem = targetSystem,

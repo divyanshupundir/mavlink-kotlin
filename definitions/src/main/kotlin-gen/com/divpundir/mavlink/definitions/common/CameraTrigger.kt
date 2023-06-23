@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Camera-IMU triggering and synchronisation message.
@@ -40,18 +39,19 @@ public data class CameraTrigger(
 ) : MavMessage<CameraTrigger> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraTrigger> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(seq)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32(seq)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(seq)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32(seq)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrigger> {
@@ -63,10 +63,9 @@ public data class CameraTrigger(
 
     public override val crcExtra: Byte = -82
 
-    public override fun deserialize(bytes: ByteArray): CameraTrigger {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val seq = inputBuffer.decodeUInt32()
+    public override fun deserialize(source: BufferedSource): CameraTrigger {
+      val timeUsec = source.decodeUInt64()
+      val seq = source.decodeUInt32()
 
       return CameraTrigger(
         timeUsec = timeUsec,

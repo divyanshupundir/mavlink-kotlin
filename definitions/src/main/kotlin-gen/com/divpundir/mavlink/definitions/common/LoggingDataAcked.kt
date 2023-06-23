@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * A message containing logged data which requires a LOGGING_ACK to be sent back
@@ -63,26 +62,27 @@ public data class LoggingDataAcked(
 ) : MavMessage<LoggingDataAcked> {
   public override val instanceCompanion: MavMessage.MavCompanion<LoggingDataAcked> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(length)
-    outputBuffer.encodeUInt8(firstMessageOffset)
-    outputBuffer.encodeUInt8Array(data, 249)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(sequence)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(length)
+    output.encodeUInt8(firstMessageOffset)
+    output.encodeUInt8Array(data, 249)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(length)
-    outputBuffer.encodeUInt8(firstMessageOffset)
-    outputBuffer.encodeUInt8Array(data, 249)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(sequence)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(length)
+    output.encodeUInt8(firstMessageOffset)
+    output.encodeUInt8Array(data, 249)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<LoggingDataAcked> {
@@ -94,14 +94,13 @@ public data class LoggingDataAcked(
 
     public override val crcExtra: Byte = 35
 
-    public override fun deserialize(bytes: ByteArray): LoggingDataAcked {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sequence = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val length = inputBuffer.decodeUInt8()
-      val firstMessageOffset = inputBuffer.decodeUInt8()
-      val data = inputBuffer.decodeUInt8Array(249)
+    public override fun deserialize(source: BufferedSource): LoggingDataAcked {
+      val sequence = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val length = source.decodeUInt8()
+      val firstMessageOffset = source.decodeUInt8()
+      val data = source.decodeUInt8Array(249)
 
       return LoggingDataAcked(
         targetSystem = targetSystem,

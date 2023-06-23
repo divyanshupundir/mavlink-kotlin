@@ -15,10 +15,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -26,6 +23,8 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Version and capability of autopilot software. This should be emitted in response to a request
@@ -110,37 +109,38 @@ public data class AutopilotVersion(
 ) : MavMessage<AutopilotVersion> {
   public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(capabilities.value, 8)
-    outputBuffer.encodeUInt64(uid)
-    outputBuffer.encodeUInt32(flightSwVersion)
-    outputBuffer.encodeUInt32(middlewareSwVersion)
-    outputBuffer.encodeUInt32(osSwVersion)
-    outputBuffer.encodeUInt32(boardVersion)
-    outputBuffer.encodeUInt16(vendorId)
-    outputBuffer.encodeUInt16(productId)
-    outputBuffer.encodeUInt8Array(flightCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(middlewareCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(osCustomVersion, 8)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeBitmaskValue(capabilities.value, 8)
+    output.encodeUInt64(uid)
+    output.encodeUInt32(flightSwVersion)
+    output.encodeUInt32(middlewareSwVersion)
+    output.encodeUInt32(osSwVersion)
+    output.encodeUInt32(boardVersion)
+    output.encodeUInt16(vendorId)
+    output.encodeUInt16(productId)
+    output.encodeUInt8Array(flightCustomVersion, 8)
+    output.encodeUInt8Array(middlewareCustomVersion, 8)
+    output.encodeUInt8Array(osCustomVersion, 8)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(capabilities.value, 8)
-    outputBuffer.encodeUInt64(uid)
-    outputBuffer.encodeUInt32(flightSwVersion)
-    outputBuffer.encodeUInt32(middlewareSwVersion)
-    outputBuffer.encodeUInt32(osSwVersion)
-    outputBuffer.encodeUInt32(boardVersion)
-    outputBuffer.encodeUInt16(vendorId)
-    outputBuffer.encodeUInt16(productId)
-    outputBuffer.encodeUInt8Array(flightCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(middlewareCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(osCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(uid2, 18)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeBitmaskValue(capabilities.value, 8)
+    output.encodeUInt64(uid)
+    output.encodeUInt32(flightSwVersion)
+    output.encodeUInt32(middlewareSwVersion)
+    output.encodeUInt32(osSwVersion)
+    output.encodeUInt32(boardVersion)
+    output.encodeUInt16(vendorId)
+    output.encodeUInt16(productId)
+    output.encodeUInt8Array(flightCustomVersion, 8)
+    output.encodeUInt8Array(middlewareCustomVersion, 8)
+    output.encodeUInt8Array(osCustomVersion, 8)
+    output.encodeUInt8Array(uid2, 18)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<AutopilotVersion> {
@@ -152,23 +152,22 @@ public data class AutopilotVersion(
 
     public override val crcExtra: Byte = -78
 
-    public override fun deserialize(bytes: ByteArray): AutopilotVersion {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val capabilities = inputBuffer.decodeBitmaskValue(8).let { value ->
+    public override fun deserialize(source: BufferedSource): AutopilotVersion {
+      val capabilities = source.decodeBitmaskValue(8).let { value ->
         val flags = MavProtocolCapability.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val uid = inputBuffer.decodeUInt64()
-      val flightSwVersion = inputBuffer.decodeUInt32()
-      val middlewareSwVersion = inputBuffer.decodeUInt32()
-      val osSwVersion = inputBuffer.decodeUInt32()
-      val boardVersion = inputBuffer.decodeUInt32()
-      val vendorId = inputBuffer.decodeUInt16()
-      val productId = inputBuffer.decodeUInt16()
-      val flightCustomVersion = inputBuffer.decodeUInt8Array(8)
-      val middlewareCustomVersion = inputBuffer.decodeUInt8Array(8)
-      val osCustomVersion = inputBuffer.decodeUInt8Array(8)
-      val uid2 = inputBuffer.decodeUInt8Array(18)
+      val uid = source.decodeUInt64()
+      val flightSwVersion = source.decodeUInt32()
+      val middlewareSwVersion = source.decodeUInt32()
+      val osSwVersion = source.decodeUInt32()
+      val boardVersion = source.decodeUInt32()
+      val vendorId = source.decodeUInt16()
+      val productId = source.decodeUInt16()
+      val flightCustomVersion = source.decodeUInt8Array(8)
+      val middlewareCustomVersion = source.decodeUInt8Array(8)
+      val osCustomVersion = source.decodeUInt8Array(8)
+      val uid2 = source.decodeUInt8Array(18)
 
       return AutopilotVersion(
         capabilities = capabilities,

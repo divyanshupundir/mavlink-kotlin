@@ -13,15 +13,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Read configured OSD parameter reply.
@@ -72,28 +71,29 @@ public data class OsdParamShowConfigReply(
   public override val instanceCompanion: MavMessage.MavCompanion<OsdParamShowConfigReply> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeFloat(minValue)
-    outputBuffer.encodeFloat(maxValue)
-    outputBuffer.encodeFloat(increment)
-    outputBuffer.encodeEnumValue(result.value, 1)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(configType.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(requestId)
+    output.encodeFloat(minValue)
+    output.encodeFloat(maxValue)
+    output.encodeFloat(increment)
+    output.encodeEnumValue(result.value, 1)
+    output.encodeString(paramId, 16)
+    output.encodeEnumValue(configType.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeFloat(minValue)
-    outputBuffer.encodeFloat(maxValue)
-    outputBuffer.encodeFloat(increment)
-    outputBuffer.encodeEnumValue(result.value, 1)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(configType.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(requestId)
+    output.encodeFloat(minValue)
+    output.encodeFloat(maxValue)
+    output.encodeFloat(increment)
+    output.encodeEnumValue(result.value, 1)
+    output.encodeString(paramId, 16)
+    output.encodeEnumValue(configType.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OsdParamShowConfigReply> {
@@ -105,18 +105,17 @@ public data class OsdParamShowConfigReply(
 
     public override val crcExtra: Byte = -79
 
-    public override fun deserialize(bytes: ByteArray): OsdParamShowConfigReply {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUInt32()
-      val minValue = inputBuffer.decodeFloat()
-      val maxValue = inputBuffer.decodeFloat()
-      val increment = inputBuffer.decodeFloat()
-      val result = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): OsdParamShowConfigReply {
+      val requestId = source.decodeUInt32()
+      val minValue = source.decodeFloat()
+      val maxValue = source.decodeFloat()
+      val increment = source.decodeFloat()
+      val result = source.decodeEnumValue(1).let { value ->
         val entry = OsdParamConfigError.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val paramId = inputBuffer.decodeString(16)
-      val configType = inputBuffer.decodeEnumValue(1).let { value ->
+      val paramId = source.decodeString(16)
+      val configType = source.decodeEnumValue(1).let { value ->
         val entry = OsdParamConfigType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

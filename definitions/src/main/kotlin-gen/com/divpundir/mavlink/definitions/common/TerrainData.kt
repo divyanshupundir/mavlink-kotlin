@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
@@ -23,6 +20,8 @@ import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Terrain data sent from GCS. The lat/lon and grid_spacing must be the same as a lat/lon from a
@@ -61,24 +60,25 @@ public data class TerrainData(
 ) : MavMessage<TerrainData> {
   public override val instanceCompanion: MavMessage.MavCompanion<TerrainData> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUInt16(gridSpacing)
-    outputBuffer.encodeInt16Array(data, 32)
-    outputBuffer.encodeUInt8(gridbit)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeUInt16(gridSpacing)
+    output.encodeInt16Array(data, 32)
+    output.encodeUInt8(gridbit)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUInt16(gridSpacing)
-    outputBuffer.encodeInt16Array(data, 32)
-    outputBuffer.encodeUInt8(gridbit)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeUInt16(gridSpacing)
+    output.encodeInt16Array(data, 32)
+    output.encodeUInt8(gridbit)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<TerrainData> {
@@ -90,13 +90,12 @@ public data class TerrainData(
 
     public override val crcExtra: Byte = -27
 
-    public override fun deserialize(bytes: ByteArray): TerrainData {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val gridSpacing = inputBuffer.decodeUInt16()
-      val data = inputBuffer.decodeInt16Array(32)
-      val gridbit = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): TerrainData {
+      val lat = source.decodeInt32()
+      val lon = source.decodeInt32()
+      val gridSpacing = source.decodeUInt16()
+      val data = source.decodeInt16Array(32)
+      val gridbit = source.decodeUInt8()
 
       return TerrainData(
         lat = lat,

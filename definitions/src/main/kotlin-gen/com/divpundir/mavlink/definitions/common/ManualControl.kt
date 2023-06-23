@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * This message provides an API for manually controlling the vehicle using standard joystick axes
@@ -112,30 +111,31 @@ public data class ManualControl(
 ) : MavMessage<ManualControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(x)
-    outputBuffer.encodeInt16(y)
-    outputBuffer.encodeInt16(z)
-    outputBuffer.encodeInt16(r)
-    outputBuffer.encodeUInt16(buttons)
-    outputBuffer.encodeUInt8(target)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(x)
+    output.encodeInt16(y)
+    output.encodeInt16(z)
+    output.encodeInt16(r)
+    output.encodeUInt16(buttons)
+    output.encodeUInt8(target)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(x)
-    outputBuffer.encodeInt16(y)
-    outputBuffer.encodeInt16(z)
-    outputBuffer.encodeInt16(r)
-    outputBuffer.encodeUInt16(buttons)
-    outputBuffer.encodeUInt8(target)
-    outputBuffer.encodeUInt16(buttons2)
-    outputBuffer.encodeUInt8(enabledExtensions)
-    outputBuffer.encodeInt16(s)
-    outputBuffer.encodeInt16(t)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(x)
+    output.encodeInt16(y)
+    output.encodeInt16(z)
+    output.encodeInt16(r)
+    output.encodeUInt16(buttons)
+    output.encodeUInt8(target)
+    output.encodeUInt16(buttons2)
+    output.encodeUInt8(enabledExtensions)
+    output.encodeInt16(s)
+    output.encodeInt16(t)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ManualControl> {
@@ -147,18 +147,17 @@ public data class ManualControl(
 
     public override val crcExtra: Byte = -13
 
-    public override fun deserialize(bytes: ByteArray): ManualControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val x = inputBuffer.decodeInt16()
-      val y = inputBuffer.decodeInt16()
-      val z = inputBuffer.decodeInt16()
-      val r = inputBuffer.decodeInt16()
-      val buttons = inputBuffer.decodeUInt16()
-      val target = inputBuffer.decodeUInt8()
-      val buttons2 = inputBuffer.decodeUInt16()
-      val enabledExtensions = inputBuffer.decodeUInt8()
-      val s = inputBuffer.decodeInt16()
-      val t = inputBuffer.decodeInt16()
+    public override fun deserialize(source: BufferedSource): ManualControl {
+      val x = source.decodeInt16()
+      val y = source.decodeInt16()
+      val z = source.decodeInt16()
+      val r = source.decodeInt16()
+      val buttons = source.decodeUInt16()
+      val target = source.decodeUInt8()
+      val buttons2 = source.decodeUInt16()
+      val enabledExtensions = source.decodeUInt8()
+      val s = source.decodeInt16()
+      val t = source.decodeInt16()
 
       return ManualControl(
         target = target,

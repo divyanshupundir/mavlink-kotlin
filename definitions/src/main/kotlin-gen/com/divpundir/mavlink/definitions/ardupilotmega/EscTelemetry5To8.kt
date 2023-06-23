@@ -8,16 +8,15 @@ import com.divpundir.mavlink.serialization.decodeUInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * ESC Telemetry Data for ESCs 5 to 8, matching data sent by BLHeli ESCs.
@@ -60,26 +59,27 @@ public data class EscTelemetry5To8(
 ) : MavMessage<EscTelemetry5To8> {
   public override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry5To8> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16Array(voltage, 8)
-    outputBuffer.encodeUInt16Array(current, 8)
-    outputBuffer.encodeUInt16Array(totalcurrent, 8)
-    outputBuffer.encodeUInt16Array(rpm, 8)
-    outputBuffer.encodeUInt16Array(count, 8)
-    outputBuffer.encodeUInt8Array(temperature, 4)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16Array(voltage, 8)
+    output.encodeUInt16Array(current, 8)
+    output.encodeUInt16Array(totalcurrent, 8)
+    output.encodeUInt16Array(rpm, 8)
+    output.encodeUInt16Array(count, 8)
+    output.encodeUInt8Array(temperature, 4)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16Array(voltage, 8)
-    outputBuffer.encodeUInt16Array(current, 8)
-    outputBuffer.encodeUInt16Array(totalcurrent, 8)
-    outputBuffer.encodeUInt16Array(rpm, 8)
-    outputBuffer.encodeUInt16Array(count, 8)
-    outputBuffer.encodeUInt8Array(temperature, 4)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16Array(voltage, 8)
+    output.encodeUInt16Array(current, 8)
+    output.encodeUInt16Array(totalcurrent, 8)
+    output.encodeUInt16Array(rpm, 8)
+    output.encodeUInt16Array(count, 8)
+    output.encodeUInt8Array(temperature, 4)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<EscTelemetry5To8> {
@@ -91,14 +91,13 @@ public data class EscTelemetry5To8(
 
     public override val crcExtra: Byte = -123
 
-    public override fun deserialize(bytes: ByteArray): EscTelemetry5To8 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val voltage = inputBuffer.decodeUInt16Array(8)
-      val current = inputBuffer.decodeUInt16Array(8)
-      val totalcurrent = inputBuffer.decodeUInt16Array(8)
-      val rpm = inputBuffer.decodeUInt16Array(8)
-      val count = inputBuffer.decodeUInt16Array(8)
-      val temperature = inputBuffer.decodeUInt8Array(4)
+    public override fun deserialize(source: BufferedSource): EscTelemetry5To8 {
+      val voltage = source.decodeUInt16Array(8)
+      val current = source.decodeUInt16Array(8)
+      val totalcurrent = source.decodeUInt16Array(8)
+      val rpm = source.decodeUInt16Array(8)
+      val count = source.decodeUInt16Array(8)
+      val temperature = source.decodeUInt8Array(4)
 
       return EscTelemetry5To8(
         temperature = temperature,

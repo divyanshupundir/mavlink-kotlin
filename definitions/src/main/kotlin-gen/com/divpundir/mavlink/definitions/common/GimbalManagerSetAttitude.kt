@@ -14,16 +14,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * High level message to control a gimbal's attitude. This message is to be sent to the gimbal
@@ -81,30 +80,31 @@ public data class GimbalManagerSetAttitude(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetAttitude> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(angularVelocityX)
-    outputBuffer.encodeFloat(angularVelocityY)
-    outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(gimbalDeviceId)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeBitmaskValue(flags.value, 4)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(angularVelocityX)
+    output.encodeFloat(angularVelocityY)
+    output.encodeFloat(angularVelocityZ)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(gimbalDeviceId)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(flags.value, 4)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(angularVelocityX)
-    outputBuffer.encodeFloat(angularVelocityY)
-    outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(gimbalDeviceId)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeBitmaskValue(flags.value, 4)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(angularVelocityX)
+    output.encodeFloat(angularVelocityY)
+    output.encodeFloat(angularVelocityZ)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(gimbalDeviceId)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GimbalManagerSetAttitude> {
@@ -116,19 +116,18 @@ public data class GimbalManagerSetAttitude(
 
     public override val crcExtra: Byte = 123
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerSetAttitude {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val flags = inputBuffer.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(source: BufferedSource): GimbalManagerSetAttitude {
+      val flags = source.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val q = inputBuffer.decodeFloatArray(16)
-      val angularVelocityX = inputBuffer.decodeFloat()
-      val angularVelocityY = inputBuffer.decodeFloat()
-      val angularVelocityZ = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val gimbalDeviceId = inputBuffer.decodeUInt8()
+      val q = source.decodeFloatArray(16)
+      val angularVelocityX = source.decodeFloat()
+      val angularVelocityY = source.decodeFloat()
+      val angularVelocityZ = source.decodeFloat()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val gimbalDeviceId = source.decodeUInt8()
 
       return GimbalManagerSetAttitude(
         targetSystem = targetSystem,

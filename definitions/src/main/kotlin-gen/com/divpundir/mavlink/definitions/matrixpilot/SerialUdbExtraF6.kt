@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F6: format
@@ -51,24 +50,25 @@ public data class SerialUdbExtraF6(
 ) : MavMessage<SerialUdbExtraF6> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF6> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(suePitchgain)
-    outputBuffer.encodeFloat(suePitchkd)
-    outputBuffer.encodeFloat(sueRudderElevMix)
-    outputBuffer.encodeFloat(sueRollElevMix)
-    outputBuffer.encodeFloat(sueElevatorBoost)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(suePitchgain)
+    output.encodeFloat(suePitchkd)
+    output.encodeFloat(sueRudderElevMix)
+    output.encodeFloat(sueRollElevMix)
+    output.encodeFloat(sueElevatorBoost)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(suePitchgain)
-    outputBuffer.encodeFloat(suePitchkd)
-    outputBuffer.encodeFloat(sueRudderElevMix)
-    outputBuffer.encodeFloat(sueRollElevMix)
-    outputBuffer.encodeFloat(sueElevatorBoost)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(suePitchgain)
+    output.encodeFloat(suePitchkd)
+    output.encodeFloat(sueRudderElevMix)
+    output.encodeFloat(sueRollElevMix)
+    output.encodeFloat(sueElevatorBoost)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF6> {
@@ -80,13 +80,12 @@ public data class SerialUdbExtraF6(
 
     public override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF6 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val suePitchgain = inputBuffer.decodeFloat()
-      val suePitchkd = inputBuffer.decodeFloat()
-      val sueRudderElevMix = inputBuffer.decodeFloat()
-      val sueRollElevMix = inputBuffer.decodeFloat()
-      val sueElevatorBoost = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF6 {
+      val suePitchgain = source.decodeFloat()
+      val suePitchkd = source.decodeFloat()
+      val sueRudderElevMix = source.decodeFloat()
+      val sueRollElevMix = source.decodeFloat()
+      val sueElevatorBoost = source.decodeFloat()
 
       return SerialUdbExtraF6(
         suePitchgain = suePitchgain,

@@ -13,15 +13,14 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Handshake message to initiate, control and stop image streaming when using the Image Transmission
@@ -72,28 +71,29 @@ public data class DataTransmissionHandshake(
   public override val instanceCompanion: MavMessage.MavCompanion<DataTransmissionHandshake> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(size)
-    outputBuffer.encodeUInt16(width)
-    outputBuffer.encodeUInt16(height)
-    outputBuffer.encodeUInt16(packets)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(payload)
-    outputBuffer.encodeUInt8(jpgQuality)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(size)
+    output.encodeUInt16(width)
+    output.encodeUInt16(height)
+    output.encodeUInt16(packets)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeUInt8(payload)
+    output.encodeUInt8(jpgQuality)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(size)
-    outputBuffer.encodeUInt16(width)
-    outputBuffer.encodeUInt16(height)
-    outputBuffer.encodeUInt16(packets)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(payload)
-    outputBuffer.encodeUInt8(jpgQuality)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(size)
+    output.encodeUInt16(width)
+    output.encodeUInt16(height)
+    output.encodeUInt16(packets)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeUInt8(payload)
+    output.encodeUInt8(jpgQuality)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<DataTransmissionHandshake> {
@@ -105,18 +105,17 @@ public data class DataTransmissionHandshake(
 
     public override val crcExtra: Byte = 29
 
-    public override fun deserialize(bytes: ByteArray): DataTransmissionHandshake {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val size = inputBuffer.decodeUInt32()
-      val width = inputBuffer.decodeUInt16()
-      val height = inputBuffer.decodeUInt16()
-      val packets = inputBuffer.decodeUInt16()
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): DataTransmissionHandshake {
+      val size = source.decodeUInt32()
+      val width = source.decodeUInt16()
+      val height = source.decodeUInt16()
+      val packets = source.decodeUInt16()
+      val type = source.decodeEnumValue(1).let { value ->
         val entry = MavlinkDataStreamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val payload = inputBuffer.decodeUInt8()
-      val jpgQuality = inputBuffer.decodeUInt8()
+      val payload = source.decodeUInt8()
+      val jpgQuality = source.decodeUInt8()
 
       return DataTransmissionHandshake(
         type = type,

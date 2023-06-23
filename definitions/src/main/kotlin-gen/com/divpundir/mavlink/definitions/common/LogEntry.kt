@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Reply to LOG_REQUEST_LIST
@@ -53,24 +52,25 @@ public data class LogEntry(
 ) : MavMessage<LogEntry> {
   public override val instanceCompanion: MavMessage.MavCompanion<LogEntry> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeUtc)
-    outputBuffer.encodeUInt32(size)
-    outputBuffer.encodeUInt16(id)
-    outputBuffer.encodeUInt16(numLogs)
-    outputBuffer.encodeUInt16(lastLogNum)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeUtc)
+    output.encodeUInt32(size)
+    output.encodeUInt16(id)
+    output.encodeUInt16(numLogs)
+    output.encodeUInt16(lastLogNum)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeUtc)
-    outputBuffer.encodeUInt32(size)
-    outputBuffer.encodeUInt16(id)
-    outputBuffer.encodeUInt16(numLogs)
-    outputBuffer.encodeUInt16(lastLogNum)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeUtc)
+    output.encodeUInt32(size)
+    output.encodeUInt16(id)
+    output.encodeUInt16(numLogs)
+    output.encodeUInt16(lastLogNum)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<LogEntry> {
@@ -82,13 +82,12 @@ public data class LogEntry(
 
     public override val crcExtra: Byte = 56
 
-    public override fun deserialize(bytes: ByteArray): LogEntry {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUtc = inputBuffer.decodeUInt32()
-      val size = inputBuffer.decodeUInt32()
-      val id = inputBuffer.decodeUInt16()
-      val numLogs = inputBuffer.decodeUInt16()
-      val lastLogNum = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): LogEntry {
+      val timeUtc = source.decodeUInt32()
+      val size = source.decodeUInt32()
+      val id = source.decodeUInt16()
+      val numLogs = source.decodeUInt16()
+      val lastLogNum = source.decodeUInt16()
 
       return LogEntry(
         id = id,

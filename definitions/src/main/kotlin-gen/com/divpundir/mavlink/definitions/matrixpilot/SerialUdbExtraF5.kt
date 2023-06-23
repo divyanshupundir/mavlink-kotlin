@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F5: format
@@ -46,22 +45,23 @@ public data class SerialUdbExtraF5(
 ) : MavMessage<SerialUdbExtraF5> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF5> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueYawkpAileron)
-    outputBuffer.encodeFloat(sueYawkdAileron)
-    outputBuffer.encodeFloat(sueRollkp)
-    outputBuffer.encodeFloat(sueRollkd)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(sueYawkpAileron)
+    output.encodeFloat(sueYawkdAileron)
+    output.encodeFloat(sueRollkp)
+    output.encodeFloat(sueRollkd)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueYawkpAileron)
-    outputBuffer.encodeFloat(sueYawkdAileron)
-    outputBuffer.encodeFloat(sueRollkp)
-    outputBuffer.encodeFloat(sueRollkd)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(sueYawkpAileron)
+    output.encodeFloat(sueYawkdAileron)
+    output.encodeFloat(sueRollkp)
+    output.encodeFloat(sueRollkd)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF5> {
@@ -73,12 +73,11 @@ public data class SerialUdbExtraF5(
 
     public override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF5 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueYawkpAileron = inputBuffer.decodeFloat()
-      val sueYawkdAileron = inputBuffer.decodeFloat()
-      val sueRollkp = inputBuffer.decodeFloat()
-      val sueRollkd = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF5 {
+      val sueYawkpAileron = source.decodeFloat()
+      val sueYawkdAileron = source.decodeFloat()
+      val sueRollkp = source.decodeFloat()
+      val sueRollkd = source.decodeFloat()
 
       return SerialUdbExtraF5(
         sueYawkpAileron = sueYawkpAileron,

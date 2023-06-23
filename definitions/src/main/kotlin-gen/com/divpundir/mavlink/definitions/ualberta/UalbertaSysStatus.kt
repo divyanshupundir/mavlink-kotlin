@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * System status specific to ualberta uav
@@ -41,20 +40,21 @@ public data class UalbertaSysStatus(
 ) : MavMessage<UalbertaSysStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<UalbertaSysStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(mode)
-    outputBuffer.encodeUInt8(navMode)
-    outputBuffer.encodeUInt8(pilot)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(mode)
+    output.encodeUInt8(navMode)
+    output.encodeUInt8(pilot)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(mode)
-    outputBuffer.encodeUInt8(navMode)
-    outputBuffer.encodeUInt8(pilot)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(mode)
+    output.encodeUInt8(navMode)
+    output.encodeUInt8(pilot)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<UalbertaSysStatus> {
@@ -66,11 +66,10 @@ public data class UalbertaSysStatus(
 
     public override val crcExtra: Byte = 15
 
-    public override fun deserialize(bytes: ByteArray): UalbertaSysStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mode = inputBuffer.decodeUInt8()
-      val navMode = inputBuffer.decodeUInt8()
-      val pilot = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): UalbertaSysStatus {
+      val mode = source.decodeUInt8()
+      val navMode = source.decodeUInt8()
+      val pilot = source.decodeUInt8()
 
       return UalbertaSysStatus(
         mode = mode,

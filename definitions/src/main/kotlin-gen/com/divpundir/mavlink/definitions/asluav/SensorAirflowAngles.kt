@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Calibrated airflow angle measurements
@@ -57,24 +56,25 @@ public data class SensorAirflowAngles(
 ) : MavMessage<SensorAirflowAngles> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensorAirflowAngles> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(angleofattack)
-    outputBuffer.encodeFloat(sideslip)
-    outputBuffer.encodeUInt8(angleofattackValid)
-    outputBuffer.encodeUInt8(sideslipValid)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(angleofattack)
+    output.encodeFloat(sideslip)
+    output.encodeUInt8(angleofattackValid)
+    output.encodeUInt8(sideslipValid)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(angleofattack)
-    outputBuffer.encodeFloat(sideslip)
-    outputBuffer.encodeUInt8(angleofattackValid)
-    outputBuffer.encodeUInt8(sideslipValid)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(angleofattack)
+    output.encodeFloat(sideslip)
+    output.encodeUInt8(angleofattackValid)
+    output.encodeUInt8(sideslipValid)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensorAirflowAngles> {
@@ -86,13 +86,12 @@ public data class SensorAirflowAngles(
 
     public override val crcExtra: Byte = -107
 
-    public override fun deserialize(bytes: ByteArray): SensorAirflowAngles {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val angleofattack = inputBuffer.decodeFloat()
-      val sideslip = inputBuffer.decodeFloat()
-      val angleofattackValid = inputBuffer.decodeUInt8()
-      val sideslipValid = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): SensorAirflowAngles {
+      val timestamp = source.decodeUInt64()
+      val angleofattack = source.decodeFloat()
+      val sideslip = source.decodeFloat()
+      val angleofattackValid = source.decodeUInt8()
+      val sideslipValid = source.decodeUInt8()
 
       return SensorAirflowAngles(
         timestamp = timestamp,

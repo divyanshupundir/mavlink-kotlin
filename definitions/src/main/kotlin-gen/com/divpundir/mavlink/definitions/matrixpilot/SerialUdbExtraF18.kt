@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F18 format
@@ -51,24 +50,25 @@ public data class SerialUdbExtraF18(
 ) : MavMessage<SerialUdbExtraF18> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF18> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(angleOfAttackNormal)
-    outputBuffer.encodeFloat(angleOfAttackInverted)
-    outputBuffer.encodeFloat(elevatorTrimNormal)
-    outputBuffer.encodeFloat(elevatorTrimInverted)
-    outputBuffer.encodeFloat(referenceSpeed)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(angleOfAttackNormal)
+    output.encodeFloat(angleOfAttackInverted)
+    output.encodeFloat(elevatorTrimNormal)
+    output.encodeFloat(elevatorTrimInverted)
+    output.encodeFloat(referenceSpeed)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(angleOfAttackNormal)
-    outputBuffer.encodeFloat(angleOfAttackInverted)
-    outputBuffer.encodeFloat(elevatorTrimNormal)
-    outputBuffer.encodeFloat(elevatorTrimInverted)
-    outputBuffer.encodeFloat(referenceSpeed)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(angleOfAttackNormal)
+    output.encodeFloat(angleOfAttackInverted)
+    output.encodeFloat(elevatorTrimNormal)
+    output.encodeFloat(elevatorTrimInverted)
+    output.encodeFloat(referenceSpeed)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF18> {
@@ -80,13 +80,12 @@ public data class SerialUdbExtraF18(
 
     public override val crcExtra: Byte = 41
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF18 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val angleOfAttackNormal = inputBuffer.decodeFloat()
-      val angleOfAttackInverted = inputBuffer.decodeFloat()
-      val elevatorTrimNormal = inputBuffer.decodeFloat()
-      val elevatorTrimInverted = inputBuffer.decodeFloat()
-      val referenceSpeed = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF18 {
+      val angleOfAttackNormal = source.decodeFloat()
+      val angleOfAttackInverted = source.decodeFloat()
+      val elevatorTrimNormal = source.decodeFloat()
+      val elevatorTrimInverted = source.decodeFloat()
+      val referenceSpeed = source.decodeFloat()
 
       return SerialUdbExtraF18(
         angleOfAttackNormal = angleOfAttackNormal,

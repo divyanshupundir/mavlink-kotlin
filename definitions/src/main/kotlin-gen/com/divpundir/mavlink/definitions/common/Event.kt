@@ -13,16 +13,15 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Event message. Each new event from a particular component gets a new sequence number. The same
@@ -76,28 +75,29 @@ public data class Event(
 ) : MavMessage<Event> {
   public override val instanceCompanion: MavMessage.MavCompanion<Event> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(id)
-    outputBuffer.encodeUInt32(eventTimeBootMs)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeUInt8(destinationComponent)
-    outputBuffer.encodeUInt8(destinationSystem)
-    outputBuffer.encodeUInt8(logLevels)
-    outputBuffer.encodeUInt8Array(arguments, 40)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(id)
+    output.encodeUInt32(eventTimeBootMs)
+    output.encodeUInt16(sequence)
+    output.encodeUInt8(destinationComponent)
+    output.encodeUInt8(destinationSystem)
+    output.encodeUInt8(logLevels)
+    output.encodeUInt8Array(arguments, 40)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(id)
-    outputBuffer.encodeUInt32(eventTimeBootMs)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeUInt8(destinationComponent)
-    outputBuffer.encodeUInt8(destinationSystem)
-    outputBuffer.encodeUInt8(logLevels)
-    outputBuffer.encodeUInt8Array(arguments, 40)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(id)
+    output.encodeUInt32(eventTimeBootMs)
+    output.encodeUInt16(sequence)
+    output.encodeUInt8(destinationComponent)
+    output.encodeUInt8(destinationSystem)
+    output.encodeUInt8(logLevels)
+    output.encodeUInt8Array(arguments, 40)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Event> {
@@ -109,15 +109,14 @@ public data class Event(
 
     public override val crcExtra: Byte = -96
 
-    public override fun deserialize(bytes: ByteArray): Event {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val id = inputBuffer.decodeUInt32()
-      val eventTimeBootMs = inputBuffer.decodeUInt32()
-      val sequence = inputBuffer.decodeUInt16()
-      val destinationComponent = inputBuffer.decodeUInt8()
-      val destinationSystem = inputBuffer.decodeUInt8()
-      val logLevels = inputBuffer.decodeUInt8()
-      val arguments = inputBuffer.decodeUInt8Array(40)
+    public override fun deserialize(source: BufferedSource): Event {
+      val id = source.decodeUInt32()
+      val eventTimeBootMs = source.decodeUInt32()
+      val sequence = source.decodeUInt16()
+      val destinationComponent = source.decodeUInt8()
+      val destinationSystem = source.decodeUInt8()
+      val logLevels = source.decodeUInt8()
+      val arguments = source.decodeUInt8Array(40)
 
       return Event(
         destinationComponent = destinationComponent,

@@ -7,13 +7,12 @@ import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Time/duration estimates for various events and actions given the current vehicle state and
@@ -59,24 +58,25 @@ public data class TimeEstimateToTarget(
 ) : MavMessage<TimeEstimateToTarget> {
   public override val instanceCompanion: MavMessage.MavCompanion<TimeEstimateToTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(safeReturn)
-    outputBuffer.encodeInt32(land)
-    outputBuffer.encodeInt32(missionNextItem)
-    outputBuffer.encodeInt32(missionEnd)
-    outputBuffer.encodeInt32(commandedAction)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(safeReturn)
+    output.encodeInt32(land)
+    output.encodeInt32(missionNextItem)
+    output.encodeInt32(missionEnd)
+    output.encodeInt32(commandedAction)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(safeReturn)
-    outputBuffer.encodeInt32(land)
-    outputBuffer.encodeInt32(missionNextItem)
-    outputBuffer.encodeInt32(missionEnd)
-    outputBuffer.encodeInt32(commandedAction)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(safeReturn)
+    output.encodeInt32(land)
+    output.encodeInt32(missionNextItem)
+    output.encodeInt32(missionEnd)
+    output.encodeInt32(commandedAction)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<TimeEstimateToTarget> {
@@ -88,13 +88,12 @@ public data class TimeEstimateToTarget(
 
     public override val crcExtra: Byte = -24
 
-    public override fun deserialize(bytes: ByteArray): TimeEstimateToTarget {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val safeReturn = inputBuffer.decodeInt32()
-      val land = inputBuffer.decodeInt32()
-      val missionNextItem = inputBuffer.decodeInt32()
-      val missionEnd = inputBuffer.decodeInt32()
-      val commandedAction = inputBuffer.decodeInt32()
+    public override fun deserialize(source: BufferedSource): TimeEstimateToTarget {
+      val safeReturn = source.decodeInt32()
+      val land = source.decodeInt32()
+      val missionNextItem = source.decodeInt32()
+      val missionEnd = source.decodeInt32()
+      val commandedAction = source.decodeInt32()
 
       return TimeEstimateToTarget(
         safeReturn = safeReturn,

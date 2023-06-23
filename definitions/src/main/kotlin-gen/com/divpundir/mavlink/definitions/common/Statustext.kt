@@ -13,16 +13,15 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Status text message. These messages are printed in yellow in the COMM console of QGroundControl.
@@ -67,20 +66,21 @@ public data class Statustext(
 ) : MavMessage<Statustext> {
   public override val instanceCompanion: MavMessage.MavCompanion<Statustext> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(severity.value, 1)
-    outputBuffer.encodeString(text, 50)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeEnumValue(severity.value, 1)
+    output.encodeString(text, 50)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(severity.value, 1)
-    outputBuffer.encodeString(text, 50)
-    outputBuffer.encodeUInt16(id)
-    outputBuffer.encodeUInt8(chunkSeq)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeEnumValue(severity.value, 1)
+    output.encodeString(text, 50)
+    output.encodeUInt16(id)
+    output.encodeUInt8(chunkSeq)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Statustext> {
@@ -92,15 +92,14 @@ public data class Statustext(
 
     public override val crcExtra: Byte = 83
 
-    public override fun deserialize(bytes: ByteArray): Statustext {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val severity = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): Statustext {
+      val severity = source.decodeEnumValue(1).let { value ->
         val entry = MavSeverity.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val text = inputBuffer.decodeString(50)
-      val id = inputBuffer.decodeUInt16()
-      val chunkSeq = inputBuffer.decodeUInt8()
+      val text = source.decodeString(50)
+      val id = source.decodeUInt16()
+      val chunkSeq = source.decodeUInt8()
 
       return Statustext(
         severity = severity,

@@ -14,14 +14,13 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The heartbeat message shows that a system or component is present and responding. The type and
@@ -71,26 +70,27 @@ public data class Heartbeat(
 ) : MavMessage<Heartbeat> {
   public override val instanceCompanion: MavMessage.MavCompanion<Heartbeat> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(customMode)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
-    outputBuffer.encodeEnumValue(systemStatus.value, 1)
-    outputBuffer.encodeUInt8(mavlinkVersion)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(customMode)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeEnumValue(autopilot.value, 1)
+    output.encodeBitmaskValue(baseMode.value, 1)
+    output.encodeEnumValue(systemStatus.value, 1)
+    output.encodeUInt8(mavlinkVersion)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(customMode)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
-    outputBuffer.encodeEnumValue(systemStatus.value, 1)
-    outputBuffer.encodeUInt8(mavlinkVersion)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(customMode)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeEnumValue(autopilot.value, 1)
+    output.encodeBitmaskValue(baseMode.value, 1)
+    output.encodeEnumValue(systemStatus.value, 1)
+    output.encodeUInt8(mavlinkVersion)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Heartbeat> {
@@ -102,26 +102,25 @@ public data class Heartbeat(
 
     public override val crcExtra: Byte = 50
 
-    public override fun deserialize(bytes: ByteArray): Heartbeat {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val customMode = inputBuffer.decodeUInt32()
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): Heartbeat {
+      val customMode = source.decodeUInt32()
+      val type = source.decodeEnumValue(1).let { value ->
         val entry = MavType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val autopilot = inputBuffer.decodeEnumValue(1).let { value ->
+      val autopilot = source.decodeEnumValue(1).let { value ->
         val entry = MavAutopilot.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val baseMode = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val baseMode = source.decodeBitmaskValue(1).let { value ->
         val flags = MavModeFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val systemStatus = inputBuffer.decodeEnumValue(1).let { value ->
+      val systemStatus = source.decodeEnumValue(1).let { value ->
         val entry = MavState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val mavlinkVersion = inputBuffer.decodeUInt8()
+      val mavlinkVersion = source.decodeUInt8()
 
       return Heartbeat(
         type = type,

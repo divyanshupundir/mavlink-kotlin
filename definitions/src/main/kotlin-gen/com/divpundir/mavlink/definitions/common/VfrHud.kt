@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
@@ -64,26 +63,27 @@ public data class VfrHud(
 ) : MavMessage<VfrHud> {
   public override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloat(groundspeed)
-    outputBuffer.encodeFloat(alt)
-    outputBuffer.encodeFloat(climb)
-    outputBuffer.encodeInt16(heading)
-    outputBuffer.encodeUInt16(throttle)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(airspeed)
+    output.encodeFloat(groundspeed)
+    output.encodeFloat(alt)
+    output.encodeFloat(climb)
+    output.encodeInt16(heading)
+    output.encodeUInt16(throttle)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloat(groundspeed)
-    outputBuffer.encodeFloat(alt)
-    outputBuffer.encodeFloat(climb)
-    outputBuffer.encodeInt16(heading)
-    outputBuffer.encodeUInt16(throttle)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(airspeed)
+    output.encodeFloat(groundspeed)
+    output.encodeFloat(alt)
+    output.encodeFloat(climb)
+    output.encodeInt16(heading)
+    output.encodeUInt16(throttle)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<VfrHud> {
@@ -95,14 +95,13 @@ public data class VfrHud(
 
     public override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): VfrHud {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val airspeed = inputBuffer.decodeFloat()
-      val groundspeed = inputBuffer.decodeFloat()
-      val alt = inputBuffer.decodeFloat()
-      val climb = inputBuffer.decodeFloat()
-      val heading = inputBuffer.decodeInt16()
-      val throttle = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): VfrHud {
+      val airspeed = source.decodeFloat()
+      val groundspeed = source.decodeFloat()
+      val alt = source.decodeFloat()
+      val climb = source.decodeFloat()
+      val heading = source.decodeInt16()
+      val throttle = source.decodeUInt16()
 
       return VfrHud(
         airspeed = airspeed,

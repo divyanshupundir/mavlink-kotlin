@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * ASL-fixed-wing controller data
@@ -112,64 +111,65 @@ public data class AslctrlData(
 ) : MavMessage<AslctrlData> {
   public override val instanceCompanion: MavMessage.MavCompanion<AslctrlData> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(h)
-    outputBuffer.encodeFloat(href)
-    outputBuffer.encodeFloat(hrefT)
-    outputBuffer.encodeFloat(pitchangle)
-    outputBuffer.encodeFloat(pitchangleref)
-    outputBuffer.encodeFloat(q)
-    outputBuffer.encodeFloat(qref)
-    outputBuffer.encodeFloat(uelev)
-    outputBuffer.encodeFloat(uthrot)
-    outputBuffer.encodeFloat(uthrot2)
-    outputBuffer.encodeFloat(nz)
-    outputBuffer.encodeFloat(airspeedref)
-    outputBuffer.encodeFloat(yawangle)
-    outputBuffer.encodeFloat(yawangleref)
-    outputBuffer.encodeFloat(rollangle)
-    outputBuffer.encodeFloat(rollangleref)
-    outputBuffer.encodeFloat(p)
-    outputBuffer.encodeFloat(pref)
-    outputBuffer.encodeFloat(r)
-    outputBuffer.encodeFloat(rref)
-    outputBuffer.encodeFloat(uail)
-    outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUInt8(aslctrlMode)
-    outputBuffer.encodeUInt8(spoilersengaged)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(h)
+    output.encodeFloat(href)
+    output.encodeFloat(hrefT)
+    output.encodeFloat(pitchangle)
+    output.encodeFloat(pitchangleref)
+    output.encodeFloat(q)
+    output.encodeFloat(qref)
+    output.encodeFloat(uelev)
+    output.encodeFloat(uthrot)
+    output.encodeFloat(uthrot2)
+    output.encodeFloat(nz)
+    output.encodeFloat(airspeedref)
+    output.encodeFloat(yawangle)
+    output.encodeFloat(yawangleref)
+    output.encodeFloat(rollangle)
+    output.encodeFloat(rollangleref)
+    output.encodeFloat(p)
+    output.encodeFloat(pref)
+    output.encodeFloat(r)
+    output.encodeFloat(rref)
+    output.encodeFloat(uail)
+    output.encodeFloat(urud)
+    output.encodeUInt8(aslctrlMode)
+    output.encodeUInt8(spoilersengaged)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(h)
-    outputBuffer.encodeFloat(href)
-    outputBuffer.encodeFloat(hrefT)
-    outputBuffer.encodeFloat(pitchangle)
-    outputBuffer.encodeFloat(pitchangleref)
-    outputBuffer.encodeFloat(q)
-    outputBuffer.encodeFloat(qref)
-    outputBuffer.encodeFloat(uelev)
-    outputBuffer.encodeFloat(uthrot)
-    outputBuffer.encodeFloat(uthrot2)
-    outputBuffer.encodeFloat(nz)
-    outputBuffer.encodeFloat(airspeedref)
-    outputBuffer.encodeFloat(yawangle)
-    outputBuffer.encodeFloat(yawangleref)
-    outputBuffer.encodeFloat(rollangle)
-    outputBuffer.encodeFloat(rollangleref)
-    outputBuffer.encodeFloat(p)
-    outputBuffer.encodeFloat(pref)
-    outputBuffer.encodeFloat(r)
-    outputBuffer.encodeFloat(rref)
-    outputBuffer.encodeFloat(uail)
-    outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUInt8(aslctrlMode)
-    outputBuffer.encodeUInt8(spoilersengaged)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(h)
+    output.encodeFloat(href)
+    output.encodeFloat(hrefT)
+    output.encodeFloat(pitchangle)
+    output.encodeFloat(pitchangleref)
+    output.encodeFloat(q)
+    output.encodeFloat(qref)
+    output.encodeFloat(uelev)
+    output.encodeFloat(uthrot)
+    output.encodeFloat(uthrot2)
+    output.encodeFloat(nz)
+    output.encodeFloat(airspeedref)
+    output.encodeFloat(yawangle)
+    output.encodeFloat(yawangleref)
+    output.encodeFloat(rollangle)
+    output.encodeFloat(rollangleref)
+    output.encodeFloat(p)
+    output.encodeFloat(pref)
+    output.encodeFloat(r)
+    output.encodeFloat(rref)
+    output.encodeFloat(uail)
+    output.encodeFloat(urud)
+    output.encodeUInt8(aslctrlMode)
+    output.encodeUInt8(spoilersengaged)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<AslctrlData> {
@@ -181,33 +181,32 @@ public data class AslctrlData(
 
     public override val crcExtra: Byte = -84
 
-    public override fun deserialize(bytes: ByteArray): AslctrlData {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val h = inputBuffer.decodeFloat()
-      val href = inputBuffer.decodeFloat()
-      val hrefT = inputBuffer.decodeFloat()
-      val pitchangle = inputBuffer.decodeFloat()
-      val pitchangleref = inputBuffer.decodeFloat()
-      val q = inputBuffer.decodeFloat()
-      val qref = inputBuffer.decodeFloat()
-      val uelev = inputBuffer.decodeFloat()
-      val uthrot = inputBuffer.decodeFloat()
-      val uthrot2 = inputBuffer.decodeFloat()
-      val nz = inputBuffer.decodeFloat()
-      val airspeedref = inputBuffer.decodeFloat()
-      val yawangle = inputBuffer.decodeFloat()
-      val yawangleref = inputBuffer.decodeFloat()
-      val rollangle = inputBuffer.decodeFloat()
-      val rollangleref = inputBuffer.decodeFloat()
-      val p = inputBuffer.decodeFloat()
-      val pref = inputBuffer.decodeFloat()
-      val r = inputBuffer.decodeFloat()
-      val rref = inputBuffer.decodeFloat()
-      val uail = inputBuffer.decodeFloat()
-      val urud = inputBuffer.decodeFloat()
-      val aslctrlMode = inputBuffer.decodeUInt8()
-      val spoilersengaged = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): AslctrlData {
+      val timestamp = source.decodeUInt64()
+      val h = source.decodeFloat()
+      val href = source.decodeFloat()
+      val hrefT = source.decodeFloat()
+      val pitchangle = source.decodeFloat()
+      val pitchangleref = source.decodeFloat()
+      val q = source.decodeFloat()
+      val qref = source.decodeFloat()
+      val uelev = source.decodeFloat()
+      val uthrot = source.decodeFloat()
+      val uthrot2 = source.decodeFloat()
+      val nz = source.decodeFloat()
+      val airspeedref = source.decodeFloat()
+      val yawangle = source.decodeFloat()
+      val yawangleref = source.decodeFloat()
+      val rollangle = source.decodeFloat()
+      val rollangleref = source.decodeFloat()
+      val p = source.decodeFloat()
+      val pref = source.decodeFloat()
+      val r = source.decodeFloat()
+      val rref = source.decodeFloat()
+      val uail = source.decodeFloat()
+      val urud = source.decodeFloat()
+      val aslctrlMode = source.decodeUInt8()
+      val spoilersengaged = source.decodeUInt8()
 
       return AslctrlData(
         timestamp = timestamp,

@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * A certain mission item has been reached. The system will either hold this position (or circle on
@@ -32,16 +31,17 @@ public data class MissionItemReached(
 ) : MavMessage<MissionItemReached> {
   public override val instanceCompanion: MavMessage.MavCompanion<MissionItemReached> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seq)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(seq)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seq)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(seq)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<MissionItemReached> {
@@ -53,9 +53,8 @@ public data class MissionItemReached(
 
     public override val crcExtra: Byte = 11
 
-    public override fun deserialize(bytes: ByteArray): MissionItemReached {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val seq = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): MissionItemReached {
+      val seq = source.decodeUInt16()
 
       return MissionItemReached(
         seq = seq,

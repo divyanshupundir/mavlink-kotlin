@@ -10,14 +10,13 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  *  Drone position.
@@ -61,26 +60,27 @@ public data class AvssDronePosition(
 ) : MavMessage<AvssDronePosition> {
   public override val instanceCompanion: MavMessage.MavCompanion<AvssDronePosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeFloat(groundAlt)
-    outputBuffer.encodeFloat(barometerAlt)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeInt32(alt)
+    output.encodeFloat(groundAlt)
+    output.encodeFloat(barometerAlt)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeFloat(groundAlt)
-    outputBuffer.encodeFloat(barometerAlt)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeInt32(alt)
+    output.encodeFloat(groundAlt)
+    output.encodeFloat(barometerAlt)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<AvssDronePosition> {
@@ -92,14 +92,13 @@ public data class AvssDronePosition(
 
     public override val crcExtra: Byte = -11
 
-    public override fun deserialize(bytes: ByteArray): AvssDronePosition {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val alt = inputBuffer.decodeInt32()
-      val groundAlt = inputBuffer.decodeFloat()
-      val barometerAlt = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): AvssDronePosition {
+      val timeBootMs = source.decodeUInt32()
+      val lat = source.decodeInt32()
+      val lon = source.decodeInt32()
+      val alt = source.decodeInt32()
+      val groundAlt = source.decodeFloat()
+      val barometerAlt = source.decodeFloat()
 
       return AvssDronePosition(
         timeBootMs = timeBootMs,

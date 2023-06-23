@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Status of compassmot calibration.
@@ -59,26 +58,27 @@ public data class CompassmotStatus(
 ) : MavMessage<CompassmotStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<CompassmotStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(current)
-    outputBuffer.encodeFloat(compensationx)
-    outputBuffer.encodeFloat(compensationy)
-    outputBuffer.encodeFloat(compensationz)
-    outputBuffer.encodeUInt16(throttle)
-    outputBuffer.encodeUInt16(interference)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(current)
+    output.encodeFloat(compensationx)
+    output.encodeFloat(compensationy)
+    output.encodeFloat(compensationz)
+    output.encodeUInt16(throttle)
+    output.encodeUInt16(interference)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(current)
-    outputBuffer.encodeFloat(compensationx)
-    outputBuffer.encodeFloat(compensationy)
-    outputBuffer.encodeFloat(compensationz)
-    outputBuffer.encodeUInt16(throttle)
-    outputBuffer.encodeUInt16(interference)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(current)
+    output.encodeFloat(compensationx)
+    output.encodeFloat(compensationy)
+    output.encodeFloat(compensationz)
+    output.encodeUInt16(throttle)
+    output.encodeUInt16(interference)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CompassmotStatus> {
@@ -90,14 +90,13 @@ public data class CompassmotStatus(
 
     public override val crcExtra: Byte = -16
 
-    public override fun deserialize(bytes: ByteArray): CompassmotStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val current = inputBuffer.decodeFloat()
-      val compensationx = inputBuffer.decodeFloat()
-      val compensationy = inputBuffer.decodeFloat()
-      val compensationz = inputBuffer.decodeFloat()
-      val throttle = inputBuffer.decodeUInt16()
-      val interference = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): CompassmotStatus {
+      val current = source.decodeFloat()
+      val compensationx = source.decodeFloat()
+      val compensationy = source.decodeFloat()
+      val compensationz = source.decodeFloat()
+      val throttle = source.decodeUInt16()
+      val interference = source.decodeUInt16()
 
       return CompassmotStatus(
         throttle = throttle,

@@ -12,14 +12,13 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
@@ -100,40 +99,41 @@ public data class CameraTrackingGeoStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeFloat(alt)
-    outputBuffer.encodeFloat(hAcc)
-    outputBuffer.encodeFloat(vAcc)
-    outputBuffer.encodeFloat(velN)
-    outputBuffer.encodeFloat(velE)
-    outputBuffer.encodeFloat(velD)
-    outputBuffer.encodeFloat(velAcc)
-    outputBuffer.encodeFloat(dist)
-    outputBuffer.encodeFloat(hdg)
-    outputBuffer.encodeFloat(hdgAcc)
-    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeFloat(alt)
+    output.encodeFloat(hAcc)
+    output.encodeFloat(vAcc)
+    output.encodeFloat(velN)
+    output.encodeFloat(velE)
+    output.encodeFloat(velD)
+    output.encodeFloat(velAcc)
+    output.encodeFloat(dist)
+    output.encodeFloat(hdg)
+    output.encodeFloat(hdgAcc)
+    output.encodeEnumValue(trackingStatus.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeFloat(alt)
-    outputBuffer.encodeFloat(hAcc)
-    outputBuffer.encodeFloat(vAcc)
-    outputBuffer.encodeFloat(velN)
-    outputBuffer.encodeFloat(velE)
-    outputBuffer.encodeFloat(velD)
-    outputBuffer.encodeFloat(velAcc)
-    outputBuffer.encodeFloat(dist)
-    outputBuffer.encodeFloat(hdg)
-    outputBuffer.encodeFloat(hdgAcc)
-    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeFloat(alt)
+    output.encodeFloat(hAcc)
+    output.encodeFloat(vAcc)
+    output.encodeFloat(velN)
+    output.encodeFloat(velE)
+    output.encodeFloat(velD)
+    output.encodeFloat(velAcc)
+    output.encodeFloat(dist)
+    output.encodeFloat(hdg)
+    output.encodeFloat(hdgAcc)
+    output.encodeEnumValue(trackingStatus.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrackingGeoStatus> {
@@ -145,21 +145,20 @@ public data class CameraTrackingGeoStatus(
 
     public override val crcExtra: Byte = 18
 
-    public override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val alt = inputBuffer.decodeFloat()
-      val hAcc = inputBuffer.decodeFloat()
-      val vAcc = inputBuffer.decodeFloat()
-      val velN = inputBuffer.decodeFloat()
-      val velE = inputBuffer.decodeFloat()
-      val velD = inputBuffer.decodeFloat()
-      val velAcc = inputBuffer.decodeFloat()
-      val dist = inputBuffer.decodeFloat()
-      val hdg = inputBuffer.decodeFloat()
-      val hdgAcc = inputBuffer.decodeFloat()
-      val trackingStatus = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): CameraTrackingGeoStatus {
+      val lat = source.decodeInt32()
+      val lon = source.decodeInt32()
+      val alt = source.decodeFloat()
+      val hAcc = source.decodeFloat()
+      val vAcc = source.decodeFloat()
+      val velN = source.decodeFloat()
+      val velE = source.decodeFloat()
+      val velD = source.decodeFloat()
+      val velAcc = source.decodeFloat()
+      val dist = source.decodeFloat()
+      val hdg = source.decodeFloat()
+      val hdgAcc = source.decodeFloat()
+      val trackingStatus = source.decodeEnumValue(1).let { value ->
         val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

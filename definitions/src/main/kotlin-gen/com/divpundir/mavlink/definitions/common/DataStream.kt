@@ -8,16 +8,15 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Data stream status information.
@@ -46,20 +45,21 @@ public data class DataStream(
 ) : MavMessage<DataStream> {
   public override val instanceCompanion: MavMessage.MavCompanion<DataStream> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(messageRate)
-    outputBuffer.encodeUInt8(streamId)
-    outputBuffer.encodeUInt8(onOff)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(messageRate)
+    output.encodeUInt8(streamId)
+    output.encodeUInt8(onOff)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(messageRate)
-    outputBuffer.encodeUInt8(streamId)
-    outputBuffer.encodeUInt8(onOff)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(messageRate)
+    output.encodeUInt8(streamId)
+    output.encodeUInt8(onOff)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<DataStream> {
@@ -71,11 +71,10 @@ public data class DataStream(
 
     public override val crcExtra: Byte = 21
 
-    public override fun deserialize(bytes: ByteArray): DataStream {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val messageRate = inputBuffer.decodeUInt16()
-      val streamId = inputBuffer.decodeUInt8()
-      val onOff = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): DataStream {
+      val messageRate = source.decodeUInt16()
+      val streamId = source.decodeUInt8()
+      val onOff = source.decodeUInt8()
 
       return DataStream(
         streamId = streamId,

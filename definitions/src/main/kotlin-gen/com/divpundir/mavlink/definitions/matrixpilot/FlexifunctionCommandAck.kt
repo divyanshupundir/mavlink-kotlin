@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Acknowldge sucess or failure of a flexifunction command
@@ -37,18 +36,19 @@ public data class FlexifunctionCommandAck(
   public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommandAck> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(commandType)
-    outputBuffer.encodeUInt16(result)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(commandType)
+    output.encodeUInt16(result)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(commandType)
-    outputBuffer.encodeUInt16(result)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(commandType)
+    output.encodeUInt16(result)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<FlexifunctionCommandAck> {
@@ -60,10 +60,9 @@ public data class FlexifunctionCommandAck(
 
     public override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionCommandAck {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val commandType = inputBuffer.decodeUInt16()
-      val result = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): FlexifunctionCommandAck {
+      val commandType = source.decodeUInt16()
+      val result = source.decodeUInt16()
 
       return FlexifunctionCommandAck(
         commandType = commandType,

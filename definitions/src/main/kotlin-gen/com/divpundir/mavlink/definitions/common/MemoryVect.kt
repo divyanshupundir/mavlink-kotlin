@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Send raw controller memory. The use of this message is discouraged for normal packets, but a
@@ -54,22 +53,23 @@ public data class MemoryVect(
 ) : MavMessage<MemoryVect> {
   public override val instanceCompanion: MavMessage.MavCompanion<MemoryVect> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(address)
-    outputBuffer.encodeUInt8(ver)
-    outputBuffer.encodeUInt8(type)
-    outputBuffer.encodeInt8Array(value, 32)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(address)
+    output.encodeUInt8(ver)
+    output.encodeUInt8(type)
+    output.encodeInt8Array(value, 32)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(address)
-    outputBuffer.encodeUInt8(ver)
-    outputBuffer.encodeUInt8(type)
-    outputBuffer.encodeInt8Array(value, 32)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(address)
+    output.encodeUInt8(ver)
+    output.encodeUInt8(type)
+    output.encodeInt8Array(value, 32)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<MemoryVect> {
@@ -81,12 +81,11 @@ public data class MemoryVect(
 
     public override val crcExtra: Byte = -52
 
-    public override fun deserialize(bytes: ByteArray): MemoryVect {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val address = inputBuffer.decodeUInt16()
-      val ver = inputBuffer.decodeUInt8()
-      val type = inputBuffer.decodeUInt8()
-      val value = inputBuffer.decodeInt8Array(32)
+    public override fun deserialize(source: BufferedSource): MemoryVect {
+      val address = source.decodeUInt16()
+      val ver = source.decodeUInt8()
+      val type = source.decodeUInt8()
+      val value = source.decodeInt8Array(32)
 
       return MemoryVect(
         address = address,

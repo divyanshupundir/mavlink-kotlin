@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * 100 Hz gimbal torque command telemetry.
@@ -54,24 +53,25 @@ public data class GimbalTorqueCmdReport(
 ) : MavMessage<GimbalTorqueCmdReport> {
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalTorqueCmdReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(rlTorqueCmd)
-    outputBuffer.encodeInt16(elTorqueCmd)
-    outputBuffer.encodeInt16(azTorqueCmd)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(rlTorqueCmd)
+    output.encodeInt16(elTorqueCmd)
+    output.encodeInt16(azTorqueCmd)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(rlTorqueCmd)
-    outputBuffer.encodeInt16(elTorqueCmd)
-    outputBuffer.encodeInt16(azTorqueCmd)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(rlTorqueCmd)
+    output.encodeInt16(elTorqueCmd)
+    output.encodeInt16(azTorqueCmd)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GimbalTorqueCmdReport> {
@@ -83,13 +83,12 @@ public data class GimbalTorqueCmdReport(
 
     public override val crcExtra: Byte = 69
 
-    public override fun deserialize(bytes: ByteArray): GimbalTorqueCmdReport {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val rlTorqueCmd = inputBuffer.decodeInt16()
-      val elTorqueCmd = inputBuffer.decodeInt16()
-      val azTorqueCmd = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): GimbalTorqueCmdReport {
+      val rlTorqueCmd = source.decodeInt16()
+      val elTorqueCmd = source.decodeInt16()
+      val azTorqueCmd = source.decodeInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
 
       return GimbalTorqueCmdReport(
         targetSystem = targetSystem,

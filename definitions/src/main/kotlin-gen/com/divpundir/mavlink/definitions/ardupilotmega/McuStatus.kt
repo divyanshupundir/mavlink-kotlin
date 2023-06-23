@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The MCU status, giving MCU temperature and voltage. The min and max voltages are to allow for
@@ -58,24 +57,25 @@ public data class McuStatus(
 ) : MavMessage<McuStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<McuStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(mcuTemperature)
-    outputBuffer.encodeUInt16(mcuVoltage)
-    outputBuffer.encodeUInt16(mcuVoltageMin)
-    outputBuffer.encodeUInt16(mcuVoltageMax)
-    outputBuffer.encodeUInt8(id)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(mcuTemperature)
+    output.encodeUInt16(mcuVoltage)
+    output.encodeUInt16(mcuVoltageMin)
+    output.encodeUInt16(mcuVoltageMax)
+    output.encodeUInt8(id)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(mcuTemperature)
-    outputBuffer.encodeUInt16(mcuVoltage)
-    outputBuffer.encodeUInt16(mcuVoltageMin)
-    outputBuffer.encodeUInt16(mcuVoltageMax)
-    outputBuffer.encodeUInt8(id)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(mcuTemperature)
+    output.encodeUInt16(mcuVoltage)
+    output.encodeUInt16(mcuVoltageMin)
+    output.encodeUInt16(mcuVoltageMax)
+    output.encodeUInt8(id)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<McuStatus> {
@@ -87,13 +87,12 @@ public data class McuStatus(
 
     public override val crcExtra: Byte = -114
 
-    public override fun deserialize(bytes: ByteArray): McuStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mcuTemperature = inputBuffer.decodeInt16()
-      val mcuVoltage = inputBuffer.decodeUInt16()
-      val mcuVoltageMin = inputBuffer.decodeUInt16()
-      val mcuVoltageMax = inputBuffer.decodeUInt16()
-      val id = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): McuStatus {
+      val mcuTemperature = source.decodeInt16()
+      val mcuVoltage = source.decodeUInt16()
+      val mcuVoltageMin = source.decodeUInt16()
+      val mcuVoltageMax = source.decodeUInt16()
+      val id = source.decodeUInt8()
 
       return McuStatus(
         id = id,

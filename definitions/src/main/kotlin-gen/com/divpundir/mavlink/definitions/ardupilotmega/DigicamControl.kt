@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Control on-board Camera Control System to take shots.
@@ -82,34 +81,35 @@ public data class DigicamControl(
 ) : MavMessage<DigicamControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<DigicamControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(extraValue)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(session)
-    outputBuffer.encodeUInt8(zoomPos)
-    outputBuffer.encodeInt8(zoomStep)
-    outputBuffer.encodeUInt8(focusLock)
-    outputBuffer.encodeUInt8(shot)
-    outputBuffer.encodeUInt8(commandId)
-    outputBuffer.encodeUInt8(extraParam)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(extraValue)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(session)
+    output.encodeUInt8(zoomPos)
+    output.encodeInt8(zoomStep)
+    output.encodeUInt8(focusLock)
+    output.encodeUInt8(shot)
+    output.encodeUInt8(commandId)
+    output.encodeUInt8(extraParam)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(extraValue)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(session)
-    outputBuffer.encodeUInt8(zoomPos)
-    outputBuffer.encodeInt8(zoomStep)
-    outputBuffer.encodeUInt8(focusLock)
-    outputBuffer.encodeUInt8(shot)
-    outputBuffer.encodeUInt8(commandId)
-    outputBuffer.encodeUInt8(extraParam)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(extraValue)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(session)
+    output.encodeUInt8(zoomPos)
+    output.encodeInt8(zoomStep)
+    output.encodeUInt8(focusLock)
+    output.encodeUInt8(shot)
+    output.encodeUInt8(commandId)
+    output.encodeUInt8(extraParam)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<DigicamControl> {
@@ -121,18 +121,17 @@ public data class DigicamControl(
 
     public override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): DigicamControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val extraValue = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val session = inputBuffer.decodeUInt8()
-      val zoomPos = inputBuffer.decodeUInt8()
-      val zoomStep = inputBuffer.decodeInt8()
-      val focusLock = inputBuffer.decodeUInt8()
-      val shot = inputBuffer.decodeUInt8()
-      val commandId = inputBuffer.decodeUInt8()
-      val extraParam = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): DigicamControl {
+      val extraValue = source.decodeFloat()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val session = source.decodeUInt8()
+      val zoomPos = source.decodeUInt8()
+      val zoomStep = source.decodeInt8()
+      val focusLock = source.decodeUInt8()
+      val shot = source.decodeUInt8()
+      val commandId = source.decodeUInt8()
+      val extraParam = source.decodeUInt8()
 
       return DigicamControl(
         targetSystem = targetSystem,

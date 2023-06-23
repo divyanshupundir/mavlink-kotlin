@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Power supply status
@@ -44,20 +43,21 @@ public data class PowerStatus(
 ) : MavMessage<PowerStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<PowerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(vcc)
-    outputBuffer.encodeUInt16(vservo)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(vcc)
+    output.encodeUInt16(vservo)
+    output.encodeBitmaskValue(flags.value, 2)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(vcc)
-    outputBuffer.encodeUInt16(vservo)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(vcc)
+    output.encodeUInt16(vservo)
+    output.encodeBitmaskValue(flags.value, 2)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<PowerStatus> {
@@ -69,11 +69,10 @@ public data class PowerStatus(
 
     public override val crcExtra: Byte = -53
 
-    public override fun deserialize(bytes: ByteArray): PowerStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val vcc = inputBuffer.decodeUInt16()
-      val vservo = inputBuffer.decodeUInt16()
-      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(source: BufferedSource): PowerStatus {
+      val vcc = source.decodeUInt16()
+      val vservo = source.decodeUInt16()
+      val flags = source.decodeBitmaskValue(2).let { value ->
         val flags = MavPowerStatus.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

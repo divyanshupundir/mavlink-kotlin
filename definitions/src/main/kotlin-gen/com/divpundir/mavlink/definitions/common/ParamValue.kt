@@ -13,16 +13,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Emit the value of a onboard parameter. The inclusion of param_count and param_index in the
@@ -65,24 +64,25 @@ public data class ParamValue(
 ) : MavMessage<ParamValue> {
   public override val instanceCompanion: MavMessage.MavCompanion<ParamValue> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeUInt16(paramCount)
-    outputBuffer.encodeUInt16(paramIndex)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(paramType.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(paramValue)
+    output.encodeUInt16(paramCount)
+    output.encodeUInt16(paramIndex)
+    output.encodeString(paramId, 16)
+    output.encodeEnumValue(paramType.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(paramValue)
-    outputBuffer.encodeUInt16(paramCount)
-    outputBuffer.encodeUInt16(paramIndex)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(paramType.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(paramValue)
+    output.encodeUInt16(paramCount)
+    output.encodeUInt16(paramIndex)
+    output.encodeString(paramId, 16)
+    output.encodeEnumValue(paramType.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ParamValue> {
@@ -94,13 +94,12 @@ public data class ParamValue(
 
     public override val crcExtra: Byte = -36
 
-    public override fun deserialize(bytes: ByteArray): ParamValue {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val paramValue = inputBuffer.decodeFloat()
-      val paramCount = inputBuffer.decodeUInt16()
-      val paramIndex = inputBuffer.decodeUInt16()
-      val paramId = inputBuffer.decodeString(16)
-      val paramType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): ParamValue {
+      val paramValue = source.decodeFloat()
+      val paramCount = source.decodeUInt16()
+      val paramIndex = source.decodeUInt16()
+      val paramId = source.decodeString(16)
+      val paramType = source.decodeEnumValue(1).let { value ->
         val entry = MavParamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

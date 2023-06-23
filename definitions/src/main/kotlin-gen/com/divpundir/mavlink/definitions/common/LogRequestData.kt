@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request a chunk of a log
@@ -56,24 +55,25 @@ public data class LogRequestData(
 ) : MavMessage<LogRequestData> {
   public override val instanceCompanion: MavMessage.MavCompanion<LogRequestData> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(ofs)
-    outputBuffer.encodeUInt32(count)
-    outputBuffer.encodeUInt16(id)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(ofs)
+    output.encodeUInt32(count)
+    output.encodeUInt16(id)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(ofs)
-    outputBuffer.encodeUInt32(count)
-    outputBuffer.encodeUInt16(id)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(ofs)
+    output.encodeUInt32(count)
+    output.encodeUInt16(id)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<LogRequestData> {
@@ -85,13 +85,12 @@ public data class LogRequestData(
 
     public override val crcExtra: Byte = 116
 
-    public override fun deserialize(bytes: ByteArray): LogRequestData {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val ofs = inputBuffer.decodeUInt32()
-      val count = inputBuffer.decodeUInt32()
-      val id = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): LogRequestData {
+      val ofs = source.decodeUInt32()
+      val count = source.decodeUInt32()
+      val id = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
 
       return LogRequestData(
         targetSystem = targetSystem,

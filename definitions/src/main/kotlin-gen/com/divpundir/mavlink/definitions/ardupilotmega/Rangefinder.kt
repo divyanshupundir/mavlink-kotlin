@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Rangefinder reporting.
@@ -36,18 +35,19 @@ public data class Rangefinder(
 ) : MavMessage<Rangefinder> {
   public override val instanceCompanion: MavMessage.MavCompanion<Rangefinder> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(distance)
-    outputBuffer.encodeFloat(voltage)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(distance)
+    output.encodeFloat(voltage)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(distance)
-    outputBuffer.encodeFloat(voltage)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(distance)
+    output.encodeFloat(voltage)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Rangefinder> {
@@ -59,10 +59,9 @@ public data class Rangefinder(
 
     public override val crcExtra: Byte = 83
 
-    public override fun deserialize(bytes: ByteArray): Rangefinder {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val distance = inputBuffer.decodeFloat()
-      val voltage = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): Rangefinder {
+      val distance = source.decodeFloat()
+      val voltage = source.decodeFloat()
 
       return Rangefinder(
         distance = distance,

@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request to control this MAV
@@ -52,22 +51,23 @@ public data class ChangeOperatorControl(
 ) : MavMessage<ChangeOperatorControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(controlRequest)
-    outputBuffer.encodeUInt8(version)
-    outputBuffer.encodeString(passkey, 25)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(controlRequest)
+    output.encodeUInt8(version)
+    output.encodeString(passkey, 25)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(controlRequest)
-    outputBuffer.encodeUInt8(version)
-    outputBuffer.encodeString(passkey, 25)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(controlRequest)
+    output.encodeUInt8(version)
+    output.encodeString(passkey, 25)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ChangeOperatorControl> {
@@ -79,12 +79,11 @@ public data class ChangeOperatorControl(
 
     public override val crcExtra: Byte = -39
 
-    public override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUInt8()
-      val controlRequest = inputBuffer.decodeUInt8()
-      val version = inputBuffer.decodeUInt8()
-      val passkey = inputBuffer.decodeString(25)
+    public override fun deserialize(source: BufferedSource): ChangeOperatorControl {
+      val targetSystem = source.decodeUInt8()
+      val controlRequest = source.decodeUInt8()
+      val version = source.decodeUInt8()
+      val passkey = source.decodeString(25)
 
       return ChangeOperatorControl(
         targetSystem = targetSystem,

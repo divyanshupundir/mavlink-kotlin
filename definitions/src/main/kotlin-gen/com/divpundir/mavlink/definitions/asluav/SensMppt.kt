@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -23,6 +20,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Maximum Power Point Tracker (MPPT) sensor data for solar module power performance tracking
@@ -100,40 +99,41 @@ public data class SensMppt(
 ) : MavMessage<SensMppt> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensMppt> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(mpptTimestamp)
-    outputBuffer.encodeFloat(mppt1Volt)
-    outputBuffer.encodeFloat(mppt1Amp)
-    outputBuffer.encodeFloat(mppt2Volt)
-    outputBuffer.encodeFloat(mppt2Amp)
-    outputBuffer.encodeFloat(mppt3Volt)
-    outputBuffer.encodeFloat(mppt3Amp)
-    outputBuffer.encodeUInt16(mppt1Pwm)
-    outputBuffer.encodeUInt16(mppt2Pwm)
-    outputBuffer.encodeUInt16(mppt3Pwm)
-    outputBuffer.encodeUInt8(mppt1Status)
-    outputBuffer.encodeUInt8(mppt2Status)
-    outputBuffer.encodeUInt8(mppt3Status)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(mpptTimestamp)
+    output.encodeFloat(mppt1Volt)
+    output.encodeFloat(mppt1Amp)
+    output.encodeFloat(mppt2Volt)
+    output.encodeFloat(mppt2Amp)
+    output.encodeFloat(mppt3Volt)
+    output.encodeFloat(mppt3Amp)
+    output.encodeUInt16(mppt1Pwm)
+    output.encodeUInt16(mppt2Pwm)
+    output.encodeUInt16(mppt3Pwm)
+    output.encodeUInt8(mppt1Status)
+    output.encodeUInt8(mppt2Status)
+    output.encodeUInt8(mppt3Status)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(mpptTimestamp)
-    outputBuffer.encodeFloat(mppt1Volt)
-    outputBuffer.encodeFloat(mppt1Amp)
-    outputBuffer.encodeFloat(mppt2Volt)
-    outputBuffer.encodeFloat(mppt2Amp)
-    outputBuffer.encodeFloat(mppt3Volt)
-    outputBuffer.encodeFloat(mppt3Amp)
-    outputBuffer.encodeUInt16(mppt1Pwm)
-    outputBuffer.encodeUInt16(mppt2Pwm)
-    outputBuffer.encodeUInt16(mppt3Pwm)
-    outputBuffer.encodeUInt8(mppt1Status)
-    outputBuffer.encodeUInt8(mppt2Status)
-    outputBuffer.encodeUInt8(mppt3Status)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(mpptTimestamp)
+    output.encodeFloat(mppt1Volt)
+    output.encodeFloat(mppt1Amp)
+    output.encodeFloat(mppt2Volt)
+    output.encodeFloat(mppt2Amp)
+    output.encodeFloat(mppt3Volt)
+    output.encodeFloat(mppt3Amp)
+    output.encodeUInt16(mppt1Pwm)
+    output.encodeUInt16(mppt2Pwm)
+    output.encodeUInt16(mppt3Pwm)
+    output.encodeUInt8(mppt1Status)
+    output.encodeUInt8(mppt2Status)
+    output.encodeUInt8(mppt3Status)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensMppt> {
@@ -145,21 +145,20 @@ public data class SensMppt(
 
     public override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): SensMppt {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mpptTimestamp = inputBuffer.decodeUInt64()
-      val mppt1Volt = inputBuffer.decodeFloat()
-      val mppt1Amp = inputBuffer.decodeFloat()
-      val mppt2Volt = inputBuffer.decodeFloat()
-      val mppt2Amp = inputBuffer.decodeFloat()
-      val mppt3Volt = inputBuffer.decodeFloat()
-      val mppt3Amp = inputBuffer.decodeFloat()
-      val mppt1Pwm = inputBuffer.decodeUInt16()
-      val mppt2Pwm = inputBuffer.decodeUInt16()
-      val mppt3Pwm = inputBuffer.decodeUInt16()
-      val mppt1Status = inputBuffer.decodeUInt8()
-      val mppt2Status = inputBuffer.decodeUInt8()
-      val mppt3Status = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): SensMppt {
+      val mpptTimestamp = source.decodeUInt64()
+      val mppt1Volt = source.decodeFloat()
+      val mppt1Amp = source.decodeFloat()
+      val mppt2Volt = source.decodeFloat()
+      val mppt2Amp = source.decodeFloat()
+      val mppt3Volt = source.decodeFloat()
+      val mppt3Amp = source.decodeFloat()
+      val mppt1Pwm = source.decodeUInt16()
+      val mppt2Pwm = source.decodeUInt16()
+      val mppt3Pwm = source.decodeUInt16()
+      val mppt1Status = source.decodeUInt8()
+      val mppt2Status = source.decodeUInt8()
+      val mppt3Status = source.decodeUInt8()
 
       return SensMppt(
         mpptTimestamp = mpptTimestamp,

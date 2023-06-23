@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F22 format
@@ -56,26 +55,27 @@ public data class SerialUdbExtraF22(
 ) : MavMessage<SerialUdbExtraF22> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF22> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(sueAccelXAtCalibration)
-    outputBuffer.encodeInt16(sueAccelYAtCalibration)
-    outputBuffer.encodeInt16(sueAccelZAtCalibration)
-    outputBuffer.encodeInt16(sueGyroXAtCalibration)
-    outputBuffer.encodeInt16(sueGyroYAtCalibration)
-    outputBuffer.encodeInt16(sueGyroZAtCalibration)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(sueAccelXAtCalibration)
+    output.encodeInt16(sueAccelYAtCalibration)
+    output.encodeInt16(sueAccelZAtCalibration)
+    output.encodeInt16(sueGyroXAtCalibration)
+    output.encodeInt16(sueGyroYAtCalibration)
+    output.encodeInt16(sueGyroZAtCalibration)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(sueAccelXAtCalibration)
-    outputBuffer.encodeInt16(sueAccelYAtCalibration)
-    outputBuffer.encodeInt16(sueAccelZAtCalibration)
-    outputBuffer.encodeInt16(sueGyroXAtCalibration)
-    outputBuffer.encodeInt16(sueGyroYAtCalibration)
-    outputBuffer.encodeInt16(sueGyroZAtCalibration)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(sueAccelXAtCalibration)
+    output.encodeInt16(sueAccelYAtCalibration)
+    output.encodeInt16(sueAccelZAtCalibration)
+    output.encodeInt16(sueGyroXAtCalibration)
+    output.encodeInt16(sueGyroYAtCalibration)
+    output.encodeInt16(sueGyroZAtCalibration)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF22> {
@@ -87,14 +87,13 @@ public data class SerialUdbExtraF22(
 
     public override val crcExtra: Byte = 91
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF22 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueAccelXAtCalibration = inputBuffer.decodeInt16()
-      val sueAccelYAtCalibration = inputBuffer.decodeInt16()
-      val sueAccelZAtCalibration = inputBuffer.decodeInt16()
-      val sueGyroXAtCalibration = inputBuffer.decodeInt16()
-      val sueGyroYAtCalibration = inputBuffer.decodeInt16()
-      val sueGyroZAtCalibration = inputBuffer.decodeInt16()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF22 {
+      val sueAccelXAtCalibration = source.decodeInt16()
+      val sueAccelYAtCalibration = source.decodeInt16()
+      val sueAccelZAtCalibration = source.decodeInt16()
+      val sueGyroXAtCalibration = source.decodeInt16()
+      val sueGyroYAtCalibration = source.decodeInt16()
+      val sueGyroZAtCalibration = source.decodeInt16()
 
       return SerialUdbExtraF22(
         sueAccelXAtCalibration = sueAccelXAtCalibration,

@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Offsets and calibrations values for hardware sensors. This makes it easier to debug the
@@ -92,38 +91,39 @@ public data class SensorOffsets(
 ) : MavMessage<SensorOffsets> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensorOffsets> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(magDeclination)
-    outputBuffer.encodeInt32(rawPress)
-    outputBuffer.encodeInt32(rawTemp)
-    outputBuffer.encodeFloat(gyroCalX)
-    outputBuffer.encodeFloat(gyroCalY)
-    outputBuffer.encodeFloat(gyroCalZ)
-    outputBuffer.encodeFloat(accelCalX)
-    outputBuffer.encodeFloat(accelCalY)
-    outputBuffer.encodeFloat(accelCalZ)
-    outputBuffer.encodeInt16(magOfsX)
-    outputBuffer.encodeInt16(magOfsY)
-    outputBuffer.encodeInt16(magOfsZ)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(magDeclination)
+    output.encodeInt32(rawPress)
+    output.encodeInt32(rawTemp)
+    output.encodeFloat(gyroCalX)
+    output.encodeFloat(gyroCalY)
+    output.encodeFloat(gyroCalZ)
+    output.encodeFloat(accelCalX)
+    output.encodeFloat(accelCalY)
+    output.encodeFloat(accelCalZ)
+    output.encodeInt16(magOfsX)
+    output.encodeInt16(magOfsY)
+    output.encodeInt16(magOfsZ)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(magDeclination)
-    outputBuffer.encodeInt32(rawPress)
-    outputBuffer.encodeInt32(rawTemp)
-    outputBuffer.encodeFloat(gyroCalX)
-    outputBuffer.encodeFloat(gyroCalY)
-    outputBuffer.encodeFloat(gyroCalZ)
-    outputBuffer.encodeFloat(accelCalX)
-    outputBuffer.encodeFloat(accelCalY)
-    outputBuffer.encodeFloat(accelCalZ)
-    outputBuffer.encodeInt16(magOfsX)
-    outputBuffer.encodeInt16(magOfsY)
-    outputBuffer.encodeInt16(magOfsZ)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(magDeclination)
+    output.encodeInt32(rawPress)
+    output.encodeInt32(rawTemp)
+    output.encodeFloat(gyroCalX)
+    output.encodeFloat(gyroCalY)
+    output.encodeFloat(gyroCalZ)
+    output.encodeFloat(accelCalX)
+    output.encodeFloat(accelCalY)
+    output.encodeFloat(accelCalZ)
+    output.encodeInt16(magOfsX)
+    output.encodeInt16(magOfsY)
+    output.encodeInt16(magOfsZ)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensorOffsets> {
@@ -135,20 +135,19 @@ public data class SensorOffsets(
 
     public override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): SensorOffsets {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val magDeclination = inputBuffer.decodeFloat()
-      val rawPress = inputBuffer.decodeInt32()
-      val rawTemp = inputBuffer.decodeInt32()
-      val gyroCalX = inputBuffer.decodeFloat()
-      val gyroCalY = inputBuffer.decodeFloat()
-      val gyroCalZ = inputBuffer.decodeFloat()
-      val accelCalX = inputBuffer.decodeFloat()
-      val accelCalY = inputBuffer.decodeFloat()
-      val accelCalZ = inputBuffer.decodeFloat()
-      val magOfsX = inputBuffer.decodeInt16()
-      val magOfsY = inputBuffer.decodeInt16()
-      val magOfsZ = inputBuffer.decodeInt16()
+    public override fun deserialize(source: BufferedSource): SensorOffsets {
+      val magDeclination = source.decodeFloat()
+      val rawPress = source.decodeInt32()
+      val rawTemp = source.decodeInt32()
+      val gyroCalX = source.decodeFloat()
+      val gyroCalY = source.decodeFloat()
+      val gyroCalZ = source.decodeFloat()
+      val accelCalX = source.decodeFloat()
+      val accelCalY = source.decodeFloat()
+      val accelCalZ = source.decodeFloat()
+      val magOfsX = source.decodeInt16()
+      val magOfsY = source.decodeInt16()
+      val magOfsZ = source.decodeInt16()
 
       return SensorOffsets(
         magOfsX = magOfsX,

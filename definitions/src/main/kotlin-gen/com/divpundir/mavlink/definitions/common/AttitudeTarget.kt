@@ -13,15 +13,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Reports the current commanded attitude of the vehicle as specified by the autopilot. This should
@@ -71,28 +70,29 @@ public data class AttitudeTarget(
 ) : MavMessage<AttitudeTarget> {
   public override val instanceCompanion: MavMessage.MavCompanion<AttitudeTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(bodyRollRate)
-    outputBuffer.encodeFloat(bodyPitchRate)
-    outputBuffer.encodeFloat(bodyYawRate)
-    outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeBitmaskValue(typeMask.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(bodyRollRate)
+    output.encodeFloat(bodyPitchRate)
+    output.encodeFloat(bodyYawRate)
+    output.encodeFloat(thrust)
+    output.encodeBitmaskValue(typeMask.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(bodyRollRate)
-    outputBuffer.encodeFloat(bodyPitchRate)
-    outputBuffer.encodeFloat(bodyYawRate)
-    outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeBitmaskValue(typeMask.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(bodyRollRate)
+    output.encodeFloat(bodyPitchRate)
+    output.encodeFloat(bodyYawRate)
+    output.encodeFloat(thrust)
+    output.encodeBitmaskValue(typeMask.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<AttitudeTarget> {
@@ -104,15 +104,14 @@ public data class AttitudeTarget(
 
     public override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): AttitudeTarget {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val q = inputBuffer.decodeFloatArray(16)
-      val bodyRollRate = inputBuffer.decodeFloat()
-      val bodyPitchRate = inputBuffer.decodeFloat()
-      val bodyYawRate = inputBuffer.decodeFloat()
-      val thrust = inputBuffer.decodeFloat()
-      val typeMask = inputBuffer.decodeBitmaskValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): AttitudeTarget {
+      val timeBootMs = source.decodeUInt32()
+      val q = source.decodeFloatArray(16)
+      val bodyRollRate = source.decodeFloat()
+      val bodyPitchRate = source.decodeFloat()
+      val bodyYawRate = source.decodeFloat()
+      val thrust = source.decodeFloat()
+      val typeMask = source.decodeBitmaskValue(1).let { value ->
         val flags = AttitudeTargetTypemask.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

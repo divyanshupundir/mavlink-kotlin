@@ -15,10 +15,7 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -26,6 +23,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
@@ -128,36 +127,37 @@ public data class LandingTarget(
 ) : MavMessage<LandingTarget> {
   public override val instanceCompanion: MavMessage.MavCompanion<LandingTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(angleX)
-    outputBuffer.encodeFloat(angleY)
-    outputBuffer.encodeFloat(distance)
-    outputBuffer.encodeFloat(sizeX)
-    outputBuffer.encodeFloat(sizeY)
-    outputBuffer.encodeUInt8(targetNum)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(angleX)
+    output.encodeFloat(angleY)
+    output.encodeFloat(distance)
+    output.encodeFloat(sizeX)
+    output.encodeFloat(sizeY)
+    output.encodeUInt8(targetNum)
+    output.encodeEnumValue(frame.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(angleX)
-    outputBuffer.encodeFloat(angleY)
-    outputBuffer.encodeFloat(distance)
-    outputBuffer.encodeFloat(sizeX)
-    outputBuffer.encodeFloat(sizeY)
-    outputBuffer.encodeUInt8(targetNum)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(positionValid)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(angleX)
+    output.encodeFloat(angleY)
+    output.encodeFloat(distance)
+    output.encodeFloat(sizeX)
+    output.encodeFloat(sizeY)
+    output.encodeUInt8(targetNum)
+    output.encodeEnumValue(frame.value, 1)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloatArray(q, 16)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeUInt8(positionValid)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<LandingTarget> {
@@ -169,28 +169,27 @@ public data class LandingTarget(
 
     public override val crcExtra: Byte = -56
 
-    public override fun deserialize(bytes: ByteArray): LandingTarget {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val angleX = inputBuffer.decodeFloat()
-      val angleY = inputBuffer.decodeFloat()
-      val distance = inputBuffer.decodeFloat()
-      val sizeX = inputBuffer.decodeFloat()
-      val sizeY = inputBuffer.decodeFloat()
-      val targetNum = inputBuffer.decodeUInt8()
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): LandingTarget {
+      val timeUsec = source.decodeUInt64()
+      val angleX = source.decodeFloat()
+      val angleY = source.decodeFloat()
+      val distance = source.decodeFloat()
+      val sizeX = source.decodeFloat()
+      val sizeY = source.decodeFloat()
+      val targetNum = source.decodeUInt8()
+      val frame = source.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val q = inputBuffer.decodeFloatArray(16)
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val x = source.decodeFloat()
+      val y = source.decodeFloat()
+      val z = source.decodeFloat()
+      val q = source.decodeFloatArray(16)
+      val type = source.decodeEnumValue(1).let { value ->
         val entry = LandingTargetType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val positionValid = inputBuffer.decodeUInt8()
+      val positionValid = source.decodeUInt8()
 
       return LandingTarget(
         timeUsec = timeUsec,

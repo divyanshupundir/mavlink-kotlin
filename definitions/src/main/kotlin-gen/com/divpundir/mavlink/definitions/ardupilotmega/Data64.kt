@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Data packet, size 64.
@@ -44,20 +43,21 @@ public data class Data64(
 ) : MavMessage<Data64> {
   public override val instanceCompanion: MavMessage.MavCompanion<Data64> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(type)
-    outputBuffer.encodeUInt8(len)
-    outputBuffer.encodeUInt8Array(data, 64)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(type)
+    output.encodeUInt8(len)
+    output.encodeUInt8Array(data, 64)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(type)
-    outputBuffer.encodeUInt8(len)
-    outputBuffer.encodeUInt8Array(data, 64)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(type)
+    output.encodeUInt8(len)
+    output.encodeUInt8Array(data, 64)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Data64> {
@@ -69,11 +69,10 @@ public data class Data64(
 
     public override val crcExtra: Byte = -75
 
-    public override fun deserialize(bytes: ByteArray): Data64 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val type = inputBuffer.decodeUInt8()
-      val len = inputBuffer.decodeUInt8()
-      val data = inputBuffer.decodeUInt8Array(64)
+    public override fun deserialize(source: BufferedSource): Data64 {
+      val type = source.decodeUInt8()
+      val len = source.decodeUInt8()
+      val data = source.decodeUInt8Array(64)
 
       return Data64(
         type = type,

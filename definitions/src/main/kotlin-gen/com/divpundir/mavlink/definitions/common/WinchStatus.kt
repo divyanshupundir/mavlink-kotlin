@@ -13,16 +13,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Winch status.
@@ -76,30 +75,31 @@ public data class WinchStatus(
 ) : MavMessage<WinchStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<WinchStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(lineLength)
-    outputBuffer.encodeFloat(speed)
-    outputBuffer.encodeFloat(tension)
-    outputBuffer.encodeFloat(voltage)
-    outputBuffer.encodeFloat(current)
-    outputBuffer.encodeBitmaskValue(status.value, 4)
-    outputBuffer.encodeInt16(temperature)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(lineLength)
+    output.encodeFloat(speed)
+    output.encodeFloat(tension)
+    output.encodeFloat(voltage)
+    output.encodeFloat(current)
+    output.encodeBitmaskValue(status.value, 4)
+    output.encodeInt16(temperature)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(lineLength)
-    outputBuffer.encodeFloat(speed)
-    outputBuffer.encodeFloat(tension)
-    outputBuffer.encodeFloat(voltage)
-    outputBuffer.encodeFloat(current)
-    outputBuffer.encodeBitmaskValue(status.value, 4)
-    outputBuffer.encodeInt16(temperature)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(lineLength)
+    output.encodeFloat(speed)
+    output.encodeFloat(tension)
+    output.encodeFloat(voltage)
+    output.encodeFloat(current)
+    output.encodeBitmaskValue(status.value, 4)
+    output.encodeInt16(temperature)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<WinchStatus> {
@@ -111,19 +111,18 @@ public data class WinchStatus(
 
     public override val crcExtra: Byte = 117
 
-    public override fun deserialize(bytes: ByteArray): WinchStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val lineLength = inputBuffer.decodeFloat()
-      val speed = inputBuffer.decodeFloat()
-      val tension = inputBuffer.decodeFloat()
-      val voltage = inputBuffer.decodeFloat()
-      val current = inputBuffer.decodeFloat()
-      val status = inputBuffer.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(source: BufferedSource): WinchStatus {
+      val timeUsec = source.decodeUInt64()
+      val lineLength = source.decodeFloat()
+      val speed = source.decodeFloat()
+      val tension = source.decodeFloat()
+      val voltage = source.decodeFloat()
+      val current = source.decodeFloat()
+      val status = source.decodeBitmaskValue(4).let { value ->
         val flags = MavWinchStatusFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val temperature = inputBuffer.decodeInt16()
+      val temperature = source.decodeInt16()
 
       return WinchStatus(
         timeUsec = timeUsec,

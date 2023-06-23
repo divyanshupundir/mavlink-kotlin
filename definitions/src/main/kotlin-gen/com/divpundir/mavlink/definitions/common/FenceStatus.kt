@@ -13,15 +13,14 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
@@ -62,23 +61,24 @@ public data class FenceStatus(
 ) : MavMessage<FenceStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(breachTime)
-    outputBuffer.encodeUInt16(breachCount)
-    outputBuffer.encodeUInt8(breachStatus)
-    outputBuffer.encodeEnumValue(breachType.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(breachTime)
+    output.encodeUInt16(breachCount)
+    output.encodeUInt8(breachStatus)
+    output.encodeEnumValue(breachType.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(breachTime)
-    outputBuffer.encodeUInt16(breachCount)
-    outputBuffer.encodeUInt8(breachStatus)
-    outputBuffer.encodeEnumValue(breachType.value, 1)
-    outputBuffer.encodeEnumValue(breachMitigation.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(breachTime)
+    output.encodeUInt16(breachCount)
+    output.encodeUInt8(breachStatus)
+    output.encodeEnumValue(breachType.value, 1)
+    output.encodeEnumValue(breachMitigation.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<FenceStatus> {
@@ -90,16 +90,15 @@ public data class FenceStatus(
 
     public override val crcExtra: Byte = -67
 
-    public override fun deserialize(bytes: ByteArray): FenceStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val breachTime = inputBuffer.decodeUInt32()
-      val breachCount = inputBuffer.decodeUInt16()
-      val breachStatus = inputBuffer.decodeUInt8()
-      val breachType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): FenceStatus {
+      val breachTime = source.decodeUInt32()
+      val breachCount = source.decodeUInt16()
+      val breachStatus = source.decodeUInt8()
+      val breachType = source.decodeEnumValue(1).let { value ->
         val entry = FenceBreach.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val breachMitigation = inputBuffer.decodeEnumValue(1).let { value ->
+      val breachMitigation = source.decodeEnumValue(1).let { value ->
         val entry = FenceMitigate.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Message for transporting "arbitrary" variable-length data from one component to another
@@ -65,24 +64,25 @@ public data class Tunnel(
 ) : MavMessage<Tunnel> {
   public override val instanceCompanion: MavMessage.MavCompanion<Tunnel> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(payloadType.value, 2)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(payloadLength)
-    outputBuffer.encodeUInt8Array(payload, 128)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeEnumValue(payloadType.value, 2)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(payloadLength)
+    output.encodeUInt8Array(payload, 128)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeEnumValue(payloadType.value, 2)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(payloadLength)
-    outputBuffer.encodeUInt8Array(payload, 128)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeEnumValue(payloadType.value, 2)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(payloadLength)
+    output.encodeUInt8Array(payload, 128)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Tunnel> {
@@ -94,16 +94,15 @@ public data class Tunnel(
 
     public override val crcExtra: Byte = -109
 
-    public override fun deserialize(bytes: ByteArray): Tunnel {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val payloadType = inputBuffer.decodeEnumValue(2).let { value ->
+    public override fun deserialize(source: BufferedSource): Tunnel {
+      val payloadType = source.decodeEnumValue(2).let { value ->
         val entry = MavTunnelPayloadType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val payloadLength = inputBuffer.decodeUInt8()
-      val payload = inputBuffer.decodeUInt8Array(128)
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val payloadLength = source.decodeUInt8()
+      val payload = source.decodeUInt8Array(128)
 
       return Tunnel(
         targetSystem = targetSystem,

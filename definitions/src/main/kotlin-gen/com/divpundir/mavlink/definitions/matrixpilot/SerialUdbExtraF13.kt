@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F13: format
@@ -48,22 +47,23 @@ public data class SerialUdbExtraF13(
 ) : MavMessage<SerialUdbExtraF13> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF13> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(sueLatOrigin)
-    outputBuffer.encodeInt32(sueLonOrigin)
-    outputBuffer.encodeInt32(sueAltOrigin)
-    outputBuffer.encodeInt16(sueWeekNo)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(sueLatOrigin)
+    output.encodeInt32(sueLonOrigin)
+    output.encodeInt32(sueAltOrigin)
+    output.encodeInt16(sueWeekNo)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(sueLatOrigin)
-    outputBuffer.encodeInt32(sueLonOrigin)
-    outputBuffer.encodeInt32(sueAltOrigin)
-    outputBuffer.encodeInt16(sueWeekNo)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(sueLatOrigin)
+    output.encodeInt32(sueLonOrigin)
+    output.encodeInt32(sueAltOrigin)
+    output.encodeInt16(sueWeekNo)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF13> {
@@ -75,12 +75,11 @@ public data class SerialUdbExtraF13(
 
     public override val crcExtra: Byte = -7
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF13 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueLatOrigin = inputBuffer.decodeInt32()
-      val sueLonOrigin = inputBuffer.decodeInt32()
-      val sueAltOrigin = inputBuffer.decodeInt32()
-      val sueWeekNo = inputBuffer.decodeInt16()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF13 {
+      val sueLatOrigin = source.decodeInt32()
+      val sueLonOrigin = source.decodeInt32()
+      val sueAltOrigin = source.decodeInt32()
+      val sueWeekNo = source.decodeInt16()
 
       return SerialUdbExtraF13(
         sueWeekNo = sueWeekNo,

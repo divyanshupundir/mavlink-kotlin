@@ -24,16 +24,15 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Message appropriate for high latency connections like Iridium (version 2)
@@ -182,68 +181,69 @@ public data class HighLatency2(
 ) : MavMessage<HighLatency2> {
   public override val instanceCompanion: MavMessage.MavCompanion<HighLatency2> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timestamp)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeUInt16(customMode)
-    outputBuffer.encodeInt16(altitude)
-    outputBuffer.encodeInt16(targetAltitude)
-    outputBuffer.encodeUInt16(targetDistance)
-    outputBuffer.encodeUInt16(wpNum)
-    outputBuffer.encodeBitmaskValue(failureFlags.value, 2)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeUInt8(heading)
-    outputBuffer.encodeUInt8(targetHeading)
-    outputBuffer.encodeUInt8(throttle)
-    outputBuffer.encodeUInt8(airspeed)
-    outputBuffer.encodeUInt8(airspeedSp)
-    outputBuffer.encodeUInt8(groundspeed)
-    outputBuffer.encodeUInt8(windspeed)
-    outputBuffer.encodeUInt8(windHeading)
-    outputBuffer.encodeUInt8(eph)
-    outputBuffer.encodeUInt8(epv)
-    outputBuffer.encodeInt8(temperatureAir)
-    outputBuffer.encodeInt8(climbRate)
-    outputBuffer.encodeInt8(battery)
-    outputBuffer.encodeInt8(custom0)
-    outputBuffer.encodeInt8(custom1)
-    outputBuffer.encodeInt8(custom2)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timestamp)
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeUInt16(customMode)
+    output.encodeInt16(altitude)
+    output.encodeInt16(targetAltitude)
+    output.encodeUInt16(targetDistance)
+    output.encodeUInt16(wpNum)
+    output.encodeBitmaskValue(failureFlags.value, 2)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeEnumValue(autopilot.value, 1)
+    output.encodeUInt8(heading)
+    output.encodeUInt8(targetHeading)
+    output.encodeUInt8(throttle)
+    output.encodeUInt8(airspeed)
+    output.encodeUInt8(airspeedSp)
+    output.encodeUInt8(groundspeed)
+    output.encodeUInt8(windspeed)
+    output.encodeUInt8(windHeading)
+    output.encodeUInt8(eph)
+    output.encodeUInt8(epv)
+    output.encodeInt8(temperatureAir)
+    output.encodeInt8(climbRate)
+    output.encodeInt8(battery)
+    output.encodeInt8(custom0)
+    output.encodeInt8(custom1)
+    output.encodeInt8(custom2)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timestamp)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeUInt16(customMode)
-    outputBuffer.encodeInt16(altitude)
-    outputBuffer.encodeInt16(targetAltitude)
-    outputBuffer.encodeUInt16(targetDistance)
-    outputBuffer.encodeUInt16(wpNum)
-    outputBuffer.encodeBitmaskValue(failureFlags.value, 2)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeEnumValue(autopilot.value, 1)
-    outputBuffer.encodeUInt8(heading)
-    outputBuffer.encodeUInt8(targetHeading)
-    outputBuffer.encodeUInt8(throttle)
-    outputBuffer.encodeUInt8(airspeed)
-    outputBuffer.encodeUInt8(airspeedSp)
-    outputBuffer.encodeUInt8(groundspeed)
-    outputBuffer.encodeUInt8(windspeed)
-    outputBuffer.encodeUInt8(windHeading)
-    outputBuffer.encodeUInt8(eph)
-    outputBuffer.encodeUInt8(epv)
-    outputBuffer.encodeInt8(temperatureAir)
-    outputBuffer.encodeInt8(climbRate)
-    outputBuffer.encodeInt8(battery)
-    outputBuffer.encodeInt8(custom0)
-    outputBuffer.encodeInt8(custom1)
-    outputBuffer.encodeInt8(custom2)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timestamp)
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeUInt16(customMode)
+    output.encodeInt16(altitude)
+    output.encodeInt16(targetAltitude)
+    output.encodeUInt16(targetDistance)
+    output.encodeUInt16(wpNum)
+    output.encodeBitmaskValue(failureFlags.value, 2)
+    output.encodeEnumValue(type.value, 1)
+    output.encodeEnumValue(autopilot.value, 1)
+    output.encodeUInt8(heading)
+    output.encodeUInt8(targetHeading)
+    output.encodeUInt8(throttle)
+    output.encodeUInt8(airspeed)
+    output.encodeUInt8(airspeedSp)
+    output.encodeUInt8(groundspeed)
+    output.encodeUInt8(windspeed)
+    output.encodeUInt8(windHeading)
+    output.encodeUInt8(eph)
+    output.encodeUInt8(epv)
+    output.encodeInt8(temperatureAir)
+    output.encodeInt8(climbRate)
+    output.encodeInt8(battery)
+    output.encodeInt8(custom0)
+    output.encodeInt8(custom1)
+    output.encodeInt8(custom2)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<HighLatency2> {
@@ -255,44 +255,43 @@ public data class HighLatency2(
 
     public override val crcExtra: Byte = -77
 
-    public override fun deserialize(bytes: ByteArray): HighLatency2 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt32()
-      val latitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val customMode = inputBuffer.decodeUInt16()
-      val altitude = inputBuffer.decodeInt16()
-      val targetAltitude = inputBuffer.decodeInt16()
-      val targetDistance = inputBuffer.decodeUInt16()
-      val wpNum = inputBuffer.decodeUInt16()
-      val failureFlags = inputBuffer.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(source: BufferedSource): HighLatency2 {
+      val timestamp = source.decodeUInt32()
+      val latitude = source.decodeInt32()
+      val longitude = source.decodeInt32()
+      val customMode = source.decodeUInt16()
+      val altitude = source.decodeInt16()
+      val targetAltitude = source.decodeInt16()
+      val targetDistance = source.decodeUInt16()
+      val wpNum = source.decodeUInt16()
+      val failureFlags = source.decodeBitmaskValue(2).let { value ->
         val flags = HlFailureFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val type = source.decodeEnumValue(1).let { value ->
         val entry = MavType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val autopilot = inputBuffer.decodeEnumValue(1).let { value ->
+      val autopilot = source.decodeEnumValue(1).let { value ->
         val entry = MavAutopilot.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val heading = inputBuffer.decodeUInt8()
-      val targetHeading = inputBuffer.decodeUInt8()
-      val throttle = inputBuffer.decodeUInt8()
-      val airspeed = inputBuffer.decodeUInt8()
-      val airspeedSp = inputBuffer.decodeUInt8()
-      val groundspeed = inputBuffer.decodeUInt8()
-      val windspeed = inputBuffer.decodeUInt8()
-      val windHeading = inputBuffer.decodeUInt8()
-      val eph = inputBuffer.decodeUInt8()
-      val epv = inputBuffer.decodeUInt8()
-      val temperatureAir = inputBuffer.decodeInt8()
-      val climbRate = inputBuffer.decodeInt8()
-      val battery = inputBuffer.decodeInt8()
-      val custom0 = inputBuffer.decodeInt8()
-      val custom1 = inputBuffer.decodeInt8()
-      val custom2 = inputBuffer.decodeInt8()
+      val heading = source.decodeUInt8()
+      val targetHeading = source.decodeUInt8()
+      val throttle = source.decodeUInt8()
+      val airspeed = source.decodeUInt8()
+      val airspeedSp = source.decodeUInt8()
+      val groundspeed = source.decodeUInt8()
+      val windspeed = source.decodeUInt8()
+      val windHeading = source.decodeUInt8()
+      val eph = source.decodeUInt8()
+      val epv = source.decodeUInt8()
+      val temperatureAir = source.decodeInt8()
+      val climbRate = source.decodeInt8()
+      val battery = source.decodeInt8()
+      val custom0 = source.decodeInt8()
+      val custom1 = source.decodeInt8()
+      val custom2 = source.decodeInt8()
 
       return HighLatency2(
         timestamp = timestamp,

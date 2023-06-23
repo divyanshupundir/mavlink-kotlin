@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F17 format
@@ -41,20 +40,21 @@ public data class SerialUdbExtraF17(
 ) : MavMessage<SerialUdbExtraF17> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF17> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueFeedForward)
-    outputBuffer.encodeFloat(sueTurnRateNav)
-    outputBuffer.encodeFloat(sueTurnRateFbw)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(sueFeedForward)
+    output.encodeFloat(sueTurnRateNav)
+    output.encodeFloat(sueTurnRateFbw)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueFeedForward)
-    outputBuffer.encodeFloat(sueTurnRateNav)
-    outputBuffer.encodeFloat(sueTurnRateFbw)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(sueFeedForward)
+    output.encodeFloat(sueTurnRateNav)
+    output.encodeFloat(sueTurnRateFbw)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF17> {
@@ -66,11 +66,10 @@ public data class SerialUdbExtraF17(
 
     public override val crcExtra: Byte = -81
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF17 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueFeedForward = inputBuffer.decodeFloat()
-      val sueTurnRateNav = inputBuffer.decodeFloat()
-      val sueTurnRateFbw = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): SerialUdbExtraF17 {
+      val sueFeedForward = source.decodeFloat()
+      val sueTurnRateNav = source.decodeFloat()
+      val sueTurnRateFbw = source.decodeFloat()
 
       return SerialUdbExtraF17(
         sueFeedForward = sueFeedForward,

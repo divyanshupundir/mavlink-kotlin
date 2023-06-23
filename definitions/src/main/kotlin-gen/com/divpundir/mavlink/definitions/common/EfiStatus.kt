@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * EFI status output
@@ -123,49 +122,50 @@ public data class EfiStatus(
 ) : MavMessage<EfiStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<EfiStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(ecuIndex)
-    outputBuffer.encodeFloat(rpm)
-    outputBuffer.encodeFloat(fuelConsumed)
-    outputBuffer.encodeFloat(fuelFlow)
-    outputBuffer.encodeFloat(engineLoad)
-    outputBuffer.encodeFloat(throttlePosition)
-    outputBuffer.encodeFloat(sparkDwellTime)
-    outputBuffer.encodeFloat(barometricPressure)
-    outputBuffer.encodeFloat(intakeManifoldPressure)
-    outputBuffer.encodeFloat(intakeManifoldTemperature)
-    outputBuffer.encodeFloat(cylinderHeadTemperature)
-    outputBuffer.encodeFloat(ignitionTiming)
-    outputBuffer.encodeFloat(injectionTime)
-    outputBuffer.encodeFloat(exhaustGasTemperature)
-    outputBuffer.encodeFloat(throttleOut)
-    outputBuffer.encodeFloat(ptCompensation)
-    outputBuffer.encodeUInt8(health)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(ecuIndex)
+    output.encodeFloat(rpm)
+    output.encodeFloat(fuelConsumed)
+    output.encodeFloat(fuelFlow)
+    output.encodeFloat(engineLoad)
+    output.encodeFloat(throttlePosition)
+    output.encodeFloat(sparkDwellTime)
+    output.encodeFloat(barometricPressure)
+    output.encodeFloat(intakeManifoldPressure)
+    output.encodeFloat(intakeManifoldTemperature)
+    output.encodeFloat(cylinderHeadTemperature)
+    output.encodeFloat(ignitionTiming)
+    output.encodeFloat(injectionTime)
+    output.encodeFloat(exhaustGasTemperature)
+    output.encodeFloat(throttleOut)
+    output.encodeFloat(ptCompensation)
+    output.encodeUInt8(health)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(ecuIndex)
-    outputBuffer.encodeFloat(rpm)
-    outputBuffer.encodeFloat(fuelConsumed)
-    outputBuffer.encodeFloat(fuelFlow)
-    outputBuffer.encodeFloat(engineLoad)
-    outputBuffer.encodeFloat(throttlePosition)
-    outputBuffer.encodeFloat(sparkDwellTime)
-    outputBuffer.encodeFloat(barometricPressure)
-    outputBuffer.encodeFloat(intakeManifoldPressure)
-    outputBuffer.encodeFloat(intakeManifoldTemperature)
-    outputBuffer.encodeFloat(cylinderHeadTemperature)
-    outputBuffer.encodeFloat(ignitionTiming)
-    outputBuffer.encodeFloat(injectionTime)
-    outputBuffer.encodeFloat(exhaustGasTemperature)
-    outputBuffer.encodeFloat(throttleOut)
-    outputBuffer.encodeFloat(ptCompensation)
-    outputBuffer.encodeUInt8(health)
-    outputBuffer.encodeFloat(ignitionVoltage)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(ecuIndex)
+    output.encodeFloat(rpm)
+    output.encodeFloat(fuelConsumed)
+    output.encodeFloat(fuelFlow)
+    output.encodeFloat(engineLoad)
+    output.encodeFloat(throttlePosition)
+    output.encodeFloat(sparkDwellTime)
+    output.encodeFloat(barometricPressure)
+    output.encodeFloat(intakeManifoldPressure)
+    output.encodeFloat(intakeManifoldTemperature)
+    output.encodeFloat(cylinderHeadTemperature)
+    output.encodeFloat(ignitionTiming)
+    output.encodeFloat(injectionTime)
+    output.encodeFloat(exhaustGasTemperature)
+    output.encodeFloat(throttleOut)
+    output.encodeFloat(ptCompensation)
+    output.encodeUInt8(health)
+    output.encodeFloat(ignitionVoltage)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<EfiStatus> {
@@ -177,26 +177,25 @@ public data class EfiStatus(
 
     public override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): EfiStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val ecuIndex = inputBuffer.decodeFloat()
-      val rpm = inputBuffer.decodeFloat()
-      val fuelConsumed = inputBuffer.decodeFloat()
-      val fuelFlow = inputBuffer.decodeFloat()
-      val engineLoad = inputBuffer.decodeFloat()
-      val throttlePosition = inputBuffer.decodeFloat()
-      val sparkDwellTime = inputBuffer.decodeFloat()
-      val barometricPressure = inputBuffer.decodeFloat()
-      val intakeManifoldPressure = inputBuffer.decodeFloat()
-      val intakeManifoldTemperature = inputBuffer.decodeFloat()
-      val cylinderHeadTemperature = inputBuffer.decodeFloat()
-      val ignitionTiming = inputBuffer.decodeFloat()
-      val injectionTime = inputBuffer.decodeFloat()
-      val exhaustGasTemperature = inputBuffer.decodeFloat()
-      val throttleOut = inputBuffer.decodeFloat()
-      val ptCompensation = inputBuffer.decodeFloat()
-      val health = inputBuffer.decodeUInt8()
-      val ignitionVoltage = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): EfiStatus {
+      val ecuIndex = source.decodeFloat()
+      val rpm = source.decodeFloat()
+      val fuelConsumed = source.decodeFloat()
+      val fuelFlow = source.decodeFloat()
+      val engineLoad = source.decodeFloat()
+      val throttlePosition = source.decodeFloat()
+      val sparkDwellTime = source.decodeFloat()
+      val barometricPressure = source.decodeFloat()
+      val intakeManifoldPressure = source.decodeFloat()
+      val intakeManifoldTemperature = source.decodeFloat()
+      val cylinderHeadTemperature = source.decodeFloat()
+      val ignitionTiming = source.decodeFloat()
+      val injectionTime = source.decodeFloat()
+      val exhaustGasTemperature = source.decodeFloat()
+      val throttleOut = source.decodeFloat()
+      val ptCompensation = source.decodeFloat()
+      val health = source.decodeUInt8()
+      val ignitionVoltage = source.decodeFloat()
 
       return EfiStatus(
         health = health,

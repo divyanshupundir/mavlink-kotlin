@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Monitoring of sensorpod status
@@ -72,30 +71,31 @@ public data class SensorpodStatus(
 ) : MavMessage<SensorpodStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensorpodStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt16(freeSpace)
-    outputBuffer.encodeUInt8(visensorRate1)
-    outputBuffer.encodeUInt8(visensorRate2)
-    outputBuffer.encodeUInt8(visensorRate3)
-    outputBuffer.encodeUInt8(visensorRate4)
-    outputBuffer.encodeUInt8(recordingNodesCount)
-    outputBuffer.encodeUInt8(cpuTemp)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeUInt16(freeSpace)
+    output.encodeUInt8(visensorRate1)
+    output.encodeUInt8(visensorRate2)
+    output.encodeUInt8(visensorRate3)
+    output.encodeUInt8(visensorRate4)
+    output.encodeUInt8(recordingNodesCount)
+    output.encodeUInt8(cpuTemp)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt16(freeSpace)
-    outputBuffer.encodeUInt8(visensorRate1)
-    outputBuffer.encodeUInt8(visensorRate2)
-    outputBuffer.encodeUInt8(visensorRate3)
-    outputBuffer.encodeUInt8(visensorRate4)
-    outputBuffer.encodeUInt8(recordingNodesCount)
-    outputBuffer.encodeUInt8(cpuTemp)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeUInt16(freeSpace)
+    output.encodeUInt8(visensorRate1)
+    output.encodeUInt8(visensorRate2)
+    output.encodeUInt8(visensorRate3)
+    output.encodeUInt8(visensorRate4)
+    output.encodeUInt8(recordingNodesCount)
+    output.encodeUInt8(cpuTemp)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensorpodStatus> {
@@ -107,16 +107,15 @@ public data class SensorpodStatus(
 
     public override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): SensorpodStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val freeSpace = inputBuffer.decodeUInt16()
-      val visensorRate1 = inputBuffer.decodeUInt8()
-      val visensorRate2 = inputBuffer.decodeUInt8()
-      val visensorRate3 = inputBuffer.decodeUInt8()
-      val visensorRate4 = inputBuffer.decodeUInt8()
-      val recordingNodesCount = inputBuffer.decodeUInt8()
-      val cpuTemp = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): SensorpodStatus {
+      val timestamp = source.decodeUInt64()
+      val freeSpace = source.decodeUInt16()
+      val visensorRate1 = source.decodeUInt8()
+      val visensorRate2 = source.decodeUInt8()
+      val visensorRate3 = source.decodeUInt8()
+      val visensorRate4 = source.decodeUInt8()
+      val recordingNodesCount = source.decodeUInt8()
+      val cpuTemp = source.decodeUInt8()
 
       return SensorpodStatus(
         timestamp = timestamp,

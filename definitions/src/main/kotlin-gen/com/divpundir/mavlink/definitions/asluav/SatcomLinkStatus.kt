@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Status of the SatCom link
@@ -72,30 +71,31 @@ public data class SatcomLinkStatus(
 ) : MavMessage<SatcomLinkStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<SatcomLinkStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt64(lastHeartbeat)
-    outputBuffer.encodeUInt16(failedSessions)
-    outputBuffer.encodeUInt16(successfulSessions)
-    outputBuffer.encodeUInt8(signalQuality)
-    outputBuffer.encodeUInt8(ringPending)
-    outputBuffer.encodeUInt8(txSessionPending)
-    outputBuffer.encodeUInt8(rxSessionPending)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeUInt64(lastHeartbeat)
+    output.encodeUInt16(failedSessions)
+    output.encodeUInt16(successfulSessions)
+    output.encodeUInt8(signalQuality)
+    output.encodeUInt8(ringPending)
+    output.encodeUInt8(txSessionPending)
+    output.encodeUInt8(rxSessionPending)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt64(lastHeartbeat)
-    outputBuffer.encodeUInt16(failedSessions)
-    outputBuffer.encodeUInt16(successfulSessions)
-    outputBuffer.encodeUInt8(signalQuality)
-    outputBuffer.encodeUInt8(ringPending)
-    outputBuffer.encodeUInt8(txSessionPending)
-    outputBuffer.encodeUInt8(rxSessionPending)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeUInt64(lastHeartbeat)
+    output.encodeUInt16(failedSessions)
+    output.encodeUInt16(successfulSessions)
+    output.encodeUInt8(signalQuality)
+    output.encodeUInt8(ringPending)
+    output.encodeUInt8(txSessionPending)
+    output.encodeUInt8(rxSessionPending)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SatcomLinkStatus> {
@@ -107,16 +107,15 @@ public data class SatcomLinkStatus(
 
     public override val crcExtra: Byte = 23
 
-    public override fun deserialize(bytes: ByteArray): SatcomLinkStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val lastHeartbeat = inputBuffer.decodeUInt64()
-      val failedSessions = inputBuffer.decodeUInt16()
-      val successfulSessions = inputBuffer.decodeUInt16()
-      val signalQuality = inputBuffer.decodeUInt8()
-      val ringPending = inputBuffer.decodeUInt8()
-      val txSessionPending = inputBuffer.decodeUInt8()
-      val rxSessionPending = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): SatcomLinkStatus {
+      val timestamp = source.decodeUInt64()
+      val lastHeartbeat = source.decodeUInt64()
+      val failedSessions = source.decodeUInt16()
+      val successfulSessions = source.decodeUInt16()
+      val signalQuality = source.decodeUInt8()
+      val ringPending = source.decodeUInt8()
+      val txSessionPending = source.decodeUInt8()
+      val rxSessionPending = source.decodeUInt8()
 
       return SatcomLinkStatus(
         timestamp = timestamp,

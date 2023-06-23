@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt64
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Publishes the GPS co-ordinates of the vehicle local origin (0,0,0) position. Emitted whenever a
@@ -53,21 +52,22 @@ public data class GpsGlobalOrigin(
 ) : MavMessage<GpsGlobalOrigin> {
   public override val instanceCompanion: MavMessage.MavCompanion<GpsGlobalOrigin> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt32(altitude)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeInt32(altitude)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeUInt64(timeUsec)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeInt32(altitude)
+    output.encodeUInt64(timeUsec)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GpsGlobalOrigin> {
@@ -79,12 +79,11 @@ public data class GpsGlobalOrigin(
 
     public override val crcExtra: Byte = 39
 
-    public override fun deserialize(bytes: ByteArray): GpsGlobalOrigin {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val latitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val altitude = inputBuffer.decodeInt32()
-      val timeUsec = inputBuffer.decodeUInt64()
+    public override fun deserialize(source: BufferedSource): GpsGlobalOrigin {
+      val latitude = source.decodeInt32()
+      val longitude = source.decodeInt32()
+      val altitude = source.decodeInt32()
+      val timeUsec = source.decodeUInt64()
 
       return GpsGlobalOrigin(
         latitude = latitude,

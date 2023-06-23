@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request to read the onboard parameter with the param_id string id. Onboard parameters are stored
@@ -60,22 +59,23 @@ public data class ParamRequestRead(
 ) : MavMessage<ParamRequestRead> {
   public override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(paramIndex)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(paramId, 16)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(paramIndex)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(paramId, 16)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(paramIndex)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(paramId, 16)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt16(paramIndex)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(paramId, 16)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ParamRequestRead> {
@@ -87,12 +87,11 @@ public data class ParamRequestRead(
 
     public override val crcExtra: Byte = -42
 
-    public override fun deserialize(bytes: ByteArray): ParamRequestRead {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val paramIndex = inputBuffer.decodeInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val paramId = inputBuffer.decodeString(16)
+    public override fun deserialize(source: BufferedSource): ParamRequestRead {
+      val paramIndex = source.decodeInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val paramId = source.decodeString(16)
 
       return ParamRequestRead(
         targetSystem = targetSystem,

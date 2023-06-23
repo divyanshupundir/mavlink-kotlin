@@ -13,16 +13,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The IMU readings in SI units in NED body frame
@@ -120,45 +119,46 @@ public data class HighresImu(
 ) : MavMessage<HighresImu> {
   public override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(xacc)
-    outputBuffer.encodeFloat(yacc)
-    outputBuffer.encodeFloat(zacc)
-    outputBuffer.encodeFloat(xgyro)
-    outputBuffer.encodeFloat(ygyro)
-    outputBuffer.encodeFloat(zgyro)
-    outputBuffer.encodeFloat(xmag)
-    outputBuffer.encodeFloat(ymag)
-    outputBuffer.encodeFloat(zmag)
-    outputBuffer.encodeFloat(absPressure)
-    outputBuffer.encodeFloat(diffPressure)
-    outputBuffer.encodeFloat(pressureAlt)
-    outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 2)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(xacc)
+    output.encodeFloat(yacc)
+    output.encodeFloat(zacc)
+    output.encodeFloat(xgyro)
+    output.encodeFloat(ygyro)
+    output.encodeFloat(zgyro)
+    output.encodeFloat(xmag)
+    output.encodeFloat(ymag)
+    output.encodeFloat(zmag)
+    output.encodeFloat(absPressure)
+    output.encodeFloat(diffPressure)
+    output.encodeFloat(pressureAlt)
+    output.encodeFloat(temperature)
+    output.encodeBitmaskValue(fieldsUpdated.value, 2)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(xacc)
-    outputBuffer.encodeFloat(yacc)
-    outputBuffer.encodeFloat(zacc)
-    outputBuffer.encodeFloat(xgyro)
-    outputBuffer.encodeFloat(ygyro)
-    outputBuffer.encodeFloat(zgyro)
-    outputBuffer.encodeFloat(xmag)
-    outputBuffer.encodeFloat(ymag)
-    outputBuffer.encodeFloat(zmag)
-    outputBuffer.encodeFloat(absPressure)
-    outputBuffer.encodeFloat(diffPressure)
-    outputBuffer.encodeFloat(pressureAlt)
-    outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeBitmaskValue(fieldsUpdated.value, 2)
-    outputBuffer.encodeUInt8(id)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(xacc)
+    output.encodeFloat(yacc)
+    output.encodeFloat(zacc)
+    output.encodeFloat(xgyro)
+    output.encodeFloat(ygyro)
+    output.encodeFloat(zgyro)
+    output.encodeFloat(xmag)
+    output.encodeFloat(ymag)
+    output.encodeFloat(zmag)
+    output.encodeFloat(absPressure)
+    output.encodeFloat(diffPressure)
+    output.encodeFloat(pressureAlt)
+    output.encodeFloat(temperature)
+    output.encodeBitmaskValue(fieldsUpdated.value, 2)
+    output.encodeUInt8(id)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<HighresImu> {
@@ -170,27 +170,26 @@ public data class HighresImu(
 
     public override val crcExtra: Byte = 93
 
-    public override fun deserialize(bytes: ByteArray): HighresImu {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val xacc = inputBuffer.decodeFloat()
-      val yacc = inputBuffer.decodeFloat()
-      val zacc = inputBuffer.decodeFloat()
-      val xgyro = inputBuffer.decodeFloat()
-      val ygyro = inputBuffer.decodeFloat()
-      val zgyro = inputBuffer.decodeFloat()
-      val xmag = inputBuffer.decodeFloat()
-      val ymag = inputBuffer.decodeFloat()
-      val zmag = inputBuffer.decodeFloat()
-      val absPressure = inputBuffer.decodeFloat()
-      val diffPressure = inputBuffer.decodeFloat()
-      val pressureAlt = inputBuffer.decodeFloat()
-      val temperature = inputBuffer.decodeFloat()
-      val fieldsUpdated = inputBuffer.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(source: BufferedSource): HighresImu {
+      val timeUsec = source.decodeUInt64()
+      val xacc = source.decodeFloat()
+      val yacc = source.decodeFloat()
+      val zacc = source.decodeFloat()
+      val xgyro = source.decodeFloat()
+      val ygyro = source.decodeFloat()
+      val zgyro = source.decodeFloat()
+      val xmag = source.decodeFloat()
+      val ymag = source.decodeFloat()
+      val zmag = source.decodeFloat()
+      val absPressure = source.decodeFloat()
+      val diffPressure = source.decodeFloat()
+      val pressureAlt = source.decodeFloat()
+      val temperature = source.decodeFloat()
+      val fieldsUpdated = source.decodeBitmaskValue(2).let { value ->
         val flags = HighresImuUpdatedFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val id = inputBuffer.decodeUInt8()
+      val id = source.decodeUInt8()
 
       return HighresImu(
         timeUsec = timeUsec,

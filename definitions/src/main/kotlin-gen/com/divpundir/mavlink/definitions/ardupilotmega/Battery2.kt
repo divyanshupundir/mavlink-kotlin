@@ -8,16 +8,15 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * 2nd Battery status
@@ -41,18 +40,19 @@ public data class Battery2(
 ) : MavMessage<Battery2> {
   public override val instanceCompanion: MavMessage.MavCompanion<Battery2> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(voltage)
-    outputBuffer.encodeInt16(currentBattery)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(voltage)
+    output.encodeInt16(currentBattery)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(voltage)
-    outputBuffer.encodeInt16(currentBattery)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(voltage)
+    output.encodeInt16(currentBattery)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Battery2> {
@@ -64,10 +64,9 @@ public data class Battery2(
 
     public override val crcExtra: Byte = -82
 
-    public override fun deserialize(bytes: ByteArray): Battery2 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val voltage = inputBuffer.decodeUInt16()
-      val currentBattery = inputBuffer.decodeInt16()
+    public override fun deserialize(source: BufferedSource): Battery2 {
+      val voltage = source.decodeUInt16()
+      val currentBattery = source.decodeInt16()
 
       return Battery2(
         voltage = voltage,

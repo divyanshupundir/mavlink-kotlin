@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * RPM sensor output.
@@ -36,18 +35,19 @@ public data class Rpm(
 ) : MavMessage<Rpm> {
   public override val instanceCompanion: MavMessage.MavCompanion<Rpm> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(rpm1)
-    outputBuffer.encodeFloat(rpm2)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(rpm1)
+    output.encodeFloat(rpm2)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(rpm1)
-    outputBuffer.encodeFloat(rpm2)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(rpm1)
+    output.encodeFloat(rpm2)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Rpm> {
@@ -59,10 +59,9 @@ public data class Rpm(
 
     public override val crcExtra: Byte = -49
 
-    public override fun deserialize(bytes: ByteArray): Rpm {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val rpm1 = inputBuffer.decodeFloat()
-      val rpm2 = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): Rpm {
+      val rpm1 = source.decodeFloat()
+      val rpm2 = source.decodeFloat()
 
       return Rpm(
         rpm1 = rpm1,

@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * File transfer protocol message: https://mavlink.io/en/services/ftp.html.
@@ -51,22 +50,23 @@ public data class FileTransferProtocol(
 ) : MavMessage<FileTransferProtocol> {
   public override val instanceCompanion: MavMessage.MavCompanion<FileTransferProtocol> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetNetwork)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(payload, 251)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(targetNetwork)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(payload, 251)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetNetwork)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(payload, 251)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(targetNetwork)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(payload, 251)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<FileTransferProtocol> {
@@ -78,12 +78,11 @@ public data class FileTransferProtocol(
 
     public override val crcExtra: Byte = 84
 
-    public override fun deserialize(bytes: ByteArray): FileTransferProtocol {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetNetwork = inputBuffer.decodeUInt8()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val payload = inputBuffer.decodeUInt8Array(251)
+    public override fun deserialize(source: BufferedSource): FileTransferProtocol {
+      val targetNetwork = source.decodeUInt8()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val payload = source.decodeUInt8Array(251)
 
       return FileTransferProtocol(
         targetNetwork = targetNetwork,

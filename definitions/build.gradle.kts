@@ -42,6 +42,7 @@ sourceSets.getByName("main") {
 dependencies {
     implementation(Deps.MavlinkKotlin.api)
     implementation(Deps.MavlinkKotlin.serialization)
+    implementation(Deps.okio)
 }
 
 @Suppress("UnstableApiUsage")

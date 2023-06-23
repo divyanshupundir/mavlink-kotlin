@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Barometer readings for 2nd barometer
@@ -59,23 +58,24 @@ public data class ScaledPressure2(
 ) : MavMessage<ScaledPressure2> {
   public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure2> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(pressAbs)
-    outputBuffer.encodeFloat(pressDiff)
-    outputBuffer.encodeInt16(temperature)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(pressAbs)
+    output.encodeFloat(pressDiff)
+    output.encodeInt16(temperature)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(pressAbs)
-    outputBuffer.encodeFloat(pressDiff)
-    outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeInt16(temperaturePressDiff)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(pressAbs)
+    output.encodeFloat(pressDiff)
+    output.encodeInt16(temperature)
+    output.encodeInt16(temperaturePressDiff)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ScaledPressure2> {
@@ -87,13 +87,12 @@ public data class ScaledPressure2(
 
     public override val crcExtra: Byte = -61
 
-    public override fun deserialize(bytes: ByteArray): ScaledPressure2 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val pressAbs = inputBuffer.decodeFloat()
-      val pressDiff = inputBuffer.decodeFloat()
-      val temperature = inputBuffer.decodeInt16()
-      val temperaturePressDiff = inputBuffer.decodeInt16()
+    public override fun deserialize(source: BufferedSource): ScaledPressure2 {
+      val timeBootMs = source.decodeUInt32()
+      val pressAbs = source.decodeFloat()
+      val pressDiff = source.decodeFloat()
+      val temperature = source.decodeInt16()
+      val temperaturePressDiff = source.decodeInt16()
 
       return ScaledPressure2(
         timeBootMs = timeBootMs,

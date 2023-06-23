@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * 3 axis gimbal measurements.
@@ -89,38 +88,39 @@ public data class GimbalReport(
 ) : MavMessage<GimbalReport> {
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(deltaTime)
-    outputBuffer.encodeFloat(deltaAngleX)
-    outputBuffer.encodeFloat(deltaAngleY)
-    outputBuffer.encodeFloat(deltaAngleZ)
-    outputBuffer.encodeFloat(deltaVelocityX)
-    outputBuffer.encodeFloat(deltaVelocityY)
-    outputBuffer.encodeFloat(deltaVelocityZ)
-    outputBuffer.encodeFloat(jointRoll)
-    outputBuffer.encodeFloat(jointEl)
-    outputBuffer.encodeFloat(jointAz)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(deltaTime)
+    output.encodeFloat(deltaAngleX)
+    output.encodeFloat(deltaAngleY)
+    output.encodeFloat(deltaAngleZ)
+    output.encodeFloat(deltaVelocityX)
+    output.encodeFloat(deltaVelocityY)
+    output.encodeFloat(deltaVelocityZ)
+    output.encodeFloat(jointRoll)
+    output.encodeFloat(jointEl)
+    output.encodeFloat(jointAz)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(deltaTime)
-    outputBuffer.encodeFloat(deltaAngleX)
-    outputBuffer.encodeFloat(deltaAngleY)
-    outputBuffer.encodeFloat(deltaAngleZ)
-    outputBuffer.encodeFloat(deltaVelocityX)
-    outputBuffer.encodeFloat(deltaVelocityY)
-    outputBuffer.encodeFloat(deltaVelocityZ)
-    outputBuffer.encodeFloat(jointRoll)
-    outputBuffer.encodeFloat(jointEl)
-    outputBuffer.encodeFloat(jointAz)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(deltaTime)
+    output.encodeFloat(deltaAngleX)
+    output.encodeFloat(deltaAngleY)
+    output.encodeFloat(deltaAngleZ)
+    output.encodeFloat(deltaVelocityX)
+    output.encodeFloat(deltaVelocityY)
+    output.encodeFloat(deltaVelocityZ)
+    output.encodeFloat(jointRoll)
+    output.encodeFloat(jointEl)
+    output.encodeFloat(jointAz)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GimbalReport> {
@@ -132,20 +132,19 @@ public data class GimbalReport(
 
     public override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): GimbalReport {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val deltaTime = inputBuffer.decodeFloat()
-      val deltaAngleX = inputBuffer.decodeFloat()
-      val deltaAngleY = inputBuffer.decodeFloat()
-      val deltaAngleZ = inputBuffer.decodeFloat()
-      val deltaVelocityX = inputBuffer.decodeFloat()
-      val deltaVelocityY = inputBuffer.decodeFloat()
-      val deltaVelocityZ = inputBuffer.decodeFloat()
-      val jointRoll = inputBuffer.decodeFloat()
-      val jointEl = inputBuffer.decodeFloat()
-      val jointAz = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): GimbalReport {
+      val deltaTime = source.decodeFloat()
+      val deltaAngleX = source.decodeFloat()
+      val deltaAngleY = source.decodeFloat()
+      val deltaAngleZ = source.decodeFloat()
+      val deltaVelocityX = source.decodeFloat()
+      val deltaVelocityY = source.decodeFloat()
+      val deltaVelocityZ = source.decodeFloat()
+      val jointRoll = source.decodeFloat()
+      val jointEl = source.decodeFloat()
+      val jointAz = source.decodeFloat()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
 
       return GimbalReport(
         targetSystem = targetSystem,

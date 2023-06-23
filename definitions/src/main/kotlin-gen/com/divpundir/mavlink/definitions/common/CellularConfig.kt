@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Configure cellular modems.
@@ -81,30 +80,31 @@ public data class CellularConfig(
 ) : MavMessage<CellularConfig> {
   public override val instanceCompanion: MavMessage.MavCompanion<CellularConfig> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(enableLte)
-    outputBuffer.encodeUInt8(enablePin)
-    outputBuffer.encodeString(pin, 16)
-    outputBuffer.encodeString(newPin, 16)
-    outputBuffer.encodeString(apn, 32)
-    outputBuffer.encodeString(puk, 16)
-    outputBuffer.encodeUInt8(roaming)
-    outputBuffer.encodeEnumValue(response.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(enableLte)
+    output.encodeUInt8(enablePin)
+    output.encodeString(pin, 16)
+    output.encodeString(newPin, 16)
+    output.encodeString(apn, 32)
+    output.encodeString(puk, 16)
+    output.encodeUInt8(roaming)
+    output.encodeEnumValue(response.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(enableLte)
-    outputBuffer.encodeUInt8(enablePin)
-    outputBuffer.encodeString(pin, 16)
-    outputBuffer.encodeString(newPin, 16)
-    outputBuffer.encodeString(apn, 32)
-    outputBuffer.encodeString(puk, 16)
-    outputBuffer.encodeUInt8(roaming)
-    outputBuffer.encodeEnumValue(response.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(enableLte)
+    output.encodeUInt8(enablePin)
+    output.encodeString(pin, 16)
+    output.encodeString(newPin, 16)
+    output.encodeString(apn, 32)
+    output.encodeString(puk, 16)
+    output.encodeUInt8(roaming)
+    output.encodeEnumValue(response.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CellularConfig> {
@@ -116,16 +116,15 @@ public data class CellularConfig(
 
     public override val crcExtra: Byte = -11
 
-    public override fun deserialize(bytes: ByteArray): CellularConfig {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val enableLte = inputBuffer.decodeUInt8()
-      val enablePin = inputBuffer.decodeUInt8()
-      val pin = inputBuffer.decodeString(16)
-      val newPin = inputBuffer.decodeString(16)
-      val apn = inputBuffer.decodeString(32)
-      val puk = inputBuffer.decodeString(16)
-      val roaming = inputBuffer.decodeUInt8()
-      val response = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): CellularConfig {
+      val enableLte = source.decodeUInt8()
+      val enablePin = source.decodeUInt8()
+      val pin = source.decodeString(16)
+      val newPin = source.decodeString(16)
+      val apn = source.decodeString(32)
+      val puk = source.decodeString(16)
+      val roaming = source.decodeUInt8()
+      val response = source.decodeEnumValue(1).let { value ->
         val entry = CellularConfigResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

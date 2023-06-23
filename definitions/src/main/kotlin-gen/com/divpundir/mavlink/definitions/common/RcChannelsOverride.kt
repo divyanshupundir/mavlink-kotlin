@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The RAW values of the RC channels sent to the MAV to override info received from the RC radio.
@@ -180,44 +179,45 @@ public data class RcChannelsOverride(
 ) : MavMessage<RcChannelsOverride> {
   public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsOverride> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(chan1Raw)
-    outputBuffer.encodeUInt16(chan2Raw)
-    outputBuffer.encodeUInt16(chan3Raw)
-    outputBuffer.encodeUInt16(chan4Raw)
-    outputBuffer.encodeUInt16(chan5Raw)
-    outputBuffer.encodeUInt16(chan6Raw)
-    outputBuffer.encodeUInt16(chan7Raw)
-    outputBuffer.encodeUInt16(chan8Raw)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(chan1Raw)
+    output.encodeUInt16(chan2Raw)
+    output.encodeUInt16(chan3Raw)
+    output.encodeUInt16(chan4Raw)
+    output.encodeUInt16(chan5Raw)
+    output.encodeUInt16(chan6Raw)
+    output.encodeUInt16(chan7Raw)
+    output.encodeUInt16(chan8Raw)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(chan1Raw)
-    outputBuffer.encodeUInt16(chan2Raw)
-    outputBuffer.encodeUInt16(chan3Raw)
-    outputBuffer.encodeUInt16(chan4Raw)
-    outputBuffer.encodeUInt16(chan5Raw)
-    outputBuffer.encodeUInt16(chan6Raw)
-    outputBuffer.encodeUInt16(chan7Raw)
-    outputBuffer.encodeUInt16(chan8Raw)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt16(chan9Raw)
-    outputBuffer.encodeUInt16(chan10Raw)
-    outputBuffer.encodeUInt16(chan11Raw)
-    outputBuffer.encodeUInt16(chan12Raw)
-    outputBuffer.encodeUInt16(chan13Raw)
-    outputBuffer.encodeUInt16(chan14Raw)
-    outputBuffer.encodeUInt16(chan15Raw)
-    outputBuffer.encodeUInt16(chan16Raw)
-    outputBuffer.encodeUInt16(chan17Raw)
-    outputBuffer.encodeUInt16(chan18Raw)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(chan1Raw)
+    output.encodeUInt16(chan2Raw)
+    output.encodeUInt16(chan3Raw)
+    output.encodeUInt16(chan4Raw)
+    output.encodeUInt16(chan5Raw)
+    output.encodeUInt16(chan6Raw)
+    output.encodeUInt16(chan7Raw)
+    output.encodeUInt16(chan8Raw)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt16(chan9Raw)
+    output.encodeUInt16(chan10Raw)
+    output.encodeUInt16(chan11Raw)
+    output.encodeUInt16(chan12Raw)
+    output.encodeUInt16(chan13Raw)
+    output.encodeUInt16(chan14Raw)
+    output.encodeUInt16(chan15Raw)
+    output.encodeUInt16(chan16Raw)
+    output.encodeUInt16(chan17Raw)
+    output.encodeUInt16(chan18Raw)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<RcChannelsOverride> {
@@ -229,28 +229,27 @@ public data class RcChannelsOverride(
 
     public override val crcExtra: Byte = 124
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsOverride {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val chan1Raw = inputBuffer.decodeUInt16()
-      val chan2Raw = inputBuffer.decodeUInt16()
-      val chan3Raw = inputBuffer.decodeUInt16()
-      val chan4Raw = inputBuffer.decodeUInt16()
-      val chan5Raw = inputBuffer.decodeUInt16()
-      val chan6Raw = inputBuffer.decodeUInt16()
-      val chan7Raw = inputBuffer.decodeUInt16()
-      val chan8Raw = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val chan9Raw = inputBuffer.decodeUInt16()
-      val chan10Raw = inputBuffer.decodeUInt16()
-      val chan11Raw = inputBuffer.decodeUInt16()
-      val chan12Raw = inputBuffer.decodeUInt16()
-      val chan13Raw = inputBuffer.decodeUInt16()
-      val chan14Raw = inputBuffer.decodeUInt16()
-      val chan15Raw = inputBuffer.decodeUInt16()
-      val chan16Raw = inputBuffer.decodeUInt16()
-      val chan17Raw = inputBuffer.decodeUInt16()
-      val chan18Raw = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): RcChannelsOverride {
+      val chan1Raw = source.decodeUInt16()
+      val chan2Raw = source.decodeUInt16()
+      val chan3Raw = source.decodeUInt16()
+      val chan4Raw = source.decodeUInt16()
+      val chan5Raw = source.decodeUInt16()
+      val chan6Raw = source.decodeUInt16()
+      val chan7Raw = source.decodeUInt16()
+      val chan8Raw = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val chan9Raw = source.decodeUInt16()
+      val chan10Raw = source.decodeUInt16()
+      val chan11Raw = source.decodeUInt16()
+      val chan12Raw = source.decodeUInt16()
+      val chan13Raw = source.decodeUInt16()
+      val chan14Raw = source.decodeUInt16()
+      val chan15Raw = source.decodeUInt16()
+      val chan16Raw = source.decodeUInt16()
+      val chan17Raw = source.decodeUInt16()
+      val chan18Raw = source.decodeUInt16()
 
       return RcChannelsOverride(
         targetSystem = targetSystem,

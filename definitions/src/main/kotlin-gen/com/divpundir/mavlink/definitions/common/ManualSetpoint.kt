@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Setpoint in roll, pitch, yaw and thrust from the operator
@@ -66,28 +65,29 @@ public data class ManualSetpoint(
 ) : MavMessage<ManualSetpoint> {
   public override val instanceCompanion: MavMessage.MavCompanion<ManualSetpoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeUInt8(modeSwitch)
-    outputBuffer.encodeUInt8(manualOverrideSwitch)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    output.encodeFloat(thrust)
+    output.encodeUInt8(modeSwitch)
+    output.encodeUInt8(manualOverrideSwitch)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeUInt8(modeSwitch)
-    outputBuffer.encodeUInt8(manualOverrideSwitch)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeFloat(roll)
+    output.encodeFloat(pitch)
+    output.encodeFloat(yaw)
+    output.encodeFloat(thrust)
+    output.encodeUInt8(modeSwitch)
+    output.encodeUInt8(manualOverrideSwitch)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ManualSetpoint> {
@@ -99,15 +99,14 @@ public data class ManualSetpoint(
 
     public override val crcExtra: Byte = 106
 
-    public override fun deserialize(bytes: ByteArray): ManualSetpoint {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val roll = inputBuffer.decodeFloat()
-      val pitch = inputBuffer.decodeFloat()
-      val yaw = inputBuffer.decodeFloat()
-      val thrust = inputBuffer.decodeFloat()
-      val modeSwitch = inputBuffer.decodeUInt8()
-      val manualOverrideSwitch = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): ManualSetpoint {
+      val timeBootMs = source.decodeUInt32()
+      val roll = source.decodeFloat()
+      val pitch = source.decodeFloat()
+      val yaw = source.decodeFloat()
+      val thrust = source.decodeFloat()
+      val modeSwitch = source.decodeUInt8()
+      val manualOverrideSwitch = source.decodeUInt8()
 
       return ManualSetpoint(
         timeBootMs = timeBootMs,

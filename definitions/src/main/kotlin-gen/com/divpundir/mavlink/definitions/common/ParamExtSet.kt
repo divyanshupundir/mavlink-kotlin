@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Set a parameter value. In order to deal with message loss (and retransmission of PARAM_EXT_SET),
@@ -62,24 +61,25 @@ public data class ParamExtSet(
 ) : MavMessage<ParamExtSet> {
   public override val instanceCompanion: MavMessage.MavCompanion<ParamExtSet> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeString(paramValue, 128)
-    outputBuffer.encodeEnumValue(paramType.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(paramId, 16)
+    output.encodeString(paramValue, 128)
+    output.encodeEnumValue(paramType.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeString(paramValue, 128)
-    outputBuffer.encodeEnumValue(paramType.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeString(paramId, 16)
+    output.encodeString(paramValue, 128)
+    output.encodeEnumValue(paramType.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ParamExtSet> {
@@ -91,13 +91,12 @@ public data class ParamExtSet(
 
     public override val crcExtra: Byte = 78
 
-    public override fun deserialize(bytes: ByteArray): ParamExtSet {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val paramId = inputBuffer.decodeString(16)
-      val paramValue = inputBuffer.decodeString(128)
-      val paramType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): ParamExtSet {
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val paramId = source.decodeString(16)
+      val paramValue = source.decodeString(128)
+      val paramType = source.decodeEnumValue(1).let { value ->
         val entry = MavParamExtType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

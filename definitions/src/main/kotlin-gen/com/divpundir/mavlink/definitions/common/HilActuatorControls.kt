@@ -12,16 +12,15 @@ import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs (replacement for
@@ -56,22 +55,23 @@ public data class HilActuatorControls(
 ) : MavMessage<HilActuatorControls> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilActuatorControls> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt64(flags)
-    outputBuffer.encodeFloatArray(controls, 64)
-    outputBuffer.encodeBitmaskValue(mode.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt64(flags)
+    output.encodeFloatArray(controls, 64)
+    output.encodeBitmaskValue(mode.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt64(flags)
-    outputBuffer.encodeFloatArray(controls, 64)
-    outputBuffer.encodeBitmaskValue(mode.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt64(flags)
+    output.encodeFloatArray(controls, 64)
+    output.encodeBitmaskValue(mode.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<HilActuatorControls> {
@@ -83,12 +83,11 @@ public data class HilActuatorControls(
 
     public override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): HilActuatorControls {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val flags = inputBuffer.decodeUInt64()
-      val controls = inputBuffer.decodeFloatArray(64)
-      val mode = inputBuffer.decodeBitmaskValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): HilActuatorControls {
+      val timeUsec = source.decodeUInt64()
+      val flags = source.decodeUInt64()
+      val controls = source.decodeFloatArray(64)
+      val mode = source.decodeBitmaskValue(1).let { value ->
         val flags = MavModeFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

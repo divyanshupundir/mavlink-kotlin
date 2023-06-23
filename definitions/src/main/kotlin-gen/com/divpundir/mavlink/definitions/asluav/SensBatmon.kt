@@ -16,10 +16,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -28,6 +25,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Battery pack monitoring data for Li-Ion batteries
@@ -115,44 +114,45 @@ public data class SensBatmon(
 ) : MavMessage<SensBatmon> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(batmonTimestamp)
-    outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeUInt32(safetystatus)
-    outputBuffer.encodeUInt32(operationstatus)
-    outputBuffer.encodeUInt16(voltage)
-    outputBuffer.encodeInt16(current)
-    outputBuffer.encodeUInt16(batterystatus)
-    outputBuffer.encodeUInt16(serialnumber)
-    outputBuffer.encodeUInt16(cellvoltage1)
-    outputBuffer.encodeUInt16(cellvoltage2)
-    outputBuffer.encodeUInt16(cellvoltage3)
-    outputBuffer.encodeUInt16(cellvoltage4)
-    outputBuffer.encodeUInt16(cellvoltage5)
-    outputBuffer.encodeUInt16(cellvoltage6)
-    outputBuffer.encodeUInt8(soc)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(batmonTimestamp)
+    output.encodeFloat(temperature)
+    output.encodeUInt32(safetystatus)
+    output.encodeUInt32(operationstatus)
+    output.encodeUInt16(voltage)
+    output.encodeInt16(current)
+    output.encodeUInt16(batterystatus)
+    output.encodeUInt16(serialnumber)
+    output.encodeUInt16(cellvoltage1)
+    output.encodeUInt16(cellvoltage2)
+    output.encodeUInt16(cellvoltage3)
+    output.encodeUInt16(cellvoltage4)
+    output.encodeUInt16(cellvoltage5)
+    output.encodeUInt16(cellvoltage6)
+    output.encodeUInt8(soc)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(batmonTimestamp)
-    outputBuffer.encodeFloat(temperature)
-    outputBuffer.encodeUInt32(safetystatus)
-    outputBuffer.encodeUInt32(operationstatus)
-    outputBuffer.encodeUInt16(voltage)
-    outputBuffer.encodeInt16(current)
-    outputBuffer.encodeUInt16(batterystatus)
-    outputBuffer.encodeUInt16(serialnumber)
-    outputBuffer.encodeUInt16(cellvoltage1)
-    outputBuffer.encodeUInt16(cellvoltage2)
-    outputBuffer.encodeUInt16(cellvoltage3)
-    outputBuffer.encodeUInt16(cellvoltage4)
-    outputBuffer.encodeUInt16(cellvoltage5)
-    outputBuffer.encodeUInt16(cellvoltage6)
-    outputBuffer.encodeUInt8(soc)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(batmonTimestamp)
+    output.encodeFloat(temperature)
+    output.encodeUInt32(safetystatus)
+    output.encodeUInt32(operationstatus)
+    output.encodeUInt16(voltage)
+    output.encodeInt16(current)
+    output.encodeUInt16(batterystatus)
+    output.encodeUInt16(serialnumber)
+    output.encodeUInt16(cellvoltage1)
+    output.encodeUInt16(cellvoltage2)
+    output.encodeUInt16(cellvoltage3)
+    output.encodeUInt16(cellvoltage4)
+    output.encodeUInt16(cellvoltage5)
+    output.encodeUInt16(cellvoltage6)
+    output.encodeUInt8(soc)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SensBatmon> {
@@ -164,23 +164,22 @@ public data class SensBatmon(
 
     public override val crcExtra: Byte = -101
 
-    public override fun deserialize(bytes: ByteArray): SensBatmon {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val batmonTimestamp = inputBuffer.decodeUInt64()
-      val temperature = inputBuffer.decodeFloat()
-      val safetystatus = inputBuffer.decodeUInt32()
-      val operationstatus = inputBuffer.decodeUInt32()
-      val voltage = inputBuffer.decodeUInt16()
-      val current = inputBuffer.decodeInt16()
-      val batterystatus = inputBuffer.decodeUInt16()
-      val serialnumber = inputBuffer.decodeUInt16()
-      val cellvoltage1 = inputBuffer.decodeUInt16()
-      val cellvoltage2 = inputBuffer.decodeUInt16()
-      val cellvoltage3 = inputBuffer.decodeUInt16()
-      val cellvoltage4 = inputBuffer.decodeUInt16()
-      val cellvoltage5 = inputBuffer.decodeUInt16()
-      val cellvoltage6 = inputBuffer.decodeUInt16()
-      val soc = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): SensBatmon {
+      val batmonTimestamp = source.decodeUInt64()
+      val temperature = source.decodeFloat()
+      val safetystatus = source.decodeUInt32()
+      val operationstatus = source.decodeUInt32()
+      val voltage = source.decodeUInt16()
+      val current = source.decodeInt16()
+      val batterystatus = source.decodeUInt16()
+      val serialnumber = source.decodeUInt16()
+      val cellvoltage1 = source.decodeUInt16()
+      val cellvoltage2 = source.decodeUInt16()
+      val cellvoltage3 = source.decodeUInt16()
+      val cellvoltage4 = source.decodeUInt16()
+      val cellvoltage5 = source.decodeUInt16()
+      val cellvoltage6 = source.decodeUInt16()
+      val soc = source.decodeUInt8()
 
       return SensBatmon(
         batmonTimestamp = batmonTimestamp,

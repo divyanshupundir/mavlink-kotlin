@@ -14,10 +14,7 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
@@ -26,6 +23,8 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  *
@@ -127,37 +126,38 @@ public data class SetHomePosition(
 ) : MavMessage<SetHomePosition> {
   public override val instanceCompanion: MavMessage.MavCompanion<SetHomePosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(approachX)
-    outputBuffer.encodeFloat(approachY)
-    outputBuffer.encodeFloat(approachZ)
-    outputBuffer.encodeUInt8(targetSystem)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeInt32(altitude)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(approachX)
+    output.encodeFloat(approachY)
+    output.encodeFloat(approachZ)
+    output.encodeUInt8(targetSystem)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt32(altitude)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(approachX)
-    outputBuffer.encodeFloat(approachY)
-    outputBuffer.encodeFloat(approachZ)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt64(timeUsec)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeInt32(latitude)
+    output.encodeInt32(longitude)
+    output.encodeInt32(altitude)
+    output.encodeFloat(x)
+    output.encodeFloat(y)
+    output.encodeFloat(z)
+    output.encodeFloatArray(q, 16)
+    output.encodeFloat(approachX)
+    output.encodeFloat(approachY)
+    output.encodeFloat(approachZ)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt64(timeUsec)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SetHomePosition> {
@@ -169,20 +169,19 @@ public data class SetHomePosition(
 
     public override val crcExtra: Byte = 85
 
-    public override fun deserialize(bytes: ByteArray): SetHomePosition {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val latitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val altitude = inputBuffer.decodeInt32()
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val q = inputBuffer.decodeFloatArray(16)
-      val approachX = inputBuffer.decodeFloat()
-      val approachY = inputBuffer.decodeFloat()
-      val approachZ = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val timeUsec = inputBuffer.decodeUInt64()
+    public override fun deserialize(source: BufferedSource): SetHomePosition {
+      val latitude = source.decodeInt32()
+      val longitude = source.decodeInt32()
+      val altitude = source.decodeInt32()
+      val x = source.decodeFloat()
+      val y = source.decodeFloat()
+      val z = source.decodeFloat()
+      val q = source.decodeFloatArray(16)
+      val approachX = source.decodeFloat()
+      val approachY = source.decodeFloat()
+      val approachZ = source.decodeFloat()
+      val targetSystem = source.decodeUInt8()
+      val timeUsec = source.decodeUInt64()
 
       return SetHomePosition(
         targetSystem = targetSystem,

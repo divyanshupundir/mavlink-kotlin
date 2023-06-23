@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
@@ -24,6 +21,8 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Large debug/prototyping array. The message uses the maximum available payload for data. The
@@ -62,21 +61,22 @@ public data class DebugFloatArray(
 ) : MavMessage<DebugFloatArray> {
   public override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt16(arrayId)
-    outputBuffer.encodeString(name, 10)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt16(arrayId)
+    output.encodeString(name, 10)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt16(arrayId)
-    outputBuffer.encodeString(name, 10)
-    outputBuffer.encodeFloatArray(data, 232)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt16(arrayId)
+    output.encodeString(name, 10)
+    output.encodeFloatArray(data, 232)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<DebugFloatArray> {
@@ -88,12 +88,11 @@ public data class DebugFloatArray(
 
     public override val crcExtra: Byte = -24
 
-    public override fun deserialize(bytes: ByteArray): DebugFloatArray {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val arrayId = inputBuffer.decodeUInt16()
-      val name = inputBuffer.decodeString(10)
-      val data = inputBuffer.decodeFloatArray(232)
+    public override fun deserialize(source: BufferedSource): DebugFloatArray {
+      val timeUsec = source.decodeUInt64()
+      val arrayId = source.decodeUInt16()
+      val name = source.decodeString(10)
+      val data = source.decodeFloatArray(232)
 
       return DebugFloatArray(
         timeUsec = timeUsec,

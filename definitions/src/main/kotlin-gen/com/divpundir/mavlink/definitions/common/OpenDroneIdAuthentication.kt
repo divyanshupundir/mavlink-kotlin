@@ -14,15 +14,14 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Data for filling the OpenDroneID Authentication message. The Authentication Message defines a
@@ -93,32 +92,33 @@ public data class OpenDroneIdAuthentication(
   public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdAuthentication> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timestamp)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(idOrMac, 20)
-    outputBuffer.encodeEnumValue(authenticationType.value, 1)
-    outputBuffer.encodeUInt8(dataPage)
-    outputBuffer.encodeUInt8(lastPageIndex)
-    outputBuffer.encodeUInt8(length)
-    outputBuffer.encodeUInt8Array(authenticationData, 23)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timestamp)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(idOrMac, 20)
+    output.encodeEnumValue(authenticationType.value, 1)
+    output.encodeUInt8(dataPage)
+    output.encodeUInt8(lastPageIndex)
+    output.encodeUInt8(length)
+    output.encodeUInt8Array(authenticationData, 23)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timestamp)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(idOrMac, 20)
-    outputBuffer.encodeEnumValue(authenticationType.value, 1)
-    outputBuffer.encodeUInt8(dataPage)
-    outputBuffer.encodeUInt8(lastPageIndex)
-    outputBuffer.encodeUInt8(length)
-    outputBuffer.encodeUInt8Array(authenticationData, 23)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timestamp)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(idOrMac, 20)
+    output.encodeEnumValue(authenticationType.value, 1)
+    output.encodeUInt8(dataPage)
+    output.encodeUInt8(lastPageIndex)
+    output.encodeUInt8(length)
+    output.encodeUInt8Array(authenticationData, 23)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OpenDroneIdAuthentication> {
@@ -130,20 +130,19 @@ public data class OpenDroneIdAuthentication(
 
     public override val crcExtra: Byte = -116
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdAuthentication {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt32()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val idOrMac = inputBuffer.decodeUInt8Array(20)
-      val authenticationType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): OpenDroneIdAuthentication {
+      val timestamp = source.decodeUInt32()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val idOrMac = source.decodeUInt8Array(20)
+      val authenticationType = source.decodeEnumValue(1).let { value ->
         val entry = MavOdidAuthType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val dataPage = inputBuffer.decodeUInt8()
-      val lastPageIndex = inputBuffer.decodeUInt8()
-      val length = inputBuffer.decodeUInt8()
-      val authenticationData = inputBuffer.decodeUInt8Array(23)
+      val dataPage = source.decodeUInt8()
+      val lastPageIndex = source.decodeUInt8()
+      val length = source.decodeUInt8()
+      val authenticationData = source.decodeUInt8Array(23)
 
       return OpenDroneIdAuthentication(
         targetSystem = targetSystem,

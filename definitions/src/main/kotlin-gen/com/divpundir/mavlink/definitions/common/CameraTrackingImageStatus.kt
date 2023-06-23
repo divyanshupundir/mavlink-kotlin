@@ -13,14 +13,13 @@ import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
@@ -93,34 +92,35 @@ public data class CameraTrackingImageStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingImageStatus> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(pointX)
-    outputBuffer.encodeFloat(pointY)
-    outputBuffer.encodeFloat(radius)
-    outputBuffer.encodeFloat(recTopX)
-    outputBuffer.encodeFloat(recTopY)
-    outputBuffer.encodeFloat(recBottomX)
-    outputBuffer.encodeFloat(recBottomY)
-    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
-    outputBuffer.encodeEnumValue(trackingMode.value, 1)
-    outputBuffer.encodeBitmaskValue(targetData.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(pointX)
+    output.encodeFloat(pointY)
+    output.encodeFloat(radius)
+    output.encodeFloat(recTopX)
+    output.encodeFloat(recTopY)
+    output.encodeFloat(recBottomX)
+    output.encodeFloat(recBottomY)
+    output.encodeEnumValue(trackingStatus.value, 1)
+    output.encodeEnumValue(trackingMode.value, 1)
+    output.encodeBitmaskValue(targetData.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(pointX)
-    outputBuffer.encodeFloat(pointY)
-    outputBuffer.encodeFloat(radius)
-    outputBuffer.encodeFloat(recTopX)
-    outputBuffer.encodeFloat(recTopY)
-    outputBuffer.encodeFloat(recBottomX)
-    outputBuffer.encodeFloat(recBottomY)
-    outputBuffer.encodeEnumValue(trackingStatus.value, 1)
-    outputBuffer.encodeEnumValue(trackingMode.value, 1)
-    outputBuffer.encodeBitmaskValue(targetData.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(pointX)
+    output.encodeFloat(pointY)
+    output.encodeFloat(radius)
+    output.encodeFloat(recTopX)
+    output.encodeFloat(recTopY)
+    output.encodeFloat(recBottomX)
+    output.encodeFloat(recBottomY)
+    output.encodeEnumValue(trackingStatus.value, 1)
+    output.encodeEnumValue(trackingMode.value, 1)
+    output.encodeBitmaskValue(targetData.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrackingImageStatus> {
@@ -132,24 +132,23 @@ public data class CameraTrackingImageStatus(
 
     public override val crcExtra: Byte = 126
 
-    public override fun deserialize(bytes: ByteArray): CameraTrackingImageStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val pointX = inputBuffer.decodeFloat()
-      val pointY = inputBuffer.decodeFloat()
-      val radius = inputBuffer.decodeFloat()
-      val recTopX = inputBuffer.decodeFloat()
-      val recTopY = inputBuffer.decodeFloat()
-      val recBottomX = inputBuffer.decodeFloat()
-      val recBottomY = inputBuffer.decodeFloat()
-      val trackingStatus = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): CameraTrackingImageStatus {
+      val pointX = source.decodeFloat()
+      val pointY = source.decodeFloat()
+      val radius = source.decodeFloat()
+      val recTopX = source.decodeFloat()
+      val recTopY = source.decodeFloat()
+      val recBottomX = source.decodeFloat()
+      val recBottomY = source.decodeFloat()
+      val trackingStatus = source.decodeEnumValue(1).let { value ->
         val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val trackingMode = inputBuffer.decodeEnumValue(1).let { value ->
+      val trackingMode = source.decodeEnumValue(1).let { value ->
         val entry = CameraTrackingMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetData = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val targetData = source.decodeBitmaskValue(1).let { value ->
         val flags = CameraTrackingTargetData.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

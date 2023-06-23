@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Write registers reply.
@@ -38,18 +37,19 @@ public data class DeviceOpWriteReply(
 ) : MavMessage<DeviceOpWriteReply> {
   public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWriteReply> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeUInt8(result)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(requestId)
+    output.encodeUInt8(result)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeUInt8(result)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(requestId)
+    output.encodeUInt8(result)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<DeviceOpWriteReply> {
@@ -61,10 +61,9 @@ public data class DeviceOpWriteReply(
 
     public override val crcExtra: Byte = 64
 
-    public override fun deserialize(bytes: ByteArray): DeviceOpWriteReply {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUInt32()
-      val result = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): DeviceOpWriteReply {
+      val requestId = source.decodeUInt32()
+      val result = source.decodeUInt8()
 
       return DeviceOpWriteReply(
         requestId = requestId,

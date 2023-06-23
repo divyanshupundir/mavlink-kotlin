@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Set a safety zone (volume), which is defined by two corners of a cube. This message can be used
@@ -80,32 +79,33 @@ public data class SafetySetAllowedArea(
 ) : MavMessage<SafetySetAllowedArea> {
   public override val instanceCompanion: MavMessage.MavCompanion<SafetySetAllowedArea> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(p1x)
-    outputBuffer.encodeFloat(p1y)
-    outputBuffer.encodeFloat(p1z)
-    outputBuffer.encodeFloat(p2x)
-    outputBuffer.encodeFloat(p2y)
-    outputBuffer.encodeFloat(p2z)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(p1x)
+    output.encodeFloat(p1y)
+    output.encodeFloat(p1z)
+    output.encodeFloat(p2x)
+    output.encodeFloat(p2y)
+    output.encodeFloat(p2z)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeEnumValue(frame.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(p1x)
-    outputBuffer.encodeFloat(p1y)
-    outputBuffer.encodeFloat(p1z)
-    outputBuffer.encodeFloat(p2x)
-    outputBuffer.encodeFloat(p2y)
-    outputBuffer.encodeFloat(p2z)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(p1x)
+    output.encodeFloat(p1y)
+    output.encodeFloat(p1z)
+    output.encodeFloat(p2x)
+    output.encodeFloat(p2y)
+    output.encodeFloat(p2z)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeEnumValue(frame.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SafetySetAllowedArea> {
@@ -117,17 +117,16 @@ public data class SafetySetAllowedArea(
 
     public override val crcExtra: Byte = 15
 
-    public override fun deserialize(bytes: ByteArray): SafetySetAllowedArea {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val p1x = inputBuffer.decodeFloat()
-      val p1y = inputBuffer.decodeFloat()
-      val p1z = inputBuffer.decodeFloat()
-      val p2x = inputBuffer.decodeFloat()
-      val p2y = inputBuffer.decodeFloat()
-      val p2z = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): SafetySetAllowedArea {
+      val p1x = source.decodeFloat()
+      val p1y = source.decodeFloat()
+      val p1z = source.decodeFloat()
+      val p2x = source.decodeFloat()
+      val p2y = source.decodeFloat()
+      val p2z = source.decodeFloat()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val frame = source.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

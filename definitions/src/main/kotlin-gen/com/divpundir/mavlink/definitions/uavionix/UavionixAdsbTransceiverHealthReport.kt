@@ -7,13 +7,12 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Transceiver heartbeat with health report (updated every 10s)
@@ -32,16 +31,17 @@ public data class UavionixAdsbTransceiverHealthReport(
   public override val instanceCompanion:
       MavMessage.MavCompanion<UavionixAdsbTransceiverHealthReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(rfhealth.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeBitmaskValue(rfhealth.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(rfhealth.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeBitmaskValue(rfhealth.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<UavionixAdsbTransceiverHealthReport> {
@@ -53,9 +53,8 @@ public data class UavionixAdsbTransceiverHealthReport(
 
     public override val crcExtra: Byte = 4
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbTransceiverHealthReport {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val rfhealth = inputBuffer.decodeBitmaskValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): UavionixAdsbTransceiverHealthReport {
+      val rfhealth = source.decodeBitmaskValue(1).let { value ->
         val flags = UavionixAdsbRfHealth.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

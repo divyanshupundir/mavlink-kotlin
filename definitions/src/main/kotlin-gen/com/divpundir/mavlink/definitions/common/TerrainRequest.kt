@@ -10,15 +10,14 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request for terrain data and terrain status. See terrain protocol docs:
@@ -52,22 +51,23 @@ public data class TerrainRequest(
 ) : MavMessage<TerrainRequest> {
   public override val instanceCompanion: MavMessage.MavCompanion<TerrainRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(mask)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUInt16(gridSpacing)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(mask)
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeUInt16(gridSpacing)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(mask)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeUInt16(gridSpacing)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(mask)
+    output.encodeInt32(lat)
+    output.encodeInt32(lon)
+    output.encodeUInt16(gridSpacing)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<TerrainRequest> {
@@ -79,12 +79,11 @@ public data class TerrainRequest(
 
     public override val crcExtra: Byte = 6
 
-    public override fun deserialize(bytes: ByteArray): TerrainRequest {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mask = inputBuffer.decodeUInt64()
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val gridSpacing = inputBuffer.decodeUInt16()
+    public override fun deserialize(source: BufferedSource): TerrainRequest {
+      val mask = source.decodeUInt64()
+      val lat = source.decodeInt32()
+      val lon = source.decodeInt32()
+      val gridSpacing = source.decodeUInt16()
 
       return TerrainRequest(
         lat = lat,

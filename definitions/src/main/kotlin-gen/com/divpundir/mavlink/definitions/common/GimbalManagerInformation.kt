@@ -14,15 +14,14 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Information about a high level gimbal manager. This message should be requested by a ground
@@ -83,32 +82,33 @@ public data class GimbalManagerInformation(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerInformation> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeBitmaskValue(capFlags.value, 4)
-    outputBuffer.encodeFloat(rollMin)
-    outputBuffer.encodeFloat(rollMax)
-    outputBuffer.encodeFloat(pitchMin)
-    outputBuffer.encodeFloat(pitchMax)
-    outputBuffer.encodeFloat(yawMin)
-    outputBuffer.encodeFloat(yawMax)
-    outputBuffer.encodeUInt8(gimbalDeviceId)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeBitmaskValue(capFlags.value, 4)
+    output.encodeFloat(rollMin)
+    output.encodeFloat(rollMax)
+    output.encodeFloat(pitchMin)
+    output.encodeFloat(pitchMax)
+    output.encodeFloat(yawMin)
+    output.encodeFloat(yawMax)
+    output.encodeUInt8(gimbalDeviceId)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeBitmaskValue(capFlags.value, 4)
-    outputBuffer.encodeFloat(rollMin)
-    outputBuffer.encodeFloat(rollMax)
-    outputBuffer.encodeFloat(pitchMin)
-    outputBuffer.encodeFloat(pitchMax)
-    outputBuffer.encodeFloat(yawMin)
-    outputBuffer.encodeFloat(yawMax)
-    outputBuffer.encodeUInt8(gimbalDeviceId)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeBitmaskValue(capFlags.value, 4)
+    output.encodeFloat(rollMin)
+    output.encodeFloat(rollMax)
+    output.encodeFloat(pitchMin)
+    output.encodeFloat(pitchMax)
+    output.encodeFloat(yawMin)
+    output.encodeFloat(yawMax)
+    output.encodeUInt8(gimbalDeviceId)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<GimbalManagerInformation> {
@@ -120,20 +120,19 @@ public data class GimbalManagerInformation(
 
     public override val crcExtra: Byte = 70
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerInformation {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val capFlags = inputBuffer.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(source: BufferedSource): GimbalManagerInformation {
+      val timeBootMs = source.decodeUInt32()
+      val capFlags = source.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerCapFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val rollMin = inputBuffer.decodeFloat()
-      val rollMax = inputBuffer.decodeFloat()
-      val pitchMin = inputBuffer.decodeFloat()
-      val pitchMax = inputBuffer.decodeFloat()
-      val yawMin = inputBuffer.decodeFloat()
-      val yawMax = inputBuffer.decodeFloat()
-      val gimbalDeviceId = inputBuffer.decodeUInt8()
+      val rollMin = source.decodeFloat()
+      val rollMax = source.decodeFloat()
+      val pitchMin = source.decodeFloat()
+      val pitchMax = source.decodeFloat()
+      val yawMin = source.decodeFloat()
+      val yawMax = source.decodeFloat()
+      val gimbalDeviceId = source.decodeUInt8()
 
       return GimbalManagerInformation(
         timeBootMs = timeBootMs,

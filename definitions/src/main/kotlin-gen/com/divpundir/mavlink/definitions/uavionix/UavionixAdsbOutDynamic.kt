@@ -20,16 +20,15 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Dynamic data used to generate ADS-B out transponder data (send at 5Hz)
@@ -124,46 +123,47 @@ public data class UavionixAdsbOutDynamic(
 ) : MavMessage<UavionixAdsbOutDynamic> {
   public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutDynamic> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(utctime)
-    outputBuffer.encodeInt32(gpslat)
-    outputBuffer.encodeInt32(gpslon)
-    outputBuffer.encodeInt32(gpsalt)
-    outputBuffer.encodeInt32(baroaltmsl)
-    outputBuffer.encodeUInt32(accuracyhor)
-    outputBuffer.encodeUInt16(accuracyvert)
-    outputBuffer.encodeUInt16(accuracyvel)
-    outputBuffer.encodeInt16(velvert)
-    outputBuffer.encodeInt16(velns)
-    outputBuffer.encodeInt16(velew)
-    outputBuffer.encodeBitmaskValue(state.value, 2)
-    outputBuffer.encodeUInt16(squawk)
-    outputBuffer.encodeEnumValue(gpsfix.value, 1)
-    outputBuffer.encodeUInt8(numsats)
-    outputBuffer.encodeEnumValue(emergencystatus.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(utctime)
+    output.encodeInt32(gpslat)
+    output.encodeInt32(gpslon)
+    output.encodeInt32(gpsalt)
+    output.encodeInt32(baroaltmsl)
+    output.encodeUInt32(accuracyhor)
+    output.encodeUInt16(accuracyvert)
+    output.encodeUInt16(accuracyvel)
+    output.encodeInt16(velvert)
+    output.encodeInt16(velns)
+    output.encodeInt16(velew)
+    output.encodeBitmaskValue(state.value, 2)
+    output.encodeUInt16(squawk)
+    output.encodeEnumValue(gpsfix.value, 1)
+    output.encodeUInt8(numsats)
+    output.encodeEnumValue(emergencystatus.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(utctime)
-    outputBuffer.encodeInt32(gpslat)
-    outputBuffer.encodeInt32(gpslon)
-    outputBuffer.encodeInt32(gpsalt)
-    outputBuffer.encodeInt32(baroaltmsl)
-    outputBuffer.encodeUInt32(accuracyhor)
-    outputBuffer.encodeUInt16(accuracyvert)
-    outputBuffer.encodeUInt16(accuracyvel)
-    outputBuffer.encodeInt16(velvert)
-    outputBuffer.encodeInt16(velns)
-    outputBuffer.encodeInt16(velew)
-    outputBuffer.encodeBitmaskValue(state.value, 2)
-    outputBuffer.encodeUInt16(squawk)
-    outputBuffer.encodeEnumValue(gpsfix.value, 1)
-    outputBuffer.encodeUInt8(numsats)
-    outputBuffer.encodeEnumValue(emergencystatus.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(utctime)
+    output.encodeInt32(gpslat)
+    output.encodeInt32(gpslon)
+    output.encodeInt32(gpsalt)
+    output.encodeInt32(baroaltmsl)
+    output.encodeUInt32(accuracyhor)
+    output.encodeUInt16(accuracyvert)
+    output.encodeUInt16(accuracyvel)
+    output.encodeInt16(velvert)
+    output.encodeInt16(velns)
+    output.encodeInt16(velew)
+    output.encodeBitmaskValue(state.value, 2)
+    output.encodeUInt16(squawk)
+    output.encodeEnumValue(gpsfix.value, 1)
+    output.encodeUInt8(numsats)
+    output.encodeEnumValue(emergencystatus.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<UavionixAdsbOutDynamic> {
@@ -175,30 +175,29 @@ public data class UavionixAdsbOutDynamic(
 
     public override val crcExtra: Byte = -70
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutDynamic {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val utctime = inputBuffer.decodeUInt32()
-      val gpslat = inputBuffer.decodeInt32()
-      val gpslon = inputBuffer.decodeInt32()
-      val gpsalt = inputBuffer.decodeInt32()
-      val baroaltmsl = inputBuffer.decodeInt32()
-      val accuracyhor = inputBuffer.decodeUInt32()
-      val accuracyvert = inputBuffer.decodeUInt16()
-      val accuracyvel = inputBuffer.decodeUInt16()
-      val velvert = inputBuffer.decodeInt16()
-      val velns = inputBuffer.decodeInt16()
-      val velew = inputBuffer.decodeInt16()
-      val state = inputBuffer.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(source: BufferedSource): UavionixAdsbOutDynamic {
+      val utctime = source.decodeUInt32()
+      val gpslat = source.decodeInt32()
+      val gpslon = source.decodeInt32()
+      val gpsalt = source.decodeInt32()
+      val baroaltmsl = source.decodeInt32()
+      val accuracyhor = source.decodeUInt32()
+      val accuracyvert = source.decodeUInt16()
+      val accuracyvel = source.decodeUInt16()
+      val velvert = source.decodeInt16()
+      val velns = source.decodeInt16()
+      val velew = source.decodeInt16()
+      val state = source.decodeBitmaskValue(2).let { value ->
         val flags = UavionixAdsbOutDynamicState.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val squawk = inputBuffer.decodeUInt16()
-      val gpsfix = inputBuffer.decodeEnumValue(1).let { value ->
+      val squawk = source.decodeUInt16()
+      val gpsfix = source.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbOutDynamicGpsFix.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val numsats = inputBuffer.decodeUInt8()
-      val emergencystatus = inputBuffer.decodeEnumValue(1).let { value ->
+      val numsats = source.decodeUInt8()
+      val emergencystatus = source.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbEmergencyStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

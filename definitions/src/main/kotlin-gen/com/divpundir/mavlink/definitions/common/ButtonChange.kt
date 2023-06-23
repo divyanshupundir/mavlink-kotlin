@@ -8,14 +8,13 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Report button state change.
@@ -43,20 +42,21 @@ public data class ButtonChange(
 ) : MavMessage<ButtonChange> {
   public override val instanceCompanion: MavMessage.MavCompanion<ButtonChange> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeUInt32(lastChangeMs)
-    outputBuffer.encodeUInt8(state)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeUInt32(lastChangeMs)
+    output.encodeUInt8(state)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeUInt32(lastChangeMs)
-    outputBuffer.encodeUInt8(state)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeUInt32(lastChangeMs)
+    output.encodeUInt8(state)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ButtonChange> {
@@ -68,11 +68,10 @@ public data class ButtonChange(
 
     public override val crcExtra: Byte = -125
 
-    public override fun deserialize(bytes: ByteArray): ButtonChange {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val lastChangeMs = inputBuffer.decodeUInt32()
-      val state = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): ButtonChange {
+      val timeBootMs = source.decodeUInt32()
+      val lastChangeMs = source.decodeUInt32()
+      val state = source.decodeUInt8()
 
       return ButtonChange(
         timeBootMs = timeBootMs,

@@ -6,14 +6,13 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Wind estimation.
@@ -41,20 +40,21 @@ public data class Wind(
 ) : MavMessage<Wind> {
   public override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(direction)
-    outputBuffer.encodeFloat(speed)
-    outputBuffer.encodeFloat(speedZ)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(direction)
+    output.encodeFloat(speed)
+    output.encodeFloat(speedZ)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(direction)
-    outputBuffer.encodeFloat(speed)
-    outputBuffer.encodeFloat(speedZ)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(direction)
+    output.encodeFloat(speed)
+    output.encodeFloat(speedZ)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Wind> {
@@ -66,11 +66,10 @@ public data class Wind(
 
     public override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): Wind {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val direction = inputBuffer.decodeFloat()
-      val speed = inputBuffer.decodeFloat()
-      val speedZ = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): Wind {
+      val direction = source.decodeFloat()
+      val speed = source.decodeFloat()
+      val speedZ = source.decodeFloat()
 
       return Wind(
         direction = direction,

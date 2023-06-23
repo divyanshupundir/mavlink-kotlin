@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Read out the safety zone the MAV currently assumes.
@@ -65,28 +64,29 @@ public data class SafetyAllowedArea(
 ) : MavMessage<SafetyAllowedArea> {
   public override val instanceCompanion: MavMessage.MavCompanion<SafetyAllowedArea> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(p1x)
-    outputBuffer.encodeFloat(p1y)
-    outputBuffer.encodeFloat(p1z)
-    outputBuffer.encodeFloat(p2x)
-    outputBuffer.encodeFloat(p2y)
-    outputBuffer.encodeFloat(p2z)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(p1x)
+    output.encodeFloat(p1y)
+    output.encodeFloat(p1z)
+    output.encodeFloat(p2x)
+    output.encodeFloat(p2y)
+    output.encodeFloat(p2z)
+    output.encodeEnumValue(frame.value, 1)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(p1x)
-    outputBuffer.encodeFloat(p1y)
-    outputBuffer.encodeFloat(p1z)
-    outputBuffer.encodeFloat(p2x)
-    outputBuffer.encodeFloat(p2y)
-    outputBuffer.encodeFloat(p2z)
-    outputBuffer.encodeEnumValue(frame.value, 1)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeFloat(p1x)
+    output.encodeFloat(p1y)
+    output.encodeFloat(p1z)
+    output.encodeFloat(p2x)
+    output.encodeFloat(p2y)
+    output.encodeFloat(p2z)
+    output.encodeEnumValue(frame.value, 1)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<SafetyAllowedArea> {
@@ -98,15 +98,14 @@ public data class SafetyAllowedArea(
 
     public override val crcExtra: Byte = 3
 
-    public override fun deserialize(bytes: ByteArray): SafetyAllowedArea {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val p1x = inputBuffer.decodeFloat()
-      val p1y = inputBuffer.decodeFloat()
-      val p1z = inputBuffer.decodeFloat()
-      val p2x = inputBuffer.decodeFloat()
-      val p2y = inputBuffer.decodeFloat()
-      val p2z = inputBuffer.decodeFloat()
-      val frame = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): SafetyAllowedArea {
+      val p1x = source.decodeFloat()
+      val p1y = source.decodeFloat()
+      val p1z = source.decodeFloat()
+      val p2x = source.decodeFloat()
+      val p2y = source.decodeFloat()
+      val p2z = source.decodeFloat()
+      val frame = source.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

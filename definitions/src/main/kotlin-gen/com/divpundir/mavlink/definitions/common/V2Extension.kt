@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Message implementing parts of the V2 payload specs in V1 frames for transitional support.
@@ -68,24 +67,25 @@ public data class V2Extension(
 ) : MavMessage<V2Extension> {
   public override val instanceCompanion: MavMessage.MavCompanion<V2Extension> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(messageType)
-    outputBuffer.encodeUInt8(targetNetwork)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(payload, 249)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(messageType)
+    output.encodeUInt8(targetNetwork)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(payload, 249)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(messageType)
-    outputBuffer.encodeUInt8(targetNetwork)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8Array(payload, 249)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(messageType)
+    output.encodeUInt8(targetNetwork)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8Array(payload, 249)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<V2Extension> {
@@ -97,13 +97,12 @@ public data class V2Extension(
 
     public override val crcExtra: Byte = 8
 
-    public override fun deserialize(bytes: ByteArray): V2Extension {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val messageType = inputBuffer.decodeUInt16()
-      val targetNetwork = inputBuffer.decodeUInt8()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val payload = inputBuffer.decodeUInt8Array(249)
+    public override fun deserialize(source: BufferedSource): V2Extension {
+      val messageType = source.decodeUInt16()
+      val targetNetwork = source.decodeUInt8()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val payload = source.decodeUInt8Array(249)
 
       return V2Extension(
         targetNetwork = targetNetwork,

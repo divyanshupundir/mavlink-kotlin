@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt64
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Extended EKF state estimates for ASLUAVs
@@ -64,28 +63,29 @@ public data class EkfExt(
 ) : MavMessage<EkfExt> {
   public override val instanceCompanion: MavMessage.MavCompanion<EkfExt> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(windspeed)
-    outputBuffer.encodeFloat(winddir)
-    outputBuffer.encodeFloat(windz)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloat(beta)
-    outputBuffer.encodeFloat(alpha)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(windspeed)
+    output.encodeFloat(winddir)
+    output.encodeFloat(windz)
+    output.encodeFloat(airspeed)
+    output.encodeFloat(beta)
+    output.encodeFloat(alpha)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(windspeed)
-    outputBuffer.encodeFloat(winddir)
-    outputBuffer.encodeFloat(windz)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloat(beta)
-    outputBuffer.encodeFloat(alpha)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(windspeed)
+    output.encodeFloat(winddir)
+    output.encodeFloat(windz)
+    output.encodeFloat(airspeed)
+    output.encodeFloat(beta)
+    output.encodeFloat(alpha)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<EkfExt> {
@@ -97,15 +97,14 @@ public data class EkfExt(
 
     public override val crcExtra: Byte = 64
 
-    public override fun deserialize(bytes: ByteArray): EkfExt {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val windspeed = inputBuffer.decodeFloat()
-      val winddir = inputBuffer.decodeFloat()
-      val windz = inputBuffer.decodeFloat()
-      val airspeed = inputBuffer.decodeFloat()
-      val beta = inputBuffer.decodeFloat()
-      val alpha = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): EkfExt {
+      val timestamp = source.decodeUInt64()
+      val windspeed = source.decodeFloat()
+      val winddir = source.decodeFloat()
+      val windz = source.decodeFloat()
+      val airspeed = source.decodeFloat()
+      val beta = source.decodeFloat()
+      val alpha = source.decodeFloat()
 
       return EkfExt(
         timestamp = timestamp,

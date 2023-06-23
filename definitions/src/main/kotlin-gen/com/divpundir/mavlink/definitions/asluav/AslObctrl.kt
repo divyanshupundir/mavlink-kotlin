@@ -10,16 +10,15 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Off-board controls/commands for ASLUAVs
@@ -72,30 +71,31 @@ public data class AslObctrl(
 ) : MavMessage<AslObctrl> {
   public override val instanceCompanion: MavMessage.MavCompanion<AslObctrl> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(uelev)
-    outputBuffer.encodeFloat(uthrot)
-    outputBuffer.encodeFloat(uthrot2)
-    outputBuffer.encodeFloat(uaill)
-    outputBuffer.encodeFloat(uailr)
-    outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUInt8(obctrlStatus)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(uelev)
+    output.encodeFloat(uthrot)
+    output.encodeFloat(uthrot2)
+    output.encodeFloat(uaill)
+    output.encodeFloat(uailr)
+    output.encodeFloat(urud)
+    output.encodeUInt8(obctrlStatus)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(uelev)
-    outputBuffer.encodeFloat(uthrot)
-    outputBuffer.encodeFloat(uthrot2)
-    outputBuffer.encodeFloat(uaill)
-    outputBuffer.encodeFloat(uailr)
-    outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUInt8(obctrlStatus)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timestamp)
+    output.encodeFloat(uelev)
+    output.encodeFloat(uthrot)
+    output.encodeFloat(uthrot2)
+    output.encodeFloat(uaill)
+    output.encodeFloat(uailr)
+    output.encodeFloat(urud)
+    output.encodeUInt8(obctrlStatus)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<AslObctrl> {
@@ -107,16 +107,15 @@ public data class AslObctrl(
 
     public override val crcExtra: Byte = -22
 
-    public override fun deserialize(bytes: ByteArray): AslObctrl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val uelev = inputBuffer.decodeFloat()
-      val uthrot = inputBuffer.decodeFloat()
-      val uthrot2 = inputBuffer.decodeFloat()
-      val uaill = inputBuffer.decodeFloat()
-      val uailr = inputBuffer.decodeFloat()
-      val urud = inputBuffer.decodeFloat()
-      val obctrlStatus = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): AslObctrl {
+      val timestamp = source.decodeUInt64()
+      val uelev = source.decodeFloat()
+      val uthrot = source.decodeFloat()
+      val uthrot2 = source.decodeFloat()
+      val uaill = source.decodeFloat()
+      val uailr = source.decodeFloat()
+      val urud = source.decodeFloat()
+      val obctrlStatus = source.decodeUInt8()
 
       return AslObctrl(
         timestamp = timestamp,

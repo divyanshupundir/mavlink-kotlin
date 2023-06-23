@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt64
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * The current system altitude.
@@ -76,28 +75,29 @@ public data class Altitude(
 ) : MavMessage<Altitude> {
   public override val instanceCompanion: MavMessage.MavCompanion<Altitude> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(altitudeMonotonic)
-    outputBuffer.encodeFloat(altitudeAmsl)
-    outputBuffer.encodeFloat(altitudeLocal)
-    outputBuffer.encodeFloat(altitudeRelative)
-    outputBuffer.encodeFloat(altitudeTerrain)
-    outputBuffer.encodeFloat(bottomClearance)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(altitudeMonotonic)
+    output.encodeFloat(altitudeAmsl)
+    output.encodeFloat(altitudeLocal)
+    output.encodeFloat(altitudeRelative)
+    output.encodeFloat(altitudeTerrain)
+    output.encodeFloat(bottomClearance)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(altitudeMonotonic)
-    outputBuffer.encodeFloat(altitudeAmsl)
-    outputBuffer.encodeFloat(altitudeLocal)
-    outputBuffer.encodeFloat(altitudeRelative)
-    outputBuffer.encodeFloat(altitudeTerrain)
-    outputBuffer.encodeFloat(bottomClearance)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(altitudeMonotonic)
+    output.encodeFloat(altitudeAmsl)
+    output.encodeFloat(altitudeLocal)
+    output.encodeFloat(altitudeRelative)
+    output.encodeFloat(altitudeTerrain)
+    output.encodeFloat(bottomClearance)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<Altitude> {
@@ -109,15 +109,14 @@ public data class Altitude(
 
     public override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): Altitude {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val altitudeMonotonic = inputBuffer.decodeFloat()
-      val altitudeAmsl = inputBuffer.decodeFloat()
-      val altitudeLocal = inputBuffer.decodeFloat()
-      val altitudeRelative = inputBuffer.decodeFloat()
-      val altitudeTerrain = inputBuffer.decodeFloat()
-      val bottomClearance = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): Altitude {
+      val timeUsec = source.decodeUInt64()
+      val altitudeMonotonic = source.decodeFloat()
+      val altitudeAmsl = source.decodeFloat()
+      val altitudeLocal = source.decodeFloat()
+      val altitudeRelative = source.decodeFloat()
+      val altitudeTerrain = source.decodeFloat()
+      val bottomClearance = source.decodeFloat()
 
       return Altitude(
         timeUsec = timeUsec,

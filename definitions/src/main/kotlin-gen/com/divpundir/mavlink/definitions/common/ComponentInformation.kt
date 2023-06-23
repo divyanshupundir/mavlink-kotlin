@@ -8,15 +8,14 @@ import com.divpundir.mavlink.serialization.decodeUInt32
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  *
@@ -63,24 +62,25 @@ public data class ComponentInformation(
 ) : MavMessage<ComponentInformation> {
   public override val instanceCompanion: MavMessage.MavCompanion<ComponentInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeUInt32(generalMetadataFileCrc)
-    outputBuffer.encodeUInt32(peripheralsMetadataFileCrc)
-    outputBuffer.encodeString(generalMetadataUri, 100)
-    outputBuffer.encodeString(peripheralsMetadataUri, 100)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeUInt32(generalMetadataFileCrc)
+    output.encodeUInt32(peripheralsMetadataFileCrc)
+    output.encodeString(generalMetadataUri, 100)
+    output.encodeString(peripheralsMetadataUri, 100)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeUInt32(generalMetadataFileCrc)
-    outputBuffer.encodeUInt32(peripheralsMetadataFileCrc)
-    outputBuffer.encodeString(generalMetadataUri, 100)
-    outputBuffer.encodeString(peripheralsMetadataUri, 100)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt32(timeBootMs)
+    output.encodeUInt32(generalMetadataFileCrc)
+    output.encodeUInt32(peripheralsMetadataFileCrc)
+    output.encodeString(generalMetadataUri, 100)
+    output.encodeString(peripheralsMetadataUri, 100)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<ComponentInformation> {
@@ -92,13 +92,12 @@ public data class ComponentInformation(
 
     public override val crcExtra: Byte = 0
 
-    public override fun deserialize(bytes: ByteArray): ComponentInformation {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val generalMetadataFileCrc = inputBuffer.decodeUInt32()
-      val peripheralsMetadataFileCrc = inputBuffer.decodeUInt32()
-      val generalMetadataUri = inputBuffer.decodeString(100)
-      val peripheralsMetadataUri = inputBuffer.decodeString(100)
+    public override fun deserialize(source: BufferedSource): ComponentInformation {
+      val timeBootMs = source.decodeUInt32()
+      val generalMetadataFileCrc = source.decodeUInt32()
+      val peripheralsMetadataFileCrc = source.decodeUInt32()
+      val generalMetadataUri = source.decodeString(100)
+      val peripheralsMetadataUri = source.decodeString(100)
 
       return ComponentInformation(
         timeBootMs = timeBootMs,

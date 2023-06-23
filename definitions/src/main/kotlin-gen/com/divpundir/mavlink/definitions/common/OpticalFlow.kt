@@ -12,10 +12,7 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -23,6 +20,8 @@ import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
@@ -92,32 +91,33 @@ public data class OpticalFlow(
 ) : MavMessage<OpticalFlow> {
   public override val instanceCompanion: MavMessage.MavCompanion<OpticalFlow> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(flowCompMX)
-    outputBuffer.encodeFloat(flowCompMY)
-    outputBuffer.encodeFloat(groundDistance)
-    outputBuffer.encodeInt16(flowX)
-    outputBuffer.encodeInt16(flowY)
-    outputBuffer.encodeUInt8(sensorId)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(flowCompMX)
+    output.encodeFloat(flowCompMY)
+    output.encodeFloat(groundDistance)
+    output.encodeInt16(flowX)
+    output.encodeInt16(flowY)
+    output.encodeUInt8(sensorId)
+    output.encodeUInt8(quality)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(flowCompMX)
-    outputBuffer.encodeFloat(flowCompMY)
-    outputBuffer.encodeFloat(groundDistance)
-    outputBuffer.encodeInt16(flowX)
-    outputBuffer.encodeInt16(flowY)
-    outputBuffer.encodeUInt8(sensorId)
-    outputBuffer.encodeUInt8(quality)
-    outputBuffer.encodeFloat(flowRateX)
-    outputBuffer.encodeFloat(flowRateY)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeFloat(flowCompMX)
+    output.encodeFloat(flowCompMY)
+    output.encodeFloat(groundDistance)
+    output.encodeInt16(flowX)
+    output.encodeInt16(flowY)
+    output.encodeUInt8(sensorId)
+    output.encodeUInt8(quality)
+    output.encodeFloat(flowRateX)
+    output.encodeFloat(flowRateY)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<OpticalFlow> {
@@ -129,18 +129,17 @@ public data class OpticalFlow(
 
     public override val crcExtra: Byte = -81
 
-    public override fun deserialize(bytes: ByteArray): OpticalFlow {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val flowCompMX = inputBuffer.decodeFloat()
-      val flowCompMY = inputBuffer.decodeFloat()
-      val groundDistance = inputBuffer.decodeFloat()
-      val flowX = inputBuffer.decodeInt16()
-      val flowY = inputBuffer.decodeInt16()
-      val sensorId = inputBuffer.decodeUInt8()
-      val quality = inputBuffer.decodeUInt8()
-      val flowRateX = inputBuffer.decodeFloat()
-      val flowRateY = inputBuffer.decodeFloat()
+    public override fun deserialize(source: BufferedSource): OpticalFlow {
+      val timeUsec = source.decodeUInt64()
+      val flowCompMX = source.decodeFloat()
+      val flowCompMY = source.decodeFloat()
+      val groundDistance = source.decodeFloat()
+      val flowX = source.decodeInt16()
+      val flowY = source.decodeInt16()
+      val sensorId = source.decodeUInt8()
+      val quality = source.decodeUInt8()
+      val flowRateX = source.decodeFloat()
+      val flowRateY = source.decodeFloat()
 
       return OpticalFlow(
         timeUsec = timeUsec,

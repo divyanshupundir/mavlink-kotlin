@@ -20,10 +20,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
@@ -32,6 +29,8 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * ESC information for lower rate streaming. Recommended streaming rate 1Hz. See ESC_STATUS for
@@ -93,32 +92,33 @@ public data class EscInfo(
 ) : MavMessage<EscInfo> {
   public override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32Array(errorCount, 16)
-    outputBuffer.encodeUInt16(counter)
-    outputBuffer.encodeUInt16Array(failureFlags, 8)
-    outputBuffer.encodeInt16Array(temperature, 8)
-    outputBuffer.encodeUInt8(index)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeEnumValue(connectionType.value, 1)
-    outputBuffer.encodeUInt8(info)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32Array(errorCount, 16)
+    output.encodeUInt16(counter)
+    output.encodeUInt16Array(failureFlags, 8)
+    output.encodeInt16Array(temperature, 8)
+    output.encodeUInt8(index)
+    output.encodeUInt8(count)
+    output.encodeEnumValue(connectionType.value, 1)
+    output.encodeUInt8(info)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32Array(errorCount, 16)
-    outputBuffer.encodeUInt16(counter)
-    outputBuffer.encodeUInt16Array(failureFlags, 8)
-    outputBuffer.encodeInt16Array(temperature, 8)
-    outputBuffer.encodeUInt8(index)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeEnumValue(connectionType.value, 1)
-    outputBuffer.encodeUInt8(info)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt64(timeUsec)
+    output.encodeUInt32Array(errorCount, 16)
+    output.encodeUInt16(counter)
+    output.encodeUInt16Array(failureFlags, 8)
+    output.encodeInt16Array(temperature, 8)
+    output.encodeUInt8(index)
+    output.encodeUInt8(count)
+    output.encodeEnumValue(connectionType.value, 1)
+    output.encodeUInt8(info)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<EscInfo> {
@@ -130,20 +130,19 @@ public data class EscInfo(
 
     public override val crcExtra: Byte = -5
 
-    public override fun deserialize(bytes: ByteArray): EscInfo {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val errorCount = inputBuffer.decodeUInt32Array(16)
-      val counter = inputBuffer.decodeUInt16()
-      val failureFlags = inputBuffer.decodeUInt16Array(8)
-      val temperature = inputBuffer.decodeInt16Array(8)
-      val index = inputBuffer.decodeUInt8()
-      val count = inputBuffer.decodeUInt8()
-      val connectionType = inputBuffer.decodeEnumValue(1).let { value ->
+    public override fun deserialize(source: BufferedSource): EscInfo {
+      val timeUsec = source.decodeUInt64()
+      val errorCount = source.decodeUInt32Array(16)
+      val counter = source.decodeUInt16()
+      val failureFlags = source.decodeUInt16Array(8)
+      val temperature = source.decodeInt16Array(8)
+      val index = source.decodeUInt8()
+      val count = source.decodeUInt8()
+      val connectionType = source.decodeEnumValue(1).let { value ->
         val entry = EscConnectionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val info = inputBuffer.decodeUInt8()
+      val info = source.decodeUInt8()
 
       return EscInfo(
         index = index,

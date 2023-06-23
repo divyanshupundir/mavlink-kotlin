@@ -8,16 +8,15 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
+import okio.Buffer
+import okio.BufferedSource
 
 /**
  * Request a data stream.
@@ -56,24 +55,25 @@ public data class RequestDataStream(
 ) : MavMessage<RequestDataStream> {
   public override val instanceCompanion: MavMessage.MavCompanion<RequestDataStream> = Companion
 
-  public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(reqMessageRate)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(reqStreamId)
-    outputBuffer.encodeUInt8(startStop)
-    return outputBuffer.array()
+  public override fun serializeV1(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(reqMessageRate)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(reqStreamId)
+    output.encodeUInt8(startStop)
+    return output
   }
 
-  public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(reqMessageRate)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(reqStreamId)
-    outputBuffer.encodeUInt8(startStop)
-    return outputBuffer.array().truncateZeros()
+  public override fun serializeV2(): BufferedSource {
+    val output = Buffer()
+    output.encodeUInt16(reqMessageRate)
+    output.encodeUInt8(targetSystem)
+    output.encodeUInt8(targetComponent)
+    output.encodeUInt8(reqStreamId)
+    output.encodeUInt8(startStop)
+    output.truncateZeros()
+    return output
   }
 
   public companion object : MavMessage.MavCompanion<RequestDataStream> {
@@ -85,13 +85,12 @@ public data class RequestDataStream(
 
     public override val crcExtra: Byte = -108
 
-    public override fun deserialize(bytes: ByteArray): RequestDataStream {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val reqMessageRate = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val reqStreamId = inputBuffer.decodeUInt8()
-      val startStop = inputBuffer.decodeUInt8()
+    public override fun deserialize(source: BufferedSource): RequestDataStream {
+      val reqMessageRate = source.decodeUInt16()
+      val targetSystem = source.decodeUInt8()
+      val targetComponent = source.decodeUInt8()
+      val reqStreamId = source.decodeUInt8()
+      val startStop = source.decodeUInt8()
 
       return RequestDataStream(
         targetSystem = targetSystem,
