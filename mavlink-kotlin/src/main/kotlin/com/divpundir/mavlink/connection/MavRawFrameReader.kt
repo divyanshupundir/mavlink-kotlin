@@ -35,6 +35,7 @@ internal class MavRawFrameReader(
                     val payloadSize = peeked.readByte()
                     val incompatibleFlags = peeked.readByte()
 
+                    // FIXME: Signature size is according to the old scheme
                     val signatureSize = if (incompatibleFlags.toUByte() == MavRawFrame.Flags.INCOMPAT_SIGNED) {
                         MavRawFrame.Sizes.SIGNATURE
                     } else {
