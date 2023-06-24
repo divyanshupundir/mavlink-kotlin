@@ -50,6 +50,8 @@ internal data class MavRawFrame(
         if (messageId != other.messageId) return false
         if (!payload.contentEquals(other.payload)) return false
         if (checksum != other.checksum) return false
+        if (signatureLinkId != other.signatureLinkId) return false
+        if (signatureTimestamp != other.signatureTimestamp) return false
         if (!signature.contentEquals(other.signature)) return false
         return rawBytes.contentEquals(other.rawBytes)
     }
@@ -65,6 +67,8 @@ internal data class MavRawFrame(
         result = 31 * result + messageId.hashCode()
         result = 31 * result + payload.contentHashCode()
         result = 31 * result + checksum.hashCode()
+        result = 31 * result + signatureLinkId.hashCode()
+        result = 31 * result + signatureTimestamp.hashCode()
         result = 31 * result + signature.contentHashCode()
         result = 31 * result + rawBytes.contentHashCode()
         return result
@@ -83,8 +87,10 @@ internal data class MavRawFrame(
     object Sizes {
         const val STX = 1
         const val LEN = 1
+
         const val INCOMPAT_FLAGS = 1
         const val COMPAT_FLAGS = 1
+
         const val SEQ = 1
         const val SYS_ID = 1
         const val COMP_ID = 1
