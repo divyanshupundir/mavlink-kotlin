@@ -1,7 +1,7 @@
 package com.divpundir.mavlink.connection.tcp
 
 import com.divpundir.mavlink.api.MavDialect
-import com.divpundir.mavlink.connection.stream.StreamMavConnection
+import com.divpundir.mavlink.connection.StreamMavConnection
 import okio.buffer
 import okio.sink
 import okio.source

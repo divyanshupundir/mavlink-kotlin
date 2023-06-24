@@ -1,4 +1,4 @@
-package com.divpundir.mavlink.frame
+package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.serialization.*
 import java.io.IOException

@@ -1,6 +1,5 @@
-package com.divpundir.mavlink.connection.stream
+package com.divpundir.mavlink.connection
 
-import com.divpundir.mavlink.frame.MavRawFrame
 import okio.BufferedSource
 import java.io.EOFException
 import java.io.IOException

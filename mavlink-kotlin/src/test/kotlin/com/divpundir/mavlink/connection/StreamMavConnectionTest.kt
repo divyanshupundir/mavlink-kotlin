@@ -2,7 +2,6 @@ package com.divpundir.mavlink.connection
 
 import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.connection.stream.StreamMavConnection
 import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.minimal.Heartbeat
 import com.divpundir.mavlink.definitions.minimal.MavAutopilot

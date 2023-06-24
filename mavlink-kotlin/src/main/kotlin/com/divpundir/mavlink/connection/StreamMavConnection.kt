@@ -1,12 +1,8 @@
-package com.divpundir.mavlink.connection.stream
+package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.connection.MavConnection
-import com.divpundir.mavlink.frame.MavFrameV1Impl
-import com.divpundir.mavlink.frame.MavFrameV2Impl
-import com.divpundir.mavlink.frame.MavRawFrame
 import okio.BufferedSink
 import okio.BufferedSource
 import java.io.Closeable

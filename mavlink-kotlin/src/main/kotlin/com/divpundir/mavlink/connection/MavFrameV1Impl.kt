@@ -1,4 +1,4 @@
-package com.divpundir.mavlink.frame
+package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.api.MavFrameV1
 
