@@ -44,8 +44,6 @@ private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = Fu
 private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
     .addSuperinterface(MavMessage.MavCompanion::class.asClassName().parameterizedBy(getClassName(packageName)))
-    .addProperty(generateSizeV1Property())
-    .addProperty(generateSizeV2Property())
     .addProperty(generateIdProperty())
     .addProperty(generateCrcExtraProperty())
     .addFunction(generateDeserializeMethod(packageName, enumHelper))
@@ -66,16 +64,6 @@ private fun MessageModel.generateIdProperty() = PropertySpec
 private fun MessageModel.generateCrcExtraProperty() = PropertySpec
     .builder("crcExtra", Byte::class, KModifier.OVERRIDE)
     .initializer("%L", crcExtra)
-    .build()
-
-private fun MessageModel.generateSizeV1Property() = PropertySpec
-    .builder("SIZE_V1", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", sizeV1)
-    .build()
-
-private fun MessageModel.generateSizeV2Property() = PropertySpec
-    .builder("SIZE_V2", Int::class, KModifier.PRIVATE, KModifier.CONST)
-    .initializer("%L", sizeV2)
     .build()
 
 private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelper: EnumHelper) = FunSpec
@@ -156,12 +144,6 @@ private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.
     .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
-
-private val MessageModel.sizeV1: Int
-    get() = fields.filter { !it.extension }.sumOf { it.size }
-
-private val MessageModel.sizeV2: Int
-    get() = fields.sumOf { it.size }
 
 private val truncateZerosMemberName = MemberName("com.divpundir.mavlink.serialization", "truncateZeros")
 
