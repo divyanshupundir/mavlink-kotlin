@@ -10,7 +10,6 @@ import com.divpundir.mavlink.serialization.CrcX25
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import okio.Buffer
-import okio.BufferedSource
 
 internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
@@ -69,17 +68,19 @@ private fun MessageModel.generateCrcExtraProperty() = PropertySpec
 private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelper: EnumHelper) = FunSpec
     .builder("deserialize")
     .addModifiers(KModifier.OVERRIDE)
-    .addParameter(ParameterSpec("source", BufferedSource::class.asTypeName()))
+    .addParameter(ParameterSpec("bytes", ByteArray::class.asTypeName()))
     .returns(getClassName(packageName))
     .addCode(
         buildCodeBlock {
-            fields.sorted().forEach { add(it.generateDeserializeStatement("source", enumHelper)) }
+            beginControlFlow("return with(%T().write(bytes))", Buffer::class)
+            fields.sorted().forEach { add(it.generateDeserializeStatement("this", enumHelper)) }
             addStatement("")
-            addStatement("return %T(", getClassName(packageName))
+            addStatement("%T(", getClassName(packageName))
             indent()
             fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
             unindent()
             addStatement(")")
+            endControlFlow()
         }
     )
     .build()
@@ -96,12 +97,13 @@ private fun MessageModel.generateInstanceCompanion(packageName: String) = Proper
 private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV1")
     .addModifiers(KModifier.OVERRIDE)
-    .returns(BufferedSource::class)
+    .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
-            addStatement("val output = %T()", Buffer::class)
-            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("output", enumHelper)) }
-            addStatement("return output")
+            beginControlFlow("return with(%T())", Buffer::class)
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("this", enumHelper)) }
+            addStatement("this.readByteArray()")
+            endControlFlow()
         }
     )
     .build()
@@ -109,13 +111,13 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
 private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .builder("serializeV2")
     .addModifiers(KModifier.OVERRIDE)
-    .returns(BufferedSource::class)
+    .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
-            addStatement("val output = %T()", Buffer::class)
-            fields.sorted().forEach { add(it.generateSerializeStatement("output", enumHelper)) }
-            addStatement("output.%M()", truncateZerosMemberName)
-            addStatement("return output")
+            beginControlFlow("return with(%T())", Buffer::class)
+            fields.sorted().forEach { add(it.generateSerializeStatement("this", enumHelper)) }
+            addStatement("this.readByteArray().%M()", truncateZerosMemberName)
+            endControlFlow()
         }
     )
     .build()

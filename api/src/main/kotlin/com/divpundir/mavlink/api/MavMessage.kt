@@ -1,7 +1,5 @@
 package com.divpundir.mavlink.api
 
-import okio.BufferedSource
-
 /**
  * A high level MAVLink message.
  *
@@ -15,15 +13,15 @@ public interface MavMessage<T : MavMessage<T>> {
     public val instanceCompanion: MavCompanion<T>
 
     /**
-     * Serializes the message to a [BufferedSource] according to MAVLink v1 scheme. Extensions are not serialized.
+     * Serializes the message to a [ByteArray] according to MAVLink v1 scheme. Extensions are not serialized.
      */
-    public fun serializeV1(): BufferedSource
+    public fun serializeV1(): ByteArray
 
     /**
-     * Serializes the message to a [BufferedSource] according to MAVLink v2 scheme. Extensions are also serialized and
+     * Serializes the message to a [ByteArray] according to MAVLink v2 scheme. Extensions are also serialized and
      * payload truncation is applied.
      */
-    public fun serializeV2(): BufferedSource
+    public fun serializeV2(): ByteArray
 
     /**
      * The companion object for a [MavMessage], which contains the MAVLink metadata and the [MavDeserializer]
