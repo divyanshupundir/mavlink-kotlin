@@ -8,11 +8,10 @@ import com.divpundir.mavlink.serialization.decodeEnumValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Provides state for additional features
@@ -36,36 +35,33 @@ public data class ExtendedSysState(
 ) : MavMessage<ExtendedSysState> {
   public override val instanceCompanion: MavMessage.MavCompanion<ExtendedSysState> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(vtolState.value, 1)
-    output.encodeEnumValue(landedState.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(vtolState.value, 1)
+    buffer.encodeEnumValue(landedState.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(vtolState.value, 1)
-    output.encodeEnumValue(landedState.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(vtolState.value, 1)
+    buffer.encodeEnumValue(landedState.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ExtendedSysState> {
-    private const val SIZE_V1: Int = 2
-
-    private const val SIZE_V2: Int = 2
-
     public override val id: UInt = 245u
 
     public override val crcExtra: Byte = -126
 
-    public override fun deserialize(source: BufferedSource): ExtendedSysState {
-      val vtolState = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): ExtendedSysState {
+      val buffer = Buffer().write(bytes)
+
+      val vtolState = buffer.decodeEnumValue(1).let { value ->
         val entry = MavVtolState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val landedState = source.decodeEnumValue(1).let { value ->
+      val landedState = buffer.decodeEnumValue(1).let { value ->
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

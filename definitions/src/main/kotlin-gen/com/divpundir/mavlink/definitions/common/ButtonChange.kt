@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Report button state change.
@@ -42,36 +41,33 @@ public data class ButtonChange(
 ) : MavMessage<ButtonChange> {
   public override val instanceCompanion: MavMessage.MavCompanion<ButtonChange> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(lastChangeMs)
-    output.encodeUInt8(state)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(lastChangeMs)
+    buffer.encodeUInt8(state)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(lastChangeMs)
-    output.encodeUInt8(state)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(lastChangeMs)
+    buffer.encodeUInt8(state)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ButtonChange> {
-    private const val SIZE_V1: Int = 9
-
-    private const val SIZE_V2: Int = 9
-
     public override val id: UInt = 257u
 
     public override val crcExtra: Byte = -125
 
-    public override fun deserialize(source: BufferedSource): ButtonChange {
-      val timeBootMs = source.decodeUInt32()
-      val lastChangeMs = source.decodeUInt32()
-      val state = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): ButtonChange {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val lastChangeMs = buffer.decodeUInt32()
+      val state = buffer.decodeUInt8()
 
       return ButtonChange(
         timeBootMs = timeBootMs,

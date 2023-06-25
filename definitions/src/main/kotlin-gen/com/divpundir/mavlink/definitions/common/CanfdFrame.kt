@@ -11,13 +11,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * A forwarded CANFD frame as requested by MAV_CMD_CAN_FORWARD. These are separated from CAN_FRAME
@@ -61,45 +60,42 @@ public data class CanfdFrame(
 ) : MavMessage<CanfdFrame> {
   public override val instanceCompanion: MavMessage.MavCompanion<CanfdFrame> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(id)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(bus)
-    output.encodeUInt8(len)
-    output.encodeUInt8Array(data, 64)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(id)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(bus)
+    buffer.encodeUInt8(len)
+    buffer.encodeUInt8Array(data, 64)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(id)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(bus)
-    output.encodeUInt8(len)
-    output.encodeUInt8Array(data, 64)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(id)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(bus)
+    buffer.encodeUInt8(len)
+    buffer.encodeUInt8Array(data, 64)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CanfdFrame> {
-    private const val SIZE_V1: Int = 72
-
-    private const val SIZE_V2: Int = 72
-
     public override val id: UInt = 387u
 
     public override val crcExtra: Byte = 4
 
-    public override fun deserialize(source: BufferedSource): CanfdFrame {
-      val id = source.decodeUInt32()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val bus = source.decodeUInt8()
-      val len = source.decodeUInt8()
-      val data = source.decodeUInt8Array(64)
+    public override fun deserialize(bytes: ByteArray): CanfdFrame {
+      val buffer = Buffer().write(bytes)
+
+      val id = buffer.decodeUInt32()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val bus = buffer.decodeUInt8()
+      val len = buffer.decodeUInt8()
+      val data = buffer.decodeUInt8Array(64)
 
       return CanfdFrame(
         targetSystem = targetSystem,

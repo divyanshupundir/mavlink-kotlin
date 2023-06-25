@@ -19,14 +19,13 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Control a serial port. This can be used for raw access to an onboard serial peripheral such as a
@@ -88,55 +87,52 @@ public data class SerialControl(
 ) : MavMessage<SerialControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(baudrate)
-    output.encodeUInt16(timeout)
-    output.encodeEnumValue(device.value, 1)
-    output.encodeBitmaskValue(flags.value, 1)
-    output.encodeUInt8(count)
-    output.encodeUInt8Array(data, 70)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(baudrate)
+    buffer.encodeUInt16(timeout)
+    buffer.encodeEnumValue(device.value, 1)
+    buffer.encodeBitmaskValue(flags.value, 1)
+    buffer.encodeUInt8(count)
+    buffer.encodeUInt8Array(data, 70)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(baudrate)
-    output.encodeUInt16(timeout)
-    output.encodeEnumValue(device.value, 1)
-    output.encodeBitmaskValue(flags.value, 1)
-    output.encodeUInt8(count)
-    output.encodeUInt8Array(data, 70)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(baudrate)
+    buffer.encodeUInt16(timeout)
+    buffer.encodeEnumValue(device.value, 1)
+    buffer.encodeBitmaskValue(flags.value, 1)
+    buffer.encodeUInt8(count)
+    buffer.encodeUInt8Array(data, 70)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialControl> {
-    private const val SIZE_V1: Int = 79
-
-    private const val SIZE_V2: Int = 81
-
     public override val id: UInt = 126u
 
     public override val crcExtra: Byte = -36
 
-    public override fun deserialize(source: BufferedSource): SerialControl {
-      val baudrate = source.decodeUInt32()
-      val timeout = source.decodeUInt16()
-      val device = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): SerialControl {
+      val buffer = Buffer().write(bytes)
+
+      val baudrate = buffer.decodeUInt32()
+      val timeout = buffer.decodeUInt16()
+      val device = buffer.decodeEnumValue(1).let { value ->
         val entry = SerialControlDev.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = source.decodeBitmaskValue(1).let { value ->
+      val flags = buffer.decodeBitmaskValue(1).let { value ->
         val flags = SerialControlFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val count = source.decodeUInt8()
-      val data = source.decodeUInt8Array(70)
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
+      val count = buffer.decodeUInt8()
+      val data = buffer.decodeUInt8Array(70)
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
 
       return SerialControl(
         device = device,

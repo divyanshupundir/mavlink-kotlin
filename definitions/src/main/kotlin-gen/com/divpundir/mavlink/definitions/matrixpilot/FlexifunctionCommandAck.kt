@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Acknowldge sucess or failure of a flexifunction command
@@ -36,33 +35,30 @@ public data class FlexifunctionCommandAck(
   public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommandAck> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(commandType)
-    output.encodeUInt16(result)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(commandType)
+    buffer.encodeUInt16(result)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(commandType)
-    output.encodeUInt16(result)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(commandType)
+    buffer.encodeUInt16(result)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FlexifunctionCommandAck> {
-    private const val SIZE_V1: Int = 4
-
-    private const val SIZE_V2: Int = 4
-
     public override val id: UInt = 158u
 
     public override val crcExtra: Byte = -48
 
-    public override fun deserialize(source: BufferedSource): FlexifunctionCommandAck {
-      val commandType = source.decodeUInt16()
-      val result = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): FlexifunctionCommandAck {
+      val buffer = Buffer().write(bytes)
+
+      val commandType = buffer.decodeUInt16()
+      val result = buffer.decodeUInt16()
 
       return FlexifunctionCommandAck(
         commandType = commandType,

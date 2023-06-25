@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Monitoring of power board status
@@ -91,63 +90,60 @@ public data class SensPowerBoard(
 ) : MavMessage<SensPowerBoard> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeFloat(pwrBrdSystemVolt)
-    output.encodeFloat(pwrBrdServoVolt)
-    output.encodeFloat(pwrBrdDigitalVolt)
-    output.encodeFloat(pwrBrdMotLAmp)
-    output.encodeFloat(pwrBrdMotRAmp)
-    output.encodeFloat(pwrBrdAnalogAmp)
-    output.encodeFloat(pwrBrdDigitalAmp)
-    output.encodeFloat(pwrBrdExtAmp)
-    output.encodeFloat(pwrBrdAuxAmp)
-    output.encodeUInt8(pwrBrdStatus)
-    output.encodeUInt8(pwrBrdLedStatus)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeFloat(pwrBrdSystemVolt)
+    buffer.encodeFloat(pwrBrdServoVolt)
+    buffer.encodeFloat(pwrBrdDigitalVolt)
+    buffer.encodeFloat(pwrBrdMotLAmp)
+    buffer.encodeFloat(pwrBrdMotRAmp)
+    buffer.encodeFloat(pwrBrdAnalogAmp)
+    buffer.encodeFloat(pwrBrdDigitalAmp)
+    buffer.encodeFloat(pwrBrdExtAmp)
+    buffer.encodeFloat(pwrBrdAuxAmp)
+    buffer.encodeUInt8(pwrBrdStatus)
+    buffer.encodeUInt8(pwrBrdLedStatus)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeFloat(pwrBrdSystemVolt)
-    output.encodeFloat(pwrBrdServoVolt)
-    output.encodeFloat(pwrBrdDigitalVolt)
-    output.encodeFloat(pwrBrdMotLAmp)
-    output.encodeFloat(pwrBrdMotRAmp)
-    output.encodeFloat(pwrBrdAnalogAmp)
-    output.encodeFloat(pwrBrdDigitalAmp)
-    output.encodeFloat(pwrBrdExtAmp)
-    output.encodeFloat(pwrBrdAuxAmp)
-    output.encodeUInt8(pwrBrdStatus)
-    output.encodeUInt8(pwrBrdLedStatus)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeFloat(pwrBrdSystemVolt)
+    buffer.encodeFloat(pwrBrdServoVolt)
+    buffer.encodeFloat(pwrBrdDigitalVolt)
+    buffer.encodeFloat(pwrBrdMotLAmp)
+    buffer.encodeFloat(pwrBrdMotRAmp)
+    buffer.encodeFloat(pwrBrdAnalogAmp)
+    buffer.encodeFloat(pwrBrdDigitalAmp)
+    buffer.encodeFloat(pwrBrdExtAmp)
+    buffer.encodeFloat(pwrBrdAuxAmp)
+    buffer.encodeUInt8(pwrBrdStatus)
+    buffer.encodeUInt8(pwrBrdLedStatus)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SensPowerBoard> {
-    private const val SIZE_V1: Int = 46
-
-    private const val SIZE_V2: Int = 46
-
     public override val id: UInt = 8_013u
 
     public override val crcExtra: Byte = -34
 
-    public override fun deserialize(source: BufferedSource): SensPowerBoard {
-      val timestamp = source.decodeUInt64()
-      val pwrBrdSystemVolt = source.decodeFloat()
-      val pwrBrdServoVolt = source.decodeFloat()
-      val pwrBrdDigitalVolt = source.decodeFloat()
-      val pwrBrdMotLAmp = source.decodeFloat()
-      val pwrBrdMotRAmp = source.decodeFloat()
-      val pwrBrdAnalogAmp = source.decodeFloat()
-      val pwrBrdDigitalAmp = source.decodeFloat()
-      val pwrBrdExtAmp = source.decodeFloat()
-      val pwrBrdAuxAmp = source.decodeFloat()
-      val pwrBrdStatus = source.decodeUInt8()
-      val pwrBrdLedStatus = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): SensPowerBoard {
+      val buffer = Buffer().write(bytes)
+
+      val timestamp = buffer.decodeUInt64()
+      val pwrBrdSystemVolt = buffer.decodeFloat()
+      val pwrBrdServoVolt = buffer.decodeFloat()
+      val pwrBrdDigitalVolt = buffer.decodeFloat()
+      val pwrBrdMotLAmp = buffer.decodeFloat()
+      val pwrBrdMotRAmp = buffer.decodeFloat()
+      val pwrBrdAnalogAmp = buffer.decodeFloat()
+      val pwrBrdDigitalAmp = buffer.decodeFloat()
+      val pwrBrdExtAmp = buffer.decodeFloat()
+      val pwrBrdAuxAmp = buffer.decodeFloat()
+      val pwrBrdStatus = buffer.decodeUInt8()
+      val pwrBrdLedStatus = buffer.decodeUInt8()
 
       return SensPowerBoard(
         timestamp = timestamp,

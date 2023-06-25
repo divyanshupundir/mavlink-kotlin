@@ -8,11 +8,11 @@ import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Time/duration estimates for various events and actions given the current vehicle state and
@@ -58,42 +58,39 @@ public data class TimeEstimateToTarget(
 ) : MavMessage<TimeEstimateToTarget> {
   public override val instanceCompanion: MavMessage.MavCompanion<TimeEstimateToTarget> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(safeReturn)
-    output.encodeInt32(land)
-    output.encodeInt32(missionNextItem)
-    output.encodeInt32(missionEnd)
-    output.encodeInt32(commandedAction)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(safeReturn)
+    buffer.encodeInt32(land)
+    buffer.encodeInt32(missionNextItem)
+    buffer.encodeInt32(missionEnd)
+    buffer.encodeInt32(commandedAction)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(safeReturn)
-    output.encodeInt32(land)
-    output.encodeInt32(missionNextItem)
-    output.encodeInt32(missionEnd)
-    output.encodeInt32(commandedAction)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(safeReturn)
+    buffer.encodeInt32(land)
+    buffer.encodeInt32(missionNextItem)
+    buffer.encodeInt32(missionEnd)
+    buffer.encodeInt32(commandedAction)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<TimeEstimateToTarget> {
-    private const val SIZE_V1: Int = 20
-
-    private const val SIZE_V2: Int = 20
-
     public override val id: UInt = 380u
 
     public override val crcExtra: Byte = -24
 
-    public override fun deserialize(source: BufferedSource): TimeEstimateToTarget {
-      val safeReturn = source.decodeInt32()
-      val land = source.decodeInt32()
-      val missionNextItem = source.decodeInt32()
-      val missionEnd = source.decodeInt32()
-      val commandedAction = source.decodeInt32()
+    public override fun deserialize(bytes: ByteArray): TimeEstimateToTarget {
+      val buffer = Buffer().write(bytes)
+
+      val safeReturn = buffer.decodeInt32()
+      val land = buffer.decodeInt32()
+      val missionNextItem = buffer.decodeInt32()
+      val missionEnd = buffer.decodeInt32()
+      val commandedAction = buffer.decodeInt32()
 
       return TimeEstimateToTarget(
         safeReturn = safeReturn,

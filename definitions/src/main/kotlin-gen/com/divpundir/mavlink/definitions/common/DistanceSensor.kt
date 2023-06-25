@@ -18,15 +18,14 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Distance sensor information for an onboard rangefinder.
@@ -119,65 +118,62 @@ public data class DistanceSensor(
 ) : MavMessage<DistanceSensor> {
   public override val instanceCompanion: MavMessage.MavCompanion<DistanceSensor> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt16(minDistance)
-    output.encodeUInt16(maxDistance)
-    output.encodeUInt16(currentDistance)
-    output.encodeEnumValue(type.value, 1)
-    output.encodeUInt8(id)
-    output.encodeEnumValue(orientation.value, 1)
-    output.encodeUInt8(covariance)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt16(minDistance)
+    buffer.encodeUInt16(maxDistance)
+    buffer.encodeUInt16(currentDistance)
+    buffer.encodeEnumValue(type.value, 1)
+    buffer.encodeUInt8(id)
+    buffer.encodeEnumValue(orientation.value, 1)
+    buffer.encodeUInt8(covariance)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt16(minDistance)
-    output.encodeUInt16(maxDistance)
-    output.encodeUInt16(currentDistance)
-    output.encodeEnumValue(type.value, 1)
-    output.encodeUInt8(id)
-    output.encodeEnumValue(orientation.value, 1)
-    output.encodeUInt8(covariance)
-    output.encodeFloat(horizontalFov)
-    output.encodeFloat(verticalFov)
-    output.encodeFloatArray(quaternion, 16)
-    output.encodeUInt8(signalQuality)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt16(minDistance)
+    buffer.encodeUInt16(maxDistance)
+    buffer.encodeUInt16(currentDistance)
+    buffer.encodeEnumValue(type.value, 1)
+    buffer.encodeUInt8(id)
+    buffer.encodeEnumValue(orientation.value, 1)
+    buffer.encodeUInt8(covariance)
+    buffer.encodeFloat(horizontalFov)
+    buffer.encodeFloat(verticalFov)
+    buffer.encodeFloatArray(quaternion, 16)
+    buffer.encodeUInt8(signalQuality)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DistanceSensor> {
-    private const val SIZE_V1: Int = 14
-
-    private const val SIZE_V2: Int = 39
-
     public override val id: UInt = 132u
 
     public override val crcExtra: Byte = 85
 
-    public override fun deserialize(source: BufferedSource): DistanceSensor {
-      val timeBootMs = source.decodeUInt32()
-      val minDistance = source.decodeUInt16()
-      val maxDistance = source.decodeUInt16()
-      val currentDistance = source.decodeUInt16()
-      val type = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): DistanceSensor {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val minDistance = buffer.decodeUInt16()
+      val maxDistance = buffer.decodeUInt16()
+      val currentDistance = buffer.decodeUInt16()
+      val type = buffer.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val id = source.decodeUInt8()
-      val orientation = source.decodeEnumValue(1).let { value ->
+      val id = buffer.decodeUInt8()
+      val orientation = buffer.decodeEnumValue(1).let { value ->
         val entry = MavSensorOrientation.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val covariance = source.decodeUInt8()
-      val horizontalFov = source.decodeFloat()
-      val verticalFov = source.decodeFloat()
-      val quaternion = source.decodeFloatArray(16)
-      val signalQuality = source.decodeUInt8()
+      val covariance = buffer.decodeUInt8()
+      val horizontalFov = buffer.decodeFloat()
+      val verticalFov = buffer.decodeFloat()
+      val quaternion = buffer.decodeFloatArray(16)
+      val signalQuality = buffer.decodeUInt8()
 
       return DistanceSensor(
         timeBootMs = timeBootMs,

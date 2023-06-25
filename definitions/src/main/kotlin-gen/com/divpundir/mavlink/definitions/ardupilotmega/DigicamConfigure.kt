@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Configure on-board Camera Control System.
@@ -87,60 +86,57 @@ public data class DigicamConfigure(
 ) : MavMessage<DigicamConfigure> {
   public override val instanceCompanion: MavMessage.MavCompanion<DigicamConfigure> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(extraValue)
-    output.encodeUInt16(shutterSpeed)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(mode)
-    output.encodeUInt8(aperture)
-    output.encodeUInt8(iso)
-    output.encodeUInt8(exposureType)
-    output.encodeUInt8(commandId)
-    output.encodeUInt8(engineCutOff)
-    output.encodeUInt8(extraParam)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(extraValue)
+    buffer.encodeUInt16(shutterSpeed)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(mode)
+    buffer.encodeUInt8(aperture)
+    buffer.encodeUInt8(iso)
+    buffer.encodeUInt8(exposureType)
+    buffer.encodeUInt8(commandId)
+    buffer.encodeUInt8(engineCutOff)
+    buffer.encodeUInt8(extraParam)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(extraValue)
-    output.encodeUInt16(shutterSpeed)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(mode)
-    output.encodeUInt8(aperture)
-    output.encodeUInt8(iso)
-    output.encodeUInt8(exposureType)
-    output.encodeUInt8(commandId)
-    output.encodeUInt8(engineCutOff)
-    output.encodeUInt8(extraParam)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(extraValue)
+    buffer.encodeUInt16(shutterSpeed)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(mode)
+    buffer.encodeUInt8(aperture)
+    buffer.encodeUInt8(iso)
+    buffer.encodeUInt8(exposureType)
+    buffer.encodeUInt8(commandId)
+    buffer.encodeUInt8(engineCutOff)
+    buffer.encodeUInt8(extraParam)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DigicamConfigure> {
-    private const val SIZE_V1: Int = 15
-
-    private const val SIZE_V2: Int = 15
-
     public override val id: UInt = 154u
 
     public override val crcExtra: Byte = 84
 
-    public override fun deserialize(source: BufferedSource): DigicamConfigure {
-      val extraValue = source.decodeFloat()
-      val shutterSpeed = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val mode = source.decodeUInt8()
-      val aperture = source.decodeUInt8()
-      val iso = source.decodeUInt8()
-      val exposureType = source.decodeUInt8()
-      val commandId = source.decodeUInt8()
-      val engineCutOff = source.decodeUInt8()
-      val extraParam = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): DigicamConfigure {
+      val buffer = Buffer().write(bytes)
+
+      val extraValue = buffer.decodeFloat()
+      val shutterSpeed = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val mode = buffer.decodeUInt8()
+      val aperture = buffer.decodeUInt8()
+      val iso = buffer.decodeUInt8()
+      val exposureType = buffer.decodeUInt8()
+      val commandId = buffer.decodeUInt8()
+      val engineCutOff = buffer.decodeUInt8()
+      val extraParam = buffer.decodeUInt8()
 
       return DigicamConfigure(
         targetSystem = targetSystem,

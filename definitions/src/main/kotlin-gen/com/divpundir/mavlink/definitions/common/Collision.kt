@@ -12,12 +12,11 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about a potential collision
@@ -65,54 +64,51 @@ public data class Collision(
 ) : MavMessage<Collision> {
   public override val instanceCompanion: MavMessage.MavCompanion<Collision> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(id)
-    output.encodeFloat(timeToMinimumDelta)
-    output.encodeFloat(altitudeMinimumDelta)
-    output.encodeFloat(horizontalMinimumDelta)
-    output.encodeEnumValue(src.value, 1)
-    output.encodeEnumValue(action.value, 1)
-    output.encodeEnumValue(threatLevel.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(id)
+    buffer.encodeFloat(timeToMinimumDelta)
+    buffer.encodeFloat(altitudeMinimumDelta)
+    buffer.encodeFloat(horizontalMinimumDelta)
+    buffer.encodeEnumValue(src.value, 1)
+    buffer.encodeEnumValue(action.value, 1)
+    buffer.encodeEnumValue(threatLevel.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(id)
-    output.encodeFloat(timeToMinimumDelta)
-    output.encodeFloat(altitudeMinimumDelta)
-    output.encodeFloat(horizontalMinimumDelta)
-    output.encodeEnumValue(src.value, 1)
-    output.encodeEnumValue(action.value, 1)
-    output.encodeEnumValue(threatLevel.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(id)
+    buffer.encodeFloat(timeToMinimumDelta)
+    buffer.encodeFloat(altitudeMinimumDelta)
+    buffer.encodeFloat(horizontalMinimumDelta)
+    buffer.encodeEnumValue(src.value, 1)
+    buffer.encodeEnumValue(action.value, 1)
+    buffer.encodeEnumValue(threatLevel.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Collision> {
-    private const val SIZE_V1: Int = 19
-
-    private const val SIZE_V2: Int = 19
-
     public override val id: UInt = 247u
 
     public override val crcExtra: Byte = 81
 
-    public override fun deserialize(source: BufferedSource): Collision {
-      val id = source.decodeUInt32()
-      val timeToMinimumDelta = source.decodeFloat()
-      val altitudeMinimumDelta = source.decodeFloat()
-      val horizontalMinimumDelta = source.decodeFloat()
-      val src = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): Collision {
+      val buffer = Buffer().write(bytes)
+
+      val id = buffer.decodeUInt32()
+      val timeToMinimumDelta = buffer.decodeFloat()
+      val altitudeMinimumDelta = buffer.decodeFloat()
+      val horizontalMinimumDelta = buffer.decodeFloat()
+      val src = buffer.decodeEnumValue(1).let { value ->
         val entry = MavCollisionSrc.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val action = source.decodeEnumValue(1).let { value ->
+      val action = buffer.decodeEnumValue(1).let { value ->
         val entry = MavCollisionAction.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val threatLevel = source.decodeEnumValue(1).let { value ->
+      val threatLevel = buffer.decodeEnumValue(1).let { value ->
         val entry = MavCollisionThreatLevel.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

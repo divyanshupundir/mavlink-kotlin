@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * File transfer protocol message: https://mavlink.io/en/services/ftp.html.
@@ -50,39 +49,36 @@ public data class FileTransferProtocol(
 ) : MavMessage<FileTransferProtocol> {
   public override val instanceCompanion: MavMessage.MavCompanion<FileTransferProtocol> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetNetwork)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(payload, 251)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetNetwork)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(payload, 251)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetNetwork)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(payload, 251)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetNetwork)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(payload, 251)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FileTransferProtocol> {
-    private const val SIZE_V1: Int = 254
-
-    private const val SIZE_V2: Int = 254
-
     public override val id: UInt = 110u
 
     public override val crcExtra: Byte = 84
 
-    public override fun deserialize(source: BufferedSource): FileTransferProtocol {
-      val targetNetwork = source.decodeUInt8()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val payload = source.decodeUInt8Array(251)
+    public override fun deserialize(bytes: ByteArray): FileTransferProtocol {
+      val buffer = Buffer().write(bytes)
+
+      val targetNetwork = buffer.decodeUInt8()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val payload = buffer.decodeUInt8Array(251)
 
       return FileTransferProtocol(
         targetNetwork = targetNetwork,

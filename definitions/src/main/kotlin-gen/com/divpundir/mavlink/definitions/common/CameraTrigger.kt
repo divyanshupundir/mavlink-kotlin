@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Camera-IMU triggering and synchronisation message.
@@ -39,33 +38,30 @@ public data class CameraTrigger(
 ) : MavMessage<CameraTrigger> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraTrigger> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32(seq)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32(seq)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32(seq)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32(seq)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrigger> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 112u
 
     public override val crcExtra: Byte = -82
 
-    public override fun deserialize(source: BufferedSource): CameraTrigger {
-      val timeUsec = source.decodeUInt64()
-      val seq = source.decodeUInt32()
+    public override fun deserialize(bytes: ByteArray): CameraTrigger {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val seq = buffer.decodeUInt32()
 
       return CameraTrigger(
         timeUsec = timeUsec,

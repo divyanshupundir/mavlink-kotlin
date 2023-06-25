@@ -21,7 +21,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
@@ -30,7 +30,6 @@ import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * ESC information for lower rate streaming. Recommended streaming rate 1Hz. See ESC_STATUS for
@@ -92,57 +91,54 @@ public data class EscInfo(
 ) : MavMessage<EscInfo> {
   public override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32Array(errorCount, 16)
-    output.encodeUInt16(counter)
-    output.encodeUInt16Array(failureFlags, 8)
-    output.encodeInt16Array(temperature, 8)
-    output.encodeUInt8(index)
-    output.encodeUInt8(count)
-    output.encodeEnumValue(connectionType.value, 1)
-    output.encodeUInt8(info)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32Array(errorCount, 16)
+    buffer.encodeUInt16(counter)
+    buffer.encodeUInt16Array(failureFlags, 8)
+    buffer.encodeInt16Array(temperature, 8)
+    buffer.encodeUInt8(index)
+    buffer.encodeUInt8(count)
+    buffer.encodeEnumValue(connectionType.value, 1)
+    buffer.encodeUInt8(info)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32Array(errorCount, 16)
-    output.encodeUInt16(counter)
-    output.encodeUInt16Array(failureFlags, 8)
-    output.encodeInt16Array(temperature, 8)
-    output.encodeUInt8(index)
-    output.encodeUInt8(count)
-    output.encodeEnumValue(connectionType.value, 1)
-    output.encodeUInt8(info)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32Array(errorCount, 16)
+    buffer.encodeUInt16(counter)
+    buffer.encodeUInt16Array(failureFlags, 8)
+    buffer.encodeInt16Array(temperature, 8)
+    buffer.encodeUInt8(index)
+    buffer.encodeUInt8(count)
+    buffer.encodeEnumValue(connectionType.value, 1)
+    buffer.encodeUInt8(info)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EscInfo> {
-    private const val SIZE_V1: Int = 46
-
-    private const val SIZE_V2: Int = 46
-
     public override val id: UInt = 290u
 
     public override val crcExtra: Byte = -5
 
-    public override fun deserialize(source: BufferedSource): EscInfo {
-      val timeUsec = source.decodeUInt64()
-      val errorCount = source.decodeUInt32Array(16)
-      val counter = source.decodeUInt16()
-      val failureFlags = source.decodeUInt16Array(8)
-      val temperature = source.decodeInt16Array(8)
-      val index = source.decodeUInt8()
-      val count = source.decodeUInt8()
-      val connectionType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): EscInfo {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val errorCount = buffer.decodeUInt32Array(16)
+      val counter = buffer.decodeUInt16()
+      val failureFlags = buffer.decodeUInt16Array(8)
+      val temperature = buffer.decodeInt16Array(8)
+      val index = buffer.decodeUInt8()
+      val count = buffer.decodeUInt8()
+      val connectionType = buffer.decodeEnumValue(1).let { value ->
         val entry = EscConnectionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val info = source.decodeUInt8()
+      val info = buffer.decodeUInt8()
 
       return EscInfo(
         index = index,

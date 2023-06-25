@@ -11,13 +11,12 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Send a debug value. The index is used to discriminate between values. These values show up in the
@@ -46,36 +45,33 @@ public data class Debug(
 ) : MavMessage<Debug> {
   public override val instanceCompanion: MavMessage.MavCompanion<Debug> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(value)
-    output.encodeUInt8(ind)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(value)
+    buffer.encodeUInt8(ind)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(value)
-    output.encodeUInt8(ind)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(value)
+    buffer.encodeUInt8(ind)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Debug> {
-    private const val SIZE_V1: Int = 9
-
-    private const val SIZE_V2: Int = 9
-
     public override val id: UInt = 254u
 
     public override val crcExtra: Byte = 46
 
-    public override fun deserialize(source: BufferedSource): Debug {
-      val timeBootMs = source.decodeUInt32()
-      val value = source.decodeFloat()
-      val ind = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): Debug {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val value = buffer.decodeFloat()
+      val ind = buffer.decodeUInt8()
 
       return Debug(
         timeBootMs = timeBootMs,

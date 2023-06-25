@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeInt64
 import com.divpundir.mavlink.serialization.encodeInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.Long
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Time synchronization message.
@@ -35,33 +34,30 @@ public data class Timesync(
 ) : MavMessage<Timesync> {
   public override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt64(tc1)
-    output.encodeInt64(ts1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt64(tc1)
+    buffer.encodeInt64(ts1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt64(tc1)
-    output.encodeInt64(ts1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt64(tc1)
+    buffer.encodeInt64(ts1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Timesync> {
-    private const val SIZE_V1: Int = 16
-
-    private const val SIZE_V2: Int = 16
-
     public override val id: UInt = 111u
 
     public override val crcExtra: Byte = 34
 
-    public override fun deserialize(source: BufferedSource): Timesync {
-      val tc1 = source.decodeInt64()
-      val ts1 = source.decodeInt64()
+    public override fun deserialize(bytes: ByteArray): Timesync {
+      val buffer = Buffer().write(bytes)
+
+      val tc1 = buffer.decodeInt64()
+      val ts1 = buffer.decodeInt64()
 
       return Timesync(
         tc1 = tc1,

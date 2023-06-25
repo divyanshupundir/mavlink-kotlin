@@ -19,6 +19,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
@@ -28,7 +29,6 @@ import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about a captured image. This is emitted every time a message is captured.
@@ -107,60 +107,57 @@ public data class CameraImageCaptured(
 ) : MavMessage<CameraImageCaptured> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraImageCaptured> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUtc)
-    output.encodeUInt32(timeBootMs)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeInt32(relativeAlt)
-    output.encodeFloatArray(q, 16)
-    output.encodeInt32(imageIndex)
-    output.encodeUInt8(cameraId)
-    output.encodeInt8(captureResult)
-    output.encodeString(fileUrl, 205)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUtc)
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeInt32(relativeAlt)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeInt32(imageIndex)
+    buffer.encodeUInt8(cameraId)
+    buffer.encodeInt8(captureResult)
+    buffer.encodeString(fileUrl, 205)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUtc)
-    output.encodeUInt32(timeBootMs)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeInt32(relativeAlt)
-    output.encodeFloatArray(q, 16)
-    output.encodeInt32(imageIndex)
-    output.encodeUInt8(cameraId)
-    output.encodeInt8(captureResult)
-    output.encodeString(fileUrl, 205)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUtc)
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeInt32(relativeAlt)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeInt32(imageIndex)
+    buffer.encodeUInt8(cameraId)
+    buffer.encodeInt8(captureResult)
+    buffer.encodeString(fileUrl, 205)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraImageCaptured> {
-    private const val SIZE_V1: Int = 255
-
-    private const val SIZE_V2: Int = 255
-
     public override val id: UInt = 263u
 
     public override val crcExtra: Byte = -123
 
-    public override fun deserialize(source: BufferedSource): CameraImageCaptured {
-      val timeUtc = source.decodeUInt64()
-      val timeBootMs = source.decodeUInt32()
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
-      val alt = source.decodeInt32()
-      val relativeAlt = source.decodeInt32()
-      val q = source.decodeFloatArray(16)
-      val imageIndex = source.decodeInt32()
-      val cameraId = source.decodeUInt8()
-      val captureResult = source.decodeInt8()
-      val fileUrl = source.decodeString(205)
+    public override fun deserialize(bytes: ByteArray): CameraImageCaptured {
+      val buffer = Buffer().write(bytes)
+
+      val timeUtc = buffer.decodeUInt64()
+      val timeBootMs = buffer.decodeUInt32()
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
+      val alt = buffer.decodeInt32()
+      val relativeAlt = buffer.decodeInt32()
+      val q = buffer.decodeFloatArray(16)
+      val imageIndex = buffer.decodeInt32()
+      val cameraId = buffer.decodeUInt8()
+      val captureResult = buffer.decodeInt8()
+      val fileUrl = buffer.decodeString(205)
 
       return CameraImageCaptured(
         timeBootMs = timeBootMs,

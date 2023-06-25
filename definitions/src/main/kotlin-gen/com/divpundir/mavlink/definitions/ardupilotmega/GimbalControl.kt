@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Control message for rate gimbal.
@@ -53,42 +52,39 @@ public data class GimbalControl(
 ) : MavMessage<GimbalControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalControl> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(demandedRateX)
-    output.encodeFloat(demandedRateY)
-    output.encodeFloat(demandedRateZ)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(demandedRateX)
+    buffer.encodeFloat(demandedRateY)
+    buffer.encodeFloat(demandedRateZ)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(demandedRateX)
-    output.encodeFloat(demandedRateY)
-    output.encodeFloat(demandedRateZ)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(demandedRateX)
+    buffer.encodeFloat(demandedRateY)
+    buffer.encodeFloat(demandedRateZ)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalControl> {
-    private const val SIZE_V1: Int = 14
-
-    private const val SIZE_V2: Int = 14
-
     public override val id: UInt = 201u
 
     public override val crcExtra: Byte = -51
 
-    public override fun deserialize(source: BufferedSource): GimbalControl {
-      val demandedRateX = source.decodeFloat()
-      val demandedRateY = source.decodeFloat()
-      val demandedRateZ = source.decodeFloat()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): GimbalControl {
+      val buffer = Buffer().write(bytes)
+
+      val demandedRateX = buffer.decodeFloat()
+      val demandedRateY = buffer.decodeFloat()
+      val demandedRateZ = buffer.decodeFloat()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
 
       return GimbalControl(
         targetSystem = targetSystem,

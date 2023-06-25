@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeInt16
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F21 format
@@ -55,45 +54,42 @@ public data class SerialUdbExtraF21(
 ) : MavMessage<SerialUdbExtraF21> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF21> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt16(sueAccelXOffset)
-    output.encodeInt16(sueAccelYOffset)
-    output.encodeInt16(sueAccelZOffset)
-    output.encodeInt16(sueGyroXOffset)
-    output.encodeInt16(sueGyroYOffset)
-    output.encodeInt16(sueGyroZOffset)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt16(sueAccelXOffset)
+    buffer.encodeInt16(sueAccelYOffset)
+    buffer.encodeInt16(sueAccelZOffset)
+    buffer.encodeInt16(sueGyroXOffset)
+    buffer.encodeInt16(sueGyroYOffset)
+    buffer.encodeInt16(sueGyroZOffset)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt16(sueAccelXOffset)
-    output.encodeInt16(sueAccelYOffset)
-    output.encodeInt16(sueAccelZOffset)
-    output.encodeInt16(sueGyroXOffset)
-    output.encodeInt16(sueGyroYOffset)
-    output.encodeInt16(sueGyroZOffset)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt16(sueAccelXOffset)
+    buffer.encodeInt16(sueAccelYOffset)
+    buffer.encodeInt16(sueAccelZOffset)
+    buffer.encodeInt16(sueGyroXOffset)
+    buffer.encodeInt16(sueGyroYOffset)
+    buffer.encodeInt16(sueGyroZOffset)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF21> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 187u
 
     public override val crcExtra: Byte = -122
 
-    public override fun deserialize(source: BufferedSource): SerialUdbExtraF21 {
-      val sueAccelXOffset = source.decodeInt16()
-      val sueAccelYOffset = source.decodeInt16()
-      val sueAccelZOffset = source.decodeInt16()
-      val sueGyroXOffset = source.decodeInt16()
-      val sueGyroYOffset = source.decodeInt16()
-      val sueGyroZOffset = source.decodeInt16()
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF21 {
+      val buffer = Buffer().write(bytes)
+
+      val sueAccelXOffset = buffer.decodeInt16()
+      val sueAccelYOffset = buffer.decodeInt16()
+      val sueAccelZOffset = buffer.decodeInt16()
+      val sueGyroXOffset = buffer.decodeInt16()
+      val sueGyroYOffset = buffer.decodeInt16()
+      val sueGyroZOffset = buffer.decodeInt16()
 
       return SerialUdbExtraF21(
         sueAccelXOffset = sueAccelXOffset,

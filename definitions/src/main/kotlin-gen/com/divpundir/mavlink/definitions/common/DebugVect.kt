@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * To debug something using a named 3D vector.
@@ -57,42 +56,39 @@ public data class DebugVect(
 ) : MavMessage<DebugVect> {
   public override val instanceCompanion: MavMessage.MavCompanion<DebugVect> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeString(name, 10)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeString(name, 10)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeString(name, 10)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeString(name, 10)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DebugVect> {
-    private const val SIZE_V1: Int = 30
-
-    private const val SIZE_V2: Int = 30
-
     public override val id: UInt = 250u
 
     public override val crcExtra: Byte = 49
 
-    public override fun deserialize(source: BufferedSource): DebugVect {
-      val timeUsec = source.decodeUInt64()
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val name = source.decodeString(10)
+    public override fun deserialize(bytes: ByteArray): DebugVect {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val name = buffer.decodeString(10)
 
       return DebugVect(
         name = name,

@@ -10,12 +10,11 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  *
@@ -60,36 +59,33 @@ public data class ComponentMetadata(
 ) : MavMessage<ComponentMetadata> {
   public override val instanceCompanion: MavMessage.MavCompanion<ComponentMetadata> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(fileCrc)
-    output.encodeString(uri, 100)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(fileCrc)
+    buffer.encodeString(uri, 100)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(fileCrc)
-    output.encodeString(uri, 100)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(fileCrc)
+    buffer.encodeString(uri, 100)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ComponentMetadata> {
-    private const val SIZE_V1: Int = 108
-
-    private const val SIZE_V2: Int = 108
-
     public override val id: UInt = 397u
 
     public override val crcExtra: Byte = -74
 
-    public override fun deserialize(source: BufferedSource): ComponentMetadata {
-      val timeBootMs = source.decodeUInt32()
-      val fileCrc = source.decodeUInt32()
-      val uri = source.decodeString(100)
+    public override fun deserialize(bytes: ByteArray): ComponentMetadata {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val fileCrc = buffer.decodeUInt32()
+      val uri = buffer.decodeString(100)
 
       return ComponentMetadata(
         timeBootMs = timeBootMs,

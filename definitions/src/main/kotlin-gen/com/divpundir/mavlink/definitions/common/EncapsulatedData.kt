@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Data packet for images sent using the Image Transmission Protocol:
@@ -40,33 +39,30 @@ public data class EncapsulatedData(
 ) : MavMessage<EncapsulatedData> {
   public override val instanceCompanion: MavMessage.MavCompanion<EncapsulatedData> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seqnr)
-    output.encodeUInt8Array(data, 253)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seqnr)
+    buffer.encodeUInt8Array(data, 253)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seqnr)
-    output.encodeUInt8Array(data, 253)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seqnr)
+    buffer.encodeUInt8Array(data, 253)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EncapsulatedData> {
-    private const val SIZE_V1: Int = 255
-
-    private const val SIZE_V2: Int = 255
-
     public override val id: UInt = 131u
 
     public override val crcExtra: Byte = -33
 
-    public override fun deserialize(source: BufferedSource): EncapsulatedData {
-      val seqnr = source.decodeUInt16()
-      val data = source.decodeUInt8Array(253)
+    public override fun deserialize(bytes: ByteArray): EncapsulatedData {
+      val buffer = Buffer().write(bytes)
+
+      val seqnr = buffer.decodeUInt16()
+      val data = buffer.decodeUInt8Array(253)
 
       return EncapsulatedData(
         seqnr = seqnr,

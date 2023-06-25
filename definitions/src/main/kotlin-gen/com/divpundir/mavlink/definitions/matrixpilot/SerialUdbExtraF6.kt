@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F6: format
@@ -50,42 +49,39 @@ public data class SerialUdbExtraF6(
 ) : MavMessage<SerialUdbExtraF6> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF6> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(suePitchgain)
-    output.encodeFloat(suePitchkd)
-    output.encodeFloat(sueRudderElevMix)
-    output.encodeFloat(sueRollElevMix)
-    output.encodeFloat(sueElevatorBoost)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(suePitchgain)
+    buffer.encodeFloat(suePitchkd)
+    buffer.encodeFloat(sueRudderElevMix)
+    buffer.encodeFloat(sueRollElevMix)
+    buffer.encodeFloat(sueElevatorBoost)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(suePitchgain)
-    output.encodeFloat(suePitchkd)
-    output.encodeFloat(sueRudderElevMix)
-    output.encodeFloat(sueRollElevMix)
-    output.encodeFloat(sueElevatorBoost)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(suePitchgain)
+    buffer.encodeFloat(suePitchkd)
+    buffer.encodeFloat(sueRudderElevMix)
+    buffer.encodeFloat(sueRollElevMix)
+    buffer.encodeFloat(sueElevatorBoost)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF6> {
-    private const val SIZE_V1: Int = 20
-
-    private const val SIZE_V2: Int = 20
-
     public override val id: UInt = 174u
 
     public override val crcExtra: Byte = 54
 
-    public override fun deserialize(source: BufferedSource): SerialUdbExtraF6 {
-      val suePitchgain = source.decodeFloat()
-      val suePitchkd = source.decodeFloat()
-      val sueRudderElevMix = source.decodeFloat()
-      val sueRollElevMix = source.decodeFloat()
-      val sueElevatorBoost = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF6 {
+      val buffer = Buffer().write(bytes)
+
+      val suePitchgain = buffer.decodeFloat()
+      val suePitchkd = buffer.decodeFloat()
+      val sueRudderElevMix = buffer.decodeFloat()
+      val sueRollElevMix = buffer.decodeFloat()
+      val sueElevatorBoost = buffer.decodeFloat()
 
       return SerialUdbExtraF6(
         suePitchgain = suePitchgain,

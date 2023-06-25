@@ -9,12 +9,12 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  *
@@ -43,33 +43,30 @@ public data class MessageInterval(
 ) : MavMessage<MessageInterval> {
   public override val instanceCompanion: MavMessage.MavCompanion<MessageInterval> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(intervalUs)
-    output.encodeUInt16(messageId)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(intervalUs)
+    buffer.encodeUInt16(messageId)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(intervalUs)
-    output.encodeUInt16(messageId)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(intervalUs)
+    buffer.encodeUInt16(messageId)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MessageInterval> {
-    private const val SIZE_V1: Int = 6
-
-    private const val SIZE_V2: Int = 6
-
     public override val id: UInt = 244u
 
     public override val crcExtra: Byte = 95
 
-    public override fun deserialize(source: BufferedSource): MessageInterval {
-      val intervalUs = source.decodeInt32()
-      val messageId = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): MessageInterval {
+      val buffer = Buffer().write(bytes)
+
+      val intervalUs = buffer.decodeInt32()
+      val messageId = buffer.decodeUInt16()
 
       return MessageInterval(
         messageId = messageId,

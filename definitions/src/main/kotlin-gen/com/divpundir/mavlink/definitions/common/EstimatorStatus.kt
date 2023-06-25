@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Estimator status message including flags, innovation test ratios and estimated accuracies. The
@@ -90,57 +89,54 @@ public data class EstimatorStatus(
 ) : MavMessage<EstimatorStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<EstimatorStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(velRatio)
-    output.encodeFloat(posHorizRatio)
-    output.encodeFloat(posVertRatio)
-    output.encodeFloat(magRatio)
-    output.encodeFloat(haglRatio)
-    output.encodeFloat(tasRatio)
-    output.encodeFloat(posHorizAccuracy)
-    output.encodeFloat(posVertAccuracy)
-    output.encodeBitmaskValue(flags.value, 2)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(velRatio)
+    buffer.encodeFloat(posHorizRatio)
+    buffer.encodeFloat(posVertRatio)
+    buffer.encodeFloat(magRatio)
+    buffer.encodeFloat(haglRatio)
+    buffer.encodeFloat(tasRatio)
+    buffer.encodeFloat(posHorizAccuracy)
+    buffer.encodeFloat(posVertAccuracy)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(velRatio)
-    output.encodeFloat(posHorizRatio)
-    output.encodeFloat(posVertRatio)
-    output.encodeFloat(magRatio)
-    output.encodeFloat(haglRatio)
-    output.encodeFloat(tasRatio)
-    output.encodeFloat(posHorizAccuracy)
-    output.encodeFloat(posVertAccuracy)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(velRatio)
+    buffer.encodeFloat(posHorizRatio)
+    buffer.encodeFloat(posVertRatio)
+    buffer.encodeFloat(magRatio)
+    buffer.encodeFloat(haglRatio)
+    buffer.encodeFloat(tasRatio)
+    buffer.encodeFloat(posHorizAccuracy)
+    buffer.encodeFloat(posVertAccuracy)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EstimatorStatus> {
-    private const val SIZE_V1: Int = 42
-
-    private const val SIZE_V2: Int = 42
-
     public override val id: UInt = 230u
 
     public override val crcExtra: Byte = -93
 
-    public override fun deserialize(source: BufferedSource): EstimatorStatus {
-      val timeUsec = source.decodeUInt64()
-      val velRatio = source.decodeFloat()
-      val posHorizRatio = source.decodeFloat()
-      val posVertRatio = source.decodeFloat()
-      val magRatio = source.decodeFloat()
-      val haglRatio = source.decodeFloat()
-      val tasRatio = source.decodeFloat()
-      val posHorizAccuracy = source.decodeFloat()
-      val posVertAccuracy = source.decodeFloat()
-      val flags = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): EstimatorStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val velRatio = buffer.decodeFloat()
+      val posHorizRatio = buffer.decodeFloat()
+      val posVertRatio = buffer.decodeFloat()
+      val magRatio = buffer.decodeFloat()
+      val haglRatio = buffer.decodeFloat()
+      val tasRatio = buffer.decodeFloat()
+      val posHorizAccuracy = buffer.decodeFloat()
+      val posVertAccuracy = buffer.decodeFloat()
+      val flags = buffer.decodeBitmaskValue(2).let { value ->
         val flags = EstimatorStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

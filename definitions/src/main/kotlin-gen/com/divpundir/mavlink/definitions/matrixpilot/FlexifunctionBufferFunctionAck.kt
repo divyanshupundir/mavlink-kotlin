@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Flexifunction type and parameters for component at function index from buffer
@@ -49,39 +48,36 @@ public data class FlexifunctionBufferFunctionAck(
   public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunctionAck> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(funcIndex)
-    output.encodeUInt16(result)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(funcIndex)
+    buffer.encodeUInt16(result)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(funcIndex)
-    output.encodeUInt16(result)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(funcIndex)
+    buffer.encodeUInt16(result)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FlexifunctionBufferFunctionAck> {
-    private const val SIZE_V1: Int = 6
-
-    private const val SIZE_V2: Int = 6
-
     public override val id: UInt = 153u
 
     public override val crcExtra: Byte = 109
 
-    public override fun deserialize(source: BufferedSource): FlexifunctionBufferFunctionAck {
-      val funcIndex = source.decodeUInt16()
-      val result = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunctionAck {
+      val buffer = Buffer().write(bytes)
+
+      val funcIndex = buffer.decodeUInt16()
+      val result = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
 
       return FlexifunctionBufferFunctionAck(
         targetSystem = targetSystem,

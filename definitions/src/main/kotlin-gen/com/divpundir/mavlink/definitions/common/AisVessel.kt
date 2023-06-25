@@ -23,6 +23,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
@@ -30,7 +31,6 @@ import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The location and information of an AIS vessel
@@ -128,87 +128,84 @@ public data class AisVessel(
 ) : MavMessage<AisVessel> {
   public override val instanceCompanion: MavMessage.MavCompanion<AisVessel> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(mmsi)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeUInt16(cog)
-    output.encodeUInt16(heading)
-    output.encodeUInt16(velocity)
-    output.encodeUInt16(dimensionBow)
-    output.encodeUInt16(dimensionStern)
-    output.encodeUInt16(tslc)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeInt8(turnRate)
-    output.encodeEnumValue(navigationalStatus.value, 1)
-    output.encodeEnumValue(type.value, 1)
-    output.encodeUInt8(dimensionPort)
-    output.encodeUInt8(dimensionStarboard)
-    output.encodeString(callsign, 7)
-    output.encodeString(name, 20)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(mmsi)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeUInt16(cog)
+    buffer.encodeUInt16(heading)
+    buffer.encodeUInt16(velocity)
+    buffer.encodeUInt16(dimensionBow)
+    buffer.encodeUInt16(dimensionStern)
+    buffer.encodeUInt16(tslc)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeInt8(turnRate)
+    buffer.encodeEnumValue(navigationalStatus.value, 1)
+    buffer.encodeEnumValue(type.value, 1)
+    buffer.encodeUInt8(dimensionPort)
+    buffer.encodeUInt8(dimensionStarboard)
+    buffer.encodeString(callsign, 7)
+    buffer.encodeString(name, 20)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(mmsi)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeUInt16(cog)
-    output.encodeUInt16(heading)
-    output.encodeUInt16(velocity)
-    output.encodeUInt16(dimensionBow)
-    output.encodeUInt16(dimensionStern)
-    output.encodeUInt16(tslc)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeInt8(turnRate)
-    output.encodeEnumValue(navigationalStatus.value, 1)
-    output.encodeEnumValue(type.value, 1)
-    output.encodeUInt8(dimensionPort)
-    output.encodeUInt8(dimensionStarboard)
-    output.encodeString(callsign, 7)
-    output.encodeString(name, 20)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(mmsi)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeUInt16(cog)
+    buffer.encodeUInt16(heading)
+    buffer.encodeUInt16(velocity)
+    buffer.encodeUInt16(dimensionBow)
+    buffer.encodeUInt16(dimensionStern)
+    buffer.encodeUInt16(tslc)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeInt8(turnRate)
+    buffer.encodeEnumValue(navigationalStatus.value, 1)
+    buffer.encodeEnumValue(type.value, 1)
+    buffer.encodeUInt8(dimensionPort)
+    buffer.encodeUInt8(dimensionStarboard)
+    buffer.encodeString(callsign, 7)
+    buffer.encodeString(name, 20)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AisVessel> {
-    private const val SIZE_V1: Int = 58
-
-    private const val SIZE_V2: Int = 58
-
     public override val id: UInt = 301u
 
     public override val crcExtra: Byte = -13
 
-    public override fun deserialize(source: BufferedSource): AisVessel {
-      val mmsi = source.decodeUInt32()
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
-      val cog = source.decodeUInt16()
-      val heading = source.decodeUInt16()
-      val velocity = source.decodeUInt16()
-      val dimensionBow = source.decodeUInt16()
-      val dimensionStern = source.decodeUInt16()
-      val tslc = source.decodeUInt16()
-      val flags = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): AisVessel {
+      val buffer = Buffer().write(bytes)
+
+      val mmsi = buffer.decodeUInt32()
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
+      val cog = buffer.decodeUInt16()
+      val heading = buffer.decodeUInt16()
+      val velocity = buffer.decodeUInt16()
+      val dimensionBow = buffer.decodeUInt16()
+      val dimensionStern = buffer.decodeUInt16()
+      val tslc = buffer.decodeUInt16()
+      val flags = buffer.decodeBitmaskValue(2).let { value ->
         val flags = AisFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val turnRate = source.decodeInt8()
-      val navigationalStatus = source.decodeEnumValue(1).let { value ->
+      val turnRate = buffer.decodeInt8()
+      val navigationalStatus = buffer.decodeEnumValue(1).let { value ->
         val entry = AisNavStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type = source.decodeEnumValue(1).let { value ->
+      val type = buffer.decodeEnumValue(1).let { value ->
         val entry = AisType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val dimensionPort = source.decodeUInt8()
-      val dimensionStarboard = source.decodeUInt8()
-      val callsign = source.decodeString(7)
-      val name = source.decodeString(20)
+      val dimensionPort = buffer.decodeUInt8()
+      val dimensionStarboard = buffer.decodeUInt8()
+      val callsign = buffer.decodeString(7)
+      val name = buffer.decodeString(20)
 
       return AisVessel(
         mmsi = mmsi,

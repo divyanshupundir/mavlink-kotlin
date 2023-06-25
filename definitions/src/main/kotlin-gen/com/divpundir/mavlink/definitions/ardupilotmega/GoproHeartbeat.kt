@@ -11,11 +11,10 @@ import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Heartbeat from a HeroBus attached GoPro.
@@ -43,42 +42,39 @@ public data class GoproHeartbeat(
 ) : MavMessage<GoproHeartbeat> {
   public override val instanceCompanion: MavMessage.MavCompanion<GoproHeartbeat> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(status.value, 1)
-    output.encodeEnumValue(captureMode.value, 1)
-    output.encodeBitmaskValue(flags.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(status.value, 1)
+    buffer.encodeEnumValue(captureMode.value, 1)
+    buffer.encodeBitmaskValue(flags.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(status.value, 1)
-    output.encodeEnumValue(captureMode.value, 1)
-    output.encodeBitmaskValue(flags.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(status.value, 1)
+    buffer.encodeEnumValue(captureMode.value, 1)
+    buffer.encodeBitmaskValue(flags.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GoproHeartbeat> {
-    private const val SIZE_V1: Int = 3
-
-    private const val SIZE_V2: Int = 3
-
     public override val id: UInt = 215u
 
     public override val crcExtra: Byte = 101
 
-    public override fun deserialize(source: BufferedSource): GoproHeartbeat {
-      val status = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): GoproHeartbeat {
+      val buffer = Buffer().write(bytes)
+
+      val status = buffer.decodeEnumValue(1).let { value ->
         val entry = GoproHeartbeatStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val captureMode = source.decodeEnumValue(1).let { value ->
+      val captureMode = buffer.decodeEnumValue(1).let { value ->
         val entry = GoproCaptureMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = source.decodeBitmaskValue(1).let { value ->
+      val flags = buffer.decodeBitmaskValue(1).let { value ->
         val flags = GoproHeartbeatFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

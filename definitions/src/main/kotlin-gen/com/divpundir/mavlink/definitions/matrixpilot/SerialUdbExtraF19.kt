@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F19 format
@@ -65,51 +64,48 @@ public data class SerialUdbExtraF19(
 ) : MavMessage<SerialUdbExtraF19> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF19> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(sueAileronOutputChannel)
-    output.encodeUInt8(sueAileronReversed)
-    output.encodeUInt8(sueElevatorOutputChannel)
-    output.encodeUInt8(sueElevatorReversed)
-    output.encodeUInt8(sueThrottleOutputChannel)
-    output.encodeUInt8(sueThrottleReversed)
-    output.encodeUInt8(sueRudderOutputChannel)
-    output.encodeUInt8(sueRudderReversed)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(sueAileronOutputChannel)
+    buffer.encodeUInt8(sueAileronReversed)
+    buffer.encodeUInt8(sueElevatorOutputChannel)
+    buffer.encodeUInt8(sueElevatorReversed)
+    buffer.encodeUInt8(sueThrottleOutputChannel)
+    buffer.encodeUInt8(sueThrottleReversed)
+    buffer.encodeUInt8(sueRudderOutputChannel)
+    buffer.encodeUInt8(sueRudderReversed)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(sueAileronOutputChannel)
-    output.encodeUInt8(sueAileronReversed)
-    output.encodeUInt8(sueElevatorOutputChannel)
-    output.encodeUInt8(sueElevatorReversed)
-    output.encodeUInt8(sueThrottleOutputChannel)
-    output.encodeUInt8(sueThrottleReversed)
-    output.encodeUInt8(sueRudderOutputChannel)
-    output.encodeUInt8(sueRudderReversed)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(sueAileronOutputChannel)
+    buffer.encodeUInt8(sueAileronReversed)
+    buffer.encodeUInt8(sueElevatorOutputChannel)
+    buffer.encodeUInt8(sueElevatorReversed)
+    buffer.encodeUInt8(sueThrottleOutputChannel)
+    buffer.encodeUInt8(sueThrottleReversed)
+    buffer.encodeUInt8(sueRudderOutputChannel)
+    buffer.encodeUInt8(sueRudderReversed)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF19> {
-    private const val SIZE_V1: Int = 8
-
-    private const val SIZE_V2: Int = 8
-
     public override val id: UInt = 185u
 
     public override val crcExtra: Byte = 87
 
-    public override fun deserialize(source: BufferedSource): SerialUdbExtraF19 {
-      val sueAileronOutputChannel = source.decodeUInt8()
-      val sueAileronReversed = source.decodeUInt8()
-      val sueElevatorOutputChannel = source.decodeUInt8()
-      val sueElevatorReversed = source.decodeUInt8()
-      val sueThrottleOutputChannel = source.decodeUInt8()
-      val sueThrottleReversed = source.decodeUInt8()
-      val sueRudderOutputChannel = source.decodeUInt8()
-      val sueRudderReversed = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF19 {
+      val buffer = Buffer().write(bytes)
+
+      val sueAileronOutputChannel = buffer.decodeUInt8()
+      val sueAileronReversed = buffer.decodeUInt8()
+      val sueElevatorOutputChannel = buffer.decodeUInt8()
+      val sueElevatorReversed = buffer.decodeUInt8()
+      val sueThrottleOutputChannel = buffer.decodeUInt8()
+      val sueThrottleReversed = buffer.decodeUInt8()
+      val sueRudderOutputChannel = buffer.decodeUInt8()
+      val sueRudderReversed = buffer.decodeUInt8()
 
       return SerialUdbExtraF19(
         sueAileronOutputChannel = sueAileronOutputChannel,

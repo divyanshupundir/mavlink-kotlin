@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.Short
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Request to read the onboard parameter with the param_id string id. Onboard parameters are stored
@@ -59,39 +58,36 @@ public data class ParamRequestRead(
 ) : MavMessage<ParamRequestRead> {
   public override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt16(paramIndex)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeString(paramId, 16)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt16(paramIndex)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeString(paramId, 16)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt16(paramIndex)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeString(paramId, 16)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt16(paramIndex)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeString(paramId, 16)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ParamRequestRead> {
-    private const val SIZE_V1: Int = 20
-
-    private const val SIZE_V2: Int = 20
-
     public override val id: UInt = 20u
 
     public override val crcExtra: Byte = -42
 
-    public override fun deserialize(source: BufferedSource): ParamRequestRead {
-      val paramIndex = source.decodeInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val paramId = source.decodeString(16)
+    public override fun deserialize(bytes: ByteArray): ParamRequestRead {
+      val buffer = Buffer().write(bytes)
+
+      val paramIndex = buffer.decodeInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val paramId = buffer.decodeString(16)
 
       return ParamRequestRead(
         targetSystem = targetSystem,

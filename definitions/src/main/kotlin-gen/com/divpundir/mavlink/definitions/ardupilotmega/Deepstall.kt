@@ -12,12 +12,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Deepstall path planning.
@@ -80,57 +80,54 @@ public data class Deepstall(
 ) : MavMessage<Deepstall> {
   public override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(landingLat)
-    output.encodeInt32(landingLon)
-    output.encodeInt32(pathLat)
-    output.encodeInt32(pathLon)
-    output.encodeInt32(arcEntryLat)
-    output.encodeInt32(arcEntryLon)
-    output.encodeFloat(altitude)
-    output.encodeFloat(expectedTravelDistance)
-    output.encodeFloat(crossTrackError)
-    output.encodeEnumValue(stage.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(landingLat)
+    buffer.encodeInt32(landingLon)
+    buffer.encodeInt32(pathLat)
+    buffer.encodeInt32(pathLon)
+    buffer.encodeInt32(arcEntryLat)
+    buffer.encodeInt32(arcEntryLon)
+    buffer.encodeFloat(altitude)
+    buffer.encodeFloat(expectedTravelDistance)
+    buffer.encodeFloat(crossTrackError)
+    buffer.encodeEnumValue(stage.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(landingLat)
-    output.encodeInt32(landingLon)
-    output.encodeInt32(pathLat)
-    output.encodeInt32(pathLon)
-    output.encodeInt32(arcEntryLat)
-    output.encodeInt32(arcEntryLon)
-    output.encodeFloat(altitude)
-    output.encodeFloat(expectedTravelDistance)
-    output.encodeFloat(crossTrackError)
-    output.encodeEnumValue(stage.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(landingLat)
+    buffer.encodeInt32(landingLon)
+    buffer.encodeInt32(pathLat)
+    buffer.encodeInt32(pathLon)
+    buffer.encodeInt32(arcEntryLat)
+    buffer.encodeInt32(arcEntryLon)
+    buffer.encodeFloat(altitude)
+    buffer.encodeFloat(expectedTravelDistance)
+    buffer.encodeFloat(crossTrackError)
+    buffer.encodeEnumValue(stage.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Deepstall> {
-    private const val SIZE_V1: Int = 37
-
-    private const val SIZE_V2: Int = 37
-
     public override val id: UInt = 195u
 
     public override val crcExtra: Byte = 120
 
-    public override fun deserialize(source: BufferedSource): Deepstall {
-      val landingLat = source.decodeInt32()
-      val landingLon = source.decodeInt32()
-      val pathLat = source.decodeInt32()
-      val pathLon = source.decodeInt32()
-      val arcEntryLat = source.decodeInt32()
-      val arcEntryLon = source.decodeInt32()
-      val altitude = source.decodeFloat()
-      val expectedTravelDistance = source.decodeFloat()
-      val crossTrackError = source.decodeFloat()
-      val stage = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): Deepstall {
+      val buffer = Buffer().write(bytes)
+
+      val landingLat = buffer.decodeInt32()
+      val landingLon = buffer.decodeInt32()
+      val pathLat = buffer.decodeInt32()
+      val pathLon = buffer.decodeInt32()
+      val arcEntryLat = buffer.decodeInt32()
+      val arcEntryLon = buffer.decodeInt32()
+      val altitude = buffer.decodeFloat()
+      val expectedTravelDistance = buffer.decodeFloat()
+      val crossTrackError = buffer.decodeFloat()
+      val stage = buffer.decodeEnumValue(1).let { value ->
         val entry = DeepstallStage.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

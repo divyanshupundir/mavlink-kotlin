@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Wind estimation.
@@ -40,36 +39,33 @@ public data class Wind(
 ) : MavMessage<Wind> {
   public override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(direction)
-    output.encodeFloat(speed)
-    output.encodeFloat(speedZ)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(direction)
+    buffer.encodeFloat(speed)
+    buffer.encodeFloat(speedZ)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(direction)
-    output.encodeFloat(speed)
-    output.encodeFloat(speedZ)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(direction)
+    buffer.encodeFloat(speed)
+    buffer.encodeFloat(speedZ)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Wind> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 168u
 
     public override val crcExtra: Byte = 1
 
-    public override fun deserialize(source: BufferedSource): Wind {
-      val direction = source.decodeFloat()
-      val speed = source.decodeFloat()
-      val speedZ = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): Wind {
+      val buffer = Buffer().write(bytes)
+
+      val direction = buffer.decodeFloat()
+      val speed = buffer.decodeFloat()
+      val speedZ = buffer.decodeFloat()
 
       return Wind(
         direction = direction,

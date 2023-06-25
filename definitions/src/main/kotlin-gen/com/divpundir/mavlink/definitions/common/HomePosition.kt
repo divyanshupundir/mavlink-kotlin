@@ -13,6 +13,7 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
@@ -20,7 +21,6 @@ import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  *
@@ -115,59 +115,56 @@ public data class HomePosition(
 ) : MavMessage<HomePosition> {
   public override val instanceCompanion: MavMessage.MavCompanion<HomePosition> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(latitude)
-    output.encodeInt32(longitude)
-    output.encodeInt32(altitude)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(approachX)
-    output.encodeFloat(approachY)
-    output.encodeFloat(approachZ)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(latitude)
+    buffer.encodeInt32(longitude)
+    buffer.encodeInt32(altitude)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(approachX)
+    buffer.encodeFloat(approachY)
+    buffer.encodeFloat(approachZ)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(latitude)
-    output.encodeInt32(longitude)
-    output.encodeInt32(altitude)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(approachX)
-    output.encodeFloat(approachY)
-    output.encodeFloat(approachZ)
-    output.encodeUInt64(timeUsec)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(latitude)
+    buffer.encodeInt32(longitude)
+    buffer.encodeInt32(altitude)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(approachX)
+    buffer.encodeFloat(approachY)
+    buffer.encodeFloat(approachZ)
+    buffer.encodeUInt64(timeUsec)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HomePosition> {
-    private const val SIZE_V1: Int = 52
-
-    private const val SIZE_V2: Int = 60
-
     public override val id: UInt = 242u
 
     public override val crcExtra: Byte = 104
 
-    public override fun deserialize(source: BufferedSource): HomePosition {
-      val latitude = source.decodeInt32()
-      val longitude = source.decodeInt32()
-      val altitude = source.decodeInt32()
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val q = source.decodeFloatArray(16)
-      val approachX = source.decodeFloat()
-      val approachY = source.decodeFloat()
-      val approachZ = source.decodeFloat()
-      val timeUsec = source.decodeUInt64()
+    public override fun deserialize(bytes: ByteArray): HomePosition {
+      val buffer = Buffer().write(bytes)
+
+      val latitude = buffer.decodeInt32()
+      val longitude = buffer.decodeInt32()
+      val altitude = buffer.decodeInt32()
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val q = buffer.decodeFloatArray(16)
+      val approachX = buffer.decodeFloat()
+      val approachY = buffer.decodeFloat()
+      val approachZ = buffer.decodeFloat()
+      val timeUsec = buffer.decodeUInt64()
 
       return HomePosition(
         latitude = latitude,

@@ -18,8 +18,8 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
@@ -27,7 +27,6 @@ import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Obstacle distances in front of the sensor, starting from the left in increment degrees to the
@@ -105,54 +104,51 @@ public data class ObstacleDistance(
 ) : MavMessage<ObstacleDistance> {
   public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt16Array(distances, 144)
-    output.encodeUInt16(minDistance)
-    output.encodeUInt16(maxDistance)
-    output.encodeEnumValue(sensorType.value, 1)
-    output.encodeUInt8(increment)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt16Array(distances, 144)
+    buffer.encodeUInt16(minDistance)
+    buffer.encodeUInt16(maxDistance)
+    buffer.encodeEnumValue(sensorType.value, 1)
+    buffer.encodeUInt8(increment)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt16Array(distances, 144)
-    output.encodeUInt16(minDistance)
-    output.encodeUInt16(maxDistance)
-    output.encodeEnumValue(sensorType.value, 1)
-    output.encodeUInt8(increment)
-    output.encodeFloat(incrementF)
-    output.encodeFloat(angleOffset)
-    output.encodeEnumValue(frame.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt16Array(distances, 144)
+    buffer.encodeUInt16(minDistance)
+    buffer.encodeUInt16(maxDistance)
+    buffer.encodeEnumValue(sensorType.value, 1)
+    buffer.encodeUInt8(increment)
+    buffer.encodeFloat(incrementF)
+    buffer.encodeFloat(angleOffset)
+    buffer.encodeEnumValue(frame.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ObstacleDistance> {
-    private const val SIZE_V1: Int = 158
-
-    private const val SIZE_V2: Int = 167
-
     public override val id: UInt = 330u
 
     public override val crcExtra: Byte = 23
 
-    public override fun deserialize(source: BufferedSource): ObstacleDistance {
-      val timeUsec = source.decodeUInt64()
-      val distances = source.decodeUInt16Array(144)
-      val minDistance = source.decodeUInt16()
-      val maxDistance = source.decodeUInt16()
-      val sensorType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): ObstacleDistance {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val distances = buffer.decodeUInt16Array(144)
+      val minDistance = buffer.decodeUInt16()
+      val maxDistance = buffer.decodeUInt16()
+      val sensorType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val increment = source.decodeUInt8()
-      val incrementF = source.decodeFloat()
-      val angleOffset = source.decodeFloat()
-      val frame = source.decodeEnumValue(1).let { value ->
+      val increment = buffer.decodeUInt8()
+      val incrementF = buffer.decodeFloat()
+      val angleOffset = buffer.decodeFloat()
+      val frame = buffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

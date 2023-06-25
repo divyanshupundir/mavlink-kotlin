@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Deprecated
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Request a data stream.
@@ -55,42 +54,39 @@ public data class RequestDataStream(
 ) : MavMessage<RequestDataStream> {
   public override val instanceCompanion: MavMessage.MavCompanion<RequestDataStream> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(reqMessageRate)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(reqStreamId)
-    output.encodeUInt8(startStop)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(reqMessageRate)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(reqStreamId)
+    buffer.encodeUInt8(startStop)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(reqMessageRate)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(reqStreamId)
-    output.encodeUInt8(startStop)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(reqMessageRate)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(reqStreamId)
+    buffer.encodeUInt8(startStop)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RequestDataStream> {
-    private const val SIZE_V1: Int = 6
-
-    private const val SIZE_V2: Int = 6
-
     public override val id: UInt = 66u
 
     public override val crcExtra: Byte = -108
 
-    public override fun deserialize(source: BufferedSource): RequestDataStream {
-      val reqMessageRate = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val reqStreamId = source.decodeUInt8()
-      val startStop = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): RequestDataStream {
+      val buffer = Buffer().write(bytes)
+
+      val reqMessageRate = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val reqStreamId = buffer.decodeUInt8()
+      val startStop = buffer.decodeUInt8()
 
       return RequestDataStream(
         targetSystem = targetSystem,

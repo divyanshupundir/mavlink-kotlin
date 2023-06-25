@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of the Iridium SBD link.
@@ -74,51 +73,48 @@ public data class IsbdLinkStatus(
 ) : MavMessage<IsbdLinkStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<IsbdLinkStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeUInt64(lastHeartbeat)
-    output.encodeUInt16(failedSessions)
-    output.encodeUInt16(successfulSessions)
-    output.encodeUInt8(signalQuality)
-    output.encodeUInt8(ringPending)
-    output.encodeUInt8(txSessionPending)
-    output.encodeUInt8(rxSessionPending)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeUInt64(lastHeartbeat)
+    buffer.encodeUInt16(failedSessions)
+    buffer.encodeUInt16(successfulSessions)
+    buffer.encodeUInt8(signalQuality)
+    buffer.encodeUInt8(ringPending)
+    buffer.encodeUInt8(txSessionPending)
+    buffer.encodeUInt8(rxSessionPending)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeUInt64(lastHeartbeat)
-    output.encodeUInt16(failedSessions)
-    output.encodeUInt16(successfulSessions)
-    output.encodeUInt8(signalQuality)
-    output.encodeUInt8(ringPending)
-    output.encodeUInt8(txSessionPending)
-    output.encodeUInt8(rxSessionPending)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeUInt64(lastHeartbeat)
+    buffer.encodeUInt16(failedSessions)
+    buffer.encodeUInt16(successfulSessions)
+    buffer.encodeUInt8(signalQuality)
+    buffer.encodeUInt8(ringPending)
+    buffer.encodeUInt8(txSessionPending)
+    buffer.encodeUInt8(rxSessionPending)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<IsbdLinkStatus> {
-    private const val SIZE_V1: Int = 24
-
-    private const val SIZE_V2: Int = 24
-
     public override val id: UInt = 335u
 
     public override val crcExtra: Byte = -31
 
-    public override fun deserialize(source: BufferedSource): IsbdLinkStatus {
-      val timestamp = source.decodeUInt64()
-      val lastHeartbeat = source.decodeUInt64()
-      val failedSessions = source.decodeUInt16()
-      val successfulSessions = source.decodeUInt16()
-      val signalQuality = source.decodeUInt8()
-      val ringPending = source.decodeUInt8()
-      val txSessionPending = source.decodeUInt8()
-      val rxSessionPending = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): IsbdLinkStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timestamp = buffer.decodeUInt64()
+      val lastHeartbeat = buffer.decodeUInt64()
+      val failedSessions = buffer.decodeUInt16()
+      val successfulSessions = buffer.decodeUInt16()
+      val signalQuality = buffer.decodeUInt8()
+      val ringPending = buffer.decodeUInt8()
+      val txSessionPending = buffer.decodeUInt8()
+      val rxSessionPending = buffer.decodeUInt8()
 
       return IsbdLinkStatus(
         timestamp = timestamp,

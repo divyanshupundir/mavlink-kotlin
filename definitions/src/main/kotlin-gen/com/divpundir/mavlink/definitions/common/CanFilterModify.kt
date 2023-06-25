@@ -12,14 +12,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Modify the filter of what CAN messages to forward over the mavlink. This can be used to make CAN
@@ -65,48 +64,45 @@ public data class CanFilterModify(
 ) : MavMessage<CanFilterModify> {
   public override val instanceCompanion: MavMessage.MavCompanion<CanFilterModify> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16Array(ids, 32)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(bus)
-    output.encodeEnumValue(operation.value, 1)
-    output.encodeUInt8(numIds)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16Array(ids, 32)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(bus)
+    buffer.encodeEnumValue(operation.value, 1)
+    buffer.encodeUInt8(numIds)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16Array(ids, 32)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(bus)
-    output.encodeEnumValue(operation.value, 1)
-    output.encodeUInt8(numIds)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16Array(ids, 32)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(bus)
+    buffer.encodeEnumValue(operation.value, 1)
+    buffer.encodeUInt8(numIds)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CanFilterModify> {
-    private const val SIZE_V1: Int = 37
-
-    private const val SIZE_V2: Int = 37
-
     public override val id: UInt = 388u
 
     public override val crcExtra: Byte = 8
 
-    public override fun deserialize(source: BufferedSource): CanFilterModify {
-      val ids = source.decodeUInt16Array(32)
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val bus = source.decodeUInt8()
-      val operation = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): CanFilterModify {
+      val buffer = Buffer().write(bytes)
+
+      val ids = buffer.decodeUInt16Array(32)
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val bus = buffer.decodeUInt8()
+      val operation = buffer.decodeEnumValue(1).let { value ->
         val entry = CanFilterOp.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val numIds = source.decodeUInt8()
+      val numIds = buffer.decodeUInt8()
 
       return CanFilterModify(
         targetSystem = targetSystem,

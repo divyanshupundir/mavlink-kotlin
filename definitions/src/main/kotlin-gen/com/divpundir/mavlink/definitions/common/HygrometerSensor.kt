@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Temperature and humidity from hygrometer.
@@ -46,36 +45,33 @@ public data class HygrometerSensor(
 ) : MavMessage<HygrometerSensor> {
   public override val instanceCompanion: MavMessage.MavCompanion<HygrometerSensor> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt16(temperature)
-    output.encodeUInt16(humidity)
-    output.encodeUInt8(id)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt16(temperature)
+    buffer.encodeUInt16(humidity)
+    buffer.encodeUInt8(id)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt16(temperature)
-    output.encodeUInt16(humidity)
-    output.encodeUInt8(id)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt16(temperature)
+    buffer.encodeUInt16(humidity)
+    buffer.encodeUInt8(id)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HygrometerSensor> {
-    private const val SIZE_V1: Int = 5
-
-    private const val SIZE_V2: Int = 5
-
     public override val id: UInt = 12_920u
 
     public override val crcExtra: Byte = 20
 
-    public override fun deserialize(source: BufferedSource): HygrometerSensor {
-      val temperature = source.decodeInt16()
-      val humidity = source.decodeUInt16()
-      val id = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): HygrometerSensor {
+      val buffer = Buffer().write(bytes)
+
+      val temperature = buffer.decodeInt16()
+      val humidity = buffer.decodeUInt16()
+      val id = buffer.decodeUInt8()
 
       return HygrometerSensor(
         id = id,

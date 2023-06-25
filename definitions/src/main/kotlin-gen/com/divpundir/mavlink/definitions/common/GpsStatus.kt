@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The positioning status, as reported by GPS. This message is intended to display status
@@ -60,45 +59,42 @@ public data class GpsStatus(
 ) : MavMessage<GpsStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<GpsStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(satellitesVisible)
-    output.encodeUInt8Array(satellitePrn, 20)
-    output.encodeUInt8Array(satelliteUsed, 20)
-    output.encodeUInt8Array(satelliteElevation, 20)
-    output.encodeUInt8Array(satelliteAzimuth, 20)
-    output.encodeUInt8Array(satelliteSnr, 20)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(satellitesVisible)
+    buffer.encodeUInt8Array(satellitePrn, 20)
+    buffer.encodeUInt8Array(satelliteUsed, 20)
+    buffer.encodeUInt8Array(satelliteElevation, 20)
+    buffer.encodeUInt8Array(satelliteAzimuth, 20)
+    buffer.encodeUInt8Array(satelliteSnr, 20)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(satellitesVisible)
-    output.encodeUInt8Array(satellitePrn, 20)
-    output.encodeUInt8Array(satelliteUsed, 20)
-    output.encodeUInt8Array(satelliteElevation, 20)
-    output.encodeUInt8Array(satelliteAzimuth, 20)
-    output.encodeUInt8Array(satelliteSnr, 20)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(satellitesVisible)
+    buffer.encodeUInt8Array(satellitePrn, 20)
+    buffer.encodeUInt8Array(satelliteUsed, 20)
+    buffer.encodeUInt8Array(satelliteElevation, 20)
+    buffer.encodeUInt8Array(satelliteAzimuth, 20)
+    buffer.encodeUInt8Array(satelliteSnr, 20)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GpsStatus> {
-    private const val SIZE_V1: Int = 101
-
-    private const val SIZE_V2: Int = 101
-
     public override val id: UInt = 25u
 
     public override val crcExtra: Byte = 23
 
-    public override fun deserialize(source: BufferedSource): GpsStatus {
-      val satellitesVisible = source.decodeUInt8()
-      val satellitePrn = source.decodeUInt8Array(20)
-      val satelliteUsed = source.decodeUInt8Array(20)
-      val satelliteElevation = source.decodeUInt8Array(20)
-      val satelliteAzimuth = source.decodeUInt8Array(20)
-      val satelliteSnr = source.decodeUInt8Array(20)
+    public override fun deserialize(bytes: ByteArray): GpsStatus {
+      val buffer = Buffer().write(bytes)
+
+      val satellitesVisible = buffer.decodeUInt8()
+      val satellitePrn = buffer.decodeUInt8Array(20)
+      val satelliteUsed = buffer.decodeUInt8Array(20)
+      val satelliteElevation = buffer.decodeUInt8Array(20)
+      val satelliteAzimuth = buffer.decodeUInt8Array(20)
+      val satelliteSnr = buffer.decodeUInt8Array(20)
 
       return GpsStatus(
         satellitesVisible = satellitesVisible,

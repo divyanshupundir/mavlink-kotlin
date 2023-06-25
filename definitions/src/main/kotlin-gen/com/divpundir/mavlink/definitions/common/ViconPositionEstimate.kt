@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Global position estimate from a Vicon motion system source.
@@ -76,50 +75,47 @@ public data class ViconPositionEstimate(
 ) : MavMessage<ViconPositionEstimate> {
   public override val instanceCompanion: MavMessage.MavCompanion<ViconPositionEstimate> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(usec)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(usec)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(usec)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloatArray(covariance, 84)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(usec)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloatArray(covariance, 84)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ViconPositionEstimate> {
-    private const val SIZE_V1: Int = 32
-
-    private const val SIZE_V2: Int = 116
-
     public override val id: UInt = 104u
 
     public override val crcExtra: Byte = 56
 
-    public override fun deserialize(source: BufferedSource): ViconPositionEstimate {
-      val usec = source.decodeUInt64()
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val roll = source.decodeFloat()
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val covariance = source.decodeFloatArray(84)
+    public override fun deserialize(bytes: ByteArray): ViconPositionEstimate {
+      val buffer = Buffer().write(bytes)
+
+      val usec = buffer.decodeUInt64()
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val roll = buffer.decodeFloat()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val covariance = buffer.decodeFloatArray(84)
 
       return ViconPositionEstimate(
         usec = usec,

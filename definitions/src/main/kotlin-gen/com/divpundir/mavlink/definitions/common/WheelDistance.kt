@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Double
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Cumulative distance traveled for each reported wheel.
@@ -49,36 +48,33 @@ public data class WheelDistance(
 ) : MavMessage<WheelDistance> {
   public override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeDoubleArray(distance, 128)
-    output.encodeUInt8(count)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeDoubleArray(distance, 128)
+    buffer.encodeUInt8(count)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeDoubleArray(distance, 128)
-    output.encodeUInt8(count)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeDoubleArray(distance, 128)
+    buffer.encodeUInt8(count)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WheelDistance> {
-    private const val SIZE_V1: Int = 137
-
-    private const val SIZE_V2: Int = 137
-
     public override val id: UInt = 9_000u
 
     public override val crcExtra: Byte = 113
 
-    public override fun deserialize(source: BufferedSource): WheelDistance {
-      val timeUsec = source.decodeUInt64()
-      val distance = source.decodeDoubleArray(128)
-      val count = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): WheelDistance {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val distance = buffer.decodeDoubleArray(128)
+      val count = buffer.decodeUInt8()
 
       return WheelDistance(
         timeUsec = timeUsec,

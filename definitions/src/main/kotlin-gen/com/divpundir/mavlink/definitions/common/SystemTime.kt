@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The system time is the time of the master clock, typically the computer clock of the main onboard
@@ -38,33 +37,30 @@ public data class SystemTime(
 ) : MavMessage<SystemTime> {
   public override val instanceCompanion: MavMessage.MavCompanion<SystemTime> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUnixUsec)
-    output.encodeUInt32(timeBootMs)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUnixUsec)
+    buffer.encodeUInt32(timeBootMs)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUnixUsec)
-    output.encodeUInt32(timeBootMs)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUnixUsec)
+    buffer.encodeUInt32(timeBootMs)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SystemTime> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 2u
 
     public override val crcExtra: Byte = -119
 
-    public override fun deserialize(source: BufferedSource): SystemTime {
-      val timeUnixUsec = source.decodeUInt64()
-      val timeBootMs = source.decodeUInt32()
+    public override fun deserialize(bytes: ByteArray): SystemTime {
+      val buffer = Buffer().write(bytes)
+
+      val timeUnixUsec = buffer.decodeUInt64()
+      val timeBootMs = buffer.decodeUInt32()
 
       return SystemTime(
         timeUnixUsec = timeUnixUsec,

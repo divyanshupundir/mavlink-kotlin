@@ -10,13 +10,12 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Response from a GOPRO_COMMAND get request.
@@ -44,42 +43,39 @@ public data class GoproGetResponse(
 ) : MavMessage<GoproGetResponse> {
   public override val instanceCompanion: MavMessage.MavCompanion<GoproGetResponse> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(cmdId.value, 1)
-    output.encodeEnumValue(status.value, 1)
-    output.encodeUInt8Array(value, 4)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(cmdId.value, 1)
+    buffer.encodeEnumValue(status.value, 1)
+    buffer.encodeUInt8Array(value, 4)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(cmdId.value, 1)
-    output.encodeEnumValue(status.value, 1)
-    output.encodeUInt8Array(value, 4)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(cmdId.value, 1)
+    buffer.encodeEnumValue(status.value, 1)
+    buffer.encodeUInt8Array(value, 4)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GoproGetResponse> {
-    private const val SIZE_V1: Int = 6
-
-    private const val SIZE_V2: Int = 6
-
     public override val id: UInt = 217u
 
     public override val crcExtra: Byte = -54
 
-    public override fun deserialize(source: BufferedSource): GoproGetResponse {
-      val cmdId = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): GoproGetResponse {
+      val buffer = Buffer().write(bytes)
+
+      val cmdId = buffer.decodeEnumValue(1).let { value ->
         val entry = GoproCommand.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val status = source.decodeEnumValue(1).let { value ->
+      val status = buffer.decodeEnumValue(1).let { value ->
         val entry = GoproRequestStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val value = source.decodeUInt8Array(4)
+      val value = buffer.decodeUInt8Array(4)
 
       return GoproGetResponse(
         cmdId = cmdId,

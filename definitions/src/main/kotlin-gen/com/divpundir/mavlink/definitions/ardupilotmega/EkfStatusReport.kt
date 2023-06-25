@@ -10,12 +10,11 @@ import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * EKF Status message including flags and variances.
@@ -66,50 +65,47 @@ public data class EkfStatusReport(
 ) : MavMessage<EkfStatusReport> {
   public override val instanceCompanion: MavMessage.MavCompanion<EkfStatusReport> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(velocityVariance)
-    output.encodeFloat(posHorizVariance)
-    output.encodeFloat(posVertVariance)
-    output.encodeFloat(compassVariance)
-    output.encodeFloat(terrainAltVariance)
-    output.encodeBitmaskValue(flags.value, 2)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(velocityVariance)
+    buffer.encodeFloat(posHorizVariance)
+    buffer.encodeFloat(posVertVariance)
+    buffer.encodeFloat(compassVariance)
+    buffer.encodeFloat(terrainAltVariance)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(velocityVariance)
-    output.encodeFloat(posHorizVariance)
-    output.encodeFloat(posVertVariance)
-    output.encodeFloat(compassVariance)
-    output.encodeFloat(terrainAltVariance)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeFloat(airspeedVariance)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(velocityVariance)
+    buffer.encodeFloat(posHorizVariance)
+    buffer.encodeFloat(posVertVariance)
+    buffer.encodeFloat(compassVariance)
+    buffer.encodeFloat(terrainAltVariance)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeFloat(airspeedVariance)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EkfStatusReport> {
-    private const val SIZE_V1: Int = 22
-
-    private const val SIZE_V2: Int = 26
-
     public override val id: UInt = 193u
 
     public override val crcExtra: Byte = 71
 
-    public override fun deserialize(source: BufferedSource): EkfStatusReport {
-      val velocityVariance = source.decodeFloat()
-      val posHorizVariance = source.decodeFloat()
-      val posVertVariance = source.decodeFloat()
-      val compassVariance = source.decodeFloat()
-      val terrainAltVariance = source.decodeFloat()
-      val flags = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): EkfStatusReport {
+      val buffer = Buffer().write(bytes)
+
+      val velocityVariance = buffer.decodeFloat()
+      val posHorizVariance = buffer.decodeFloat()
+      val posVertVariance = buffer.decodeFloat()
+      val compassVariance = buffer.decodeFloat()
+      val terrainAltVariance = buffer.decodeFloat()
+      val flags = buffer.decodeBitmaskValue(2).let { value ->
         val flags = EkfStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val airspeedVariance = source.decodeFloat()
+      val airspeedVariance = buffer.decodeFloat()
 
       return EkfStatusReport(
         flags = flags,

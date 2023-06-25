@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Orientation of a mount
@@ -58,41 +57,38 @@ public data class MountOrientation(
 ) : MavMessage<MountOrientation> {
   public override val instanceCompanion: MavMessage.MavCompanion<MountOrientation> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(yawAbsolute)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(yawAbsolute)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MountOrientation> {
-    private const val SIZE_V1: Int = 16
-
-    private const val SIZE_V2: Int = 20
-
     public override val id: UInt = 265u
 
     public override val crcExtra: Byte = 26
 
-    public override fun deserialize(source: BufferedSource): MountOrientation {
-      val timeBootMs = source.decodeUInt32()
-      val roll = source.decodeFloat()
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val yawAbsolute = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): MountOrientation {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val roll = buffer.decodeFloat()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val yawAbsolute = buffer.decodeFloat()
 
       return MountOrientation(
         timeBootMs = timeBootMs,

@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * RTCM message for injecting into the onboard GPS (used for DGPS)
@@ -50,36 +49,33 @@ public data class GpsRtcmData(
 ) : MavMessage<GpsRtcmData> {
   public override val instanceCompanion: MavMessage.MavCompanion<GpsRtcmData> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(flags)
-    output.encodeUInt8(len)
-    output.encodeUInt8Array(data, 180)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(flags)
+    buffer.encodeUInt8(len)
+    buffer.encodeUInt8Array(data, 180)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(flags)
-    output.encodeUInt8(len)
-    output.encodeUInt8Array(data, 180)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(flags)
+    buffer.encodeUInt8(len)
+    buffer.encodeUInt8Array(data, 180)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GpsRtcmData> {
-    private const val SIZE_V1: Int = 182
-
-    private const val SIZE_V2: Int = 182
-
     public override val id: UInt = 233u
 
     public override val crcExtra: Byte = 35
 
-    public override fun deserialize(source: BufferedSource): GpsRtcmData {
-      val flags = source.decodeUInt8()
-      val len = source.decodeUInt8()
-      val data = source.decodeUInt8Array(180)
+    public override fun deserialize(bytes: ByteArray): GpsRtcmData {
+      val buffer = Buffer().write(bytes)
+
+      val flags = buffer.decodeUInt8()
+      val len = buffer.decodeUInt8()
+      val data = buffer.decodeUInt8Array(180)
 
       return GpsRtcmData(
         flags = flags,

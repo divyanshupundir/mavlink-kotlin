@@ -17,13 +17,12 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Obstacle located as a 3D vector.
@@ -83,57 +82,54 @@ public data class ObstacleDistance3d(
 ) : MavMessage<ObstacleDistance3d> {
   public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance3d> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloat(minDistance)
-    output.encodeFloat(maxDistance)
-    output.encodeUInt16(obstacleId)
-    output.encodeEnumValue(sensorType.value, 1)
-    output.encodeEnumValue(frame.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloat(minDistance)
+    buffer.encodeFloat(maxDistance)
+    buffer.encodeUInt16(obstacleId)
+    buffer.encodeEnumValue(sensorType.value, 1)
+    buffer.encodeEnumValue(frame.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloat(minDistance)
-    output.encodeFloat(maxDistance)
-    output.encodeUInt16(obstacleId)
-    output.encodeEnumValue(sensorType.value, 1)
-    output.encodeEnumValue(frame.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloat(minDistance)
+    buffer.encodeFloat(maxDistance)
+    buffer.encodeUInt16(obstacleId)
+    buffer.encodeEnumValue(sensorType.value, 1)
+    buffer.encodeEnumValue(frame.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ObstacleDistance3d> {
-    private const val SIZE_V1: Int = 28
-
-    private const val SIZE_V2: Int = 28
-
     public override val id: UInt = 11_037u
 
     public override val crcExtra: Byte = -126
 
-    public override fun deserialize(source: BufferedSource): ObstacleDistance3d {
-      val timeBootMs = source.decodeUInt32()
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val minDistance = source.decodeFloat()
-      val maxDistance = source.decodeFloat()
-      val obstacleId = source.decodeUInt16()
-      val sensorType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): ObstacleDistance3d {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val minDistance = buffer.decodeFloat()
+      val maxDistance = buffer.decodeFloat()
+      val obstacleId = buffer.decodeUInt16()
+      val sensorType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val frame = source.decodeEnumValue(1).let { value ->
+      val frame = buffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

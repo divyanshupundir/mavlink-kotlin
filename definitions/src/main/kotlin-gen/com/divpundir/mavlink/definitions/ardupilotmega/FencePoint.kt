@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
@@ -59,45 +58,42 @@ public data class FencePoint(
 ) : MavMessage<FencePoint> {
   public override val instanceCompanion: MavMessage.MavCompanion<FencePoint> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(lat)
-    output.encodeFloat(lng)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(idx)
-    output.encodeUInt8(count)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(lat)
+    buffer.encodeFloat(lng)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(idx)
+    buffer.encodeUInt8(count)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(lat)
-    output.encodeFloat(lng)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(idx)
-    output.encodeUInt8(count)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(lat)
+    buffer.encodeFloat(lng)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(idx)
+    buffer.encodeUInt8(count)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FencePoint> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 160u
 
     public override val crcExtra: Byte = 78
 
-    public override fun deserialize(source: BufferedSource): FencePoint {
-      val lat = source.decodeFloat()
-      val lng = source.decodeFloat()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val idx = source.decodeUInt8()
-      val count = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): FencePoint {
+      val buffer = Buffer().write(bytes)
+
+      val lat = buffer.decodeFloat()
+      val lng = buffer.decodeFloat()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val idx = buffer.decodeUInt8()
+      val count = buffer.decodeUInt8()
 
       return FencePoint(
         targetSystem = targetSystem,

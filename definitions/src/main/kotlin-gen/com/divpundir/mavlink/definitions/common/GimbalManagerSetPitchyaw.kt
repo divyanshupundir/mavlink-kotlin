@@ -13,13 +13,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * High level message to control a gimbal's pitch and yaw angles. This message is to be sent to the
@@ -77,54 +76,51 @@ public data class GimbalManagerSetPitchyaw(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeBitmaskValue(flags.value, 4)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(pitchRate)
-    output.encodeFloat(yawRate)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(gimbalDeviceId)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeBitmaskValue(flags.value, 4)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(pitchRate)
+    buffer.encodeFloat(yawRate)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(gimbalDeviceId)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeBitmaskValue(flags.value, 4)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(pitchRate)
-    output.encodeFloat(yawRate)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(gimbalDeviceId)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeBitmaskValue(flags.value, 4)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(pitchRate)
+    buffer.encodeFloat(yawRate)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(gimbalDeviceId)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalManagerSetPitchyaw> {
-    private const val SIZE_V1: Int = 23
-
-    private const val SIZE_V2: Int = 23
-
     public override val id: UInt = 287u
 
     public override val crcExtra: Byte = 1
 
-    public override fun deserialize(source: BufferedSource): GimbalManagerSetPitchyaw {
-      val flags = source.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(bytes: ByteArray): GimbalManagerSetPitchyaw {
+      val buffer = Buffer().write(bytes)
+
+      val flags = buffer.decodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val pitchRate = source.decodeFloat()
-      val yawRate = source.decodeFloat()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val gimbalDeviceId = source.decodeUInt8()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val pitchRate = buffer.decodeFloat()
+      val yawRate = buffer.decodeFloat()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val gimbalDeviceId = buffer.decodeUInt8()
 
       return GimbalManagerSetPitchyaw(
         targetSystem = targetSystem,

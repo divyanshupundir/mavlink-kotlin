@@ -16,14 +16,13 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about the status of a video stream. It may be requested using
@@ -77,54 +76,51 @@ public data class VideoStreamStatus(
 ) : MavMessage<VideoStreamStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(framerate)
-    output.encodeUInt32(bitrate)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeUInt16(resolutionH)
-    output.encodeUInt16(resolutionV)
-    output.encodeUInt16(rotation)
-    output.encodeUInt16(hfov)
-    output.encodeUInt8(streamId)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(framerate)
+    buffer.encodeUInt32(bitrate)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeUInt16(resolutionH)
+    buffer.encodeUInt16(resolutionV)
+    buffer.encodeUInt16(rotation)
+    buffer.encodeUInt16(hfov)
+    buffer.encodeUInt8(streamId)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(framerate)
-    output.encodeUInt32(bitrate)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeUInt16(resolutionH)
-    output.encodeUInt16(resolutionV)
-    output.encodeUInt16(rotation)
-    output.encodeUInt16(hfov)
-    output.encodeUInt8(streamId)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(framerate)
+    buffer.encodeUInt32(bitrate)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeUInt16(resolutionH)
+    buffer.encodeUInt16(resolutionV)
+    buffer.encodeUInt16(rotation)
+    buffer.encodeUInt16(hfov)
+    buffer.encodeUInt8(streamId)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<VideoStreamStatus> {
-    private const val SIZE_V1: Int = 19
-
-    private const val SIZE_V2: Int = 19
-
     public override val id: UInt = 270u
 
     public override val crcExtra: Byte = 59
 
-    public override fun deserialize(source: BufferedSource): VideoStreamStatus {
-      val framerate = source.decodeFloat()
-      val bitrate = source.decodeUInt32()
-      val flags = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): VideoStreamStatus {
+      val buffer = Buffer().write(bytes)
+
+      val framerate = buffer.decodeFloat()
+      val bitrate = buffer.decodeUInt32()
+      val flags = buffer.decodeBitmaskValue(2).let { value ->
         val flags = VideoStreamStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val resolutionH = source.decodeUInt16()
-      val resolutionV = source.decodeUInt16()
-      val rotation = source.decodeUInt16()
-      val hfov = source.decodeUInt16()
-      val streamId = source.decodeUInt8()
+      val resolutionH = buffer.decodeUInt16()
+      val resolutionV = buffer.decodeUInt16()
+      val rotation = buffer.decodeUInt16()
+      val hfov = buffer.decodeUInt16()
+      val streamId = buffer.decodeUInt8()
 
       return VideoStreamStatus(
         streamId = streamId,

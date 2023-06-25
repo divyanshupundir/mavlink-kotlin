@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Raw ADC output.
@@ -55,45 +54,42 @@ public data class ApAdc(
 ) : MavMessage<ApAdc> {
   public override val instanceCompanion: MavMessage.MavCompanion<ApAdc> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(adc1)
-    output.encodeUInt16(adc2)
-    output.encodeUInt16(adc3)
-    output.encodeUInt16(adc4)
-    output.encodeUInt16(adc5)
-    output.encodeUInt16(adc6)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(adc1)
+    buffer.encodeUInt16(adc2)
+    buffer.encodeUInt16(adc3)
+    buffer.encodeUInt16(adc4)
+    buffer.encodeUInt16(adc5)
+    buffer.encodeUInt16(adc6)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(adc1)
-    output.encodeUInt16(adc2)
-    output.encodeUInt16(adc3)
-    output.encodeUInt16(adc4)
-    output.encodeUInt16(adc5)
-    output.encodeUInt16(adc6)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(adc1)
+    buffer.encodeUInt16(adc2)
+    buffer.encodeUInt16(adc3)
+    buffer.encodeUInt16(adc4)
+    buffer.encodeUInt16(adc5)
+    buffer.encodeUInt16(adc6)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ApAdc> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 153u
 
     public override val crcExtra: Byte = -68
 
-    public override fun deserialize(source: BufferedSource): ApAdc {
-      val adc1 = source.decodeUInt16()
-      val adc2 = source.decodeUInt16()
-      val adc3 = source.decodeUInt16()
-      val adc4 = source.decodeUInt16()
-      val adc5 = source.decodeUInt16()
-      val adc6 = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): ApAdc {
+      val buffer = Buffer().write(bytes)
+
+      val adc1 = buffer.decodeUInt16()
+      val adc2 = buffer.decodeUInt16()
+      val adc3 = buffer.decodeUInt16()
+      val adc4 = buffer.decodeUInt16()
+      val adc5 = buffer.decodeUInt16()
+      val adc6 = buffer.decodeUInt16()
 
       return ApAdc(
         adc1 = adc1,

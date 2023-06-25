@@ -14,14 +14,13 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs
@@ -90,63 +89,60 @@ public data class HilControls(
 ) : MavMessage<HilControls> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilControls> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(rollAilerons)
-    output.encodeFloat(pitchElevator)
-    output.encodeFloat(yawRudder)
-    output.encodeFloat(throttle)
-    output.encodeFloat(aux1)
-    output.encodeFloat(aux2)
-    output.encodeFloat(aux3)
-    output.encodeFloat(aux4)
-    output.encodeEnumValue(mode.value, 1)
-    output.encodeUInt8(navMode)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(rollAilerons)
+    buffer.encodeFloat(pitchElevator)
+    buffer.encodeFloat(yawRudder)
+    buffer.encodeFloat(throttle)
+    buffer.encodeFloat(aux1)
+    buffer.encodeFloat(aux2)
+    buffer.encodeFloat(aux3)
+    buffer.encodeFloat(aux4)
+    buffer.encodeEnumValue(mode.value, 1)
+    buffer.encodeUInt8(navMode)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(rollAilerons)
-    output.encodeFloat(pitchElevator)
-    output.encodeFloat(yawRudder)
-    output.encodeFloat(throttle)
-    output.encodeFloat(aux1)
-    output.encodeFloat(aux2)
-    output.encodeFloat(aux3)
-    output.encodeFloat(aux4)
-    output.encodeEnumValue(mode.value, 1)
-    output.encodeUInt8(navMode)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(rollAilerons)
+    buffer.encodeFloat(pitchElevator)
+    buffer.encodeFloat(yawRudder)
+    buffer.encodeFloat(throttle)
+    buffer.encodeFloat(aux1)
+    buffer.encodeFloat(aux2)
+    buffer.encodeFloat(aux3)
+    buffer.encodeFloat(aux4)
+    buffer.encodeEnumValue(mode.value, 1)
+    buffer.encodeUInt8(navMode)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilControls> {
-    private const val SIZE_V1: Int = 42
-
-    private const val SIZE_V2: Int = 42
-
     public override val id: UInt = 91u
 
     public override val crcExtra: Byte = 63
 
-    public override fun deserialize(source: BufferedSource): HilControls {
-      val timeUsec = source.decodeUInt64()
-      val rollAilerons = source.decodeFloat()
-      val pitchElevator = source.decodeFloat()
-      val yawRudder = source.decodeFloat()
-      val throttle = source.decodeFloat()
-      val aux1 = source.decodeFloat()
-      val aux2 = source.decodeFloat()
-      val aux3 = source.decodeFloat()
-      val aux4 = source.decodeFloat()
-      val mode = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): HilControls {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val rollAilerons = buffer.decodeFloat()
+      val pitchElevator = buffer.decodeFloat()
+      val yawRudder = buffer.decodeFloat()
+      val throttle = buffer.decodeFloat()
+      val aux1 = buffer.decodeFloat()
+      val aux2 = buffer.decodeFloat()
+      val aux3 = buffer.decodeFloat()
+      val aux4 = buffer.decodeFloat()
+      val mode = buffer.decodeEnumValue(1).let { value ->
         val entry = MavMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val navMode = source.decodeUInt8()
+      val navMode = buffer.decodeUInt8()
 
       return HilControls(
         timeUsec = timeUsec,

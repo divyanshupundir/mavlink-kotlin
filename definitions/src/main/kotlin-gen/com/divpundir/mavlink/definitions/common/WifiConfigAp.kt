@@ -10,12 +10,11 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Configure WiFi AP SSID, password, and mode. This message is re-emitted as an acknowledgement by
@@ -56,40 +55,37 @@ public data class WifiConfigAp(
 ) : MavMessage<WifiConfigAp> {
   public override val instanceCompanion: MavMessage.MavCompanion<WifiConfigAp> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeString(ssid, 32)
-    output.encodeString(password, 64)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeString(ssid, 32)
+    buffer.encodeString(password, 64)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeString(ssid, 32)
-    output.encodeString(password, 64)
-    output.encodeEnumValue(mode.value, 1)
-    output.encodeEnumValue(response.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeString(ssid, 32)
+    buffer.encodeString(password, 64)
+    buffer.encodeEnumValue(mode.value, 1)
+    buffer.encodeEnumValue(response.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WifiConfigAp> {
-    private const val SIZE_V1: Int = 96
-
-    private const val SIZE_V2: Int = 98
-
     public override val id: UInt = 299u
 
     public override val crcExtra: Byte = 19
 
-    public override fun deserialize(source: BufferedSource): WifiConfigAp {
-      val ssid = source.decodeString(32)
-      val password = source.decodeString(64)
-      val mode = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): WifiConfigAp {
+      val buffer = Buffer().write(bytes)
+
+      val ssid = buffer.decodeString(32)
+      val password = buffer.decodeString(64)
+      val mode = buffer.decodeEnumValue(1).let { value ->
         val entry = WifiConfigApMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val response = source.decodeEnumValue(1).let { value ->
+      val response = buffer.decodeEnumValue(1).let { value ->
         val entry = WifiConfigApResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

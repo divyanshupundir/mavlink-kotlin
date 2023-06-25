@@ -18,13 +18,12 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec
@@ -82,63 +81,60 @@ public data class UavionixAdsbOutCfg(
 ) : MavMessage<UavionixAdsbOutCfg> {
   public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutCfg> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(icao)
-    output.encodeUInt16(stallspeed)
-    output.encodeString(callsign, 9)
-    output.encodeEnumValue(emittertype.value, 1)
-    output.encodeEnumValue(aircraftsize.value, 1)
-    output.encodeEnumValue(gpsoffsetlat.value, 1)
-    output.encodeEnumValue(gpsoffsetlon.value, 1)
-    output.encodeBitmaskValue(rfselect.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(icao)
+    buffer.encodeUInt16(stallspeed)
+    buffer.encodeString(callsign, 9)
+    buffer.encodeEnumValue(emittertype.value, 1)
+    buffer.encodeEnumValue(aircraftsize.value, 1)
+    buffer.encodeEnumValue(gpsoffsetlat.value, 1)
+    buffer.encodeEnumValue(gpsoffsetlon.value, 1)
+    buffer.encodeBitmaskValue(rfselect.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(icao)
-    output.encodeUInt16(stallspeed)
-    output.encodeString(callsign, 9)
-    output.encodeEnumValue(emittertype.value, 1)
-    output.encodeEnumValue(aircraftsize.value, 1)
-    output.encodeEnumValue(gpsoffsetlat.value, 1)
-    output.encodeEnumValue(gpsoffsetlon.value, 1)
-    output.encodeBitmaskValue(rfselect.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(icao)
+    buffer.encodeUInt16(stallspeed)
+    buffer.encodeString(callsign, 9)
+    buffer.encodeEnumValue(emittertype.value, 1)
+    buffer.encodeEnumValue(aircraftsize.value, 1)
+    buffer.encodeEnumValue(gpsoffsetlat.value, 1)
+    buffer.encodeEnumValue(gpsoffsetlon.value, 1)
+    buffer.encodeBitmaskValue(rfselect.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UavionixAdsbOutCfg> {
-    private const val SIZE_V1: Int = 20
-
-    private const val SIZE_V2: Int = 20
-
     public override val id: UInt = 10_001u
 
     public override val crcExtra: Byte = -47
 
-    public override fun deserialize(source: BufferedSource): UavionixAdsbOutCfg {
-      val icao = source.decodeUInt32()
-      val stallspeed = source.decodeUInt16()
-      val callsign = source.decodeString(9)
-      val emittertype = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutCfg {
+      val buffer = Buffer().write(bytes)
+
+      val icao = buffer.decodeUInt32()
+      val stallspeed = buffer.decodeUInt16()
+      val callsign = buffer.decodeString(9)
+      val emittertype = buffer.decodeEnumValue(1).let { value ->
         val entry = AdsbEmitterType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val aircraftsize = source.decodeEnumValue(1).let { value ->
+      val aircraftsize = buffer.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbOutCfgAircraftSize.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val gpsoffsetlat = source.decodeEnumValue(1).let { value ->
+      val gpsoffsetlat = buffer.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbOutCfgGpsOffsetLat.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val gpsoffsetlon = source.decodeEnumValue(1).let { value ->
+      val gpsoffsetlon = buffer.decodeEnumValue(1).let { value ->
         val entry = UavionixAdsbOutCfgGpsOffsetLon.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val rfselect = source.decodeBitmaskValue(1).let { value ->
+      val rfselect = buffer.decodeBitmaskValue(1).let { value ->
         val flags = UavionixAdsbOutRfSelect.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

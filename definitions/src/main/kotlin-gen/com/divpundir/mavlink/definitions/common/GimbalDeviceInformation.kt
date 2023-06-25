@@ -19,15 +19,14 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about a low level gimbal. This message should be requested by the gimbal manager or a
@@ -122,75 +121,72 @@ public data class GimbalDeviceInformation(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceInformation> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(uid)
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(firmwareVersion)
-    output.encodeUInt32(hardwareVersion)
-    output.encodeFloat(rollMin)
-    output.encodeFloat(rollMax)
-    output.encodeFloat(pitchMin)
-    output.encodeFloat(pitchMax)
-    output.encodeFloat(yawMin)
-    output.encodeFloat(yawMax)
-    output.encodeBitmaskValue(capFlags.value, 2)
-    output.encodeUInt16(customCapFlags)
-    output.encodeString(vendorName, 32)
-    output.encodeString(modelName, 32)
-    output.encodeString(customName, 32)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(uid)
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(firmwareVersion)
+    buffer.encodeUInt32(hardwareVersion)
+    buffer.encodeFloat(rollMin)
+    buffer.encodeFloat(rollMax)
+    buffer.encodeFloat(pitchMin)
+    buffer.encodeFloat(pitchMax)
+    buffer.encodeFloat(yawMin)
+    buffer.encodeFloat(yawMax)
+    buffer.encodeBitmaskValue(capFlags.value, 2)
+    buffer.encodeUInt16(customCapFlags)
+    buffer.encodeString(vendorName, 32)
+    buffer.encodeString(modelName, 32)
+    buffer.encodeString(customName, 32)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(uid)
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(firmwareVersion)
-    output.encodeUInt32(hardwareVersion)
-    output.encodeFloat(rollMin)
-    output.encodeFloat(rollMax)
-    output.encodeFloat(pitchMin)
-    output.encodeFloat(pitchMax)
-    output.encodeFloat(yawMin)
-    output.encodeFloat(yawMax)
-    output.encodeBitmaskValue(capFlags.value, 2)
-    output.encodeUInt16(customCapFlags)
-    output.encodeString(vendorName, 32)
-    output.encodeString(modelName, 32)
-    output.encodeString(customName, 32)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(uid)
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(firmwareVersion)
+    buffer.encodeUInt32(hardwareVersion)
+    buffer.encodeFloat(rollMin)
+    buffer.encodeFloat(rollMax)
+    buffer.encodeFloat(pitchMin)
+    buffer.encodeFloat(pitchMax)
+    buffer.encodeFloat(yawMin)
+    buffer.encodeFloat(yawMax)
+    buffer.encodeBitmaskValue(capFlags.value, 2)
+    buffer.encodeUInt16(customCapFlags)
+    buffer.encodeString(vendorName, 32)
+    buffer.encodeString(modelName, 32)
+    buffer.encodeString(customName, 32)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalDeviceInformation> {
-    private const val SIZE_V1: Int = 144
-
-    private const val SIZE_V2: Int = 144
-
     public override val id: UInt = 283u
 
     public override val crcExtra: Byte = 74
 
-    public override fun deserialize(source: BufferedSource): GimbalDeviceInformation {
-      val uid = source.decodeUInt64()
-      val timeBootMs = source.decodeUInt32()
-      val firmwareVersion = source.decodeUInt32()
-      val hardwareVersion = source.decodeUInt32()
-      val rollMin = source.decodeFloat()
-      val rollMax = source.decodeFloat()
-      val pitchMin = source.decodeFloat()
-      val pitchMax = source.decodeFloat()
-      val yawMin = source.decodeFloat()
-      val yawMax = source.decodeFloat()
-      val capFlags = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): GimbalDeviceInformation {
+      val buffer = Buffer().write(bytes)
+
+      val uid = buffer.decodeUInt64()
+      val timeBootMs = buffer.decodeUInt32()
+      val firmwareVersion = buffer.decodeUInt32()
+      val hardwareVersion = buffer.decodeUInt32()
+      val rollMin = buffer.decodeFloat()
+      val rollMax = buffer.decodeFloat()
+      val pitchMin = buffer.decodeFloat()
+      val pitchMax = buffer.decodeFloat()
+      val yawMin = buffer.decodeFloat()
+      val yawMax = buffer.decodeFloat()
+      val capFlags = buffer.decodeBitmaskValue(2).let { value ->
         val flags = GimbalDeviceCapFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val customCapFlags = source.decodeUInt16()
-      val vendorName = source.decodeString(32)
-      val modelName = source.decodeString(32)
-      val customName = source.decodeString(32)
+      val customCapFlags = buffer.decodeUInt16()
+      val vendorName = buffer.decodeString(32)
+      val modelName = buffer.decodeString(32)
+      val customName = buffer.decodeString(32)
 
       return GimbalDeviceInformation(
         timeBootMs = timeBootMs,

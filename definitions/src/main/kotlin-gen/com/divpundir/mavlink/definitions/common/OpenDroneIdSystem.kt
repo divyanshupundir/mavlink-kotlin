@@ -21,6 +21,7 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -29,7 +30,6 @@ import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Data for filling the OpenDroneID System message. The System Message contains general system
@@ -123,81 +123,78 @@ public data class OpenDroneIdSystem(
 ) : MavMessage<OpenDroneIdSystem> {
   public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystem> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(operatorLatitude)
-    output.encodeInt32(operatorLongitude)
-    output.encodeFloat(areaCeiling)
-    output.encodeFloat(areaFloor)
-    output.encodeFloat(operatorAltitudeGeo)
-    output.encodeUInt32(timestamp)
-    output.encodeUInt16(areaCount)
-    output.encodeUInt16(areaRadius)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(idOrMac, 20)
-    output.encodeEnumValue(operatorLocationType.value, 1)
-    output.encodeEnumValue(classificationType.value, 1)
-    output.encodeEnumValue(categoryEu.value, 1)
-    output.encodeEnumValue(classEu.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(operatorLatitude)
+    buffer.encodeInt32(operatorLongitude)
+    buffer.encodeFloat(areaCeiling)
+    buffer.encodeFloat(areaFloor)
+    buffer.encodeFloat(operatorAltitudeGeo)
+    buffer.encodeUInt32(timestamp)
+    buffer.encodeUInt16(areaCount)
+    buffer.encodeUInt16(areaRadius)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(idOrMac, 20)
+    buffer.encodeEnumValue(operatorLocationType.value, 1)
+    buffer.encodeEnumValue(classificationType.value, 1)
+    buffer.encodeEnumValue(categoryEu.value, 1)
+    buffer.encodeEnumValue(classEu.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(operatorLatitude)
-    output.encodeInt32(operatorLongitude)
-    output.encodeFloat(areaCeiling)
-    output.encodeFloat(areaFloor)
-    output.encodeFloat(operatorAltitudeGeo)
-    output.encodeUInt32(timestamp)
-    output.encodeUInt16(areaCount)
-    output.encodeUInt16(areaRadius)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(idOrMac, 20)
-    output.encodeEnumValue(operatorLocationType.value, 1)
-    output.encodeEnumValue(classificationType.value, 1)
-    output.encodeEnumValue(categoryEu.value, 1)
-    output.encodeEnumValue(classEu.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(operatorLatitude)
+    buffer.encodeInt32(operatorLongitude)
+    buffer.encodeFloat(areaCeiling)
+    buffer.encodeFloat(areaFloor)
+    buffer.encodeFloat(operatorAltitudeGeo)
+    buffer.encodeUInt32(timestamp)
+    buffer.encodeUInt16(areaCount)
+    buffer.encodeUInt16(areaRadius)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(idOrMac, 20)
+    buffer.encodeEnumValue(operatorLocationType.value, 1)
+    buffer.encodeEnumValue(classificationType.value, 1)
+    buffer.encodeEnumValue(categoryEu.value, 1)
+    buffer.encodeEnumValue(classEu.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OpenDroneIdSystem> {
-    private const val SIZE_V1: Int = 54
-
-    private const val SIZE_V2: Int = 54
-
     public override val id: UInt = 12_904u
 
     public override val crcExtra: Byte = 77
 
-    public override fun deserialize(source: BufferedSource): OpenDroneIdSystem {
-      val operatorLatitude = source.decodeInt32()
-      val operatorLongitude = source.decodeInt32()
-      val areaCeiling = source.decodeFloat()
-      val areaFloor = source.decodeFloat()
-      val operatorAltitudeGeo = source.decodeFloat()
-      val timestamp = source.decodeUInt32()
-      val areaCount = source.decodeUInt16()
-      val areaRadius = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val idOrMac = source.decodeUInt8Array(20)
-      val operatorLocationType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): OpenDroneIdSystem {
+      val buffer = Buffer().write(bytes)
+
+      val operatorLatitude = buffer.decodeInt32()
+      val operatorLongitude = buffer.decodeInt32()
+      val areaCeiling = buffer.decodeFloat()
+      val areaFloor = buffer.decodeFloat()
+      val operatorAltitudeGeo = buffer.decodeFloat()
+      val timestamp = buffer.decodeUInt32()
+      val areaCount = buffer.decodeUInt16()
+      val areaRadius = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val idOrMac = buffer.decodeUInt8Array(20)
+      val operatorLocationType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidOperatorLocationType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val classificationType = source.decodeEnumValue(1).let { value ->
+      val classificationType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidClassificationType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val categoryEu = source.decodeEnumValue(1).let { value ->
+      val categoryEu = buffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidCategoryEu.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val classEu = source.decodeEnumValue(1).let { value ->
+      val classEu = buffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidClassEu.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Erase all logs
@@ -35,33 +34,30 @@ public data class LogErase(
 ) : MavMessage<LogErase> {
   public override val instanceCompanion: MavMessage.MavCompanion<LogErase> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LogErase> {
-    private const val SIZE_V1: Int = 2
-
-    private const val SIZE_V2: Int = 2
-
     public override val id: UInt = 121u
 
     public override val crcExtra: Byte = -19
 
-    public override fun deserialize(source: BufferedSource): LogErase {
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): LogErase {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
 
       return LogErase(
         targetSystem = targetSystem,

@@ -14,6 +14,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -22,7 +23,6 @@ import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * ESC information for higher rate streaming. Recommended streaming rate is ~10 Hz. Information that
@@ -64,42 +64,39 @@ public data class EscStatus(
 ) : MavMessage<EscStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<EscStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeInt32Array(rpm, 16)
-    output.encodeFloatArray(voltage, 16)
-    output.encodeFloatArray(current, 16)
-    output.encodeUInt8(index)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeInt32Array(rpm, 16)
+    buffer.encodeFloatArray(voltage, 16)
+    buffer.encodeFloatArray(current, 16)
+    buffer.encodeUInt8(index)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeInt32Array(rpm, 16)
-    output.encodeFloatArray(voltage, 16)
-    output.encodeFloatArray(current, 16)
-    output.encodeUInt8(index)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeInt32Array(rpm, 16)
+    buffer.encodeFloatArray(voltage, 16)
+    buffer.encodeFloatArray(current, 16)
+    buffer.encodeUInt8(index)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EscStatus> {
-    private const val SIZE_V1: Int = 57
-
-    private const val SIZE_V2: Int = 57
-
     public override val id: UInt = 291u
 
     public override val crcExtra: Byte = 10
 
-    public override fun deserialize(source: BufferedSource): EscStatus {
-      val timeUsec = source.decodeUInt64()
-      val rpm = source.decodeInt32Array(16)
-      val voltage = source.decodeFloatArray(16)
-      val current = source.decodeFloatArray(16)
-      val index = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): EscStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val rpm = buffer.decodeInt32Array(16)
+      val voltage = buffer.decodeFloatArray(16)
+      val current = buffer.decodeFloatArray(16)
+      val index = buffer.decodeUInt8()
 
       return EscStatus(
         index = index,

@@ -10,14 +10,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Version and capability of protocol version. This message can be requested with
@@ -60,42 +59,39 @@ public data class ProtocolVersion(
 ) : MavMessage<ProtocolVersion> {
   public override val instanceCompanion: MavMessage.MavCompanion<ProtocolVersion> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(version)
-    output.encodeUInt16(minVersion)
-    output.encodeUInt16(maxVersion)
-    output.encodeUInt8Array(specVersionHash, 8)
-    output.encodeUInt8Array(libraryVersionHash, 8)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(version)
+    buffer.encodeUInt16(minVersion)
+    buffer.encodeUInt16(maxVersion)
+    buffer.encodeUInt8Array(specVersionHash, 8)
+    buffer.encodeUInt8Array(libraryVersionHash, 8)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(version)
-    output.encodeUInt16(minVersion)
-    output.encodeUInt16(maxVersion)
-    output.encodeUInt8Array(specVersionHash, 8)
-    output.encodeUInt8Array(libraryVersionHash, 8)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(version)
+    buffer.encodeUInt16(minVersion)
+    buffer.encodeUInt16(maxVersion)
+    buffer.encodeUInt8Array(specVersionHash, 8)
+    buffer.encodeUInt8Array(libraryVersionHash, 8)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ProtocolVersion> {
-    private const val SIZE_V1: Int = 22
-
-    private const val SIZE_V2: Int = 22
-
     public override val id: UInt = 300u
 
     public override val crcExtra: Byte = -39
 
-    public override fun deserialize(source: BufferedSource): ProtocolVersion {
-      val version = source.decodeUInt16()
-      val minVersion = source.decodeUInt16()
-      val maxVersion = source.decodeUInt16()
-      val specVersionHash = source.decodeUInt8Array(8)
-      val libraryVersionHash = source.decodeUInt8Array(8)
+    public override fun deserialize(bytes: ByteArray): ProtocolVersion {
+      val buffer = Buffer().write(bytes)
+
+      val version = buffer.decodeUInt16()
+      val minVersion = buffer.decodeUInt16()
+      val maxVersion = buffer.decodeUInt16()
+      val specVersionHash = buffer.decodeUInt8Array(8)
+      val libraryVersionHash = buffer.decodeUInt8Array(8)
 
       return ProtocolVersion(
         version = version,

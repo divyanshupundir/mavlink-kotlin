@@ -15,6 +15,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
@@ -22,7 +23,6 @@ import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Backwards compatible MAVLink version of SERIAL_UDB_EXTRA - F2: Format Part A
@@ -170,108 +170,105 @@ public data class SerialUdbExtraF2A(
 ) : MavMessage<SerialUdbExtraF2A> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF2A> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(sueTime)
-    output.encodeInt32(sueLatitude)
-    output.encodeInt32(sueLongitude)
-    output.encodeInt32(sueAltitude)
-    output.encodeUInt16(sueWaypointIndex)
-    output.encodeInt16(sueRmat0)
-    output.encodeInt16(sueRmat1)
-    output.encodeInt16(sueRmat2)
-    output.encodeInt16(sueRmat3)
-    output.encodeInt16(sueRmat4)
-    output.encodeInt16(sueRmat5)
-    output.encodeInt16(sueRmat6)
-    output.encodeInt16(sueRmat7)
-    output.encodeInt16(sueRmat8)
-    output.encodeUInt16(sueCog)
-    output.encodeInt16(sueSog)
-    output.encodeUInt16(sueCpuLoad)
-    output.encodeUInt16(sueAirSpeed3dimu)
-    output.encodeInt16(sueEstimatedWind0)
-    output.encodeInt16(sueEstimatedWind1)
-    output.encodeInt16(sueEstimatedWind2)
-    output.encodeInt16(sueMagfieldearth0)
-    output.encodeInt16(sueMagfieldearth1)
-    output.encodeInt16(sueMagfieldearth2)
-    output.encodeInt16(sueSvs)
-    output.encodeInt16(sueHdop)
-    output.encodeUInt8(sueStatus)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(sueTime)
+    buffer.encodeInt32(sueLatitude)
+    buffer.encodeInt32(sueLongitude)
+    buffer.encodeInt32(sueAltitude)
+    buffer.encodeUInt16(sueWaypointIndex)
+    buffer.encodeInt16(sueRmat0)
+    buffer.encodeInt16(sueRmat1)
+    buffer.encodeInt16(sueRmat2)
+    buffer.encodeInt16(sueRmat3)
+    buffer.encodeInt16(sueRmat4)
+    buffer.encodeInt16(sueRmat5)
+    buffer.encodeInt16(sueRmat6)
+    buffer.encodeInt16(sueRmat7)
+    buffer.encodeInt16(sueRmat8)
+    buffer.encodeUInt16(sueCog)
+    buffer.encodeInt16(sueSog)
+    buffer.encodeUInt16(sueCpuLoad)
+    buffer.encodeUInt16(sueAirSpeed3dimu)
+    buffer.encodeInt16(sueEstimatedWind0)
+    buffer.encodeInt16(sueEstimatedWind1)
+    buffer.encodeInt16(sueEstimatedWind2)
+    buffer.encodeInt16(sueMagfieldearth0)
+    buffer.encodeInt16(sueMagfieldearth1)
+    buffer.encodeInt16(sueMagfieldearth2)
+    buffer.encodeInt16(sueSvs)
+    buffer.encodeInt16(sueHdop)
+    buffer.encodeUInt8(sueStatus)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(sueTime)
-    output.encodeInt32(sueLatitude)
-    output.encodeInt32(sueLongitude)
-    output.encodeInt32(sueAltitude)
-    output.encodeUInt16(sueWaypointIndex)
-    output.encodeInt16(sueRmat0)
-    output.encodeInt16(sueRmat1)
-    output.encodeInt16(sueRmat2)
-    output.encodeInt16(sueRmat3)
-    output.encodeInt16(sueRmat4)
-    output.encodeInt16(sueRmat5)
-    output.encodeInt16(sueRmat6)
-    output.encodeInt16(sueRmat7)
-    output.encodeInt16(sueRmat8)
-    output.encodeUInt16(sueCog)
-    output.encodeInt16(sueSog)
-    output.encodeUInt16(sueCpuLoad)
-    output.encodeUInt16(sueAirSpeed3dimu)
-    output.encodeInt16(sueEstimatedWind0)
-    output.encodeInt16(sueEstimatedWind1)
-    output.encodeInt16(sueEstimatedWind2)
-    output.encodeInt16(sueMagfieldearth0)
-    output.encodeInt16(sueMagfieldearth1)
-    output.encodeInt16(sueMagfieldearth2)
-    output.encodeInt16(sueSvs)
-    output.encodeInt16(sueHdop)
-    output.encodeUInt8(sueStatus)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(sueTime)
+    buffer.encodeInt32(sueLatitude)
+    buffer.encodeInt32(sueLongitude)
+    buffer.encodeInt32(sueAltitude)
+    buffer.encodeUInt16(sueWaypointIndex)
+    buffer.encodeInt16(sueRmat0)
+    buffer.encodeInt16(sueRmat1)
+    buffer.encodeInt16(sueRmat2)
+    buffer.encodeInt16(sueRmat3)
+    buffer.encodeInt16(sueRmat4)
+    buffer.encodeInt16(sueRmat5)
+    buffer.encodeInt16(sueRmat6)
+    buffer.encodeInt16(sueRmat7)
+    buffer.encodeInt16(sueRmat8)
+    buffer.encodeUInt16(sueCog)
+    buffer.encodeInt16(sueSog)
+    buffer.encodeUInt16(sueCpuLoad)
+    buffer.encodeUInt16(sueAirSpeed3dimu)
+    buffer.encodeInt16(sueEstimatedWind0)
+    buffer.encodeInt16(sueEstimatedWind1)
+    buffer.encodeInt16(sueEstimatedWind2)
+    buffer.encodeInt16(sueMagfieldearth0)
+    buffer.encodeInt16(sueMagfieldearth1)
+    buffer.encodeInt16(sueMagfieldearth2)
+    buffer.encodeInt16(sueSvs)
+    buffer.encodeInt16(sueHdop)
+    buffer.encodeUInt8(sueStatus)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF2A> {
-    private const val SIZE_V1: Int = 61
-
-    private const val SIZE_V2: Int = 61
-
     public override val id: UInt = 170u
 
     public override val crcExtra: Byte = 103
 
-    public override fun deserialize(source: BufferedSource): SerialUdbExtraF2A {
-      val sueTime = source.decodeUInt32()
-      val sueLatitude = source.decodeInt32()
-      val sueLongitude = source.decodeInt32()
-      val sueAltitude = source.decodeInt32()
-      val sueWaypointIndex = source.decodeUInt16()
-      val sueRmat0 = source.decodeInt16()
-      val sueRmat1 = source.decodeInt16()
-      val sueRmat2 = source.decodeInt16()
-      val sueRmat3 = source.decodeInt16()
-      val sueRmat4 = source.decodeInt16()
-      val sueRmat5 = source.decodeInt16()
-      val sueRmat6 = source.decodeInt16()
-      val sueRmat7 = source.decodeInt16()
-      val sueRmat8 = source.decodeInt16()
-      val sueCog = source.decodeUInt16()
-      val sueSog = source.decodeInt16()
-      val sueCpuLoad = source.decodeUInt16()
-      val sueAirSpeed3dimu = source.decodeUInt16()
-      val sueEstimatedWind0 = source.decodeInt16()
-      val sueEstimatedWind1 = source.decodeInt16()
-      val sueEstimatedWind2 = source.decodeInt16()
-      val sueMagfieldearth0 = source.decodeInt16()
-      val sueMagfieldearth1 = source.decodeInt16()
-      val sueMagfieldearth2 = source.decodeInt16()
-      val sueSvs = source.decodeInt16()
-      val sueHdop = source.decodeInt16()
-      val sueStatus = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF2A {
+      val buffer = Buffer().write(bytes)
+
+      val sueTime = buffer.decodeUInt32()
+      val sueLatitude = buffer.decodeInt32()
+      val sueLongitude = buffer.decodeInt32()
+      val sueAltitude = buffer.decodeInt32()
+      val sueWaypointIndex = buffer.decodeUInt16()
+      val sueRmat0 = buffer.decodeInt16()
+      val sueRmat1 = buffer.decodeInt16()
+      val sueRmat2 = buffer.decodeInt16()
+      val sueRmat3 = buffer.decodeInt16()
+      val sueRmat4 = buffer.decodeInt16()
+      val sueRmat5 = buffer.decodeInt16()
+      val sueRmat6 = buffer.decodeInt16()
+      val sueRmat7 = buffer.decodeInt16()
+      val sueRmat8 = buffer.decodeInt16()
+      val sueCog = buffer.decodeUInt16()
+      val sueSog = buffer.decodeInt16()
+      val sueCpuLoad = buffer.decodeUInt16()
+      val sueAirSpeed3dimu = buffer.decodeUInt16()
+      val sueEstimatedWind0 = buffer.decodeInt16()
+      val sueEstimatedWind1 = buffer.decodeInt16()
+      val sueEstimatedWind2 = buffer.decodeInt16()
+      val sueMagfieldearth0 = buffer.decodeInt16()
+      val sueMagfieldearth1 = buffer.decodeInt16()
+      val sueMagfieldearth2 = buffer.decodeInt16()
+      val sueSvs = buffer.decodeInt16()
+      val sueHdop = buffer.decodeInt16()
+      val sueStatus = buffer.decodeUInt8()
 
       return SerialUdbExtraF2A(
         sueTime = sueTime,

@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Set the mission item with sequence number seq as current item. This means that the MAV will
@@ -44,36 +43,33 @@ public data class MissionSetCurrent(
 ) : MavMessage<MissionSetCurrent> {
   public override val instanceCompanion: MavMessage.MavCompanion<MissionSetCurrent> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seq)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seq)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seq)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seq)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MissionSetCurrent> {
-    private const val SIZE_V1: Int = 4
-
-    private const val SIZE_V2: Int = 4
-
     public override val id: UInt = 41u
 
     public override val crcExtra: Byte = 28
 
-    public override fun deserialize(source: BufferedSource): MissionSetCurrent {
-      val seq = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): MissionSetCurrent {
+      val buffer = Buffer().write(bytes)
+
+      val seq = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
 
       return MissionSetCurrent(
         targetSystem = targetSystem,

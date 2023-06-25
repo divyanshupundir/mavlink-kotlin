@@ -15,6 +15,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -23,7 +24,6 @@ import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Current motion information from a designated system
@@ -91,60 +91,57 @@ public data class FollowTarget(
 ) : MavMessage<FollowTarget> {
   public override val instanceCompanion: MavMessage.MavCompanion<FollowTarget> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeUInt64(customState)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeFloat(alt)
-    output.encodeFloatArray(vel, 12)
-    output.encodeFloatArray(acc, 12)
-    output.encodeFloatArray(attitudeQ, 16)
-    output.encodeFloatArray(rates, 12)
-    output.encodeFloatArray(positionCov, 12)
-    output.encodeUInt8(estCapabilities)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeUInt64(customState)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeFloat(alt)
+    buffer.encodeFloatArray(vel, 12)
+    buffer.encodeFloatArray(acc, 12)
+    buffer.encodeFloatArray(attitudeQ, 16)
+    buffer.encodeFloatArray(rates, 12)
+    buffer.encodeFloatArray(positionCov, 12)
+    buffer.encodeUInt8(estCapabilities)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeUInt64(customState)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeFloat(alt)
-    output.encodeFloatArray(vel, 12)
-    output.encodeFloatArray(acc, 12)
-    output.encodeFloatArray(attitudeQ, 16)
-    output.encodeFloatArray(rates, 12)
-    output.encodeFloatArray(positionCov, 12)
-    output.encodeUInt8(estCapabilities)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeUInt64(customState)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeFloat(alt)
+    buffer.encodeFloatArray(vel, 12)
+    buffer.encodeFloatArray(acc, 12)
+    buffer.encodeFloatArray(attitudeQ, 16)
+    buffer.encodeFloatArray(rates, 12)
+    buffer.encodeFloatArray(positionCov, 12)
+    buffer.encodeUInt8(estCapabilities)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FollowTarget> {
-    private const val SIZE_V1: Int = 93
-
-    private const val SIZE_V2: Int = 93
-
     public override val id: UInt = 144u
 
     public override val crcExtra: Byte = 127
 
-    public override fun deserialize(source: BufferedSource): FollowTarget {
-      val timestamp = source.decodeUInt64()
-      val customState = source.decodeUInt64()
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
-      val alt = source.decodeFloat()
-      val vel = source.decodeFloatArray(12)
-      val acc = source.decodeFloatArray(12)
-      val attitudeQ = source.decodeFloatArray(16)
-      val rates = source.decodeFloatArray(12)
-      val positionCov = source.decodeFloatArray(12)
-      val estCapabilities = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): FollowTarget {
+      val buffer = Buffer().write(bytes)
+
+      val timestamp = buffer.decodeUInt64()
+      val customState = buffer.decodeUInt64()
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
+      val alt = buffer.decodeFloat()
+      val vel = buffer.decodeFloatArray(12)
+      val acc = buffer.decodeFloatArray(12)
+      val attitudeQ = buffer.decodeFloatArray(16)
+      val rates = buffer.decodeFloatArray(12)
+      val positionCov = buffer.decodeFloatArray(12)
+      val estCapabilities = buffer.decodeUInt8()
 
       return FollowTarget(
         timestamp = timestamp,

@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  *  AVSS PRS system status.
@@ -52,42 +51,39 @@ public data class AvssPrsSysStatus(
 ) : MavMessage<AvssPrsSysStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<AvssPrsSysStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(errorStatus)
-    output.encodeUInt32(batteryStatus)
-    output.encodeUInt8(armStatus)
-    output.encodeUInt8(chargeStatus)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(errorStatus)
+    buffer.encodeUInt32(batteryStatus)
+    buffer.encodeUInt8(armStatus)
+    buffer.encodeUInt8(chargeStatus)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(errorStatus)
-    output.encodeUInt32(batteryStatus)
-    output.encodeUInt8(armStatus)
-    output.encodeUInt8(chargeStatus)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(errorStatus)
+    buffer.encodeUInt32(batteryStatus)
+    buffer.encodeUInt8(armStatus)
+    buffer.encodeUInt8(chargeStatus)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AvssPrsSysStatus> {
-    private const val SIZE_V1: Int = 14
-
-    private const val SIZE_V2: Int = 14
-
     public override val id: UInt = 60_050u
 
     public override val crcExtra: Byte = -36
 
-    public override fun deserialize(source: BufferedSource): AvssPrsSysStatus {
-      val timeBootMs = source.decodeUInt32()
-      val errorStatus = source.decodeUInt32()
-      val batteryStatus = source.decodeUInt32()
-      val armStatus = source.decodeUInt8()
-      val chargeStatus = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): AvssPrsSysStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val errorStatus = buffer.decodeUInt32()
+      val batteryStatus = buffer.decodeUInt32()
+      val armStatus = buffer.decodeUInt8()
+      val chargeStatus = buffer.decodeUInt8()
 
       return AvssPrsSysStatus(
         timeBootMs = timeBootMs,

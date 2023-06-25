@@ -13,14 +13,13 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs (replacement for
@@ -55,39 +54,36 @@ public data class HilActuatorControls(
 ) : MavMessage<HilActuatorControls> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilActuatorControls> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt64(flags)
-    output.encodeFloatArray(controls, 64)
-    output.encodeBitmaskValue(mode.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt64(flags)
+    buffer.encodeFloatArray(controls, 64)
+    buffer.encodeBitmaskValue(mode.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt64(flags)
-    output.encodeFloatArray(controls, 64)
-    output.encodeBitmaskValue(mode.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt64(flags)
+    buffer.encodeFloatArray(controls, 64)
+    buffer.encodeBitmaskValue(mode.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilActuatorControls> {
-    private const val SIZE_V1: Int = 81
-
-    private const val SIZE_V2: Int = 81
-
     public override val id: UInt = 93u
 
     public override val crcExtra: Byte = 47
 
-    public override fun deserialize(source: BufferedSource): HilActuatorControls {
-      val timeUsec = source.decodeUInt64()
-      val flags = source.decodeUInt64()
-      val controls = source.decodeFloatArray(64)
-      val mode = source.decodeBitmaskValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): HilActuatorControls {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val flags = buffer.decodeUInt64()
+      val controls = buffer.decodeFloatArray(64)
+      val mode = buffer.decodeBitmaskValue(1).let { value ->
         val flags = MavModeFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

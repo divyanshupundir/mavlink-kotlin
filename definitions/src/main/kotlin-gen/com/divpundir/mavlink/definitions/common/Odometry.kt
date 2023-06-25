@@ -16,15 +16,14 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147
@@ -137,82 +136,79 @@ public data class Odometry(
 ) : MavMessage<Odometry> {
   public override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.encodeFloat(rollspeed)
-    output.encodeFloat(pitchspeed)
-    output.encodeFloat(yawspeed)
-    output.encodeFloatArray(poseCovariance, 84)
-    output.encodeFloatArray(velocityCovariance, 84)
-    output.encodeEnumValue(frameId.value, 1)
-    output.encodeEnumValue(childFrameId.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    buffer.encodeFloat(rollspeed)
+    buffer.encodeFloat(pitchspeed)
+    buffer.encodeFloat(yawspeed)
+    buffer.encodeFloatArray(poseCovariance, 84)
+    buffer.encodeFloatArray(velocityCovariance, 84)
+    buffer.encodeEnumValue(frameId.value, 1)
+    buffer.encodeEnumValue(childFrameId.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.encodeFloat(rollspeed)
-    output.encodeFloat(pitchspeed)
-    output.encodeFloat(yawspeed)
-    output.encodeFloatArray(poseCovariance, 84)
-    output.encodeFloatArray(velocityCovariance, 84)
-    output.encodeEnumValue(frameId.value, 1)
-    output.encodeEnumValue(childFrameId.value, 1)
-    output.encodeUInt8(resetCounter)
-    output.encodeEnumValue(estimatorType.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    buffer.encodeFloat(rollspeed)
+    buffer.encodeFloat(pitchspeed)
+    buffer.encodeFloat(yawspeed)
+    buffer.encodeFloatArray(poseCovariance, 84)
+    buffer.encodeFloatArray(velocityCovariance, 84)
+    buffer.encodeEnumValue(frameId.value, 1)
+    buffer.encodeEnumValue(childFrameId.value, 1)
+    buffer.encodeUInt8(resetCounter)
+    buffer.encodeEnumValue(estimatorType.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Odometry> {
-    private const val SIZE_V1: Int = 230
-
-    private const val SIZE_V2: Int = 232
-
     public override val id: UInt = 331u
 
     public override val crcExtra: Byte = 91
 
-    public override fun deserialize(source: BufferedSource): Odometry {
-      val timeUsec = source.decodeUInt64()
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val q = source.decodeFloatArray(16)
-      val vx = source.decodeFloat()
-      val vy = source.decodeFloat()
-      val vz = source.decodeFloat()
-      val rollspeed = source.decodeFloat()
-      val pitchspeed = source.decodeFloat()
-      val yawspeed = source.decodeFloat()
-      val poseCovariance = source.decodeFloatArray(84)
-      val velocityCovariance = source.decodeFloatArray(84)
-      val frameId = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): Odometry {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val q = buffer.decodeFloatArray(16)
+      val vx = buffer.decodeFloat()
+      val vy = buffer.decodeFloat()
+      val vz = buffer.decodeFloat()
+      val rollspeed = buffer.decodeFloat()
+      val pitchspeed = buffer.decodeFloat()
+      val yawspeed = buffer.decodeFloat()
+      val poseCovariance = buffer.decodeFloatArray(84)
+      val velocityCovariance = buffer.decodeFloatArray(84)
+      val frameId = buffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val childFrameId = source.decodeEnumValue(1).let { value ->
+      val childFrameId = buffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val resetCounter = source.decodeUInt8()
-      val estimatorType = source.decodeEnumValue(1).let { value ->
+      val resetCounter = buffer.decodeUInt8()
+      val estimatorType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavEstimatorType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

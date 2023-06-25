@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about flight since last arming.
@@ -49,39 +48,36 @@ public data class FlightInformation(
 ) : MavMessage<FlightInformation> {
   public override val instanceCompanion: MavMessage.MavCompanion<FlightInformation> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(armingTimeUtc)
-    output.encodeUInt64(takeoffTimeUtc)
-    output.encodeUInt64(flightUuid)
-    output.encodeUInt32(timeBootMs)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(armingTimeUtc)
+    buffer.encodeUInt64(takeoffTimeUtc)
+    buffer.encodeUInt64(flightUuid)
+    buffer.encodeUInt32(timeBootMs)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(armingTimeUtc)
-    output.encodeUInt64(takeoffTimeUtc)
-    output.encodeUInt64(flightUuid)
-    output.encodeUInt32(timeBootMs)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(armingTimeUtc)
+    buffer.encodeUInt64(takeoffTimeUtc)
+    buffer.encodeUInt64(flightUuid)
+    buffer.encodeUInt32(timeBootMs)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FlightInformation> {
-    private const val SIZE_V1: Int = 28
-
-    private const val SIZE_V2: Int = 28
-
     public override val id: UInt = 264u
 
     public override val crcExtra: Byte = 49
 
-    public override fun deserialize(source: BufferedSource): FlightInformation {
-      val armingTimeUtc = source.decodeUInt64()
-      val takeoffTimeUtc = source.decodeUInt64()
-      val flightUuid = source.decodeUInt64()
-      val timeBootMs = source.decodeUInt32()
+    public override fun deserialize(bytes: ByteArray): FlightInformation {
+      val buffer = Buffer().write(bytes)
+
+      val armingTimeUtc = buffer.decodeUInt64()
+      val takeoffTimeUtc = buffer.decodeUInt64()
+      val flightUuid = buffer.decodeUInt64()
+      val timeBootMs = buffer.decodeUInt32()
 
       return FlightInformation(
         timeBootMs = timeBootMs,

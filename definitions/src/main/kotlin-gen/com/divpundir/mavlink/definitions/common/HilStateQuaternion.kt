@@ -17,6 +17,7 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -26,7 +27,6 @@ import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Sent from simulation to autopilot, avoids in contrast to HIL_STATE singularities. This packet is
@@ -122,75 +122,72 @@ public data class HilStateQuaternion(
 ) : MavMessage<HilStateQuaternion> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilStateQuaternion> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloatArray(attitudeQuaternion, 16)
-    output.encodeFloat(rollspeed)
-    output.encodeFloat(pitchspeed)
-    output.encodeFloat(yawspeed)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeInt16(vx)
-    output.encodeInt16(vy)
-    output.encodeInt16(vz)
-    output.encodeUInt16(indAirspeed)
-    output.encodeUInt16(trueAirspeed)
-    output.encodeInt16(xacc)
-    output.encodeInt16(yacc)
-    output.encodeInt16(zacc)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloatArray(attitudeQuaternion, 16)
+    buffer.encodeFloat(rollspeed)
+    buffer.encodeFloat(pitchspeed)
+    buffer.encodeFloat(yawspeed)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeInt16(vx)
+    buffer.encodeInt16(vy)
+    buffer.encodeInt16(vz)
+    buffer.encodeUInt16(indAirspeed)
+    buffer.encodeUInt16(trueAirspeed)
+    buffer.encodeInt16(xacc)
+    buffer.encodeInt16(yacc)
+    buffer.encodeInt16(zacc)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloatArray(attitudeQuaternion, 16)
-    output.encodeFloat(rollspeed)
-    output.encodeFloat(pitchspeed)
-    output.encodeFloat(yawspeed)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeInt16(vx)
-    output.encodeInt16(vy)
-    output.encodeInt16(vz)
-    output.encodeUInt16(indAirspeed)
-    output.encodeUInt16(trueAirspeed)
-    output.encodeInt16(xacc)
-    output.encodeInt16(yacc)
-    output.encodeInt16(zacc)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloatArray(attitudeQuaternion, 16)
+    buffer.encodeFloat(rollspeed)
+    buffer.encodeFloat(pitchspeed)
+    buffer.encodeFloat(yawspeed)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeInt16(vx)
+    buffer.encodeInt16(vy)
+    buffer.encodeInt16(vz)
+    buffer.encodeUInt16(indAirspeed)
+    buffer.encodeUInt16(trueAirspeed)
+    buffer.encodeInt16(xacc)
+    buffer.encodeInt16(yacc)
+    buffer.encodeInt16(zacc)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilStateQuaternion> {
-    private const val SIZE_V1: Int = 64
-
-    private const val SIZE_V2: Int = 64
-
     public override val id: UInt = 115u
 
     public override val crcExtra: Byte = 4
 
-    public override fun deserialize(source: BufferedSource): HilStateQuaternion {
-      val timeUsec = source.decodeUInt64()
-      val attitudeQuaternion = source.decodeFloatArray(16)
-      val rollspeed = source.decodeFloat()
-      val pitchspeed = source.decodeFloat()
-      val yawspeed = source.decodeFloat()
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
-      val alt = source.decodeInt32()
-      val vx = source.decodeInt16()
-      val vy = source.decodeInt16()
-      val vz = source.decodeInt16()
-      val indAirspeed = source.decodeUInt16()
-      val trueAirspeed = source.decodeUInt16()
-      val xacc = source.decodeInt16()
-      val yacc = source.decodeInt16()
-      val zacc = source.decodeInt16()
+    public override fun deserialize(bytes: ByteArray): HilStateQuaternion {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val attitudeQuaternion = buffer.decodeFloatArray(16)
+      val rollspeed = buffer.decodeFloat()
+      val pitchspeed = buffer.decodeFloat()
+      val yawspeed = buffer.decodeFloat()
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
+      val alt = buffer.decodeInt32()
+      val vx = buffer.decodeInt16()
+      val vy = buffer.decodeInt16()
+      val vz = buffer.decodeInt16()
+      val indAirspeed = buffer.decodeUInt16()
+      val trueAirspeed = buffer.decodeUInt16()
+      val xacc = buffer.decodeInt16()
+      val yacc = buffer.decodeInt16()
+      val zacc = buffer.decodeInt16()
 
       return HilStateQuaternion(
         timeUsec = timeUsec,

@@ -11,13 +11,12 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Superseded by ACTUATOR_OUTPUT_STATUS. The RAW values of the servo outputs (for RC input from the
@@ -148,73 +147,70 @@ public data class ServoOutputRaw(
 ) : MavMessage<ServoOutputRaw> {
   public override val instanceCompanion: MavMessage.MavCompanion<ServoOutputRaw> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeUsec)
-    output.encodeUInt16(servo1Raw)
-    output.encodeUInt16(servo2Raw)
-    output.encodeUInt16(servo3Raw)
-    output.encodeUInt16(servo4Raw)
-    output.encodeUInt16(servo5Raw)
-    output.encodeUInt16(servo6Raw)
-    output.encodeUInt16(servo7Raw)
-    output.encodeUInt16(servo8Raw)
-    output.encodeUInt8(port)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeUsec)
+    buffer.encodeUInt16(servo1Raw)
+    buffer.encodeUInt16(servo2Raw)
+    buffer.encodeUInt16(servo3Raw)
+    buffer.encodeUInt16(servo4Raw)
+    buffer.encodeUInt16(servo5Raw)
+    buffer.encodeUInt16(servo6Raw)
+    buffer.encodeUInt16(servo7Raw)
+    buffer.encodeUInt16(servo8Raw)
+    buffer.encodeUInt8(port)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeUsec)
-    output.encodeUInt16(servo1Raw)
-    output.encodeUInt16(servo2Raw)
-    output.encodeUInt16(servo3Raw)
-    output.encodeUInt16(servo4Raw)
-    output.encodeUInt16(servo5Raw)
-    output.encodeUInt16(servo6Raw)
-    output.encodeUInt16(servo7Raw)
-    output.encodeUInt16(servo8Raw)
-    output.encodeUInt8(port)
-    output.encodeUInt16(servo9Raw)
-    output.encodeUInt16(servo10Raw)
-    output.encodeUInt16(servo11Raw)
-    output.encodeUInt16(servo12Raw)
-    output.encodeUInt16(servo13Raw)
-    output.encodeUInt16(servo14Raw)
-    output.encodeUInt16(servo15Raw)
-    output.encodeUInt16(servo16Raw)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeUsec)
+    buffer.encodeUInt16(servo1Raw)
+    buffer.encodeUInt16(servo2Raw)
+    buffer.encodeUInt16(servo3Raw)
+    buffer.encodeUInt16(servo4Raw)
+    buffer.encodeUInt16(servo5Raw)
+    buffer.encodeUInt16(servo6Raw)
+    buffer.encodeUInt16(servo7Raw)
+    buffer.encodeUInt16(servo8Raw)
+    buffer.encodeUInt8(port)
+    buffer.encodeUInt16(servo9Raw)
+    buffer.encodeUInt16(servo10Raw)
+    buffer.encodeUInt16(servo11Raw)
+    buffer.encodeUInt16(servo12Raw)
+    buffer.encodeUInt16(servo13Raw)
+    buffer.encodeUInt16(servo14Raw)
+    buffer.encodeUInt16(servo15Raw)
+    buffer.encodeUInt16(servo16Raw)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ServoOutputRaw> {
-    private const val SIZE_V1: Int = 21
-
-    private const val SIZE_V2: Int = 37
-
     public override val id: UInt = 36u
 
     public override val crcExtra: Byte = -34
 
-    public override fun deserialize(source: BufferedSource): ServoOutputRaw {
-      val timeUsec = source.decodeUInt32()
-      val servo1Raw = source.decodeUInt16()
-      val servo2Raw = source.decodeUInt16()
-      val servo3Raw = source.decodeUInt16()
-      val servo4Raw = source.decodeUInt16()
-      val servo5Raw = source.decodeUInt16()
-      val servo6Raw = source.decodeUInt16()
-      val servo7Raw = source.decodeUInt16()
-      val servo8Raw = source.decodeUInt16()
-      val port = source.decodeUInt8()
-      val servo9Raw = source.decodeUInt16()
-      val servo10Raw = source.decodeUInt16()
-      val servo11Raw = source.decodeUInt16()
-      val servo12Raw = source.decodeUInt16()
-      val servo13Raw = source.decodeUInt16()
-      val servo14Raw = source.decodeUInt16()
-      val servo15Raw = source.decodeUInt16()
-      val servo16Raw = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): ServoOutputRaw {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt32()
+      val servo1Raw = buffer.decodeUInt16()
+      val servo2Raw = buffer.decodeUInt16()
+      val servo3Raw = buffer.decodeUInt16()
+      val servo4Raw = buffer.decodeUInt16()
+      val servo5Raw = buffer.decodeUInt16()
+      val servo6Raw = buffer.decodeUInt16()
+      val servo7Raw = buffer.decodeUInt16()
+      val servo8Raw = buffer.decodeUInt16()
+      val port = buffer.decodeUInt8()
+      val servo9Raw = buffer.decodeUInt16()
+      val servo10Raw = buffer.decodeUInt16()
+      val servo11Raw = buffer.decodeUInt16()
+      val servo12Raw = buffer.decodeUInt16()
+      val servo13Raw = buffer.decodeUInt16()
+      val servo14Raw = buffer.decodeUInt16()
+      val servo15Raw = buffer.decodeUInt16()
+      val servo16Raw = buffer.decodeUInt16()
 
       return ServoOutputRaw(
         timeUsec = timeUsec,

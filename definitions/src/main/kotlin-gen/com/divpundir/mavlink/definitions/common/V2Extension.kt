@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Message implementing parts of the V2 payload specs in V1 frames for transitional support.
@@ -67,42 +66,39 @@ public data class V2Extension(
 ) : MavMessage<V2Extension> {
   public override val instanceCompanion: MavMessage.MavCompanion<V2Extension> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(messageType)
-    output.encodeUInt8(targetNetwork)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(payload, 249)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(messageType)
+    buffer.encodeUInt8(targetNetwork)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(payload, 249)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(messageType)
-    output.encodeUInt8(targetNetwork)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(payload, 249)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(messageType)
+    buffer.encodeUInt8(targetNetwork)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(payload, 249)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<V2Extension> {
-    private const val SIZE_V1: Int = 254
-
-    private const val SIZE_V2: Int = 254
-
     public override val id: UInt = 248u
 
     public override val crcExtra: Byte = 8
 
-    public override fun deserialize(source: BufferedSource): V2Extension {
-      val messageType = source.decodeUInt16()
-      val targetNetwork = source.decodeUInt8()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val payload = source.decodeUInt8Array(249)
+    public override fun deserialize(bytes: ByteArray): V2Extension {
+      val buffer = Buffer().write(bytes)
+
+      val messageType = buffer.decodeUInt16()
+      val targetNetwork = buffer.decodeUInt8()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val payload = buffer.decodeUInt8Array(249)
 
       return V2Extension(
         targetNetwork = targetNetwork,

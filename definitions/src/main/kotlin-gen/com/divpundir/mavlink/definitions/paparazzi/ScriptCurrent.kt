@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * This message informs about the currently active SCRIPT.
@@ -30,30 +29,27 @@ public data class ScriptCurrent(
 ) : MavMessage<ScriptCurrent> {
   public override val instanceCompanion: MavMessage.MavCompanion<ScriptCurrent> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seq)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seq)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seq)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seq)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ScriptCurrent> {
-    private const val SIZE_V1: Int = 2
-
-    private const val SIZE_V2: Int = 2
-
     public override val id: UInt = 184u
 
     public override val crcExtra: Byte = 40
 
-    public override fun deserialize(source: BufferedSource): ScriptCurrent {
-      val seq = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): ScriptCurrent {
+      val buffer = Buffer().write(bytes)
+
+      val seq = buffer.decodeUInt16()
 
       return ScriptCurrent(
         seq = seq,

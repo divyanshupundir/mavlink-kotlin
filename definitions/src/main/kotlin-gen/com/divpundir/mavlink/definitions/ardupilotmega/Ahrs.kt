@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of DCM attitude estimator.
@@ -60,48 +59,45 @@ public data class Ahrs(
 ) : MavMessage<Ahrs> {
   public override val instanceCompanion: MavMessage.MavCompanion<Ahrs> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(omegaix)
-    output.encodeFloat(omegaiy)
-    output.encodeFloat(omegaiz)
-    output.encodeFloat(accelWeight)
-    output.encodeFloat(renormVal)
-    output.encodeFloat(errorRp)
-    output.encodeFloat(errorYaw)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(omegaix)
+    buffer.encodeFloat(omegaiy)
+    buffer.encodeFloat(omegaiz)
+    buffer.encodeFloat(accelWeight)
+    buffer.encodeFloat(renormVal)
+    buffer.encodeFloat(errorRp)
+    buffer.encodeFloat(errorYaw)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(omegaix)
-    output.encodeFloat(omegaiy)
-    output.encodeFloat(omegaiz)
-    output.encodeFloat(accelWeight)
-    output.encodeFloat(renormVal)
-    output.encodeFloat(errorRp)
-    output.encodeFloat(errorYaw)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(omegaix)
+    buffer.encodeFloat(omegaiy)
+    buffer.encodeFloat(omegaiz)
+    buffer.encodeFloat(accelWeight)
+    buffer.encodeFloat(renormVal)
+    buffer.encodeFloat(errorRp)
+    buffer.encodeFloat(errorYaw)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Ahrs> {
-    private const val SIZE_V1: Int = 28
-
-    private const val SIZE_V2: Int = 28
-
     public override val id: UInt = 163u
 
     public override val crcExtra: Byte = 127
 
-    public override fun deserialize(source: BufferedSource): Ahrs {
-      val omegaix = source.decodeFloat()
-      val omegaiy = source.decodeFloat()
-      val omegaiz = source.decodeFloat()
-      val accelWeight = source.decodeFloat()
-      val renormVal = source.decodeFloat()
-      val errorRp = source.decodeFloat()
-      val errorYaw = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): Ahrs {
+      val buffer = Buffer().write(bytes)
+
+      val omegaix = buffer.decodeFloat()
+      val omegaiy = buffer.decodeFloat()
+      val omegaiz = buffer.decodeFloat()
+      val accelWeight = buffer.decodeFloat()
+      val renormVal = buffer.decodeFloat()
+      val errorRp = buffer.decodeFloat()
+      val errorYaw = buffer.decodeFloat()
 
       return Ahrs(
         omegaix = omegaix,

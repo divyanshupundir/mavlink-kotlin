@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Write registers reply.
@@ -37,33 +36,30 @@ public data class DeviceOpWriteReply(
 ) : MavMessage<DeviceOpWriteReply> {
   public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWriteReply> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeUInt8(result)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeUInt8(result)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeUInt8(result)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeUInt8(result)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DeviceOpWriteReply> {
-    private const val SIZE_V1: Int = 5
-
-    private const val SIZE_V2: Int = 5
-
     public override val id: UInt = 11_003u
 
     public override val crcExtra: Byte = 64
 
-    public override fun deserialize(source: BufferedSource): DeviceOpWriteReply {
-      val requestId = source.decodeUInt32()
-      val result = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): DeviceOpWriteReply {
+      val buffer = Buffer().write(bytes)
+
+      val requestId = buffer.decodeUInt32()
+      val result = buffer.decodeUInt8()
 
       return DeviceOpWriteReply(
         requestId = requestId,

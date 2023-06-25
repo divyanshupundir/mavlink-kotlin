@@ -15,14 +15,13 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Low level message to control a gimbal device's attitude. This message is to be sent from the
@@ -76,51 +75,48 @@ public data class GimbalDeviceSetAttitude(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceSetAttitude> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(angularVelocityX)
-    output.encodeFloat(angularVelocityY)
-    output.encodeFloat(angularVelocityZ)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(angularVelocityX)
+    buffer.encodeFloat(angularVelocityY)
+    buffer.encodeFloat(angularVelocityZ)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(angularVelocityX)
-    output.encodeFloat(angularVelocityY)
-    output.encodeFloat(angularVelocityZ)
-    output.encodeBitmaskValue(flags.value, 2)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(angularVelocityX)
+    buffer.encodeFloat(angularVelocityY)
+    buffer.encodeFloat(angularVelocityZ)
+    buffer.encodeBitmaskValue(flags.value, 2)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalDeviceSetAttitude> {
-    private const val SIZE_V1: Int = 32
-
-    private const val SIZE_V2: Int = 32
-
     public override val id: UInt = 284u
 
     public override val crcExtra: Byte = 99
 
-    public override fun deserialize(source: BufferedSource): GimbalDeviceSetAttitude {
-      val q = source.decodeFloatArray(16)
-      val angularVelocityX = source.decodeFloat()
-      val angularVelocityY = source.decodeFloat()
-      val angularVelocityZ = source.decodeFloat()
-      val flags = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): GimbalDeviceSetAttitude {
+      val buffer = Buffer().write(bytes)
+
+      val q = buffer.decodeFloatArray(16)
+      val angularVelocityX = buffer.decodeFloat()
+      val angularVelocityY = buffer.decodeFloat()
+      val angularVelocityZ = buffer.decodeFloat()
+      val flags = buffer.decodeBitmaskValue(2).let { value ->
         val flags = GimbalDeviceFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
 
       return GimbalDeviceSetAttitude(
         targetSystem = targetSystem,

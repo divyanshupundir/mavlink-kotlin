@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * System status specific to ualberta uav
@@ -40,36 +39,33 @@ public data class UalbertaSysStatus(
 ) : MavMessage<UalbertaSysStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<UalbertaSysStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(mode)
-    output.encodeUInt8(navMode)
-    output.encodeUInt8(pilot)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(mode)
+    buffer.encodeUInt8(navMode)
+    buffer.encodeUInt8(pilot)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(mode)
-    output.encodeUInt8(navMode)
-    output.encodeUInt8(pilot)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(mode)
+    buffer.encodeUInt8(navMode)
+    buffer.encodeUInt8(pilot)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UalbertaSysStatus> {
-    private const val SIZE_V1: Int = 3
-
-    private const val SIZE_V2: Int = 3
-
     public override val id: UInt = 222u
 
     public override val crcExtra: Byte = 15
 
-    public override fun deserialize(source: BufferedSource): UalbertaSysStatus {
-      val mode = source.decodeUInt8()
-      val navMode = source.decodeUInt8()
-      val pilot = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): UalbertaSysStatus {
+      val buffer = Buffer().write(bytes)
+
+      val mode = buffer.decodeUInt8()
+      val navMode = buffer.decodeUInt8()
+      val pilot = buffer.decodeUInt8()
 
       return UalbertaSysStatus(
         mode = mode,

@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeString
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Emit an encrypted signature / key identifying this system. PLEASE NOTE: This protocol has been
@@ -31,30 +30,27 @@ public data class AuthKey(
 ) : MavMessage<AuthKey> {
   public override val instanceCompanion: MavMessage.MavCompanion<AuthKey> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeString(key, 32)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeString(key, 32)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeString(key, 32)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeString(key, 32)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AuthKey> {
-    private const val SIZE_V1: Int = 32
-
-    private const val SIZE_V2: Int = 32
-
     public override val id: UInt = 7u
 
     public override val crcExtra: Byte = 119
 
-    public override fun deserialize(source: BufferedSource): AuthKey {
-      val key = source.decodeString(32)
+    public override fun deserialize(bytes: ByteArray): AuthKey {
+      val buffer = Buffer().write(bytes)
+
+      val key = buffer.decodeString(32)
 
       return AuthKey(
         key = key,

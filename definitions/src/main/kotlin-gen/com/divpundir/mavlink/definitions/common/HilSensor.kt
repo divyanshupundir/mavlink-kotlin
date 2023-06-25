@@ -14,14 +14,13 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The IMU readings in SI units in NED body frame
@@ -118,77 +117,74 @@ public data class HilSensor(
 ) : MavMessage<HilSensor> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilSensor> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(xacc)
-    output.encodeFloat(yacc)
-    output.encodeFloat(zacc)
-    output.encodeFloat(xgyro)
-    output.encodeFloat(ygyro)
-    output.encodeFloat(zgyro)
-    output.encodeFloat(xmag)
-    output.encodeFloat(ymag)
-    output.encodeFloat(zmag)
-    output.encodeFloat(absPressure)
-    output.encodeFloat(diffPressure)
-    output.encodeFloat(pressureAlt)
-    output.encodeFloat(temperature)
-    output.encodeBitmaskValue(fieldsUpdated.value, 4)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(xacc)
+    buffer.encodeFloat(yacc)
+    buffer.encodeFloat(zacc)
+    buffer.encodeFloat(xgyro)
+    buffer.encodeFloat(ygyro)
+    buffer.encodeFloat(zgyro)
+    buffer.encodeFloat(xmag)
+    buffer.encodeFloat(ymag)
+    buffer.encodeFloat(zmag)
+    buffer.encodeFloat(absPressure)
+    buffer.encodeFloat(diffPressure)
+    buffer.encodeFloat(pressureAlt)
+    buffer.encodeFloat(temperature)
+    buffer.encodeBitmaskValue(fieldsUpdated.value, 4)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(xacc)
-    output.encodeFloat(yacc)
-    output.encodeFloat(zacc)
-    output.encodeFloat(xgyro)
-    output.encodeFloat(ygyro)
-    output.encodeFloat(zgyro)
-    output.encodeFloat(xmag)
-    output.encodeFloat(ymag)
-    output.encodeFloat(zmag)
-    output.encodeFloat(absPressure)
-    output.encodeFloat(diffPressure)
-    output.encodeFloat(pressureAlt)
-    output.encodeFloat(temperature)
-    output.encodeBitmaskValue(fieldsUpdated.value, 4)
-    output.encodeUInt8(id)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(xacc)
+    buffer.encodeFloat(yacc)
+    buffer.encodeFloat(zacc)
+    buffer.encodeFloat(xgyro)
+    buffer.encodeFloat(ygyro)
+    buffer.encodeFloat(zgyro)
+    buffer.encodeFloat(xmag)
+    buffer.encodeFloat(ymag)
+    buffer.encodeFloat(zmag)
+    buffer.encodeFloat(absPressure)
+    buffer.encodeFloat(diffPressure)
+    buffer.encodeFloat(pressureAlt)
+    buffer.encodeFloat(temperature)
+    buffer.encodeBitmaskValue(fieldsUpdated.value, 4)
+    buffer.encodeUInt8(id)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilSensor> {
-    private const val SIZE_V1: Int = 64
-
-    private const val SIZE_V2: Int = 65
-
     public override val id: UInt = 107u
 
     public override val crcExtra: Byte = 108
 
-    public override fun deserialize(source: BufferedSource): HilSensor {
-      val timeUsec = source.decodeUInt64()
-      val xacc = source.decodeFloat()
-      val yacc = source.decodeFloat()
-      val zacc = source.decodeFloat()
-      val xgyro = source.decodeFloat()
-      val ygyro = source.decodeFloat()
-      val zgyro = source.decodeFloat()
-      val xmag = source.decodeFloat()
-      val ymag = source.decodeFloat()
-      val zmag = source.decodeFloat()
-      val absPressure = source.decodeFloat()
-      val diffPressure = source.decodeFloat()
-      val pressureAlt = source.decodeFloat()
-      val temperature = source.decodeFloat()
-      val fieldsUpdated = source.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(bytes: ByteArray): HilSensor {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val xacc = buffer.decodeFloat()
+      val yacc = buffer.decodeFloat()
+      val zacc = buffer.decodeFloat()
+      val xgyro = buffer.decodeFloat()
+      val ygyro = buffer.decodeFloat()
+      val zgyro = buffer.decodeFloat()
+      val xmag = buffer.decodeFloat()
+      val ymag = buffer.decodeFloat()
+      val zmag = buffer.decodeFloat()
+      val absPressure = buffer.decodeFloat()
+      val diffPressure = buffer.decodeFloat()
+      val pressureAlt = buffer.decodeFloat()
+      val temperature = buffer.decodeFloat()
+      val fieldsUpdated = buffer.decodeBitmaskValue(4).let { value ->
         val flags = HilSensorUpdatedFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val id = source.decodeUInt8()
+      val id = buffer.decodeUInt8()
 
       return HilSensor(
         timeUsec = timeUsec,

@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Extended EKF state estimates for ASLUAVs
@@ -63,48 +62,45 @@ public data class EkfExt(
 ) : MavMessage<EkfExt> {
   public override val instanceCompanion: MavMessage.MavCompanion<EkfExt> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeFloat(windspeed)
-    output.encodeFloat(winddir)
-    output.encodeFloat(windz)
-    output.encodeFloat(airspeed)
-    output.encodeFloat(beta)
-    output.encodeFloat(alpha)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeFloat(windspeed)
+    buffer.encodeFloat(winddir)
+    buffer.encodeFloat(windz)
+    buffer.encodeFloat(airspeed)
+    buffer.encodeFloat(beta)
+    buffer.encodeFloat(alpha)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeFloat(windspeed)
-    output.encodeFloat(winddir)
-    output.encodeFloat(windz)
-    output.encodeFloat(airspeed)
-    output.encodeFloat(beta)
-    output.encodeFloat(alpha)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeFloat(windspeed)
+    buffer.encodeFloat(winddir)
+    buffer.encodeFloat(windz)
+    buffer.encodeFloat(airspeed)
+    buffer.encodeFloat(beta)
+    buffer.encodeFloat(alpha)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EkfExt> {
-    private const val SIZE_V1: Int = 32
-
-    private const val SIZE_V2: Int = 32
-
     public override val id: UInt = 8_007u
 
     public override val crcExtra: Byte = 64
 
-    public override fun deserialize(source: BufferedSource): EkfExt {
-      val timestamp = source.decodeUInt64()
-      val windspeed = source.decodeFloat()
-      val winddir = source.decodeFloat()
-      val windz = source.decodeFloat()
-      val airspeed = source.decodeFloat()
-      val beta = source.decodeFloat()
-      val alpha = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): EkfExt {
+      val buffer = Buffer().write(bytes)
+
+      val timestamp = buffer.decodeUInt64()
+      val windspeed = buffer.decodeFloat()
+      val winddir = buffer.decodeFloat()
+      val windz = buffer.decodeFloat()
+      val airspeed = buffer.decodeFloat()
+      val beta = buffer.decodeFloat()
+      val alpha = buffer.decodeFloat()
 
       return EkfExt(
         timestamp = timestamp,

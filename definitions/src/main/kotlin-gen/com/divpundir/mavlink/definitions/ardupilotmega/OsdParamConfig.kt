@@ -16,14 +16,13 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Configure an OSD parameter slot.
@@ -88,57 +87,54 @@ public data class OsdParamConfig(
 ) : MavMessage<OsdParamConfig> {
   public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfig> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeFloat(minValue)
-    output.encodeFloat(maxValue)
-    output.encodeFloat(increment)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(osdScreen)
-    output.encodeUInt8(osdIndex)
-    output.encodeString(paramId, 16)
-    output.encodeEnumValue(configType.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeFloat(minValue)
+    buffer.encodeFloat(maxValue)
+    buffer.encodeFloat(increment)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(osdScreen)
+    buffer.encodeUInt8(osdIndex)
+    buffer.encodeString(paramId, 16)
+    buffer.encodeEnumValue(configType.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeFloat(minValue)
-    output.encodeFloat(maxValue)
-    output.encodeFloat(increment)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(osdScreen)
-    output.encodeUInt8(osdIndex)
-    output.encodeString(paramId, 16)
-    output.encodeEnumValue(configType.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeFloat(minValue)
+    buffer.encodeFloat(maxValue)
+    buffer.encodeFloat(increment)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(osdScreen)
+    buffer.encodeUInt8(osdIndex)
+    buffer.encodeString(paramId, 16)
+    buffer.encodeEnumValue(configType.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OsdParamConfig> {
-    private const val SIZE_V1: Int = 37
-
-    private const val SIZE_V2: Int = 37
-
     public override val id: UInt = 11_033u
 
     public override val crcExtra: Byte = -61
 
-    public override fun deserialize(source: BufferedSource): OsdParamConfig {
-      val requestId = source.decodeUInt32()
-      val minValue = source.decodeFloat()
-      val maxValue = source.decodeFloat()
-      val increment = source.decodeFloat()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val osdScreen = source.decodeUInt8()
-      val osdIndex = source.decodeUInt8()
-      val paramId = source.decodeString(16)
-      val configType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): OsdParamConfig {
+      val buffer = Buffer().write(bytes)
+
+      val requestId = buffer.decodeUInt32()
+      val minValue = buffer.decodeFloat()
+      val maxValue = buffer.decodeFloat()
+      val increment = buffer.decodeFloat()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val osdScreen = buffer.decodeUInt8()
+      val osdIndex = buffer.decodeUInt8()
+      val paramId = buffer.decodeString(16)
+      val configType = buffer.decodeEnumValue(1).let { value ->
         val entry = OsdParamConfigType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

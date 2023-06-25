@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
@@ -63,48 +62,45 @@ public data class LocalPositionNed(
 ) : MavMessage<LocalPositionNed> {
   public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNed> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LocalPositionNed> {
-    private const val SIZE_V1: Int = 28
-
-    private const val SIZE_V2: Int = 28
-
     public override val id: UInt = 32u
 
     public override val crcExtra: Byte = -71
 
-    public override fun deserialize(source: BufferedSource): LocalPositionNed {
-      val timeBootMs = source.decodeUInt32()
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val vx = source.decodeFloat()
-      val vy = source.decodeFloat()
-      val vz = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): LocalPositionNed {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val vx = buffer.decodeFloat()
+      val vy = buffer.decodeFloat()
+      val vz = buffer.decodeFloat()
 
       return LocalPositionNed(
         timeBootMs = timeBootMs,

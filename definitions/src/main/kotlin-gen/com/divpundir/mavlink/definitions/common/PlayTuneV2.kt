@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Play vehicle tone/tune (buzzer). Supersedes message PLAY_TUNE.
@@ -51,42 +50,39 @@ public data class PlayTuneV2(
 ) : MavMessage<PlayTuneV2> {
   public override val instanceCompanion: MavMessage.MavCompanion<PlayTuneV2> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(format.value, 4)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeString(tune, 248)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(format.value, 4)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeString(tune, 248)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeEnumValue(format.value, 4)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeString(tune, 248)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeEnumValue(format.value, 4)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeString(tune, 248)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<PlayTuneV2> {
-    private const val SIZE_V1: Int = 254
-
-    private const val SIZE_V2: Int = 254
-
     public override val id: UInt = 400u
 
     public override val crcExtra: Byte = 110
 
-    public override fun deserialize(source: BufferedSource): PlayTuneV2 {
-      val format = source.decodeEnumValue(4).let { value ->
+    public override fun deserialize(bytes: ByteArray): PlayTuneV2 {
+      val buffer = Buffer().write(bytes)
+
+      val format = buffer.decodeEnumValue(4).let { value ->
         val entry = TuneFormat.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val tune = source.decodeString(248)
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val tune = buffer.decodeString(248)
 
       return PlayTuneV2(
         targetSystem = targetSystem,

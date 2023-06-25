@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Motion capture attitude and position
@@ -67,44 +66,41 @@ public data class AttPosMocap(
 ) : MavMessage<AttPosMocap> {
   public override val instanceCompanion: MavMessage.MavCompanion<AttPosMocap> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloatArray(q, 16)
-    output.encodeFloat(x)
-    output.encodeFloat(y)
-    output.encodeFloat(z)
-    output.encodeFloatArray(covariance, 84)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeFloat(x)
+    buffer.encodeFloat(y)
+    buffer.encodeFloat(z)
+    buffer.encodeFloatArray(covariance, 84)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AttPosMocap> {
-    private const val SIZE_V1: Int = 36
-
-    private const val SIZE_V2: Int = 120
-
     public override val id: UInt = 138u
 
     public override val crcExtra: Byte = 109
 
-    public override fun deserialize(source: BufferedSource): AttPosMocap {
-      val timeUsec = source.decodeUInt64()
-      val q = source.decodeFloatArray(16)
-      val x = source.decodeFloat()
-      val y = source.decodeFloat()
-      val z = source.decodeFloat()
-      val covariance = source.decodeFloatArray(84)
+    public override fun deserialize(bytes: ByteArray): AttPosMocap {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val q = buffer.decodeFloatArray(16)
+      val x = buffer.decodeFloat()
+      val y = buffer.decodeFloat()
+      val z = buffer.decodeFloat()
+      val covariance = buffer.decodeFloatArray(84)
 
       return AttPosMocap(
         timeUsec = timeUsec,

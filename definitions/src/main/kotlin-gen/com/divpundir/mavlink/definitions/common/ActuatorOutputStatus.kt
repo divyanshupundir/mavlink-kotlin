@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The raw values of the actuator outputs (e.g. on Pixhawk, from MAIN, AUX ports). This message
@@ -47,36 +46,33 @@ public data class ActuatorOutputStatus(
 ) : MavMessage<ActuatorOutputStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<ActuatorOutputStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32(active)
-    output.encodeFloatArray(actuator, 128)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32(active)
+    buffer.encodeFloatArray(actuator, 128)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32(active)
-    output.encodeFloatArray(actuator, 128)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32(active)
+    buffer.encodeFloatArray(actuator, 128)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ActuatorOutputStatus> {
-    private const val SIZE_V1: Int = 140
-
-    private const val SIZE_V2: Int = 140
-
     public override val id: UInt = 375u
 
     public override val crcExtra: Byte = -5
 
-    public override fun deserialize(source: BufferedSource): ActuatorOutputStatus {
-      val timeUsec = source.decodeUInt64()
-      val active = source.decodeUInt32()
-      val actuator = source.decodeFloatArray(128)
+    public override fun deserialize(bytes: ByteArray): ActuatorOutputStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val active = buffer.decodeUInt32()
+      val actuator = buffer.decodeFloatArray(128)
 
       return ActuatorOutputStatus(
         timeUsec = timeUsec,

@@ -15,12 +15,11 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of AP_Limits. Sent in extended status stream when AP_Limits is enabled.
@@ -78,63 +77,60 @@ public data class LimitsStatus(
 ) : MavMessage<LimitsStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<LimitsStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(lastTrigger)
-    output.encodeUInt32(lastAction)
-    output.encodeUInt32(lastRecovery)
-    output.encodeUInt32(lastClear)
-    output.encodeUInt16(breachCount)
-    output.encodeEnumValue(limitsState.value, 1)
-    output.encodeBitmaskValue(modsEnabled.value, 1)
-    output.encodeBitmaskValue(modsRequired.value, 1)
-    output.encodeBitmaskValue(modsTriggered.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(lastTrigger)
+    buffer.encodeUInt32(lastAction)
+    buffer.encodeUInt32(lastRecovery)
+    buffer.encodeUInt32(lastClear)
+    buffer.encodeUInt16(breachCount)
+    buffer.encodeEnumValue(limitsState.value, 1)
+    buffer.encodeBitmaskValue(modsEnabled.value, 1)
+    buffer.encodeBitmaskValue(modsRequired.value, 1)
+    buffer.encodeBitmaskValue(modsTriggered.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(lastTrigger)
-    output.encodeUInt32(lastAction)
-    output.encodeUInt32(lastRecovery)
-    output.encodeUInt32(lastClear)
-    output.encodeUInt16(breachCount)
-    output.encodeEnumValue(limitsState.value, 1)
-    output.encodeBitmaskValue(modsEnabled.value, 1)
-    output.encodeBitmaskValue(modsRequired.value, 1)
-    output.encodeBitmaskValue(modsTriggered.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(lastTrigger)
+    buffer.encodeUInt32(lastAction)
+    buffer.encodeUInt32(lastRecovery)
+    buffer.encodeUInt32(lastClear)
+    buffer.encodeUInt16(breachCount)
+    buffer.encodeEnumValue(limitsState.value, 1)
+    buffer.encodeBitmaskValue(modsEnabled.value, 1)
+    buffer.encodeBitmaskValue(modsRequired.value, 1)
+    buffer.encodeBitmaskValue(modsTriggered.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LimitsStatus> {
-    private const val SIZE_V1: Int = 22
-
-    private const val SIZE_V2: Int = 22
-
     public override val id: UInt = 167u
 
     public override val crcExtra: Byte = -112
 
-    public override fun deserialize(source: BufferedSource): LimitsStatus {
-      val lastTrigger = source.decodeUInt32()
-      val lastAction = source.decodeUInt32()
-      val lastRecovery = source.decodeUInt32()
-      val lastClear = source.decodeUInt32()
-      val breachCount = source.decodeUInt16()
-      val limitsState = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): LimitsStatus {
+      val buffer = Buffer().write(bytes)
+
+      val lastTrigger = buffer.decodeUInt32()
+      val lastAction = buffer.decodeUInt32()
+      val lastRecovery = buffer.decodeUInt32()
+      val lastClear = buffer.decodeUInt32()
+      val breachCount = buffer.decodeUInt16()
+      val limitsState = buffer.decodeEnumValue(1).let { value ->
         val entry = LimitsState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val modsEnabled = source.decodeBitmaskValue(1).let { value ->
+      val modsEnabled = buffer.decodeBitmaskValue(1).let { value ->
         val flags = LimitModule.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val modsRequired = source.decodeBitmaskValue(1).let { value ->
+      val modsRequired = buffer.decodeBitmaskValue(1).let { value ->
         val flags = LimitModule.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val modsTriggered = source.decodeBitmaskValue(1).let { value ->
+      val modsTriggered = buffer.decodeBitmaskValue(1).let { value ->
         val flags = LimitModule.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

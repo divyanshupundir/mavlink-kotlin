@@ -16,14 +16,13 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Write registers for a device.
@@ -94,62 +93,59 @@ public data class DeviceOpWrite(
 ) : MavMessage<DeviceOpWrite> {
   public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWrite> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(bustype.value, 1)
-    output.encodeUInt8(bus)
-    output.encodeUInt8(address)
-    output.encodeString(busname, 40)
-    output.encodeUInt8(regstart)
-    output.encodeUInt8(count)
-    output.encodeUInt8Array(data, 128)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(bustype.value, 1)
+    buffer.encodeUInt8(bus)
+    buffer.encodeUInt8(address)
+    buffer.encodeString(busname, 40)
+    buffer.encodeUInt8(regstart)
+    buffer.encodeUInt8(count)
+    buffer.encodeUInt8Array(data, 128)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(bustype.value, 1)
-    output.encodeUInt8(bus)
-    output.encodeUInt8(address)
-    output.encodeString(busname, 40)
-    output.encodeUInt8(regstart)
-    output.encodeUInt8(count)
-    output.encodeUInt8Array(data, 128)
-    output.encodeUInt8(bank)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(bustype.value, 1)
+    buffer.encodeUInt8(bus)
+    buffer.encodeUInt8(address)
+    buffer.encodeString(busname, 40)
+    buffer.encodeUInt8(regstart)
+    buffer.encodeUInt8(count)
+    buffer.encodeUInt8Array(data, 128)
+    buffer.encodeUInt8(bank)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DeviceOpWrite> {
-    private const val SIZE_V1: Int = 179
-
-    private const val SIZE_V2: Int = 180
-
     public override val id: UInt = 11_002u
 
     public override val crcExtra: Byte = -22
 
-    public override fun deserialize(source: BufferedSource): DeviceOpWrite {
-      val requestId = source.decodeUInt32()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val bustype = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): DeviceOpWrite {
+      val buffer = Buffer().write(bytes)
+
+      val requestId = buffer.decodeUInt32()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val bustype = buffer.decodeEnumValue(1).let { value ->
         val entry = DeviceOpBustype.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val bus = source.decodeUInt8()
-      val address = source.decodeUInt8()
-      val busname = source.decodeString(40)
-      val regstart = source.decodeUInt8()
-      val count = source.decodeUInt8()
-      val data = source.decodeUInt8Array(128)
-      val bank = source.decodeUInt8()
+      val bus = buffer.decodeUInt8()
+      val address = buffer.decodeUInt8()
+      val busname = buffer.decodeString(40)
+      val regstart = buffer.decodeUInt8()
+      val count = buffer.decodeUInt8()
+      val data = buffer.decodeUInt8Array(128)
+      val bank = buffer.decodeUInt8()
 
       return DeviceOpWrite(
         targetSystem = targetSystem,

@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Request to control this MAV
@@ -51,39 +50,36 @@ public data class ChangeOperatorControl(
 ) : MavMessage<ChangeOperatorControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(controlRequest)
-    output.encodeUInt8(version)
-    output.encodeString(passkey, 25)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(controlRequest)
+    buffer.encodeUInt8(version)
+    buffer.encodeString(passkey, 25)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(controlRequest)
-    output.encodeUInt8(version)
-    output.encodeString(passkey, 25)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(controlRequest)
+    buffer.encodeUInt8(version)
+    buffer.encodeString(passkey, 25)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ChangeOperatorControl> {
-    private const val SIZE_V1: Int = 28
-
-    private const val SIZE_V2: Int = 28
-
     public override val id: UInt = 5u
 
     public override val crcExtra: Byte = -39
 
-    public override fun deserialize(source: BufferedSource): ChangeOperatorControl {
-      val targetSystem = source.decodeUInt8()
-      val controlRequest = source.decodeUInt8()
-      val version = source.decodeUInt8()
-      val passkey = source.decodeString(25)
+    public override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val controlRequest = buffer.decodeUInt8()
+      val version = buffer.decodeUInt8()
+      val passkey = buffer.decodeString(25)
 
       return ChangeOperatorControl(
         targetSystem = targetSystem,

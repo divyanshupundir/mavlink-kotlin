@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Deprecated
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is
@@ -48,36 +47,33 @@ public data class SetMode(
 ) : MavMessage<SetMode> {
   public override val instanceCompanion: MavMessage.MavCompanion<SetMode> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(customMode)
-    output.encodeUInt8(targetSystem)
-    output.encodeEnumValue(baseMode.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(customMode)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeEnumValue(baseMode.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(customMode)
-    output.encodeUInt8(targetSystem)
-    output.encodeEnumValue(baseMode.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(customMode)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeEnumValue(baseMode.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SetMode> {
-    private const val SIZE_V1: Int = 6
-
-    private const val SIZE_V2: Int = 6
-
     public override val id: UInt = 11u
 
     public override val crcExtra: Byte = 89
 
-    public override fun deserialize(source: BufferedSource): SetMode {
-      val customMode = source.decodeUInt32()
-      val targetSystem = source.decodeUInt8()
-      val baseMode = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): SetMode {
+      val buffer = Buffer().write(bytes)
+
+      val customMode = buffer.decodeUInt32()
+      val targetSystem = buffer.decodeUInt8()
+      val baseMode = buffer.decodeEnumValue(1).let { value ->
         val entry = MavMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

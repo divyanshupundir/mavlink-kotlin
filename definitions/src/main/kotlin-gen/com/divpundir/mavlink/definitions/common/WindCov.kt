@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Wind estimate from vehicle. Note that despite the name, this message does not actually contain
@@ -75,54 +74,51 @@ public data class WindCov(
 ) : MavMessage<WindCov> {
   public override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(windX)
-    output.encodeFloat(windY)
-    output.encodeFloat(windZ)
-    output.encodeFloat(varHoriz)
-    output.encodeFloat(varVert)
-    output.encodeFloat(windAlt)
-    output.encodeFloat(horizAccuracy)
-    output.encodeFloat(vertAccuracy)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(windX)
+    buffer.encodeFloat(windY)
+    buffer.encodeFloat(windZ)
+    buffer.encodeFloat(varHoriz)
+    buffer.encodeFloat(varVert)
+    buffer.encodeFloat(windAlt)
+    buffer.encodeFloat(horizAccuracy)
+    buffer.encodeFloat(vertAccuracy)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(windX)
-    output.encodeFloat(windY)
-    output.encodeFloat(windZ)
-    output.encodeFloat(varHoriz)
-    output.encodeFloat(varVert)
-    output.encodeFloat(windAlt)
-    output.encodeFloat(horizAccuracy)
-    output.encodeFloat(vertAccuracy)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(windX)
+    buffer.encodeFloat(windY)
+    buffer.encodeFloat(windZ)
+    buffer.encodeFloat(varHoriz)
+    buffer.encodeFloat(varVert)
+    buffer.encodeFloat(windAlt)
+    buffer.encodeFloat(horizAccuracy)
+    buffer.encodeFloat(vertAccuracy)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WindCov> {
-    private const val SIZE_V1: Int = 40
-
-    private const val SIZE_V2: Int = 40
-
     public override val id: UInt = 231u
 
     public override val crcExtra: Byte = 105
 
-    public override fun deserialize(source: BufferedSource): WindCov {
-      val timeUsec = source.decodeUInt64()
-      val windX = source.decodeFloat()
-      val windY = source.decodeFloat()
-      val windZ = source.decodeFloat()
-      val varHoriz = source.decodeFloat()
-      val varVert = source.decodeFloat()
-      val windAlt = source.decodeFloat()
-      val horizAccuracy = source.decodeFloat()
-      val vertAccuracy = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): WindCov {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val windX = buffer.decodeFloat()
+      val windY = buffer.decodeFloat()
+      val windZ = buffer.decodeFloat()
+      val varHoriz = buffer.decodeFloat()
+      val varVert = buffer.decodeFloat()
+      val windAlt = buffer.decodeFloat()
+      val horizAccuracy = buffer.decodeFloat()
+      val vertAccuracy = buffer.decodeFloat()
 
       return WindCov(
         timeUsec = timeUsec,

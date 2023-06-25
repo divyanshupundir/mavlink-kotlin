@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The state of the navigation and position controller.
@@ -71,51 +70,48 @@ public data class NavControllerOutput(
 ) : MavMessage<NavControllerOutput> {
   public override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(navRoll)
-    output.encodeFloat(navPitch)
-    output.encodeFloat(altError)
-    output.encodeFloat(aspdError)
-    output.encodeFloat(xtrackError)
-    output.encodeInt16(navBearing)
-    output.encodeInt16(targetBearing)
-    output.encodeUInt16(wpDist)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(navRoll)
+    buffer.encodeFloat(navPitch)
+    buffer.encodeFloat(altError)
+    buffer.encodeFloat(aspdError)
+    buffer.encodeFloat(xtrackError)
+    buffer.encodeInt16(navBearing)
+    buffer.encodeInt16(targetBearing)
+    buffer.encodeUInt16(wpDist)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(navRoll)
-    output.encodeFloat(navPitch)
-    output.encodeFloat(altError)
-    output.encodeFloat(aspdError)
-    output.encodeFloat(xtrackError)
-    output.encodeInt16(navBearing)
-    output.encodeInt16(targetBearing)
-    output.encodeUInt16(wpDist)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(navRoll)
+    buffer.encodeFloat(navPitch)
+    buffer.encodeFloat(altError)
+    buffer.encodeFloat(aspdError)
+    buffer.encodeFloat(xtrackError)
+    buffer.encodeInt16(navBearing)
+    buffer.encodeInt16(targetBearing)
+    buffer.encodeUInt16(wpDist)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<NavControllerOutput> {
-    private const val SIZE_V1: Int = 26
-
-    private const val SIZE_V2: Int = 26
-
     public override val id: UInt = 62u
 
     public override val crcExtra: Byte = -73
 
-    public override fun deserialize(source: BufferedSource): NavControllerOutput {
-      val navRoll = source.decodeFloat()
-      val navPitch = source.decodeFloat()
-      val altError = source.decodeFloat()
-      val aspdError = source.decodeFloat()
-      val xtrackError = source.decodeFloat()
-      val navBearing = source.decodeInt16()
-      val targetBearing = source.decodeInt16()
-      val wpDist = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): NavControllerOutput {
+      val buffer = Buffer().write(bytes)
+
+      val navRoll = buffer.decodeFloat()
+      val navPitch = buffer.decodeFloat()
+      val altError = buffer.decodeFloat()
+      val aspdError = buffer.decodeFloat()
+      val xtrackError = buffer.decodeFloat()
+      val navBearing = buffer.decodeInt16()
+      val targetBearing = buffer.decodeInt16()
+      val wpDist = buffer.decodeUInt16()
 
       return NavControllerOutput(
         navRoll = navRoll,

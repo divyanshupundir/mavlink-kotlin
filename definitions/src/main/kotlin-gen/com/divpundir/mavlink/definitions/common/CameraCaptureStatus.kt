@@ -13,13 +13,13 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about the status of a capture. Can be requested with a MAV_CMD_REQUEST_MESSAGE
@@ -73,47 +73,44 @@ public data class CameraCaptureStatus(
 ) : MavMessage<CameraCaptureStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(imageInterval)
-    output.encodeUInt32(recordingTimeMs)
-    output.encodeFloat(availableCapacity)
-    output.encodeUInt8(imageStatus)
-    output.encodeUInt8(videoStatus)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(imageInterval)
+    buffer.encodeUInt32(recordingTimeMs)
+    buffer.encodeFloat(availableCapacity)
+    buffer.encodeUInt8(imageStatus)
+    buffer.encodeUInt8(videoStatus)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(imageInterval)
-    output.encodeUInt32(recordingTimeMs)
-    output.encodeFloat(availableCapacity)
-    output.encodeUInt8(imageStatus)
-    output.encodeUInt8(videoStatus)
-    output.encodeInt32(imageCount)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(imageInterval)
+    buffer.encodeUInt32(recordingTimeMs)
+    buffer.encodeFloat(availableCapacity)
+    buffer.encodeUInt8(imageStatus)
+    buffer.encodeUInt8(videoStatus)
+    buffer.encodeInt32(imageCount)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraCaptureStatus> {
-    private const val SIZE_V1: Int = 18
-
-    private const val SIZE_V2: Int = 22
-
     public override val id: UInt = 262u
 
     public override val crcExtra: Byte = 12
 
-    public override fun deserialize(source: BufferedSource): CameraCaptureStatus {
-      val timeBootMs = source.decodeUInt32()
-      val imageInterval = source.decodeFloat()
-      val recordingTimeMs = source.decodeUInt32()
-      val availableCapacity = source.decodeFloat()
-      val imageStatus = source.decodeUInt8()
-      val videoStatus = source.decodeUInt8()
-      val imageCount = source.decodeInt32()
+    public override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val imageInterval = buffer.decodeFloat()
+      val recordingTimeMs = buffer.decodeUInt32()
+      val availableCapacity = buffer.decodeFloat()
+      val imageStatus = buffer.decodeUInt8()
+      val videoStatus = buffer.decodeUInt8()
+      val imageCount = buffer.decodeInt32()
 
       return CameraCaptureStatus(
         timeBootMs = timeBootMs,

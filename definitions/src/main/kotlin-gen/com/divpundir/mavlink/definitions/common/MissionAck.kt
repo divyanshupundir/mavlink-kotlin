@@ -10,12 +10,11 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Acknowledgment message during waypoint handling. The type field states if this message is a
@@ -52,41 +51,38 @@ public data class MissionAck(
 ) : MavMessage<MissionAck> {
   public override val instanceCompanion: MavMessage.MavCompanion<MissionAck> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(type.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(type.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(type.value, 1)
-    output.encodeEnumValue(missionType.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(type.value, 1)
+    buffer.encodeEnumValue(missionType.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MissionAck> {
-    private const val SIZE_V1: Int = 3
-
-    private const val SIZE_V2: Int = 4
-
     public override val id: UInt = 47u
 
     public override val crcExtra: Byte = -103
 
-    public override fun deserialize(source: BufferedSource): MissionAck {
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val type = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): MissionAck {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val type = buffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionResult.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val missionType = source.decodeEnumValue(1).let { value ->
+      val missionType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

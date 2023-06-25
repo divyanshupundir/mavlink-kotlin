@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp
@@ -52,39 +51,36 @@ public data class SetupSigning(
 ) : MavMessage<SetupSigning> {
   public override val instanceCompanion: MavMessage.MavCompanion<SetupSigning> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(initialTimestamp)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(secretKey, 32)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(initialTimestamp)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(secretKey, 32)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(initialTimestamp)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(secretKey, 32)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(initialTimestamp)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(secretKey, 32)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SetupSigning> {
-    private const val SIZE_V1: Int = 42
-
-    private const val SIZE_V2: Int = 42
-
     public override val id: UInt = 256u
 
     public override val crcExtra: Byte = 71
 
-    public override fun deserialize(source: BufferedSource): SetupSigning {
-      val initialTimestamp = source.decodeUInt64()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val secretKey = source.decodeUInt8Array(32)
+    public override fun deserialize(bytes: ByteArray): SetupSigning {
+      val buffer = Buffer().write(bytes)
+
+      val initialTimestamp = buffer.decodeUInt64()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val secretKey = buffer.decodeUInt8Array(32)
 
       return SetupSigning(
         targetSystem = targetSystem,

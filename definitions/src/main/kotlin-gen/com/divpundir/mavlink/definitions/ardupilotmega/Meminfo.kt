@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * State of autopilot RAM.
@@ -45,35 +44,32 @@ public data class Meminfo(
 ) : MavMessage<Meminfo> {
   public override val instanceCompanion: MavMessage.MavCompanion<Meminfo> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(brkval)
-    output.encodeUInt16(freemem)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(brkval)
+    buffer.encodeUInt16(freemem)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(brkval)
-    output.encodeUInt16(freemem)
-    output.encodeUInt32(freemem32)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(brkval)
+    buffer.encodeUInt16(freemem)
+    buffer.encodeUInt32(freemem32)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Meminfo> {
-    private const val SIZE_V1: Int = 4
-
-    private const val SIZE_V2: Int = 8
-
     public override val id: UInt = 152u
 
     public override val crcExtra: Byte = -48
 
-    public override fun deserialize(source: BufferedSource): Meminfo {
-      val brkval = source.decodeUInt16()
-      val freemem = source.decodeUInt16()
-      val freemem32 = source.decodeUInt32()
+    public override fun deserialize(bytes: ByteArray): Meminfo {
+      val buffer = Buffer().write(bytes)
+
+      val brkval = buffer.decodeUInt16()
+      val freemem = buffer.decodeUInt16()
+      val freemem32 = buffer.decodeUInt32()
 
       return Meminfo(
         brkval = brkval,

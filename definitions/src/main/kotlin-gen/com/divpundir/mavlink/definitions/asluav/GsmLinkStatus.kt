@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of GSM modem (connected to onboard computer)
@@ -66,54 +65,51 @@ public data class GsmLinkStatus(
 ) : MavMessage<GsmLinkStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<GsmLinkStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeEnumValue(gsmModemType.value, 1)
-    output.encodeEnumValue(gsmLinkType.value, 1)
-    output.encodeUInt8(rssi)
-    output.encodeUInt8(rsrpRscp)
-    output.encodeUInt8(sinrEcio)
-    output.encodeUInt8(rsrq)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeEnumValue(gsmModemType.value, 1)
+    buffer.encodeEnumValue(gsmLinkType.value, 1)
+    buffer.encodeUInt8(rssi)
+    buffer.encodeUInt8(rsrpRscp)
+    buffer.encodeUInt8(sinrEcio)
+    buffer.encodeUInt8(rsrq)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeEnumValue(gsmModemType.value, 1)
-    output.encodeEnumValue(gsmLinkType.value, 1)
-    output.encodeUInt8(rssi)
-    output.encodeUInt8(rsrpRscp)
-    output.encodeUInt8(sinrEcio)
-    output.encodeUInt8(rsrq)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeEnumValue(gsmModemType.value, 1)
+    buffer.encodeEnumValue(gsmLinkType.value, 1)
+    buffer.encodeUInt8(rssi)
+    buffer.encodeUInt8(rsrpRscp)
+    buffer.encodeUInt8(sinrEcio)
+    buffer.encodeUInt8(rsrq)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GsmLinkStatus> {
-    private const val SIZE_V1: Int = 14
-
-    private const val SIZE_V2: Int = 14
-
     public override val id: UInt = 8_014u
 
     public override val crcExtra: Byte = -56
 
-    public override fun deserialize(source: BufferedSource): GsmLinkStatus {
-      val timestamp = source.decodeUInt64()
-      val gsmModemType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): GsmLinkStatus {
+      val buffer = Buffer().write(bytes)
+
+      val timestamp = buffer.decodeUInt64()
+      val gsmModemType = buffer.decodeEnumValue(1).let { value ->
         val entry = GsmModemType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val gsmLinkType = source.decodeEnumValue(1).let { value ->
+      val gsmLinkType = buffer.decodeEnumValue(1).let { value ->
         val entry = GsmLinkType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val rssi = source.decodeUInt8()
-      val rsrpRscp = source.decodeUInt8()
-      val sinrEcio = source.decodeUInt8()
-      val rsrq = source.decodeUInt8()
+      val rssi = buffer.decodeUInt8()
+      val rsrpRscp = buffer.decodeUInt8()
+      val sinrEcio = buffer.decodeUInt8()
+      val rsrq = buffer.decodeUInt8()
 
       return GsmLinkStatus(
         timestamp = timestamp,

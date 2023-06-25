@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Calibrated airflow angle measurements
@@ -56,42 +55,39 @@ public data class SensorAirflowAngles(
 ) : MavMessage<SensorAirflowAngles> {
   public override val instanceCompanion: MavMessage.MavCompanion<SensorAirflowAngles> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeFloat(angleofattack)
-    output.encodeFloat(sideslip)
-    output.encodeUInt8(angleofattackValid)
-    output.encodeUInt8(sideslipValid)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeFloat(angleofattack)
+    buffer.encodeFloat(sideslip)
+    buffer.encodeUInt8(angleofattackValid)
+    buffer.encodeUInt8(sideslipValid)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timestamp)
-    output.encodeFloat(angleofattack)
-    output.encodeFloat(sideslip)
-    output.encodeUInt8(angleofattackValid)
-    output.encodeUInt8(sideslipValid)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timestamp)
+    buffer.encodeFloat(angleofattack)
+    buffer.encodeFloat(sideslip)
+    buffer.encodeUInt8(angleofattackValid)
+    buffer.encodeUInt8(sideslipValid)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SensorAirflowAngles> {
-    private const val SIZE_V1: Int = 18
-
-    private const val SIZE_V2: Int = 18
-
     public override val id: UInt = 8_016u
 
     public override val crcExtra: Byte = -107
 
-    public override fun deserialize(source: BufferedSource): SensorAirflowAngles {
-      val timestamp = source.decodeUInt64()
-      val angleofattack = source.decodeFloat()
-      val sideslip = source.decodeFloat()
-      val angleofattackValid = source.decodeUInt8()
-      val sideslipValid = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): SensorAirflowAngles {
+      val buffer = Buffer().write(bytes)
+
+      val timestamp = buffer.decodeUInt64()
+      val angleofattack = buffer.decodeFloat()
+      val sideslip = buffer.decodeFloat()
+      val angleofattackValid = buffer.decodeUInt8()
+      val sideslipValid = buffer.decodeUInt8()
 
       return SensorAirflowAngles(
         timestamp = timestamp,

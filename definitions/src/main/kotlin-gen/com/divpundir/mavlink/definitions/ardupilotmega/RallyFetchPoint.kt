@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Request a current rally point from MAV. MAV should respond with a RALLY_POINT message. MAV should
@@ -41,36 +40,33 @@ public data class RallyFetchPoint(
 ) : MavMessage<RallyFetchPoint> {
   public override val instanceCompanion: MavMessage.MavCompanion<RallyFetchPoint> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(idx)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(idx)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(idx)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(idx)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RallyFetchPoint> {
-    private const val SIZE_V1: Int = 3
-
-    private const val SIZE_V2: Int = 3
-
     public override val id: UInt = 176u
 
     public override val crcExtra: Byte = -22
 
-    public override fun deserialize(source: BufferedSource): RallyFetchPoint {
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val idx = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): RallyFetchPoint {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val idx = buffer.decodeUInt8()
 
       return RallyFetchPoint(
         targetSystem = targetSystem,

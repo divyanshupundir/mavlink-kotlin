@@ -20,8 +20,8 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
@@ -29,7 +29,6 @@ import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Information about a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
@@ -112,69 +111,66 @@ public data class CameraInformation(
 ) : MavMessage<CameraInformation> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraInformation> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(firmwareVersion)
-    output.encodeFloat(focalLength)
-    output.encodeFloat(sensorSizeH)
-    output.encodeFloat(sensorSizeV)
-    output.encodeBitmaskValue(flags.value, 4)
-    output.encodeUInt16(resolutionH)
-    output.encodeUInt16(resolutionV)
-    output.encodeUInt16(camDefinitionVersion)
-    output.encodeUInt8Array(vendorName, 32)
-    output.encodeUInt8Array(modelName, 32)
-    output.encodeUInt8(lensId)
-    output.encodeString(camDefinitionUri, 140)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(firmwareVersion)
+    buffer.encodeFloat(focalLength)
+    buffer.encodeFloat(sensorSizeH)
+    buffer.encodeFloat(sensorSizeV)
+    buffer.encodeBitmaskValue(flags.value, 4)
+    buffer.encodeUInt16(resolutionH)
+    buffer.encodeUInt16(resolutionV)
+    buffer.encodeUInt16(camDefinitionVersion)
+    buffer.encodeUInt8Array(vendorName, 32)
+    buffer.encodeUInt8Array(modelName, 32)
+    buffer.encodeUInt8(lensId)
+    buffer.encodeString(camDefinitionUri, 140)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt32(firmwareVersion)
-    output.encodeFloat(focalLength)
-    output.encodeFloat(sensorSizeH)
-    output.encodeFloat(sensorSizeV)
-    output.encodeBitmaskValue(flags.value, 4)
-    output.encodeUInt16(resolutionH)
-    output.encodeUInt16(resolutionV)
-    output.encodeUInt16(camDefinitionVersion)
-    output.encodeUInt8Array(vendorName, 32)
-    output.encodeUInt8Array(modelName, 32)
-    output.encodeUInt8(lensId)
-    output.encodeString(camDefinitionUri, 140)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt32(firmwareVersion)
+    buffer.encodeFloat(focalLength)
+    buffer.encodeFloat(sensorSizeH)
+    buffer.encodeFloat(sensorSizeV)
+    buffer.encodeBitmaskValue(flags.value, 4)
+    buffer.encodeUInt16(resolutionH)
+    buffer.encodeUInt16(resolutionV)
+    buffer.encodeUInt16(camDefinitionVersion)
+    buffer.encodeUInt8Array(vendorName, 32)
+    buffer.encodeUInt8Array(modelName, 32)
+    buffer.encodeUInt8(lensId)
+    buffer.encodeString(camDefinitionUri, 140)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraInformation> {
-    private const val SIZE_V1: Int = 235
-
-    private const val SIZE_V2: Int = 235
-
     public override val id: UInt = 259u
 
     public override val crcExtra: Byte = 92
 
-    public override fun deserialize(source: BufferedSource): CameraInformation {
-      val timeBootMs = source.decodeUInt32()
-      val firmwareVersion = source.decodeUInt32()
-      val focalLength = source.decodeFloat()
-      val sensorSizeH = source.decodeFloat()
-      val sensorSizeV = source.decodeFloat()
-      val flags = source.decodeBitmaskValue(4).let { value ->
+    public override fun deserialize(bytes: ByteArray): CameraInformation {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val firmwareVersion = buffer.decodeUInt32()
+      val focalLength = buffer.decodeFloat()
+      val sensorSizeH = buffer.decodeFloat()
+      val sensorSizeV = buffer.decodeFloat()
+      val flags = buffer.decodeBitmaskValue(4).let { value ->
         val flags = CameraCapFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val resolutionH = source.decodeUInt16()
-      val resolutionV = source.decodeUInt16()
-      val camDefinitionVersion = source.decodeUInt16()
-      val vendorName = source.decodeUInt8Array(32)
-      val modelName = source.decodeUInt8Array(32)
-      val lensId = source.decodeUInt8()
-      val camDefinitionUri = source.decodeString(140)
+      val resolutionH = buffer.decodeUInt16()
+      val resolutionV = buffer.decodeUInt16()
+      val camDefinitionVersion = buffer.decodeUInt16()
+      val vendorName = buffer.decodeUInt8Array(32)
+      val modelName = buffer.decodeUInt8Array(32)
+      val lensId = buffer.decodeUInt8()
+      val camDefinitionUri = buffer.decodeString(140)
 
       return CameraInformation(
         timeBootMs = timeBootMs,

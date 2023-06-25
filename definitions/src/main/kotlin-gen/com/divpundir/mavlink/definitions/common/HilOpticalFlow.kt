@@ -15,15 +15,14 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Simulated optical flow from a flow sensor (e.g. PX4FLOW or optical mouse sensor)
@@ -101,63 +100,60 @@ public data class HilOpticalFlow(
 ) : MavMessage<HilOpticalFlow> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilOpticalFlow> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32(integrationTimeUs)
-    output.encodeFloat(integratedX)
-    output.encodeFloat(integratedY)
-    output.encodeFloat(integratedXgyro)
-    output.encodeFloat(integratedYgyro)
-    output.encodeFloat(integratedZgyro)
-    output.encodeUInt32(timeDeltaDistanceUs)
-    output.encodeFloat(distance)
-    output.encodeInt16(temperature)
-    output.encodeUInt8(sensorId)
-    output.encodeUInt8(quality)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32(integrationTimeUs)
+    buffer.encodeFloat(integratedX)
+    buffer.encodeFloat(integratedY)
+    buffer.encodeFloat(integratedXgyro)
+    buffer.encodeFloat(integratedYgyro)
+    buffer.encodeFloat(integratedZgyro)
+    buffer.encodeUInt32(timeDeltaDistanceUs)
+    buffer.encodeFloat(distance)
+    buffer.encodeInt16(temperature)
+    buffer.encodeUInt8(sensorId)
+    buffer.encodeUInt8(quality)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeUInt32(integrationTimeUs)
-    output.encodeFloat(integratedX)
-    output.encodeFloat(integratedY)
-    output.encodeFloat(integratedXgyro)
-    output.encodeFloat(integratedYgyro)
-    output.encodeFloat(integratedZgyro)
-    output.encodeUInt32(timeDeltaDistanceUs)
-    output.encodeFloat(distance)
-    output.encodeInt16(temperature)
-    output.encodeUInt8(sensorId)
-    output.encodeUInt8(quality)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeUInt32(integrationTimeUs)
+    buffer.encodeFloat(integratedX)
+    buffer.encodeFloat(integratedY)
+    buffer.encodeFloat(integratedXgyro)
+    buffer.encodeFloat(integratedYgyro)
+    buffer.encodeFloat(integratedZgyro)
+    buffer.encodeUInt32(timeDeltaDistanceUs)
+    buffer.encodeFloat(distance)
+    buffer.encodeInt16(temperature)
+    buffer.encodeUInt8(sensorId)
+    buffer.encodeUInt8(quality)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilOpticalFlow> {
-    private const val SIZE_V1: Int = 44
-
-    private const val SIZE_V2: Int = 44
-
     public override val id: UInt = 114u
 
     public override val crcExtra: Byte = -19
 
-    public override fun deserialize(source: BufferedSource): HilOpticalFlow {
-      val timeUsec = source.decodeUInt64()
-      val integrationTimeUs = source.decodeUInt32()
-      val integratedX = source.decodeFloat()
-      val integratedY = source.decodeFloat()
-      val integratedXgyro = source.decodeFloat()
-      val integratedYgyro = source.decodeFloat()
-      val integratedZgyro = source.decodeFloat()
-      val timeDeltaDistanceUs = source.decodeUInt32()
-      val distance = source.decodeFloat()
-      val temperature = source.decodeInt16()
-      val sensorId = source.decodeUInt8()
-      val quality = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): HilOpticalFlow {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val integrationTimeUs = buffer.decodeUInt32()
+      val integratedX = buffer.decodeFloat()
+      val integratedY = buffer.decodeFloat()
+      val integratedXgyro = buffer.decodeFloat()
+      val integratedYgyro = buffer.decodeFloat()
+      val integratedZgyro = buffer.decodeFloat()
+      val timeDeltaDistanceUs = buffer.decodeUInt32()
+      val distance = buffer.decodeFloat()
+      val temperature = buffer.decodeInt16()
+      val sensorId = buffer.decodeUInt8()
+      val quality = buffer.decodeUInt8()
 
       return HilOpticalFlow(
         timeUsec = timeUsec,

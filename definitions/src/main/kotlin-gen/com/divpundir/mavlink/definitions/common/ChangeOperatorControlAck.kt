@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Accept / deny control of this MAV
@@ -42,36 +41,33 @@ public data class ChangeOperatorControlAck(
   public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControlAck> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(gcsSystemId)
-    output.encodeUInt8(controlRequest)
-    output.encodeUInt8(ack)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(gcsSystemId)
+    buffer.encodeUInt8(controlRequest)
+    buffer.encodeUInt8(ack)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(gcsSystemId)
-    output.encodeUInt8(controlRequest)
-    output.encodeUInt8(ack)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(gcsSystemId)
+    buffer.encodeUInt8(controlRequest)
+    buffer.encodeUInt8(ack)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ChangeOperatorControlAck> {
-    private const val SIZE_V1: Int = 3
-
-    private const val SIZE_V2: Int = 3
-
     public override val id: UInt = 6u
 
     public override val crcExtra: Byte = 104
 
-    public override fun deserialize(source: BufferedSource): ChangeOperatorControlAck {
-      val gcsSystemId = source.decodeUInt8()
-      val controlRequest = source.decodeUInt8()
-      val ack = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): ChangeOperatorControlAck {
+      val buffer = Buffer().write(bytes)
+
+      val gcsSystemId = buffer.decodeUInt8()
+      val controlRequest = buffer.decodeUInt8()
+      val ack = buffer.decodeUInt8()
 
       return ChangeOperatorControlAck(
         gcsSystemId = gcsSystemId,

@@ -72,15 +72,16 @@ private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelp
     .returns(getClassName(packageName))
     .addCode(
         buildCodeBlock {
-            beginControlFlow("return with(%T().write(bytes))", Buffer::class)
-            fields.sorted().forEach { add(it.generateDeserializeStatement("this", enumHelper)) }
+            val bufferName = if (fields.none { it.name == "buffer" }) "buffer" else "_buffer"
+            addStatement("val $bufferName = %T().write(bytes)", Buffer::class)
             addStatement("")
-            addStatement("%T(", getClassName(packageName))
+            fields.sorted().forEach { add(it.generateDeserializeStatement(bufferName, enumHelper)) }
+            addStatement("")
+            addStatement("return %T(", getClassName(packageName))
             indent()
             fields.sortedByPosition().forEach { add("${it.formattedName} = ${it.formattedName},\n") }
             unindent()
             addStatement(")")
-            endControlFlow()
         }
     )
     .build()
@@ -100,10 +101,10 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
-            beginControlFlow("return with(%T())", Buffer::class)
-            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement("this", enumHelper)) }
-            addStatement("this.readByteArray()")
-            endControlFlow()
+            val bufferName = if (fields.none { it.name == "buffer" }) "buffer" else "_buffer"
+            addStatement("val $bufferName = %T()", Buffer::class)
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement(bufferName, enumHelper)) }
+            addStatement("return $bufferName.readByteArray()")
         }
     )
     .build()
@@ -114,10 +115,10 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
-            beginControlFlow("return with(%T())", Buffer::class)
-            fields.sorted().forEach { add(it.generateSerializeStatement("this", enumHelper)) }
-            addStatement("this.readByteArray().%M()", truncateZerosMemberName)
-            endControlFlow()
+            val bufferName = if (fields.none { it.name == "buffer" }) "buffer" else "_buffer"
+            addStatement("val $bufferName = %T()", Buffer::class)
+            fields.sorted().forEach { add(it.generateSerializeStatement(bufferName, enumHelper)) }
+            addStatement("return $bufferName.readByteArray().%M()", truncateZerosMemberName)
         }
     )
     .build()

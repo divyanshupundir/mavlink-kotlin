@@ -10,11 +10,10 @@ import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Configure OSD parameter reply.
@@ -37,33 +36,30 @@ public data class OsdParamConfigReply(
 ) : MavMessage<OsdParamConfigReply> {
   public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfigReply> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeEnumValue(result.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeEnumValue(result.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(requestId)
-    output.encodeEnumValue(result.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(requestId)
+    buffer.encodeEnumValue(result.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OsdParamConfigReply> {
-    private const val SIZE_V1: Int = 5
-
-    private const val SIZE_V2: Int = 5
-
     public override val id: UInt = 11_034u
 
     public override val crcExtra: Byte = 79
 
-    public override fun deserialize(source: BufferedSource): OsdParamConfigReply {
-      val requestId = source.decodeUInt32()
-      val result = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): OsdParamConfigReply {
+      val buffer = Buffer().write(bytes)
+
+      val requestId = buffer.decodeUInt32()
+      val result = buffer.decodeEnumValue(1).let { value ->
         val entry = OsdParamConfigError.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

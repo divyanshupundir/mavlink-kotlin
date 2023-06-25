@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Request to set a GOPRO_COMMAND with a desired.
@@ -51,42 +50,39 @@ public data class GoproSetRequest(
 ) : MavMessage<GoproSetRequest> {
   public override val instanceCompanion: MavMessage.MavCompanion<GoproSetRequest> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(cmdId.value, 1)
-    output.encodeUInt8Array(value, 4)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(cmdId.value, 1)
+    buffer.encodeUInt8Array(value, 4)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(cmdId.value, 1)
-    output.encodeUInt8Array(value, 4)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(cmdId.value, 1)
+    buffer.encodeUInt8Array(value, 4)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GoproSetRequest> {
-    private const val SIZE_V1: Int = 7
-
-    private const val SIZE_V2: Int = 7
-
     public override val id: UInt = 218u
 
     public override val crcExtra: Byte = 17
 
-    public override fun deserialize(source: BufferedSource): GoproSetRequest {
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val cmdId = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): GoproSetRequest {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val cmdId = buffer.decodeEnumValue(1).let { value ->
         val entry = GoproCommand.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val value = source.decodeUInt8Array(4)
+      val value = buffer.decodeUInt8Array(4)
 
       return GoproSetRequest(
         targetSystem = targetSystem,

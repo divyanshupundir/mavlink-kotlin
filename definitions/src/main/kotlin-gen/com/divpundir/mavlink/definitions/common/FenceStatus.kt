@@ -14,13 +14,12 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
@@ -61,44 +60,41 @@ public data class FenceStatus(
 ) : MavMessage<FenceStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(breachTime)
-    output.encodeUInt16(breachCount)
-    output.encodeUInt8(breachStatus)
-    output.encodeEnumValue(breachType.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(breachTime)
+    buffer.encodeUInt16(breachCount)
+    buffer.encodeUInt8(breachStatus)
+    buffer.encodeEnumValue(breachType.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(breachTime)
-    output.encodeUInt16(breachCount)
-    output.encodeUInt8(breachStatus)
-    output.encodeEnumValue(breachType.value, 1)
-    output.encodeEnumValue(breachMitigation.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(breachTime)
+    buffer.encodeUInt16(breachCount)
+    buffer.encodeUInt8(breachStatus)
+    buffer.encodeEnumValue(breachType.value, 1)
+    buffer.encodeEnumValue(breachMitigation.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FenceStatus> {
-    private const val SIZE_V1: Int = 8
-
-    private const val SIZE_V2: Int = 9
-
     public override val id: UInt = 162u
 
     public override val crcExtra: Byte = -67
 
-    public override fun deserialize(source: BufferedSource): FenceStatus {
-      val breachTime = source.decodeUInt32()
-      val breachCount = source.decodeUInt16()
-      val breachStatus = source.decodeUInt8()
-      val breachType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): FenceStatus {
+      val buffer = Buffer().write(bytes)
+
+      val breachTime = buffer.decodeUInt32()
+      val breachCount = buffer.decodeUInt16()
+      val breachStatus = buffer.decodeUInt8()
+      val breachType = buffer.decodeEnumValue(1).let { value ->
         val entry = FenceBreach.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val breachMitigation = source.decodeEnumValue(1).let { value ->
+      val breachMitigation = buffer.decodeEnumValue(1).let { value ->
         val entry = FenceMitigate.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

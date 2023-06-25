@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Control vehicle LEDs.
@@ -58,45 +57,42 @@ public data class LedControl(
 ) : MavMessage<LedControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<LedControl> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(instance)
-    output.encodeUInt8(pattern)
-    output.encodeUInt8(customLen)
-    output.encodeUInt8Array(customBytes, 24)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(instance)
+    buffer.encodeUInt8(pattern)
+    buffer.encodeUInt8(customLen)
+    buffer.encodeUInt8Array(customBytes, 24)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(instance)
-    output.encodeUInt8(pattern)
-    output.encodeUInt8(customLen)
-    output.encodeUInt8Array(customBytes, 24)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(instance)
+    buffer.encodeUInt8(pattern)
+    buffer.encodeUInt8(customLen)
+    buffer.encodeUInt8Array(customBytes, 24)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LedControl> {
-    private const val SIZE_V1: Int = 29
-
-    private const val SIZE_V2: Int = 29
-
     public override val id: UInt = 186u
 
     public override val crcExtra: Byte = 72
 
-    public override fun deserialize(source: BufferedSource): LedControl {
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val instance = source.decodeUInt8()
-      val pattern = source.decodeUInt8()
-      val customLen = source.decodeUInt8()
-      val customBytes = source.decodeUInt8Array(24)
+    public override fun deserialize(bytes: ByteArray): LedControl {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val instance = buffer.decodeUInt8()
+      val pattern = buffer.decodeUInt8()
+      val customLen = buffer.decodeUInt8()
+      val customBytes = buffer.decodeUInt8Array(24)
 
       return LedControl(
         targetSystem = targetSystem,

@@ -7,11 +7,11 @@ import com.divpundir.mavlink.serialization.decodeInt32
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Request that the vehicle report terrain height at the given location (expected response is a
@@ -35,33 +35,30 @@ public data class TerrainCheck(
 ) : MavMessage<TerrainCheck> {
   public override val instanceCompanion: MavMessage.MavCompanion<TerrainCheck> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<TerrainCheck> {
-    private const val SIZE_V1: Int = 8
-
-    private const val SIZE_V2: Int = 8
-
     public override val id: UInt = 135u
 
     public override val crcExtra: Byte = -53
 
-    public override fun deserialize(source: BufferedSource): TerrainCheck {
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
+    public override fun deserialize(bytes: ByteArray): TerrainCheck {
+      val buffer = Buffer().write(bytes)
+
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
 
       return TerrainCheck(
         lat = lat,

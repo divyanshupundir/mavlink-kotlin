@@ -13,15 +13,14 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
@@ -91,55 +90,52 @@ public data class OpticalFlow(
 ) : MavMessage<OpticalFlow> {
   public override val instanceCompanion: MavMessage.MavCompanion<OpticalFlow> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(flowCompMX)
-    output.encodeFloat(flowCompMY)
-    output.encodeFloat(groundDistance)
-    output.encodeInt16(flowX)
-    output.encodeInt16(flowY)
-    output.encodeUInt8(sensorId)
-    output.encodeUInt8(quality)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(flowCompMX)
+    buffer.encodeFloat(flowCompMY)
+    buffer.encodeFloat(groundDistance)
+    buffer.encodeInt16(flowX)
+    buffer.encodeInt16(flowY)
+    buffer.encodeUInt8(sensorId)
+    buffer.encodeUInt8(quality)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(flowCompMX)
-    output.encodeFloat(flowCompMY)
-    output.encodeFloat(groundDistance)
-    output.encodeInt16(flowX)
-    output.encodeInt16(flowY)
-    output.encodeUInt8(sensorId)
-    output.encodeUInt8(quality)
-    output.encodeFloat(flowRateX)
-    output.encodeFloat(flowRateY)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(flowCompMX)
+    buffer.encodeFloat(flowCompMY)
+    buffer.encodeFloat(groundDistance)
+    buffer.encodeInt16(flowX)
+    buffer.encodeInt16(flowY)
+    buffer.encodeUInt8(sensorId)
+    buffer.encodeUInt8(quality)
+    buffer.encodeFloat(flowRateX)
+    buffer.encodeFloat(flowRateY)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OpticalFlow> {
-    private const val SIZE_V1: Int = 26
-
-    private const val SIZE_V2: Int = 34
-
     public override val id: UInt = 100u
 
     public override val crcExtra: Byte = -81
 
-    public override fun deserialize(source: BufferedSource): OpticalFlow {
-      val timeUsec = source.decodeUInt64()
-      val flowCompMX = source.decodeFloat()
-      val flowCompMY = source.decodeFloat()
-      val groundDistance = source.decodeFloat()
-      val flowX = source.decodeInt16()
-      val flowY = source.decodeInt16()
-      val sensorId = source.decodeUInt8()
-      val quality = source.decodeUInt8()
-      val flowRateX = source.decodeFloat()
-      val flowRateY = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): OpticalFlow {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val flowCompMX = buffer.decodeFloat()
+      val flowCompMY = buffer.decodeFloat()
+      val groundDistance = buffer.decodeFloat()
+      val flowX = buffer.decodeInt16()
+      val flowY = buffer.decodeInt16()
+      val sensorId = buffer.decodeUInt8()
+      val quality = buffer.decodeUInt8()
+      val flowRateX = buffer.decodeFloat()
+      val flowRateY = buffer.decodeFloat()
 
       return OpticalFlow(
         timeUsec = timeUsec,

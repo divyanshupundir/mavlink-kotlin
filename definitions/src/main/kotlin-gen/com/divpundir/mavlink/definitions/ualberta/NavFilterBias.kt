@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Accelerometer and Gyro biases from the navigation filter
@@ -63,48 +62,45 @@ public data class NavFilterBias(
 ) : MavMessage<NavFilterBias> {
   public override val instanceCompanion: MavMessage.MavCompanion<NavFilterBias> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(usec)
-    output.encodeFloat(accel0)
-    output.encodeFloat(accel1)
-    output.encodeFloat(accel2)
-    output.encodeFloat(gyro0)
-    output.encodeFloat(gyro1)
-    output.encodeFloat(gyro2)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(usec)
+    buffer.encodeFloat(accel0)
+    buffer.encodeFloat(accel1)
+    buffer.encodeFloat(accel2)
+    buffer.encodeFloat(gyro0)
+    buffer.encodeFloat(gyro1)
+    buffer.encodeFloat(gyro2)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(usec)
-    output.encodeFloat(accel0)
-    output.encodeFloat(accel1)
-    output.encodeFloat(accel2)
-    output.encodeFloat(gyro0)
-    output.encodeFloat(gyro1)
-    output.encodeFloat(gyro2)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(usec)
+    buffer.encodeFloat(accel0)
+    buffer.encodeFloat(accel1)
+    buffer.encodeFloat(accel2)
+    buffer.encodeFloat(gyro0)
+    buffer.encodeFloat(gyro1)
+    buffer.encodeFloat(gyro2)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<NavFilterBias> {
-    private const val SIZE_V1: Int = 32
-
-    private const val SIZE_V2: Int = 32
-
     public override val id: UInt = 220u
 
     public override val crcExtra: Byte = 34
 
-    public override fun deserialize(source: BufferedSource): NavFilterBias {
-      val usec = source.decodeUInt64()
-      val accel0 = source.decodeFloat()
-      val accel1 = source.decodeFloat()
-      val accel2 = source.decodeFloat()
-      val gyro0 = source.decodeFloat()
-      val gyro1 = source.decodeFloat()
-      val gyro2 = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): NavFilterBias {
+      val buffer = Buffer().write(bytes)
+
+      val usec = buffer.decodeUInt64()
+      val accel0 = buffer.decodeFloat()
+      val accel1 = buffer.decodeFloat()
+      val accel2 = buffer.decodeFloat()
+      val gyro0 = buffer.decodeFloat()
+      val gyro1 = buffer.decodeFloat()
+      val gyro2 = buffer.decodeFloat()
 
       return NavFilterBias(
         usec = usec,

@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * RPM sensor output.
@@ -35,33 +34,30 @@ public data class Rpm(
 ) : MavMessage<Rpm> {
   public override val instanceCompanion: MavMessage.MavCompanion<Rpm> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(rpm1)
-    output.encodeFloat(rpm2)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(rpm1)
+    buffer.encodeFloat(rpm2)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(rpm1)
-    output.encodeFloat(rpm2)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(rpm1)
+    buffer.encodeFloat(rpm2)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Rpm> {
-    private const val SIZE_V1: Int = 8
-
-    private const val SIZE_V2: Int = 8
-
     public override val id: UInt = 226u
 
     public override val crcExtra: Byte = -49
 
-    public override fun deserialize(source: BufferedSource): Rpm {
-      val rpm1 = source.decodeFloat()
-      val rpm2 = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): Rpm {
+      val buffer = Buffer().write(bytes)
+
+      val rpm1 = buffer.decodeFloat()
+      val rpm2 = buffer.decodeFloat()
 
       return Rpm(
         rpm1 = rpm1,

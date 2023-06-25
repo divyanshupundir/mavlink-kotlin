@@ -7,12 +7,11 @@ import com.divpundir.mavlink.serialization.decodeFloat
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F17 format
@@ -40,36 +39,33 @@ public data class SerialUdbExtraF17(
 ) : MavMessage<SerialUdbExtraF17> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF17> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(sueFeedForward)
-    output.encodeFloat(sueTurnRateNav)
-    output.encodeFloat(sueTurnRateFbw)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(sueFeedForward)
+    buffer.encodeFloat(sueTurnRateNav)
+    buffer.encodeFloat(sueTurnRateFbw)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(sueFeedForward)
-    output.encodeFloat(sueTurnRateNav)
-    output.encodeFloat(sueTurnRateFbw)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(sueFeedForward)
+    buffer.encodeFloat(sueTurnRateNav)
+    buffer.encodeFloat(sueTurnRateFbw)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF17> {
-    private const val SIZE_V1: Int = 12
-
-    private const val SIZE_V2: Int = 12
-
     public override val id: UInt = 183u
 
     public override val crcExtra: Byte = -81
 
-    public override fun deserialize(source: BufferedSource): SerialUdbExtraF17 {
-      val sueFeedForward = source.decodeFloat()
-      val sueTurnRateNav = source.decodeFloat()
-      val sueTurnRateFbw = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF17 {
+      val buffer = Buffer().write(bytes)
+
+      val sueFeedForward = buffer.decodeFloat()
+      val sueTurnRateNav = buffer.decodeFloat()
+      val sueTurnRateFbw = buffer.decodeFloat()
 
       return SerialUdbExtraF17(
         sueFeedForward = sueFeedForward,

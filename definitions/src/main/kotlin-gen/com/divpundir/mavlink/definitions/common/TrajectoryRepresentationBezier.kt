@@ -11,15 +11,14 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Describe a trajectory using an array of up-to 5 bezier control points in the local frame
@@ -70,48 +69,45 @@ public data class TrajectoryRepresentationBezier(
   public override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationBezier> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloatArray(posX, 20)
-    output.encodeFloatArray(posY, 20)
-    output.encodeFloatArray(posZ, 20)
-    output.encodeFloatArray(delta, 20)
-    output.encodeFloatArray(posYaw, 20)
-    output.encodeUInt8(validPoints)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloatArray(posX, 20)
+    buffer.encodeFloatArray(posY, 20)
+    buffer.encodeFloatArray(posZ, 20)
+    buffer.encodeFloatArray(delta, 20)
+    buffer.encodeFloatArray(posYaw, 20)
+    buffer.encodeUInt8(validPoints)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloatArray(posX, 20)
-    output.encodeFloatArray(posY, 20)
-    output.encodeFloatArray(posZ, 20)
-    output.encodeFloatArray(delta, 20)
-    output.encodeFloatArray(posYaw, 20)
-    output.encodeUInt8(validPoints)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloatArray(posX, 20)
+    buffer.encodeFloatArray(posY, 20)
+    buffer.encodeFloatArray(posZ, 20)
+    buffer.encodeFloatArray(delta, 20)
+    buffer.encodeFloatArray(posYaw, 20)
+    buffer.encodeUInt8(validPoints)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<TrajectoryRepresentationBezier> {
-    private const val SIZE_V1: Int = 109
-
-    private const val SIZE_V2: Int = 109
-
     public override val id: UInt = 333u
 
     public override val crcExtra: Byte = -25
 
-    public override fun deserialize(source: BufferedSource): TrajectoryRepresentationBezier {
-      val timeUsec = source.decodeUInt64()
-      val posX = source.decodeFloatArray(20)
-      val posY = source.decodeFloatArray(20)
-      val posZ = source.decodeFloatArray(20)
-      val delta = source.decodeFloatArray(20)
-      val posYaw = source.decodeFloatArray(20)
-      val validPoints = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): TrajectoryRepresentationBezier {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val posX = buffer.decodeFloatArray(20)
+      val posY = buffer.decodeFloatArray(20)
+      val posZ = buffer.decodeFloatArray(20)
+      val delta = buffer.decodeFloatArray(20)
+      val posYaw = buffer.decodeFloatArray(20)
+      val validPoints = buffer.decodeUInt8()
 
       return TrajectoryRepresentationBezier(
         timeUsec = timeUsec,

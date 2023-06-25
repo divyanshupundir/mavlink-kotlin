@@ -15,6 +15,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
@@ -23,7 +24,6 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The global position, as returned by the Global Positioning System (GPS). This is
@@ -122,70 +122,67 @@ public data class HilGps(
 ) : MavMessage<HilGps> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilGps> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeUInt16(eph)
-    output.encodeUInt16(epv)
-    output.encodeUInt16(vel)
-    output.encodeInt16(vn)
-    output.encodeInt16(ve)
-    output.encodeInt16(vd)
-    output.encodeUInt16(cog)
-    output.encodeUInt8(fixType)
-    output.encodeUInt8(satellitesVisible)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeUInt16(eph)
+    buffer.encodeUInt16(epv)
+    buffer.encodeUInt16(vel)
+    buffer.encodeInt16(vn)
+    buffer.encodeInt16(ve)
+    buffer.encodeInt16(vd)
+    buffer.encodeUInt16(cog)
+    buffer.encodeUInt8(fixType)
+    buffer.encodeUInt8(satellitesVisible)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeUInt16(eph)
-    output.encodeUInt16(epv)
-    output.encodeUInt16(vel)
-    output.encodeInt16(vn)
-    output.encodeInt16(ve)
-    output.encodeInt16(vd)
-    output.encodeUInt16(cog)
-    output.encodeUInt8(fixType)
-    output.encodeUInt8(satellitesVisible)
-    output.encodeUInt8(id)
-    output.encodeUInt16(yaw)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeUInt16(eph)
+    buffer.encodeUInt16(epv)
+    buffer.encodeUInt16(vel)
+    buffer.encodeInt16(vn)
+    buffer.encodeInt16(ve)
+    buffer.encodeInt16(vd)
+    buffer.encodeUInt16(cog)
+    buffer.encodeUInt8(fixType)
+    buffer.encodeUInt8(satellitesVisible)
+    buffer.encodeUInt8(id)
+    buffer.encodeUInt16(yaw)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilGps> {
-    private const val SIZE_V1: Int = 36
-
-    private const val SIZE_V2: Int = 39
-
     public override val id: UInt = 113u
 
     public override val crcExtra: Byte = 124
 
-    public override fun deserialize(source: BufferedSource): HilGps {
-      val timeUsec = source.decodeUInt64()
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
-      val alt = source.decodeInt32()
-      val eph = source.decodeUInt16()
-      val epv = source.decodeUInt16()
-      val vel = source.decodeUInt16()
-      val vn = source.decodeInt16()
-      val ve = source.decodeInt16()
-      val vd = source.decodeInt16()
-      val cog = source.decodeUInt16()
-      val fixType = source.decodeUInt8()
-      val satellitesVisible = source.decodeUInt8()
-      val id = source.decodeUInt8()
-      val yaw = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): HilGps {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
+      val alt = buffer.decodeInt32()
+      val eph = buffer.decodeUInt16()
+      val epv = buffer.decodeUInt16()
+      val vel = buffer.decodeUInt16()
+      val vn = buffer.decodeInt16()
+      val ve = buffer.decodeInt16()
+      val vd = buffer.decodeInt16()
+      val cog = buffer.decodeUInt16()
+      val fixType = buffer.decodeUInt8()
+      val satellitesVisible = buffer.decodeUInt8()
+      val id = buffer.decodeUInt8()
+      val yaw = buffer.decodeUInt16()
 
       return HilGps(
         timeUsec = timeUsec,

@@ -18,6 +18,7 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -26,7 +27,6 @@ import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Camera Capture Feedback.
@@ -113,71 +113,68 @@ public data class CameraFeedback(
 ) : MavMessage<CameraFeedback> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraFeedback> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeInt32(lat)
-    output.encodeInt32(lng)
-    output.encodeFloat(altMsl)
-    output.encodeFloat(altRel)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(focLen)
-    output.encodeUInt16(imgIdx)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(camIdx)
-    output.encodeEnumValue(flags.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lng)
+    buffer.encodeFloat(altMsl)
+    buffer.encodeFloat(altRel)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(focLen)
+    buffer.encodeUInt16(imgIdx)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(camIdx)
+    buffer.encodeEnumValue(flags.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeInt32(lat)
-    output.encodeInt32(lng)
-    output.encodeFloat(altMsl)
-    output.encodeFloat(altRel)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(focLen)
-    output.encodeUInt16(imgIdx)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(camIdx)
-    output.encodeEnumValue(flags.value, 1)
-    output.encodeUInt16(completedCaptures)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lng)
+    buffer.encodeFloat(altMsl)
+    buffer.encodeFloat(altRel)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(focLen)
+    buffer.encodeUInt16(imgIdx)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(camIdx)
+    buffer.encodeEnumValue(flags.value, 1)
+    buffer.encodeUInt16(completedCaptures)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraFeedback> {
-    private const val SIZE_V1: Int = 45
-
-    private const val SIZE_V2: Int = 47
-
     public override val id: UInt = 180u
 
     public override val crcExtra: Byte = 52
 
-    public override fun deserialize(source: BufferedSource): CameraFeedback {
-      val timeUsec = source.decodeUInt64()
-      val lat = source.decodeInt32()
-      val lng = source.decodeInt32()
-      val altMsl = source.decodeFloat()
-      val altRel = source.decodeFloat()
-      val roll = source.decodeFloat()
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val focLen = source.decodeFloat()
-      val imgIdx = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val camIdx = source.decodeUInt8()
-      val flags = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): CameraFeedback {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val lat = buffer.decodeInt32()
+      val lng = buffer.decodeInt32()
+      val altMsl = buffer.decodeFloat()
+      val altRel = buffer.decodeFloat()
+      val roll = buffer.decodeFloat()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val focLen = buffer.decodeFloat()
+      val imgIdx = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val camIdx = buffer.decodeUInt8()
+      val flags = buffer.decodeEnumValue(1).let { value ->
         val entry = CameraFeedbackFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val completedCaptures = source.decodeUInt16()
+      val completedCaptures = buffer.decodeUInt16()
 
       return CameraFeedback(
         timeUsec = timeUsec,

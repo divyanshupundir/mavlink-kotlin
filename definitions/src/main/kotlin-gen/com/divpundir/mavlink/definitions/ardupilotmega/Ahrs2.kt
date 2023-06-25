@@ -9,12 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of secondary AHRS filter if available.
@@ -57,45 +57,42 @@ public data class Ahrs2(
 ) : MavMessage<Ahrs2> {
   public override val instanceCompanion: MavMessage.MavCompanion<Ahrs2> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(altitude)
-    output.encodeInt32(lat)
-    output.encodeInt32(lng)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(altitude)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lng)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(altitude)
-    output.encodeInt32(lat)
-    output.encodeInt32(lng)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(altitude)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lng)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Ahrs2> {
-    private const val SIZE_V1: Int = 24
-
-    private const val SIZE_V2: Int = 24
-
     public override val id: UInt = 178u
 
     public override val crcExtra: Byte = 47
 
-    public override fun deserialize(source: BufferedSource): Ahrs2 {
-      val roll = source.decodeFloat()
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val altitude = source.decodeFloat()
-      val lat = source.decodeInt32()
-      val lng = source.decodeInt32()
+    public override fun deserialize(bytes: ByteArray): Ahrs2 {
+      val buffer = Buffer().write(bytes)
+
+      val roll = buffer.decodeFloat()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val altitude = buffer.decodeFloat()
+      val lat = buffer.decodeInt32()
+      val lng = buffer.decodeInt32()
 
       return Ahrs2(
         roll = roll,

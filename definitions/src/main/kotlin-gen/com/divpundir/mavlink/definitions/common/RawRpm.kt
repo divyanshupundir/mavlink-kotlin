@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * RPM sensor data message.
@@ -38,33 +37,30 @@ public data class RawRpm(
 ) : MavMessage<RawRpm> {
   public override val instanceCompanion: MavMessage.MavCompanion<RawRpm> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(frequency)
-    output.encodeUInt8(index)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(frequency)
+    buffer.encodeUInt8(index)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(frequency)
-    output.encodeUInt8(index)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(frequency)
+    buffer.encodeUInt8(index)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RawRpm> {
-    private const val SIZE_V1: Int = 5
-
-    private const val SIZE_V2: Int = 5
-
     public override val id: UInt = 339u
 
     public override val crcExtra: Byte = -57
 
-    public override fun deserialize(source: BufferedSource): RawRpm {
-      val frequency = source.decodeFloat()
-      val index = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): RawRpm {
+      val buffer = Buffer().write(bytes)
+
+      val frequency = buffer.decodeFloat()
+      val index = buffer.decodeUInt8()
 
       return RawRpm(
         index = index,

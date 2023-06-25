@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Flexifunction type and parameters for component at function index from buffer
@@ -67,48 +66,45 @@ public data class FlexifunctionBufferFunction(
   public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunction> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(funcIndex)
-    output.encodeUInt16(funcCount)
-    output.encodeUInt16(dataAddress)
-    output.encodeUInt16(dataSize)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeInt8Array(data, 48)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(funcIndex)
+    buffer.encodeUInt16(funcCount)
+    buffer.encodeUInt16(dataAddress)
+    buffer.encodeUInt16(dataSize)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeInt8Array(data, 48)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(funcIndex)
-    output.encodeUInt16(funcCount)
-    output.encodeUInt16(dataAddress)
-    output.encodeUInt16(dataSize)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeInt8Array(data, 48)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(funcIndex)
+    buffer.encodeUInt16(funcCount)
+    buffer.encodeUInt16(dataAddress)
+    buffer.encodeUInt16(dataSize)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeInt8Array(data, 48)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FlexifunctionBufferFunction> {
-    private const val SIZE_V1: Int = 58
-
-    private const val SIZE_V2: Int = 58
-
     public override val id: UInt = 152u
 
     public override val crcExtra: Byte = 101
 
-    public override fun deserialize(source: BufferedSource): FlexifunctionBufferFunction {
-      val funcIndex = source.decodeUInt16()
-      val funcCount = source.decodeUInt16()
-      val dataAddress = source.decodeUInt16()
-      val dataSize = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val data = source.decodeInt8Array(48)
+    public override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunction {
+      val buffer = Buffer().write(bytes)
+
+      val funcIndex = buffer.decodeUInt16()
+      val funcCount = buffer.decodeUInt16()
+      val dataAddress = buffer.decodeUInt16()
+      val dataSize = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val data = buffer.decodeInt8Array(48)
 
       return FlexifunctionBufferFunction(
         targetSystem = targetSystem,

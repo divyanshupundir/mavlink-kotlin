@@ -13,14 +13,13 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Reply to LOG_REQUEST_DATA
@@ -53,39 +52,36 @@ public data class LogData(
 ) : MavMessage<LogData> {
   public override val instanceCompanion: MavMessage.MavCompanion<LogData> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(ofs)
-    output.encodeUInt16(id)
-    output.encodeUInt8(count)
-    output.encodeUInt8Array(data, 90)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(ofs)
+    buffer.encodeUInt16(id)
+    buffer.encodeUInt8(count)
+    buffer.encodeUInt8Array(data, 90)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(ofs)
-    output.encodeUInt16(id)
-    output.encodeUInt8(count)
-    output.encodeUInt8Array(data, 90)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(ofs)
+    buffer.encodeUInt16(id)
+    buffer.encodeUInt8(count)
+    buffer.encodeUInt8Array(data, 90)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LogData> {
-    private const val SIZE_V1: Int = 97
-
-    private const val SIZE_V2: Int = 97
-
     public override val id: UInt = 120u
 
     public override val crcExtra: Byte = -122
 
-    public override fun deserialize(source: BufferedSource): LogData {
-      val ofs = source.decodeUInt32()
-      val id = source.decodeUInt16()
-      val count = source.decodeUInt8()
-      val data = source.decodeUInt8Array(90)
+    public override fun deserialize(bytes: ByteArray): LogData {
+      val buffer = Buffer().write(bytes)
+
+      val ofs = buffer.decodeUInt32()
+      val id = buffer.decodeUInt16()
+      val count = buffer.decodeUInt8()
+      val data = buffer.decodeUInt8Array(90)
 
       return LogData(
         id = id,

@@ -13,6 +13,7 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
@@ -21,7 +22,6 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Sent from simulation to autopilot. This packet is useful for high throughput applications such as
@@ -117,75 +117,72 @@ public data class HilState(
 ) : MavMessage<HilState> {
   public override val instanceCompanion: MavMessage.MavCompanion<HilState> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(rollspeed)
-    output.encodeFloat(pitchspeed)
-    output.encodeFloat(yawspeed)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeInt16(vx)
-    output.encodeInt16(vy)
-    output.encodeInt16(vz)
-    output.encodeInt16(xacc)
-    output.encodeInt16(yacc)
-    output.encodeInt16(zacc)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(rollspeed)
+    buffer.encodeFloat(pitchspeed)
+    buffer.encodeFloat(yawspeed)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeInt16(vx)
+    buffer.encodeInt16(vy)
+    buffer.encodeInt16(vz)
+    buffer.encodeInt16(xacc)
+    buffer.encodeInt16(yacc)
+    buffer.encodeInt16(zacc)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(rollspeed)
-    output.encodeFloat(pitchspeed)
-    output.encodeFloat(yawspeed)
-    output.encodeInt32(lat)
-    output.encodeInt32(lon)
-    output.encodeInt32(alt)
-    output.encodeInt16(vx)
-    output.encodeInt16(vy)
-    output.encodeInt16(vz)
-    output.encodeInt16(xacc)
-    output.encodeInt16(yacc)
-    output.encodeInt16(zacc)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(rollspeed)
+    buffer.encodeFloat(pitchspeed)
+    buffer.encodeFloat(yawspeed)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lon)
+    buffer.encodeInt32(alt)
+    buffer.encodeInt16(vx)
+    buffer.encodeInt16(vy)
+    buffer.encodeInt16(vz)
+    buffer.encodeInt16(xacc)
+    buffer.encodeInt16(yacc)
+    buffer.encodeInt16(zacc)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilState> {
-    private const val SIZE_V1: Int = 56
-
-    private const val SIZE_V2: Int = 56
-
     public override val id: UInt = 90u
 
     public override val crcExtra: Byte = -73
 
-    public override fun deserialize(source: BufferedSource): HilState {
-      val timeUsec = source.decodeUInt64()
-      val roll = source.decodeFloat()
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val rollspeed = source.decodeFloat()
-      val pitchspeed = source.decodeFloat()
-      val yawspeed = source.decodeFloat()
-      val lat = source.decodeInt32()
-      val lon = source.decodeInt32()
-      val alt = source.decodeInt32()
-      val vx = source.decodeInt16()
-      val vy = source.decodeInt16()
-      val vz = source.decodeInt16()
-      val xacc = source.decodeInt16()
-      val yacc = source.decodeInt16()
-      val zacc = source.decodeInt16()
+    public override fun deserialize(bytes: ByteArray): HilState {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val roll = buffer.decodeFloat()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val rollspeed = buffer.decodeFloat()
+      val pitchspeed = buffer.decodeFloat()
+      val yawspeed = buffer.decodeFloat()
+      val lat = buffer.decodeInt32()
+      val lon = buffer.decodeInt32()
+      val alt = buffer.decodeInt32()
+      val vx = buffer.decodeInt16()
+      val vy = buffer.decodeInt16()
+      val vz = buffer.decodeInt16()
+      val xacc = buffer.decodeInt16()
+      val yacc = buffer.decodeInt16()
+      val zacc = buffer.decodeInt16()
 
       return HilState(
         timeUsec = timeUsec,

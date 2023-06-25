@@ -11,13 +11,12 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000
@@ -89,60 +88,57 @@ public data class RcChannelsRaw(
 ) : MavMessage<RcChannelsRaw> {
   public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt16(chan1Raw)
-    output.encodeUInt16(chan2Raw)
-    output.encodeUInt16(chan3Raw)
-    output.encodeUInt16(chan4Raw)
-    output.encodeUInt16(chan5Raw)
-    output.encodeUInt16(chan6Raw)
-    output.encodeUInt16(chan7Raw)
-    output.encodeUInt16(chan8Raw)
-    output.encodeUInt8(port)
-    output.encodeUInt8(rssi)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt16(chan1Raw)
+    buffer.encodeUInt16(chan2Raw)
+    buffer.encodeUInt16(chan3Raw)
+    buffer.encodeUInt16(chan4Raw)
+    buffer.encodeUInt16(chan5Raw)
+    buffer.encodeUInt16(chan6Raw)
+    buffer.encodeUInt16(chan7Raw)
+    buffer.encodeUInt16(chan8Raw)
+    buffer.encodeUInt8(port)
+    buffer.encodeUInt8(rssi)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeUInt16(chan1Raw)
-    output.encodeUInt16(chan2Raw)
-    output.encodeUInt16(chan3Raw)
-    output.encodeUInt16(chan4Raw)
-    output.encodeUInt16(chan5Raw)
-    output.encodeUInt16(chan6Raw)
-    output.encodeUInt16(chan7Raw)
-    output.encodeUInt16(chan8Raw)
-    output.encodeUInt8(port)
-    output.encodeUInt8(rssi)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeUInt16(chan1Raw)
+    buffer.encodeUInt16(chan2Raw)
+    buffer.encodeUInt16(chan3Raw)
+    buffer.encodeUInt16(chan4Raw)
+    buffer.encodeUInt16(chan5Raw)
+    buffer.encodeUInt16(chan6Raw)
+    buffer.encodeUInt16(chan7Raw)
+    buffer.encodeUInt16(chan8Raw)
+    buffer.encodeUInt8(port)
+    buffer.encodeUInt8(rssi)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RcChannelsRaw> {
-    private const val SIZE_V1: Int = 22
-
-    private const val SIZE_V2: Int = 22
-
     public override val id: UInt = 35u
 
     public override val crcExtra: Byte = -12
 
-    public override fun deserialize(source: BufferedSource): RcChannelsRaw {
-      val timeBootMs = source.decodeUInt32()
-      val chan1Raw = source.decodeUInt16()
-      val chan2Raw = source.decodeUInt16()
-      val chan3Raw = source.decodeUInt16()
-      val chan4Raw = source.decodeUInt16()
-      val chan5Raw = source.decodeUInt16()
-      val chan6Raw = source.decodeUInt16()
-      val chan7Raw = source.decodeUInt16()
-      val chan8Raw = source.decodeUInt16()
-      val port = source.decodeUInt8()
-      val rssi = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): RcChannelsRaw {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val chan1Raw = buffer.decodeUInt16()
+      val chan2Raw = buffer.decodeUInt16()
+      val chan3Raw = buffer.decodeUInt16()
+      val chan4Raw = buffer.decodeUInt16()
+      val chan5Raw = buffer.decodeUInt16()
+      val chan6Raw = buffer.decodeUInt16()
+      val chan7Raw = buffer.decodeUInt16()
+      val chan8Raw = buffer.decodeUInt16()
+      val port = buffer.decodeUInt8()
+      val rssi = buffer.decodeUInt8()
 
       return RcChannelsRaw(
         timeBootMs = timeBootMs,

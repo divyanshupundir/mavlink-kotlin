@@ -11,14 +11,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Message encoding a mission script item. This message is emitted upon a request for the next
@@ -52,39 +51,36 @@ public data class ScriptItem(
 ) : MavMessage<ScriptItem> {
   public override val instanceCompanion: MavMessage.MavCompanion<ScriptItem> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seq)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeString(name, 50)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seq)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeString(name, 50)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(seq)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeString(name, 50)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(seq)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeString(name, 50)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ScriptItem> {
-    private const val SIZE_V1: Int = 54
-
-    private const val SIZE_V2: Int = 54
-
     public override val id: UInt = 180u
 
     public override val crcExtra: Byte = -25
 
-    public override fun deserialize(source: BufferedSource): ScriptItem {
-      val seq = source.decodeUInt16()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val name = source.decodeString(50)
+    public override fun deserialize(bytes: ByteArray): ScriptItem {
+      val buffer = Buffer().write(bytes)
+
+      val seq = buffer.decodeUInt16()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val name = buffer.decodeString(50)
 
       return ScriptItem(
         targetSystem = targetSystem,

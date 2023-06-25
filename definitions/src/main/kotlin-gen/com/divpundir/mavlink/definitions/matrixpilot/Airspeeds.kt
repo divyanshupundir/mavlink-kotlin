@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The airspeed measured by sensors and IMU
@@ -62,48 +61,45 @@ public data class Airspeeds(
 ) : MavMessage<Airspeeds> {
   public override val instanceCompanion: MavMessage.MavCompanion<Airspeeds> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeInt16(airspeedImu)
-    output.encodeInt16(airspeedPitot)
-    output.encodeInt16(airspeedHotWire)
-    output.encodeInt16(airspeedUltrasonic)
-    output.encodeInt16(aoa)
-    output.encodeInt16(aoy)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeInt16(airspeedImu)
+    buffer.encodeInt16(airspeedPitot)
+    buffer.encodeInt16(airspeedHotWire)
+    buffer.encodeInt16(airspeedUltrasonic)
+    buffer.encodeInt16(aoa)
+    buffer.encodeInt16(aoy)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeInt16(airspeedImu)
-    output.encodeInt16(airspeedPitot)
-    output.encodeInt16(airspeedHotWire)
-    output.encodeInt16(airspeedUltrasonic)
-    output.encodeInt16(aoa)
-    output.encodeInt16(aoy)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeInt16(airspeedImu)
+    buffer.encodeInt16(airspeedPitot)
+    buffer.encodeInt16(airspeedHotWire)
+    buffer.encodeInt16(airspeedUltrasonic)
+    buffer.encodeInt16(aoa)
+    buffer.encodeInt16(aoy)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Airspeeds> {
-    private const val SIZE_V1: Int = 16
-
-    private const val SIZE_V2: Int = 16
-
     public override val id: UInt = 182u
 
     public override val crcExtra: Byte = -102
 
-    public override fun deserialize(source: BufferedSource): Airspeeds {
-      val timeBootMs = source.decodeUInt32()
-      val airspeedImu = source.decodeInt16()
-      val airspeedPitot = source.decodeInt16()
-      val airspeedHotWire = source.decodeInt16()
-      val airspeedUltrasonic = source.decodeInt16()
-      val aoa = source.decodeInt16()
-      val aoy = source.decodeInt16()
+    public override fun deserialize(bytes: ByteArray): Airspeeds {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val airspeedImu = buffer.decodeInt16()
+      val airspeedPitot = buffer.decodeInt16()
+      val airspeedHotWire = buffer.decodeInt16()
+      val airspeedUltrasonic = buffer.decodeInt16()
+      val aoa = buffer.decodeInt16()
+      val aoy = buffer.decodeInt16()
 
       return Airspeeds(
         timeBootMs = timeBootMs,

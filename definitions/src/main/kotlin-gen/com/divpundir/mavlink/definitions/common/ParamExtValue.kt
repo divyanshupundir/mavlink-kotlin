@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Emit the value of a parameter. The inclusion of param_count and param_index in the message allows
@@ -60,42 +59,39 @@ public data class ParamExtValue(
 ) : MavMessage<ParamExtValue> {
   public override val instanceCompanion: MavMessage.MavCompanion<ParamExtValue> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(paramCount)
-    output.encodeUInt16(paramIndex)
-    output.encodeString(paramId, 16)
-    output.encodeString(paramValue, 128)
-    output.encodeEnumValue(paramType.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(paramCount)
+    buffer.encodeUInt16(paramIndex)
+    buffer.encodeString(paramId, 16)
+    buffer.encodeString(paramValue, 128)
+    buffer.encodeEnumValue(paramType.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(paramCount)
-    output.encodeUInt16(paramIndex)
-    output.encodeString(paramId, 16)
-    output.encodeString(paramValue, 128)
-    output.encodeEnumValue(paramType.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(paramCount)
+    buffer.encodeUInt16(paramIndex)
+    buffer.encodeString(paramId, 16)
+    buffer.encodeString(paramValue, 128)
+    buffer.encodeEnumValue(paramType.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ParamExtValue> {
-    private const val SIZE_V1: Int = 149
-
-    private const val SIZE_V2: Int = 149
-
     public override val id: UInt = 322u
 
     public override val crcExtra: Byte = -13
 
-    public override fun deserialize(source: BufferedSource): ParamExtValue {
-      val paramCount = source.decodeUInt16()
-      val paramIndex = source.decodeUInt16()
-      val paramId = source.decodeString(16)
-      val paramValue = source.decodeString(128)
-      val paramType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): ParamExtValue {
+      val buffer = Buffer().write(bytes)
+
+      val paramCount = buffer.decodeUInt16()
+      val paramIndex = buffer.decodeUInt16()
+      val paramId = buffer.decodeString(16)
+      val paramValue = buffer.decodeString(128)
+      val paramType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavParamExtType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

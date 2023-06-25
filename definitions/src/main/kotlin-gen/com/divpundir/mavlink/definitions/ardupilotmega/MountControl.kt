@@ -9,12 +9,12 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Message to control a camera mount, directional antenna, etc.
@@ -57,45 +57,42 @@ public data class MountControl(
 ) : MavMessage<MountControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<MountControl> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(inputA)
-    output.encodeInt32(inputB)
-    output.encodeInt32(inputC)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(savePosition)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(inputA)
+    buffer.encodeInt32(inputB)
+    buffer.encodeInt32(inputC)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(savePosition)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeInt32(inputA)
-    output.encodeInt32(inputB)
-    output.encodeInt32(inputC)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(savePosition)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeInt32(inputA)
+    buffer.encodeInt32(inputB)
+    buffer.encodeInt32(inputC)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(savePosition)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MountControl> {
-    private const val SIZE_V1: Int = 15
-
-    private const val SIZE_V2: Int = 15
-
     public override val id: UInt = 157u
 
     public override val crcExtra: Byte = 21
 
-    public override fun deserialize(source: BufferedSource): MountControl {
-      val inputA = source.decodeInt32()
-      val inputB = source.decodeInt32()
-      val inputC = source.decodeInt32()
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val savePosition = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): MountControl {
+      val buffer = Buffer().write(bytes)
+
+      val inputA = buffer.decodeInt32()
+      val inputB = buffer.decodeInt32()
+      val inputC = buffer.decodeInt32()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val savePosition = buffer.decodeUInt8()
 
       return MountControl(
         targetSystem = targetSystem,

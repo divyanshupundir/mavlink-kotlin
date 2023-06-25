@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Angle of Attack and Side Slip Angle.
@@ -43,36 +42,33 @@ public data class AoaSsa(
 ) : MavMessage<AoaSsa> {
   public override val instanceCompanion: MavMessage.MavCompanion<AoaSsa> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(aoa)
-    output.encodeFloat(ssa)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(aoa)
+    buffer.encodeFloat(ssa)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeUsec)
-    output.encodeFloat(aoa)
-    output.encodeFloat(ssa)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeUsec)
+    buffer.encodeFloat(aoa)
+    buffer.encodeFloat(ssa)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AoaSsa> {
-    private const val SIZE_V1: Int = 16
-
-    private const val SIZE_V2: Int = 16
-
     public override val id: UInt = 11_020u
 
     public override val crcExtra: Byte = -51
 
-    public override fun deserialize(source: BufferedSource): AoaSsa {
-      val timeUsec = source.decodeUInt64()
-      val aoa = source.decodeFloat()
-      val ssa = source.decodeFloat()
+    public override fun deserialize(bytes: ByteArray): AoaSsa {
+      val buffer = Buffer().write(bytes)
+
+      val timeUsec = buffer.decodeUInt64()
+      val aoa = buffer.decodeFloat()
+      val ssa = buffer.decodeFloat()
 
       return AoaSsa(
         timeUsec = timeUsec,

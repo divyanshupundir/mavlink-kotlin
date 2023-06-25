@@ -9,14 +9,13 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Deprecated
-import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * 2nd Battery status
@@ -40,33 +39,30 @@ public data class Battery2(
 ) : MavMessage<Battery2> {
   public override val instanceCompanion: MavMessage.MavCompanion<Battery2> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(voltage)
-    output.encodeInt16(currentBattery)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(voltage)
+    buffer.encodeInt16(currentBattery)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt16(voltage)
-    output.encodeInt16(currentBattery)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt16(voltage)
+    buffer.encodeInt16(currentBattery)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Battery2> {
-    private const val SIZE_V1: Int = 4
-
-    private const val SIZE_V2: Int = 4
-
     public override val id: UInt = 181u
 
     public override val crcExtra: Byte = -82
 
-    public override fun deserialize(source: BufferedSource): Battery2 {
-      val voltage = source.decodeUInt16()
-      val currentBattery = source.decodeInt16()
+    public override fun deserialize(bytes: ByteArray): Battery2 {
+      val buffer = Buffer().write(bytes)
+
+      val voltage = buffer.decodeUInt16()
+      val currentBattery = buffer.decodeInt16()
 
       return Battery2(
         voltage = voltage,

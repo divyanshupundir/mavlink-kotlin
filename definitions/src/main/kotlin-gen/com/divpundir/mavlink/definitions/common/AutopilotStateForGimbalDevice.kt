@@ -22,15 +22,14 @@ import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Low level message containing autopilot state relevant for a gimbal device. This message is to be
@@ -110,66 +109,63 @@ public data class AutopilotStateForGimbalDevice(
   public override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeBootUs)
-    output.encodeFloatArray(q, 16)
-    output.encodeUInt32(qEstimatedDelayUs)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.encodeUInt32(vEstimatedDelayUs)
-    output.encodeFloat(feedForwardAngularVelocityZ)
-    output.encodeBitmaskValue(estimatorStatus.value, 2)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(landedState.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeBootUs)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeUInt32(qEstimatedDelayUs)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    buffer.encodeUInt32(vEstimatedDelayUs)
+    buffer.encodeFloat(feedForwardAngularVelocityZ)
+    buffer.encodeBitmaskValue(estimatorStatus.value, 2)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(landedState.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt64(timeBootUs)
-    output.encodeFloatArray(q, 16)
-    output.encodeUInt32(qEstimatedDelayUs)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.encodeUInt32(vEstimatedDelayUs)
-    output.encodeFloat(feedForwardAngularVelocityZ)
-    output.encodeBitmaskValue(estimatorStatus.value, 2)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeEnumValue(landedState.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt64(timeBootUs)
+    buffer.encodeFloatArray(q, 16)
+    buffer.encodeUInt32(qEstimatedDelayUs)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    buffer.encodeUInt32(vEstimatedDelayUs)
+    buffer.encodeFloat(feedForwardAngularVelocityZ)
+    buffer.encodeBitmaskValue(estimatorStatus.value, 2)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeEnumValue(landedState.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AutopilotStateForGimbalDevice> {
-    private const val SIZE_V1: Int = 53
-
-    private const val SIZE_V2: Int = 53
-
     public override val id: UInt = 286u
 
     public override val crcExtra: Byte = -46
 
-    public override fun deserialize(source: BufferedSource): AutopilotStateForGimbalDevice {
-      val timeBootUs = source.decodeUInt64()
-      val q = source.decodeFloatArray(16)
-      val qEstimatedDelayUs = source.decodeUInt32()
-      val vx = source.decodeFloat()
-      val vy = source.decodeFloat()
-      val vz = source.decodeFloat()
-      val vEstimatedDelayUs = source.decodeUInt32()
-      val feedForwardAngularVelocityZ = source.decodeFloat()
-      val estimatorStatus = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootUs = buffer.decodeUInt64()
+      val q = buffer.decodeFloatArray(16)
+      val qEstimatedDelayUs = buffer.decodeUInt32()
+      val vx = buffer.decodeFloat()
+      val vy = buffer.decodeFloat()
+      val vz = buffer.decodeFloat()
+      val vEstimatedDelayUs = buffer.decodeUInt32()
+      val feedForwardAngularVelocityZ = buffer.decodeFloat()
+      val estimatorStatus = buffer.decodeBitmaskValue(2).let { value ->
         val flags = EstimatorStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val landedState = source.decodeEnumValue(1).let { value ->
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val landedState = buffer.decodeEnumValue(1).let { value ->
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

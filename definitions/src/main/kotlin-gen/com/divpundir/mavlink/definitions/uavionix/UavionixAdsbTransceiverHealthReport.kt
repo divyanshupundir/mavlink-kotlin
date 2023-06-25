@@ -8,11 +8,10 @@ import com.divpundir.mavlink.serialization.decodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Transceiver heartbeat with health report (updated every 10s)
@@ -31,30 +30,27 @@ public data class UavionixAdsbTransceiverHealthReport(
   public override val instanceCompanion:
       MavMessage.MavCompanion<UavionixAdsbTransceiverHealthReport> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeBitmaskValue(rfhealth.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeBitmaskValue(rfhealth.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeBitmaskValue(rfhealth.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeBitmaskValue(rfhealth.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UavionixAdsbTransceiverHealthReport> {
-    private const val SIZE_V1: Int = 1
-
-    private const val SIZE_V2: Int = 1
-
     public override val id: UInt = 10_003u
 
     public override val crcExtra: Byte = 4
 
-    public override fun deserialize(source: BufferedSource): UavionixAdsbTransceiverHealthReport {
-      val rfhealth = source.decodeBitmaskValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): UavionixAdsbTransceiverHealthReport {
+      val buffer = Buffer().write(bytes)
+
+      val rfhealth = buffer.decodeBitmaskValue(1).let { value ->
         val flags = UavionixAdsbRfHealth.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

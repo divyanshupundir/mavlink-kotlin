@@ -9,13 +9,12 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
@@ -55,42 +54,39 @@ public data class ResourceRequest(
 ) : MavMessage<ResourceRequest> {
   public override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(requestId)
-    output.encodeUInt8(uriType)
-    output.encodeUInt8Array(uri, 120)
-    output.encodeUInt8(transferType)
-    output.encodeUInt8Array(storage, 120)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(requestId)
+    buffer.encodeUInt8(uriType)
+    buffer.encodeUInt8Array(uri, 120)
+    buffer.encodeUInt8(transferType)
+    buffer.encodeUInt8Array(storage, 120)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(requestId)
-    output.encodeUInt8(uriType)
-    output.encodeUInt8Array(uri, 120)
-    output.encodeUInt8(transferType)
-    output.encodeUInt8Array(storage, 120)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(requestId)
+    buffer.encodeUInt8(uriType)
+    buffer.encodeUInt8Array(uri, 120)
+    buffer.encodeUInt8(transferType)
+    buffer.encodeUInt8Array(storage, 120)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ResourceRequest> {
-    private const val SIZE_V1: Int = 243
-
-    private const val SIZE_V2: Int = 243
-
     public override val id: UInt = 142u
 
     public override val crcExtra: Byte = 72
 
-    public override fun deserialize(source: BufferedSource): ResourceRequest {
-      val requestId = source.decodeUInt8()
-      val uriType = source.decodeUInt8()
-      val uri = source.decodeUInt8Array(120)
-      val transferType = source.decodeUInt8()
-      val storage = source.decodeUInt8Array(120)
+    public override fun deserialize(bytes: ByteArray): ResourceRequest {
+      val buffer = Buffer().write(bytes)
+
+      val requestId = buffer.decodeUInt8()
+      val uriType = buffer.decodeUInt8()
+      val uri = buffer.decodeUInt8Array(120)
+      val transferType = buffer.decodeUInt8()
+      val storage = buffer.decodeUInt8Array(120)
 
       return ResourceRequest(
         requestId = requestId,

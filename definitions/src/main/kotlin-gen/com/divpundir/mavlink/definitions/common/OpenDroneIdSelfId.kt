@@ -15,14 +15,13 @@ import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Data for filling the OpenDroneID Self ID message. The Self ID Message is an opportunity for the
@@ -67,45 +66,42 @@ public data class OpenDroneIdSelfId(
 ) : MavMessage<OpenDroneIdSelfId> {
   public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSelfId> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(idOrMac, 20)
-    output.encodeEnumValue(descriptionType.value, 1)
-    output.encodeString(description, 23)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(idOrMac, 20)
+    buffer.encodeEnumValue(descriptionType.value, 1)
+    buffer.encodeString(description, 23)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8Array(idOrMac, 20)
-    output.encodeEnumValue(descriptionType.value, 1)
-    output.encodeString(description, 23)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8Array(idOrMac, 20)
+    buffer.encodeEnumValue(descriptionType.value, 1)
+    buffer.encodeString(description, 23)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OpenDroneIdSelfId> {
-    private const val SIZE_V1: Int = 46
-
-    private const val SIZE_V2: Int = 46
-
     public override val id: UInt = 12_903u
 
     public override val crcExtra: Byte = -7
 
-    public override fun deserialize(source: BufferedSource): OpenDroneIdSelfId {
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val idOrMac = source.decodeUInt8Array(20)
-      val descriptionType = source.decodeEnumValue(1).let { value ->
+    public override fun deserialize(bytes: ByteArray): OpenDroneIdSelfId {
+      val buffer = Buffer().write(bytes)
+
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val idOrMac = buffer.decodeUInt8Array(20)
+      val descriptionType = buffer.decodeEnumValue(1).let { value ->
         val entry = MavOdidDescType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val description = source.decodeString(23)
+      val description = buffer.decodeString(23)
 
       return OpenDroneIdSelfId(
         targetSystem = targetSystem,

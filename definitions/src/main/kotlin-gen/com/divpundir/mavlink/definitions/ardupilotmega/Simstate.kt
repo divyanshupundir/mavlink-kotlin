@@ -9,12 +9,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Status of simulation environment, if used.
@@ -82,60 +82,57 @@ public data class Simstate(
 ) : MavMessage<Simstate> {
   public override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(xacc)
-    output.encodeFloat(yacc)
-    output.encodeFloat(zacc)
-    output.encodeFloat(xgyro)
-    output.encodeFloat(ygyro)
-    output.encodeFloat(zgyro)
-    output.encodeInt32(lat)
-    output.encodeInt32(lng)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(xacc)
+    buffer.encodeFloat(yacc)
+    buffer.encodeFloat(zacc)
+    buffer.encodeFloat(xgyro)
+    buffer.encodeFloat(ygyro)
+    buffer.encodeFloat(zgyro)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lng)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(roll)
-    output.encodeFloat(pitch)
-    output.encodeFloat(yaw)
-    output.encodeFloat(xacc)
-    output.encodeFloat(yacc)
-    output.encodeFloat(zacc)
-    output.encodeFloat(xgyro)
-    output.encodeFloat(ygyro)
-    output.encodeFloat(zgyro)
-    output.encodeInt32(lat)
-    output.encodeInt32(lng)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(roll)
+    buffer.encodeFloat(pitch)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(xacc)
+    buffer.encodeFloat(yacc)
+    buffer.encodeFloat(zacc)
+    buffer.encodeFloat(xgyro)
+    buffer.encodeFloat(ygyro)
+    buffer.encodeFloat(zgyro)
+    buffer.encodeInt32(lat)
+    buffer.encodeInt32(lng)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Simstate> {
-    private const val SIZE_V1: Int = 44
-
-    private const val SIZE_V2: Int = 44
-
     public override val id: UInt = 164u
 
     public override val crcExtra: Byte = -102
 
-    public override fun deserialize(source: BufferedSource): Simstate {
-      val roll = source.decodeFloat()
-      val pitch = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val xacc = source.decodeFloat()
-      val yacc = source.decodeFloat()
-      val zacc = source.decodeFloat()
-      val xgyro = source.decodeFloat()
-      val ygyro = source.decodeFloat()
-      val zgyro = source.decodeFloat()
-      val lat = source.decodeInt32()
-      val lng = source.decodeInt32()
+    public override fun deserialize(bytes: ByteArray): Simstate {
+      val buffer = Buffer().write(bytes)
+
+      val roll = buffer.decodeFloat()
+      val pitch = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val xacc = buffer.decodeFloat()
+      val yacc = buffer.decodeFloat()
+      val zacc = buffer.decodeFloat()
+      val xgyro = buffer.decodeFloat()
+      val ygyro = buffer.decodeFloat()
+      val zgyro = buffer.decodeFloat()
+      val lat = buffer.decodeInt32()
+      val lng = buffer.decodeInt32()
 
       return Simstate(
         roll = roll,

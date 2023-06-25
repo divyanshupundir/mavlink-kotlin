@@ -11,13 +11,12 @@ import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * The pressure readings for the typical setup of one absolute and differential pressure sensor. The
@@ -59,41 +58,38 @@ public data class ScaledPressure(
 ) : MavMessage<ScaledPressure> {
   public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(pressAbs)
-    output.encodeFloat(pressDiff)
-    output.encodeInt16(temperature)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(pressAbs)
+    buffer.encodeFloat(pressDiff)
+    buffer.encodeInt16(temperature)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeFloat(pressAbs)
-    output.encodeFloat(pressDiff)
-    output.encodeInt16(temperature)
-    output.encodeInt16(temperaturePressDiff)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeFloat(pressAbs)
+    buffer.encodeFloat(pressDiff)
+    buffer.encodeInt16(temperature)
+    buffer.encodeInt16(temperaturePressDiff)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ScaledPressure> {
-    private const val SIZE_V1: Int = 14
-
-    private const val SIZE_V2: Int = 16
-
     public override val id: UInt = 29u
 
     public override val crcExtra: Byte = 115
 
-    public override fun deserialize(source: BufferedSource): ScaledPressure {
-      val timeBootMs = source.decodeUInt32()
-      val pressAbs = source.decodeFloat()
-      val pressDiff = source.decodeFloat()
-      val temperature = source.decodeInt16()
-      val temperaturePressDiff = source.decodeInt16()
+    public override fun deserialize(bytes: ByteArray): ScaledPressure {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val pressAbs = buffer.decodeFloat()
+      val pressDiff = buffer.decodeFloat()
+      val temperature = buffer.decodeInt16()
+      val temperaturePressDiff = buffer.decodeInt16()
 
       return ScaledPressure(
         timeBootMs = timeBootMs,

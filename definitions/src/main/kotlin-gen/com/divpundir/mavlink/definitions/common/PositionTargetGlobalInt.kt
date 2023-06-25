@@ -17,12 +17,12 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
@@ -111,72 +111,69 @@ public data class PositionTargetGlobalInt(
   public override val instanceCompanion: MavMessage.MavCompanion<PositionTargetGlobalInt> =
       Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeInt32(latInt)
-    output.encodeInt32(lonInt)
-    output.encodeFloat(alt)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.encodeFloat(afx)
-    output.encodeFloat(afy)
-    output.encodeFloat(afz)
-    output.encodeFloat(yaw)
-    output.encodeFloat(yawRate)
-    output.encodeBitmaskValue(typeMask.value, 2)
-    output.encodeEnumValue(coordinateFrame.value, 1)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeInt32(latInt)
+    buffer.encodeInt32(lonInt)
+    buffer.encodeFloat(alt)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    buffer.encodeFloat(afx)
+    buffer.encodeFloat(afy)
+    buffer.encodeFloat(afz)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(yawRate)
+    buffer.encodeBitmaskValue(typeMask.value, 2)
+    buffer.encodeEnumValue(coordinateFrame.value, 1)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeBootMs)
-    output.encodeInt32(latInt)
-    output.encodeInt32(lonInt)
-    output.encodeFloat(alt)
-    output.encodeFloat(vx)
-    output.encodeFloat(vy)
-    output.encodeFloat(vz)
-    output.encodeFloat(afx)
-    output.encodeFloat(afy)
-    output.encodeFloat(afz)
-    output.encodeFloat(yaw)
-    output.encodeFloat(yawRate)
-    output.encodeBitmaskValue(typeMask.value, 2)
-    output.encodeEnumValue(coordinateFrame.value, 1)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeBootMs)
+    buffer.encodeInt32(latInt)
+    buffer.encodeInt32(lonInt)
+    buffer.encodeFloat(alt)
+    buffer.encodeFloat(vx)
+    buffer.encodeFloat(vy)
+    buffer.encodeFloat(vz)
+    buffer.encodeFloat(afx)
+    buffer.encodeFloat(afy)
+    buffer.encodeFloat(afz)
+    buffer.encodeFloat(yaw)
+    buffer.encodeFloat(yawRate)
+    buffer.encodeBitmaskValue(typeMask.value, 2)
+    buffer.encodeEnumValue(coordinateFrame.value, 1)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<PositionTargetGlobalInt> {
-    private const val SIZE_V1: Int = 51
-
-    private const val SIZE_V2: Int = 51
-
     public override val id: UInt = 87u
 
     public override val crcExtra: Byte = -106
 
-    public override fun deserialize(source: BufferedSource): PositionTargetGlobalInt {
-      val timeBootMs = source.decodeUInt32()
-      val latInt = source.decodeInt32()
-      val lonInt = source.decodeInt32()
-      val alt = source.decodeFloat()
-      val vx = source.decodeFloat()
-      val vy = source.decodeFloat()
-      val vz = source.decodeFloat()
-      val afx = source.decodeFloat()
-      val afy = source.decodeFloat()
-      val afz = source.decodeFloat()
-      val yaw = source.decodeFloat()
-      val yawRate = source.decodeFloat()
-      val typeMask = source.decodeBitmaskValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): PositionTargetGlobalInt {
+      val buffer = Buffer().write(bytes)
+
+      val timeBootMs = buffer.decodeUInt32()
+      val latInt = buffer.decodeInt32()
+      val lonInt = buffer.decodeInt32()
+      val alt = buffer.decodeFloat()
+      val vx = buffer.decodeFloat()
+      val vy = buffer.decodeFloat()
+      val vz = buffer.decodeFloat()
+      val afx = buffer.decodeFloat()
+      val afy = buffer.decodeFloat()
+      val afz = buffer.decodeFloat()
+      val yaw = buffer.decodeFloat()
+      val yawRate = buffer.decodeFloat()
+      val typeMask = buffer.decodeBitmaskValue(2).let { value ->
         val flags = PositionTargetTypemask.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val coordinateFrame = source.decodeEnumValue(1).let { value ->
+      val coordinateFrame = buffer.decodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

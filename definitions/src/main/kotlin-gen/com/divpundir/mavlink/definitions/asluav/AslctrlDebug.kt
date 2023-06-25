@@ -11,13 +11,12 @@ import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * ASL-fixed-wing controller debug data
@@ -85,60 +84,57 @@ public data class AslctrlDebug(
 ) : MavMessage<AslctrlDebug> {
   public override val instanceCompanion: MavMessage.MavCompanion<AslctrlDebug> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(i321)
-    output.encodeFloat(f1)
-    output.encodeFloat(f2)
-    output.encodeFloat(f3)
-    output.encodeFloat(f4)
-    output.encodeFloat(f5)
-    output.encodeFloat(f6)
-    output.encodeFloat(f7)
-    output.encodeFloat(f8)
-    output.encodeUInt8(i81)
-    output.encodeUInt8(i82)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(i321)
+    buffer.encodeFloat(f1)
+    buffer.encodeFloat(f2)
+    buffer.encodeFloat(f3)
+    buffer.encodeFloat(f4)
+    buffer.encodeFloat(f5)
+    buffer.encodeFloat(f6)
+    buffer.encodeFloat(f7)
+    buffer.encodeFloat(f8)
+    buffer.encodeUInt8(i81)
+    buffer.encodeUInt8(i82)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(i321)
-    output.encodeFloat(f1)
-    output.encodeFloat(f2)
-    output.encodeFloat(f3)
-    output.encodeFloat(f4)
-    output.encodeFloat(f5)
-    output.encodeFloat(f6)
-    output.encodeFloat(f7)
-    output.encodeFloat(f8)
-    output.encodeUInt8(i81)
-    output.encodeUInt8(i82)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(i321)
+    buffer.encodeFloat(f1)
+    buffer.encodeFloat(f2)
+    buffer.encodeFloat(f3)
+    buffer.encodeFloat(f4)
+    buffer.encodeFloat(f5)
+    buffer.encodeFloat(f6)
+    buffer.encodeFloat(f7)
+    buffer.encodeFloat(f8)
+    buffer.encodeUInt8(i81)
+    buffer.encodeUInt8(i82)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AslctrlDebug> {
-    private const val SIZE_V1: Int = 38
-
-    private const val SIZE_V2: Int = 38
-
     public override val id: UInt = 8_005u
 
     public override val crcExtra: Byte = -5
 
-    public override fun deserialize(source: BufferedSource): AslctrlDebug {
-      val i321 = source.decodeUInt32()
-      val f1 = source.decodeFloat()
-      val f2 = source.decodeFloat()
-      val f3 = source.decodeFloat()
-      val f4 = source.decodeFloat()
-      val f5 = source.decodeFloat()
-      val f6 = source.decodeFloat()
-      val f7 = source.decodeFloat()
-      val f8 = source.decodeFloat()
-      val i81 = source.decodeUInt8()
-      val i82 = source.decodeUInt8()
+    public override fun deserialize(bytes: ByteArray): AslctrlDebug {
+      val buffer = Buffer().write(bytes)
+
+      val i321 = buffer.decodeUInt32()
+      val f1 = buffer.decodeFloat()
+      val f2 = buffer.decodeFloat()
+      val f3 = buffer.decodeFloat()
+      val f4 = buffer.decodeFloat()
+      val f5 = buffer.decodeFloat()
+      val f6 = buffer.decodeFloat()
+      val f7 = buffer.decodeFloat()
+      val f8 = buffer.decodeFloat()
+      val i81 = buffer.decodeUInt8()
+      val i82 = buffer.decodeUInt8()
 
       return AslctrlDebug(
         i321 = i321,

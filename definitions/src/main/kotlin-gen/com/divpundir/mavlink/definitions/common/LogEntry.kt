@@ -9,12 +9,11 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Reply to LOG_REQUEST_LIST
@@ -52,42 +51,39 @@ public data class LogEntry(
 ) : MavMessage<LogEntry> {
   public override val instanceCompanion: MavMessage.MavCompanion<LogEntry> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeUtc)
-    output.encodeUInt32(size)
-    output.encodeUInt16(id)
-    output.encodeUInt16(numLogs)
-    output.encodeUInt16(lastLogNum)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeUtc)
+    buffer.encodeUInt32(size)
+    buffer.encodeUInt16(id)
+    buffer.encodeUInt16(numLogs)
+    buffer.encodeUInt16(lastLogNum)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt32(timeUtc)
-    output.encodeUInt32(size)
-    output.encodeUInt16(id)
-    output.encodeUInt16(numLogs)
-    output.encodeUInt16(lastLogNum)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt32(timeUtc)
+    buffer.encodeUInt32(size)
+    buffer.encodeUInt16(id)
+    buffer.encodeUInt16(numLogs)
+    buffer.encodeUInt16(lastLogNum)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LogEntry> {
-    private const val SIZE_V1: Int = 14
-
-    private const val SIZE_V2: Int = 14
-
     public override val id: UInt = 118u
 
     public override val crcExtra: Byte = 56
 
-    public override fun deserialize(source: BufferedSource): LogEntry {
-      val timeUtc = source.decodeUInt32()
-      val size = source.decodeUInt32()
-      val id = source.decodeUInt16()
-      val numLogs = source.decodeUInt16()
-      val lastLogNum = source.decodeUInt16()
+    public override fun deserialize(bytes: ByteArray): LogEntry {
+      val buffer = Buffer().write(bytes)
+
+      val timeUtc = buffer.decodeUInt32()
+      val size = buffer.decodeUInt32()
+      val id = buffer.decodeUInt16()
+      val numLogs = buffer.decodeUInt16()
+      val lastLogNum = buffer.decodeUInt16()
 
       return LogEntry(
         id = id,

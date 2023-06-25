@@ -7,13 +7,12 @@ import com.divpundir.mavlink.serialization.decodeUInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
-import kotlin.Int
+import kotlin.ByteArray
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F15 format
@@ -36,33 +35,30 @@ public data class SerialUdbExtraF15(
 ) : MavMessage<SerialUdbExtraF15> {
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF15> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8Array(sueIdVehicleModelName, 40)
-    output.encodeUInt8Array(sueIdVehicleRegistration, 20)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8Array(sueIdVehicleModelName, 40)
+    buffer.encodeUInt8Array(sueIdVehicleRegistration, 20)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeUInt8Array(sueIdVehicleModelName, 40)
-    output.encodeUInt8Array(sueIdVehicleRegistration, 20)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeUInt8Array(sueIdVehicleModelName, 40)
+    buffer.encodeUInt8Array(sueIdVehicleRegistration, 20)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF15> {
-    private const val SIZE_V1: Int = 60
-
-    private const val SIZE_V2: Int = 60
-
     public override val id: UInt = 179u
 
     public override val crcExtra: Byte = 7
 
-    public override fun deserialize(source: BufferedSource): SerialUdbExtraF15 {
-      val sueIdVehicleModelName = source.decodeUInt8Array(40)
-      val sueIdVehicleRegistration = source.decodeUInt8Array(20)
+    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF15 {
+      val buffer = Buffer().write(bytes)
+
+      val sueIdVehicleModelName = buffer.decodeUInt8Array(40)
+      val sueIdVehicleRegistration = buffer.decodeUInt8Array(20)
 
       return SerialUdbExtraF15(
         sueIdVehicleModelName = sueIdVehicleModelName,

@@ -12,13 +12,12 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
+import kotlin.ByteArray
 import kotlin.Float
-import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import okio.Buffer
-import okio.BufferedSource
 
 /**
  * Send a command with up to seven parameters to the MAV. The command microservice is documented at
@@ -88,63 +87,60 @@ public data class CommandLong(
 ) : MavMessage<CommandLong> {
   public override val instanceCompanion: MavMessage.MavCompanion<CommandLong> = Companion
 
-  public override fun serializeV1(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(param1)
-    output.encodeFloat(param2)
-    output.encodeFloat(param3)
-    output.encodeFloat(param4)
-    output.encodeFloat(param5)
-    output.encodeFloat(param6)
-    output.encodeFloat(param7)
-    output.encodeEnumValue(command.value, 2)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(confirmation)
-    return output
+  public override fun serializeV1(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(param1)
+    buffer.encodeFloat(param2)
+    buffer.encodeFloat(param3)
+    buffer.encodeFloat(param4)
+    buffer.encodeFloat(param5)
+    buffer.encodeFloat(param6)
+    buffer.encodeFloat(param7)
+    buffer.encodeEnumValue(command.value, 2)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(confirmation)
+    return buffer.readByteArray()
   }
 
-  public override fun serializeV2(): BufferedSource {
-    val output = Buffer()
-    output.encodeFloat(param1)
-    output.encodeFloat(param2)
-    output.encodeFloat(param3)
-    output.encodeFloat(param4)
-    output.encodeFloat(param5)
-    output.encodeFloat(param6)
-    output.encodeFloat(param7)
-    output.encodeEnumValue(command.value, 2)
-    output.encodeUInt8(targetSystem)
-    output.encodeUInt8(targetComponent)
-    output.encodeUInt8(confirmation)
-    output.truncateZeros()
-    return output
+  public override fun serializeV2(): ByteArray {
+    val buffer = Buffer()
+    buffer.encodeFloat(param1)
+    buffer.encodeFloat(param2)
+    buffer.encodeFloat(param3)
+    buffer.encodeFloat(param4)
+    buffer.encodeFloat(param5)
+    buffer.encodeFloat(param6)
+    buffer.encodeFloat(param7)
+    buffer.encodeEnumValue(command.value, 2)
+    buffer.encodeUInt8(targetSystem)
+    buffer.encodeUInt8(targetComponent)
+    buffer.encodeUInt8(confirmation)
+    return buffer.readByteArray().truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CommandLong> {
-    private const val SIZE_V1: Int = 33
-
-    private const val SIZE_V2: Int = 33
-
     public override val id: UInt = 76u
 
     public override val crcExtra: Byte = -104
 
-    public override fun deserialize(source: BufferedSource): CommandLong {
-      val param1 = source.decodeFloat()
-      val param2 = source.decodeFloat()
-      val param3 = source.decodeFloat()
-      val param4 = source.decodeFloat()
-      val param5 = source.decodeFloat()
-      val param6 = source.decodeFloat()
-      val param7 = source.decodeFloat()
-      val command = source.decodeEnumValue(2).let { value ->
+    public override fun deserialize(bytes: ByteArray): CommandLong {
+      val buffer = Buffer().write(bytes)
+
+      val param1 = buffer.decodeFloat()
+      val param2 = buffer.decodeFloat()
+      val param3 = buffer.decodeFloat()
+      val param4 = buffer.decodeFloat()
+      val param5 = buffer.decodeFloat()
+      val param6 = buffer.decodeFloat()
+      val param7 = buffer.decodeFloat()
+      val command = buffer.decodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = source.decodeUInt8()
-      val targetComponent = source.decodeUInt8()
-      val confirmation = source.decodeUInt8()
+      val targetSystem = buffer.decodeUInt8()
+      val targetComponent = buffer.decodeUInt8()
+      val confirmation = buffer.decodeUInt8()
 
       return CommandLong(
         targetSystem = targetSystem,
