@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.processors.PublishProcessor
-import java.io.IOException
+import okio.IOException
 
 internal class Rx3MavConnectionImpl(
     private val connection: MavConnection,

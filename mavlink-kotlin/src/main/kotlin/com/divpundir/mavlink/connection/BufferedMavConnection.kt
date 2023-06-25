@@ -5,13 +5,13 @@ import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import okio.BufferedSink
 import okio.BufferedSource
-import java.io.Closeable
-import java.io.IOException
+import okio.Closeable
+import okio.IOException
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-internal class StreamMavConnection(
+internal class BufferedMavConnection(
     source: BufferedSource,
     private val sink: BufferedSink,
     private val streamHandle: Closeable,

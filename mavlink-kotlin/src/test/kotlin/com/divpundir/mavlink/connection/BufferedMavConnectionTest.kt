@@ -15,14 +15,14 @@ import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class StreamMavConnectionTest {
+class BufferedMavConnectionTest {
 
     @Test
     fun read() {
         val socket = Socket()
         socket.connect(InetSocketAddress("127.0.0.1", 5760))
 
-        val connection = StreamMavConnection(
+        val connection = BufferedMavConnection(
             socket.getInputStream().source().buffer(),
             socket.getOutputStream().sink().buffer(),
             socket,
@@ -42,7 +42,7 @@ class StreamMavConnectionTest {
         val socket = server.accept()
         server.close()
 
-        val connection = StreamMavConnection(
+        val connection = BufferedMavConnection(
             socket.getInputStream().source().buffer(),
             socket.getOutputStream().sink().buffer(),
             socket,

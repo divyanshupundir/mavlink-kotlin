@@ -1,8 +1,7 @@
 package com.divpundir.mavlink.connection.tcp
 
-import com.divpundir.mavlink.connection.tcp.TcpClientMavConnection
-import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.definitions.common.CommonDialect
+import org.junit.jupiter.api.Test
 
 class TcpClientMavConnectionTest {
 

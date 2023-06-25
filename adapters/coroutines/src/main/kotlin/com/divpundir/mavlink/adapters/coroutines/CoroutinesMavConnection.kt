@@ -4,7 +4,7 @@ import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
-import java.io.IOException
+import okio.IOException
 
 public interface CoroutinesMavConnection {
 

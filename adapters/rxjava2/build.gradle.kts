@@ -16,8 +16,10 @@ tasks.test {
 }
 
 dependencies {
-    implementation(project(":mavlink-kotlin"))
     api(Deps.ReactiveX.rxJava2)
+
+    implementation(project(":mavlink-kotlin"))
+    implementation(Deps.okio)
 
     testImplementation(project(":definitions"))
     testImplementation(TestDeps.Jupiter.api)
