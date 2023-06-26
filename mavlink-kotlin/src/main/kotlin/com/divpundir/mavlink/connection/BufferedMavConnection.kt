@@ -47,7 +47,7 @@ internal class BufferedMavConnection(
 
                 val payload = try {
                     companion.deserialize(rawFrame.payload)
-                } catch (e: Exception) {
+                } catch (e: IOException) {
                     System.err.println("Error deserializing MAVLink message. rawFrame=$rawFrame metadata=$companion")
                     continue
                 }
@@ -77,12 +77,12 @@ internal class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createV1(
-                sequence++,
-                systemId,
-                componentId,
-                payload.instanceCompanion.id,
-                payload.serializeV1(),
-                payload.instanceCompanion.crcExtra,
+                seq = sequence++,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = payload.instanceCompanion.id,
+                payload = payload.serializeV1(),
+                crcExtra = payload.instanceCompanion.crcExtra,
             )
         )
     }
@@ -95,12 +95,12 @@ internal class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createUnsignedV2(
-                sequence++,
-                systemId,
-                componentId,
-                payload.instanceCompanion.id,
-                payload.serializeV2(),
-                payload.instanceCompanion.crcExtra,
+                seq = sequence++,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = payload.instanceCompanion.id,
+                payload = payload.serializeV2(),
+                crcExtra = payload.instanceCompanion.crcExtra,
             )
         )
     }
@@ -116,15 +116,15 @@ internal class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createSignedV2(
-                sequence++,
-                systemId,
-                componentId,
-                payload.instanceCompanion.id,
-                payload.serializeV2(),
-                payload.instanceCompanion.crcExtra,
-                linkId,
-                timestamp,
-                secretKey
+                seq = sequence++,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = payload.instanceCompanion.id,
+                payload = payload.serializeV2(),
+                crcExtra = payload.instanceCompanion.crcExtra,
+                signatureLinkId = linkId,
+                signatureTimestamp = timestamp,
+                secretKey = secretKey
             )
         )
     }
