@@ -16,7 +16,7 @@ tasks.test {
 }
 
 dependencies {
-    implementation(Deps.okio)
+    api(Deps.okio)
 
     testImplementation(TestDeps.Jupiter.api)
     testRuntimeOnly(TestDeps.Jupiter.engine)
