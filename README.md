@@ -126,3 +126,9 @@ dependencies {
 
 ### Connection handling
 Refer the different adapter modules for details on how to use them.
+
+---
+
+## Supported By
+
+![JetBrains Open Source Support](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
