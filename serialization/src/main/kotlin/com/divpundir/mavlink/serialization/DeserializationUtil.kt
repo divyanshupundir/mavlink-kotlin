@@ -1,95 +1,92 @@
 package com.divpundir.mavlink.serialization
 
-import okio.Buffer
-import okio.BufferedSource
-
 /**
  * Reads a [Byte]/Int8 from the buffer's current position, and then increments the position. Returns `0` if there are
  * not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeInt8(): Byte =
-    decodePrimitive(Byte.SIZE_BYTES, 0, BufferedSource::readByte)
+public fun DataDecoder.decodeInt8(): Byte =
+    decodePrimitive(Byte.SIZE_BYTES, 0, DataDecoder::decodeByte)
 
 /**
  * Reads a [UByte]/UInt8 from the buffer's current position, and then increments the position. Returns `0u` if there are
  * not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeUInt8(): UByte =
-    decodePrimitive(UByte.SIZE_BYTES, 0u, BufferedSource::readUByte)
+public fun DataDecoder.decodeUInt8(): UByte =
+    decodePrimitive(UByte.SIZE_BYTES, 0u, DataDecoder::decodeUByte)
 
 /**
  * Reads a [Short]/Int16 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeInt16(): Short =
-    decodePrimitive(Short.SIZE_BYTES, 0, BufferedSource::readShortLe)
+public fun DataDecoder.decodeInt16(): Short =
+    decodePrimitive(Short.SIZE_BYTES, 0, DataDecoder::decodeShort)
 
 /**
  * Reads a [UShort]/UInt16 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0u` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeUInt16(): UShort =
-    decodePrimitive(UShort.SIZE_BYTES, 0u, BufferedSource::readUShortLe)
+public fun DataDecoder.decodeUInt16(): UShort =
+    decodePrimitive(UShort.SIZE_BYTES, 0u, DataDecoder::decodeUShort)
 
 /**
  * Reads a [Int]/Int32 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeInt32(): Int =
-    decodePrimitive(Int.SIZE_BYTES, 0, BufferedSource::readIntLe)
+public fun DataDecoder.decodeInt32(): Int =
+    decodePrimitive(Int.SIZE_BYTES, 0, DataDecoder::decodeInt)
 
 /**
  * Reads a [UInt]/UInt32 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0u` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeUInt32(): UInt =
-    decodePrimitive(UInt.SIZE_BYTES, 0u, BufferedSource::readUIntLe)
+public fun DataDecoder.decodeUInt32(): UInt =
+    decodePrimitive(UInt.SIZE_BYTES, 0u, DataDecoder::decodeUInt)
 
 /**
  * Reads a [Long]/Int64 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeInt64(): Long =
-    decodePrimitive(Long.SIZE_BYTES, 0, BufferedSource::readLongLe)
+public fun DataDecoder.decodeInt64(): Long =
+    decodePrimitive(Long.SIZE_BYTES, 0, DataDecoder::decodeLong)
 
 /**
  * Reads a [ULong]/UInt64 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0u` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeUInt64(): ULong =
-    decodePrimitive(ULong.SIZE_BYTES, 0u, BufferedSource::readULongLe)
+public fun DataDecoder.decodeUInt64(): ULong =
+    decodePrimitive(ULong.SIZE_BYTES, 0u, DataDecoder::decodeULong)
 
 /**
  * Reads a [Float]/Float32 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0F` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeFloat(): Float =
-    decodePrimitive(Float.SIZE_BYTES, 0F, BufferedSource::readFloatLe)
+public fun DataDecoder.decodeFloat(): Float =
+    decodePrimitive(Float.SIZE_BYTES, 0F) { Float.fromBits(this.decodeInt()) }
 
 /**
  * Reads a [Double]/Float64 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0.0` if there are not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeDouble(): Double =
-    decodePrimitive(Double.SIZE_BYTES, 0.0, BufferedSource::readDoubleLe)
+public fun DataDecoder.decodeDouble(): Double =
+    decodePrimitive(Double.SIZE_BYTES, 0.0) { Double.fromBits(this.decodeLong()) }
 
 /**
  * Reads a [Char] from the buffer's current position, and then increments the position. Returns `\u0000` if there are
  * not enough bytes in the buffer.
  */
-public fun BufferedSource.decodeChar(): Char =
-    if (this.request(Byte.SIZE_BYTES.toLong())) readByte().toInt().toChar() else '\u0000'
+public fun DataDecoder.decodeChar(): Char =
+    if (this.remaining >= Byte.SIZE_BYTES) decodeByte().toInt().toChar() else '\u0000'
 
 /**
  * Reads a [String] of the given [length] from the buffer's current position using the UTF-8 encoding, and then
  * increments the position. If there are not enough bytes in the buffer, the remaining length is ignored.
  */
-public fun BufferedSource.decodeString(length: Int): String {
+public fun DataDecoder.decodeString(length: Int): String {
     val data = ByteArray(length)
-    if (this.request(length.toLong())) {
-        this.read(data)
+    if (this.remaining >= length) {
+        this.decodeByteArray(data)
     } else {
-        this.read(data, 0, this.buffer.size.toInt())
+        this.decodeByteArray(data, 0, this.remaining)
     }
 
     for (i in 0 until length) {
@@ -102,77 +99,77 @@ public fun BufferedSource.decodeString(length: Int): String {
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded [Byte]/Int8 values.
  */
-public fun BufferedSource.decodeInt8Array(dataSize: Int): List<Byte> =
-    decodeArray(dataSize / Byte.SIZE_BYTES, BufferedSource::decodeInt8)
+public fun DataDecoder.decodeInt8Array(dataSize: Int): List<Byte> =
+    decodeArray(dataSize / Byte.SIZE_BYTES, DataDecoder::decodeInt8)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded [UByte]/UInt8 values.
  */
-public fun BufferedSource.decodeUInt8Array(dataSize: Int): List<UByte> =
-    decodeArray(dataSize / UByte.SIZE_BYTES, BufferedSource::decodeUInt8)
+public fun DataDecoder.decodeUInt8Array(dataSize: Int): List<UByte> =
+    decodeArray(dataSize / UByte.SIZE_BYTES, DataDecoder::decodeUInt8)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Short]/Int16 values.
  */
-public fun BufferedSource.decodeInt16Array(dataSize: Int): List<Short> =
-    decodeArray(dataSize / Short.SIZE_BYTES, BufferedSource::decodeInt16)
+public fun DataDecoder.decodeInt16Array(dataSize: Int): List<Short> =
+    decodeArray(dataSize / Short.SIZE_BYTES, DataDecoder::decodeInt16)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [UShort]/UInt16 values.
  */
-public fun BufferedSource.decodeUInt16Array(dataSize: Int): List<UShort> =
-    decodeArray(dataSize / Short.SIZE_BYTES, BufferedSource::decodeUInt16)
+public fun DataDecoder.decodeUInt16Array(dataSize: Int): List<UShort> =
+    decodeArray(dataSize / Short.SIZE_BYTES, DataDecoder::decodeUInt16)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Int]/Int32 values.
  */
-public fun BufferedSource.decodeInt32Array(dataSize: Int): List<Int> =
-    decodeArray(dataSize / Int.SIZE_BYTES, BufferedSource::decodeInt32)
+public fun DataDecoder.decodeInt32Array(dataSize: Int): List<Int> =
+    decodeArray(dataSize / Int.SIZE_BYTES, DataDecoder::decodeInt32)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [UInt]/UInt32 values.
  */
-public fun BufferedSource.decodeUInt32Array(dataSize: Int): List<UInt> =
-    decodeArray(dataSize / Int.SIZE_BYTES, BufferedSource::decodeUInt32)
+public fun DataDecoder.decodeUInt32Array(dataSize: Int): List<UInt> =
+    decodeArray(dataSize / Int.SIZE_BYTES, DataDecoder::decodeUInt32)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Long]/Int64 values.
  */
-public fun BufferedSource.decodeInt64Array(dataSize: Int): List<Long> =
-    decodeArray(dataSize / Long.SIZE_BYTES, BufferedSource::decodeInt64)
+public fun DataDecoder.decodeInt64Array(dataSize: Int): List<Long> =
+    decodeArray(dataSize / Long.SIZE_BYTES, DataDecoder::decodeInt64)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [ULong]/UInt64 values.
  */
-public fun BufferedSource.decodeUInt64Array(dataSize: Int): List<ULong> =
-    decodeArray(dataSize / Long.SIZE_BYTES, BufferedSource::decodeUInt64)
+public fun DataDecoder.decodeUInt64Array(dataSize: Int): List<ULong> =
+    decodeArray(dataSize / Long.SIZE_BYTES, DataDecoder::decodeUInt64)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Float]/Float32 values.
  */
-public fun BufferedSource.decodeFloatArray(dataSize: Int): List<Float> =
-    decodeArray(dataSize / Float.SIZE_BYTES, BufferedSource::decodeFloat)
+public fun DataDecoder.decodeFloatArray(dataSize: Int): List<Float> =
+    decodeArray(dataSize / Float.SIZE_BYTES, DataDecoder::decodeFloat)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Double]/Float64 values.
  */
-public fun BufferedSource.decodeDoubleArray(dataSize: Int): List<Double> =
-    decodeArray(dataSize / Double.SIZE_BYTES, BufferedSource::decodeDouble)
+public fun DataDecoder.decodeDoubleArray(dataSize: Int): List<Double> =
+    decodeArray(dataSize / Double.SIZE_BYTES, DataDecoder::decodeDouble)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * little-endian [UInt] representing the MAVLink enum value.
  */
-public fun BufferedSource.decodeEnumValue(dataSize: Int): UInt = when (dataSize) {
+public fun DataDecoder.decodeEnumValue(dataSize: Int): UInt = when (dataSize) {
     UByte.SIZE_BYTES -> decodeUInt8().toUInt()
     UShort.SIZE_BYTES -> decodeUInt16().toUInt()
     UInt.SIZE_BYTES -> decodeUInt32()
@@ -183,7 +180,7 @@ public fun BufferedSource.decodeEnumValue(dataSize: Int): UInt = when (dataSize)
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * little-endian [UInt] representing the MAVLink bitmask value.
  */
-public fun BufferedSource.decodeBitmaskValue(dataSize: Int): UInt = when (dataSize) {
+public fun DataDecoder.decodeBitmaskValue(dataSize: Int): UInt = when (dataSize) {
     UByte.SIZE_BYTES -> decodeUInt8().toUInt()
     UShort.SIZE_BYTES -> decodeUInt16().toUInt()
     UInt.SIZE_BYTES -> decodeUInt32()
@@ -194,12 +191,12 @@ public fun BufferedSource.decodeBitmaskValue(dataSize: Int): UInt = when (dataSi
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns the
  * unsigned value encoded as a little-endian [Long].
  */
-public fun BufferedSource.decodeUnsignedIntegerValue(dataSize: Int): Long {
+public fun DataDecoder.decodeUnsignedIntegerValue(dataSize: Int): Long {
     val data = ByteArray(dataSize)
-    if (request(dataSize.toLong())) {
-        this.read(data)
+    if (this.remaining >= dataSize) {
+        this.decodeByteArray(data)
     } else {
-        this.read(data, 0, this.buffer.size.toInt())
+        this.decodeByteArray(data, offset = 0, length = this.remaining)
     }
 
     var value: Long = 0
@@ -213,7 +210,7 @@ public fun BufferedSource.decodeUnsignedIntegerValue(dataSize: Int): Long {
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns the
  * signed value encoded as a little-endian [Long].
  */
-public fun BufferedSource.decodeSignedIntegerValue(dataSize: Int): Long {
+public fun DataDecoder.decodeSignedIntegerValue(dataSize: Int): Long {
     var value = decodeUnsignedIntegerValue(dataSize)
     val signBitIndex = dataSize * Byte.SIZE_BITS - 1
     if ((value shr signBitIndex) == 1L) {
@@ -222,33 +219,28 @@ public fun BufferedSource.decodeSignedIntegerValue(dataSize: Int): Long {
     return value
 }
 
-private inline fun <T : Any> BufferedSource.decodePrimitive(size: Int, default: T, decode: BufferedSource.() -> T): T {
-    if (this.exhausted()) {
+private inline fun <T : Any> DataDecoder.decodePrimitive(size: Int, default: T, decode: DataDecoder.() -> T): T {
+    if (this.remaining == 0) {
         return default
     }
 
-    if (this.request(size.toLong())) {
+    if (this.remaining >= size) {
         return this.decode()
     }
 
-    val rem = Buffer()
-    rem.write(this, this.buffer.size)
-    rem.write(ByteArray(size - this.buffer.size.toInt()))
+    val rem = ByteArray(size)
+    this.decodeByteArray(rem, offset = 0, length = this.remaining)
 
-    return rem.decode()
+    return this.factory().wrap(rem).decode()
 }
 
-private inline fun <T : Any> BufferedSource.decodeArray(elementCount: Int, decode: BufferedSource.() -> T): List<T> =
+private inline fun <T : Any> DataDecoder.decodeArray(elementCount: Int, decode: DataDecoder.() -> T): List<T> =
     List(elementCount) { this.decode() }
 
-private fun BufferedSource.readUByte(): UByte = this.readByte().toUByte()
+private fun DataDecoder.decodeUByte(): UByte = this.decodeByte().toUByte()
 
-private fun BufferedSource.readUShortLe(): UShort = this.readShortLe().toUShort()
+private fun DataDecoder.decodeUShort(): UShort = this.decodeShort().toUShort()
 
-private fun BufferedSource.readUIntLe(): UInt = this.readIntLe().toUInt()
+private fun DataDecoder.decodeUInt(): UInt = this.decodeInt().toUInt()
 
-private fun BufferedSource.readULongLe(): ULong = this.readLongLe().toULong()
-
-private fun BufferedSource.readFloatLe(): Float = Float.fromBits(this.readIntLe())
-
-private fun BufferedSource.readDoubleLe(): Double = Double.fromBits(this.readLongLe())
+private fun DataDecoder.decodeULong(): ULong = this.decodeLong().toULong()

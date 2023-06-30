@@ -12,7 +12,9 @@ public interface DataDecoder {
 
     public fun decodeLong(): Long
 
-    public fun decodeByteArray(dst: ByteArray)
+    public fun decodeByteArray(dst: ByteArray, offset: Int = 0, length: Int = dst.size)
+
+    public fun factory(): Factory
 
     public interface Factory {
 

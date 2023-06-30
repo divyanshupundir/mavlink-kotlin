@@ -14,7 +14,9 @@ public interface DataEncoder {
 
     public fun encodeLong(value: Long)
 
-    public fun encodeByteArray(src: ByteArray)
+    public fun encodeByteArray(src: ByteArray, offset: Int = 0, length: Int = src.size)
+
+    public fun factory(): Factory
 
     public interface Factory {
 

@@ -20,9 +20,11 @@ public class LittleEndianDataDecoder private constructor(
 
     override fun decodeLong(): Long = buffer.getLong()
 
-    override fun decodeByteArray(dst: ByteArray) {
-        buffer.get(dst)
+    override fun decodeByteArray(dst: ByteArray, offset: Int, length: Int) {
+        buffer.get(dst, offset, length)
     }
+
+    override fun factory(): DataDecoder.Factory = Companion
 
     public companion object : DataDecoder.Factory {
 

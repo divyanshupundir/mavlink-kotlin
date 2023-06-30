@@ -31,9 +31,11 @@ public class LittleEndianDataEncoder private constructor(
         buffer.putLong(value)
     }
 
-    override fun encodeByteArray(src: ByteArray) {
-        buffer.put(src)
+    override fun encodeByteArray(src: ByteArray, offset: Int, length: Int) {
+        buffer.put(src, offset, length)
     }
+
+    override fun factory(): DataEncoder.Factory = Companion
 
     public companion object : DataEncoder.Factory {
 
