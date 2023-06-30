@@ -1,46 +1,38 @@
 package com.divpundir.mavlink.serialization
 
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+
 public class LittleEndianDataEncoder private constructor(
-    private val size: Int
+    size: Int
 ) : DataEncoder {
 
-    private var position = 0
+    private val buffer = ByteBuffer.allocate(size).order(ByteOrder.LITTLE_ENDIAN)
 
-    override val bytes: ByteArray = ByteArray(size)
+    override val bytes: ByteArray
+        get() = buffer.array()
 
     override val remaining: Int
-        get() = size - position
+        get() = buffer.remaining()
 
     override fun encodeByte(value: Byte) {
-        bytes[position++] = value
+        buffer.put(value)
     }
 
     override fun encodeShort(value: Short) {
-        bytes[position++] = value.toByte()
-        bytes[position++] = (value.toInt() shr 8).toByte()
+        buffer.putShort(value)
     }
 
     override fun encodeInt(value: Int) {
-        bytes[position++] = value.toByte()
-        bytes[position++] = (value shr 8).toByte()
-        bytes[position++] = (value shr 16).toByte()
-        bytes[position++] = (value shr 24).toByte()
+        buffer.putInt(value)
     }
 
     override fun encodeLong(value: Long) {
-        bytes[position++] = value.toByte()
-        bytes[position++] = (value shr 8).toByte()
-        bytes[position++] = (value shr 16).toByte()
-        bytes[position++] = (value shr 24).toByte()
-        bytes[position++] = (value shr 32).toByte()
-        bytes[position++] = (value shr 40).toByte()
-        bytes[position++] = (value shr 48).toByte()
-        bytes[position++] = (value shr 56).toByte()
+        buffer.putLong(value)
     }
 
-    override fun encodeByteArray(value: ByteArray) {
-        value.copyInto(bytes, destinationOffset = position)
-        position += value.size
+    override fun encodeByteArray(src: ByteArray) {
+        buffer.put(src)
     }
 
     public companion object : DataEncoder.Factory {
