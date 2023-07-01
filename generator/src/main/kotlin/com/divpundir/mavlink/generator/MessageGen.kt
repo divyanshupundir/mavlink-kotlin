@@ -116,7 +116,7 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .addCode(
         buildCodeBlock {
             val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
-            addStatement("val $encoderName = %T.allocate($sizeV1)", LittleEndianDataEncoder::class)
+            addStatement("val $encoderName = %T.allocate(SIZE_V1)", LittleEndianDataEncoder::class)
             fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
             addStatement("return $encoderName.bytes")
         }
@@ -130,7 +130,7 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .addCode(
         buildCodeBlock {
             val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
-            addStatement("val $encoderName = %T.allocate($sizeV2)", LittleEndianDataEncoder::class)
+            addStatement("val $encoderName = %T.allocate(SIZE_V2)", LittleEndianDataEncoder::class)
             fields.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
             addStatement("return $encoderName.bytes.%M()", truncateZerosMemberName)
         }
