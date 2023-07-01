@@ -186,7 +186,7 @@ public fun MavDataEncoder.encodeBitmaskValue(value: UInt, dataSize: Int) {
  * Encodes the given [Long] into a [ByteArray] of size [dataSize], writes it to the array's current position, and then
  * increments the position.
  */
-public fun MavDataEncoder.encodeIntegerValue(value: Long, dataSize: Int) {
+public fun MavDataEncoder.encodeInteger(value: Long, dataSize: Int) {
     for (shift in 0 until dataSize) {
         this.encodeByte(((value shr (shift * 8)) and 0xFF).toByte())
     }
