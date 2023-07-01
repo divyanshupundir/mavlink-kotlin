@@ -7,6 +7,8 @@ import com.divpundir.mavlink.generator.models.FieldModel
 import com.divpundir.mavlink.generator.models.MessageModel
 import com.divpundir.mavlink.generator.models.sortedByPosition
 import com.divpundir.mavlink.serialization.CrcX25
+import com.divpundir.mavlink.serialization.LittleEndianDataDecoder
+import com.divpundir.mavlink.serialization.LittleEndianDataEncoder
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import okio.Buffer
@@ -43,6 +45,8 @@ private fun MessageModel.generatePrimaryConstructor(enumHelper: EnumHelper) = Fu
 private fun MessageModel.generateCompanionObject(packageName: String, enumHelper: EnumHelper) = TypeSpec
     .companionObjectBuilder()
     .addSuperinterface(MavMessage.MavCompanion::class.asClassName().parameterizedBy(getClassName(packageName)))
+    .addProperty(generateSizeV1Property())
+    .addProperty(generateSizeV2Property())
     .addProperty(generateIdProperty())
     .addProperty(generateCrcExtraProperty())
     .addFunction(generateDeserializeMethod(packageName, enumHelper))
@@ -53,6 +57,16 @@ private fun MessageModel.generateGeneratedAnnotation() = AnnotationSpec
     .builder(GeneratedMavMessage::class)
     .addMember("id = %Lu", id)
     .addMember("crcExtra = %L", crcExtra)
+    .build()
+
+private fun MessageModel.generateSizeV1Property() = PropertySpec
+    .builder("SIZE_V1", Int::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%L", sizeV1)
+    .build()
+
+private fun MessageModel.generateSizeV2Property() = PropertySpec
+    .builder("SIZE_V2", Int::class, KModifier.PRIVATE, KModifier.CONST)
+    .initializer("%L", sizeV2)
     .build()
 
 private fun MessageModel.generateIdProperty() = PropertySpec
@@ -72,10 +86,10 @@ private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelp
     .returns(getClassName(packageName))
     .addCode(
         buildCodeBlock {
-            val bufferName = if (fields.none { it.name == "buffer" }) "buffer" else "_buffer"
-            addStatement("val $bufferName = %T().write(bytes)", Buffer::class)
+            val decoderName = if (fields.none { it.name == "decoder" }) "decoder" else "_decoder"
+            addStatement("val $decoderName = %T.wrap(bytes)", LittleEndianDataDecoder::class)
             addStatement("")
-            fields.sorted().forEach { add(it.generateDeserializeStatement(bufferName, enumHelper)) }
+            fields.sorted().forEach { add(it.generateDeserializeStatement(decoderName, enumHelper)) }
             addStatement("")
             addStatement("return %T(", getClassName(packageName))
             indent()
@@ -101,10 +115,10 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
-            val bufferName = if (fields.none { it.name == "buffer" }) "buffer" else "_buffer"
-            addStatement("val $bufferName = %T()", Buffer::class)
-            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement(bufferName, enumHelper)) }
-            addStatement("return $bufferName.readByteArray()")
+            val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
+            addStatement("val $encoderName = %T.allocate($sizeV1)", LittleEndianDataEncoder::class)
+            fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
+            addStatement("return $encoderName.bytes")
         }
     )
     .build()
@@ -115,10 +129,10 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .returns(ByteArray::class)
     .addCode(
         buildCodeBlock {
-            val bufferName = if (fields.none { it.name == "buffer" }) "buffer" else "_buffer"
-            addStatement("val $bufferName = %T()", Buffer::class)
-            fields.sorted().forEach { add(it.generateSerializeStatement(bufferName, enumHelper)) }
-            addStatement("return $bufferName.readByteArray().%M()", truncateZerosMemberName)
+            val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
+            addStatement("val $encoderName = %T.allocate($sizeV2)", LittleEndianDataEncoder::class)
+            fields.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
+            addStatement("return $encoderName.bytes.%M()", truncateZerosMemberName)
         }
     )
     .build()
@@ -147,6 +161,12 @@ private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.
     .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
+
+private val MessageModel.sizeV1: Int
+    get() = fields.filter { !it.extension }.sumOf { it.size }
+
+private val MessageModel.sizeV2: Int
+    get() = fields.sumOf { it.size }
 
 private val truncateZerosMemberName = MemberName("com.divpundir.mavlink.serialization", "truncateZeros")
 
