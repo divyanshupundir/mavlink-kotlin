@@ -3,6 +3,9 @@ package com.divpundir.mavlink.serialization
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
+/**
+ * A [DataEncoder] implementation that writes the primitives according to the Little-Endian byte order.
+ */
 public class LittleEndianDataEncoder private constructor(
     size: Int
 ) : DataEncoder {
