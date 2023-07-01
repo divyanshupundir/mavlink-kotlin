@@ -4,84 +4,84 @@ package com.divpundir.mavlink.serialization
  * Reads a [Byte]/Int8 from the buffer's current position, and then increments the position. Returns `0` if there are
  * not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeInt8(): Byte =
-    decodePrimitive(Byte.SIZE_BYTES, 0, DataDecoder::decodeByte)
+public fun DataDecoder.safeDecodeInt8(): Byte =
+    safeDecodePrimitive(Byte.SIZE_BYTES, 0, DataDecoder::decodeByte)
 
 /**
  * Reads a [UByte]/UInt8 from the buffer's current position, and then increments the position. Returns `0u` if there are
  * not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeUInt8(): UByte =
-    decodePrimitive(UByte.SIZE_BYTES, 0u, DataDecoder::decodeUByte)
+public fun DataDecoder.safeDecodeUInt8(): UByte =
+    safeDecodePrimitive(UByte.SIZE_BYTES, 0u, DataDecoder::decodeUByte)
 
 /**
  * Reads a [Short]/Int16 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeInt16(): Short =
-    decodePrimitive(Short.SIZE_BYTES, 0, DataDecoder::decodeShort)
+public fun DataDecoder.safeDecodeInt16(): Short =
+    safeDecodePrimitive(Short.SIZE_BYTES, 0, DataDecoder::decodeShort)
 
 /**
  * Reads a [UShort]/UInt16 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0u` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeUInt16(): UShort =
-    decodePrimitive(UShort.SIZE_BYTES, 0u, DataDecoder::decodeUShort)
+public fun DataDecoder.safeDecodeUInt16(): UShort =
+    safeDecodePrimitive(UShort.SIZE_BYTES, 0u, DataDecoder::decodeUShort)
 
 /**
  * Reads a [Int]/Int32 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeInt32(): Int =
-    decodePrimitive(Int.SIZE_BYTES, 0, DataDecoder::decodeInt)
+public fun DataDecoder.safeDecodeInt32(): Int =
+    safeDecodePrimitive(Int.SIZE_BYTES, 0, DataDecoder::decodeInt)
 
 /**
  * Reads a [UInt]/UInt32 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0u` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeUInt32(): UInt =
-    decodePrimitive(UInt.SIZE_BYTES, 0u, DataDecoder::decodeUInt)
+public fun DataDecoder.safeDecodeUInt32(): UInt =
+    safeDecodePrimitive(UInt.SIZE_BYTES, 0u, DataDecoder::decodeUInt)
 
 /**
  * Reads a [Long]/Int64 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeInt64(): Long =
-    decodePrimitive(Long.SIZE_BYTES, 0, DataDecoder::decodeLong)
+public fun DataDecoder.safeDecodeInt64(): Long =
+    safeDecodePrimitive(Long.SIZE_BYTES, 0, DataDecoder::decodeLong)
 
 /**
  * Reads a [ULong]/UInt64 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0u` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeUInt64(): ULong =
-    decodePrimitive(ULong.SIZE_BYTES, 0u, DataDecoder::decodeULong)
+public fun DataDecoder.safeDecodeUInt64(): ULong =
+    safeDecodePrimitive(ULong.SIZE_BYTES, 0u, DataDecoder::decodeULong)
 
 /**
  * Reads a [Float]/Float32 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0F` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeFloat(): Float =
-    decodePrimitive(Float.SIZE_BYTES, 0F) { Float.fromBits(this.decodeInt()) }
+public fun DataDecoder.safeDecodeFloat(): Float =
+    safeDecodePrimitive(Float.SIZE_BYTES, 0F) { Float.fromBits(this.decodeInt()) }
 
 /**
  * Reads a [Double]/Float64 from the buffer's current position in little-endian order, and then increments the position.
  * Returns `0.0` if there are not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeDouble(): Double =
-    decodePrimitive(Double.SIZE_BYTES, 0.0) { Double.fromBits(this.decodeLong()) }
+public fun DataDecoder.safeDecodeDouble(): Double =
+    safeDecodePrimitive(Double.SIZE_BYTES, 0.0) { Double.fromBits(this.decodeLong()) }
 
 /**
  * Reads a [Char] from the buffer's current position, and then increments the position. Returns `\u0000` if there are
  * not enough bytes in the buffer.
  */
-public fun DataDecoder.decodeChar(): Char =
+public fun DataDecoder.safeDecodeChar(): Char =
     if (this.remaining >= Byte.SIZE_BYTES) decodeByte().toInt().toChar() else '\u0000'
 
 /**
  * Reads a [String] of the given [length] from the buffer's current position using the UTF-8 encoding, and then
  * increments the position. If there are not enough bytes in the buffer, the remaining length is ignored.
  */
-public fun DataDecoder.decodeString(length: Int): String {
+public fun DataDecoder.safeDecodeString(length: Int): String {
     val data = ByteArray(length)
     if (this.remaining >= length) {
         this.decodeByteArray(data)
@@ -99,80 +99,80 @@ public fun DataDecoder.decodeString(length: Int): String {
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded [Byte]/Int8 values.
  */
-public fun DataDecoder.decodeInt8Array(dataSize: Int): List<Byte> =
-    decodeArray(dataSize / Byte.SIZE_BYTES, DataDecoder::decodeInt8)
+public fun DataDecoder.safeDecodeInt8Array(dataSize: Int): List<Byte> =
+    safeDecodeArray(dataSize / Byte.SIZE_BYTES, DataDecoder::safeDecodeInt8)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded [UByte]/UInt8 values.
  */
-public fun DataDecoder.decodeUInt8Array(dataSize: Int): List<UByte> =
-    decodeArray(dataSize / UByte.SIZE_BYTES, DataDecoder::decodeUInt8)
+public fun DataDecoder.safeDecodeUInt8Array(dataSize: Int): List<UByte> =
+    safeDecodeArray(dataSize / UByte.SIZE_BYTES, DataDecoder::safeDecodeUInt8)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Short]/Int16 values.
  */
-public fun DataDecoder.decodeInt16Array(dataSize: Int): List<Short> =
-    decodeArray(dataSize / Short.SIZE_BYTES, DataDecoder::decodeInt16)
+public fun DataDecoder.safeDecodeInt16Array(dataSize: Int): List<Short> =
+    safeDecodeArray(dataSize / Short.SIZE_BYTES, DataDecoder::safeDecodeInt16)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [UShort]/UInt16 values.
  */
-public fun DataDecoder.decodeUInt16Array(dataSize: Int): List<UShort> =
-    decodeArray(dataSize / Short.SIZE_BYTES, DataDecoder::decodeUInt16)
+public fun DataDecoder.safeDecodeUInt16Array(dataSize: Int): List<UShort> =
+    safeDecodeArray(dataSize / Short.SIZE_BYTES, DataDecoder::safeDecodeUInt16)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Int]/Int32 values.
  */
-public fun DataDecoder.decodeInt32Array(dataSize: Int): List<Int> =
-    decodeArray(dataSize / Int.SIZE_BYTES, DataDecoder::decodeInt32)
+public fun DataDecoder.safeDecodeInt32Array(dataSize: Int): List<Int> =
+    safeDecodeArray(dataSize / Int.SIZE_BYTES, DataDecoder::safeDecodeInt32)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [UInt]/UInt32 values.
  */
-public fun DataDecoder.decodeUInt32Array(dataSize: Int): List<UInt> =
-    decodeArray(dataSize / Int.SIZE_BYTES, DataDecoder::decodeUInt32)
+public fun DataDecoder.safeDecodeUInt32Array(dataSize: Int): List<UInt> =
+    safeDecodeArray(dataSize / Int.SIZE_BYTES, DataDecoder::safeDecodeUInt32)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Long]/Int64 values.
  */
-public fun DataDecoder.decodeInt64Array(dataSize: Int): List<Long> =
-    decodeArray(dataSize / Long.SIZE_BYTES, DataDecoder::decodeInt64)
+public fun DataDecoder.safeDecodeInt64Array(dataSize: Int): List<Long> =
+    safeDecodeArray(dataSize / Long.SIZE_BYTES, DataDecoder::safeDecodeInt64)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [ULong]/UInt64 values.
  */
-public fun DataDecoder.decodeUInt64Array(dataSize: Int): List<ULong> =
-    decodeArray(dataSize / Long.SIZE_BYTES, DataDecoder::decodeUInt64)
+public fun DataDecoder.safeDecodeUInt64Array(dataSize: Int): List<ULong> =
+    safeDecodeArray(dataSize / Long.SIZE_BYTES, DataDecoder::safeDecodeUInt64)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Float]/Float32 values.
  */
-public fun DataDecoder.decodeFloatArray(dataSize: Int): List<Float> =
-    decodeArray(dataSize / Float.SIZE_BYTES, DataDecoder::decodeFloat)
+public fun DataDecoder.safeDecodeFloatArray(dataSize: Int): List<Float> =
+    safeDecodeArray(dataSize / Float.SIZE_BYTES, DataDecoder::safeDecodeFloat)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * [List] of the decoded little-endian [Double]/Float64 values.
  */
-public fun DataDecoder.decodeDoubleArray(dataSize: Int): List<Double> =
-    decodeArray(dataSize / Double.SIZE_BYTES, DataDecoder::decodeDouble)
+public fun DataDecoder.safeDecodeDoubleArray(dataSize: Int): List<Double> =
+    safeDecodeArray(dataSize / Double.SIZE_BYTES, DataDecoder::safeDecodeDouble)
 
 /**
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * little-endian [UInt] representing the MAVLink enum value.
  */
-public fun DataDecoder.decodeEnumValue(dataSize: Int): UInt = when (dataSize) {
-    UByte.SIZE_BYTES -> decodeUInt8().toUInt()
-    UShort.SIZE_BYTES -> decodeUInt16().toUInt()
-    UInt.SIZE_BYTES -> decodeUInt32()
+public fun DataDecoder.safeDecodeEnumValue(dataSize: Int): UInt = when (dataSize) {
+    UByte.SIZE_BYTES -> safeDecodeUInt8().toUInt()
+    UShort.SIZE_BYTES -> safeDecodeUInt16().toUInt()
+    UInt.SIZE_BYTES -> safeDecodeUInt32()
     else -> 0u
 }
 
@@ -180,10 +180,10 @@ public fun DataDecoder.decodeEnumValue(dataSize: Int): UInt = when (dataSize) {
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns a
  * little-endian [UInt] representing the MAVLink bitmask value.
  */
-public fun DataDecoder.decodeBitmaskValue(dataSize: Int): UInt = when (dataSize) {
-    UByte.SIZE_BYTES -> decodeUInt8().toUInt()
-    UShort.SIZE_BYTES -> decodeUInt16().toUInt()
-    UInt.SIZE_BYTES -> decodeUInt32()
+public fun DataDecoder.safeDecodeBitmaskValue(dataSize: Int): UInt = when (dataSize) {
+    UByte.SIZE_BYTES -> safeDecodeUInt8().toUInt()
+    UShort.SIZE_BYTES -> safeDecodeUInt16().toUInt()
+    UInt.SIZE_BYTES -> safeDecodeUInt32()
     else -> 0u
 }
 
@@ -191,7 +191,7 @@ public fun DataDecoder.decodeBitmaskValue(dataSize: Int): UInt = when (dataSize)
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns the
  * unsigned value encoded as a little-endian [Long].
  */
-public fun DataDecoder.decodeUnsignedIntegerValue(dataSize: Int): Long {
+public fun DataDecoder.safeDecodeUnsignedInteger(dataSize: Int): Long {
     val data = ByteArray(dataSize)
     if (this.remaining >= dataSize) {
         this.decodeByteArray(data)
@@ -210,8 +210,8 @@ public fun DataDecoder.decodeUnsignedIntegerValue(dataSize: Int): Long {
  * Reads [dataSize] number of bytes from the buffer's current position, and then increments the position. Returns the
  * signed value encoded as a little-endian [Long].
  */
-public fun DataDecoder.decodeSignedIntegerValue(dataSize: Int): Long {
-    var value = decodeUnsignedIntegerValue(dataSize)
+public fun DataDecoder.safeDecodeSignedInteger(dataSize: Int): Long {
+    var value = safeDecodeUnsignedInteger(dataSize)
     val signBitIndex = dataSize * Byte.SIZE_BITS - 1
     if ((value shr signBitIndex) == 1L) {
         value = value or (-1L shl signBitIndex)
@@ -219,7 +219,7 @@ public fun DataDecoder.decodeSignedIntegerValue(dataSize: Int): Long {
     return value
 }
 
-private inline fun <T : Any> DataDecoder.decodePrimitive(size: Int, default: T, decode: DataDecoder.() -> T): T {
+private inline fun <T : Any> DataDecoder.safeDecodePrimitive(size: Int, default: T, decode: DataDecoder.() -> T): T {
     if (this.remaining == 0) {
         return default
     }
@@ -234,7 +234,7 @@ private inline fun <T : Any> DataDecoder.decodePrimitive(size: Int, default: T, 
     return this.factory().wrap(rem).decode()
 }
 
-private inline fun <T : Any> DataDecoder.decodeArray(elementCount: Int, decode: DataDecoder.() -> T): List<T> =
+private inline fun <T : Any> DataDecoder.safeDecodeArray(elementCount: Int, decode: DataDecoder.() -> T): List<T> =
     List(elementCount) { this.decode() }
 
 private fun DataDecoder.decodeUByte(): UByte = this.decodeByte().toUByte()
