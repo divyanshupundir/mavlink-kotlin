@@ -45,7 +45,6 @@ dependencies {
 
     implementation(project(":api"))
     implementation(project(":serialization"))
-    implementation(Deps.okio)
 
     implementation(Deps.Jackson.dataFormatXml)
     implementation(Deps.Jackson.moduleKotlin)

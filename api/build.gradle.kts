@@ -16,7 +16,6 @@ tasks.test {
 }
 
 dependencies {
-    api(Deps.okio)
     implementation(Deps.Kotlin.immutableCollections)
 
     testImplementation(TestDeps.Jupiter.api)

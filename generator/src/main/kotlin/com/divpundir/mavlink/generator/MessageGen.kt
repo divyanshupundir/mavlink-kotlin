@@ -11,7 +11,6 @@ import com.divpundir.mavlink.serialization.LittleEndianDataDecoder
 import com.divpundir.mavlink.serialization.LittleEndianDataEncoder
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import okio.Buffer
 
 internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
     val message = TypeSpec.classBuilder(formattedName)
