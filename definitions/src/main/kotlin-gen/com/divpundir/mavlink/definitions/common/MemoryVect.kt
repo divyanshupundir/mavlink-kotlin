@@ -3,21 +3,23 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt8Array
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Send raw controller memory. The use of this message is discouraged for normal packets, but a
@@ -53,35 +55,39 @@ public data class MemoryVect(
   public override val instanceCompanion: MavMessage.MavCompanion<MemoryVect> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(address)
-    buffer.encodeUInt8(ver)
-    buffer.encodeUInt8(type)
-    buffer.encodeInt8Array(value, 32)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(address)
+    encoder.encodeUInt8(ver)
+    encoder.encodeUInt8(type)
+    encoder.encodeInt8Array(value, 32)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(address)
-    buffer.encodeUInt8(ver)
-    buffer.encodeUInt8(type)
-    buffer.encodeInt8Array(value, 32)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(address)
+    encoder.encodeUInt8(ver)
+    encoder.encodeUInt8(type)
+    encoder.encodeInt8Array(value, 32)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MemoryVect> {
+    private const val SIZE_V1: Int = 36
+
+    private const val SIZE_V2: Int = 36
+
     public override val id: UInt = 249u
 
     public override val crcExtra: Byte = -52
 
     public override fun deserialize(bytes: ByteArray): MemoryVect {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val address = buffer.decodeUInt16()
-      val ver = buffer.decodeUInt8()
-      val type = buffer.decodeUInt8()
-      val value = buffer.decodeInt8Array(32)
+      val address = decoder.safeDecodeUInt16()
+      val ver = decoder.safeDecodeUInt8()
+      val type = decoder.safeDecodeUInt8()
+      val value = decoder.safeDecodeInt8Array(32)
 
       return MemoryVect(
         address = address,

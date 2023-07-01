@@ -4,12 +4,14 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -17,7 +19,6 @@ import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Report status of a command. Includes feedback whether the command was executed. The command
@@ -79,43 +80,47 @@ public data class CommandAck(
   public override val instanceCompanion: MavMessage.MavCompanion<CommandAck> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeEnumValue(command.value, 2)
-    buffer.encodeEnumValue(result.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeEnumValue(command.value, 2)
+    encoder.encodeEnumValue(result.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeEnumValue(command.value, 2)
-    buffer.encodeEnumValue(result.value, 1)
-    buffer.encodeUInt8(progress)
-    buffer.encodeInt32(resultParam2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeEnumValue(command.value, 2)
+    encoder.encodeEnumValue(result.value, 1)
+    encoder.encodeUInt8(progress)
+    encoder.encodeInt32(resultParam2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CommandAck> {
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 10
+
     public override val id: UInt = 77u
 
     public override val crcExtra: Byte = -113
 
     public override fun deserialize(bytes: ByteArray): CommandAck {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val command = buffer.decodeEnumValue(2).let { value ->
+      val command = decoder.safeDecodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val result = buffer.decodeEnumValue(1).let { value ->
+      val result = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavResult.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val progress = buffer.decodeUInt8()
-      val resultParam2 = buffer.decodeInt32()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
+      val progress = decoder.safeDecodeUInt8()
+      val resultParam2 = decoder.safeDecodeInt32()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
 
       return CommandAck(
         command = command,

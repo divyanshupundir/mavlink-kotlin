@@ -5,16 +5,18 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -22,7 +24,6 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
@@ -112,68 +113,72 @@ public data class PositionTargetGlobalInt(
       Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(latInt)
-    buffer.encodeInt32(lonInt)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(vx)
-    buffer.encodeFloat(vy)
-    buffer.encodeFloat(vz)
-    buffer.encodeFloat(afx)
-    buffer.encodeFloat(afy)
-    buffer.encodeFloat(afz)
-    buffer.encodeFloat(yaw)
-    buffer.encodeFloat(yawRate)
-    buffer.encodeBitmaskValue(typeMask.value, 2)
-    buffer.encodeEnumValue(coordinateFrame.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(latInt)
+    encoder.encodeInt32(lonInt)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeFloat(afx)
+    encoder.encodeFloat(afy)
+    encoder.encodeFloat(afz)
+    encoder.encodeFloat(yaw)
+    encoder.encodeFloat(yawRate)
+    encoder.encodeBitmaskValue(typeMask.value, 2)
+    encoder.encodeEnumValue(coordinateFrame.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(latInt)
-    buffer.encodeInt32(lonInt)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(vx)
-    buffer.encodeFloat(vy)
-    buffer.encodeFloat(vz)
-    buffer.encodeFloat(afx)
-    buffer.encodeFloat(afy)
-    buffer.encodeFloat(afz)
-    buffer.encodeFloat(yaw)
-    buffer.encodeFloat(yawRate)
-    buffer.encodeBitmaskValue(typeMask.value, 2)
-    buffer.encodeEnumValue(coordinateFrame.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(latInt)
+    encoder.encodeInt32(lonInt)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeFloat(afx)
+    encoder.encodeFloat(afy)
+    encoder.encodeFloat(afz)
+    encoder.encodeFloat(yaw)
+    encoder.encodeFloat(yawRate)
+    encoder.encodeBitmaskValue(typeMask.value, 2)
+    encoder.encodeEnumValue(coordinateFrame.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<PositionTargetGlobalInt> {
+    private const val SIZE_V1: Int = 51
+
+    private const val SIZE_V2: Int = 51
+
     public override val id: UInt = 87u
 
     public override val crcExtra: Byte = -106
 
     public override fun deserialize(bytes: ByteArray): PositionTargetGlobalInt {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val latInt = buffer.decodeInt32()
-      val lonInt = buffer.decodeInt32()
-      val alt = buffer.decodeFloat()
-      val vx = buffer.decodeFloat()
-      val vy = buffer.decodeFloat()
-      val vz = buffer.decodeFloat()
-      val afx = buffer.decodeFloat()
-      val afy = buffer.decodeFloat()
-      val afz = buffer.decodeFloat()
-      val yaw = buffer.decodeFloat()
-      val yawRate = buffer.decodeFloat()
-      val typeMask = buffer.decodeBitmaskValue(2).let { value ->
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val latInt = decoder.safeDecodeInt32()
+      val lonInt = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeFloat()
+      val vx = decoder.safeDecodeFloat()
+      val vy = decoder.safeDecodeFloat()
+      val vz = decoder.safeDecodeFloat()
+      val afx = decoder.safeDecodeFloat()
+      val afy = decoder.safeDecodeFloat()
+      val afz = decoder.safeDecodeFloat()
+      val yaw = decoder.safeDecodeFloat()
+      val yawRate = decoder.safeDecodeFloat()
+      val typeMask = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = PositionTargetTypemask.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val coordinateFrame = buffer.decodeEnumValue(1).let { value ->
+      val coordinateFrame = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

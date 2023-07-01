@@ -6,13 +6,8 @@ import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -20,16 +15,23 @@ import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Low level message containing autopilot state relevant for a gimbal device. This message is to be
@@ -110,62 +112,66 @@ public data class AutopilotStateForGimbalDevice(
       Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeBootUs)
-    buffer.encodeFloatArray(q, 16)
-    buffer.encodeUInt32(qEstimatedDelayUs)
-    buffer.encodeFloat(vx)
-    buffer.encodeFloat(vy)
-    buffer.encodeFloat(vz)
-    buffer.encodeUInt32(vEstimatedDelayUs)
-    buffer.encodeFloat(feedForwardAngularVelocityZ)
-    buffer.encodeBitmaskValue(estimatorStatus.value, 2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(landedState.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeBootUs)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeUInt32(qEstimatedDelayUs)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeUInt32(vEstimatedDelayUs)
+    encoder.encodeFloat(feedForwardAngularVelocityZ)
+    encoder.encodeBitmaskValue(estimatorStatus.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(landedState.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeBootUs)
-    buffer.encodeFloatArray(q, 16)
-    buffer.encodeUInt32(qEstimatedDelayUs)
-    buffer.encodeFloat(vx)
-    buffer.encodeFloat(vy)
-    buffer.encodeFloat(vz)
-    buffer.encodeUInt32(vEstimatedDelayUs)
-    buffer.encodeFloat(feedForwardAngularVelocityZ)
-    buffer.encodeBitmaskValue(estimatorStatus.value, 2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(landedState.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeBootUs)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeUInt32(qEstimatedDelayUs)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeUInt32(vEstimatedDelayUs)
+    encoder.encodeFloat(feedForwardAngularVelocityZ)
+    encoder.encodeBitmaskValue(estimatorStatus.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(landedState.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AutopilotStateForGimbalDevice> {
+    private const val SIZE_V1: Int = 53
+
+    private const val SIZE_V2: Int = 53
+
     public override val id: UInt = 286u
 
     public override val crcExtra: Byte = -46
 
     public override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootUs = buffer.decodeUInt64()
-      val q = buffer.decodeFloatArray(16)
-      val qEstimatedDelayUs = buffer.decodeUInt32()
-      val vx = buffer.decodeFloat()
-      val vy = buffer.decodeFloat()
-      val vz = buffer.decodeFloat()
-      val vEstimatedDelayUs = buffer.decodeUInt32()
-      val feedForwardAngularVelocityZ = buffer.decodeFloat()
-      val estimatorStatus = buffer.decodeBitmaskValue(2).let { value ->
+      val timeBootUs = decoder.safeDecodeUInt64()
+      val q = decoder.safeDecodeFloatArray(16)
+      val qEstimatedDelayUs = decoder.safeDecodeUInt32()
+      val vx = decoder.safeDecodeFloat()
+      val vy = decoder.safeDecodeFloat()
+      val vz = decoder.safeDecodeFloat()
+      val vEstimatedDelayUs = decoder.safeDecodeUInt32()
+      val feedForwardAngularVelocityZ = decoder.safeDecodeFloat()
+      val estimatorStatus = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = EstimatorStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val landedState = buffer.decodeEnumValue(1).let { value ->
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val landedState = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

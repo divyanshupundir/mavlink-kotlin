@@ -4,14 +4,16 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Response from a GOPRO_COMMAND set request.
@@ -35,32 +37,36 @@ public data class GoproSetResponse(
   public override val instanceCompanion: MavMessage.MavCompanion<GoproSetResponse> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeEnumValue(cmdId.value, 1)
-    buffer.encodeEnumValue(status.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeEnumValue(cmdId.value, 1)
+    encoder.encodeEnumValue(status.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeEnumValue(cmdId.value, 1)
-    buffer.encodeEnumValue(status.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeEnumValue(cmdId.value, 1)
+    encoder.encodeEnumValue(status.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GoproSetResponse> {
+    private const val SIZE_V1: Int = 2
+
+    private const val SIZE_V2: Int = 2
+
     public override val id: UInt = 219u
 
     public override val crcExtra: Byte = -94
 
     public override fun deserialize(bytes: ByteArray): GoproSetResponse {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val cmdId = buffer.decodeEnumValue(1).let { value ->
+      val cmdId = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = GoproCommand.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val status = buffer.decodeEnumValue(1).let { value ->
+      val status = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = GoproRequestStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

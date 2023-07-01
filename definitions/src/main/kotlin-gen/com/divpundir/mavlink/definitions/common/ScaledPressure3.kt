@@ -3,20 +3,22 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Barometer readings for 3rd barometer
@@ -58,37 +60,41 @@ public data class ScaledPressure3(
   public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure3> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(pressAbs)
-    buffer.encodeFloat(pressDiff)
-    buffer.encodeInt16(temperature)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(pressAbs)
+    encoder.encodeFloat(pressDiff)
+    encoder.encodeInt16(temperature)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(pressAbs)
-    buffer.encodeFloat(pressDiff)
-    buffer.encodeInt16(temperature)
-    buffer.encodeInt16(temperaturePressDiff)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(pressAbs)
+    encoder.encodeFloat(pressDiff)
+    encoder.encodeInt16(temperature)
+    encoder.encodeInt16(temperaturePressDiff)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ScaledPressure3> {
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 16
+
     public override val id: UInt = 143u
 
     public override val crcExtra: Byte = -125
 
     public override fun deserialize(bytes: ByteArray): ScaledPressure3 {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val pressAbs = buffer.decodeFloat()
-      val pressDiff = buffer.decodeFloat()
-      val temperature = buffer.decodeInt16()
-      val temperaturePressDiff = buffer.decodeInt16()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val pressAbs = decoder.safeDecodeFloat()
+      val pressDiff = decoder.safeDecodeFloat()
+      val temperature = decoder.safeDecodeInt16()
+      val temperaturePressDiff = decoder.safeDecodeInt16()
 
       return ScaledPressure3(
         timeBootMs = timeBootMs,

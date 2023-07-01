@@ -3,14 +3,16 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -19,7 +21,6 @@ import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Water depth
@@ -88,56 +89,60 @@ public data class WaterDepth(
   public override val instanceCompanion: MavMessage.MavCompanion<WaterDepth> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lng)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(roll)
-    buffer.encodeFloat(pitch)
-    buffer.encodeFloat(yaw)
-    buffer.encodeFloat(distance)
-    buffer.encodeFloat(temperature)
-    buffer.encodeUInt8(id)
-    buffer.encodeUInt8(healthy)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lng)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(roll)
+    encoder.encodeFloat(pitch)
+    encoder.encodeFloat(yaw)
+    encoder.encodeFloat(distance)
+    encoder.encodeFloat(temperature)
+    encoder.encodeUInt8(id)
+    encoder.encodeUInt8(healthy)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lng)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(roll)
-    buffer.encodeFloat(pitch)
-    buffer.encodeFloat(yaw)
-    buffer.encodeFloat(distance)
-    buffer.encodeFloat(temperature)
-    buffer.encodeUInt8(id)
-    buffer.encodeUInt8(healthy)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lng)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(roll)
+    encoder.encodeFloat(pitch)
+    encoder.encodeFloat(yaw)
+    encoder.encodeFloat(distance)
+    encoder.encodeFloat(temperature)
+    encoder.encodeUInt8(id)
+    encoder.encodeUInt8(healthy)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WaterDepth> {
+    private const val SIZE_V1: Int = 38
+
+    private const val SIZE_V2: Int = 38
+
     public override val id: UInt = 11_038u
 
     public override val crcExtra: Byte = 47
 
     public override fun deserialize(bytes: ByteArray): WaterDepth {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val lat = buffer.decodeInt32()
-      val lng = buffer.decodeInt32()
-      val alt = buffer.decodeFloat()
-      val roll = buffer.decodeFloat()
-      val pitch = buffer.decodeFloat()
-      val yaw = buffer.decodeFloat()
-      val distance = buffer.decodeFloat()
-      val temperature = buffer.decodeFloat()
-      val id = buffer.decodeUInt8()
-      val healthy = buffer.decodeUInt8()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val lat = decoder.safeDecodeInt32()
+      val lng = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeFloat()
+      val roll = decoder.safeDecodeFloat()
+      val pitch = decoder.safeDecodeFloat()
+      val yaw = decoder.safeDecodeFloat()
+      val distance = decoder.safeDecodeFloat()
+      val temperature = decoder.safeDecodeFloat()
+      val id = decoder.safeDecodeUInt8()
+      val healthy = decoder.safeDecodeUInt8()
 
       return WaterDepth(
         timeBootMs = timeBootMs,

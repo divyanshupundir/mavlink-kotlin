@@ -7,22 +7,24 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.definitions.common.MavDistanceSensor
 import com.divpundir.mavlink.definitions.common.MavFrame
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Obstacle located as a 3D vector.
@@ -83,53 +85,57 @@ public data class ObstacleDistance3d(
   public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance3d> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(x)
-    buffer.encodeFloat(y)
-    buffer.encodeFloat(z)
-    buffer.encodeFloat(minDistance)
-    buffer.encodeFloat(maxDistance)
-    buffer.encodeUInt16(obstacleId)
-    buffer.encodeEnumValue(sensorType.value, 1)
-    buffer.encodeEnumValue(frame.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    encoder.encodeFloat(minDistance)
+    encoder.encodeFloat(maxDistance)
+    encoder.encodeUInt16(obstacleId)
+    encoder.encodeEnumValue(sensorType.value, 1)
+    encoder.encodeEnumValue(frame.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(x)
-    buffer.encodeFloat(y)
-    buffer.encodeFloat(z)
-    buffer.encodeFloat(minDistance)
-    buffer.encodeFloat(maxDistance)
-    buffer.encodeUInt16(obstacleId)
-    buffer.encodeEnumValue(sensorType.value, 1)
-    buffer.encodeEnumValue(frame.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    encoder.encodeFloat(minDistance)
+    encoder.encodeFloat(maxDistance)
+    encoder.encodeUInt16(obstacleId)
+    encoder.encodeEnumValue(sensorType.value, 1)
+    encoder.encodeEnumValue(frame.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ObstacleDistance3d> {
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
+
     public override val id: UInt = 11_037u
 
     public override val crcExtra: Byte = -126
 
     public override fun deserialize(bytes: ByteArray): ObstacleDistance3d {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val x = buffer.decodeFloat()
-      val y = buffer.decodeFloat()
-      val z = buffer.decodeFloat()
-      val minDistance = buffer.decodeFloat()
-      val maxDistance = buffer.decodeFloat()
-      val obstacleId = buffer.decodeUInt16()
-      val sensorType = buffer.decodeEnumValue(1).let { value ->
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val x = decoder.safeDecodeFloat()
+      val y = decoder.safeDecodeFloat()
+      val z = decoder.safeDecodeFloat()
+      val minDistance = decoder.safeDecodeFloat()
+      val maxDistance = decoder.safeDecodeFloat()
+      val obstacleId = decoder.safeDecodeUInt16()
+      val sensorType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavDistanceSensor.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val frame = buffer.decodeEnumValue(1).let { value ->
+      val frame = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

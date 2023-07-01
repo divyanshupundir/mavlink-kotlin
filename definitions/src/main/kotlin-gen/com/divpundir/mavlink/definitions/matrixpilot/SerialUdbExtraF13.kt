@@ -3,10 +3,12 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -14,7 +16,6 @@ import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F13: format
@@ -48,35 +49,39 @@ public data class SerialUdbExtraF13(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF13> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(sueLatOrigin)
-    buffer.encodeInt32(sueLonOrigin)
-    buffer.encodeInt32(sueAltOrigin)
-    buffer.encodeInt16(sueWeekNo)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(sueLatOrigin)
+    encoder.encodeInt32(sueLonOrigin)
+    encoder.encodeInt32(sueAltOrigin)
+    encoder.encodeInt16(sueWeekNo)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(sueLatOrigin)
-    buffer.encodeInt32(sueLonOrigin)
-    buffer.encodeInt32(sueAltOrigin)
-    buffer.encodeInt16(sueWeekNo)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(sueLatOrigin)
+    encoder.encodeInt32(sueLonOrigin)
+    encoder.encodeInt32(sueAltOrigin)
+    encoder.encodeInt16(sueWeekNo)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF13> {
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 14
+
     public override val id: UInt = 177u
 
     public override val crcExtra: Byte = -7
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF13 {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val sueLatOrigin = buffer.decodeInt32()
-      val sueLonOrigin = buffer.decodeInt32()
-      val sueAltOrigin = buffer.decodeInt32()
-      val sueWeekNo = buffer.decodeInt16()
+      val sueLatOrigin = decoder.safeDecodeInt32()
+      val sueLonOrigin = decoder.safeDecodeInt32()
+      val sueAltOrigin = decoder.safeDecodeInt32()
+      val sueWeekNo = decoder.safeDecodeInt16()
 
       return SerialUdbExtraF13(
         sueWeekNo = sueWeekNo,

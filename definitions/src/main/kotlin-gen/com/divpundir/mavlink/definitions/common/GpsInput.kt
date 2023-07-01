@@ -4,13 +4,8 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
@@ -18,6 +13,13 @@ import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -28,7 +30,6 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global
@@ -142,82 +143,86 @@ public data class GpsInput(
   public override val instanceCompanion: MavMessage.MavCompanion<GpsInput> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeUInt32(timeWeekMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(hdop)
-    buffer.encodeFloat(vdop)
-    buffer.encodeFloat(vn)
-    buffer.encodeFloat(ve)
-    buffer.encodeFloat(vd)
-    buffer.encodeFloat(speedAccuracy)
-    buffer.encodeFloat(horizAccuracy)
-    buffer.encodeFloat(vertAccuracy)
-    buffer.encodeBitmaskValue(ignoreFlags.value, 2)
-    buffer.encodeUInt16(timeWeek)
-    buffer.encodeUInt8(gpsId)
-    buffer.encodeUInt8(fixType)
-    buffer.encodeUInt8(satellitesVisible)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(timeWeekMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(hdop)
+    encoder.encodeFloat(vdop)
+    encoder.encodeFloat(vn)
+    encoder.encodeFloat(ve)
+    encoder.encodeFloat(vd)
+    encoder.encodeFloat(speedAccuracy)
+    encoder.encodeFloat(horizAccuracy)
+    encoder.encodeFloat(vertAccuracy)
+    encoder.encodeBitmaskValue(ignoreFlags.value, 2)
+    encoder.encodeUInt16(timeWeek)
+    encoder.encodeUInt8(gpsId)
+    encoder.encodeUInt8(fixType)
+    encoder.encodeUInt8(satellitesVisible)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeUInt32(timeWeekMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(hdop)
-    buffer.encodeFloat(vdop)
-    buffer.encodeFloat(vn)
-    buffer.encodeFloat(ve)
-    buffer.encodeFloat(vd)
-    buffer.encodeFloat(speedAccuracy)
-    buffer.encodeFloat(horizAccuracy)
-    buffer.encodeFloat(vertAccuracy)
-    buffer.encodeBitmaskValue(ignoreFlags.value, 2)
-    buffer.encodeUInt16(timeWeek)
-    buffer.encodeUInt8(gpsId)
-    buffer.encodeUInt8(fixType)
-    buffer.encodeUInt8(satellitesVisible)
-    buffer.encodeUInt16(yaw)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(timeWeekMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(hdop)
+    encoder.encodeFloat(vdop)
+    encoder.encodeFloat(vn)
+    encoder.encodeFloat(ve)
+    encoder.encodeFloat(vd)
+    encoder.encodeFloat(speedAccuracy)
+    encoder.encodeFloat(horizAccuracy)
+    encoder.encodeFloat(vertAccuracy)
+    encoder.encodeBitmaskValue(ignoreFlags.value, 2)
+    encoder.encodeUInt16(timeWeek)
+    encoder.encodeUInt8(gpsId)
+    encoder.encodeUInt8(fixType)
+    encoder.encodeUInt8(satellitesVisible)
+    encoder.encodeUInt16(yaw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GpsInput> {
+    private const val SIZE_V1: Int = 63
+
+    private const val SIZE_V2: Int = 65
+
     public override val id: UInt = 232u
 
     public override val crcExtra: Byte = -105
 
     public override fun deserialize(bytes: ByteArray): GpsInput {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val timeWeekMs = buffer.decodeUInt32()
-      val lat = buffer.decodeInt32()
-      val lon = buffer.decodeInt32()
-      val alt = buffer.decodeFloat()
-      val hdop = buffer.decodeFloat()
-      val vdop = buffer.decodeFloat()
-      val vn = buffer.decodeFloat()
-      val ve = buffer.decodeFloat()
-      val vd = buffer.decodeFloat()
-      val speedAccuracy = buffer.decodeFloat()
-      val horizAccuracy = buffer.decodeFloat()
-      val vertAccuracy = buffer.decodeFloat()
-      val ignoreFlags = buffer.decodeBitmaskValue(2).let { value ->
+      val timeUsec = decoder.safeDecodeUInt64()
+      val timeWeekMs = decoder.safeDecodeUInt32()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeFloat()
+      val hdop = decoder.safeDecodeFloat()
+      val vdop = decoder.safeDecodeFloat()
+      val vn = decoder.safeDecodeFloat()
+      val ve = decoder.safeDecodeFloat()
+      val vd = decoder.safeDecodeFloat()
+      val speedAccuracy = decoder.safeDecodeFloat()
+      val horizAccuracy = decoder.safeDecodeFloat()
+      val vertAccuracy = decoder.safeDecodeFloat()
+      val ignoreFlags = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = GpsInputIgnoreFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val timeWeek = buffer.decodeUInt16()
-      val gpsId = buffer.decodeUInt8()
-      val fixType = buffer.decodeUInt8()
-      val satellitesVisible = buffer.decodeUInt8()
-      val yaw = buffer.decodeUInt16()
+      val timeWeek = decoder.safeDecodeUInt16()
+      val gpsId = decoder.safeDecodeUInt8()
+      val fixType = decoder.safeDecodeUInt8()
+      val satellitesVisible = decoder.safeDecodeUInt8()
+      val yaw = decoder.safeDecodeUInt16()
 
       return GpsInput(
         timeUsec = timeUsec,

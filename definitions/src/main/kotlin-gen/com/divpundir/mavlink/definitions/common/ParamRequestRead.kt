@@ -3,21 +3,23 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Request to read the onboard parameter with the param_id string id. Onboard parameters are stored
@@ -59,35 +61,39 @@ public data class ParamRequestRead(
   public override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt16(paramIndex)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeString(paramId, 16)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt16(paramIndex)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeString(paramId, 16)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt16(paramIndex)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeString(paramId, 16)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt16(paramIndex)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeString(paramId, 16)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ParamRequestRead> {
+    private const val SIZE_V1: Int = 20
+
+    private const val SIZE_V2: Int = 20
+
     public override val id: UInt = 20u
 
     public override val crcExtra: Byte = -42
 
     public override fun deserialize(bytes: ByteArray): ParamRequestRead {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val paramIndex = buffer.decodeInt16()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val paramId = buffer.decodeString(16)
+      val paramIndex = decoder.safeDecodeInt16()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val paramId = decoder.safeDecodeString(16)
 
       return ParamRequestRead(
         targetSystem = targetSystem,

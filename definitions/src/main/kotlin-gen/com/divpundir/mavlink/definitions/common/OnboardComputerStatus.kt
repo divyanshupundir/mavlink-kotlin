@@ -4,14 +4,8 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeInt16Array
-import com.divpundir.mavlink.serialization.decodeInt8
-import com.divpundir.mavlink.serialization.decodeInt8Array
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt32Array
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16Array
 import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeInt8Array
@@ -20,16 +14,24 @@ import com.divpundir.mavlink.serialization.encodeUInt32Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeInt16Array
+import com.divpundir.mavlink.serialization.safeDecodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Hardware status sent by an onboard computer.
@@ -156,83 +158,87 @@ public data class OnboardComputerStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<OnboardComputerStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeUInt32(uptime)
-    buffer.encodeUInt32(ramUsage)
-    buffer.encodeUInt32(ramTotal)
-    buffer.encodeUInt32Array(storageType, 16)
-    buffer.encodeUInt32Array(storageUsage, 16)
-    buffer.encodeUInt32Array(storageTotal, 16)
-    buffer.encodeUInt32Array(linkType, 24)
-    buffer.encodeUInt32Array(linkTxRate, 24)
-    buffer.encodeUInt32Array(linkRxRate, 24)
-    buffer.encodeUInt32Array(linkTxMax, 24)
-    buffer.encodeUInt32Array(linkRxMax, 24)
-    buffer.encodeInt16Array(fanSpeed, 8)
-    buffer.encodeUInt8(type)
-    buffer.encodeUInt8Array(cpuCores, 8)
-    buffer.encodeUInt8Array(cpuCombined, 10)
-    buffer.encodeUInt8Array(gpuCores, 4)
-    buffer.encodeUInt8Array(gpuCombined, 10)
-    buffer.encodeInt8(temperatureBoard)
-    buffer.encodeInt8Array(temperatureCore, 8)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(uptime)
+    encoder.encodeUInt32(ramUsage)
+    encoder.encodeUInt32(ramTotal)
+    encoder.encodeUInt32Array(storageType, 16)
+    encoder.encodeUInt32Array(storageUsage, 16)
+    encoder.encodeUInt32Array(storageTotal, 16)
+    encoder.encodeUInt32Array(linkType, 24)
+    encoder.encodeUInt32Array(linkTxRate, 24)
+    encoder.encodeUInt32Array(linkRxRate, 24)
+    encoder.encodeUInt32Array(linkTxMax, 24)
+    encoder.encodeUInt32Array(linkRxMax, 24)
+    encoder.encodeInt16Array(fanSpeed, 8)
+    encoder.encodeUInt8(type)
+    encoder.encodeUInt8Array(cpuCores, 8)
+    encoder.encodeUInt8Array(cpuCombined, 10)
+    encoder.encodeUInt8Array(gpuCores, 4)
+    encoder.encodeUInt8Array(gpuCombined, 10)
+    encoder.encodeInt8(temperatureBoard)
+    encoder.encodeInt8Array(temperatureCore, 8)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeUInt32(uptime)
-    buffer.encodeUInt32(ramUsage)
-    buffer.encodeUInt32(ramTotal)
-    buffer.encodeUInt32Array(storageType, 16)
-    buffer.encodeUInt32Array(storageUsage, 16)
-    buffer.encodeUInt32Array(storageTotal, 16)
-    buffer.encodeUInt32Array(linkType, 24)
-    buffer.encodeUInt32Array(linkTxRate, 24)
-    buffer.encodeUInt32Array(linkRxRate, 24)
-    buffer.encodeUInt32Array(linkTxMax, 24)
-    buffer.encodeUInt32Array(linkRxMax, 24)
-    buffer.encodeInt16Array(fanSpeed, 8)
-    buffer.encodeUInt8(type)
-    buffer.encodeUInt8Array(cpuCores, 8)
-    buffer.encodeUInt8Array(cpuCombined, 10)
-    buffer.encodeUInt8Array(gpuCores, 4)
-    buffer.encodeUInt8Array(gpuCombined, 10)
-    buffer.encodeInt8(temperatureBoard)
-    buffer.encodeInt8Array(temperatureCore, 8)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(uptime)
+    encoder.encodeUInt32(ramUsage)
+    encoder.encodeUInt32(ramTotal)
+    encoder.encodeUInt32Array(storageType, 16)
+    encoder.encodeUInt32Array(storageUsage, 16)
+    encoder.encodeUInt32Array(storageTotal, 16)
+    encoder.encodeUInt32Array(linkType, 24)
+    encoder.encodeUInt32Array(linkTxRate, 24)
+    encoder.encodeUInt32Array(linkRxRate, 24)
+    encoder.encodeUInt32Array(linkTxMax, 24)
+    encoder.encodeUInt32Array(linkRxMax, 24)
+    encoder.encodeInt16Array(fanSpeed, 8)
+    encoder.encodeUInt8(type)
+    encoder.encodeUInt8Array(cpuCores, 8)
+    encoder.encodeUInt8Array(cpuCombined, 10)
+    encoder.encodeUInt8Array(gpuCores, 4)
+    encoder.encodeUInt8Array(gpuCombined, 10)
+    encoder.encodeInt8(temperatureBoard)
+    encoder.encodeInt8Array(temperatureCore, 8)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OnboardComputerStatus> {
+    private const val SIZE_V1: Int = 238
+
+    private const val SIZE_V2: Int = 238
+
     public override val id: UInt = 390u
 
     public override val crcExtra: Byte = -100
 
     public override fun deserialize(bytes: ByteArray): OnboardComputerStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val uptime = buffer.decodeUInt32()
-      val ramUsage = buffer.decodeUInt32()
-      val ramTotal = buffer.decodeUInt32()
-      val storageType = buffer.decodeUInt32Array(16)
-      val storageUsage = buffer.decodeUInt32Array(16)
-      val storageTotal = buffer.decodeUInt32Array(16)
-      val linkType = buffer.decodeUInt32Array(24)
-      val linkTxRate = buffer.decodeUInt32Array(24)
-      val linkRxRate = buffer.decodeUInt32Array(24)
-      val linkTxMax = buffer.decodeUInt32Array(24)
-      val linkRxMax = buffer.decodeUInt32Array(24)
-      val fanSpeed = buffer.decodeInt16Array(8)
-      val type = buffer.decodeUInt8()
-      val cpuCores = buffer.decodeUInt8Array(8)
-      val cpuCombined = buffer.decodeUInt8Array(10)
-      val gpuCores = buffer.decodeUInt8Array(4)
-      val gpuCombined = buffer.decodeUInt8Array(10)
-      val temperatureBoard = buffer.decodeInt8()
-      val temperatureCore = buffer.decodeInt8Array(8)
+      val timeUsec = decoder.safeDecodeUInt64()
+      val uptime = decoder.safeDecodeUInt32()
+      val ramUsage = decoder.safeDecodeUInt32()
+      val ramTotal = decoder.safeDecodeUInt32()
+      val storageType = decoder.safeDecodeUInt32Array(16)
+      val storageUsage = decoder.safeDecodeUInt32Array(16)
+      val storageTotal = decoder.safeDecodeUInt32Array(16)
+      val linkType = decoder.safeDecodeUInt32Array(24)
+      val linkTxRate = decoder.safeDecodeUInt32Array(24)
+      val linkRxRate = decoder.safeDecodeUInt32Array(24)
+      val linkTxMax = decoder.safeDecodeUInt32Array(24)
+      val linkRxMax = decoder.safeDecodeUInt32Array(24)
+      val fanSpeed = decoder.safeDecodeInt16Array(8)
+      val type = decoder.safeDecodeUInt8()
+      val cpuCores = decoder.safeDecodeUInt8Array(8)
+      val cpuCombined = decoder.safeDecodeUInt8Array(10)
+      val gpuCores = decoder.safeDecodeUInt8Array(4)
+      val gpuCombined = decoder.safeDecodeUInt8Array(10)
+      val temperatureBoard = decoder.safeDecodeInt8()
+      val temperatureCore = decoder.safeDecodeInt8Array(8)
 
       return OnboardComputerStatus(
         timeUsec = timeUsec,

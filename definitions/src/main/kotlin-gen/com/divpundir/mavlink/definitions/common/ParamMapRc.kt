@@ -3,24 +3,26 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.Short
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
@@ -85,50 +87,54 @@ public data class ParamMapRc(
   public override val instanceCompanion: MavMessage.MavCompanion<ParamMapRc> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(paramValue0)
-    buffer.encodeFloat(scale)
-    buffer.encodeFloat(paramValueMin)
-    buffer.encodeFloat(paramValueMax)
-    buffer.encodeInt16(paramIndex)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeString(paramId, 16)
-    buffer.encodeUInt8(parameterRcChannelIndex)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(paramValue0)
+    encoder.encodeFloat(scale)
+    encoder.encodeFloat(paramValueMin)
+    encoder.encodeFloat(paramValueMax)
+    encoder.encodeInt16(paramIndex)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeString(paramId, 16)
+    encoder.encodeUInt8(parameterRcChannelIndex)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(paramValue0)
-    buffer.encodeFloat(scale)
-    buffer.encodeFloat(paramValueMin)
-    buffer.encodeFloat(paramValueMax)
-    buffer.encodeInt16(paramIndex)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeString(paramId, 16)
-    buffer.encodeUInt8(parameterRcChannelIndex)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(paramValue0)
+    encoder.encodeFloat(scale)
+    encoder.encodeFloat(paramValueMin)
+    encoder.encodeFloat(paramValueMax)
+    encoder.encodeInt16(paramIndex)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeString(paramId, 16)
+    encoder.encodeUInt8(parameterRcChannelIndex)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ParamMapRc> {
+    private const val SIZE_V1: Int = 37
+
+    private const val SIZE_V2: Int = 37
+
     public override val id: UInt = 50u
 
     public override val crcExtra: Byte = 78
 
     public override fun deserialize(bytes: ByteArray): ParamMapRc {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val paramValue0 = buffer.decodeFloat()
-      val scale = buffer.decodeFloat()
-      val paramValueMin = buffer.decodeFloat()
-      val paramValueMax = buffer.decodeFloat()
-      val paramIndex = buffer.decodeInt16()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val paramId = buffer.decodeString(16)
-      val parameterRcChannelIndex = buffer.decodeUInt8()
+      val paramValue0 = decoder.safeDecodeFloat()
+      val scale = decoder.safeDecodeFloat()
+      val paramValueMin = decoder.safeDecodeFloat()
+      val paramValueMax = decoder.safeDecodeFloat()
+      val paramIndex = decoder.safeDecodeInt16()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val paramId = decoder.safeDecodeString(16)
+      val parameterRcChannelIndex = decoder.safeDecodeUInt8()
 
       return ParamMapRc(
         targetSystem = targetSystem,

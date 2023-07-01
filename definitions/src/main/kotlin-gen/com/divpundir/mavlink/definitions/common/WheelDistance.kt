@@ -3,22 +3,24 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeDoubleArray
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeDoubleArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeDoubleArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Double
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Cumulative distance traveled for each reported wheel.
@@ -49,32 +51,36 @@ public data class WheelDistance(
   public override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeDoubleArray(distance, 128)
-    buffer.encodeUInt8(count)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeDoubleArray(distance, 128)
+    encoder.encodeUInt8(count)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeDoubleArray(distance, 128)
-    buffer.encodeUInt8(count)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeDoubleArray(distance, 128)
+    encoder.encodeUInt8(count)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WheelDistance> {
+    private const val SIZE_V1: Int = 137
+
+    private const val SIZE_V2: Int = 137
+
     public override val id: UInt = 9_000u
 
     public override val crcExtra: Byte = 113
 
     public override fun deserialize(bytes: ByteArray): WheelDistance {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val distance = buffer.decodeDoubleArray(128)
-      val count = buffer.decodeUInt8()
+      val timeUsec = decoder.safeDecodeUInt64()
+      val distance = decoder.safeDecodeDoubleArray(128)
+      val count = decoder.safeDecodeUInt8()
 
       return WheelDistance(
         timeUsec = timeUsec,

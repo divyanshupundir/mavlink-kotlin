@@ -3,19 +3,21 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
+import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Set the magnetometer offsets
@@ -55,38 +57,42 @@ public data class SetMagOffsets(
   public override val instanceCompanion: MavMessage.MavCompanion<SetMagOffsets> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt16(magOfsX)
-    buffer.encodeInt16(magOfsY)
-    buffer.encodeInt16(magOfsZ)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt16(magOfsX)
+    encoder.encodeInt16(magOfsY)
+    encoder.encodeInt16(magOfsZ)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt16(magOfsX)
-    buffer.encodeInt16(magOfsY)
-    buffer.encodeInt16(magOfsZ)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt16(magOfsX)
+    encoder.encodeInt16(magOfsY)
+    encoder.encodeInt16(magOfsZ)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SetMagOffsets> {
+    private const val SIZE_V1: Int = 8
+
+    private const val SIZE_V2: Int = 8
+
     public override val id: UInt = 151u
 
     public override val crcExtra: Byte = -37
 
     public override fun deserialize(bytes: ByteArray): SetMagOffsets {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val magOfsX = buffer.decodeInt16()
-      val magOfsY = buffer.decodeInt16()
-      val magOfsZ = buffer.decodeInt16()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
+      val magOfsX = decoder.safeDecodeInt16()
+      val magOfsY = decoder.safeDecodeInt16()
+      val magOfsZ = decoder.safeDecodeInt16()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
 
       return SetMagOffsets(
         targetSystem = targetSystem,

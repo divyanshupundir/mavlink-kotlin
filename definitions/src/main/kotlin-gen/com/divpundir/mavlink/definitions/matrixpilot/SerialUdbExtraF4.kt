@@ -3,15 +3,17 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F4: format
@@ -75,53 +77,57 @@ public data class SerialUdbExtraF4(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF4> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(sueRollStabilizationAilerons)
-    buffer.encodeUInt8(sueRollStabilizationRudder)
-    buffer.encodeUInt8(suePitchStabilization)
-    buffer.encodeUInt8(sueYawStabilizationRudder)
-    buffer.encodeUInt8(sueYawStabilizationAileron)
-    buffer.encodeUInt8(sueAileronNavigation)
-    buffer.encodeUInt8(sueRudderNavigation)
-    buffer.encodeUInt8(sueAltitudeholdStabilized)
-    buffer.encodeUInt8(sueAltitudeholdWaypoint)
-    buffer.encodeUInt8(sueRacingMode)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(sueRollStabilizationAilerons)
+    encoder.encodeUInt8(sueRollStabilizationRudder)
+    encoder.encodeUInt8(suePitchStabilization)
+    encoder.encodeUInt8(sueYawStabilizationRudder)
+    encoder.encodeUInt8(sueYawStabilizationAileron)
+    encoder.encodeUInt8(sueAileronNavigation)
+    encoder.encodeUInt8(sueRudderNavigation)
+    encoder.encodeUInt8(sueAltitudeholdStabilized)
+    encoder.encodeUInt8(sueAltitudeholdWaypoint)
+    encoder.encodeUInt8(sueRacingMode)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(sueRollStabilizationAilerons)
-    buffer.encodeUInt8(sueRollStabilizationRudder)
-    buffer.encodeUInt8(suePitchStabilization)
-    buffer.encodeUInt8(sueYawStabilizationRudder)
-    buffer.encodeUInt8(sueYawStabilizationAileron)
-    buffer.encodeUInt8(sueAileronNavigation)
-    buffer.encodeUInt8(sueRudderNavigation)
-    buffer.encodeUInt8(sueAltitudeholdStabilized)
-    buffer.encodeUInt8(sueAltitudeholdWaypoint)
-    buffer.encodeUInt8(sueRacingMode)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(sueRollStabilizationAilerons)
+    encoder.encodeUInt8(sueRollStabilizationRudder)
+    encoder.encodeUInt8(suePitchStabilization)
+    encoder.encodeUInt8(sueYawStabilizationRudder)
+    encoder.encodeUInt8(sueYawStabilizationAileron)
+    encoder.encodeUInt8(sueAileronNavigation)
+    encoder.encodeUInt8(sueRudderNavigation)
+    encoder.encodeUInt8(sueAltitudeholdStabilized)
+    encoder.encodeUInt8(sueAltitudeholdWaypoint)
+    encoder.encodeUInt8(sueRacingMode)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF4> {
+    private const val SIZE_V1: Int = 10
+
+    private const val SIZE_V2: Int = 10
+
     public override val id: UInt = 172u
 
     public override val crcExtra: Byte = -65
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF4 {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val sueRollStabilizationAilerons = buffer.decodeUInt8()
-      val sueRollStabilizationRudder = buffer.decodeUInt8()
-      val suePitchStabilization = buffer.decodeUInt8()
-      val sueYawStabilizationRudder = buffer.decodeUInt8()
-      val sueYawStabilizationAileron = buffer.decodeUInt8()
-      val sueAileronNavigation = buffer.decodeUInt8()
-      val sueRudderNavigation = buffer.decodeUInt8()
-      val sueAltitudeholdStabilized = buffer.decodeUInt8()
-      val sueAltitudeholdWaypoint = buffer.decodeUInt8()
-      val sueRacingMode = buffer.decodeUInt8()
+      val sueRollStabilizationAilerons = decoder.safeDecodeUInt8()
+      val sueRollStabilizationRudder = decoder.safeDecodeUInt8()
+      val suePitchStabilization = decoder.safeDecodeUInt8()
+      val sueYawStabilizationRudder = decoder.safeDecodeUInt8()
+      val sueYawStabilizationAileron = decoder.safeDecodeUInt8()
+      val sueAileronNavigation = decoder.safeDecodeUInt8()
+      val sueRudderNavigation = decoder.safeDecodeUInt8()
+      val sueAltitudeholdStabilized = decoder.safeDecodeUInt8()
+      val sueAltitudeholdWaypoint = decoder.safeDecodeUInt8()
+      val sueRacingMode = decoder.safeDecodeUInt8()
 
       return SerialUdbExtraF4(
         sueRollStabilizationAilerons = sueRollStabilizationAilerons,

@@ -3,21 +3,23 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Fixed-wing soaring (i.e. thermal seeking) data
@@ -156,98 +158,102 @@ public data class FwSoaringData(
   public override val instanceCompanion: MavMessage.MavCompanion<FwSoaringData> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timestamp)
-    buffer.encodeUInt64(timestampmodechanged)
-    buffer.encodeFloat(xw)
-    buffer.encodeFloat(xr)
-    buffer.encodeFloat(xlat)
-    buffer.encodeFloat(xlon)
-    buffer.encodeFloat(varw)
-    buffer.encodeFloat(varr)
-    buffer.encodeFloat(varlat)
-    buffer.encodeFloat(varlon)
-    buffer.encodeFloat(loiterradius)
-    buffer.encodeFloat(loiterdirection)
-    buffer.encodeFloat(disttosoarpoint)
-    buffer.encodeFloat(vsinkexp)
-    buffer.encodeFloat(z1Localupdraftspeed)
-    buffer.encodeFloat(z2Deltaroll)
-    buffer.encodeFloat(z1Exp)
-    buffer.encodeFloat(z2Exp)
-    buffer.encodeFloat(thermalgsnorth)
-    buffer.encodeFloat(thermalgseast)
-    buffer.encodeFloat(tseDot)
-    buffer.encodeFloat(debugvar1)
-    buffer.encodeFloat(debugvar2)
-    buffer.encodeUInt8(controlmode)
-    buffer.encodeUInt8(valid)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeUInt64(timestampmodechanged)
+    encoder.encodeFloat(xw)
+    encoder.encodeFloat(xr)
+    encoder.encodeFloat(xlat)
+    encoder.encodeFloat(xlon)
+    encoder.encodeFloat(varw)
+    encoder.encodeFloat(varr)
+    encoder.encodeFloat(varlat)
+    encoder.encodeFloat(varlon)
+    encoder.encodeFloat(loiterradius)
+    encoder.encodeFloat(loiterdirection)
+    encoder.encodeFloat(disttosoarpoint)
+    encoder.encodeFloat(vsinkexp)
+    encoder.encodeFloat(z1Localupdraftspeed)
+    encoder.encodeFloat(z2Deltaroll)
+    encoder.encodeFloat(z1Exp)
+    encoder.encodeFloat(z2Exp)
+    encoder.encodeFloat(thermalgsnorth)
+    encoder.encodeFloat(thermalgseast)
+    encoder.encodeFloat(tseDot)
+    encoder.encodeFloat(debugvar1)
+    encoder.encodeFloat(debugvar2)
+    encoder.encodeUInt8(controlmode)
+    encoder.encodeUInt8(valid)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timestamp)
-    buffer.encodeUInt64(timestampmodechanged)
-    buffer.encodeFloat(xw)
-    buffer.encodeFloat(xr)
-    buffer.encodeFloat(xlat)
-    buffer.encodeFloat(xlon)
-    buffer.encodeFloat(varw)
-    buffer.encodeFloat(varr)
-    buffer.encodeFloat(varlat)
-    buffer.encodeFloat(varlon)
-    buffer.encodeFloat(loiterradius)
-    buffer.encodeFloat(loiterdirection)
-    buffer.encodeFloat(disttosoarpoint)
-    buffer.encodeFloat(vsinkexp)
-    buffer.encodeFloat(z1Localupdraftspeed)
-    buffer.encodeFloat(z2Deltaroll)
-    buffer.encodeFloat(z1Exp)
-    buffer.encodeFloat(z2Exp)
-    buffer.encodeFloat(thermalgsnorth)
-    buffer.encodeFloat(thermalgseast)
-    buffer.encodeFloat(tseDot)
-    buffer.encodeFloat(debugvar1)
-    buffer.encodeFloat(debugvar2)
-    buffer.encodeUInt8(controlmode)
-    buffer.encodeUInt8(valid)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeUInt64(timestampmodechanged)
+    encoder.encodeFloat(xw)
+    encoder.encodeFloat(xr)
+    encoder.encodeFloat(xlat)
+    encoder.encodeFloat(xlon)
+    encoder.encodeFloat(varw)
+    encoder.encodeFloat(varr)
+    encoder.encodeFloat(varlat)
+    encoder.encodeFloat(varlon)
+    encoder.encodeFloat(loiterradius)
+    encoder.encodeFloat(loiterdirection)
+    encoder.encodeFloat(disttosoarpoint)
+    encoder.encodeFloat(vsinkexp)
+    encoder.encodeFloat(z1Localupdraftspeed)
+    encoder.encodeFloat(z2Deltaroll)
+    encoder.encodeFloat(z1Exp)
+    encoder.encodeFloat(z2Exp)
+    encoder.encodeFloat(thermalgsnorth)
+    encoder.encodeFloat(thermalgseast)
+    encoder.encodeFloat(tseDot)
+    encoder.encodeFloat(debugvar1)
+    encoder.encodeFloat(debugvar2)
+    encoder.encodeUInt8(controlmode)
+    encoder.encodeUInt8(valid)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FwSoaringData> {
+    private const val SIZE_V1: Int = 102
+
+    private const val SIZE_V2: Int = 102
+
     public override val id: UInt = 8_011u
 
     public override val crcExtra: Byte = 20
 
     public override fun deserialize(bytes: ByteArray): FwSoaringData {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timestamp = buffer.decodeUInt64()
-      val timestampmodechanged = buffer.decodeUInt64()
-      val xw = buffer.decodeFloat()
-      val xr = buffer.decodeFloat()
-      val xlat = buffer.decodeFloat()
-      val xlon = buffer.decodeFloat()
-      val varw = buffer.decodeFloat()
-      val varr = buffer.decodeFloat()
-      val varlat = buffer.decodeFloat()
-      val varlon = buffer.decodeFloat()
-      val loiterradius = buffer.decodeFloat()
-      val loiterdirection = buffer.decodeFloat()
-      val disttosoarpoint = buffer.decodeFloat()
-      val vsinkexp = buffer.decodeFloat()
-      val z1Localupdraftspeed = buffer.decodeFloat()
-      val z2Deltaroll = buffer.decodeFloat()
-      val z1Exp = buffer.decodeFloat()
-      val z2Exp = buffer.decodeFloat()
-      val thermalgsnorth = buffer.decodeFloat()
-      val thermalgseast = buffer.decodeFloat()
-      val tseDot = buffer.decodeFloat()
-      val debugvar1 = buffer.decodeFloat()
-      val debugvar2 = buffer.decodeFloat()
-      val controlmode = buffer.decodeUInt8()
-      val valid = buffer.decodeUInt8()
+      val timestamp = decoder.safeDecodeUInt64()
+      val timestampmodechanged = decoder.safeDecodeUInt64()
+      val xw = decoder.safeDecodeFloat()
+      val xr = decoder.safeDecodeFloat()
+      val xlat = decoder.safeDecodeFloat()
+      val xlon = decoder.safeDecodeFloat()
+      val varw = decoder.safeDecodeFloat()
+      val varr = decoder.safeDecodeFloat()
+      val varlat = decoder.safeDecodeFloat()
+      val varlon = decoder.safeDecodeFloat()
+      val loiterradius = decoder.safeDecodeFloat()
+      val loiterdirection = decoder.safeDecodeFloat()
+      val disttosoarpoint = decoder.safeDecodeFloat()
+      val vsinkexp = decoder.safeDecodeFloat()
+      val z1Localupdraftspeed = decoder.safeDecodeFloat()
+      val z2Deltaroll = decoder.safeDecodeFloat()
+      val z1Exp = decoder.safeDecodeFloat()
+      val z2Exp = decoder.safeDecodeFloat()
+      val thermalgsnorth = decoder.safeDecodeFloat()
+      val thermalgseast = decoder.safeDecodeFloat()
+      val tseDot = decoder.safeDecodeFloat()
+      val debugvar1 = decoder.safeDecodeFloat()
+      val debugvar2 = decoder.safeDecodeFloat()
+      val controlmode = decoder.safeDecodeUInt8()
+      val valid = decoder.safeDecodeUInt8()
 
       return FwSoaringData(
         timestamp = timestamp,

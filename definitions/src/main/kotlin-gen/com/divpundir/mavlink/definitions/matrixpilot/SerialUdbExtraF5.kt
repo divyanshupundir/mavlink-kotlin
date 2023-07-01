@@ -3,15 +3,17 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F5: format
@@ -45,35 +47,39 @@ public data class SerialUdbExtraF5(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF5> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(sueYawkpAileron)
-    buffer.encodeFloat(sueYawkdAileron)
-    buffer.encodeFloat(sueRollkp)
-    buffer.encodeFloat(sueRollkd)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(sueYawkpAileron)
+    encoder.encodeFloat(sueYawkdAileron)
+    encoder.encodeFloat(sueRollkp)
+    encoder.encodeFloat(sueRollkd)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(sueYawkpAileron)
-    buffer.encodeFloat(sueYawkdAileron)
-    buffer.encodeFloat(sueRollkp)
-    buffer.encodeFloat(sueRollkd)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(sueYawkpAileron)
+    encoder.encodeFloat(sueYawkdAileron)
+    encoder.encodeFloat(sueRollkp)
+    encoder.encodeFloat(sueRollkd)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF5> {
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
+
     public override val id: UInt = 173u
 
     public override val crcExtra: Byte = 54
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF5 {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val sueYawkpAileron = buffer.decodeFloat()
-      val sueYawkdAileron = buffer.decodeFloat()
-      val sueRollkp = buffer.decodeFloat()
-      val sueRollkd = buffer.decodeFloat()
+      val sueYawkpAileron = decoder.safeDecodeFloat()
+      val sueYawkdAileron = decoder.safeDecodeFloat()
+      val sueRollkp = decoder.safeDecodeFloat()
+      val sueRollkd = decoder.safeDecodeFloat()
 
       return SerialUdbExtraF5(
         sueYawkpAileron = sueYawkpAileron,

@@ -3,14 +3,16 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -19,7 +21,6 @@ import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Information about the status of a capture. Can be requested with a MAV_CMD_REQUEST_MESSAGE
@@ -74,43 +75,47 @@ public data class CameraCaptureStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(imageInterval)
-    buffer.encodeUInt32(recordingTimeMs)
-    buffer.encodeFloat(availableCapacity)
-    buffer.encodeUInt8(imageStatus)
-    buffer.encodeUInt8(videoStatus)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(imageInterval)
+    encoder.encodeUInt32(recordingTimeMs)
+    encoder.encodeFloat(availableCapacity)
+    encoder.encodeUInt8(imageStatus)
+    encoder.encodeUInt8(videoStatus)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(imageInterval)
-    buffer.encodeUInt32(recordingTimeMs)
-    buffer.encodeFloat(availableCapacity)
-    buffer.encodeUInt8(imageStatus)
-    buffer.encodeUInt8(videoStatus)
-    buffer.encodeInt32(imageCount)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(imageInterval)
+    encoder.encodeUInt32(recordingTimeMs)
+    encoder.encodeFloat(availableCapacity)
+    encoder.encodeUInt8(imageStatus)
+    encoder.encodeUInt8(videoStatus)
+    encoder.encodeInt32(imageCount)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraCaptureStatus> {
+    private const val SIZE_V1: Int = 18
+
+    private const val SIZE_V2: Int = 22
+
     public override val id: UInt = 262u
 
     public override val crcExtra: Byte = 12
 
     public override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val imageInterval = buffer.decodeFloat()
-      val recordingTimeMs = buffer.decodeUInt32()
-      val availableCapacity = buffer.decodeFloat()
-      val imageStatus = buffer.decodeUInt8()
-      val videoStatus = buffer.decodeUInt8()
-      val imageCount = buffer.decodeInt32()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val imageInterval = decoder.safeDecodeFloat()
+      val recordingTimeMs = decoder.safeDecodeUInt32()
+      val availableCapacity = decoder.safeDecodeFloat()
+      val imageStatus = decoder.safeDecodeUInt8()
+      val videoStatus = decoder.safeDecodeUInt8()
+      val imageCount = decoder.safeDecodeInt32()
 
       return CameraCaptureStatus(
         timeBootMs = timeBootMs,

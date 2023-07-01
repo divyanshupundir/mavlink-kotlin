@@ -4,17 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * PID tuning information.
@@ -79,51 +81,55 @@ public data class PidTuning(
   public override val instanceCompanion: MavMessage.MavCompanion<PidTuning> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(desired)
-    buffer.encodeFloat(achieved)
-    buffer.encodeFloat(ff)
-    buffer.encodeFloat(p)
-    buffer.encodeFloat(i)
-    buffer.encodeFloat(d)
-    buffer.encodeEnumValue(axis.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(desired)
+    encoder.encodeFloat(achieved)
+    encoder.encodeFloat(ff)
+    encoder.encodeFloat(p)
+    encoder.encodeFloat(i)
+    encoder.encodeFloat(d)
+    encoder.encodeEnumValue(axis.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(desired)
-    buffer.encodeFloat(achieved)
-    buffer.encodeFloat(ff)
-    buffer.encodeFloat(p)
-    buffer.encodeFloat(i)
-    buffer.encodeFloat(d)
-    buffer.encodeEnumValue(axis.value, 1)
-    buffer.encodeFloat(srate)
-    buffer.encodeFloat(pdmod)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(desired)
+    encoder.encodeFloat(achieved)
+    encoder.encodeFloat(ff)
+    encoder.encodeFloat(p)
+    encoder.encodeFloat(i)
+    encoder.encodeFloat(d)
+    encoder.encodeEnumValue(axis.value, 1)
+    encoder.encodeFloat(srate)
+    encoder.encodeFloat(pdmod)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<PidTuning> {
+    private const val SIZE_V1: Int = 25
+
+    private const val SIZE_V2: Int = 33
+
     public override val id: UInt = 194u
 
     public override val crcExtra: Byte = 98
 
     public override fun deserialize(bytes: ByteArray): PidTuning {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val desired = buffer.decodeFloat()
-      val achieved = buffer.decodeFloat()
-      val ff = buffer.decodeFloat()
-      val p = buffer.decodeFloat()
-      val i = buffer.decodeFloat()
-      val d = buffer.decodeFloat()
-      val axis = buffer.decodeEnumValue(1).let { value ->
+      val desired = decoder.safeDecodeFloat()
+      val achieved = decoder.safeDecodeFloat()
+      val ff = decoder.safeDecodeFloat()
+      val p = decoder.safeDecodeFloat()
+      val i = decoder.safeDecodeFloat()
+      val d = decoder.safeDecodeFloat()
+      val axis = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = PidTuningAxis.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val srate = buffer.decodeFloat()
-      val pdmod = buffer.decodeFloat()
+      val srate = decoder.safeDecodeFloat()
+      val pdmod = decoder.safeDecodeFloat()
 
       return PidTuning(
         axis = axis,

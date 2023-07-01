@@ -3,20 +3,22 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000
@@ -89,56 +91,60 @@ public data class RcChannelsRaw(
   public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt16(chan1Raw)
-    buffer.encodeUInt16(chan2Raw)
-    buffer.encodeUInt16(chan3Raw)
-    buffer.encodeUInt16(chan4Raw)
-    buffer.encodeUInt16(chan5Raw)
-    buffer.encodeUInt16(chan6Raw)
-    buffer.encodeUInt16(chan7Raw)
-    buffer.encodeUInt16(chan8Raw)
-    buffer.encodeUInt8(port)
-    buffer.encodeUInt8(rssi)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt16(chan1Raw)
+    encoder.encodeUInt16(chan2Raw)
+    encoder.encodeUInt16(chan3Raw)
+    encoder.encodeUInt16(chan4Raw)
+    encoder.encodeUInt16(chan5Raw)
+    encoder.encodeUInt16(chan6Raw)
+    encoder.encodeUInt16(chan7Raw)
+    encoder.encodeUInt16(chan8Raw)
+    encoder.encodeUInt8(port)
+    encoder.encodeUInt8(rssi)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt16(chan1Raw)
-    buffer.encodeUInt16(chan2Raw)
-    buffer.encodeUInt16(chan3Raw)
-    buffer.encodeUInt16(chan4Raw)
-    buffer.encodeUInt16(chan5Raw)
-    buffer.encodeUInt16(chan6Raw)
-    buffer.encodeUInt16(chan7Raw)
-    buffer.encodeUInt16(chan8Raw)
-    buffer.encodeUInt8(port)
-    buffer.encodeUInt8(rssi)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt16(chan1Raw)
+    encoder.encodeUInt16(chan2Raw)
+    encoder.encodeUInt16(chan3Raw)
+    encoder.encodeUInt16(chan4Raw)
+    encoder.encodeUInt16(chan5Raw)
+    encoder.encodeUInt16(chan6Raw)
+    encoder.encodeUInt16(chan7Raw)
+    encoder.encodeUInt16(chan8Raw)
+    encoder.encodeUInt8(port)
+    encoder.encodeUInt8(rssi)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RcChannelsRaw> {
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 22
+
     public override val id: UInt = 35u
 
     public override val crcExtra: Byte = -12
 
     public override fun deserialize(bytes: ByteArray): RcChannelsRaw {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val chan1Raw = buffer.decodeUInt16()
-      val chan2Raw = buffer.decodeUInt16()
-      val chan3Raw = buffer.decodeUInt16()
-      val chan4Raw = buffer.decodeUInt16()
-      val chan5Raw = buffer.decodeUInt16()
-      val chan6Raw = buffer.decodeUInt16()
-      val chan7Raw = buffer.decodeUInt16()
-      val chan8Raw = buffer.decodeUInt16()
-      val port = buffer.decodeUInt8()
-      val rssi = buffer.decodeUInt8()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val chan1Raw = decoder.safeDecodeUInt16()
+      val chan2Raw = decoder.safeDecodeUInt16()
+      val chan3Raw = decoder.safeDecodeUInt16()
+      val chan4Raw = decoder.safeDecodeUInt16()
+      val chan5Raw = decoder.safeDecodeUInt16()
+      val chan6Raw = decoder.safeDecodeUInt16()
+      val chan7Raw = decoder.safeDecodeUInt16()
+      val chan8Raw = decoder.safeDecodeUInt16()
+      val port = decoder.safeDecodeUInt8()
+      val rssi = decoder.safeDecodeUInt8()
 
       return RcChannelsRaw(
         timeBootMs = timeBootMs,

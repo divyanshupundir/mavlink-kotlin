@@ -5,28 +5,30 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Information about a low level gimbal. This message should be requested by the gimbal manager or a
@@ -122,71 +124,75 @@ public data class GimbalDeviceInformation(
       Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(uid)
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt32(firmwareVersion)
-    buffer.encodeUInt32(hardwareVersion)
-    buffer.encodeFloat(rollMin)
-    buffer.encodeFloat(rollMax)
-    buffer.encodeFloat(pitchMin)
-    buffer.encodeFloat(pitchMax)
-    buffer.encodeFloat(yawMin)
-    buffer.encodeFloat(yawMax)
-    buffer.encodeBitmaskValue(capFlags.value, 2)
-    buffer.encodeUInt16(customCapFlags)
-    buffer.encodeString(vendorName, 32)
-    buffer.encodeString(modelName, 32)
-    buffer.encodeString(customName, 32)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(uid)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(firmwareVersion)
+    encoder.encodeUInt32(hardwareVersion)
+    encoder.encodeFloat(rollMin)
+    encoder.encodeFloat(rollMax)
+    encoder.encodeFloat(pitchMin)
+    encoder.encodeFloat(pitchMax)
+    encoder.encodeFloat(yawMin)
+    encoder.encodeFloat(yawMax)
+    encoder.encodeBitmaskValue(capFlags.value, 2)
+    encoder.encodeUInt16(customCapFlags)
+    encoder.encodeString(vendorName, 32)
+    encoder.encodeString(modelName, 32)
+    encoder.encodeString(customName, 32)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(uid)
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt32(firmwareVersion)
-    buffer.encodeUInt32(hardwareVersion)
-    buffer.encodeFloat(rollMin)
-    buffer.encodeFloat(rollMax)
-    buffer.encodeFloat(pitchMin)
-    buffer.encodeFloat(pitchMax)
-    buffer.encodeFloat(yawMin)
-    buffer.encodeFloat(yawMax)
-    buffer.encodeBitmaskValue(capFlags.value, 2)
-    buffer.encodeUInt16(customCapFlags)
-    buffer.encodeString(vendorName, 32)
-    buffer.encodeString(modelName, 32)
-    buffer.encodeString(customName, 32)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(uid)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(firmwareVersion)
+    encoder.encodeUInt32(hardwareVersion)
+    encoder.encodeFloat(rollMin)
+    encoder.encodeFloat(rollMax)
+    encoder.encodeFloat(pitchMin)
+    encoder.encodeFloat(pitchMax)
+    encoder.encodeFloat(yawMin)
+    encoder.encodeFloat(yawMax)
+    encoder.encodeBitmaskValue(capFlags.value, 2)
+    encoder.encodeUInt16(customCapFlags)
+    encoder.encodeString(vendorName, 32)
+    encoder.encodeString(modelName, 32)
+    encoder.encodeString(customName, 32)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalDeviceInformation> {
+    private const val SIZE_V1: Int = 144
+
+    private const val SIZE_V2: Int = 144
+
     public override val id: UInt = 283u
 
     public override val crcExtra: Byte = 74
 
     public override fun deserialize(bytes: ByteArray): GimbalDeviceInformation {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val uid = buffer.decodeUInt64()
-      val timeBootMs = buffer.decodeUInt32()
-      val firmwareVersion = buffer.decodeUInt32()
-      val hardwareVersion = buffer.decodeUInt32()
-      val rollMin = buffer.decodeFloat()
-      val rollMax = buffer.decodeFloat()
-      val pitchMin = buffer.decodeFloat()
-      val pitchMax = buffer.decodeFloat()
-      val yawMin = buffer.decodeFloat()
-      val yawMax = buffer.decodeFloat()
-      val capFlags = buffer.decodeBitmaskValue(2).let { value ->
+      val uid = decoder.safeDecodeUInt64()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val firmwareVersion = decoder.safeDecodeUInt32()
+      val hardwareVersion = decoder.safeDecodeUInt32()
+      val rollMin = decoder.safeDecodeFloat()
+      val rollMax = decoder.safeDecodeFloat()
+      val pitchMin = decoder.safeDecodeFloat()
+      val pitchMax = decoder.safeDecodeFloat()
+      val yawMin = decoder.safeDecodeFloat()
+      val yawMax = decoder.safeDecodeFloat()
+      val capFlags = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = GimbalDeviceCapFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val customCapFlags = buffer.decodeUInt16()
-      val vendorName = buffer.decodeString(32)
-      val modelName = buffer.decodeString(32)
-      val customName = buffer.decodeString(32)
+      val customCapFlags = decoder.safeDecodeUInt16()
+      val vendorName = decoder.safeDecodeString(32)
+      val modelName = decoder.safeDecodeString(32)
+      val customName = decoder.safeDecodeString(32)
 
       return GimbalDeviceInformation(
         timeBootMs = timeBootMs,

@@ -3,17 +3,19 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The RAW IMU readings for the usual 9DOF sensor setup. This message should contain the scaled
@@ -87,55 +89,59 @@ public data class ScaledImu(
   public override val instanceCompanion: MavMessage.MavCompanion<ScaledImu> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt16(xacc)
-    buffer.encodeInt16(yacc)
-    buffer.encodeInt16(zacc)
-    buffer.encodeInt16(xgyro)
-    buffer.encodeInt16(ygyro)
-    buffer.encodeInt16(zgyro)
-    buffer.encodeInt16(xmag)
-    buffer.encodeInt16(ymag)
-    buffer.encodeInt16(zmag)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt16(xacc)
+    encoder.encodeInt16(yacc)
+    encoder.encodeInt16(zacc)
+    encoder.encodeInt16(xgyro)
+    encoder.encodeInt16(ygyro)
+    encoder.encodeInt16(zgyro)
+    encoder.encodeInt16(xmag)
+    encoder.encodeInt16(ymag)
+    encoder.encodeInt16(zmag)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt16(xacc)
-    buffer.encodeInt16(yacc)
-    buffer.encodeInt16(zacc)
-    buffer.encodeInt16(xgyro)
-    buffer.encodeInt16(ygyro)
-    buffer.encodeInt16(zgyro)
-    buffer.encodeInt16(xmag)
-    buffer.encodeInt16(ymag)
-    buffer.encodeInt16(zmag)
-    buffer.encodeInt16(temperature)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt16(xacc)
+    encoder.encodeInt16(yacc)
+    encoder.encodeInt16(zacc)
+    encoder.encodeInt16(xgyro)
+    encoder.encodeInt16(ygyro)
+    encoder.encodeInt16(zgyro)
+    encoder.encodeInt16(xmag)
+    encoder.encodeInt16(ymag)
+    encoder.encodeInt16(zmag)
+    encoder.encodeInt16(temperature)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ScaledImu> {
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 24
+
     public override val id: UInt = 26u
 
     public override val crcExtra: Byte = -86
 
     public override fun deserialize(bytes: ByteArray): ScaledImu {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val xacc = buffer.decodeInt16()
-      val yacc = buffer.decodeInt16()
-      val zacc = buffer.decodeInt16()
-      val xgyro = buffer.decodeInt16()
-      val ygyro = buffer.decodeInt16()
-      val zgyro = buffer.decodeInt16()
-      val xmag = buffer.decodeInt16()
-      val ymag = buffer.decodeInt16()
-      val zmag = buffer.decodeInt16()
-      val temperature = buffer.decodeInt16()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val xacc = decoder.safeDecodeInt16()
+      val yacc = decoder.safeDecodeInt16()
+      val zacc = decoder.safeDecodeInt16()
+      val xgyro = decoder.safeDecodeInt16()
+      val ygyro = decoder.safeDecodeInt16()
+      val zgyro = decoder.safeDecodeInt16()
+      val xmag = decoder.safeDecodeInt16()
+      val ymag = decoder.safeDecodeInt16()
+      val zmag = decoder.safeDecodeInt16()
+      val temperature = decoder.safeDecodeInt16()
 
       return ScaledImu(
         timeBootMs = timeBootMs,

@@ -3,10 +3,12 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -14,7 +16,6 @@ import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  *
@@ -44,29 +45,33 @@ public data class MessageInterval(
   public override val instanceCompanion: MavMessage.MavCompanion<MessageInterval> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(intervalUs)
-    buffer.encodeUInt16(messageId)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(intervalUs)
+    encoder.encodeUInt16(messageId)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(intervalUs)
-    buffer.encodeUInt16(messageId)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(intervalUs)
+    encoder.encodeUInt16(messageId)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MessageInterval> {
+    private const val SIZE_V1: Int = 6
+
+    private const val SIZE_V2: Int = 6
+
     public override val id: UInt = 244u
 
     public override val crcExtra: Byte = 95
 
     public override fun deserialize(bytes: ByteArray): MessageInterval {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val intervalUs = buffer.decodeInt32()
-      val messageId = buffer.decodeUInt16()
+      val intervalUs = decoder.safeDecodeInt32()
+      val messageId = decoder.safeDecodeUInt16()
 
       return MessageInterval(
         messageId = messageId,

@@ -4,20 +4,22 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Configure cellular modems.
@@ -80,47 +82,51 @@ public data class CellularConfig(
   public override val instanceCompanion: MavMessage.MavCompanion<CellularConfig> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(enableLte)
-    buffer.encodeUInt8(enablePin)
-    buffer.encodeString(pin, 16)
-    buffer.encodeString(newPin, 16)
-    buffer.encodeString(apn, 32)
-    buffer.encodeString(puk, 16)
-    buffer.encodeUInt8(roaming)
-    buffer.encodeEnumValue(response.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(enableLte)
+    encoder.encodeUInt8(enablePin)
+    encoder.encodeString(pin, 16)
+    encoder.encodeString(newPin, 16)
+    encoder.encodeString(apn, 32)
+    encoder.encodeString(puk, 16)
+    encoder.encodeUInt8(roaming)
+    encoder.encodeEnumValue(response.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(enableLte)
-    buffer.encodeUInt8(enablePin)
-    buffer.encodeString(pin, 16)
-    buffer.encodeString(newPin, 16)
-    buffer.encodeString(apn, 32)
-    buffer.encodeString(puk, 16)
-    buffer.encodeUInt8(roaming)
-    buffer.encodeEnumValue(response.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(enableLte)
+    encoder.encodeUInt8(enablePin)
+    encoder.encodeString(pin, 16)
+    encoder.encodeString(newPin, 16)
+    encoder.encodeString(apn, 32)
+    encoder.encodeString(puk, 16)
+    encoder.encodeUInt8(roaming)
+    encoder.encodeEnumValue(response.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CellularConfig> {
+    private const val SIZE_V1: Int = 84
+
+    private const val SIZE_V2: Int = 84
+
     public override val id: UInt = 336u
 
     public override val crcExtra: Byte = -11
 
     public override fun deserialize(bytes: ByteArray): CellularConfig {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val enableLte = buffer.decodeUInt8()
-      val enablePin = buffer.decodeUInt8()
-      val pin = buffer.decodeString(16)
-      val newPin = buffer.decodeString(16)
-      val apn = buffer.decodeString(32)
-      val puk = buffer.decodeString(16)
-      val roaming = buffer.decodeUInt8()
-      val response = buffer.decodeEnumValue(1).let { value ->
+      val enableLte = decoder.safeDecodeUInt8()
+      val enablePin = decoder.safeDecodeUInt8()
+      val pin = decoder.safeDecodeString(16)
+      val newPin = decoder.safeDecodeString(16)
+      val apn = decoder.safeDecodeString(32)
+      val puk = decoder.safeDecodeString(16)
+      val roaming = decoder.safeDecodeUInt8()
+      val response = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CellularConfigResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

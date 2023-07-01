@@ -3,17 +3,18 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The altitude measured by sensors and IMU
@@ -62,44 +63,48 @@ public data class Altitudes(
   public override val instanceCompanion: MavMessage.MavCompanion<Altitudes> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(altGps)
-    buffer.encodeInt32(altImu)
-    buffer.encodeInt32(altBarometric)
-    buffer.encodeInt32(altOpticalFlow)
-    buffer.encodeInt32(altRangeFinder)
-    buffer.encodeInt32(altExtra)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(altGps)
+    encoder.encodeInt32(altImu)
+    encoder.encodeInt32(altBarometric)
+    encoder.encodeInt32(altOpticalFlow)
+    encoder.encodeInt32(altRangeFinder)
+    encoder.encodeInt32(altExtra)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(altGps)
-    buffer.encodeInt32(altImu)
-    buffer.encodeInt32(altBarometric)
-    buffer.encodeInt32(altOpticalFlow)
-    buffer.encodeInt32(altRangeFinder)
-    buffer.encodeInt32(altExtra)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(altGps)
+    encoder.encodeInt32(altImu)
+    encoder.encodeInt32(altBarometric)
+    encoder.encodeInt32(altOpticalFlow)
+    encoder.encodeInt32(altRangeFinder)
+    encoder.encodeInt32(altExtra)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Altitudes> {
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
+
     public override val id: UInt = 181u
 
     public override val crcExtra: Byte = 55
 
     public override fun deserialize(bytes: ByteArray): Altitudes {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val altGps = buffer.decodeInt32()
-      val altImu = buffer.decodeInt32()
-      val altBarometric = buffer.decodeInt32()
-      val altOpticalFlow = buffer.decodeInt32()
-      val altRangeFinder = buffer.decodeInt32()
-      val altExtra = buffer.decodeInt32()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val altGps = decoder.safeDecodeInt32()
+      val altImu = decoder.safeDecodeInt32()
+      val altBarometric = decoder.safeDecodeInt32()
+      val altOpticalFlow = decoder.safeDecodeInt32()
+      val altRangeFinder = decoder.safeDecodeInt32()
+      val altExtra = decoder.safeDecodeInt32()
 
       return Altitudes(
         timeBootMs = timeBootMs,

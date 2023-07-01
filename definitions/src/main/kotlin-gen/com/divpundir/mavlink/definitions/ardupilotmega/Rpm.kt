@@ -3,15 +3,17 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * RPM sensor output.
@@ -35,29 +37,33 @@ public data class Rpm(
   public override val instanceCompanion: MavMessage.MavCompanion<Rpm> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(rpm1)
-    buffer.encodeFloat(rpm2)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(rpm1)
+    encoder.encodeFloat(rpm2)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(rpm1)
-    buffer.encodeFloat(rpm2)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(rpm1)
+    encoder.encodeFloat(rpm2)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Rpm> {
+    private const val SIZE_V1: Int = 8
+
+    private const val SIZE_V2: Int = 8
+
     public override val id: UInt = 226u
 
     public override val crcExtra: Byte = -49
 
     public override fun deserialize(bytes: ByteArray): Rpm {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val rpm1 = buffer.decodeFloat()
-      val rpm2 = buffer.decodeFloat()
+      val rpm1 = decoder.safeDecodeFloat()
+      val rpm2 = decoder.safeDecodeFloat()
 
       return Rpm(
         rpm1 = rpm1,

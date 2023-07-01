@@ -4,16 +4,18 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -23,7 +25,6 @@ import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Message encoding a mission item. This message is emitted to announce
@@ -122,73 +123,77 @@ public data class MissionItemInt(
   public override val instanceCompanion: MavMessage.MavCompanion<MissionItemInt> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(param1)
-    buffer.encodeFloat(param2)
-    buffer.encodeFloat(param3)
-    buffer.encodeFloat(param4)
-    buffer.encodeInt32(x)
-    buffer.encodeInt32(y)
-    buffer.encodeFloat(z)
-    buffer.encodeUInt16(seq)
-    buffer.encodeEnumValue(command.value, 2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(frame.value, 1)
-    buffer.encodeUInt8(current)
-    buffer.encodeUInt8(autocontinue)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(param1)
+    encoder.encodeFloat(param2)
+    encoder.encodeFloat(param3)
+    encoder.encodeFloat(param4)
+    encoder.encodeInt32(x)
+    encoder.encodeInt32(y)
+    encoder.encodeFloat(z)
+    encoder.encodeUInt16(seq)
+    encoder.encodeEnumValue(command.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(frame.value, 1)
+    encoder.encodeUInt8(current)
+    encoder.encodeUInt8(autocontinue)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(param1)
-    buffer.encodeFloat(param2)
-    buffer.encodeFloat(param3)
-    buffer.encodeFloat(param4)
-    buffer.encodeInt32(x)
-    buffer.encodeInt32(y)
-    buffer.encodeFloat(z)
-    buffer.encodeUInt16(seq)
-    buffer.encodeEnumValue(command.value, 2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(frame.value, 1)
-    buffer.encodeUInt8(current)
-    buffer.encodeUInt8(autocontinue)
-    buffer.encodeEnumValue(missionType.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(param1)
+    encoder.encodeFloat(param2)
+    encoder.encodeFloat(param3)
+    encoder.encodeFloat(param4)
+    encoder.encodeInt32(x)
+    encoder.encodeInt32(y)
+    encoder.encodeFloat(z)
+    encoder.encodeUInt16(seq)
+    encoder.encodeEnumValue(command.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(frame.value, 1)
+    encoder.encodeUInt8(current)
+    encoder.encodeUInt8(autocontinue)
+    encoder.encodeEnumValue(missionType.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MissionItemInt> {
+    private const val SIZE_V1: Int = 37
+
+    private const val SIZE_V2: Int = 38
+
     public override val id: UInt = 73u
 
     public override val crcExtra: Byte = 38
 
     public override fun deserialize(bytes: ByteArray): MissionItemInt {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val param1 = buffer.decodeFloat()
-      val param2 = buffer.decodeFloat()
-      val param3 = buffer.decodeFloat()
-      val param4 = buffer.decodeFloat()
-      val x = buffer.decodeInt32()
-      val y = buffer.decodeInt32()
-      val z = buffer.decodeFloat()
-      val seq = buffer.decodeUInt16()
-      val command = buffer.decodeEnumValue(2).let { value ->
+      val param1 = decoder.safeDecodeFloat()
+      val param2 = decoder.safeDecodeFloat()
+      val param3 = decoder.safeDecodeFloat()
+      val param4 = decoder.safeDecodeFloat()
+      val x = decoder.safeDecodeInt32()
+      val y = decoder.safeDecodeInt32()
+      val z = decoder.safeDecodeFloat()
+      val seq = decoder.safeDecodeUInt16()
+      val command = decoder.safeDecodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val frame = buffer.decodeEnumValue(1).let { value ->
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val frame = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val current = buffer.decodeUInt8()
-      val autocontinue = buffer.decodeUInt8()
-      val missionType = buffer.decodeEnumValue(1).let { value ->
+      val current = decoder.safeDecodeUInt8()
+      val autocontinue = decoder.safeDecodeUInt8()
+      val missionType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

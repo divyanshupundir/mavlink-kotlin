@@ -4,18 +4,20 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -25,7 +27,6 @@ import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Telemetry of power generation system. Alternator or mechanical generator.
@@ -98,59 +99,63 @@ public data class GeneratorStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<GeneratorStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeBitmaskValue(status.value, 8)
-    buffer.encodeFloat(batteryCurrent)
-    buffer.encodeFloat(loadCurrent)
-    buffer.encodeFloat(powerGenerated)
-    buffer.encodeFloat(busVoltage)
-    buffer.encodeFloat(batCurrentSetpoint)
-    buffer.encodeUInt32(runtime)
-    buffer.encodeInt32(timeUntilMaintenance)
-    buffer.encodeUInt16(generatorSpeed)
-    buffer.encodeInt16(rectifierTemperature)
-    buffer.encodeInt16(generatorTemperature)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeBitmaskValue(status.value, 8)
+    encoder.encodeFloat(batteryCurrent)
+    encoder.encodeFloat(loadCurrent)
+    encoder.encodeFloat(powerGenerated)
+    encoder.encodeFloat(busVoltage)
+    encoder.encodeFloat(batCurrentSetpoint)
+    encoder.encodeUInt32(runtime)
+    encoder.encodeInt32(timeUntilMaintenance)
+    encoder.encodeUInt16(generatorSpeed)
+    encoder.encodeInt16(rectifierTemperature)
+    encoder.encodeInt16(generatorTemperature)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeBitmaskValue(status.value, 8)
-    buffer.encodeFloat(batteryCurrent)
-    buffer.encodeFloat(loadCurrent)
-    buffer.encodeFloat(powerGenerated)
-    buffer.encodeFloat(busVoltage)
-    buffer.encodeFloat(batCurrentSetpoint)
-    buffer.encodeUInt32(runtime)
-    buffer.encodeInt32(timeUntilMaintenance)
-    buffer.encodeUInt16(generatorSpeed)
-    buffer.encodeInt16(rectifierTemperature)
-    buffer.encodeInt16(generatorTemperature)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeBitmaskValue(status.value, 8)
+    encoder.encodeFloat(batteryCurrent)
+    encoder.encodeFloat(loadCurrent)
+    encoder.encodeFloat(powerGenerated)
+    encoder.encodeFloat(busVoltage)
+    encoder.encodeFloat(batCurrentSetpoint)
+    encoder.encodeUInt32(runtime)
+    encoder.encodeInt32(timeUntilMaintenance)
+    encoder.encodeUInt16(generatorSpeed)
+    encoder.encodeInt16(rectifierTemperature)
+    encoder.encodeInt16(generatorTemperature)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GeneratorStatus> {
+    private const val SIZE_V1: Int = 42
+
+    private const val SIZE_V2: Int = 42
+
     public override val id: UInt = 373u
 
     public override val crcExtra: Byte = 117
 
     public override fun deserialize(bytes: ByteArray): GeneratorStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val status = buffer.decodeBitmaskValue(8).let { value ->
+      val status = decoder.safeDecodeBitmaskValue(8).let { value ->
         val flags = MavGeneratorStatusFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val batteryCurrent = buffer.decodeFloat()
-      val loadCurrent = buffer.decodeFloat()
-      val powerGenerated = buffer.decodeFloat()
-      val busVoltage = buffer.decodeFloat()
-      val batCurrentSetpoint = buffer.decodeFloat()
-      val runtime = buffer.decodeUInt32()
-      val timeUntilMaintenance = buffer.decodeInt32()
-      val generatorSpeed = buffer.decodeUInt16()
-      val rectifierTemperature = buffer.decodeInt16()
-      val generatorTemperature = buffer.decodeInt16()
+      val batteryCurrent = decoder.safeDecodeFloat()
+      val loadCurrent = decoder.safeDecodeFloat()
+      val powerGenerated = decoder.safeDecodeFloat()
+      val busVoltage = decoder.safeDecodeFloat()
+      val batCurrentSetpoint = decoder.safeDecodeFloat()
+      val runtime = decoder.safeDecodeUInt32()
+      val timeUntilMaintenance = decoder.safeDecodeInt32()
+      val generatorSpeed = decoder.safeDecodeUInt16()
+      val rectifierTemperature = decoder.safeDecodeInt16()
+      val generatorTemperature = decoder.safeDecodeInt16()
 
       return GeneratorStatus(
         status = status,

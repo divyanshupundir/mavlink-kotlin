@@ -3,10 +3,12 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -14,7 +16,6 @@ import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Publishes the GPS co-ordinates of the vehicle local origin (0,0,0) position. Emitted whenever a
@@ -53,34 +54,38 @@ public data class GpsGlobalOrigin(
   public override val instanceCompanion: MavMessage.MavCompanion<GpsGlobalOrigin> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(latitude)
-    buffer.encodeInt32(longitude)
-    buffer.encodeInt32(altitude)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(latitude)
+    encoder.encodeInt32(longitude)
+    encoder.encodeInt32(altitude)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(latitude)
-    buffer.encodeInt32(longitude)
-    buffer.encodeInt32(altitude)
-    buffer.encodeUInt64(timeUsec)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(latitude)
+    encoder.encodeInt32(longitude)
+    encoder.encodeInt32(altitude)
+    encoder.encodeUInt64(timeUsec)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GpsGlobalOrigin> {
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 20
+
     public override val id: UInt = 49u
 
     public override val crcExtra: Byte = 39
 
     public override fun deserialize(bytes: ByteArray): GpsGlobalOrigin {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val latitude = buffer.decodeInt32()
-      val longitude = buffer.decodeInt32()
-      val altitude = buffer.decodeInt32()
-      val timeUsec = buffer.decodeUInt64()
+      val latitude = decoder.safeDecodeInt32()
+      val longitude = decoder.safeDecodeInt32()
+      val altitude = decoder.safeDecodeInt32()
+      val timeUsec = decoder.safeDecodeUInt64()
 
       return GpsGlobalOrigin(
         latitude = latitude,

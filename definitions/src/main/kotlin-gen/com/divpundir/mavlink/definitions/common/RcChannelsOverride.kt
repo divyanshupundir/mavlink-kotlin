@@ -3,18 +3,20 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The RAW values of the RC channels sent to the MAV to override info received from the RC radio.
@@ -179,73 +181,77 @@ public data class RcChannelsOverride(
   public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsOverride> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(chan1Raw)
-    buffer.encodeUInt16(chan2Raw)
-    buffer.encodeUInt16(chan3Raw)
-    buffer.encodeUInt16(chan4Raw)
-    buffer.encodeUInt16(chan5Raw)
-    buffer.encodeUInt16(chan6Raw)
-    buffer.encodeUInt16(chan7Raw)
-    buffer.encodeUInt16(chan8Raw)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(chan1Raw)
+    encoder.encodeUInt16(chan2Raw)
+    encoder.encodeUInt16(chan3Raw)
+    encoder.encodeUInt16(chan4Raw)
+    encoder.encodeUInt16(chan5Raw)
+    encoder.encodeUInt16(chan6Raw)
+    encoder.encodeUInt16(chan7Raw)
+    encoder.encodeUInt16(chan8Raw)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(chan1Raw)
-    buffer.encodeUInt16(chan2Raw)
-    buffer.encodeUInt16(chan3Raw)
-    buffer.encodeUInt16(chan4Raw)
-    buffer.encodeUInt16(chan5Raw)
-    buffer.encodeUInt16(chan6Raw)
-    buffer.encodeUInt16(chan7Raw)
-    buffer.encodeUInt16(chan8Raw)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeUInt16(chan9Raw)
-    buffer.encodeUInt16(chan10Raw)
-    buffer.encodeUInt16(chan11Raw)
-    buffer.encodeUInt16(chan12Raw)
-    buffer.encodeUInt16(chan13Raw)
-    buffer.encodeUInt16(chan14Raw)
-    buffer.encodeUInt16(chan15Raw)
-    buffer.encodeUInt16(chan16Raw)
-    buffer.encodeUInt16(chan17Raw)
-    buffer.encodeUInt16(chan18Raw)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(chan1Raw)
+    encoder.encodeUInt16(chan2Raw)
+    encoder.encodeUInt16(chan3Raw)
+    encoder.encodeUInt16(chan4Raw)
+    encoder.encodeUInt16(chan5Raw)
+    encoder.encodeUInt16(chan6Raw)
+    encoder.encodeUInt16(chan7Raw)
+    encoder.encodeUInt16(chan8Raw)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt16(chan9Raw)
+    encoder.encodeUInt16(chan10Raw)
+    encoder.encodeUInt16(chan11Raw)
+    encoder.encodeUInt16(chan12Raw)
+    encoder.encodeUInt16(chan13Raw)
+    encoder.encodeUInt16(chan14Raw)
+    encoder.encodeUInt16(chan15Raw)
+    encoder.encodeUInt16(chan16Raw)
+    encoder.encodeUInt16(chan17Raw)
+    encoder.encodeUInt16(chan18Raw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RcChannelsOverride> {
+    private const val SIZE_V1: Int = 18
+
+    private const val SIZE_V2: Int = 38
+
     public override val id: UInt = 70u
 
     public override val crcExtra: Byte = 124
 
     public override fun deserialize(bytes: ByteArray): RcChannelsOverride {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val chan1Raw = buffer.decodeUInt16()
-      val chan2Raw = buffer.decodeUInt16()
-      val chan3Raw = buffer.decodeUInt16()
-      val chan4Raw = buffer.decodeUInt16()
-      val chan5Raw = buffer.decodeUInt16()
-      val chan6Raw = buffer.decodeUInt16()
-      val chan7Raw = buffer.decodeUInt16()
-      val chan8Raw = buffer.decodeUInt16()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val chan9Raw = buffer.decodeUInt16()
-      val chan10Raw = buffer.decodeUInt16()
-      val chan11Raw = buffer.decodeUInt16()
-      val chan12Raw = buffer.decodeUInt16()
-      val chan13Raw = buffer.decodeUInt16()
-      val chan14Raw = buffer.decodeUInt16()
-      val chan15Raw = buffer.decodeUInt16()
-      val chan16Raw = buffer.decodeUInt16()
-      val chan17Raw = buffer.decodeUInt16()
-      val chan18Raw = buffer.decodeUInt16()
+      val chan1Raw = decoder.safeDecodeUInt16()
+      val chan2Raw = decoder.safeDecodeUInt16()
+      val chan3Raw = decoder.safeDecodeUInt16()
+      val chan4Raw = decoder.safeDecodeUInt16()
+      val chan5Raw = decoder.safeDecodeUInt16()
+      val chan6Raw = decoder.safeDecodeUInt16()
+      val chan7Raw = decoder.safeDecodeUInt16()
+      val chan8Raw = decoder.safeDecodeUInt16()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val chan9Raw = decoder.safeDecodeUInt16()
+      val chan10Raw = decoder.safeDecodeUInt16()
+      val chan11Raw = decoder.safeDecodeUInt16()
+      val chan12Raw = decoder.safeDecodeUInt16()
+      val chan13Raw = decoder.safeDecodeUInt16()
+      val chan14Raw = decoder.safeDecodeUInt16()
+      val chan15Raw = decoder.safeDecodeUInt16()
+      val chan16Raw = decoder.safeDecodeUInt16()
+      val chan17Raw = decoder.safeDecodeUInt16()
+      val chan18Raw = decoder.safeDecodeUInt16()
 
       return RcChannelsOverride(
         targetSystem = targetSystem,

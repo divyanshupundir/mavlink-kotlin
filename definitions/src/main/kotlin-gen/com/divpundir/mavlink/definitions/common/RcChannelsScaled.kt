@@ -3,20 +3,22 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels
@@ -88,56 +90,60 @@ public data class RcChannelsScaled(
   public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsScaled> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt16(chan1Scaled)
-    buffer.encodeInt16(chan2Scaled)
-    buffer.encodeInt16(chan3Scaled)
-    buffer.encodeInt16(chan4Scaled)
-    buffer.encodeInt16(chan5Scaled)
-    buffer.encodeInt16(chan6Scaled)
-    buffer.encodeInt16(chan7Scaled)
-    buffer.encodeInt16(chan8Scaled)
-    buffer.encodeUInt8(port)
-    buffer.encodeUInt8(rssi)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt16(chan1Scaled)
+    encoder.encodeInt16(chan2Scaled)
+    encoder.encodeInt16(chan3Scaled)
+    encoder.encodeInt16(chan4Scaled)
+    encoder.encodeInt16(chan5Scaled)
+    encoder.encodeInt16(chan6Scaled)
+    encoder.encodeInt16(chan7Scaled)
+    encoder.encodeInt16(chan8Scaled)
+    encoder.encodeUInt8(port)
+    encoder.encodeUInt8(rssi)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt16(chan1Scaled)
-    buffer.encodeInt16(chan2Scaled)
-    buffer.encodeInt16(chan3Scaled)
-    buffer.encodeInt16(chan4Scaled)
-    buffer.encodeInt16(chan5Scaled)
-    buffer.encodeInt16(chan6Scaled)
-    buffer.encodeInt16(chan7Scaled)
-    buffer.encodeInt16(chan8Scaled)
-    buffer.encodeUInt8(port)
-    buffer.encodeUInt8(rssi)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt16(chan1Scaled)
+    encoder.encodeInt16(chan2Scaled)
+    encoder.encodeInt16(chan3Scaled)
+    encoder.encodeInt16(chan4Scaled)
+    encoder.encodeInt16(chan5Scaled)
+    encoder.encodeInt16(chan6Scaled)
+    encoder.encodeInt16(chan7Scaled)
+    encoder.encodeInt16(chan8Scaled)
+    encoder.encodeUInt8(port)
+    encoder.encodeUInt8(rssi)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RcChannelsScaled> {
+    private const val SIZE_V1: Int = 22
+
+    private const val SIZE_V2: Int = 22
+
     public override val id: UInt = 34u
 
     public override val crcExtra: Byte = -19
 
     public override fun deserialize(bytes: ByteArray): RcChannelsScaled {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val chan1Scaled = buffer.decodeInt16()
-      val chan2Scaled = buffer.decodeInt16()
-      val chan3Scaled = buffer.decodeInt16()
-      val chan4Scaled = buffer.decodeInt16()
-      val chan5Scaled = buffer.decodeInt16()
-      val chan6Scaled = buffer.decodeInt16()
-      val chan7Scaled = buffer.decodeInt16()
-      val chan8Scaled = buffer.decodeInt16()
-      val port = buffer.decodeUInt8()
-      val rssi = buffer.decodeUInt8()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val chan1Scaled = decoder.safeDecodeInt16()
+      val chan2Scaled = decoder.safeDecodeInt16()
+      val chan3Scaled = decoder.safeDecodeInt16()
+      val chan4Scaled = decoder.safeDecodeInt16()
+      val chan5Scaled = decoder.safeDecodeInt16()
+      val chan6Scaled = decoder.safeDecodeInt16()
+      val chan7Scaled = decoder.safeDecodeInt16()
+      val chan8Scaled = decoder.safeDecodeInt16()
+      val port = decoder.safeDecodeUInt8()
+      val rssi = decoder.safeDecodeUInt8()
 
       return RcChannelsScaled(
         timeBootMs = timeBootMs,

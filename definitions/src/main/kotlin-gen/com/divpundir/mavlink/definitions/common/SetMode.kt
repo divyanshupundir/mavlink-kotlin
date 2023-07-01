@@ -4,20 +4,22 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is
@@ -48,32 +50,36 @@ public data class SetMode(
   public override val instanceCompanion: MavMessage.MavCompanion<SetMode> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(customMode)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeEnumValue(baseMode.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(customMode)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeEnumValue(baseMode.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(customMode)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeEnumValue(baseMode.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(customMode)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeEnumValue(baseMode.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SetMode> {
+    private const val SIZE_V1: Int = 6
+
+    private const val SIZE_V2: Int = 6
+
     public override val id: UInt = 11u
 
     public override val crcExtra: Byte = 89
 
     public override fun deserialize(bytes: ByteArray): SetMode {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val customMode = buffer.decodeUInt32()
-      val targetSystem = buffer.decodeUInt8()
-      val baseMode = buffer.decodeEnumValue(1).let { value ->
+      val customMode = decoder.safeDecodeUInt32()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val baseMode = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

@@ -3,18 +3,20 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F20 format
@@ -93,62 +95,66 @@ public data class SerialUdbExtraF20(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF20> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt16(sueTrimValueInput1)
-    buffer.encodeInt16(sueTrimValueInput2)
-    buffer.encodeInt16(sueTrimValueInput3)
-    buffer.encodeInt16(sueTrimValueInput4)
-    buffer.encodeInt16(sueTrimValueInput5)
-    buffer.encodeInt16(sueTrimValueInput6)
-    buffer.encodeInt16(sueTrimValueInput7)
-    buffer.encodeInt16(sueTrimValueInput8)
-    buffer.encodeInt16(sueTrimValueInput9)
-    buffer.encodeInt16(sueTrimValueInput10)
-    buffer.encodeInt16(sueTrimValueInput11)
-    buffer.encodeInt16(sueTrimValueInput12)
-    buffer.encodeUInt8(sueNumberOfInputs)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt16(sueTrimValueInput1)
+    encoder.encodeInt16(sueTrimValueInput2)
+    encoder.encodeInt16(sueTrimValueInput3)
+    encoder.encodeInt16(sueTrimValueInput4)
+    encoder.encodeInt16(sueTrimValueInput5)
+    encoder.encodeInt16(sueTrimValueInput6)
+    encoder.encodeInt16(sueTrimValueInput7)
+    encoder.encodeInt16(sueTrimValueInput8)
+    encoder.encodeInt16(sueTrimValueInput9)
+    encoder.encodeInt16(sueTrimValueInput10)
+    encoder.encodeInt16(sueTrimValueInput11)
+    encoder.encodeInt16(sueTrimValueInput12)
+    encoder.encodeUInt8(sueNumberOfInputs)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt16(sueTrimValueInput1)
-    buffer.encodeInt16(sueTrimValueInput2)
-    buffer.encodeInt16(sueTrimValueInput3)
-    buffer.encodeInt16(sueTrimValueInput4)
-    buffer.encodeInt16(sueTrimValueInput5)
-    buffer.encodeInt16(sueTrimValueInput6)
-    buffer.encodeInt16(sueTrimValueInput7)
-    buffer.encodeInt16(sueTrimValueInput8)
-    buffer.encodeInt16(sueTrimValueInput9)
-    buffer.encodeInt16(sueTrimValueInput10)
-    buffer.encodeInt16(sueTrimValueInput11)
-    buffer.encodeInt16(sueTrimValueInput12)
-    buffer.encodeUInt8(sueNumberOfInputs)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt16(sueTrimValueInput1)
+    encoder.encodeInt16(sueTrimValueInput2)
+    encoder.encodeInt16(sueTrimValueInput3)
+    encoder.encodeInt16(sueTrimValueInput4)
+    encoder.encodeInt16(sueTrimValueInput5)
+    encoder.encodeInt16(sueTrimValueInput6)
+    encoder.encodeInt16(sueTrimValueInput7)
+    encoder.encodeInt16(sueTrimValueInput8)
+    encoder.encodeInt16(sueTrimValueInput9)
+    encoder.encodeInt16(sueTrimValueInput10)
+    encoder.encodeInt16(sueTrimValueInput11)
+    encoder.encodeInt16(sueTrimValueInput12)
+    encoder.encodeUInt8(sueNumberOfInputs)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF20> {
+    private const val SIZE_V1: Int = 25
+
+    private const val SIZE_V2: Int = 25
+
     public override val id: UInt = 186u
 
     public override val crcExtra: Byte = -112
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF20 {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val sueTrimValueInput1 = buffer.decodeInt16()
-      val sueTrimValueInput2 = buffer.decodeInt16()
-      val sueTrimValueInput3 = buffer.decodeInt16()
-      val sueTrimValueInput4 = buffer.decodeInt16()
-      val sueTrimValueInput5 = buffer.decodeInt16()
-      val sueTrimValueInput6 = buffer.decodeInt16()
-      val sueTrimValueInput7 = buffer.decodeInt16()
-      val sueTrimValueInput8 = buffer.decodeInt16()
-      val sueTrimValueInput9 = buffer.decodeInt16()
-      val sueTrimValueInput10 = buffer.decodeInt16()
-      val sueTrimValueInput11 = buffer.decodeInt16()
-      val sueTrimValueInput12 = buffer.decodeInt16()
-      val sueNumberOfInputs = buffer.decodeUInt8()
+      val sueTrimValueInput1 = decoder.safeDecodeInt16()
+      val sueTrimValueInput2 = decoder.safeDecodeInt16()
+      val sueTrimValueInput3 = decoder.safeDecodeInt16()
+      val sueTrimValueInput4 = decoder.safeDecodeInt16()
+      val sueTrimValueInput5 = decoder.safeDecodeInt16()
+      val sueTrimValueInput6 = decoder.safeDecodeInt16()
+      val sueTrimValueInput7 = decoder.safeDecodeInt16()
+      val sueTrimValueInput8 = decoder.safeDecodeInt16()
+      val sueTrimValueInput9 = decoder.safeDecodeInt16()
+      val sueTrimValueInput10 = decoder.safeDecodeInt16()
+      val sueTrimValueInput11 = decoder.safeDecodeInt16()
+      val sueTrimValueInput12 = decoder.safeDecodeInt16()
+      val sueNumberOfInputs = decoder.safeDecodeUInt8()
 
       return SerialUdbExtraF20(
         sueNumberOfInputs = sueNumberOfInputs,

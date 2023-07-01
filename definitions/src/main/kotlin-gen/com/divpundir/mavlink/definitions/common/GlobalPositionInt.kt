@@ -3,14 +3,16 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -19,7 +21,6 @@ import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame
@@ -81,50 +82,54 @@ public data class GlobalPositionInt(
   public override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionInt> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(alt)
-    buffer.encodeInt32(relativeAlt)
-    buffer.encodeInt16(vx)
-    buffer.encodeInt16(vy)
-    buffer.encodeInt16(vz)
-    buffer.encodeUInt16(hdg)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeInt32(relativeAlt)
+    encoder.encodeInt16(vx)
+    encoder.encodeInt16(vy)
+    encoder.encodeInt16(vz)
+    encoder.encodeUInt16(hdg)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(alt)
-    buffer.encodeInt32(relativeAlt)
-    buffer.encodeInt16(vx)
-    buffer.encodeInt16(vy)
-    buffer.encodeInt16(vz)
-    buffer.encodeUInt16(hdg)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeInt32(relativeAlt)
+    encoder.encodeInt16(vx)
+    encoder.encodeInt16(vy)
+    encoder.encodeInt16(vz)
+    encoder.encodeUInt16(hdg)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GlobalPositionInt> {
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
+
     public override val id: UInt = 33u
 
     public override val crcExtra: Byte = 104
 
     public override fun deserialize(bytes: ByteArray): GlobalPositionInt {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val lat = buffer.decodeInt32()
-      val lon = buffer.decodeInt32()
-      val alt = buffer.decodeInt32()
-      val relativeAlt = buffer.decodeInt32()
-      val vx = buffer.decodeInt16()
-      val vy = buffer.decodeInt16()
-      val vz = buffer.decodeInt16()
-      val hdg = buffer.decodeUInt16()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt32()
+      val relativeAlt = decoder.safeDecodeInt32()
+      val vx = decoder.safeDecodeInt16()
+      val vy = decoder.safeDecodeInt16()
+      val vz = decoder.safeDecodeInt16()
+      val hdg = decoder.safeDecodeUInt16()
 
       return GlobalPositionInt(
         timeBootMs = timeBootMs,

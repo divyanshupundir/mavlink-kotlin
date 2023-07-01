@@ -5,17 +5,19 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.MavMountMode
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Message to configure a camera mount, directional antenna, etc.
@@ -59,44 +61,48 @@ public data class MountConfigure(
   public override val instanceCompanion: MavMessage.MavCompanion<MountConfigure> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(mountMode.value, 1)
-    buffer.encodeUInt8(stabRoll)
-    buffer.encodeUInt8(stabPitch)
-    buffer.encodeUInt8(stabYaw)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(mountMode.value, 1)
+    encoder.encodeUInt8(stabRoll)
+    encoder.encodeUInt8(stabPitch)
+    encoder.encodeUInt8(stabYaw)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(mountMode.value, 1)
-    buffer.encodeUInt8(stabRoll)
-    buffer.encodeUInt8(stabPitch)
-    buffer.encodeUInt8(stabYaw)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(mountMode.value, 1)
+    encoder.encodeUInt8(stabRoll)
+    encoder.encodeUInt8(stabPitch)
+    encoder.encodeUInt8(stabYaw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MountConfigure> {
+    private const val SIZE_V1: Int = 6
+
+    private const val SIZE_V2: Int = 6
+
     public override val id: UInt = 156u
 
     public override val crcExtra: Byte = 19
 
     public override fun deserialize(bytes: ByteArray): MountConfigure {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val mountMode = buffer.decodeEnumValue(1).let { value ->
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val mountMode = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavMountMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val stabRoll = buffer.decodeUInt8()
-      val stabPitch = buffer.decodeUInt8()
-      val stabYaw = buffer.decodeUInt8()
+      val stabRoll = decoder.safeDecodeUInt8()
+      val stabPitch = decoder.safeDecodeUInt8()
+      val stabYaw = decoder.safeDecodeUInt8()
 
       return MountConfigure(
         targetSystem = targetSystem,

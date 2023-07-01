@@ -3,17 +3,19 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Reply to LOG_REQUEST_LIST
@@ -52,38 +54,42 @@ public data class LogEntry(
   public override val instanceCompanion: MavMessage.MavCompanion<LogEntry> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeUtc)
-    buffer.encodeUInt32(size)
-    buffer.encodeUInt16(id)
-    buffer.encodeUInt16(numLogs)
-    buffer.encodeUInt16(lastLogNum)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeUtc)
+    encoder.encodeUInt32(size)
+    encoder.encodeUInt16(id)
+    encoder.encodeUInt16(numLogs)
+    encoder.encodeUInt16(lastLogNum)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeUtc)
-    buffer.encodeUInt32(size)
-    buffer.encodeUInt16(id)
-    buffer.encodeUInt16(numLogs)
-    buffer.encodeUInt16(lastLogNum)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeUtc)
+    encoder.encodeUInt32(size)
+    encoder.encodeUInt16(id)
+    encoder.encodeUInt16(numLogs)
+    encoder.encodeUInt16(lastLogNum)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LogEntry> {
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 14
+
     public override val id: UInt = 118u
 
     public override val crcExtra: Byte = 56
 
     public override fun deserialize(bytes: ByteArray): LogEntry {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUtc = buffer.decodeUInt32()
-      val size = buffer.decodeUInt32()
-      val id = buffer.decodeUInt16()
-      val numLogs = buffer.decodeUInt16()
-      val lastLogNum = buffer.decodeUInt16()
+      val timeUtc = decoder.safeDecodeUInt32()
+      val size = decoder.safeDecodeUInt32()
+      val id = decoder.safeDecodeUInt16()
+      val numLogs = decoder.safeDecodeUInt16()
+      val lastLogNum = decoder.safeDecodeUInt16()
 
       return LogEntry(
         id = id,

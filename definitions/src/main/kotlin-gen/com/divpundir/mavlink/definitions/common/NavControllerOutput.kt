@@ -3,21 +3,23 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The state of the navigation and position controller.
@@ -71,47 +73,51 @@ public data class NavControllerOutput(
   public override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(navRoll)
-    buffer.encodeFloat(navPitch)
-    buffer.encodeFloat(altError)
-    buffer.encodeFloat(aspdError)
-    buffer.encodeFloat(xtrackError)
-    buffer.encodeInt16(navBearing)
-    buffer.encodeInt16(targetBearing)
-    buffer.encodeUInt16(wpDist)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(navRoll)
+    encoder.encodeFloat(navPitch)
+    encoder.encodeFloat(altError)
+    encoder.encodeFloat(aspdError)
+    encoder.encodeFloat(xtrackError)
+    encoder.encodeInt16(navBearing)
+    encoder.encodeInt16(targetBearing)
+    encoder.encodeUInt16(wpDist)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(navRoll)
-    buffer.encodeFloat(navPitch)
-    buffer.encodeFloat(altError)
-    buffer.encodeFloat(aspdError)
-    buffer.encodeFloat(xtrackError)
-    buffer.encodeInt16(navBearing)
-    buffer.encodeInt16(targetBearing)
-    buffer.encodeUInt16(wpDist)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(navRoll)
+    encoder.encodeFloat(navPitch)
+    encoder.encodeFloat(altError)
+    encoder.encodeFloat(aspdError)
+    encoder.encodeFloat(xtrackError)
+    encoder.encodeInt16(navBearing)
+    encoder.encodeInt16(targetBearing)
+    encoder.encodeUInt16(wpDist)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<NavControllerOutput> {
+    private const val SIZE_V1: Int = 26
+
+    private const val SIZE_V2: Int = 26
+
     public override val id: UInt = 62u
 
     public override val crcExtra: Byte = -73
 
     public override fun deserialize(bytes: ByteArray): NavControllerOutput {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val navRoll = buffer.decodeFloat()
-      val navPitch = buffer.decodeFloat()
-      val altError = buffer.decodeFloat()
-      val aspdError = buffer.decodeFloat()
-      val xtrackError = buffer.decodeFloat()
-      val navBearing = buffer.decodeInt16()
-      val targetBearing = buffer.decodeInt16()
-      val wpDist = buffer.decodeUInt16()
+      val navRoll = decoder.safeDecodeFloat()
+      val navPitch = decoder.safeDecodeFloat()
+      val altError = decoder.safeDecodeFloat()
+      val aspdError = decoder.safeDecodeFloat()
+      val xtrackError = decoder.safeDecodeFloat()
+      val navBearing = decoder.safeDecodeInt16()
+      val targetBearing = decoder.safeDecodeInt16()
+      val wpDist = decoder.safeDecodeUInt16()
 
       return NavControllerOutput(
         navRoll = navRoll,

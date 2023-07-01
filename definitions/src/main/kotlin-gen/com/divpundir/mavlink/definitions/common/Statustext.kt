@@ -4,23 +4,25 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Status text message. These messages are printed in yellow in the COMM console of QGroundControl.
@@ -66,36 +68,40 @@ public data class Statustext(
   public override val instanceCompanion: MavMessage.MavCompanion<Statustext> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeEnumValue(severity.value, 1)
-    buffer.encodeString(text, 50)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeEnumValue(severity.value, 1)
+    encoder.encodeString(text, 50)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeEnumValue(severity.value, 1)
-    buffer.encodeString(text, 50)
-    buffer.encodeUInt16(id)
-    buffer.encodeUInt8(chunkSeq)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeEnumValue(severity.value, 1)
+    encoder.encodeString(text, 50)
+    encoder.encodeUInt16(id)
+    encoder.encodeUInt8(chunkSeq)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Statustext> {
+    private const val SIZE_V1: Int = 51
+
+    private const val SIZE_V2: Int = 54
+
     public override val id: UInt = 253u
 
     public override val crcExtra: Byte = 83
 
     public override fun deserialize(bytes: ByteArray): Statustext {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val severity = buffer.decodeEnumValue(1).let { value ->
+      val severity = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavSeverity.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val text = buffer.decodeString(50)
-      val id = buffer.decodeUInt16()
-      val chunkSeq = buffer.decodeUInt8()
+      val text = decoder.safeDecodeString(50)
+      val id = decoder.safeDecodeUInt16()
+      val chunkSeq = decoder.safeDecodeUInt8()
 
       return Statustext(
         severity = severity,

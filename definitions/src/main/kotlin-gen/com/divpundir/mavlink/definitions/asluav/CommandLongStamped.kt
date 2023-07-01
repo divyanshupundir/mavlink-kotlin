@@ -5,25 +5,27 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.MavCmd
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Send a command with up to seven parameters to the MAV and additional metadata
@@ -103,65 +105,69 @@ public data class CommandLongStamped(
   public override val instanceCompanion: MavMessage.MavCompanion<CommandLongStamped> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(vehicleTimestamp)
-    buffer.encodeUInt32(utcTime)
-    buffer.encodeFloat(param1)
-    buffer.encodeFloat(param2)
-    buffer.encodeFloat(param3)
-    buffer.encodeFloat(param4)
-    buffer.encodeFloat(param5)
-    buffer.encodeFloat(param6)
-    buffer.encodeFloat(param7)
-    buffer.encodeEnumValue(command.value, 2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeUInt8(confirmation)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(vehicleTimestamp)
+    encoder.encodeUInt32(utcTime)
+    encoder.encodeFloat(param1)
+    encoder.encodeFloat(param2)
+    encoder.encodeFloat(param3)
+    encoder.encodeFloat(param4)
+    encoder.encodeFloat(param5)
+    encoder.encodeFloat(param6)
+    encoder.encodeFloat(param7)
+    encoder.encodeEnumValue(command.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(confirmation)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(vehicleTimestamp)
-    buffer.encodeUInt32(utcTime)
-    buffer.encodeFloat(param1)
-    buffer.encodeFloat(param2)
-    buffer.encodeFloat(param3)
-    buffer.encodeFloat(param4)
-    buffer.encodeFloat(param5)
-    buffer.encodeFloat(param6)
-    buffer.encodeFloat(param7)
-    buffer.encodeEnumValue(command.value, 2)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeUInt8(confirmation)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(vehicleTimestamp)
+    encoder.encodeUInt32(utcTime)
+    encoder.encodeFloat(param1)
+    encoder.encodeFloat(param2)
+    encoder.encodeFloat(param3)
+    encoder.encodeFloat(param4)
+    encoder.encodeFloat(param5)
+    encoder.encodeFloat(param6)
+    encoder.encodeFloat(param7)
+    encoder.encodeEnumValue(command.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(confirmation)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CommandLongStamped> {
+    private const val SIZE_V1: Int = 45
+
+    private const val SIZE_V2: Int = 45
+
     public override val id: UInt = 224u
 
     public override val crcExtra: Byte = 102
 
     public override fun deserialize(bytes: ByteArray): CommandLongStamped {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val vehicleTimestamp = buffer.decodeUInt64()
-      val utcTime = buffer.decodeUInt32()
-      val param1 = buffer.decodeFloat()
-      val param2 = buffer.decodeFloat()
-      val param3 = buffer.decodeFloat()
-      val param4 = buffer.decodeFloat()
-      val param5 = buffer.decodeFloat()
-      val param6 = buffer.decodeFloat()
-      val param7 = buffer.decodeFloat()
-      val command = buffer.decodeEnumValue(2).let { value ->
+      val vehicleTimestamp = decoder.safeDecodeUInt64()
+      val utcTime = decoder.safeDecodeUInt32()
+      val param1 = decoder.safeDecodeFloat()
+      val param2 = decoder.safeDecodeFloat()
+      val param3 = decoder.safeDecodeFloat()
+      val param4 = decoder.safeDecodeFloat()
+      val param5 = decoder.safeDecodeFloat()
+      val param6 = decoder.safeDecodeFloat()
+      val param7 = decoder.safeDecodeFloat()
+      val command = decoder.safeDecodeEnumValue(2).let { value ->
         val entry = MavCmd.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val confirmation = buffer.decodeUInt8()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val confirmation = decoder.safeDecodeUInt8()
 
       return CommandLongStamped(
         utcTime = utcTime,

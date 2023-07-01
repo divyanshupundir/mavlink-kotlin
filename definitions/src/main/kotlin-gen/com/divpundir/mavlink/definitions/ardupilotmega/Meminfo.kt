@@ -3,17 +3,19 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * State of autopilot RAM.
@@ -45,31 +47,35 @@ public data class Meminfo(
   public override val instanceCompanion: MavMessage.MavCompanion<Meminfo> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(brkval)
-    buffer.encodeUInt16(freemem)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(brkval)
+    encoder.encodeUInt16(freemem)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(brkval)
-    buffer.encodeUInt16(freemem)
-    buffer.encodeUInt32(freemem32)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(brkval)
+    encoder.encodeUInt16(freemem)
+    encoder.encodeUInt32(freemem32)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Meminfo> {
+    private const val SIZE_V1: Int = 4
+
+    private const val SIZE_V2: Int = 8
+
     public override val id: UInt = 152u
 
     public override val crcExtra: Byte = -48
 
     public override fun deserialize(bytes: ByteArray): Meminfo {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val brkval = buffer.decodeUInt16()
-      val freemem = buffer.decodeUInt16()
-      val freemem32 = buffer.decodeUInt32()
+      val brkval = decoder.safeDecodeUInt16()
+      val freemem = decoder.safeDecodeUInt16()
+      val freemem32 = decoder.safeDecodeUInt32()
 
       return Meminfo(
         brkval = brkval,

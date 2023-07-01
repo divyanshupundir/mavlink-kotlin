@@ -4,23 +4,25 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The IMU readings in SI units in NED body frame
@@ -119,73 +121,77 @@ public data class HighresImu(
   public override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(xacc)
-    buffer.encodeFloat(yacc)
-    buffer.encodeFloat(zacc)
-    buffer.encodeFloat(xgyro)
-    buffer.encodeFloat(ygyro)
-    buffer.encodeFloat(zgyro)
-    buffer.encodeFloat(xmag)
-    buffer.encodeFloat(ymag)
-    buffer.encodeFloat(zmag)
-    buffer.encodeFloat(absPressure)
-    buffer.encodeFloat(diffPressure)
-    buffer.encodeFloat(pressureAlt)
-    buffer.encodeFloat(temperature)
-    buffer.encodeBitmaskValue(fieldsUpdated.value, 2)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(xacc)
+    encoder.encodeFloat(yacc)
+    encoder.encodeFloat(zacc)
+    encoder.encodeFloat(xgyro)
+    encoder.encodeFloat(ygyro)
+    encoder.encodeFloat(zgyro)
+    encoder.encodeFloat(xmag)
+    encoder.encodeFloat(ymag)
+    encoder.encodeFloat(zmag)
+    encoder.encodeFloat(absPressure)
+    encoder.encodeFloat(diffPressure)
+    encoder.encodeFloat(pressureAlt)
+    encoder.encodeFloat(temperature)
+    encoder.encodeBitmaskValue(fieldsUpdated.value, 2)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(xacc)
-    buffer.encodeFloat(yacc)
-    buffer.encodeFloat(zacc)
-    buffer.encodeFloat(xgyro)
-    buffer.encodeFloat(ygyro)
-    buffer.encodeFloat(zgyro)
-    buffer.encodeFloat(xmag)
-    buffer.encodeFloat(ymag)
-    buffer.encodeFloat(zmag)
-    buffer.encodeFloat(absPressure)
-    buffer.encodeFloat(diffPressure)
-    buffer.encodeFloat(pressureAlt)
-    buffer.encodeFloat(temperature)
-    buffer.encodeBitmaskValue(fieldsUpdated.value, 2)
-    buffer.encodeUInt8(id)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(xacc)
+    encoder.encodeFloat(yacc)
+    encoder.encodeFloat(zacc)
+    encoder.encodeFloat(xgyro)
+    encoder.encodeFloat(ygyro)
+    encoder.encodeFloat(zgyro)
+    encoder.encodeFloat(xmag)
+    encoder.encodeFloat(ymag)
+    encoder.encodeFloat(zmag)
+    encoder.encodeFloat(absPressure)
+    encoder.encodeFloat(diffPressure)
+    encoder.encodeFloat(pressureAlt)
+    encoder.encodeFloat(temperature)
+    encoder.encodeBitmaskValue(fieldsUpdated.value, 2)
+    encoder.encodeUInt8(id)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HighresImu> {
+    private const val SIZE_V1: Int = 62
+
+    private const val SIZE_V2: Int = 63
+
     public override val id: UInt = 105u
 
     public override val crcExtra: Byte = 93
 
     public override fun deserialize(bytes: ByteArray): HighresImu {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val xacc = buffer.decodeFloat()
-      val yacc = buffer.decodeFloat()
-      val zacc = buffer.decodeFloat()
-      val xgyro = buffer.decodeFloat()
-      val ygyro = buffer.decodeFloat()
-      val zgyro = buffer.decodeFloat()
-      val xmag = buffer.decodeFloat()
-      val ymag = buffer.decodeFloat()
-      val zmag = buffer.decodeFloat()
-      val absPressure = buffer.decodeFloat()
-      val diffPressure = buffer.decodeFloat()
-      val pressureAlt = buffer.decodeFloat()
-      val temperature = buffer.decodeFloat()
-      val fieldsUpdated = buffer.decodeBitmaskValue(2).let { value ->
+      val timeUsec = decoder.safeDecodeUInt64()
+      val xacc = decoder.safeDecodeFloat()
+      val yacc = decoder.safeDecodeFloat()
+      val zacc = decoder.safeDecodeFloat()
+      val xgyro = decoder.safeDecodeFloat()
+      val ygyro = decoder.safeDecodeFloat()
+      val zgyro = decoder.safeDecodeFloat()
+      val xmag = decoder.safeDecodeFloat()
+      val ymag = decoder.safeDecodeFloat()
+      val zmag = decoder.safeDecodeFloat()
+      val absPressure = decoder.safeDecodeFloat()
+      val diffPressure = decoder.safeDecodeFloat()
+      val pressureAlt = decoder.safeDecodeFloat()
+      val temperature = decoder.safeDecodeFloat()
+      val fieldsUpdated = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = HighresImuUpdatedFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val id = buffer.decodeUInt8()
+      val id = decoder.safeDecodeUInt8()
 
       return HighresImu(
         timeUsec = timeUsec,

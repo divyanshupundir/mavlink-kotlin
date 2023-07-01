@@ -5,14 +5,8 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt16
@@ -21,6 +15,14 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -31,7 +33,6 @@ import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The location and information of an ADSB vehicle
@@ -110,71 +111,75 @@ public data class AdsbVehicle(
   public override val instanceCompanion: MavMessage.MavCompanion<AdsbVehicle> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(icaoAddress)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(altitude)
-    buffer.encodeUInt16(heading)
-    buffer.encodeUInt16(horVelocity)
-    buffer.encodeInt16(verVelocity)
-    buffer.encodeBitmaskValue(flags.value, 2)
-    buffer.encodeUInt16(squawk)
-    buffer.encodeEnumValue(altitudeType.value, 1)
-    buffer.encodeString(callsign, 9)
-    buffer.encodeEnumValue(emitterType.value, 1)
-    buffer.encodeUInt8(tslc)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(icaoAddress)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(altitude)
+    encoder.encodeUInt16(heading)
+    encoder.encodeUInt16(horVelocity)
+    encoder.encodeInt16(verVelocity)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    encoder.encodeUInt16(squawk)
+    encoder.encodeEnumValue(altitudeType.value, 1)
+    encoder.encodeString(callsign, 9)
+    encoder.encodeEnumValue(emitterType.value, 1)
+    encoder.encodeUInt8(tslc)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(icaoAddress)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(altitude)
-    buffer.encodeUInt16(heading)
-    buffer.encodeUInt16(horVelocity)
-    buffer.encodeInt16(verVelocity)
-    buffer.encodeBitmaskValue(flags.value, 2)
-    buffer.encodeUInt16(squawk)
-    buffer.encodeEnumValue(altitudeType.value, 1)
-    buffer.encodeString(callsign, 9)
-    buffer.encodeEnumValue(emitterType.value, 1)
-    buffer.encodeUInt8(tslc)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(icaoAddress)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(altitude)
+    encoder.encodeUInt16(heading)
+    encoder.encodeUInt16(horVelocity)
+    encoder.encodeInt16(verVelocity)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    encoder.encodeUInt16(squawk)
+    encoder.encodeEnumValue(altitudeType.value, 1)
+    encoder.encodeString(callsign, 9)
+    encoder.encodeEnumValue(emitterType.value, 1)
+    encoder.encodeUInt8(tslc)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AdsbVehicle> {
+    private const val SIZE_V1: Int = 38
+
+    private const val SIZE_V2: Int = 38
+
     public override val id: UInt = 246u
 
     public override val crcExtra: Byte = -72
 
     public override fun deserialize(bytes: ByteArray): AdsbVehicle {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val icaoAddress = buffer.decodeUInt32()
-      val lat = buffer.decodeInt32()
-      val lon = buffer.decodeInt32()
-      val altitude = buffer.decodeInt32()
-      val heading = buffer.decodeUInt16()
-      val horVelocity = buffer.decodeUInt16()
-      val verVelocity = buffer.decodeInt16()
-      val flags = buffer.decodeBitmaskValue(2).let { value ->
+      val icaoAddress = decoder.safeDecodeUInt32()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val altitude = decoder.safeDecodeInt32()
+      val heading = decoder.safeDecodeUInt16()
+      val horVelocity = decoder.safeDecodeUInt16()
+      val verVelocity = decoder.safeDecodeInt16()
+      val flags = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = AdsbFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val squawk = buffer.decodeUInt16()
-      val altitudeType = buffer.decodeEnumValue(1).let { value ->
+      val squawk = decoder.safeDecodeUInt16()
+      val altitudeType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = AdsbAltitudeType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val callsign = buffer.decodeString(9)
-      val emitterType = buffer.decodeEnumValue(1).let { value ->
+      val callsign = decoder.safeDecodeString(9)
+      val emitterType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = AdsbEmitterType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val tslc = buffer.decodeUInt8()
+      val tslc = decoder.safeDecodeUInt8()
 
       return AdsbVehicle(
         icaoAddress = icaoAddress,

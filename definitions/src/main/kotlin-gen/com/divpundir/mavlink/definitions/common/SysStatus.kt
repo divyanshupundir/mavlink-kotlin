@@ -4,22 +4,24 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt8
-import com.divpundir.mavlink.serialization.decodeUInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The general system state. If the system is following the MAVLink standard, the system state is
@@ -145,83 +147,87 @@ public data class SysStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
-    buffer.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
-    buffer.encodeBitmaskValue(onboardControlSensorsHealth.value, 4)
-    buffer.encodeUInt16(load)
-    buffer.encodeUInt16(voltageBattery)
-    buffer.encodeInt16(currentBattery)
-    buffer.encodeUInt16(dropRateComm)
-    buffer.encodeUInt16(errorsComm)
-    buffer.encodeUInt16(errorsCount1)
-    buffer.encodeUInt16(errorsCount2)
-    buffer.encodeUInt16(errorsCount3)
-    buffer.encodeUInt16(errorsCount4)
-    buffer.encodeInt8(batteryRemaining)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
+    encoder.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
+    encoder.encodeBitmaskValue(onboardControlSensorsHealth.value, 4)
+    encoder.encodeUInt16(load)
+    encoder.encodeUInt16(voltageBattery)
+    encoder.encodeInt16(currentBattery)
+    encoder.encodeUInt16(dropRateComm)
+    encoder.encodeUInt16(errorsComm)
+    encoder.encodeUInt16(errorsCount1)
+    encoder.encodeUInt16(errorsCount2)
+    encoder.encodeUInt16(errorsCount3)
+    encoder.encodeUInt16(errorsCount4)
+    encoder.encodeInt8(batteryRemaining)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
-    buffer.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
-    buffer.encodeBitmaskValue(onboardControlSensorsHealth.value, 4)
-    buffer.encodeUInt16(load)
-    buffer.encodeUInt16(voltageBattery)
-    buffer.encodeInt16(currentBattery)
-    buffer.encodeUInt16(dropRateComm)
-    buffer.encodeUInt16(errorsComm)
-    buffer.encodeUInt16(errorsCount1)
-    buffer.encodeUInt16(errorsCount2)
-    buffer.encodeUInt16(errorsCount3)
-    buffer.encodeUInt16(errorsCount4)
-    buffer.encodeInt8(batteryRemaining)
-    buffer.encodeBitmaskValue(onboardControlSensorsPresentExtended.value, 4)
-    buffer.encodeBitmaskValue(onboardControlSensorsEnabledExtended.value, 4)
-    buffer.encodeBitmaskValue(onboardControlSensorsHealthExtended.value, 4)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
+    encoder.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
+    encoder.encodeBitmaskValue(onboardControlSensorsHealth.value, 4)
+    encoder.encodeUInt16(load)
+    encoder.encodeUInt16(voltageBattery)
+    encoder.encodeInt16(currentBattery)
+    encoder.encodeUInt16(dropRateComm)
+    encoder.encodeUInt16(errorsComm)
+    encoder.encodeUInt16(errorsCount1)
+    encoder.encodeUInt16(errorsCount2)
+    encoder.encodeUInt16(errorsCount3)
+    encoder.encodeUInt16(errorsCount4)
+    encoder.encodeInt8(batteryRemaining)
+    encoder.encodeBitmaskValue(onboardControlSensorsPresentExtended.value, 4)
+    encoder.encodeBitmaskValue(onboardControlSensorsEnabledExtended.value, 4)
+    encoder.encodeBitmaskValue(onboardControlSensorsHealthExtended.value, 4)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SysStatus> {
+    private const val SIZE_V1: Int = 31
+
+    private const val SIZE_V2: Int = 43
+
     public override val id: UInt = 1u
 
     public override val crcExtra: Byte = 124
 
     public override fun deserialize(bytes: ByteArray): SysStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val onboardControlSensorsPresent = buffer.decodeBitmaskValue(4).let { value ->
+      val onboardControlSensorsPresent = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensor.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsEnabled = buffer.decodeBitmaskValue(4).let { value ->
+      val onboardControlSensorsEnabled = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensor.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsHealth = buffer.decodeBitmaskValue(4).let { value ->
+      val onboardControlSensorsHealth = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensor.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val load = buffer.decodeUInt16()
-      val voltageBattery = buffer.decodeUInt16()
-      val currentBattery = buffer.decodeInt16()
-      val dropRateComm = buffer.decodeUInt16()
-      val errorsComm = buffer.decodeUInt16()
-      val errorsCount1 = buffer.decodeUInt16()
-      val errorsCount2 = buffer.decodeUInt16()
-      val errorsCount3 = buffer.decodeUInt16()
-      val errorsCount4 = buffer.decodeUInt16()
-      val batteryRemaining = buffer.decodeInt8()
-      val onboardControlSensorsPresentExtended = buffer.decodeBitmaskValue(4).let { value ->
+      val load = decoder.safeDecodeUInt16()
+      val voltageBattery = decoder.safeDecodeUInt16()
+      val currentBattery = decoder.safeDecodeInt16()
+      val dropRateComm = decoder.safeDecodeUInt16()
+      val errorsComm = decoder.safeDecodeUInt16()
+      val errorsCount1 = decoder.safeDecodeUInt16()
+      val errorsCount2 = decoder.safeDecodeUInt16()
+      val errorsCount3 = decoder.safeDecodeUInt16()
+      val errorsCount4 = decoder.safeDecodeUInt16()
+      val batteryRemaining = decoder.safeDecodeInt8()
+      val onboardControlSensorsPresentExtended = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensorExtended.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsEnabledExtended = buffer.decodeBitmaskValue(4).let { value ->
+      val onboardControlSensorsEnabledExtended = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensorExtended.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val onboardControlSensorsHealthExtended = buffer.decodeBitmaskValue(4).let { value ->
+      val onboardControlSensorsHealthExtended = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavSysStatusSensorExtended.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

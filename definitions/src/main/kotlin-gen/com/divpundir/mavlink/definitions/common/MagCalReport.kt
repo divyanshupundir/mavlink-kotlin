@@ -4,20 +4,22 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Reports results of completed compass calibration. Sent until MAG_CAL_ACK received.
@@ -133,82 +135,86 @@ public data class MagCalReport(
   public override val instanceCompanion: MavMessage.MavCompanion<MagCalReport> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(fitness)
-    buffer.encodeFloat(ofsX)
-    buffer.encodeFloat(ofsY)
-    buffer.encodeFloat(ofsZ)
-    buffer.encodeFloat(diagX)
-    buffer.encodeFloat(diagY)
-    buffer.encodeFloat(diagZ)
-    buffer.encodeFloat(offdiagX)
-    buffer.encodeFloat(offdiagY)
-    buffer.encodeFloat(offdiagZ)
-    buffer.encodeUInt8(compassId)
-    buffer.encodeUInt8(calMask)
-    buffer.encodeEnumValue(calStatus.value, 1)
-    buffer.encodeUInt8(autosaved)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(fitness)
+    encoder.encodeFloat(ofsX)
+    encoder.encodeFloat(ofsY)
+    encoder.encodeFloat(ofsZ)
+    encoder.encodeFloat(diagX)
+    encoder.encodeFloat(diagY)
+    encoder.encodeFloat(diagZ)
+    encoder.encodeFloat(offdiagX)
+    encoder.encodeFloat(offdiagY)
+    encoder.encodeFloat(offdiagZ)
+    encoder.encodeUInt8(compassId)
+    encoder.encodeUInt8(calMask)
+    encoder.encodeEnumValue(calStatus.value, 1)
+    encoder.encodeUInt8(autosaved)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(fitness)
-    buffer.encodeFloat(ofsX)
-    buffer.encodeFloat(ofsY)
-    buffer.encodeFloat(ofsZ)
-    buffer.encodeFloat(diagX)
-    buffer.encodeFloat(diagY)
-    buffer.encodeFloat(diagZ)
-    buffer.encodeFloat(offdiagX)
-    buffer.encodeFloat(offdiagY)
-    buffer.encodeFloat(offdiagZ)
-    buffer.encodeUInt8(compassId)
-    buffer.encodeUInt8(calMask)
-    buffer.encodeEnumValue(calStatus.value, 1)
-    buffer.encodeUInt8(autosaved)
-    buffer.encodeFloat(orientationConfidence)
-    buffer.encodeEnumValue(oldOrientation.value, 1)
-    buffer.encodeEnumValue(newOrientation.value, 1)
-    buffer.encodeFloat(scaleFactor)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(fitness)
+    encoder.encodeFloat(ofsX)
+    encoder.encodeFloat(ofsY)
+    encoder.encodeFloat(ofsZ)
+    encoder.encodeFloat(diagX)
+    encoder.encodeFloat(diagY)
+    encoder.encodeFloat(diagZ)
+    encoder.encodeFloat(offdiagX)
+    encoder.encodeFloat(offdiagY)
+    encoder.encodeFloat(offdiagZ)
+    encoder.encodeUInt8(compassId)
+    encoder.encodeUInt8(calMask)
+    encoder.encodeEnumValue(calStatus.value, 1)
+    encoder.encodeUInt8(autosaved)
+    encoder.encodeFloat(orientationConfidence)
+    encoder.encodeEnumValue(oldOrientation.value, 1)
+    encoder.encodeEnumValue(newOrientation.value, 1)
+    encoder.encodeFloat(scaleFactor)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MagCalReport> {
+    private const val SIZE_V1: Int = 44
+
+    private const val SIZE_V2: Int = 54
+
     public override val id: UInt = 192u
 
     public override val crcExtra: Byte = 36
 
     public override fun deserialize(bytes: ByteArray): MagCalReport {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val fitness = buffer.decodeFloat()
-      val ofsX = buffer.decodeFloat()
-      val ofsY = buffer.decodeFloat()
-      val ofsZ = buffer.decodeFloat()
-      val diagX = buffer.decodeFloat()
-      val diagY = buffer.decodeFloat()
-      val diagZ = buffer.decodeFloat()
-      val offdiagX = buffer.decodeFloat()
-      val offdiagY = buffer.decodeFloat()
-      val offdiagZ = buffer.decodeFloat()
-      val compassId = buffer.decodeUInt8()
-      val calMask = buffer.decodeUInt8()
-      val calStatus = buffer.decodeEnumValue(1).let { value ->
+      val fitness = decoder.safeDecodeFloat()
+      val ofsX = decoder.safeDecodeFloat()
+      val ofsY = decoder.safeDecodeFloat()
+      val ofsZ = decoder.safeDecodeFloat()
+      val diagX = decoder.safeDecodeFloat()
+      val diagY = decoder.safeDecodeFloat()
+      val diagZ = decoder.safeDecodeFloat()
+      val offdiagX = decoder.safeDecodeFloat()
+      val offdiagY = decoder.safeDecodeFloat()
+      val offdiagZ = decoder.safeDecodeFloat()
+      val compassId = decoder.safeDecodeUInt8()
+      val calMask = decoder.safeDecodeUInt8()
+      val calStatus = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MagCalStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val autosaved = buffer.decodeUInt8()
-      val orientationConfidence = buffer.decodeFloat()
-      val oldOrientation = buffer.decodeEnumValue(1).let { value ->
+      val autosaved = decoder.safeDecodeUInt8()
+      val orientationConfidence = decoder.safeDecodeFloat()
+      val oldOrientation = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavSensorOrientation.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val newOrientation = buffer.decodeEnumValue(1).let { value ->
+      val newOrientation = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavSensorOrientation.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val scaleFactor = buffer.decodeFloat()
+      val scaleFactor = decoder.safeDecodeFloat()
 
       return MagCalReport(
         compassId = compassId,

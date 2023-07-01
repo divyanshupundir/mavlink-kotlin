@@ -4,23 +4,25 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
@@ -99,59 +101,63 @@ public data class LocalPositionNedCov(
   public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedCov> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(x)
-    buffer.encodeFloat(y)
-    buffer.encodeFloat(z)
-    buffer.encodeFloat(vx)
-    buffer.encodeFloat(vy)
-    buffer.encodeFloat(vz)
-    buffer.encodeFloat(ax)
-    buffer.encodeFloat(ay)
-    buffer.encodeFloat(az)
-    buffer.encodeFloatArray(covariance, 180)
-    buffer.encodeEnumValue(estimatorType.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeFloat(ax)
+    encoder.encodeFloat(ay)
+    encoder.encodeFloat(az)
+    encoder.encodeFloatArray(covariance, 180)
+    encoder.encodeEnumValue(estimatorType.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(x)
-    buffer.encodeFloat(y)
-    buffer.encodeFloat(z)
-    buffer.encodeFloat(vx)
-    buffer.encodeFloat(vy)
-    buffer.encodeFloat(vz)
-    buffer.encodeFloat(ax)
-    buffer.encodeFloat(ay)
-    buffer.encodeFloat(az)
-    buffer.encodeFloatArray(covariance, 180)
-    buffer.encodeEnumValue(estimatorType.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeFloat(ax)
+    encoder.encodeFloat(ay)
+    encoder.encodeFloat(az)
+    encoder.encodeFloatArray(covariance, 180)
+    encoder.encodeEnumValue(estimatorType.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LocalPositionNedCov> {
+    private const val SIZE_V1: Int = 225
+
+    private const val SIZE_V2: Int = 225
+
     public override val id: UInt = 64u
 
     public override val crcExtra: Byte = -65
 
     public override fun deserialize(bytes: ByteArray): LocalPositionNedCov {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val x = buffer.decodeFloat()
-      val y = buffer.decodeFloat()
-      val z = buffer.decodeFloat()
-      val vx = buffer.decodeFloat()
-      val vy = buffer.decodeFloat()
-      val vz = buffer.decodeFloat()
-      val ax = buffer.decodeFloat()
-      val ay = buffer.decodeFloat()
-      val az = buffer.decodeFloat()
-      val covariance = buffer.decodeFloatArray(180)
-      val estimatorType = buffer.decodeEnumValue(1).let { value ->
+      val timeUsec = decoder.safeDecodeUInt64()
+      val x = decoder.safeDecodeFloat()
+      val y = decoder.safeDecodeFloat()
+      val z = decoder.safeDecodeFloat()
+      val vx = decoder.safeDecodeFloat()
+      val vy = decoder.safeDecodeFloat()
+      val vz = decoder.safeDecodeFloat()
+      val ax = decoder.safeDecodeFloat()
+      val ay = decoder.safeDecodeFloat()
+      val az = decoder.safeDecodeFloat()
+      val covariance = decoder.safeDecodeFloatArray(180)
+      val estimatorType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavEstimatorType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

@@ -5,23 +5,25 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.common.MagCalStatus
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Reports progress of compass calibration.
@@ -80,53 +82,57 @@ public data class MagCalProgress(
   public override val instanceCompanion: MavMessage.MavCompanion<MagCalProgress> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(directionX)
-    buffer.encodeFloat(directionY)
-    buffer.encodeFloat(directionZ)
-    buffer.encodeUInt8(compassId)
-    buffer.encodeUInt8(calMask)
-    buffer.encodeEnumValue(calStatus.value, 1)
-    buffer.encodeUInt8(attempt)
-    buffer.encodeUInt8(completionPct)
-    buffer.encodeUInt8Array(completionMask, 10)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(directionX)
+    encoder.encodeFloat(directionY)
+    encoder.encodeFloat(directionZ)
+    encoder.encodeUInt8(compassId)
+    encoder.encodeUInt8(calMask)
+    encoder.encodeEnumValue(calStatus.value, 1)
+    encoder.encodeUInt8(attempt)
+    encoder.encodeUInt8(completionPct)
+    encoder.encodeUInt8Array(completionMask, 10)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(directionX)
-    buffer.encodeFloat(directionY)
-    buffer.encodeFloat(directionZ)
-    buffer.encodeUInt8(compassId)
-    buffer.encodeUInt8(calMask)
-    buffer.encodeEnumValue(calStatus.value, 1)
-    buffer.encodeUInt8(attempt)
-    buffer.encodeUInt8(completionPct)
-    buffer.encodeUInt8Array(completionMask, 10)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(directionX)
+    encoder.encodeFloat(directionY)
+    encoder.encodeFloat(directionZ)
+    encoder.encodeUInt8(compassId)
+    encoder.encodeUInt8(calMask)
+    encoder.encodeEnumValue(calStatus.value, 1)
+    encoder.encodeUInt8(attempt)
+    encoder.encodeUInt8(completionPct)
+    encoder.encodeUInt8Array(completionMask, 10)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MagCalProgress> {
+    private const val SIZE_V1: Int = 27
+
+    private const val SIZE_V2: Int = 27
+
     public override val id: UInt = 191u
 
     public override val crcExtra: Byte = 92
 
     public override fun deserialize(bytes: ByteArray): MagCalProgress {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val directionX = buffer.decodeFloat()
-      val directionY = buffer.decodeFloat()
-      val directionZ = buffer.decodeFloat()
-      val compassId = buffer.decodeUInt8()
-      val calMask = buffer.decodeUInt8()
-      val calStatus = buffer.decodeEnumValue(1).let { value ->
+      val directionX = decoder.safeDecodeFloat()
+      val directionY = decoder.safeDecodeFloat()
+      val directionZ = decoder.safeDecodeFloat()
+      val compassId = decoder.safeDecodeUInt8()
+      val calMask = decoder.safeDecodeUInt8()
+      val calStatus = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MagCalStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val attempt = buffer.decodeUInt8()
-      val completionPct = buffer.decodeUInt8()
-      val completionMask = buffer.decodeUInt8Array(10)
+      val attempt = decoder.safeDecodeUInt8()
+      val completionPct = decoder.safeDecodeUInt8()
+      val completionMask = decoder.safeDecodeUInt8Array(10)
 
       return MagCalProgress(
         compassId = compassId,

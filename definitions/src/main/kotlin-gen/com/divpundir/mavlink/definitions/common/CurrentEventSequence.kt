@@ -5,17 +5,19 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Regular broadcast for the current latest event sequence number for a component. This is used to
@@ -41,29 +43,33 @@ public data class CurrentEventSequence(
   public override val instanceCompanion: MavMessage.MavCompanion<CurrentEventSequence> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(sequence)
-    buffer.encodeEnumValue(flags.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(sequence)
+    encoder.encodeEnumValue(flags.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt16(sequence)
-    buffer.encodeEnumValue(flags.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(sequence)
+    encoder.encodeEnumValue(flags.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CurrentEventSequence> {
+    private const val SIZE_V1: Int = 3
+
+    private const val SIZE_V2: Int = 3
+
     public override val id: UInt = 411u
 
     public override val crcExtra: Byte = 106
 
     public override fun deserialize(bytes: ByteArray): CurrentEventSequence {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val sequence = buffer.decodeUInt16()
-      val flags = buffer.decodeEnumValue(1).let { value ->
+      val sequence = decoder.safeDecodeUInt16()
+      val flags = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavEventCurrentSequenceFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

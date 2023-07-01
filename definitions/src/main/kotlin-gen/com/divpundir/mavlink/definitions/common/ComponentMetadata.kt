@@ -4,17 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  *
@@ -60,32 +62,36 @@ public data class ComponentMetadata(
   public override val instanceCompanion: MavMessage.MavCompanion<ComponentMetadata> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt32(fileCrc)
-    buffer.encodeString(uri, 100)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(fileCrc)
+    encoder.encodeString(uri, 100)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt32(fileCrc)
-    buffer.encodeString(uri, 100)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(fileCrc)
+    encoder.encodeString(uri, 100)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ComponentMetadata> {
+    private const val SIZE_V1: Int = 108
+
+    private const val SIZE_V2: Int = 108
+
     public override val id: UInt = 397u
 
     public override val crcExtra: Byte = -74
 
     public override fun deserialize(bytes: ByteArray): ComponentMetadata {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val fileCrc = buffer.decodeUInt32()
-      val uri = buffer.decodeString(100)
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val fileCrc = decoder.safeDecodeUInt32()
+      val uri = decoder.safeDecodeString(100)
 
       return ComponentMetadata(
         timeBootMs = timeBootMs,

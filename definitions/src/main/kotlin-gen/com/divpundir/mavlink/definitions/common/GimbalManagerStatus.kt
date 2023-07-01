@@ -5,19 +5,21 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Current status about a high level gimbal manager. This message should be broadcast at a low
@@ -68,47 +70,51 @@ public data class GimbalManagerStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeBitmaskValue(flags.value, 4)
-    buffer.encodeUInt8(gimbalDeviceId)
-    buffer.encodeUInt8(primaryControlSysid)
-    buffer.encodeUInt8(primaryControlCompid)
-    buffer.encodeUInt8(secondaryControlSysid)
-    buffer.encodeUInt8(secondaryControlCompid)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeBitmaskValue(flags.value, 4)
+    encoder.encodeUInt8(gimbalDeviceId)
+    encoder.encodeUInt8(primaryControlSysid)
+    encoder.encodeUInt8(primaryControlCompid)
+    encoder.encodeUInt8(secondaryControlSysid)
+    encoder.encodeUInt8(secondaryControlCompid)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeBitmaskValue(flags.value, 4)
-    buffer.encodeUInt8(gimbalDeviceId)
-    buffer.encodeUInt8(primaryControlSysid)
-    buffer.encodeUInt8(primaryControlCompid)
-    buffer.encodeUInt8(secondaryControlSysid)
-    buffer.encodeUInt8(secondaryControlCompid)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeBitmaskValue(flags.value, 4)
+    encoder.encodeUInt8(gimbalDeviceId)
+    encoder.encodeUInt8(primaryControlSysid)
+    encoder.encodeUInt8(primaryControlCompid)
+    encoder.encodeUInt8(secondaryControlSysid)
+    encoder.encodeUInt8(secondaryControlCompid)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalManagerStatus> {
+    private const val SIZE_V1: Int = 13
+
+    private const val SIZE_V2: Int = 13
+
     public override val id: UInt = 281u
 
     public override val crcExtra: Byte = 48
 
     public override fun deserialize(bytes: ByteArray): GimbalManagerStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val flags = buffer.decodeBitmaskValue(4).let { value ->
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val flags = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = GimbalManagerFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val gimbalDeviceId = buffer.decodeUInt8()
-      val primaryControlSysid = buffer.decodeUInt8()
-      val primaryControlCompid = buffer.decodeUInt8()
-      val secondaryControlSysid = buffer.decodeUInt8()
-      val secondaryControlCompid = buffer.decodeUInt8()
+      val gimbalDeviceId = decoder.safeDecodeUInt8()
+      val primaryControlSysid = decoder.safeDecodeUInt8()
+      val primaryControlCompid = decoder.safeDecodeUInt8()
+      val secondaryControlSysid = decoder.safeDecodeUInt8()
+      val secondaryControlCompid = decoder.safeDecodeUInt8()
 
       return GimbalManagerStatus(
         timeBootMs = timeBootMs,

@@ -4,17 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Read out the safety zone the MAV currently assumes.
@@ -64,44 +66,48 @@ public data class SafetyAllowedArea(
   public override val instanceCompanion: MavMessage.MavCompanion<SafetyAllowedArea> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(p1x)
-    buffer.encodeFloat(p1y)
-    buffer.encodeFloat(p1z)
-    buffer.encodeFloat(p2x)
-    buffer.encodeFloat(p2y)
-    buffer.encodeFloat(p2z)
-    buffer.encodeEnumValue(frame.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(p1x)
+    encoder.encodeFloat(p1y)
+    encoder.encodeFloat(p1z)
+    encoder.encodeFloat(p2x)
+    encoder.encodeFloat(p2y)
+    encoder.encodeFloat(p2z)
+    encoder.encodeEnumValue(frame.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(p1x)
-    buffer.encodeFloat(p1y)
-    buffer.encodeFloat(p1z)
-    buffer.encodeFloat(p2x)
-    buffer.encodeFloat(p2y)
-    buffer.encodeFloat(p2z)
-    buffer.encodeEnumValue(frame.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(p1x)
+    encoder.encodeFloat(p1y)
+    encoder.encodeFloat(p1z)
+    encoder.encodeFloat(p2x)
+    encoder.encodeFloat(p2y)
+    encoder.encodeFloat(p2z)
+    encoder.encodeEnumValue(frame.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SafetyAllowedArea> {
+    private const val SIZE_V1: Int = 25
+
+    private const val SIZE_V2: Int = 25
+
     public override val id: UInt = 55u
 
     public override val crcExtra: Byte = 3
 
     public override fun deserialize(bytes: ByteArray): SafetyAllowedArea {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val p1x = buffer.decodeFloat()
-      val p1y = buffer.decodeFloat()
-      val p1z = buffer.decodeFloat()
-      val p2x = buffer.decodeFloat()
-      val p2y = buffer.decodeFloat()
-      val p2z = buffer.decodeFloat()
-      val frame = buffer.decodeEnumValue(1).let { value ->
+      val p1x = decoder.safeDecodeFloat()
+      val p1y = decoder.safeDecodeFloat()
+      val p1z = decoder.safeDecodeFloat()
+      val p2x = decoder.safeDecodeFloat()
+      val p2y = decoder.safeDecodeFloat()
+      val p2z = decoder.safeDecodeFloat()
+      val frame = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavFrame.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

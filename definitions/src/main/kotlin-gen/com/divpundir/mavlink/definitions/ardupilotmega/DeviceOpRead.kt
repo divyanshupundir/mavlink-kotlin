@@ -4,22 +4,24 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Read registers for a device.
@@ -86,55 +88,59 @@ public data class DeviceOpRead(
   public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpRead> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(requestId)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(bustype.value, 1)
-    buffer.encodeUInt8(bus)
-    buffer.encodeUInt8(address)
-    buffer.encodeString(busname, 40)
-    buffer.encodeUInt8(regstart)
-    buffer.encodeUInt8(count)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(requestId)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(bustype.value, 1)
+    encoder.encodeUInt8(bus)
+    encoder.encodeUInt8(address)
+    encoder.encodeString(busname, 40)
+    encoder.encodeUInt8(regstart)
+    encoder.encodeUInt8(count)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(requestId)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeEnumValue(bustype.value, 1)
-    buffer.encodeUInt8(bus)
-    buffer.encodeUInt8(address)
-    buffer.encodeString(busname, 40)
-    buffer.encodeUInt8(regstart)
-    buffer.encodeUInt8(count)
-    buffer.encodeUInt8(bank)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(requestId)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeEnumValue(bustype.value, 1)
+    encoder.encodeUInt8(bus)
+    encoder.encodeUInt8(address)
+    encoder.encodeString(busname, 40)
+    encoder.encodeUInt8(regstart)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8(bank)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DeviceOpRead> {
+    private const val SIZE_V1: Int = 51
+
+    private const val SIZE_V2: Int = 52
+
     public override val id: UInt = 11_000u
 
     public override val crcExtra: Byte = -122
 
     public override fun deserialize(bytes: ByteArray): DeviceOpRead {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val requestId = buffer.decodeUInt32()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val bustype = buffer.decodeEnumValue(1).let { value ->
+      val requestId = decoder.safeDecodeUInt32()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val bustype = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = DeviceOpBustype.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val bus = buffer.decodeUInt8()
-      val address = buffer.decodeUInt8()
-      val busname = buffer.decodeString(40)
-      val regstart = buffer.decodeUInt8()
-      val count = buffer.decodeUInt8()
-      val bank = buffer.decodeUInt8()
+      val bus = decoder.safeDecodeUInt8()
+      val address = decoder.safeDecodeUInt8()
+      val busname = decoder.safeDecodeString(40)
+      val regstart = decoder.safeDecodeUInt8()
+      val count = decoder.safeDecodeUInt8()
+      val bank = decoder.safeDecodeUInt8()
 
       return DeviceOpRead(
         targetSystem = targetSystem,

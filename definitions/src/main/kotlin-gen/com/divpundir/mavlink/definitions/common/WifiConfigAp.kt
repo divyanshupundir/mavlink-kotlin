@@ -4,17 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeString
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeString
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Configure WiFi AP SSID, password, and mode. This message is re-emitted as an acknowledgement by
@@ -56,36 +58,40 @@ public data class WifiConfigAp(
   public override val instanceCompanion: MavMessage.MavCompanion<WifiConfigAp> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeString(ssid, 32)
-    buffer.encodeString(password, 64)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeString(ssid, 32)
+    encoder.encodeString(password, 64)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeString(ssid, 32)
-    buffer.encodeString(password, 64)
-    buffer.encodeEnumValue(mode.value, 1)
-    buffer.encodeEnumValue(response.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeString(ssid, 32)
+    encoder.encodeString(password, 64)
+    encoder.encodeEnumValue(mode.value, 1)
+    encoder.encodeEnumValue(response.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WifiConfigAp> {
+    private const val SIZE_V1: Int = 96
+
+    private const val SIZE_V2: Int = 98
+
     public override val id: UInt = 299u
 
     public override val crcExtra: Byte = 19
 
     public override fun deserialize(bytes: ByteArray): WifiConfigAp {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val ssid = buffer.decodeString(32)
-      val password = buffer.decodeString(64)
-      val mode = buffer.decodeEnumValue(1).let { value ->
+      val ssid = decoder.safeDecodeString(32)
+      val password = decoder.safeDecodeString(64)
+      val mode = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = WifiConfigApMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val response = buffer.decodeEnumValue(1).let { value ->
+      val response = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = WifiConfigApResponse.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

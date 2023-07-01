@@ -3,18 +3,20 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Request to control this MAV
@@ -51,35 +53,39 @@ public data class ChangeOperatorControl(
   public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(controlRequest)
-    buffer.encodeUInt8(version)
-    buffer.encodeString(passkey, 25)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(controlRequest)
+    encoder.encodeUInt8(version)
+    encoder.encodeString(passkey, 25)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(controlRequest)
-    buffer.encodeUInt8(version)
-    buffer.encodeString(passkey, 25)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(controlRequest)
+    encoder.encodeUInt8(version)
+    encoder.encodeString(passkey, 25)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ChangeOperatorControl> {
+    private const val SIZE_V1: Int = 28
+
+    private const val SIZE_V2: Int = 28
+
     public override val id: UInt = 5u
 
     public override val crcExtra: Byte = -39
 
     public override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val targetSystem = buffer.decodeUInt8()
-      val controlRequest = buffer.decodeUInt8()
-      val version = buffer.decodeUInt8()
-      val passkey = buffer.decodeString(25)
+      val targetSystem = decoder.safeDecodeUInt8()
+      val controlRequest = decoder.safeDecodeUInt8()
+      val version = decoder.safeDecodeUInt8()
+      val passkey = decoder.safeDecodeString(25)
 
       return ChangeOperatorControl(
         targetSystem = targetSystem,

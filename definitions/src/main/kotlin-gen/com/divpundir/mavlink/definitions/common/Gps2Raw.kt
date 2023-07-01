@@ -4,18 +4,20 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -25,7 +27,6 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Second GPS data.
@@ -150,74 +151,78 @@ public data class Gps2Raw(
   public override val instanceCompanion: MavMessage.MavCompanion<Gps2Raw> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(alt)
-    buffer.encodeUInt32(dgpsAge)
-    buffer.encodeUInt16(eph)
-    buffer.encodeUInt16(epv)
-    buffer.encodeUInt16(vel)
-    buffer.encodeUInt16(cog)
-    buffer.encodeEnumValue(fixType.value, 1)
-    buffer.encodeUInt8(satellitesVisible)
-    buffer.encodeUInt8(dgpsNumch)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeUInt32(dgpsAge)
+    encoder.encodeUInt16(eph)
+    encoder.encodeUInt16(epv)
+    encoder.encodeUInt16(vel)
+    encoder.encodeUInt16(cog)
+    encoder.encodeEnumValue(fixType.value, 1)
+    encoder.encodeUInt8(satellitesVisible)
+    encoder.encodeUInt8(dgpsNumch)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(alt)
-    buffer.encodeUInt32(dgpsAge)
-    buffer.encodeUInt16(eph)
-    buffer.encodeUInt16(epv)
-    buffer.encodeUInt16(vel)
-    buffer.encodeUInt16(cog)
-    buffer.encodeEnumValue(fixType.value, 1)
-    buffer.encodeUInt8(satellitesVisible)
-    buffer.encodeUInt8(dgpsNumch)
-    buffer.encodeUInt16(yaw)
-    buffer.encodeInt32(altEllipsoid)
-    buffer.encodeUInt32(hAcc)
-    buffer.encodeUInt32(vAcc)
-    buffer.encodeUInt32(velAcc)
-    buffer.encodeUInt32(hdgAcc)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeUInt32(dgpsAge)
+    encoder.encodeUInt16(eph)
+    encoder.encodeUInt16(epv)
+    encoder.encodeUInt16(vel)
+    encoder.encodeUInt16(cog)
+    encoder.encodeEnumValue(fixType.value, 1)
+    encoder.encodeUInt8(satellitesVisible)
+    encoder.encodeUInt8(dgpsNumch)
+    encoder.encodeUInt16(yaw)
+    encoder.encodeInt32(altEllipsoid)
+    encoder.encodeUInt32(hAcc)
+    encoder.encodeUInt32(vAcc)
+    encoder.encodeUInt32(velAcc)
+    encoder.encodeUInt32(hdgAcc)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Gps2Raw> {
+    private const val SIZE_V1: Int = 35
+
+    private const val SIZE_V2: Int = 57
+
     public override val id: UInt = 124u
 
     public override val crcExtra: Byte = 87
 
     public override fun deserialize(bytes: ByteArray): Gps2Raw {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val lat = buffer.decodeInt32()
-      val lon = buffer.decodeInt32()
-      val alt = buffer.decodeInt32()
-      val dgpsAge = buffer.decodeUInt32()
-      val eph = buffer.decodeUInt16()
-      val epv = buffer.decodeUInt16()
-      val vel = buffer.decodeUInt16()
-      val cog = buffer.decodeUInt16()
-      val fixType = buffer.decodeEnumValue(1).let { value ->
+      val timeUsec = decoder.safeDecodeUInt64()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt32()
+      val dgpsAge = decoder.safeDecodeUInt32()
+      val eph = decoder.safeDecodeUInt16()
+      val epv = decoder.safeDecodeUInt16()
+      val vel = decoder.safeDecodeUInt16()
+      val cog = decoder.safeDecodeUInt16()
+      val fixType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = GpsFixType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val satellitesVisible = buffer.decodeUInt8()
-      val dgpsNumch = buffer.decodeUInt8()
-      val yaw = buffer.decodeUInt16()
-      val altEllipsoid = buffer.decodeInt32()
-      val hAcc = buffer.decodeUInt32()
-      val vAcc = buffer.decodeUInt32()
-      val velAcc = buffer.decodeUInt32()
-      val hdgAcc = buffer.decodeUInt32()
+      val satellitesVisible = decoder.safeDecodeUInt8()
+      val dgpsNumch = decoder.safeDecodeUInt8()
+      val yaw = decoder.safeDecodeUInt16()
+      val altEllipsoid = decoder.safeDecodeInt32()
+      val hAcc = decoder.safeDecodeUInt32()
+      val vAcc = decoder.safeDecodeUInt32()
+      val velAcc = decoder.safeDecodeUInt32()
+      val hdgAcc = decoder.safeDecodeUInt32()
 
       return Gps2Raw(
         timeUsec = timeUsec,

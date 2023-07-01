@@ -4,26 +4,28 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Camera Event.
@@ -82,50 +84,54 @@ public data class CameraStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(p1)
-    buffer.encodeFloat(p2)
-    buffer.encodeFloat(p3)
-    buffer.encodeFloat(p4)
-    buffer.encodeUInt16(imgIdx)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(camIdx)
-    buffer.encodeEnumValue(eventId.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(p1)
+    encoder.encodeFloat(p2)
+    encoder.encodeFloat(p3)
+    encoder.encodeFloat(p4)
+    encoder.encodeUInt16(imgIdx)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(camIdx)
+    encoder.encodeEnumValue(eventId.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(p1)
-    buffer.encodeFloat(p2)
-    buffer.encodeFloat(p3)
-    buffer.encodeFloat(p4)
-    buffer.encodeUInt16(imgIdx)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(camIdx)
-    buffer.encodeEnumValue(eventId.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(p1)
+    encoder.encodeFloat(p2)
+    encoder.encodeFloat(p3)
+    encoder.encodeFloat(p4)
+    encoder.encodeUInt16(imgIdx)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(camIdx)
+    encoder.encodeEnumValue(eventId.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraStatus> {
+    private const val SIZE_V1: Int = 29
+
+    private const val SIZE_V2: Int = 29
+
     public override val id: UInt = 179u
 
     public override val crcExtra: Byte = -67
 
     public override fun deserialize(bytes: ByteArray): CameraStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val p1 = buffer.decodeFloat()
-      val p2 = buffer.decodeFloat()
-      val p3 = buffer.decodeFloat()
-      val p4 = buffer.decodeFloat()
-      val imgIdx = buffer.decodeUInt16()
-      val targetSystem = buffer.decodeUInt8()
-      val camIdx = buffer.decodeUInt8()
-      val eventId = buffer.decodeEnumValue(1).let { value ->
+      val timeUsec = decoder.safeDecodeUInt64()
+      val p1 = decoder.safeDecodeFloat()
+      val p2 = decoder.safeDecodeFloat()
+      val p3 = decoder.safeDecodeFloat()
+      val p4 = decoder.safeDecodeFloat()
+      val imgIdx = decoder.safeDecodeUInt16()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val camIdx = decoder.safeDecodeUInt8()
+      val eventId = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CameraStatusTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

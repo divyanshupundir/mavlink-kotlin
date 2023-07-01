@@ -3,21 +3,23 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Motion capture attitude and position
@@ -67,40 +69,44 @@ public data class AttPosMocap(
   public override val instanceCompanion: MavMessage.MavCompanion<AttPosMocap> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloatArray(q, 16)
-    buffer.encodeFloat(x)
-    buffer.encodeFloat(y)
-    buffer.encodeFloat(z)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloatArray(q, 16)
-    buffer.encodeFloat(x)
-    buffer.encodeFloat(y)
-    buffer.encodeFloat(z)
-    buffer.encodeFloatArray(covariance, 84)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    encoder.encodeFloatArray(covariance, 84)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AttPosMocap> {
+    private const val SIZE_V1: Int = 36
+
+    private const val SIZE_V2: Int = 120
+
     public override val id: UInt = 138u
 
     public override val crcExtra: Byte = 109
 
     public override fun deserialize(bytes: ByteArray): AttPosMocap {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val q = buffer.decodeFloatArray(16)
-      val x = buffer.decodeFloat()
-      val y = buffer.decodeFloat()
-      val z = buffer.decodeFloat()
-      val covariance = buffer.decodeFloatArray(84)
+      val timeUsec = decoder.safeDecodeUInt64()
+      val q = decoder.safeDecodeFloatArray(16)
+      val x = decoder.safeDecodeFloat()
+      val y = decoder.safeDecodeFloat()
+      val z = decoder.safeDecodeFloat()
+      val covariance = decoder.safeDecodeFloatArray(84)
 
       return AttPosMocap(
         timeUsec = timeUsec,

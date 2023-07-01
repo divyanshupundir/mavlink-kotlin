@@ -3,18 +3,20 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Control message for rate gimbal.
@@ -53,38 +55,42 @@ public data class GimbalControl(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalControl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(demandedRateX)
-    buffer.encodeFloat(demandedRateY)
-    buffer.encodeFloat(demandedRateZ)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(demandedRateX)
+    encoder.encodeFloat(demandedRateY)
+    encoder.encodeFloat(demandedRateZ)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(demandedRateX)
-    buffer.encodeFloat(demandedRateY)
-    buffer.encodeFloat(demandedRateZ)
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(demandedRateX)
+    encoder.encodeFloat(demandedRateY)
+    encoder.encodeFloat(demandedRateZ)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalControl> {
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 14
+
     public override val id: UInt = 201u
 
     public override val crcExtra: Byte = -51
 
     public override fun deserialize(bytes: ByteArray): GimbalControl {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val demandedRateX = buffer.decodeFloat()
-      val demandedRateY = buffer.decodeFloat()
-      val demandedRateZ = buffer.decodeFloat()
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
+      val demandedRateX = decoder.safeDecodeFloat()
+      val demandedRateY = decoder.safeDecodeFloat()
+      val demandedRateZ = decoder.safeDecodeFloat()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
 
       return GimbalControl(
         targetSystem = targetSystem,

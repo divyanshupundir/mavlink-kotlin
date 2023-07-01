@@ -5,12 +5,14 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -18,7 +20,6 @@ import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
@@ -100,62 +101,66 @@ public data class CameraTrackingGeoStatus(
       Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(hAcc)
-    buffer.encodeFloat(vAcc)
-    buffer.encodeFloat(velN)
-    buffer.encodeFloat(velE)
-    buffer.encodeFloat(velD)
-    buffer.encodeFloat(velAcc)
-    buffer.encodeFloat(dist)
-    buffer.encodeFloat(hdg)
-    buffer.encodeFloat(hdgAcc)
-    buffer.encodeEnumValue(trackingStatus.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(hAcc)
+    encoder.encodeFloat(vAcc)
+    encoder.encodeFloat(velN)
+    encoder.encodeFloat(velE)
+    encoder.encodeFloat(velD)
+    encoder.encodeFloat(velAcc)
+    encoder.encodeFloat(dist)
+    encoder.encodeFloat(hdg)
+    encoder.encodeFloat(hdgAcc)
+    encoder.encodeEnumValue(trackingStatus.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeFloat(alt)
-    buffer.encodeFloat(hAcc)
-    buffer.encodeFloat(vAcc)
-    buffer.encodeFloat(velN)
-    buffer.encodeFloat(velE)
-    buffer.encodeFloat(velD)
-    buffer.encodeFloat(velAcc)
-    buffer.encodeFloat(dist)
-    buffer.encodeFloat(hdg)
-    buffer.encodeFloat(hdgAcc)
-    buffer.encodeEnumValue(trackingStatus.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeFloat(alt)
+    encoder.encodeFloat(hAcc)
+    encoder.encodeFloat(vAcc)
+    encoder.encodeFloat(velN)
+    encoder.encodeFloat(velE)
+    encoder.encodeFloat(velD)
+    encoder.encodeFloat(velAcc)
+    encoder.encodeFloat(dist)
+    encoder.encodeFloat(hdg)
+    encoder.encodeFloat(hdgAcc)
+    encoder.encodeEnumValue(trackingStatus.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrackingGeoStatus> {
+    private const val SIZE_V1: Int = 49
+
+    private const val SIZE_V2: Int = 49
+
     public override val id: UInt = 276u
 
     public override val crcExtra: Byte = 18
 
     public override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val lat = buffer.decodeInt32()
-      val lon = buffer.decodeInt32()
-      val alt = buffer.decodeFloat()
-      val hAcc = buffer.decodeFloat()
-      val vAcc = buffer.decodeFloat()
-      val velN = buffer.decodeFloat()
-      val velE = buffer.decodeFloat()
-      val velD = buffer.decodeFloat()
-      val velAcc = buffer.decodeFloat()
-      val dist = buffer.decodeFloat()
-      val hdg = buffer.decodeFloat()
-      val hdgAcc = buffer.decodeFloat()
-      val trackingStatus = buffer.decodeEnumValue(1).let { value ->
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeFloat()
+      val hAcc = decoder.safeDecodeFloat()
+      val vAcc = decoder.safeDecodeFloat()
+      val velN = decoder.safeDecodeFloat()
+      val velE = decoder.safeDecodeFloat()
+      val velD = decoder.safeDecodeFloat()
+      val velAcc = decoder.safeDecodeFloat()
+      val dist = decoder.safeDecodeFloat()
+      val hdg = decoder.safeDecodeFloat()
+      val hdgAcc = decoder.safeDecodeFloat()
+      val trackingStatus = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

@@ -3,17 +3,19 @@ package com.divpundir.mavlink.definitions.avssuas
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  *  AVSS PRS system status.
@@ -52,38 +54,42 @@ public data class AvssPrsSysStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<AvssPrsSysStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt32(errorStatus)
-    buffer.encodeUInt32(batteryStatus)
-    buffer.encodeUInt8(armStatus)
-    buffer.encodeUInt8(chargeStatus)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(errorStatus)
+    encoder.encodeUInt32(batteryStatus)
+    encoder.encodeUInt8(armStatus)
+    encoder.encodeUInt8(chargeStatus)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeUInt32(errorStatus)
-    buffer.encodeUInt32(batteryStatus)
-    buffer.encodeUInt8(armStatus)
-    buffer.encodeUInt8(chargeStatus)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(errorStatus)
+    encoder.encodeUInt32(batteryStatus)
+    encoder.encodeUInt8(armStatus)
+    encoder.encodeUInt8(chargeStatus)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AvssPrsSysStatus> {
+    private const val SIZE_V1: Int = 14
+
+    private const val SIZE_V2: Int = 14
+
     public override val id: UInt = 60_050u
 
     public override val crcExtra: Byte = -36
 
     public override fun deserialize(bytes: ByteArray): AvssPrsSysStatus {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val errorStatus = buffer.decodeUInt32()
-      val batteryStatus = buffer.decodeUInt32()
-      val armStatus = buffer.decodeUInt8()
-      val chargeStatus = buffer.decodeUInt8()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val errorStatus = decoder.safeDecodeUInt32()
+      val batteryStatus = decoder.safeDecodeUInt32()
+      val armStatus = decoder.safeDecodeUInt8()
+      val chargeStatus = decoder.safeDecodeUInt8()
 
       return AvssPrsSysStatus(
         timeBootMs = timeBootMs,

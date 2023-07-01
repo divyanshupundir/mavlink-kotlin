@@ -1,7 +1,7 @@
 package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.serialization.*
-import okio.Buffer
+import okio.ByteString.Companion.toByteString
 
 internal data class MavRawFrame(
     val stx: UByte,
@@ -103,6 +103,8 @@ internal data class MavRawFrame(
         const val SIGNATURE_LINK_ID = 1
         const val SIGNATURE_TIMESTAMP = 6
         const val SIGNATURE = 6
+
+        const val SECRET_KEY = 32
     }
 
     companion object {
@@ -111,11 +113,13 @@ internal data class MavRawFrame(
         private fun ByteArray.generateChecksum(crcExtra: Byte): UShort {
             val frameSizeTillMsgId = when (this[0].toUByte()) {
                 Stx.V1 -> Sizes.STX + Sizes.LEN +
-                        Sizes.SEQ + Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1
+                        Sizes.SEQ +
+                        Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1
 
                 Stx.V2 -> Sizes.STX + Sizes.LEN +
                         Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
-                        Sizes.SEQ + Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2
+                        Sizes.SEQ +
+                        Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2
 
                 else -> throw IllegalArgumentException("Not a MAVLink frame")
             }
@@ -150,29 +154,39 @@ internal data class MavRawFrame(
 
             val frameSizeTillCrc = Sizes.STX + Sizes.LEN +
                     Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
-                    Sizes.SEQ + Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
+                    Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
                     payloadLength + Sizes.CHECKSUM
 
-            val buffer = Buffer().apply {
-                this.write(secretKey)
-                this.write(this@generateSignature, offset = 0, byteCount = frameSizeTillCrc)
-                this.encodeUInt8(linkId)
-                this.encodeIntegerValue(timestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
-            }
+            val signEncoder = MavDataEncoder.allocate(
+                Sizes.SECRET_KEY +
+                        frameSizeTillCrc +
+                        Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP
+            )
 
-            return buffer.readByteString().sha256().substring(0, Sizes.SIGNATURE).toByteArray()
+            signEncoder.encodeByteArray(secretKey.copyOf(Sizes.SECRET_KEY))
+            signEncoder.encodeByteArray(this, offset = 0, length = frameSizeTillCrc)
+            signEncoder.encodeUInt8(linkId)
+            signEncoder.encodeIntegerValue(timestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
+
+            return signEncoder
+                .bytes
+                .toByteString()
+                .sha256()
+                .substring(0, Sizes.SIGNATURE)
+                .toByteArray()
         }
 
         @Throws(Exception::class)
-        fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(Buffer().write(rawBytes)) {
-            val stx = this.decodeUInt8()
-            val len = this.decodeUInt8()
-            val seq = this.decodeUInt8()
-            val systemId = this.decodeUInt8()
-            val componentId = this.decodeUInt8()
-            val messageId = this.decodeUInt8().toUInt()
-            val payload = ByteArray(len.toInt()).also { this.read(it) }
-            val checksum = this.decodeUInt16()
+        fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
+            val stx = this.safeDecodeUInt8()
+            val len = this.safeDecodeUInt8()
+            val seq = this.safeDecodeUInt8()
+            val systemId = this.safeDecodeUInt8()
+            val componentId = this.safeDecodeUInt8()
+            val messageId = this.safeDecodeUInt8().toUInt()
+            val payload = ByteArray(len.toInt()).also { this.decodeByteArray(it) }
+            val checksum = this.safeDecodeUInt16()
 
             MavRawFrame(
                 stx = stx,
@@ -193,24 +207,24 @@ internal data class MavRawFrame(
         }
 
         @Throws(Exception::class)
-        fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(Buffer().write(rawBytes)) {
-            val stx = this.decodeUInt8()
-            val len = this.decodeUInt8()
-            val incompatFlags = this.decodeUInt8()
-            val compatFlags = this.decodeUInt8()
-            val seq = this.decodeUInt8()
-            val systemId = this.decodeUInt8()
-            val componentId = this.decodeUInt8()
-            val messageId = this.decodeUnsignedIntegerValue(Sizes.MSG_ID_V2).toUInt()
-            val payload = ByteArray(len.toInt()).also { this.read(it) }
-            val checksum = this.decodeUInt16()
-            val signatureLinkId = this.decodeUInt8()
-            val signatureTimestamp = this.decodeUnsignedIntegerValue(Sizes.SIGNATURE_TIMESTAMP).toUInt()
+        fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
+            val stx = this.safeDecodeUInt8()
+            val len = this.safeDecodeUInt8()
+            val incompatFlags = this.safeDecodeUInt8()
+            val compatFlags = this.safeDecodeUInt8()
+            val seq = this.safeDecodeUInt8()
+            val systemId = this.safeDecodeUInt8()
+            val componentId = this.safeDecodeUInt8()
+            val messageId = this.safeDecodeUnsignedInteger(Sizes.MSG_ID_V2).toUInt()
+            val payload = ByteArray(len.toInt()).also { this.decodeByteArray(it) }
+            val checksum = this.safeDecodeUInt16()
+            val signatureLinkId = this.safeDecodeUInt8()
+            val signatureTimestamp = this.safeDecodeUnsignedInteger(Sizes.SIGNATURE_TIMESTAMP).toUInt()
             val signature = if (incompatFlags == Flags.INCOMPAT_SIGNED) {
-                if (size < Sizes.SIGNATURE) {
+                if (remaining < Sizes.SIGNATURE) {
                     ByteArray(0)
                 } else {
-                    ByteArray(Sizes.SIGNATURE).also { this.read(it) }
+                    ByteArray(Sizes.SIGNATURE).also { this.decodeByteArray(it) }
                 }
             } else {
                 ByteArray(0)
@@ -242,18 +256,22 @@ internal data class MavRawFrame(
             payload: ByteArray,
             crcExtra: Byte
         ): MavRawFrame {
-            val buffer = Buffer().apply {
-                this.encodeUInt8(Stx.V1)
-                this.encodeUInt8(payload.size.toUByte())
-                this.encodeUInt8(seq)
-                this.encodeUInt8(systemId)
-                this.encodeUInt8(componentId)
-                this.encodeUInt8(messageId.toUByte())
-                this.write(payload)
-            }
+            val frameLength = Sizes.STX + Sizes.LEN +
+                    Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1 +
+                    payload.size + Sizes.CHECKSUM
 
-            val checksum = buffer.copy().readByteArray().generateChecksum(crcExtra)
-            buffer.encodeUInt16(checksum)
+            val encoder = MavDataEncoder.allocate(frameLength)
+            encoder.encodeUInt8(Stx.V1)
+            encoder.encodeUInt8(payload.size.toUByte())
+            encoder.encodeUInt8(seq)
+            encoder.encodeUInt8(systemId)
+            encoder.encodeUInt8(componentId)
+            encoder.encodeUInt8(messageId.toUByte())
+            encoder.encodeByteArray(payload)
+
+            val checksum = encoder.bytes.generateChecksum(crcExtra)
+            encoder.encodeUInt16(checksum)
 
             return MavRawFrame(
                 stx = Stx.V1,
@@ -269,7 +287,7 @@ internal data class MavRawFrame(
                 signatureLinkId = 0u,
                 signatureTimestamp = 0u,
                 signature = ByteArray(0),
-                rawBytes = buffer.readByteArray()
+                rawBytes = encoder.bytes
             )
         }
 
@@ -281,20 +299,25 @@ internal data class MavRawFrame(
             payload: ByteArray,
             crcExtra: Byte
         ): MavRawFrame {
-            val buffer = Buffer().apply {
-                this.encodeUInt8(Stx.V2)
-                this.encodeUInt8(payload.size.toUByte())
-                this.encodeUInt8(Flags.INCOMPAT_UNSIGNED)
-                this.encodeUInt8(0u)
-                this.encodeUInt8(seq)
-                this.encodeUInt8(systemId)
-                this.encodeUInt8(componentId)
-                this.encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
-                this.write(payload)
-            }
+            val frameLength = Sizes.STX + Sizes.LEN +
+                    Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
+                    Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
+                    payload.size + Sizes.CHECKSUM
 
-            val checksum = buffer.copy().readByteArray().generateChecksum(crcExtra)
-            buffer.encodeUInt16(checksum)
+            val encoder = MavDataEncoder.allocate(frameLength)
+            encoder.encodeUInt8(Stx.V2)
+            encoder.encodeUInt8(payload.size.toUByte())
+            encoder.encodeUInt8(Flags.INCOMPAT_UNSIGNED)
+            encoder.encodeUInt8(0u)
+            encoder.encodeUInt8(seq)
+            encoder.encodeUInt8(systemId)
+            encoder.encodeUInt8(componentId)
+            encoder.encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
+            encoder.encodeByteArray(payload)
+
+            val checksum = encoder.bytes.generateChecksum(crcExtra)
+            encoder.encodeUInt16(checksum)
 
             return MavRawFrame(
                 stx = Stx.V2,
@@ -310,7 +333,7 @@ internal data class MavRawFrame(
                 signatureLinkId = 0u,
                 signatureTimestamp = 0u,
                 signature = ByteArray(0),
-                rawBytes = buffer.readByteArray()
+                rawBytes = encoder.bytes
             )
         }
 
@@ -325,25 +348,31 @@ internal data class MavRawFrame(
             signatureTimestamp: UInt,
             secretKey: ByteArray
         ): MavRawFrame {
-            val buffer = Buffer().apply {
-                this.encodeUInt8(Stx.V2)
-                this.encodeUInt8(payload.size.toUByte())
-                this.encodeUInt8(Flags.INCOMPAT_SIGNED)
-                this.encodeUInt8(0u)
-                this.encodeUInt8(seq)
-                this.encodeUInt8(systemId)
-                this.encodeUInt8(componentId)
-                this.encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
-                this.write(payload)
-            }
+            val frameLength = Sizes.STX + Sizes.LEN +
+                    Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
+                    Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
+                    payload.size + Sizes.CHECKSUM +
+                    Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP + Sizes.SIGNATURE
 
-            val checksum = buffer.copy().readByteArray().generateChecksum(crcExtra)
+            val buffer = MavDataEncoder.allocate(frameLength)
+            buffer.encodeUInt8(Stx.V2)
+            buffer.encodeUInt8(payload.size.toUByte())
+            buffer.encodeUInt8(Flags.INCOMPAT_SIGNED)
+            buffer.encodeUInt8(0u)
+            buffer.encodeUInt8(seq)
+            buffer.encodeUInt8(systemId)
+            buffer.encodeUInt8(componentId)
+            buffer.encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
+            buffer.encodeByteArray(payload)
+
+            val checksum = buffer.bytes.generateChecksum(crcExtra)
             buffer.encodeUInt16(checksum)
 
-            val signature = buffer.copy().readByteArray().generateSignature(signatureLinkId, signatureTimestamp, secretKey)
+            val signature = buffer.bytes.generateSignature(signatureLinkId, signatureTimestamp, secretKey)
             buffer.encodeUInt8(signatureLinkId)
             buffer.encodeIntegerValue(signatureTimestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
-            buffer.write(signature)
+            buffer.encodeByteArray(signature)
 
             return MavRawFrame(
                 stx = Stx.V2,
@@ -359,7 +388,7 @@ internal data class MavRawFrame(
                 signatureLinkId = signatureLinkId,
                 signatureTimestamp = signatureTimestamp,
                 signature = signature,
-                rawBytes = buffer.readByteArray()
+                rawBytes = buffer.bytes
             )
         }
     }

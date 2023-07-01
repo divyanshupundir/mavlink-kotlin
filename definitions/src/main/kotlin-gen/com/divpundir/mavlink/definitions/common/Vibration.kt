@@ -3,20 +3,22 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Vibration levels and accelerometer clipping
@@ -66,44 +68,48 @@ public data class Vibration(
   public override val instanceCompanion: MavMessage.MavCompanion<Vibration> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(vibrationX)
-    buffer.encodeFloat(vibrationY)
-    buffer.encodeFloat(vibrationZ)
-    buffer.encodeUInt32(clipping0)
-    buffer.encodeUInt32(clipping1)
-    buffer.encodeUInt32(clipping2)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(vibrationX)
+    encoder.encodeFloat(vibrationY)
+    encoder.encodeFloat(vibrationZ)
+    encoder.encodeUInt32(clipping0)
+    encoder.encodeUInt32(clipping1)
+    encoder.encodeUInt32(clipping2)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeFloat(vibrationX)
-    buffer.encodeFloat(vibrationY)
-    buffer.encodeFloat(vibrationZ)
-    buffer.encodeUInt32(clipping0)
-    buffer.encodeUInt32(clipping1)
-    buffer.encodeUInt32(clipping2)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(vibrationX)
+    encoder.encodeFloat(vibrationY)
+    encoder.encodeFloat(vibrationZ)
+    encoder.encodeUInt32(clipping0)
+    encoder.encodeUInt32(clipping1)
+    encoder.encodeUInt32(clipping2)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Vibration> {
+    private const val SIZE_V1: Int = 32
+
+    private const val SIZE_V2: Int = 32
+
     public override val id: UInt = 241u
 
     public override val crcExtra: Byte = 90
 
     public override fun deserialize(bytes: ByteArray): Vibration {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val vibrationX = buffer.decodeFloat()
-      val vibrationY = buffer.decodeFloat()
-      val vibrationZ = buffer.decodeFloat()
-      val clipping0 = buffer.decodeUInt32()
-      val clipping1 = buffer.decodeUInt32()
-      val clipping2 = buffer.decodeUInt32()
+      val timeUsec = decoder.safeDecodeUInt64()
+      val vibrationX = decoder.safeDecodeFloat()
+      val vibrationY = decoder.safeDecodeFloat()
+      val vibrationZ = decoder.safeDecodeFloat()
+      val clipping0 = decoder.safeDecodeUInt32()
+      val clipping1 = decoder.safeDecodeUInt32()
+      val clipping2 = decoder.safeDecodeUInt32()
 
       return Vibration(
         timeUsec = timeUsec,

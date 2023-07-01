@@ -4,17 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeString
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeString
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.String
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Response from a PARAM_EXT_SET message.
@@ -50,38 +52,42 @@ public data class ParamExtAck(
   public override val instanceCompanion: MavMessage.MavCompanion<ParamExtAck> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeString(paramId, 16)
-    buffer.encodeString(paramValue, 128)
-    buffer.encodeEnumValue(paramType.value, 1)
-    buffer.encodeEnumValue(paramResult.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeString(paramId, 16)
+    encoder.encodeString(paramValue, 128)
+    encoder.encodeEnumValue(paramType.value, 1)
+    encoder.encodeEnumValue(paramResult.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeString(paramId, 16)
-    buffer.encodeString(paramValue, 128)
-    buffer.encodeEnumValue(paramType.value, 1)
-    buffer.encodeEnumValue(paramResult.value, 1)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeString(paramId, 16)
+    encoder.encodeString(paramValue, 128)
+    encoder.encodeEnumValue(paramType.value, 1)
+    encoder.encodeEnumValue(paramResult.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ParamExtAck> {
+    private const val SIZE_V1: Int = 146
+
+    private const val SIZE_V2: Int = 146
+
     public override val id: UInt = 324u
 
     public override val crcExtra: Byte = -124
 
     public override fun deserialize(bytes: ByteArray): ParamExtAck {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val paramId = buffer.decodeString(16)
-      val paramValue = buffer.decodeString(128)
-      val paramType = buffer.decodeEnumValue(1).let { value ->
+      val paramId = decoder.safeDecodeString(16)
+      val paramValue = decoder.safeDecodeString(128)
+      val paramType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavParamExtType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val paramResult = buffer.decodeEnumValue(1).let { value ->
+      val paramResult = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = ParamAck.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

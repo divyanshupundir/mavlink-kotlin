@@ -4,19 +4,21 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Settings of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
@@ -56,36 +58,40 @@ public data class CameraSettings(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraSettings> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeEnumValue(modeId.value, 1)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeEnumValue(modeId.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeEnumValue(modeId.value, 1)
-    buffer.encodeFloat(zoomlevel)
-    buffer.encodeFloat(focuslevel)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeEnumValue(modeId.value, 1)
+    encoder.encodeFloat(zoomlevel)
+    encoder.encodeFloat(focuslevel)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraSettings> {
+    private const val SIZE_V1: Int = 5
+
+    private const val SIZE_V2: Int = 13
+
     public override val id: UInt = 260u
 
     public override val crcExtra: Byte = -110
 
     public override fun deserialize(bytes: ByteArray): CameraSettings {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val modeId = buffer.decodeEnumValue(1).let { value ->
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val modeId = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CameraMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val zoomlevel = buffer.decodeFloat()
-      val focuslevel = buffer.decodeFloat()
+      val zoomlevel = decoder.safeDecodeFloat()
+      val focuslevel = decoder.safeDecodeFloat()
 
       return CameraSettings(
         timeBootMs = timeBootMs,

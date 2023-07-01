@@ -3,18 +3,20 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt8Array
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt8Array
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Acknowldge sucess or failure of a flexifunction command
@@ -58,41 +60,45 @@ public data class FlexifunctionDirectory(
   public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionDirectory> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeUInt8(directoryType)
-    buffer.encodeUInt8(startIndex)
-    buffer.encodeUInt8(count)
-    buffer.encodeInt8Array(directoryData, 48)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(directoryType)
+    encoder.encodeUInt8(startIndex)
+    encoder.encodeUInt8(count)
+    encoder.encodeInt8Array(directoryData, 48)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt8(targetSystem)
-    buffer.encodeUInt8(targetComponent)
-    buffer.encodeUInt8(directoryType)
-    buffer.encodeUInt8(startIndex)
-    buffer.encodeUInt8(count)
-    buffer.encodeInt8Array(directoryData, 48)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(directoryType)
+    encoder.encodeUInt8(startIndex)
+    encoder.encodeUInt8(count)
+    encoder.encodeInt8Array(directoryData, 48)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FlexifunctionDirectory> {
+    private const val SIZE_V1: Int = 53
+
+    private const val SIZE_V2: Int = 53
+
     public override val id: UInt = 155u
 
     public override val crcExtra: Byte = 12
 
     public override fun deserialize(bytes: ByteArray): FlexifunctionDirectory {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val targetSystem = buffer.decodeUInt8()
-      val targetComponent = buffer.decodeUInt8()
-      val directoryType = buffer.decodeUInt8()
-      val startIndex = buffer.decodeUInt8()
-      val count = buffer.decodeUInt8()
-      val directoryData = buffer.decodeInt8Array(48)
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val directoryType = decoder.safeDecodeUInt8()
+      val startIndex = decoder.safeDecodeUInt8()
+      val count = decoder.safeDecodeUInt8()
+      val directoryData = decoder.safeDecodeInt8Array(48)
 
       return FlexifunctionDirectory(
         targetSystem = targetSystem,

@@ -3,21 +3,23 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Off-board controls/commands for ASLUAVs
@@ -71,47 +73,51 @@ public data class AslObctrl(
   public override val instanceCompanion: MavMessage.MavCompanion<AslObctrl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timestamp)
-    buffer.encodeFloat(uelev)
-    buffer.encodeFloat(uthrot)
-    buffer.encodeFloat(uthrot2)
-    buffer.encodeFloat(uaill)
-    buffer.encodeFloat(uailr)
-    buffer.encodeFloat(urud)
-    buffer.encodeUInt8(obctrlStatus)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeFloat(uelev)
+    encoder.encodeFloat(uthrot)
+    encoder.encodeFloat(uthrot2)
+    encoder.encodeFloat(uaill)
+    encoder.encodeFloat(uailr)
+    encoder.encodeFloat(urud)
+    encoder.encodeUInt8(obctrlStatus)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timestamp)
-    buffer.encodeFloat(uelev)
-    buffer.encodeFloat(uthrot)
-    buffer.encodeFloat(uthrot2)
-    buffer.encodeFloat(uaill)
-    buffer.encodeFloat(uailr)
-    buffer.encodeFloat(urud)
-    buffer.encodeUInt8(obctrlStatus)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeFloat(uelev)
+    encoder.encodeFloat(uthrot)
+    encoder.encodeFloat(uthrot2)
+    encoder.encodeFloat(uaill)
+    encoder.encodeFloat(uailr)
+    encoder.encodeFloat(urud)
+    encoder.encodeUInt8(obctrlStatus)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AslObctrl> {
+    private const val SIZE_V1: Int = 33
+
+    private const val SIZE_V2: Int = 33
+
     public override val id: UInt = 8_008u
 
     public override val crcExtra: Byte = -22
 
     public override fun deserialize(bytes: ByteArray): AslObctrl {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timestamp = buffer.decodeUInt64()
-      val uelev = buffer.decodeFloat()
-      val uthrot = buffer.decodeFloat()
-      val uthrot2 = buffer.decodeFloat()
-      val uaill = buffer.decodeFloat()
-      val uailr = buffer.decodeFloat()
-      val urud = buffer.decodeFloat()
-      val obctrlStatus = buffer.decodeUInt8()
+      val timestamp = decoder.safeDecodeUInt64()
+      val uelev = decoder.safeDecodeFloat()
+      val uthrot = decoder.safeDecodeFloat()
+      val uthrot2 = decoder.safeDecodeFloat()
+      val uaill = decoder.safeDecodeFloat()
+      val uailr = decoder.safeDecodeFloat()
+      val urud = decoder.safeDecodeFloat()
+      val obctrlStatus = decoder.safeDecodeUInt8()
 
       return AslObctrl(
         timestamp = timestamp,

@@ -3,17 +3,19 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The system time is the time of the master clock, typically the computer clock of the main onboard
@@ -38,29 +40,33 @@ public data class SystemTime(
   public override val instanceCompanion: MavMessage.MavCompanion<SystemTime> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUnixUsec)
-    buffer.encodeUInt32(timeBootMs)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUnixUsec)
+    encoder.encodeUInt32(timeBootMs)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUnixUsec)
-    buffer.encodeUInt32(timeBootMs)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUnixUsec)
+    encoder.encodeUInt32(timeBootMs)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SystemTime> {
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 12
+
     public override val id: UInt = 2u
 
     public override val crcExtra: Byte = -119
 
     public override fun deserialize(bytes: ByteArray): SystemTime {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUnixUsec = buffer.decodeUInt64()
-      val timeBootMs = buffer.decodeUInt32()
+      val timeUnixUsec = decoder.safeDecodeUInt64()
+      val timeBootMs = decoder.safeDecodeUInt32()
 
       return SystemTime(
         timeUnixUsec = timeUnixUsec,

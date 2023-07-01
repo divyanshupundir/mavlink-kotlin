@@ -3,13 +3,8 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeInt8
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeInt8
@@ -17,6 +12,13 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
@@ -28,7 +30,6 @@ import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Information about a captured image. This is emitted every time a message is captured.
@@ -108,56 +109,60 @@ public data class CameraImageCaptured(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraImageCaptured> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUtc)
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(alt)
-    buffer.encodeInt32(relativeAlt)
-    buffer.encodeFloatArray(q, 16)
-    buffer.encodeInt32(imageIndex)
-    buffer.encodeUInt8(cameraId)
-    buffer.encodeInt8(captureResult)
-    buffer.encodeString(fileUrl, 205)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUtc)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeInt32(relativeAlt)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeInt32(imageIndex)
+    encoder.encodeUInt8(cameraId)
+    encoder.encodeInt8(captureResult)
+    encoder.encodeString(fileUrl, 205)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUtc)
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeInt32(lat)
-    buffer.encodeInt32(lon)
-    buffer.encodeInt32(alt)
-    buffer.encodeInt32(relativeAlt)
-    buffer.encodeFloatArray(q, 16)
-    buffer.encodeInt32(imageIndex)
-    buffer.encodeUInt8(cameraId)
-    buffer.encodeInt8(captureResult)
-    buffer.encodeString(fileUrl, 205)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUtc)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeInt32(relativeAlt)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeInt32(imageIndex)
+    encoder.encodeUInt8(cameraId)
+    encoder.encodeInt8(captureResult)
+    encoder.encodeString(fileUrl, 205)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraImageCaptured> {
+    private const val SIZE_V1: Int = 255
+
+    private const val SIZE_V2: Int = 255
+
     public override val id: UInt = 263u
 
     public override val crcExtra: Byte = -123
 
     public override fun deserialize(bytes: ByteArray): CameraImageCaptured {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUtc = buffer.decodeUInt64()
-      val timeBootMs = buffer.decodeUInt32()
-      val lat = buffer.decodeInt32()
-      val lon = buffer.decodeInt32()
-      val alt = buffer.decodeInt32()
-      val relativeAlt = buffer.decodeInt32()
-      val q = buffer.decodeFloatArray(16)
-      val imageIndex = buffer.decodeInt32()
-      val cameraId = buffer.decodeUInt8()
-      val captureResult = buffer.decodeInt8()
-      val fileUrl = buffer.decodeString(205)
+      val timeUtc = decoder.safeDecodeUInt64()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt32()
+      val relativeAlt = decoder.safeDecodeInt32()
+      val q = decoder.safeDecodeFloatArray(16)
+      val imageIndex = decoder.safeDecodeInt32()
+      val cameraId = decoder.safeDecodeUInt8()
+      val captureResult = decoder.safeDecodeInt8()
+      val fileUrl = decoder.safeDecodeString(205)
 
       return CameraImageCaptured(
         timeBootMs = timeBootMs,

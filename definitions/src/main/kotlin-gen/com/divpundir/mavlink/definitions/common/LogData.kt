@@ -3,23 +3,25 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.UShort
 import kotlin.Unit
 import kotlin.collections.List
-import okio.Buffer
 
 /**
  * Reply to LOG_REQUEST_DATA
@@ -53,35 +55,39 @@ public data class LogData(
   public override val instanceCompanion: MavMessage.MavCompanion<LogData> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(ofs)
-    buffer.encodeUInt16(id)
-    buffer.encodeUInt8(count)
-    buffer.encodeUInt8Array(data, 90)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(ofs)
+    encoder.encodeUInt16(id)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8Array(data, 90)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(ofs)
-    buffer.encodeUInt16(id)
-    buffer.encodeUInt8(count)
-    buffer.encodeUInt8Array(data, 90)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(ofs)
+    encoder.encodeUInt16(id)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8Array(data, 90)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LogData> {
+    private const val SIZE_V1: Int = 97
+
+    private const val SIZE_V2: Int = 97
+
     public override val id: UInt = 120u
 
     public override val crcExtra: Byte = -122
 
     public override fun deserialize(bytes: ByteArray): LogData {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val ofs = buffer.decodeUInt32()
-      val id = buffer.decodeUInt16()
-      val count = buffer.decodeUInt8()
-      val data = buffer.decodeUInt8Array(90)
+      val ofs = decoder.safeDecodeUInt32()
+      val id = decoder.safeDecodeUInt16()
+      val count = decoder.safeDecodeUInt8()
+      val data = decoder.safeDecodeUInt8Array(90)
 
       return LogData(
         id = id,

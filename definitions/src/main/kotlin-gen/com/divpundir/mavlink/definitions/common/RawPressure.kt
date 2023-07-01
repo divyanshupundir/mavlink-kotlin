@@ -3,18 +3,20 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Int
 import kotlin.Short
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * The RAW pressure readings for the typical setup of one absolute pressure and one differential
@@ -55,38 +57,42 @@ public data class RawPressure(
   public override val instanceCompanion: MavMessage.MavCompanion<RawPressure> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeInt16(pressAbs)
-    buffer.encodeInt16(pressDiff1)
-    buffer.encodeInt16(pressDiff2)
-    buffer.encodeInt16(temperature)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt16(pressAbs)
+    encoder.encodeInt16(pressDiff1)
+    encoder.encodeInt16(pressDiff2)
+    encoder.encodeInt16(temperature)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt64(timeUsec)
-    buffer.encodeInt16(pressAbs)
-    buffer.encodeInt16(pressDiff1)
-    buffer.encodeInt16(pressDiff2)
-    buffer.encodeInt16(temperature)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt16(pressAbs)
+    encoder.encodeInt16(pressDiff1)
+    encoder.encodeInt16(pressDiff2)
+    encoder.encodeInt16(temperature)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RawPressure> {
+    private const val SIZE_V1: Int = 16
+
+    private const val SIZE_V2: Int = 16
+
     public override val id: UInt = 28u
 
     public override val crcExtra: Byte = 67
 
     public override fun deserialize(bytes: ByteArray): RawPressure {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeUsec = buffer.decodeUInt64()
-      val pressAbs = buffer.decodeInt16()
-      val pressDiff1 = buffer.decodeInt16()
-      val pressDiff2 = buffer.decodeInt16()
-      val temperature = buffer.decodeInt16()
+      val timeUsec = decoder.safeDecodeUInt64()
+      val pressAbs = decoder.safeDecodeInt16()
+      val pressDiff1 = decoder.safeDecodeInt16()
+      val pressDiff2 = decoder.safeDecodeInt16()
+      val temperature = decoder.safeDecodeInt16()
 
       return RawPressure(
         timeUsec = timeUsec,

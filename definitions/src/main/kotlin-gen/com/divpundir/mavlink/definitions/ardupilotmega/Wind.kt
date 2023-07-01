@@ -3,15 +3,17 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  * Wind estimation.
@@ -40,32 +42,36 @@ public data class Wind(
   public override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(direction)
-    buffer.encodeFloat(speed)
-    buffer.encodeFloat(speedZ)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(direction)
+    encoder.encodeFloat(speed)
+    encoder.encodeFloat(speedZ)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeFloat(direction)
-    buffer.encodeFloat(speed)
-    buffer.encodeFloat(speedZ)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(direction)
+    encoder.encodeFloat(speed)
+    encoder.encodeFloat(speedZ)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Wind> {
+    private const val SIZE_V1: Int = 12
+
+    private const val SIZE_V2: Int = 12
+
     public override val id: UInt = 168u
 
     public override val crcExtra: Byte = 1
 
     public override fun deserialize(bytes: ByteArray): Wind {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val direction = buffer.decodeFloat()
-      val speed = buffer.decodeFloat()
-      val speedZ = buffer.decodeFloat()
+      val direction = decoder.safeDecodeFloat()
+      val speed = decoder.safeDecodeFloat()
+      val speedZ = decoder.safeDecodeFloat()
 
       return Wind(
         direction = direction,

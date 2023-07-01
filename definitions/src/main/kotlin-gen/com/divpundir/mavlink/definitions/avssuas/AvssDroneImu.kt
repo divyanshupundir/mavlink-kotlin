@@ -3,17 +3,19 @@ package com.divpundir.mavlink.definitions.avssuas
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
+import kotlin.Int
 import kotlin.UInt
 import kotlin.Unit
-import okio.Buffer
 
 /**
  *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0
@@ -83,56 +85,60 @@ public data class AvssDroneImu(
   public override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(q1)
-    buffer.encodeFloat(q2)
-    buffer.encodeFloat(q3)
-    buffer.encodeFloat(q4)
-    buffer.encodeFloat(xacc)
-    buffer.encodeFloat(yacc)
-    buffer.encodeFloat(zacc)
-    buffer.encodeFloat(xgyro)
-    buffer.encodeFloat(ygyro)
-    buffer.encodeFloat(zgyro)
-    return buffer.readByteArray()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(q1)
+    encoder.encodeFloat(q2)
+    encoder.encodeFloat(q3)
+    encoder.encodeFloat(q4)
+    encoder.encodeFloat(xacc)
+    encoder.encodeFloat(yacc)
+    encoder.encodeFloat(zacc)
+    encoder.encodeFloat(xgyro)
+    encoder.encodeFloat(ygyro)
+    encoder.encodeFloat(zgyro)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val buffer = Buffer()
-    buffer.encodeUInt32(timeBootMs)
-    buffer.encodeFloat(q1)
-    buffer.encodeFloat(q2)
-    buffer.encodeFloat(q3)
-    buffer.encodeFloat(q4)
-    buffer.encodeFloat(xacc)
-    buffer.encodeFloat(yacc)
-    buffer.encodeFloat(zacc)
-    buffer.encodeFloat(xgyro)
-    buffer.encodeFloat(ygyro)
-    buffer.encodeFloat(zgyro)
-    return buffer.readByteArray().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(q1)
+    encoder.encodeFloat(q2)
+    encoder.encodeFloat(q3)
+    encoder.encodeFloat(q4)
+    encoder.encodeFloat(xacc)
+    encoder.encodeFloat(yacc)
+    encoder.encodeFloat(zacc)
+    encoder.encodeFloat(xgyro)
+    encoder.encodeFloat(ygyro)
+    encoder.encodeFloat(zgyro)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AvssDroneImu> {
+    private const val SIZE_V1: Int = 44
+
+    private const val SIZE_V2: Int = 44
+
     public override val id: UInt = 60_052u
 
     public override val crcExtra: Byte = 101
 
     public override fun deserialize(bytes: ByteArray): AvssDroneImu {
-      val buffer = Buffer().write(bytes)
+      val decoder = MavDataDecoder.wrap(bytes)
 
-      val timeBootMs = buffer.decodeUInt32()
-      val q1 = buffer.decodeFloat()
-      val q2 = buffer.decodeFloat()
-      val q3 = buffer.decodeFloat()
-      val q4 = buffer.decodeFloat()
-      val xacc = buffer.decodeFloat()
-      val yacc = buffer.decodeFloat()
-      val zacc = buffer.decodeFloat()
-      val xgyro = buffer.decodeFloat()
-      val ygyro = buffer.decodeFloat()
-      val zgyro = buffer.decodeFloat()
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val q1 = decoder.safeDecodeFloat()
+      val q2 = decoder.safeDecodeFloat()
+      val q3 = decoder.safeDecodeFloat()
+      val q4 = decoder.safeDecodeFloat()
+      val xacc = decoder.safeDecodeFloat()
+      val yacc = decoder.safeDecodeFloat()
+      val zacc = decoder.safeDecodeFloat()
+      val xgyro = decoder.safeDecodeFloat()
+      val ygyro = decoder.safeDecodeFloat()
+      val zgyro = decoder.safeDecodeFloat()
 
       return AvssDroneImu(
         timeBootMs = timeBootMs,
