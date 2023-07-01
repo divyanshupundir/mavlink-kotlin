@@ -168,7 +168,7 @@ internal data class MavRawFrame(
             signEncoder.encodeByteArray(secretKey.copyOf(Sizes.SECRET_KEY))
             signEncoder.encodeByteArray(frameBytes, offset = 0, length = frameSizeTillCrc)
             signEncoder.encodeUInt8(linkId)
-            signEncoder.encodeIntegerValue(timestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
+            signEncoder.encodeInteger(timestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
 
             return signEncoder
                 .bytes
@@ -312,7 +312,7 @@ internal data class MavRawFrame(
             encoder.encodeUInt8(seq)
             encoder.encodeUInt8(systemId)
             encoder.encodeUInt8(componentId)
-            encoder.encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
+            encoder.encodeInteger(messageId.toLong(), Sizes.MSG_ID_V2)
             encoder.encodeByteArray(payload)
 
             val checksum = generateChecksum(encoder.bytes, crcExtra)
@@ -362,7 +362,7 @@ internal data class MavRawFrame(
             encoder.encodeUInt8(seq)
             encoder.encodeUInt8(systemId)
             encoder.encodeUInt8(componentId)
-            encoder.encodeIntegerValue(messageId.toLong(), Sizes.MSG_ID_V2)
+            encoder.encodeInteger(messageId.toLong(), Sizes.MSG_ID_V2)
             encoder.encodeByteArray(payload)
 
             val checksum = generateChecksum(encoder.bytes, crcExtra)
@@ -370,7 +370,7 @@ internal data class MavRawFrame(
 
             val signature = generateSignature(encoder.bytes, signatureLinkId, signatureTimestamp, secretKey)
             encoder.encodeUInt8(signatureLinkId)
-            encoder.encodeIntegerValue(signatureTimestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
+            encoder.encodeInteger(signatureTimestamp.toLong(), Sizes.SIGNATURE_TIMESTAMP)
             encoder.encodeByteArray(signature)
 
             return MavRawFrame(
