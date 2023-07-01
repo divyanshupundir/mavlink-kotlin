@@ -2,12 +2,10 @@ package com.divpundir.mavlink.connection
 
 import okio.BufferedSource
 import okio.EOFException
-import okio.IOException
 
 internal class MavRawFrameReader(
     private val source: BufferedSource
 ) {
-    @Throws(IOException::class)
     fun next(): MavRawFrame {
         while (!Thread.currentThread().isInterrupted) {
             val peeked = source.peek()
