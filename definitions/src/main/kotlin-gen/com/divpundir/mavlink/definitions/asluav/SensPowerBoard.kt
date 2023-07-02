@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -93,37 +93,37 @@ public data class SensPowerBoard(
   public override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(pwrBrdSystemVolt)
-    outputBuffer.encodeFloat(pwrBrdServoVolt)
-    outputBuffer.encodeFloat(pwrBrdDigitalVolt)
-    outputBuffer.encodeFloat(pwrBrdMotLAmp)
-    outputBuffer.encodeFloat(pwrBrdMotRAmp)
-    outputBuffer.encodeFloat(pwrBrdAnalogAmp)
-    outputBuffer.encodeFloat(pwrBrdDigitalAmp)
-    outputBuffer.encodeFloat(pwrBrdExtAmp)
-    outputBuffer.encodeFloat(pwrBrdAuxAmp)
-    outputBuffer.encodeUInt8(pwrBrdStatus)
-    outputBuffer.encodeUInt8(pwrBrdLedStatus)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeFloat(pwrBrdSystemVolt)
+    encoder.encodeFloat(pwrBrdServoVolt)
+    encoder.encodeFloat(pwrBrdDigitalVolt)
+    encoder.encodeFloat(pwrBrdMotLAmp)
+    encoder.encodeFloat(pwrBrdMotRAmp)
+    encoder.encodeFloat(pwrBrdAnalogAmp)
+    encoder.encodeFloat(pwrBrdDigitalAmp)
+    encoder.encodeFloat(pwrBrdExtAmp)
+    encoder.encodeFloat(pwrBrdAuxAmp)
+    encoder.encodeUInt8(pwrBrdStatus)
+    encoder.encodeUInt8(pwrBrdLedStatus)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(pwrBrdSystemVolt)
-    outputBuffer.encodeFloat(pwrBrdServoVolt)
-    outputBuffer.encodeFloat(pwrBrdDigitalVolt)
-    outputBuffer.encodeFloat(pwrBrdMotLAmp)
-    outputBuffer.encodeFloat(pwrBrdMotRAmp)
-    outputBuffer.encodeFloat(pwrBrdAnalogAmp)
-    outputBuffer.encodeFloat(pwrBrdDigitalAmp)
-    outputBuffer.encodeFloat(pwrBrdExtAmp)
-    outputBuffer.encodeFloat(pwrBrdAuxAmp)
-    outputBuffer.encodeUInt8(pwrBrdStatus)
-    outputBuffer.encodeUInt8(pwrBrdLedStatus)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeFloat(pwrBrdSystemVolt)
+    encoder.encodeFloat(pwrBrdServoVolt)
+    encoder.encodeFloat(pwrBrdDigitalVolt)
+    encoder.encodeFloat(pwrBrdMotLAmp)
+    encoder.encodeFloat(pwrBrdMotRAmp)
+    encoder.encodeFloat(pwrBrdAnalogAmp)
+    encoder.encodeFloat(pwrBrdDigitalAmp)
+    encoder.encodeFloat(pwrBrdExtAmp)
+    encoder.encodeFloat(pwrBrdAuxAmp)
+    encoder.encodeUInt8(pwrBrdStatus)
+    encoder.encodeUInt8(pwrBrdLedStatus)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SensPowerBoard> {
@@ -136,19 +136,20 @@ public data class SensPowerBoard(
     public override val crcExtra: Byte = -34
 
     public override fun deserialize(bytes: ByteArray): SensPowerBoard {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val pwrBrdSystemVolt = inputBuffer.decodeFloat()
-      val pwrBrdServoVolt = inputBuffer.decodeFloat()
-      val pwrBrdDigitalVolt = inputBuffer.decodeFloat()
-      val pwrBrdMotLAmp = inputBuffer.decodeFloat()
-      val pwrBrdMotRAmp = inputBuffer.decodeFloat()
-      val pwrBrdAnalogAmp = inputBuffer.decodeFloat()
-      val pwrBrdDigitalAmp = inputBuffer.decodeFloat()
-      val pwrBrdExtAmp = inputBuffer.decodeFloat()
-      val pwrBrdAuxAmp = inputBuffer.decodeFloat()
-      val pwrBrdStatus = inputBuffer.decodeUInt8()
-      val pwrBrdLedStatus = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timestamp = decoder.safeDecodeUInt64()
+      val pwrBrdSystemVolt = decoder.safeDecodeFloat()
+      val pwrBrdServoVolt = decoder.safeDecodeFloat()
+      val pwrBrdDigitalVolt = decoder.safeDecodeFloat()
+      val pwrBrdMotLAmp = decoder.safeDecodeFloat()
+      val pwrBrdMotRAmp = decoder.safeDecodeFloat()
+      val pwrBrdAnalogAmp = decoder.safeDecodeFloat()
+      val pwrBrdDigitalAmp = decoder.safeDecodeFloat()
+      val pwrBrdExtAmp = decoder.safeDecodeFloat()
+      val pwrBrdAuxAmp = decoder.safeDecodeFloat()
+      val pwrBrdStatus = decoder.safeDecodeUInt8()
+      val pwrBrdLedStatus = decoder.safeDecodeUInt8()
 
       return SensPowerBoard(
         timestamp = timestamp,

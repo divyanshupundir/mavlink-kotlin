@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -87,35 +87,35 @@ public data class SerialUdbExtraF14(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF14> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(sueTrapSource)
-    outputBuffer.encodeInt16(sueRcon)
-    outputBuffer.encodeInt16(sueTrapFlags)
-    outputBuffer.encodeInt16(sueOscFailCount)
-    outputBuffer.encodeUInt8(sueWindEstimation)
-    outputBuffer.encodeUInt8(sueGpsType)
-    outputBuffer.encodeUInt8(sueDr)
-    outputBuffer.encodeUInt8(sueBoardType)
-    outputBuffer.encodeUInt8(sueAirframe)
-    outputBuffer.encodeUInt8(sueClockConfig)
-    outputBuffer.encodeUInt8(sueFlightPlanType)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(sueTrapSource)
+    encoder.encodeInt16(sueRcon)
+    encoder.encodeInt16(sueTrapFlags)
+    encoder.encodeInt16(sueOscFailCount)
+    encoder.encodeUInt8(sueWindEstimation)
+    encoder.encodeUInt8(sueGpsType)
+    encoder.encodeUInt8(sueDr)
+    encoder.encodeUInt8(sueBoardType)
+    encoder.encodeUInt8(sueAirframe)
+    encoder.encodeUInt8(sueClockConfig)
+    encoder.encodeUInt8(sueFlightPlanType)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(sueTrapSource)
-    outputBuffer.encodeInt16(sueRcon)
-    outputBuffer.encodeInt16(sueTrapFlags)
-    outputBuffer.encodeInt16(sueOscFailCount)
-    outputBuffer.encodeUInt8(sueWindEstimation)
-    outputBuffer.encodeUInt8(sueGpsType)
-    outputBuffer.encodeUInt8(sueDr)
-    outputBuffer.encodeUInt8(sueBoardType)
-    outputBuffer.encodeUInt8(sueAirframe)
-    outputBuffer.encodeUInt8(sueClockConfig)
-    outputBuffer.encodeUInt8(sueFlightPlanType)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(sueTrapSource)
+    encoder.encodeInt16(sueRcon)
+    encoder.encodeInt16(sueTrapFlags)
+    encoder.encodeInt16(sueOscFailCount)
+    encoder.encodeUInt8(sueWindEstimation)
+    encoder.encodeUInt8(sueGpsType)
+    encoder.encodeUInt8(sueDr)
+    encoder.encodeUInt8(sueBoardType)
+    encoder.encodeUInt8(sueAirframe)
+    encoder.encodeUInt8(sueClockConfig)
+    encoder.encodeUInt8(sueFlightPlanType)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF14> {
@@ -128,18 +128,19 @@ public data class SerialUdbExtraF14(
     public override val crcExtra: Byte = 123
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF14 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueTrapSource = inputBuffer.decodeUInt32()
-      val sueRcon = inputBuffer.decodeInt16()
-      val sueTrapFlags = inputBuffer.decodeInt16()
-      val sueOscFailCount = inputBuffer.decodeInt16()
-      val sueWindEstimation = inputBuffer.decodeUInt8()
-      val sueGpsType = inputBuffer.decodeUInt8()
-      val sueDr = inputBuffer.decodeUInt8()
-      val sueBoardType = inputBuffer.decodeUInt8()
-      val sueAirframe = inputBuffer.decodeUInt8()
-      val sueClockConfig = inputBuffer.decodeUInt8()
-      val sueFlightPlanType = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val sueTrapSource = decoder.safeDecodeUInt32()
+      val sueRcon = decoder.safeDecodeInt16()
+      val sueTrapFlags = decoder.safeDecodeInt16()
+      val sueOscFailCount = decoder.safeDecodeInt16()
+      val sueWindEstimation = decoder.safeDecodeUInt8()
+      val sueGpsType = decoder.safeDecodeUInt8()
+      val sueDr = decoder.safeDecodeUInt8()
+      val sueBoardType = decoder.safeDecodeUInt8()
+      val sueAirframe = decoder.safeDecodeUInt8()
+      val sueClockConfig = decoder.safeDecodeUInt8()
+      val sueFlightPlanType = decoder.safeDecodeUInt8()
 
       return SerialUdbExtraF14(
         sueWindEstimation = sueWindEstimation,

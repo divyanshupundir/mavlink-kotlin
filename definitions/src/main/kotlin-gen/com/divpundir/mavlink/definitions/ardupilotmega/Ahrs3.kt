@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -79,33 +79,33 @@ public data class Ahrs3(
   public override val instanceCompanion: MavMessage.MavCompanion<Ahrs3> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloat(altitude)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lng)
-    outputBuffer.encodeFloat(v1)
-    outputBuffer.encodeFloat(v2)
-    outputBuffer.encodeFloat(v3)
-    outputBuffer.encodeFloat(v4)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(roll)
+    encoder.encodeFloat(pitch)
+    encoder.encodeFloat(yaw)
+    encoder.encodeFloat(altitude)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lng)
+    encoder.encodeFloat(v1)
+    encoder.encodeFloat(v2)
+    encoder.encodeFloat(v3)
+    encoder.encodeFloat(v4)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(roll)
-    outputBuffer.encodeFloat(pitch)
-    outputBuffer.encodeFloat(yaw)
-    outputBuffer.encodeFloat(altitude)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lng)
-    outputBuffer.encodeFloat(v1)
-    outputBuffer.encodeFloat(v2)
-    outputBuffer.encodeFloat(v3)
-    outputBuffer.encodeFloat(v4)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(roll)
+    encoder.encodeFloat(pitch)
+    encoder.encodeFloat(yaw)
+    encoder.encodeFloat(altitude)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lng)
+    encoder.encodeFloat(v1)
+    encoder.encodeFloat(v2)
+    encoder.encodeFloat(v3)
+    encoder.encodeFloat(v4)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Ahrs3> {
@@ -118,17 +118,18 @@ public data class Ahrs3(
     public override val crcExtra: Byte = -27
 
     public override fun deserialize(bytes: ByteArray): Ahrs3 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val roll = inputBuffer.decodeFloat()
-      val pitch = inputBuffer.decodeFloat()
-      val yaw = inputBuffer.decodeFloat()
-      val altitude = inputBuffer.decodeFloat()
-      val lat = inputBuffer.decodeInt32()
-      val lng = inputBuffer.decodeInt32()
-      val v1 = inputBuffer.decodeFloat()
-      val v2 = inputBuffer.decodeFloat()
-      val v3 = inputBuffer.decodeFloat()
-      val v4 = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val roll = decoder.safeDecodeFloat()
+      val pitch = decoder.safeDecodeFloat()
+      val yaw = decoder.safeDecodeFloat()
+      val altitude = decoder.safeDecodeFloat()
+      val lat = decoder.safeDecodeInt32()
+      val lng = decoder.safeDecodeInt32()
+      val v1 = decoder.safeDecodeFloat()
+      val v2 = decoder.safeDecodeFloat()
+      val v3 = decoder.safeDecodeFloat()
+      val v4 = decoder.safeDecodeFloat()
 
       return Ahrs3(
         roll = roll,

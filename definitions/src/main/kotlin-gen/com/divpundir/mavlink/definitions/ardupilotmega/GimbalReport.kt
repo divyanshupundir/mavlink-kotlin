@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -90,37 +90,37 @@ public data class GimbalReport(
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(deltaTime)
-    outputBuffer.encodeFloat(deltaAngleX)
-    outputBuffer.encodeFloat(deltaAngleY)
-    outputBuffer.encodeFloat(deltaAngleZ)
-    outputBuffer.encodeFloat(deltaVelocityX)
-    outputBuffer.encodeFloat(deltaVelocityY)
-    outputBuffer.encodeFloat(deltaVelocityZ)
-    outputBuffer.encodeFloat(jointRoll)
-    outputBuffer.encodeFloat(jointEl)
-    outputBuffer.encodeFloat(jointAz)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(deltaTime)
+    encoder.encodeFloat(deltaAngleX)
+    encoder.encodeFloat(deltaAngleY)
+    encoder.encodeFloat(deltaAngleZ)
+    encoder.encodeFloat(deltaVelocityX)
+    encoder.encodeFloat(deltaVelocityY)
+    encoder.encodeFloat(deltaVelocityZ)
+    encoder.encodeFloat(jointRoll)
+    encoder.encodeFloat(jointEl)
+    encoder.encodeFloat(jointAz)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(deltaTime)
-    outputBuffer.encodeFloat(deltaAngleX)
-    outputBuffer.encodeFloat(deltaAngleY)
-    outputBuffer.encodeFloat(deltaAngleZ)
-    outputBuffer.encodeFloat(deltaVelocityX)
-    outputBuffer.encodeFloat(deltaVelocityY)
-    outputBuffer.encodeFloat(deltaVelocityZ)
-    outputBuffer.encodeFloat(jointRoll)
-    outputBuffer.encodeFloat(jointEl)
-    outputBuffer.encodeFloat(jointAz)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(deltaTime)
+    encoder.encodeFloat(deltaAngleX)
+    encoder.encodeFloat(deltaAngleY)
+    encoder.encodeFloat(deltaAngleZ)
+    encoder.encodeFloat(deltaVelocityX)
+    encoder.encodeFloat(deltaVelocityY)
+    encoder.encodeFloat(deltaVelocityZ)
+    encoder.encodeFloat(jointRoll)
+    encoder.encodeFloat(jointEl)
+    encoder.encodeFloat(jointAz)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalReport> {
@@ -133,19 +133,20 @@ public data class GimbalReport(
     public override val crcExtra: Byte = -122
 
     public override fun deserialize(bytes: ByteArray): GimbalReport {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val deltaTime = inputBuffer.decodeFloat()
-      val deltaAngleX = inputBuffer.decodeFloat()
-      val deltaAngleY = inputBuffer.decodeFloat()
-      val deltaAngleZ = inputBuffer.decodeFloat()
-      val deltaVelocityX = inputBuffer.decodeFloat()
-      val deltaVelocityY = inputBuffer.decodeFloat()
-      val deltaVelocityZ = inputBuffer.decodeFloat()
-      val jointRoll = inputBuffer.decodeFloat()
-      val jointEl = inputBuffer.decodeFloat()
-      val jointAz = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val deltaTime = decoder.safeDecodeFloat()
+      val deltaAngleX = decoder.safeDecodeFloat()
+      val deltaAngleY = decoder.safeDecodeFloat()
+      val deltaAngleZ = decoder.safeDecodeFloat()
+      val deltaVelocityX = decoder.safeDecodeFloat()
+      val deltaVelocityY = decoder.safeDecodeFloat()
+      val deltaVelocityZ = decoder.safeDecodeFloat()
+      val jointRoll = decoder.safeDecodeFloat()
+      val jointEl = decoder.safeDecodeFloat()
+      val jointAz = decoder.safeDecodeFloat()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
 
       return GimbalReport(
         targetSystem = targetSystem,

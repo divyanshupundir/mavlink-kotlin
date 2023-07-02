@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16Array
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -61,25 +61,25 @@ public data class EscTelemetry5To8(
   public override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry5To8> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16Array(voltage, 8)
-    outputBuffer.encodeUInt16Array(current, 8)
-    outputBuffer.encodeUInt16Array(totalcurrent, 8)
-    outputBuffer.encodeUInt16Array(rpm, 8)
-    outputBuffer.encodeUInt16Array(count, 8)
-    outputBuffer.encodeUInt8Array(temperature, 4)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16Array(voltage, 8)
+    encoder.encodeUInt16Array(current, 8)
+    encoder.encodeUInt16Array(totalcurrent, 8)
+    encoder.encodeUInt16Array(rpm, 8)
+    encoder.encodeUInt16Array(count, 8)
+    encoder.encodeUInt8Array(temperature, 4)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16Array(voltage, 8)
-    outputBuffer.encodeUInt16Array(current, 8)
-    outputBuffer.encodeUInt16Array(totalcurrent, 8)
-    outputBuffer.encodeUInt16Array(rpm, 8)
-    outputBuffer.encodeUInt16Array(count, 8)
-    outputBuffer.encodeUInt8Array(temperature, 4)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16Array(voltage, 8)
+    encoder.encodeUInt16Array(current, 8)
+    encoder.encodeUInt16Array(totalcurrent, 8)
+    encoder.encodeUInt16Array(rpm, 8)
+    encoder.encodeUInt16Array(count, 8)
+    encoder.encodeUInt8Array(temperature, 4)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EscTelemetry5To8> {
@@ -92,13 +92,14 @@ public data class EscTelemetry5To8(
     public override val crcExtra: Byte = -123
 
     public override fun deserialize(bytes: ByteArray): EscTelemetry5To8 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val voltage = inputBuffer.decodeUInt16Array(8)
-      val current = inputBuffer.decodeUInt16Array(8)
-      val totalcurrent = inputBuffer.decodeUInt16Array(8)
-      val rpm = inputBuffer.decodeUInt16Array(8)
-      val count = inputBuffer.decodeUInt16Array(8)
-      val temperature = inputBuffer.decodeUInt8Array(4)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val voltage = decoder.safeDecodeUInt16Array(8)
+      val current = decoder.safeDecodeUInt16Array(8)
+      val totalcurrent = decoder.safeDecodeUInt16Array(8)
+      val rpm = decoder.safeDecodeUInt16Array(8)
+      val count = decoder.safeDecodeUInt16Array(8)
+      val temperature = decoder.safeDecodeUInt8Array(4)
 
       return EscTelemetry5To8(
         temperature = temperature,

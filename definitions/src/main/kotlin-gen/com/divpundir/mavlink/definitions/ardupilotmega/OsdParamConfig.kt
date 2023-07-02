@@ -4,19 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -90,33 +90,33 @@ public data class OsdParamConfig(
   public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfig> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeFloat(minValue)
-    outputBuffer.encodeFloat(maxValue)
-    outputBuffer.encodeFloat(increment)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(osdScreen)
-    outputBuffer.encodeUInt8(osdIndex)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(configType.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(requestId)
+    encoder.encodeFloat(minValue)
+    encoder.encodeFloat(maxValue)
+    encoder.encodeFloat(increment)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(osdScreen)
+    encoder.encodeUInt8(osdIndex)
+    encoder.encodeString(paramId, 16)
+    encoder.encodeEnumValue(configType.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeFloat(minValue)
-    outputBuffer.encodeFloat(maxValue)
-    outputBuffer.encodeFloat(increment)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(osdScreen)
-    outputBuffer.encodeUInt8(osdIndex)
-    outputBuffer.encodeString(paramId, 16)
-    outputBuffer.encodeEnumValue(configType.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(requestId)
+    encoder.encodeFloat(minValue)
+    encoder.encodeFloat(maxValue)
+    encoder.encodeFloat(increment)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(osdScreen)
+    encoder.encodeUInt8(osdIndex)
+    encoder.encodeString(paramId, 16)
+    encoder.encodeEnumValue(configType.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OsdParamConfig> {
@@ -129,17 +129,18 @@ public data class OsdParamConfig(
     public override val crcExtra: Byte = -61
 
     public override fun deserialize(bytes: ByteArray): OsdParamConfig {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUInt32()
-      val minValue = inputBuffer.decodeFloat()
-      val maxValue = inputBuffer.decodeFloat()
-      val increment = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val osdScreen = inputBuffer.decodeUInt8()
-      val osdIndex = inputBuffer.decodeUInt8()
-      val paramId = inputBuffer.decodeString(16)
-      val configType = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val requestId = decoder.safeDecodeUInt32()
+      val minValue = decoder.safeDecodeFloat()
+      val maxValue = decoder.safeDecodeFloat()
+      val increment = decoder.safeDecodeFloat()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val osdScreen = decoder.safeDecodeUInt8()
+      val osdIndex = decoder.safeDecodeUInt8()
+      val paramId = decoder.safeDecodeString(16)
+      val configType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = OsdParamConfigType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

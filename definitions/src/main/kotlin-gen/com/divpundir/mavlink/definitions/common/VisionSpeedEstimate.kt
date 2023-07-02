@@ -3,17 +3,17 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -75,23 +75,23 @@ public data class VisionSpeedEstimate(
   public override val instanceCompanion: MavMessage.MavCompanion<VisionSpeedEstimate> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(usec)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(usec)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(usec)
-    outputBuffer.encodeFloat(x)
-    outputBuffer.encodeFloat(y)
-    outputBuffer.encodeFloat(z)
-    outputBuffer.encodeFloatArray(covariance, 36)
-    outputBuffer.encodeUInt8(resetCounter)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(usec)
+    encoder.encodeFloat(x)
+    encoder.encodeFloat(y)
+    encoder.encodeFloat(z)
+    encoder.encodeFloatArray(covariance, 36)
+    encoder.encodeUInt8(resetCounter)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<VisionSpeedEstimate> {
@@ -104,13 +104,14 @@ public data class VisionSpeedEstimate(
     public override val crcExtra: Byte = -48
 
     public override fun deserialize(bytes: ByteArray): VisionSpeedEstimate {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val usec = inputBuffer.decodeUInt64()
-      val x = inputBuffer.decodeFloat()
-      val y = inputBuffer.decodeFloat()
-      val z = inputBuffer.decodeFloat()
-      val covariance = inputBuffer.decodeFloatArray(36)
-      val resetCounter = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val usec = decoder.safeDecodeUInt64()
+      val x = decoder.safeDecodeFloat()
+      val y = decoder.safeDecodeFloat()
+      val z = decoder.safeDecodeFloat()
+      val covariance = decoder.safeDecodeFloatArray(36)
+      val resetCounter = decoder.safeDecodeUInt8()
 
       return VisionSpeedEstimate(
         usec = usec,

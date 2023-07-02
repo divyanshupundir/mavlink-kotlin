@@ -4,17 +4,17 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -73,27 +73,27 @@ public data class DataTransmissionHandshake(
       Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(size)
-    outputBuffer.encodeUInt16(width)
-    outputBuffer.encodeUInt16(height)
-    outputBuffer.encodeUInt16(packets)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(payload)
-    outputBuffer.encodeUInt8(jpgQuality)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(size)
+    encoder.encodeUInt16(width)
+    encoder.encodeUInt16(height)
+    encoder.encodeUInt16(packets)
+    encoder.encodeEnumValue(type.value, 1)
+    encoder.encodeUInt8(payload)
+    encoder.encodeUInt8(jpgQuality)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(size)
-    outputBuffer.encodeUInt16(width)
-    outputBuffer.encodeUInt16(height)
-    outputBuffer.encodeUInt16(packets)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(payload)
-    outputBuffer.encodeUInt8(jpgQuality)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(size)
+    encoder.encodeUInt16(width)
+    encoder.encodeUInt16(height)
+    encoder.encodeUInt16(packets)
+    encoder.encodeEnumValue(type.value, 1)
+    encoder.encodeUInt8(payload)
+    encoder.encodeUInt8(jpgQuality)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DataTransmissionHandshake> {
@@ -106,17 +106,18 @@ public data class DataTransmissionHandshake(
     public override val crcExtra: Byte = 29
 
     public override fun deserialize(bytes: ByteArray): DataTransmissionHandshake {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val size = inputBuffer.decodeUInt32()
-      val width = inputBuffer.decodeUInt16()
-      val height = inputBuffer.decodeUInt16()
-      val packets = inputBuffer.decodeUInt16()
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val size = decoder.safeDecodeUInt32()
+      val width = decoder.safeDecodeUInt16()
+      val height = decoder.safeDecodeUInt16()
+      val packets = decoder.safeDecodeUInt16()
+      val type = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavlinkDataStreamType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val payload = inputBuffer.decodeUInt8()
-      val jpgQuality = inputBuffer.decodeUInt8()
+      val payload = decoder.safeDecodeUInt8()
+      val jpgQuality = decoder.safeDecodeUInt8()
 
       return DataTransmissionHandshake(
         type = type,

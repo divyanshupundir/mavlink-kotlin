@@ -3,17 +3,17 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -63,20 +63,20 @@ public data class DebugFloatArray(
   public override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt16(arrayId)
-    outputBuffer.encodeString(name, 10)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt16(arrayId)
+    encoder.encodeString(name, 10)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt16(arrayId)
-    outputBuffer.encodeString(name, 10)
-    outputBuffer.encodeFloatArray(data, 232)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt16(arrayId)
+    encoder.encodeString(name, 10)
+    encoder.encodeFloatArray(data, 232)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DebugFloatArray> {
@@ -89,11 +89,12 @@ public data class DebugFloatArray(
     public override val crcExtra: Byte = -24
 
     public override fun deserialize(bytes: ByteArray): DebugFloatArray {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val arrayId = inputBuffer.decodeUInt16()
-      val name = inputBuffer.decodeString(10)
-      val data = inputBuffer.decodeFloatArray(232)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val arrayId = decoder.safeDecodeUInt16()
+      val name = decoder.safeDecodeString(10)
+      val data = decoder.safeDecodeFloatArray(232)
 
       return DebugFloatArray(
         timeUsec = timeUsec,

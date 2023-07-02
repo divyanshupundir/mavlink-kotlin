@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -42,17 +42,17 @@ public data class EncapsulatedData(
   public override val instanceCompanion: MavMessage.MavCompanion<EncapsulatedData> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seqnr)
-    outputBuffer.encodeUInt8Array(data, 253)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(seqnr)
+    encoder.encodeUInt8Array(data, 253)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(seqnr)
-    outputBuffer.encodeUInt8Array(data, 253)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(seqnr)
+    encoder.encodeUInt8Array(data, 253)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EncapsulatedData> {
@@ -65,9 +65,10 @@ public data class EncapsulatedData(
     public override val crcExtra: Byte = -33
 
     public override fun deserialize(bytes: ByteArray): EncapsulatedData {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val seqnr = inputBuffer.decodeUInt16()
-      val data = inputBuffer.decodeUInt8Array(253)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val seqnr = decoder.safeDecodeUInt16()
+      val data = decoder.safeDecodeUInt8Array(253)
 
       return EncapsulatedData(
         seqnr = seqnr,

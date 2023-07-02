@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -113,63 +113,63 @@ public data class AslctrlData(
   public override val instanceCompanion: MavMessage.MavCompanion<AslctrlData> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(h)
-    outputBuffer.encodeFloat(href)
-    outputBuffer.encodeFloat(hrefT)
-    outputBuffer.encodeFloat(pitchangle)
-    outputBuffer.encodeFloat(pitchangleref)
-    outputBuffer.encodeFloat(q)
-    outputBuffer.encodeFloat(qref)
-    outputBuffer.encodeFloat(uelev)
-    outputBuffer.encodeFloat(uthrot)
-    outputBuffer.encodeFloat(uthrot2)
-    outputBuffer.encodeFloat(nz)
-    outputBuffer.encodeFloat(airspeedref)
-    outputBuffer.encodeFloat(yawangle)
-    outputBuffer.encodeFloat(yawangleref)
-    outputBuffer.encodeFloat(rollangle)
-    outputBuffer.encodeFloat(rollangleref)
-    outputBuffer.encodeFloat(p)
-    outputBuffer.encodeFloat(pref)
-    outputBuffer.encodeFloat(r)
-    outputBuffer.encodeFloat(rref)
-    outputBuffer.encodeFloat(uail)
-    outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUInt8(aslctrlMode)
-    outputBuffer.encodeUInt8(spoilersengaged)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeFloat(h)
+    encoder.encodeFloat(href)
+    encoder.encodeFloat(hrefT)
+    encoder.encodeFloat(pitchangle)
+    encoder.encodeFloat(pitchangleref)
+    encoder.encodeFloat(q)
+    encoder.encodeFloat(qref)
+    encoder.encodeFloat(uelev)
+    encoder.encodeFloat(uthrot)
+    encoder.encodeFloat(uthrot2)
+    encoder.encodeFloat(nz)
+    encoder.encodeFloat(airspeedref)
+    encoder.encodeFloat(yawangle)
+    encoder.encodeFloat(yawangleref)
+    encoder.encodeFloat(rollangle)
+    encoder.encodeFloat(rollangleref)
+    encoder.encodeFloat(p)
+    encoder.encodeFloat(pref)
+    encoder.encodeFloat(r)
+    encoder.encodeFloat(rref)
+    encoder.encodeFloat(uail)
+    encoder.encodeFloat(urud)
+    encoder.encodeUInt8(aslctrlMode)
+    encoder.encodeUInt8(spoilersengaged)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeFloat(h)
-    outputBuffer.encodeFloat(href)
-    outputBuffer.encodeFloat(hrefT)
-    outputBuffer.encodeFloat(pitchangle)
-    outputBuffer.encodeFloat(pitchangleref)
-    outputBuffer.encodeFloat(q)
-    outputBuffer.encodeFloat(qref)
-    outputBuffer.encodeFloat(uelev)
-    outputBuffer.encodeFloat(uthrot)
-    outputBuffer.encodeFloat(uthrot2)
-    outputBuffer.encodeFloat(nz)
-    outputBuffer.encodeFloat(airspeedref)
-    outputBuffer.encodeFloat(yawangle)
-    outputBuffer.encodeFloat(yawangleref)
-    outputBuffer.encodeFloat(rollangle)
-    outputBuffer.encodeFloat(rollangleref)
-    outputBuffer.encodeFloat(p)
-    outputBuffer.encodeFloat(pref)
-    outputBuffer.encodeFloat(r)
-    outputBuffer.encodeFloat(rref)
-    outputBuffer.encodeFloat(uail)
-    outputBuffer.encodeFloat(urud)
-    outputBuffer.encodeUInt8(aslctrlMode)
-    outputBuffer.encodeUInt8(spoilersengaged)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeFloat(h)
+    encoder.encodeFloat(href)
+    encoder.encodeFloat(hrefT)
+    encoder.encodeFloat(pitchangle)
+    encoder.encodeFloat(pitchangleref)
+    encoder.encodeFloat(q)
+    encoder.encodeFloat(qref)
+    encoder.encodeFloat(uelev)
+    encoder.encodeFloat(uthrot)
+    encoder.encodeFloat(uthrot2)
+    encoder.encodeFloat(nz)
+    encoder.encodeFloat(airspeedref)
+    encoder.encodeFloat(yawangle)
+    encoder.encodeFloat(yawangleref)
+    encoder.encodeFloat(rollangle)
+    encoder.encodeFloat(rollangleref)
+    encoder.encodeFloat(p)
+    encoder.encodeFloat(pref)
+    encoder.encodeFloat(r)
+    encoder.encodeFloat(rref)
+    encoder.encodeFloat(uail)
+    encoder.encodeFloat(urud)
+    encoder.encodeUInt8(aslctrlMode)
+    encoder.encodeUInt8(spoilersengaged)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AslctrlData> {
@@ -182,32 +182,33 @@ public data class AslctrlData(
     public override val crcExtra: Byte = -84
 
     public override fun deserialize(bytes: ByteArray): AslctrlData {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val h = inputBuffer.decodeFloat()
-      val href = inputBuffer.decodeFloat()
-      val hrefT = inputBuffer.decodeFloat()
-      val pitchangle = inputBuffer.decodeFloat()
-      val pitchangleref = inputBuffer.decodeFloat()
-      val q = inputBuffer.decodeFloat()
-      val qref = inputBuffer.decodeFloat()
-      val uelev = inputBuffer.decodeFloat()
-      val uthrot = inputBuffer.decodeFloat()
-      val uthrot2 = inputBuffer.decodeFloat()
-      val nz = inputBuffer.decodeFloat()
-      val airspeedref = inputBuffer.decodeFloat()
-      val yawangle = inputBuffer.decodeFloat()
-      val yawangleref = inputBuffer.decodeFloat()
-      val rollangle = inputBuffer.decodeFloat()
-      val rollangleref = inputBuffer.decodeFloat()
-      val p = inputBuffer.decodeFloat()
-      val pref = inputBuffer.decodeFloat()
-      val r = inputBuffer.decodeFloat()
-      val rref = inputBuffer.decodeFloat()
-      val uail = inputBuffer.decodeFloat()
-      val urud = inputBuffer.decodeFloat()
-      val aslctrlMode = inputBuffer.decodeUInt8()
-      val spoilersengaged = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timestamp = decoder.safeDecodeUInt64()
+      val h = decoder.safeDecodeFloat()
+      val href = decoder.safeDecodeFloat()
+      val hrefT = decoder.safeDecodeFloat()
+      val pitchangle = decoder.safeDecodeFloat()
+      val pitchangleref = decoder.safeDecodeFloat()
+      val q = decoder.safeDecodeFloat()
+      val qref = decoder.safeDecodeFloat()
+      val uelev = decoder.safeDecodeFloat()
+      val uthrot = decoder.safeDecodeFloat()
+      val uthrot2 = decoder.safeDecodeFloat()
+      val nz = decoder.safeDecodeFloat()
+      val airspeedref = decoder.safeDecodeFloat()
+      val yawangle = decoder.safeDecodeFloat()
+      val yawangleref = decoder.safeDecodeFloat()
+      val rollangle = decoder.safeDecodeFloat()
+      val rollangleref = decoder.safeDecodeFloat()
+      val p = decoder.safeDecodeFloat()
+      val pref = decoder.safeDecodeFloat()
+      val r = decoder.safeDecodeFloat()
+      val rref = decoder.safeDecodeFloat()
+      val uail = decoder.safeDecodeFloat()
+      val urud = decoder.safeDecodeFloat()
+      val aslctrlMode = decoder.safeDecodeUInt8()
+      val spoilersengaged = decoder.safeDecodeUInt8()
 
       return AslctrlData(
         timestamp = timestamp,

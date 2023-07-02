@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -73,29 +73,29 @@ public data class NavControllerOutput(
   public override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(navRoll)
-    outputBuffer.encodeFloat(navPitch)
-    outputBuffer.encodeFloat(altError)
-    outputBuffer.encodeFloat(aspdError)
-    outputBuffer.encodeFloat(xtrackError)
-    outputBuffer.encodeInt16(navBearing)
-    outputBuffer.encodeInt16(targetBearing)
-    outputBuffer.encodeUInt16(wpDist)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(navRoll)
+    encoder.encodeFloat(navPitch)
+    encoder.encodeFloat(altError)
+    encoder.encodeFloat(aspdError)
+    encoder.encodeFloat(xtrackError)
+    encoder.encodeInt16(navBearing)
+    encoder.encodeInt16(targetBearing)
+    encoder.encodeUInt16(wpDist)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(navRoll)
-    outputBuffer.encodeFloat(navPitch)
-    outputBuffer.encodeFloat(altError)
-    outputBuffer.encodeFloat(aspdError)
-    outputBuffer.encodeFloat(xtrackError)
-    outputBuffer.encodeInt16(navBearing)
-    outputBuffer.encodeInt16(targetBearing)
-    outputBuffer.encodeUInt16(wpDist)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(navRoll)
+    encoder.encodeFloat(navPitch)
+    encoder.encodeFloat(altError)
+    encoder.encodeFloat(aspdError)
+    encoder.encodeFloat(xtrackError)
+    encoder.encodeInt16(navBearing)
+    encoder.encodeInt16(targetBearing)
+    encoder.encodeUInt16(wpDist)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<NavControllerOutput> {
@@ -108,15 +108,16 @@ public data class NavControllerOutput(
     public override val crcExtra: Byte = -73
 
     public override fun deserialize(bytes: ByteArray): NavControllerOutput {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val navRoll = inputBuffer.decodeFloat()
-      val navPitch = inputBuffer.decodeFloat()
-      val altError = inputBuffer.decodeFloat()
-      val aspdError = inputBuffer.decodeFloat()
-      val xtrackError = inputBuffer.decodeFloat()
-      val navBearing = inputBuffer.decodeInt16()
-      val targetBearing = inputBuffer.decodeInt16()
-      val wpDist = inputBuffer.decodeUInt16()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val navRoll = decoder.safeDecodeFloat()
+      val navPitch = decoder.safeDecodeFloat()
+      val altError = decoder.safeDecodeFloat()
+      val aspdError = decoder.safeDecodeFloat()
+      val xtrackError = decoder.safeDecodeFloat()
+      val navBearing = decoder.safeDecodeInt16()
+      val targetBearing = decoder.safeDecodeInt16()
+      val wpDist = decoder.safeDecodeUInt16()
 
       return NavControllerOutput(
         navRoll = navRoll,

@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.ualberta
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -42,19 +42,19 @@ public data class UalbertaSysStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<UalbertaSysStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(mode)
-    outputBuffer.encodeUInt8(navMode)
-    outputBuffer.encodeUInt8(pilot)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(mode)
+    encoder.encodeUInt8(navMode)
+    encoder.encodeUInt8(pilot)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(mode)
-    outputBuffer.encodeUInt8(navMode)
-    outputBuffer.encodeUInt8(pilot)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(mode)
+    encoder.encodeUInt8(navMode)
+    encoder.encodeUInt8(pilot)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UalbertaSysStatus> {
@@ -67,10 +67,11 @@ public data class UalbertaSysStatus(
     public override val crcExtra: Byte = 15
 
     public override fun deserialize(bytes: ByteArray): UalbertaSysStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mode = inputBuffer.decodeUInt8()
-      val navMode = inputBuffer.decodeUInt8()
-      val pilot = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val mode = decoder.safeDecodeUInt8()
+      val navMode = decoder.safeDecodeUInt8()
+      val pilot = decoder.safeDecodeUInt8()
 
       return UalbertaSysStatus(
         mode = mode,

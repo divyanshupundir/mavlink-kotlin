@@ -4,15 +4,15 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -68,27 +68,27 @@ public data class CellularStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CellularStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(mcc)
-    outputBuffer.encodeUInt16(mnc)
-    outputBuffer.encodeUInt16(lac)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(failureReason.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(mcc)
+    encoder.encodeUInt16(mnc)
+    encoder.encodeUInt16(lac)
+    encoder.encodeEnumValue(status.value, 1)
+    encoder.encodeEnumValue(failureReason.value, 1)
+    encoder.encodeEnumValue(type.value, 1)
+    encoder.encodeUInt8(quality)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(mcc)
-    outputBuffer.encodeUInt16(mnc)
-    outputBuffer.encodeUInt16(lac)
-    outputBuffer.encodeEnumValue(status.value, 1)
-    outputBuffer.encodeEnumValue(failureReason.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeUInt8(quality)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(mcc)
+    encoder.encodeUInt16(mnc)
+    encoder.encodeUInt16(lac)
+    encoder.encodeEnumValue(status.value, 1)
+    encoder.encodeEnumValue(failureReason.value, 1)
+    encoder.encodeEnumValue(type.value, 1)
+    encoder.encodeUInt8(quality)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CellularStatus> {
@@ -101,23 +101,24 @@ public data class CellularStatus(
     public override val crcExtra: Byte = 72
 
     public override fun deserialize(bytes: ByteArray): CellularStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val mcc = inputBuffer.decodeUInt16()
-      val mnc = inputBuffer.decodeUInt16()
-      val lac = inputBuffer.decodeUInt16()
-      val status = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val mcc = decoder.safeDecodeUInt16()
+      val mnc = decoder.safeDecodeUInt16()
+      val lac = decoder.safeDecodeUInt16()
+      val status = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CellularStatusFlag.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val failureReason = inputBuffer.decodeEnumValue(1).let { value ->
+      val failureReason = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CellularNetworkFailedReason.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val type = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CellularNetworkRadioType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val quality = inputBuffer.decodeUInt8()
+      val quality = decoder.safeDecodeUInt8()
 
       return CellularStatus(
         status = status,

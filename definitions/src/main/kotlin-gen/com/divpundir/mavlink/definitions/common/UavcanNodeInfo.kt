@@ -3,19 +3,19 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeString
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeString
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -89,31 +89,31 @@ public data class UavcanNodeInfo(
   public override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(uptimeSec)
-    outputBuffer.encodeUInt32(swVcsCommit)
-    outputBuffer.encodeString(name, 80)
-    outputBuffer.encodeUInt8(hwVersionMajor)
-    outputBuffer.encodeUInt8(hwVersionMinor)
-    outputBuffer.encodeUInt8Array(hwUniqueId, 16)
-    outputBuffer.encodeUInt8(swVersionMajor)
-    outputBuffer.encodeUInt8(swVersionMinor)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(uptimeSec)
+    encoder.encodeUInt32(swVcsCommit)
+    encoder.encodeString(name, 80)
+    encoder.encodeUInt8(hwVersionMajor)
+    encoder.encodeUInt8(hwVersionMinor)
+    encoder.encodeUInt8Array(hwUniqueId, 16)
+    encoder.encodeUInt8(swVersionMajor)
+    encoder.encodeUInt8(swVersionMinor)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(uptimeSec)
-    outputBuffer.encodeUInt32(swVcsCommit)
-    outputBuffer.encodeString(name, 80)
-    outputBuffer.encodeUInt8(hwVersionMajor)
-    outputBuffer.encodeUInt8(hwVersionMinor)
-    outputBuffer.encodeUInt8Array(hwUniqueId, 16)
-    outputBuffer.encodeUInt8(swVersionMajor)
-    outputBuffer.encodeUInt8(swVersionMinor)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(uptimeSec)
+    encoder.encodeUInt32(swVcsCommit)
+    encoder.encodeString(name, 80)
+    encoder.encodeUInt8(hwVersionMajor)
+    encoder.encodeUInt8(hwVersionMinor)
+    encoder.encodeUInt8Array(hwUniqueId, 16)
+    encoder.encodeUInt8(swVersionMajor)
+    encoder.encodeUInt8(swVersionMinor)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UavcanNodeInfo> {
@@ -126,16 +126,17 @@ public data class UavcanNodeInfo(
     public override val crcExtra: Byte = 95
 
     public override fun deserialize(bytes: ByteArray): UavcanNodeInfo {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val uptimeSec = inputBuffer.decodeUInt32()
-      val swVcsCommit = inputBuffer.decodeUInt32()
-      val name = inputBuffer.decodeString(80)
-      val hwVersionMajor = inputBuffer.decodeUInt8()
-      val hwVersionMinor = inputBuffer.decodeUInt8()
-      val hwUniqueId = inputBuffer.decodeUInt8Array(16)
-      val swVersionMajor = inputBuffer.decodeUInt8()
-      val swVersionMinor = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val uptimeSec = decoder.safeDecodeUInt32()
+      val swVcsCommit = decoder.safeDecodeUInt32()
+      val name = decoder.safeDecodeString(80)
+      val hwVersionMajor = decoder.safeDecodeUInt8()
+      val hwVersionMinor = decoder.safeDecodeUInt8()
+      val hwUniqueId = decoder.safeDecodeUInt8Array(16)
+      val swVersionMajor = decoder.safeDecodeUInt8()
+      val swVersionMinor = decoder.safeDecodeUInt8()
 
       return UavcanNodeInfo(
         timeUsec = timeUsec,

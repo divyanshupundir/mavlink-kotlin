@@ -4,17 +4,17 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -90,33 +90,33 @@ public data class CameraFovStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraFovStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeInt32(latCamera)
-    outputBuffer.encodeInt32(lonCamera)
-    outputBuffer.encodeInt32(altCamera)
-    outputBuffer.encodeInt32(latImage)
-    outputBuffer.encodeInt32(lonImage)
-    outputBuffer.encodeInt32(altImage)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(hfov)
-    outputBuffer.encodeFloat(vfov)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(latCamera)
+    encoder.encodeInt32(lonCamera)
+    encoder.encodeInt32(altCamera)
+    encoder.encodeInt32(latImage)
+    encoder.encodeInt32(lonImage)
+    encoder.encodeInt32(altImage)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(hfov)
+    encoder.encodeFloat(vfov)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeInt32(latCamera)
-    outputBuffer.encodeInt32(lonCamera)
-    outputBuffer.encodeInt32(altCamera)
-    outputBuffer.encodeInt32(latImage)
-    outputBuffer.encodeInt32(lonImage)
-    outputBuffer.encodeInt32(altImage)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(hfov)
-    outputBuffer.encodeFloat(vfov)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeInt32(latCamera)
+    encoder.encodeInt32(lonCamera)
+    encoder.encodeInt32(altCamera)
+    encoder.encodeInt32(latImage)
+    encoder.encodeInt32(lonImage)
+    encoder.encodeInt32(altImage)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(hfov)
+    encoder.encodeFloat(vfov)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraFovStatus> {
@@ -129,17 +129,18 @@ public data class CameraFovStatus(
     public override val crcExtra: Byte = 22
 
     public override fun deserialize(bytes: ByteArray): CameraFovStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val latCamera = inputBuffer.decodeInt32()
-      val lonCamera = inputBuffer.decodeInt32()
-      val altCamera = inputBuffer.decodeInt32()
-      val latImage = inputBuffer.decodeInt32()
-      val lonImage = inputBuffer.decodeInt32()
-      val altImage = inputBuffer.decodeInt32()
-      val q = inputBuffer.decodeFloatArray(16)
-      val hfov = inputBuffer.decodeFloat()
-      val vfov = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val latCamera = decoder.safeDecodeInt32()
+      val lonCamera = decoder.safeDecodeInt32()
+      val altCamera = decoder.safeDecodeInt32()
+      val latImage = decoder.safeDecodeInt32()
+      val lonImage = decoder.safeDecodeInt32()
+      val altImage = decoder.safeDecodeInt32()
+      val q = decoder.safeDecodeFloatArray(16)
+      val hfov = decoder.safeDecodeFloat()
+      val vfov = decoder.safeDecodeFloat()
 
       return CameraFovStatus(
         timeBootMs = timeBootMs,

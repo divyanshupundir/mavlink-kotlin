@@ -4,21 +4,21 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -144,39 +144,39 @@ public data class GpsRawInt(
   public override val instanceCompanion: MavMessage.MavCompanion<GpsRawInt> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUInt16(eph)
-    outputBuffer.encodeUInt16(epv)
-    outputBuffer.encodeUInt16(vel)
-    outputBuffer.encodeUInt16(cog)
-    outputBuffer.encodeEnumValue(fixType.value, 1)
-    outputBuffer.encodeUInt8(satellitesVisible)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeUInt16(eph)
+    encoder.encodeUInt16(epv)
+    encoder.encodeUInt16(vel)
+    encoder.encodeUInt16(cog)
+    encoder.encodeEnumValue(fixType.value, 1)
+    encoder.encodeUInt8(satellitesVisible)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUInt16(eph)
-    outputBuffer.encodeUInt16(epv)
-    outputBuffer.encodeUInt16(vel)
-    outputBuffer.encodeUInt16(cog)
-    outputBuffer.encodeEnumValue(fixType.value, 1)
-    outputBuffer.encodeUInt8(satellitesVisible)
-    outputBuffer.encodeInt32(altEllipsoid)
-    outputBuffer.encodeUInt32(hAcc)
-    outputBuffer.encodeUInt32(vAcc)
-    outputBuffer.encodeUInt32(velAcc)
-    outputBuffer.encodeUInt32(hdgAcc)
-    outputBuffer.encodeUInt16(yaw)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeUInt16(eph)
+    encoder.encodeUInt16(epv)
+    encoder.encodeUInt16(vel)
+    encoder.encodeUInt16(cog)
+    encoder.encodeEnumValue(fixType.value, 1)
+    encoder.encodeUInt8(satellitesVisible)
+    encoder.encodeInt32(altEllipsoid)
+    encoder.encodeUInt32(hAcc)
+    encoder.encodeUInt32(vAcc)
+    encoder.encodeUInt32(velAcc)
+    encoder.encodeUInt32(hdgAcc)
+    encoder.encodeUInt16(yaw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GpsRawInt> {
@@ -189,26 +189,27 @@ public data class GpsRawInt(
     public override val crcExtra: Byte = 24
 
     public override fun deserialize(bytes: ByteArray): GpsRawInt {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val alt = inputBuffer.decodeInt32()
-      val eph = inputBuffer.decodeUInt16()
-      val epv = inputBuffer.decodeUInt16()
-      val vel = inputBuffer.decodeUInt16()
-      val cog = inputBuffer.decodeUInt16()
-      val fixType = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt32()
+      val eph = decoder.safeDecodeUInt16()
+      val epv = decoder.safeDecodeUInt16()
+      val vel = decoder.safeDecodeUInt16()
+      val cog = decoder.safeDecodeUInt16()
+      val fixType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = GpsFixType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val satellitesVisible = inputBuffer.decodeUInt8()
-      val altEllipsoid = inputBuffer.decodeInt32()
-      val hAcc = inputBuffer.decodeUInt32()
-      val vAcc = inputBuffer.decodeUInt32()
-      val velAcc = inputBuffer.decodeUInt32()
-      val hdgAcc = inputBuffer.decodeUInt32()
-      val yaw = inputBuffer.decodeUInt16()
+      val satellitesVisible = decoder.safeDecodeUInt8()
+      val altEllipsoid = decoder.safeDecodeInt32()
+      val hAcc = decoder.safeDecodeUInt32()
+      val vAcc = decoder.safeDecodeUInt32()
+      val velAcc = decoder.safeDecodeUInt32()
+      val hdgAcc = decoder.safeDecodeUInt32()
+      val yaw = decoder.safeDecodeUInt16()
 
       return GpsRawInt(
         timeUsec = timeUsec,

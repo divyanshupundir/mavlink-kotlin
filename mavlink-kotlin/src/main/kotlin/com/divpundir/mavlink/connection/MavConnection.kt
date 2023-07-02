@@ -2,8 +2,8 @@ package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
-import java.io.Closeable
-import java.io.IOException
+import okio.Closeable
+import okio.IOException
 
 /**
  * A connection interface with a MAVLink device.

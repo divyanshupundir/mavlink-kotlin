@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -47,21 +47,21 @@ public data class SensPower(
   public override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(adc121VspbVolt)
-    outputBuffer.encodeFloat(adc121CspbAmp)
-    outputBuffer.encodeFloat(adc121Cs1Amp)
-    outputBuffer.encodeFloat(adc121Cs2Amp)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(adc121VspbVolt)
+    encoder.encodeFloat(adc121CspbAmp)
+    encoder.encodeFloat(adc121Cs1Amp)
+    encoder.encodeFloat(adc121Cs2Amp)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(adc121VspbVolt)
-    outputBuffer.encodeFloat(adc121CspbAmp)
-    outputBuffer.encodeFloat(adc121Cs1Amp)
-    outputBuffer.encodeFloat(adc121Cs2Amp)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(adc121VspbVolt)
+    encoder.encodeFloat(adc121CspbAmp)
+    encoder.encodeFloat(adc121Cs1Amp)
+    encoder.encodeFloat(adc121Cs2Amp)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SensPower> {
@@ -74,11 +74,12 @@ public data class SensPower(
     public override val crcExtra: Byte = -38
 
     public override fun deserialize(bytes: ByteArray): SensPower {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val adc121VspbVolt = inputBuffer.decodeFloat()
-      val adc121CspbAmp = inputBuffer.decodeFloat()
-      val adc121Cs1Amp = inputBuffer.decodeFloat()
-      val adc121Cs2Amp = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val adc121VspbVolt = decoder.safeDecodeFloat()
+      val adc121CspbAmp = decoder.safeDecodeFloat()
+      val adc121Cs1Amp = decoder.safeDecodeFloat()
+      val adc121Cs2Amp = decoder.safeDecodeFloat()
 
       return SensPower(
         adc121VspbVolt = adc121VspbVolt,

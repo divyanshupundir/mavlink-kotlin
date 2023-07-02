@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -65,27 +65,27 @@ public data class Radio(
   public override val instanceCompanion: MavMessage.MavCompanion<Radio> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(rxerrors)
-    outputBuffer.encodeUInt16(fixed)
-    outputBuffer.encodeUInt8(rssi)
-    outputBuffer.encodeUInt8(remrssi)
-    outputBuffer.encodeUInt8(txbuf)
-    outputBuffer.encodeUInt8(noise)
-    outputBuffer.encodeUInt8(remnoise)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(rxerrors)
+    encoder.encodeUInt16(fixed)
+    encoder.encodeUInt8(rssi)
+    encoder.encodeUInt8(remrssi)
+    encoder.encodeUInt8(txbuf)
+    encoder.encodeUInt8(noise)
+    encoder.encodeUInt8(remnoise)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(rxerrors)
-    outputBuffer.encodeUInt16(fixed)
-    outputBuffer.encodeUInt8(rssi)
-    outputBuffer.encodeUInt8(remrssi)
-    outputBuffer.encodeUInt8(txbuf)
-    outputBuffer.encodeUInt8(noise)
-    outputBuffer.encodeUInt8(remnoise)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(rxerrors)
+    encoder.encodeUInt16(fixed)
+    encoder.encodeUInt8(rssi)
+    encoder.encodeUInt8(remrssi)
+    encoder.encodeUInt8(txbuf)
+    encoder.encodeUInt8(noise)
+    encoder.encodeUInt8(remnoise)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Radio> {
@@ -98,14 +98,15 @@ public data class Radio(
     public override val crcExtra: Byte = 21
 
     public override fun deserialize(bytes: ByteArray): Radio {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val rxerrors = inputBuffer.decodeUInt16()
-      val fixed = inputBuffer.decodeUInt16()
-      val rssi = inputBuffer.decodeUInt8()
-      val remrssi = inputBuffer.decodeUInt8()
-      val txbuf = inputBuffer.decodeUInt8()
-      val noise = inputBuffer.decodeUInt8()
-      val remnoise = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val rxerrors = decoder.safeDecodeUInt16()
+      val fixed = decoder.safeDecodeUInt16()
+      val rssi = decoder.safeDecodeUInt8()
+      val remrssi = decoder.safeDecodeUInt8()
+      val txbuf = decoder.safeDecodeUInt8()
+      val noise = decoder.safeDecodeUInt8()
+      val remnoise = decoder.safeDecodeUInt8()
 
       return Radio(
         rssi = rssi,

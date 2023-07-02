@@ -5,19 +5,19 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -91,31 +91,31 @@ public data class GimbalDeviceAttitudeStatus(
       Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(angularVelocityX)
-    outputBuffer.encodeFloat(angularVelocityY)
-    outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeBitmaskValue(failureFlags.value, 4)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(angularVelocityX)
+    encoder.encodeFloat(angularVelocityY)
+    encoder.encodeFloat(angularVelocityZ)
+    encoder.encodeBitmaskValue(failureFlags.value, 4)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(angularVelocityX)
-    outputBuffer.encodeFloat(angularVelocityY)
-    outputBuffer.encodeFloat(angularVelocityZ)
-    outputBuffer.encodeBitmaskValue(failureFlags.value, 4)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(angularVelocityX)
+    encoder.encodeFloat(angularVelocityY)
+    encoder.encodeFloat(angularVelocityZ)
+    encoder.encodeBitmaskValue(failureFlags.value, 4)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> {
@@ -128,22 +128,23 @@ public data class GimbalDeviceAttitudeStatus(
     public override val crcExtra: Byte = -119
 
     public override fun deserialize(bytes: ByteArray): GimbalDeviceAttitudeStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val q = inputBuffer.decodeFloatArray(16)
-      val angularVelocityX = inputBuffer.decodeFloat()
-      val angularVelocityY = inputBuffer.decodeFloat()
-      val angularVelocityZ = inputBuffer.decodeFloat()
-      val failureFlags = inputBuffer.decodeBitmaskValue(4).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val q = decoder.safeDecodeFloatArray(16)
+      val angularVelocityX = decoder.safeDecodeFloat()
+      val angularVelocityY = decoder.safeDecodeFloat()
+      val angularVelocityZ = decoder.safeDecodeFloat()
+      val failureFlags = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = GimbalDeviceErrorFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+      val flags = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = GimbalDeviceFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
 
       return GimbalDeviceAttitudeStatus(
         targetSystem = targetSystem,

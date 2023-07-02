@@ -16,8 +16,10 @@ tasks.test {
 }
 
 dependencies {
-    implementation(project(":mavlink-kotlin"))
     api(Deps.Kotlin.coroutines)
+
+    implementation(project(":mavlink-kotlin"))
+    implementation(Deps.okio)
 
     testImplementation(project(":definitions"))
     testImplementation(TestDeps.Jupiter.api)

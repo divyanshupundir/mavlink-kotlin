@@ -4,19 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -111,36 +111,36 @@ public data class AutopilotVersion(
   public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(capabilities.value, 8)
-    outputBuffer.encodeUInt64(uid)
-    outputBuffer.encodeUInt32(flightSwVersion)
-    outputBuffer.encodeUInt32(middlewareSwVersion)
-    outputBuffer.encodeUInt32(osSwVersion)
-    outputBuffer.encodeUInt32(boardVersion)
-    outputBuffer.encodeUInt16(vendorId)
-    outputBuffer.encodeUInt16(productId)
-    outputBuffer.encodeUInt8Array(flightCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(middlewareCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(osCustomVersion, 8)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeBitmaskValue(capabilities.value, 8)
+    encoder.encodeUInt64(uid)
+    encoder.encodeUInt32(flightSwVersion)
+    encoder.encodeUInt32(middlewareSwVersion)
+    encoder.encodeUInt32(osSwVersion)
+    encoder.encodeUInt32(boardVersion)
+    encoder.encodeUInt16(vendorId)
+    encoder.encodeUInt16(productId)
+    encoder.encodeUInt8Array(flightCustomVersion, 8)
+    encoder.encodeUInt8Array(middlewareCustomVersion, 8)
+    encoder.encodeUInt8Array(osCustomVersion, 8)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeBitmaskValue(capabilities.value, 8)
-    outputBuffer.encodeUInt64(uid)
-    outputBuffer.encodeUInt32(flightSwVersion)
-    outputBuffer.encodeUInt32(middlewareSwVersion)
-    outputBuffer.encodeUInt32(osSwVersion)
-    outputBuffer.encodeUInt32(boardVersion)
-    outputBuffer.encodeUInt16(vendorId)
-    outputBuffer.encodeUInt16(productId)
-    outputBuffer.encodeUInt8Array(flightCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(middlewareCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(osCustomVersion, 8)
-    outputBuffer.encodeUInt8Array(uid2, 18)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeBitmaskValue(capabilities.value, 8)
+    encoder.encodeUInt64(uid)
+    encoder.encodeUInt32(flightSwVersion)
+    encoder.encodeUInt32(middlewareSwVersion)
+    encoder.encodeUInt32(osSwVersion)
+    encoder.encodeUInt32(boardVersion)
+    encoder.encodeUInt16(vendorId)
+    encoder.encodeUInt16(productId)
+    encoder.encodeUInt8Array(flightCustomVersion, 8)
+    encoder.encodeUInt8Array(middlewareCustomVersion, 8)
+    encoder.encodeUInt8Array(osCustomVersion, 8)
+    encoder.encodeUInt8Array(uid2, 18)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AutopilotVersion> {
@@ -153,22 +153,23 @@ public data class AutopilotVersion(
     public override val crcExtra: Byte = -78
 
     public override fun deserialize(bytes: ByteArray): AutopilotVersion {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val capabilities = inputBuffer.decodeBitmaskValue(8).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val capabilities = decoder.safeDecodeBitmaskValue(8).let { value ->
         val flags = MavProtocolCapability.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val uid = inputBuffer.decodeUInt64()
-      val flightSwVersion = inputBuffer.decodeUInt32()
-      val middlewareSwVersion = inputBuffer.decodeUInt32()
-      val osSwVersion = inputBuffer.decodeUInt32()
-      val boardVersion = inputBuffer.decodeUInt32()
-      val vendorId = inputBuffer.decodeUInt16()
-      val productId = inputBuffer.decodeUInt16()
-      val flightCustomVersion = inputBuffer.decodeUInt8Array(8)
-      val middlewareCustomVersion = inputBuffer.decodeUInt8Array(8)
-      val osCustomVersion = inputBuffer.decodeUInt8Array(8)
-      val uid2 = inputBuffer.decodeUInt8Array(18)
+      val uid = decoder.safeDecodeUInt64()
+      val flightSwVersion = decoder.safeDecodeUInt32()
+      val middlewareSwVersion = decoder.safeDecodeUInt32()
+      val osSwVersion = decoder.safeDecodeUInt32()
+      val boardVersion = decoder.safeDecodeUInt32()
+      val vendorId = decoder.safeDecodeUInt16()
+      val productId = decoder.safeDecodeUInt16()
+      val flightCustomVersion = decoder.safeDecodeUInt8Array(8)
+      val middlewareCustomVersion = decoder.safeDecodeUInt8Array(8)
+      val osCustomVersion = decoder.safeDecodeUInt8Array(8)
+      val uid2 = decoder.safeDecodeUInt8Array(18)
 
       return AutopilotVersion(
         capabilities = capabilities,

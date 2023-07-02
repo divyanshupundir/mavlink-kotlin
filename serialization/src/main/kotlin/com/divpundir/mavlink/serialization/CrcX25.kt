@@ -1,7 +1,5 @@
 package com.divpundir.mavlink.serialization
 
-import java.nio.charset.StandardCharsets
-
 /**
  * X25 hash calculator used for computing the MAVLink frame checksums.
  */
@@ -13,7 +11,7 @@ public class CrcX25 {
      * Adds the given string to the hash. The string is encoded as UTF-8.
      */
     public fun accumulate(str: String) {
-        accumulate(str.toByteArray(StandardCharsets.UTF_8))
+        accumulate(str.toByteArray(Charsets.UTF_8))
     }
 
     /**

@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -57,25 +57,25 @@ public data class SerialUdbExtraF21(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF21> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(sueAccelXOffset)
-    outputBuffer.encodeInt16(sueAccelYOffset)
-    outputBuffer.encodeInt16(sueAccelZOffset)
-    outputBuffer.encodeInt16(sueGyroXOffset)
-    outputBuffer.encodeInt16(sueGyroYOffset)
-    outputBuffer.encodeInt16(sueGyroZOffset)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt16(sueAccelXOffset)
+    encoder.encodeInt16(sueAccelYOffset)
+    encoder.encodeInt16(sueAccelZOffset)
+    encoder.encodeInt16(sueGyroXOffset)
+    encoder.encodeInt16(sueGyroYOffset)
+    encoder.encodeInt16(sueGyroZOffset)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(sueAccelXOffset)
-    outputBuffer.encodeInt16(sueAccelYOffset)
-    outputBuffer.encodeInt16(sueAccelZOffset)
-    outputBuffer.encodeInt16(sueGyroXOffset)
-    outputBuffer.encodeInt16(sueGyroYOffset)
-    outputBuffer.encodeInt16(sueGyroZOffset)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt16(sueAccelXOffset)
+    encoder.encodeInt16(sueAccelYOffset)
+    encoder.encodeInt16(sueAccelZOffset)
+    encoder.encodeInt16(sueGyroXOffset)
+    encoder.encodeInt16(sueGyroYOffset)
+    encoder.encodeInt16(sueGyroZOffset)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF21> {
@@ -88,13 +88,14 @@ public data class SerialUdbExtraF21(
     public override val crcExtra: Byte = -122
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF21 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueAccelXOffset = inputBuffer.decodeInt16()
-      val sueAccelYOffset = inputBuffer.decodeInt16()
-      val sueAccelZOffset = inputBuffer.decodeInt16()
-      val sueGyroXOffset = inputBuffer.decodeInt16()
-      val sueGyroYOffset = inputBuffer.decodeInt16()
-      val sueGyroZOffset = inputBuffer.decodeInt16()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val sueAccelXOffset = decoder.safeDecodeInt16()
+      val sueAccelYOffset = decoder.safeDecodeInt16()
+      val sueAccelZOffset = decoder.safeDecodeInt16()
+      val sueGyroXOffset = decoder.safeDecodeInt16()
+      val sueGyroYOffset = decoder.safeDecodeInt16()
+      val sueGyroZOffset = decoder.safeDecodeInt16()
 
       return SerialUdbExtraF21(
         sueAccelXOffset = sueAccelXOffset,

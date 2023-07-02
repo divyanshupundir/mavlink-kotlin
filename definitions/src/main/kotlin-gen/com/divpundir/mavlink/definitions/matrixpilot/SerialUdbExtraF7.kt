@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -57,25 +57,25 @@ public data class SerialUdbExtraF7(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF7> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueYawkpRudder)
-    outputBuffer.encodeFloat(sueYawkdRudder)
-    outputBuffer.encodeFloat(sueRollkpRudder)
-    outputBuffer.encodeFloat(sueRollkdRudder)
-    outputBuffer.encodeFloat(sueRudderBoost)
-    outputBuffer.encodeFloat(sueRtlPitchDown)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(sueYawkpRudder)
+    encoder.encodeFloat(sueYawkdRudder)
+    encoder.encodeFloat(sueRollkpRudder)
+    encoder.encodeFloat(sueRollkdRudder)
+    encoder.encodeFloat(sueRudderBoost)
+    encoder.encodeFloat(sueRtlPitchDown)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueYawkpRudder)
-    outputBuffer.encodeFloat(sueYawkdRudder)
-    outputBuffer.encodeFloat(sueRollkpRudder)
-    outputBuffer.encodeFloat(sueRollkdRudder)
-    outputBuffer.encodeFloat(sueRudderBoost)
-    outputBuffer.encodeFloat(sueRtlPitchDown)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(sueYawkpRudder)
+    encoder.encodeFloat(sueYawkdRudder)
+    encoder.encodeFloat(sueRollkpRudder)
+    encoder.encodeFloat(sueRollkdRudder)
+    encoder.encodeFloat(sueRudderBoost)
+    encoder.encodeFloat(sueRtlPitchDown)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF7> {
@@ -88,13 +88,14 @@ public data class SerialUdbExtraF7(
     public override val crcExtra: Byte = -85
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF7 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueYawkpRudder = inputBuffer.decodeFloat()
-      val sueYawkdRudder = inputBuffer.decodeFloat()
-      val sueRollkpRudder = inputBuffer.decodeFloat()
-      val sueRollkdRudder = inputBuffer.decodeFloat()
-      val sueRudderBoost = inputBuffer.decodeFloat()
-      val sueRtlPitchDown = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val sueYawkpRudder = decoder.safeDecodeFloat()
+      val sueYawkdRudder = decoder.safeDecodeFloat()
+      val sueRollkpRudder = decoder.safeDecodeFloat()
+      val sueRollkdRudder = decoder.safeDecodeFloat()
+      val sueRudderBoost = decoder.safeDecodeFloat()
+      val sueRtlPitchDown = decoder.safeDecodeFloat()
 
       return SerialUdbExtraF7(
         sueYawkpRudder = sueYawkpRudder,

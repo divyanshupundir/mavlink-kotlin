@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import java.io.IOException
+import okio.IOException
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,

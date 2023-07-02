@@ -4,19 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -71,25 +71,25 @@ public data class UavcanNodeStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(uptimeSec)
-    outputBuffer.encodeUInt16(vendorSpecificStatusCode)
-    outputBuffer.encodeEnumValue(health.value, 1)
-    outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUInt8(subMode)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(uptimeSec)
+    encoder.encodeUInt16(vendorSpecificStatusCode)
+    encoder.encodeEnumValue(health.value, 1)
+    encoder.encodeEnumValue(mode.value, 1)
+    encoder.encodeUInt8(subMode)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32(uptimeSec)
-    outputBuffer.encodeUInt16(vendorSpecificStatusCode)
-    outputBuffer.encodeEnumValue(health.value, 1)
-    outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeUInt8(subMode)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32(uptimeSec)
+    encoder.encodeUInt16(vendorSpecificStatusCode)
+    encoder.encodeEnumValue(health.value, 1)
+    encoder.encodeEnumValue(mode.value, 1)
+    encoder.encodeUInt8(subMode)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UavcanNodeStatus> {
@@ -102,19 +102,20 @@ public data class UavcanNodeStatus(
     public override val crcExtra: Byte = 28
 
     public override fun deserialize(bytes: ByteArray): UavcanNodeStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val uptimeSec = inputBuffer.decodeUInt32()
-      val vendorSpecificStatusCode = inputBuffer.decodeUInt16()
-      val health = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val uptimeSec = decoder.safeDecodeUInt32()
+      val vendorSpecificStatusCode = decoder.safeDecodeUInt16()
+      val health = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = UavcanNodeHealth.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val mode = inputBuffer.decodeEnumValue(1).let { value ->
+      val mode = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = UavcanNodeMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val subMode = inputBuffer.decodeUInt8()
+      val subMode = decoder.safeDecodeUInt8()
 
       return UavcanNodeStatus(
         timeUsec = timeUsec,

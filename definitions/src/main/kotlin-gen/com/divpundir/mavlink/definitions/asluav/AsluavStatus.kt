@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -53,21 +53,21 @@ public data class AsluavStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<AsluavStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(motorRpm)
-    outputBuffer.encodeUInt8(ledStatus)
-    outputBuffer.encodeUInt8(satcomStatus)
-    outputBuffer.encodeUInt8Array(servoStatus, 8)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(motorRpm)
+    encoder.encodeUInt8(ledStatus)
+    encoder.encodeUInt8(satcomStatus)
+    encoder.encodeUInt8Array(servoStatus, 8)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(motorRpm)
-    outputBuffer.encodeUInt8(ledStatus)
-    outputBuffer.encodeUInt8(satcomStatus)
-    outputBuffer.encodeUInt8Array(servoStatus, 8)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(motorRpm)
+    encoder.encodeUInt8(ledStatus)
+    encoder.encodeUInt8(satcomStatus)
+    encoder.encodeUInt8Array(servoStatus, 8)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AsluavStatus> {
@@ -80,11 +80,12 @@ public data class AsluavStatus(
     public override val crcExtra: Byte = 97
 
     public override fun deserialize(bytes: ByteArray): AsluavStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val motorRpm = inputBuffer.decodeFloat()
-      val ledStatus = inputBuffer.decodeUInt8()
-      val satcomStatus = inputBuffer.decodeUInt8()
-      val servoStatus = inputBuffer.decodeUInt8Array(8)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val motorRpm = decoder.safeDecodeFloat()
+      val ledStatus = decoder.safeDecodeUInt8()
+      val satcomStatus = decoder.safeDecodeUInt8()
+      val servoStatus = decoder.safeDecodeUInt8Array(8)
 
       return AsluavStatus(
         ledStatus = ledStatus,

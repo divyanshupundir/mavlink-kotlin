@@ -42,6 +42,7 @@ gradlePlugin {
 
 dependencies {
     implementation(gradleApi())
+
     implementation(project(":api"))
     implementation(project(":serialization"))
 

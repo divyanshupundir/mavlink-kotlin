@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -87,37 +87,37 @@ public data class AirspeedAutocal(
   public override val instanceCompanion: MavMessage.MavCompanion<AirspeedAutocal> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(vx)
-    outputBuffer.encodeFloat(vy)
-    outputBuffer.encodeFloat(vz)
-    outputBuffer.encodeFloat(diffPressure)
-    outputBuffer.encodeFloat(eas2tas)
-    outputBuffer.encodeFloat(ratio)
-    outputBuffer.encodeFloat(stateX)
-    outputBuffer.encodeFloat(stateY)
-    outputBuffer.encodeFloat(stateZ)
-    outputBuffer.encodeFloat(pax)
-    outputBuffer.encodeFloat(pby)
-    outputBuffer.encodeFloat(pcz)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeFloat(diffPressure)
+    encoder.encodeFloat(eas2tas)
+    encoder.encodeFloat(ratio)
+    encoder.encodeFloat(stateX)
+    encoder.encodeFloat(stateY)
+    encoder.encodeFloat(stateZ)
+    encoder.encodeFloat(pax)
+    encoder.encodeFloat(pby)
+    encoder.encodeFloat(pcz)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(vx)
-    outputBuffer.encodeFloat(vy)
-    outputBuffer.encodeFloat(vz)
-    outputBuffer.encodeFloat(diffPressure)
-    outputBuffer.encodeFloat(eas2tas)
-    outputBuffer.encodeFloat(ratio)
-    outputBuffer.encodeFloat(stateX)
-    outputBuffer.encodeFloat(stateY)
-    outputBuffer.encodeFloat(stateZ)
-    outputBuffer.encodeFloat(pax)
-    outputBuffer.encodeFloat(pby)
-    outputBuffer.encodeFloat(pcz)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(vx)
+    encoder.encodeFloat(vy)
+    encoder.encodeFloat(vz)
+    encoder.encodeFloat(diffPressure)
+    encoder.encodeFloat(eas2tas)
+    encoder.encodeFloat(ratio)
+    encoder.encodeFloat(stateX)
+    encoder.encodeFloat(stateY)
+    encoder.encodeFloat(stateZ)
+    encoder.encodeFloat(pax)
+    encoder.encodeFloat(pby)
+    encoder.encodeFloat(pcz)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AirspeedAutocal> {
@@ -130,19 +130,20 @@ public data class AirspeedAutocal(
     public override val crcExtra: Byte = -89
 
     public override fun deserialize(bytes: ByteArray): AirspeedAutocal {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val vx = inputBuffer.decodeFloat()
-      val vy = inputBuffer.decodeFloat()
-      val vz = inputBuffer.decodeFloat()
-      val diffPressure = inputBuffer.decodeFloat()
-      val eas2tas = inputBuffer.decodeFloat()
-      val ratio = inputBuffer.decodeFloat()
-      val stateX = inputBuffer.decodeFloat()
-      val stateY = inputBuffer.decodeFloat()
-      val stateZ = inputBuffer.decodeFloat()
-      val pax = inputBuffer.decodeFloat()
-      val pby = inputBuffer.decodeFloat()
-      val pcz = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val vx = decoder.safeDecodeFloat()
+      val vy = decoder.safeDecodeFloat()
+      val vz = decoder.safeDecodeFloat()
+      val diffPressure = decoder.safeDecodeFloat()
+      val eas2tas = decoder.safeDecodeFloat()
+      val ratio = decoder.safeDecodeFloat()
+      val stateX = decoder.safeDecodeFloat()
+      val stateY = decoder.safeDecodeFloat()
+      val stateZ = decoder.safeDecodeFloat()
+      val pax = decoder.safeDecodeFloat()
+      val pby = decoder.safeDecodeFloat()
+      val pcz = decoder.safeDecodeFloat()
 
       return AirspeedAutocal(
         vx = vx,

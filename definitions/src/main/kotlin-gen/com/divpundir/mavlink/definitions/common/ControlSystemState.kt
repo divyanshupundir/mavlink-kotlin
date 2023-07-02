@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -119,47 +119,47 @@ public data class ControlSystemState(
   public override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(xAcc)
-    outputBuffer.encodeFloat(yAcc)
-    outputBuffer.encodeFloat(zAcc)
-    outputBuffer.encodeFloat(xVel)
-    outputBuffer.encodeFloat(yVel)
-    outputBuffer.encodeFloat(zVel)
-    outputBuffer.encodeFloat(xPos)
-    outputBuffer.encodeFloat(yPos)
-    outputBuffer.encodeFloat(zPos)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloatArray(velVariance, 12)
-    outputBuffer.encodeFloatArray(posVariance, 12)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(rollRate)
-    outputBuffer.encodeFloat(pitchRate)
-    outputBuffer.encodeFloat(yawRate)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(xAcc)
+    encoder.encodeFloat(yAcc)
+    encoder.encodeFloat(zAcc)
+    encoder.encodeFloat(xVel)
+    encoder.encodeFloat(yVel)
+    encoder.encodeFloat(zVel)
+    encoder.encodeFloat(xPos)
+    encoder.encodeFloat(yPos)
+    encoder.encodeFloat(zPos)
+    encoder.encodeFloat(airspeed)
+    encoder.encodeFloatArray(velVariance, 12)
+    encoder.encodeFloatArray(posVariance, 12)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(rollRate)
+    encoder.encodeFloat(pitchRate)
+    encoder.encodeFloat(yawRate)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(xAcc)
-    outputBuffer.encodeFloat(yAcc)
-    outputBuffer.encodeFloat(zAcc)
-    outputBuffer.encodeFloat(xVel)
-    outputBuffer.encodeFloat(yVel)
-    outputBuffer.encodeFloat(zVel)
-    outputBuffer.encodeFloat(xPos)
-    outputBuffer.encodeFloat(yPos)
-    outputBuffer.encodeFloat(zPos)
-    outputBuffer.encodeFloat(airspeed)
-    outputBuffer.encodeFloatArray(velVariance, 12)
-    outputBuffer.encodeFloatArray(posVariance, 12)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(rollRate)
-    outputBuffer.encodeFloat(pitchRate)
-    outputBuffer.encodeFloat(yawRate)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(xAcc)
+    encoder.encodeFloat(yAcc)
+    encoder.encodeFloat(zAcc)
+    encoder.encodeFloat(xVel)
+    encoder.encodeFloat(yVel)
+    encoder.encodeFloat(zVel)
+    encoder.encodeFloat(xPos)
+    encoder.encodeFloat(yPos)
+    encoder.encodeFloat(zPos)
+    encoder.encodeFloat(airspeed)
+    encoder.encodeFloatArray(velVariance, 12)
+    encoder.encodeFloatArray(posVariance, 12)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(rollRate)
+    encoder.encodeFloat(pitchRate)
+    encoder.encodeFloat(yawRate)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ControlSystemState> {
@@ -172,24 +172,25 @@ public data class ControlSystemState(
     public override val crcExtra: Byte = 103
 
     public override fun deserialize(bytes: ByteArray): ControlSystemState {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val xAcc = inputBuffer.decodeFloat()
-      val yAcc = inputBuffer.decodeFloat()
-      val zAcc = inputBuffer.decodeFloat()
-      val xVel = inputBuffer.decodeFloat()
-      val yVel = inputBuffer.decodeFloat()
-      val zVel = inputBuffer.decodeFloat()
-      val xPos = inputBuffer.decodeFloat()
-      val yPos = inputBuffer.decodeFloat()
-      val zPos = inputBuffer.decodeFloat()
-      val airspeed = inputBuffer.decodeFloat()
-      val velVariance = inputBuffer.decodeFloatArray(12)
-      val posVariance = inputBuffer.decodeFloatArray(12)
-      val q = inputBuffer.decodeFloatArray(16)
-      val rollRate = inputBuffer.decodeFloat()
-      val pitchRate = inputBuffer.decodeFloat()
-      val yawRate = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val xAcc = decoder.safeDecodeFloat()
+      val yAcc = decoder.safeDecodeFloat()
+      val zAcc = decoder.safeDecodeFloat()
+      val xVel = decoder.safeDecodeFloat()
+      val yVel = decoder.safeDecodeFloat()
+      val zVel = decoder.safeDecodeFloat()
+      val xPos = decoder.safeDecodeFloat()
+      val yPos = decoder.safeDecodeFloat()
+      val zPos = decoder.safeDecodeFloat()
+      val airspeed = decoder.safeDecodeFloat()
+      val velVariance = decoder.safeDecodeFloatArray(12)
+      val posVariance = decoder.safeDecodeFloatArray(12)
+      val q = decoder.safeDecodeFloatArray(16)
+      val rollRate = decoder.safeDecodeFloat()
+      val pitchRate = decoder.safeDecodeFloat()
+      val yawRate = decoder.safeDecodeFloat()
 
       return ControlSystemState(
         timeUsec = timeUsec,

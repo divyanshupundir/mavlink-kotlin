@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -73,29 +73,29 @@ public data class SensorpodStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<SensorpodStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt16(freeSpace)
-    outputBuffer.encodeUInt8(visensorRate1)
-    outputBuffer.encodeUInt8(visensorRate2)
-    outputBuffer.encodeUInt8(visensorRate3)
-    outputBuffer.encodeUInt8(visensorRate4)
-    outputBuffer.encodeUInt8(recordingNodesCount)
-    outputBuffer.encodeUInt8(cpuTemp)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeUInt16(freeSpace)
+    encoder.encodeUInt8(visensorRate1)
+    encoder.encodeUInt8(visensorRate2)
+    encoder.encodeUInt8(visensorRate3)
+    encoder.encodeUInt8(visensorRate4)
+    encoder.encodeUInt8(recordingNodesCount)
+    encoder.encodeUInt8(cpuTemp)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt16(freeSpace)
-    outputBuffer.encodeUInt8(visensorRate1)
-    outputBuffer.encodeUInt8(visensorRate2)
-    outputBuffer.encodeUInt8(visensorRate3)
-    outputBuffer.encodeUInt8(visensorRate4)
-    outputBuffer.encodeUInt8(recordingNodesCount)
-    outputBuffer.encodeUInt8(cpuTemp)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeUInt16(freeSpace)
+    encoder.encodeUInt8(visensorRate1)
+    encoder.encodeUInt8(visensorRate2)
+    encoder.encodeUInt8(visensorRate3)
+    encoder.encodeUInt8(visensorRate4)
+    encoder.encodeUInt8(recordingNodesCount)
+    encoder.encodeUInt8(cpuTemp)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SensorpodStatus> {
@@ -108,15 +108,16 @@ public data class SensorpodStatus(
     public override val crcExtra: Byte = 54
 
     public override fun deserialize(bytes: ByteArray): SensorpodStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val freeSpace = inputBuffer.decodeUInt16()
-      val visensorRate1 = inputBuffer.decodeUInt8()
-      val visensorRate2 = inputBuffer.decodeUInt8()
-      val visensorRate3 = inputBuffer.decodeUInt8()
-      val visensorRate4 = inputBuffer.decodeUInt8()
-      val recordingNodesCount = inputBuffer.decodeUInt8()
-      val cpuTemp = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timestamp = decoder.safeDecodeUInt64()
+      val freeSpace = decoder.safeDecodeUInt16()
+      val visensorRate1 = decoder.safeDecodeUInt8()
+      val visensorRate2 = decoder.safeDecodeUInt8()
+      val visensorRate3 = decoder.safeDecodeUInt8()
+      val visensorRate4 = decoder.safeDecodeUInt8()
+      val recordingNodesCount = decoder.safeDecodeUInt8()
+      val cpuTemp = decoder.safeDecodeUInt8()
 
       return SensorpodStatus(
         timestamp = timestamp,

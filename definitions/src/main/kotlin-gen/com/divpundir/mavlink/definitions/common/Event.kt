@@ -4,17 +4,17 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -77,27 +77,27 @@ public data class Event(
   public override val instanceCompanion: MavMessage.MavCompanion<Event> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(id)
-    outputBuffer.encodeUInt32(eventTimeBootMs)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeUInt8(destinationComponent)
-    outputBuffer.encodeUInt8(destinationSystem)
-    outputBuffer.encodeUInt8(logLevels)
-    outputBuffer.encodeUInt8Array(arguments, 40)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(id)
+    encoder.encodeUInt32(eventTimeBootMs)
+    encoder.encodeUInt16(sequence)
+    encoder.encodeUInt8(destinationComponent)
+    encoder.encodeUInt8(destinationSystem)
+    encoder.encodeUInt8(logLevels)
+    encoder.encodeUInt8Array(arguments, 40)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(id)
-    outputBuffer.encodeUInt32(eventTimeBootMs)
-    outputBuffer.encodeUInt16(sequence)
-    outputBuffer.encodeUInt8(destinationComponent)
-    outputBuffer.encodeUInt8(destinationSystem)
-    outputBuffer.encodeUInt8(logLevels)
-    outputBuffer.encodeUInt8Array(arguments, 40)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(id)
+    encoder.encodeUInt32(eventTimeBootMs)
+    encoder.encodeUInt16(sequence)
+    encoder.encodeUInt8(destinationComponent)
+    encoder.encodeUInt8(destinationSystem)
+    encoder.encodeUInt8(logLevels)
+    encoder.encodeUInt8Array(arguments, 40)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Event> {
@@ -110,14 +110,15 @@ public data class Event(
     public override val crcExtra: Byte = -96
 
     public override fun deserialize(bytes: ByteArray): Event {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val id = inputBuffer.decodeUInt32()
-      val eventTimeBootMs = inputBuffer.decodeUInt32()
-      val sequence = inputBuffer.decodeUInt16()
-      val destinationComponent = inputBuffer.decodeUInt8()
-      val destinationSystem = inputBuffer.decodeUInt8()
-      val logLevels = inputBuffer.decodeUInt8()
-      val arguments = inputBuffer.decodeUInt8Array(40)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val id = decoder.safeDecodeUInt32()
+      val eventTimeBootMs = decoder.safeDecodeUInt32()
+      val sequence = decoder.safeDecodeUInt16()
+      val destinationComponent = decoder.safeDecodeUInt8()
+      val destinationSystem = decoder.safeDecodeUInt8()
+      val logLevels = decoder.safeDecodeUInt8()
+      val arguments = decoder.safeDecodeUInt8Array(40)
 
       return Event(
         destinationComponent = destinationComponent,

@@ -4,13 +4,13 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -68,26 +68,26 @@ public data class EkfStatusReport(
   public override val instanceCompanion: MavMessage.MavCompanion<EkfStatusReport> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(velocityVariance)
-    outputBuffer.encodeFloat(posHorizVariance)
-    outputBuffer.encodeFloat(posVertVariance)
-    outputBuffer.encodeFloat(compassVariance)
-    outputBuffer.encodeFloat(terrainAltVariance)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(velocityVariance)
+    encoder.encodeFloat(posHorizVariance)
+    encoder.encodeFloat(posVertVariance)
+    encoder.encodeFloat(compassVariance)
+    encoder.encodeFloat(terrainAltVariance)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(velocityVariance)
-    outputBuffer.encodeFloat(posHorizVariance)
-    outputBuffer.encodeFloat(posVertVariance)
-    outputBuffer.encodeFloat(compassVariance)
-    outputBuffer.encodeFloat(terrainAltVariance)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    outputBuffer.encodeFloat(airspeedVariance)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(velocityVariance)
+    encoder.encodeFloat(posHorizVariance)
+    encoder.encodeFloat(posVertVariance)
+    encoder.encodeFloat(compassVariance)
+    encoder.encodeFloat(terrainAltVariance)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    encoder.encodeFloat(airspeedVariance)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EkfStatusReport> {
@@ -100,17 +100,18 @@ public data class EkfStatusReport(
     public override val crcExtra: Byte = 71
 
     public override fun deserialize(bytes: ByteArray): EkfStatusReport {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val velocityVariance = inputBuffer.decodeFloat()
-      val posHorizVariance = inputBuffer.decodeFloat()
-      val posVertVariance = inputBuffer.decodeFloat()
-      val compassVariance = inputBuffer.decodeFloat()
-      val terrainAltVariance = inputBuffer.decodeFloat()
-      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val velocityVariance = decoder.safeDecodeFloat()
+      val posHorizVariance = decoder.safeDecodeFloat()
+      val posVertVariance = decoder.safeDecodeFloat()
+      val compassVariance = decoder.safeDecodeFloat()
+      val terrainAltVariance = decoder.safeDecodeFloat()
+      val flags = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = EkfStatusFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val airspeedVariance = inputBuffer.decodeFloat()
+      val airspeedVariance = decoder.safeDecodeFloat()
 
       return EkfStatusReport(
         flags = flags,

@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -77,31 +77,31 @@ public data class WindCov(
   public override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(windX)
-    outputBuffer.encodeFloat(windY)
-    outputBuffer.encodeFloat(windZ)
-    outputBuffer.encodeFloat(varHoriz)
-    outputBuffer.encodeFloat(varVert)
-    outputBuffer.encodeFloat(windAlt)
-    outputBuffer.encodeFloat(horizAccuracy)
-    outputBuffer.encodeFloat(vertAccuracy)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(windX)
+    encoder.encodeFloat(windY)
+    encoder.encodeFloat(windZ)
+    encoder.encodeFloat(varHoriz)
+    encoder.encodeFloat(varVert)
+    encoder.encodeFloat(windAlt)
+    encoder.encodeFloat(horizAccuracy)
+    encoder.encodeFloat(vertAccuracy)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeFloat(windX)
-    outputBuffer.encodeFloat(windY)
-    outputBuffer.encodeFloat(windZ)
-    outputBuffer.encodeFloat(varHoriz)
-    outputBuffer.encodeFloat(varVert)
-    outputBuffer.encodeFloat(windAlt)
-    outputBuffer.encodeFloat(horizAccuracy)
-    outputBuffer.encodeFloat(vertAccuracy)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeFloat(windX)
+    encoder.encodeFloat(windY)
+    encoder.encodeFloat(windZ)
+    encoder.encodeFloat(varHoriz)
+    encoder.encodeFloat(varVert)
+    encoder.encodeFloat(windAlt)
+    encoder.encodeFloat(horizAccuracy)
+    encoder.encodeFloat(vertAccuracy)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<WindCov> {
@@ -114,16 +114,17 @@ public data class WindCov(
     public override val crcExtra: Byte = 105
 
     public override fun deserialize(bytes: ByteArray): WindCov {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val windX = inputBuffer.decodeFloat()
-      val windY = inputBuffer.decodeFloat()
-      val windZ = inputBuffer.decodeFloat()
-      val varHoriz = inputBuffer.decodeFloat()
-      val varVert = inputBuffer.decodeFloat()
-      val windAlt = inputBuffer.decodeFloat()
-      val horizAccuracy = inputBuffer.decodeFloat()
-      val vertAccuracy = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val windX = decoder.safeDecodeFloat()
+      val windY = decoder.safeDecodeFloat()
+      val windZ = decoder.safeDecodeFloat()
+      val varHoriz = decoder.safeDecodeFloat()
+      val varVert = decoder.safeDecodeFloat()
+      val windAlt = decoder.safeDecodeFloat()
+      val horizAccuracy = decoder.safeDecodeFloat()
+      val vertAccuracy = decoder.safeDecodeFloat()
 
       return WindCov(
         timeUsec = timeUsec,

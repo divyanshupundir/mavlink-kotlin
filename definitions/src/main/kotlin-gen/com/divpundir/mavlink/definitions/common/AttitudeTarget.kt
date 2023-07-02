@@ -4,17 +4,17 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -72,27 +72,27 @@ public data class AttitudeTarget(
   public override val instanceCompanion: MavMessage.MavCompanion<AttitudeTarget> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(bodyRollRate)
-    outputBuffer.encodeFloat(bodyPitchRate)
-    outputBuffer.encodeFloat(bodyYawRate)
-    outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeBitmaskValue(typeMask.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(bodyRollRate)
+    encoder.encodeFloat(bodyPitchRate)
+    encoder.encodeFloat(bodyYawRate)
+    encoder.encodeFloat(thrust)
+    encoder.encodeBitmaskValue(typeMask.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloatArray(q, 16)
-    outputBuffer.encodeFloat(bodyRollRate)
-    outputBuffer.encodeFloat(bodyPitchRate)
-    outputBuffer.encodeFloat(bodyYawRate)
-    outputBuffer.encodeFloat(thrust)
-    outputBuffer.encodeBitmaskValue(typeMask.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloatArray(q, 16)
+    encoder.encodeFloat(bodyRollRate)
+    encoder.encodeFloat(bodyPitchRate)
+    encoder.encodeFloat(bodyYawRate)
+    encoder.encodeFloat(thrust)
+    encoder.encodeBitmaskValue(typeMask.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AttitudeTarget> {
@@ -105,14 +105,15 @@ public data class AttitudeTarget(
     public override val crcExtra: Byte = 22
 
     public override fun deserialize(bytes: ByteArray): AttitudeTarget {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val q = inputBuffer.decodeFloatArray(16)
-      val bodyRollRate = inputBuffer.decodeFloat()
-      val bodyPitchRate = inputBuffer.decodeFloat()
-      val bodyYawRate = inputBuffer.decodeFloat()
-      val thrust = inputBuffer.decodeFloat()
-      val typeMask = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val q = decoder.safeDecodeFloatArray(16)
+      val bodyRollRate = decoder.safeDecodeFloat()
+      val bodyPitchRate = decoder.safeDecodeFloat()
+      val bodyYawRate = decoder.safeDecodeFloat()
+      val thrust = decoder.safeDecodeFloat()
+      val typeMask = decoder.safeDecodeBitmaskValue(1).let { value ->
         val flags = AttitudeTargetTypemask.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

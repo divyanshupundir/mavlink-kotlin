@@ -3,17 +3,17 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -75,26 +75,26 @@ public data class CameraCaptureStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(imageInterval)
-    outputBuffer.encodeUInt32(recordingTimeMs)
-    outputBuffer.encodeFloat(availableCapacity)
-    outputBuffer.encodeUInt8(imageStatus)
-    outputBuffer.encodeUInt8(videoStatus)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(imageInterval)
+    encoder.encodeUInt32(recordingTimeMs)
+    encoder.encodeFloat(availableCapacity)
+    encoder.encodeUInt8(imageStatus)
+    encoder.encodeUInt8(videoStatus)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(imageInterval)
-    outputBuffer.encodeUInt32(recordingTimeMs)
-    outputBuffer.encodeFloat(availableCapacity)
-    outputBuffer.encodeUInt8(imageStatus)
-    outputBuffer.encodeUInt8(videoStatus)
-    outputBuffer.encodeInt32(imageCount)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(imageInterval)
+    encoder.encodeUInt32(recordingTimeMs)
+    encoder.encodeFloat(availableCapacity)
+    encoder.encodeUInt8(imageStatus)
+    encoder.encodeUInt8(videoStatus)
+    encoder.encodeInt32(imageCount)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraCaptureStatus> {
@@ -107,14 +107,15 @@ public data class CameraCaptureStatus(
     public override val crcExtra: Byte = 12
 
     public override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val imageInterval = inputBuffer.decodeFloat()
-      val recordingTimeMs = inputBuffer.decodeUInt32()
-      val availableCapacity = inputBuffer.decodeFloat()
-      val imageStatus = inputBuffer.decodeUInt8()
-      val videoStatus = inputBuffer.decodeUInt8()
-      val imageCount = inputBuffer.decodeInt32()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val imageInterval = decoder.safeDecodeFloat()
+      val recordingTimeMs = decoder.safeDecodeUInt32()
+      val availableCapacity = decoder.safeDecodeFloat()
+      val imageStatus = decoder.safeDecodeUInt8()
+      val videoStatus = decoder.safeDecodeUInt8()
+      val imageCount = decoder.safeDecodeInt32()
 
       return CameraCaptureStatus(
         timeBootMs = timeBootMs,

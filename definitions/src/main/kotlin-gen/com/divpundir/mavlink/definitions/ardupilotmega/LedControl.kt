@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -60,25 +60,25 @@ public data class LedControl(
   public override val instanceCompanion: MavMessage.MavCompanion<LedControl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(instance)
-    outputBuffer.encodeUInt8(pattern)
-    outputBuffer.encodeUInt8(customLen)
-    outputBuffer.encodeUInt8Array(customBytes, 24)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(instance)
+    encoder.encodeUInt8(pattern)
+    encoder.encodeUInt8(customLen)
+    encoder.encodeUInt8Array(customBytes, 24)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(instance)
-    outputBuffer.encodeUInt8(pattern)
-    outputBuffer.encodeUInt8(customLen)
-    outputBuffer.encodeUInt8Array(customBytes, 24)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(instance)
+    encoder.encodeUInt8(pattern)
+    encoder.encodeUInt8(customLen)
+    encoder.encodeUInt8Array(customBytes, 24)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LedControl> {
@@ -91,13 +91,14 @@ public data class LedControl(
     public override val crcExtra: Byte = 72
 
     public override fun deserialize(bytes: ByteArray): LedControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val instance = inputBuffer.decodeUInt8()
-      val pattern = inputBuffer.decodeUInt8()
-      val customLen = inputBuffer.decodeUInt8()
-      val customBytes = inputBuffer.decodeUInt8Array(24)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val instance = decoder.safeDecodeUInt8()
+      val pattern = decoder.safeDecodeUInt8()
+      val customLen = decoder.safeDecodeUInt8()
+      val customBytes = decoder.safeDecodeUInt8Array(24)
 
       return LedControl(
         targetSystem = targetSystem,

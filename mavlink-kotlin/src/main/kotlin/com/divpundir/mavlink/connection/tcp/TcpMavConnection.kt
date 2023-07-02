@@ -3,7 +3,7 @@ package com.divpundir.mavlink.connection.tcp
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
-import java.io.IOException
+import okio.IOException
 
 public abstract class TcpMavConnection : MavConnection {
 

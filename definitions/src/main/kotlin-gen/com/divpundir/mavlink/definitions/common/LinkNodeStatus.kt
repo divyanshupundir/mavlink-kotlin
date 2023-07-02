@@ -4,17 +4,17 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -92,35 +92,35 @@ public data class LinkNodeStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<LinkNodeStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt32(txRate)
-    outputBuffer.encodeUInt32(rxRate)
-    outputBuffer.encodeUInt32(messagesSent)
-    outputBuffer.encodeUInt32(messagesReceived)
-    outputBuffer.encodeUInt32(messagesLost)
-    outputBuffer.encodeUInt16(rxParseErr)
-    outputBuffer.encodeUInt16(txOverflows)
-    outputBuffer.encodeUInt16(rxOverflows)
-    outputBuffer.encodeUInt8(txBuf)
-    outputBuffer.encodeUInt8(rxBuf)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeUInt32(txRate)
+    encoder.encodeUInt32(rxRate)
+    encoder.encodeUInt32(messagesSent)
+    encoder.encodeUInt32(messagesReceived)
+    encoder.encodeUInt32(messagesLost)
+    encoder.encodeUInt16(rxParseErr)
+    encoder.encodeUInt16(txOverflows)
+    encoder.encodeUInt16(rxOverflows)
+    encoder.encodeUInt8(txBuf)
+    encoder.encodeUInt8(rxBuf)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timestamp)
-    outputBuffer.encodeUInt32(txRate)
-    outputBuffer.encodeUInt32(rxRate)
-    outputBuffer.encodeUInt32(messagesSent)
-    outputBuffer.encodeUInt32(messagesReceived)
-    outputBuffer.encodeUInt32(messagesLost)
-    outputBuffer.encodeUInt16(rxParseErr)
-    outputBuffer.encodeUInt16(txOverflows)
-    outputBuffer.encodeUInt16(rxOverflows)
-    outputBuffer.encodeUInt8(txBuf)
-    outputBuffer.encodeUInt8(rxBuf)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timestamp)
+    encoder.encodeUInt32(txRate)
+    encoder.encodeUInt32(rxRate)
+    encoder.encodeUInt32(messagesSent)
+    encoder.encodeUInt32(messagesReceived)
+    encoder.encodeUInt32(messagesLost)
+    encoder.encodeUInt16(rxParseErr)
+    encoder.encodeUInt16(txOverflows)
+    encoder.encodeUInt16(rxOverflows)
+    encoder.encodeUInt8(txBuf)
+    encoder.encodeUInt8(rxBuf)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<LinkNodeStatus> {
@@ -133,18 +133,19 @@ public data class LinkNodeStatus(
     public override val crcExtra: Byte = 117
 
     public override fun deserialize(bytes: ByteArray): LinkNodeStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timestamp = inputBuffer.decodeUInt64()
-      val txRate = inputBuffer.decodeUInt32()
-      val rxRate = inputBuffer.decodeUInt32()
-      val messagesSent = inputBuffer.decodeUInt32()
-      val messagesReceived = inputBuffer.decodeUInt32()
-      val messagesLost = inputBuffer.decodeUInt32()
-      val rxParseErr = inputBuffer.decodeUInt16()
-      val txOverflows = inputBuffer.decodeUInt16()
-      val rxOverflows = inputBuffer.decodeUInt16()
-      val txBuf = inputBuffer.decodeUInt8()
-      val rxBuf = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timestamp = decoder.safeDecodeUInt64()
+      val txRate = decoder.safeDecodeUInt32()
+      val rxRate = decoder.safeDecodeUInt32()
+      val messagesSent = decoder.safeDecodeUInt32()
+      val messagesReceived = decoder.safeDecodeUInt32()
+      val messagesLost = decoder.safeDecodeUInt32()
+      val rxParseErr = decoder.safeDecodeUInt16()
+      val txOverflows = decoder.safeDecodeUInt16()
+      val rxOverflows = decoder.safeDecodeUInt16()
+      val txBuf = decoder.safeDecodeUInt8()
+      val rxBuf = decoder.safeDecodeUInt8()
 
       return LinkNodeStatus(
         timestamp = timestamp,

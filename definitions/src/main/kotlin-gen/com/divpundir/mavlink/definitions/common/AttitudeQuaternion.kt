@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -86,30 +86,30 @@ public data class AttitudeQuaternion(
   public override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternion> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(q1)
-    outputBuffer.encodeFloat(q2)
-    outputBuffer.encodeFloat(q3)
-    outputBuffer.encodeFloat(q4)
-    outputBuffer.encodeFloat(rollspeed)
-    outputBuffer.encodeFloat(pitchspeed)
-    outputBuffer.encodeFloat(yawspeed)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(q1)
+    encoder.encodeFloat(q2)
+    encoder.encodeFloat(q3)
+    encoder.encodeFloat(q4)
+    encoder.encodeFloat(rollspeed)
+    encoder.encodeFloat(pitchspeed)
+    encoder.encodeFloat(yawspeed)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeBootMs)
-    outputBuffer.encodeFloat(q1)
-    outputBuffer.encodeFloat(q2)
-    outputBuffer.encodeFloat(q3)
-    outputBuffer.encodeFloat(q4)
-    outputBuffer.encodeFloat(rollspeed)
-    outputBuffer.encodeFloat(pitchspeed)
-    outputBuffer.encodeFloat(yawspeed)
-    outputBuffer.encodeFloatArray(reprOffsetQ, 16)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeBootMs)
+    encoder.encodeFloat(q1)
+    encoder.encodeFloat(q2)
+    encoder.encodeFloat(q3)
+    encoder.encodeFloat(q4)
+    encoder.encodeFloat(rollspeed)
+    encoder.encodeFloat(pitchspeed)
+    encoder.encodeFloat(yawspeed)
+    encoder.encodeFloatArray(reprOffsetQ, 16)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AttitudeQuaternion> {
@@ -122,16 +122,17 @@ public data class AttitudeQuaternion(
     public override val crcExtra: Byte = -10
 
     public override fun deserialize(bytes: ByteArray): AttitudeQuaternion {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeBootMs = inputBuffer.decodeUInt32()
-      val q1 = inputBuffer.decodeFloat()
-      val q2 = inputBuffer.decodeFloat()
-      val q3 = inputBuffer.decodeFloat()
-      val q4 = inputBuffer.decodeFloat()
-      val rollspeed = inputBuffer.decodeFloat()
-      val pitchspeed = inputBuffer.decodeFloat()
-      val yawspeed = inputBuffer.decodeFloat()
-      val reprOffsetQ = inputBuffer.decodeFloatArray(16)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeBootMs = decoder.safeDecodeUInt32()
+      val q1 = decoder.safeDecodeFloat()
+      val q2 = decoder.safeDecodeFloat()
+      val q3 = decoder.safeDecodeFloat()
+      val q4 = decoder.safeDecodeFloat()
+      val rollspeed = decoder.safeDecodeFloat()
+      val pitchspeed = decoder.safeDecodeFloat()
+      val yawspeed = decoder.safeDecodeFloat()
+      val reprOffsetQ = decoder.safeDecodeFloatArray(16)
 
       return AttitudeQuaternion(
         timeBootMs = timeBootMs,

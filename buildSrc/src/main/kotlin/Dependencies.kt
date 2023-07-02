@@ -12,6 +12,7 @@ object Deps {
 
     object Kotlin {
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
+        const val immutableCollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
     }
 
     object MavlinkKotlin {
@@ -20,6 +21,7 @@ object Deps {
     }
 
     const val kotlinPoet = "com.squareup:kotlinpoet:1.13.2"
+    const val okio = "com.squareup.okio:okio:3.3.0"
 }
 
 object TestDeps {

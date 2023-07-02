@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeFloatArray
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -60,23 +60,23 @@ public data class VisionPositionDelta(
   public override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt64(timeDeltaUsec)
-    outputBuffer.encodeFloatArray(angleDelta, 12)
-    outputBuffer.encodeFloatArray(positionDelta, 12)
-    outputBuffer.encodeFloat(confidence)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt64(timeDeltaUsec)
+    encoder.encodeFloatArray(angleDelta, 12)
+    encoder.encodeFloatArray(positionDelta, 12)
+    encoder.encodeFloat(confidence)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt64(timeDeltaUsec)
-    outputBuffer.encodeFloatArray(angleDelta, 12)
-    outputBuffer.encodeFloatArray(positionDelta, 12)
-    outputBuffer.encodeFloat(confidence)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt64(timeDeltaUsec)
+    encoder.encodeFloatArray(angleDelta, 12)
+    encoder.encodeFloatArray(positionDelta, 12)
+    encoder.encodeFloat(confidence)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<VisionPositionDelta> {
@@ -89,12 +89,13 @@ public data class VisionPositionDelta(
     public override val crcExtra: Byte = 106
 
     public override fun deserialize(bytes: ByteArray): VisionPositionDelta {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val timeDeltaUsec = inputBuffer.decodeUInt64()
-      val angleDelta = inputBuffer.decodeFloatArray(12)
-      val positionDelta = inputBuffer.decodeFloatArray(12)
-      val confidence = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val timeDeltaUsec = decoder.safeDecodeUInt64()
+      val angleDelta = decoder.safeDecodeFloatArray(12)
+      val positionDelta = decoder.safeDecodeFloatArray(12)
+      val confidence = decoder.safeDecodeFloat()
 
       return VisionPositionDelta(
         timeUsec = timeUsec,

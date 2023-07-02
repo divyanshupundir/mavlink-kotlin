@@ -172,36 +172,36 @@ private fun FieldModel.encodeMethodName(enumHelper: EnumHelper): MemberName = wh
 private fun FieldModel.decodeMethodName(enumHelper: EnumHelper): MemberName = when (this) {
     is FieldModel.Enum -> MemberName(
         SERIALIZATION_PACKAGE,
-        if (enumHelper.isBitmask(enumType)) "decodeBitmaskValue" else "decodeEnumValue"
+        if (enumHelper.isBitmask(enumType)) "safeDecodeBitmaskValue" else "safeDecodeEnumValue"
     )
 
     is FieldModel.Primitive -> when (type) {
-        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8")
-        "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt8")
-        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt16")
-        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt16")
-        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt32")
-        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt32")
-        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt64")
-        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt64")
-        "float" -> MemberName(SERIALIZATION_PACKAGE, "decodeFloat")
-        "double" -> MemberName(SERIALIZATION_PACKAGE, "decodeDouble")
-        "char" -> MemberName(SERIALIZATION_PACKAGE, "decodeChar")
+        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt8")
+        "uint8_t_mavlink_version", "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt8")
+        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt16")
+        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt16")
+        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt32")
+        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt32")
+        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt64")
+        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt64")
+        "float" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeFloat")
+        "double" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeDouble")
+        "char" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeChar")
         else -> throw IllegalArgumentException("Unknown type: $type")
     }
 
     is FieldModel.PrimitiveArray -> when (primitiveType) {
-        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt8Array")
-        "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt8Array")
-        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt16Array")
-        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt16Array")
-        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt32Array")
-        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt32Array")
-        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeInt64Array")
-        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "decodeUInt64Array")
-        "float" -> MemberName(SERIALIZATION_PACKAGE, "decodeFloatArray")
-        "double" -> MemberName(SERIALIZATION_PACKAGE, "decodeDoubleArray")
-        "char" -> MemberName(SERIALIZATION_PACKAGE, "decodeString")
+        "int8_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt8Array")
+        "uint8_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt8Array")
+        "int16_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt16Array")
+        "uint16_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt16Array")
+        "int32_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt32Array")
+        "uint32_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt32Array")
+        "int64_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeInt64Array")
+        "uint64_t" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeUInt64Array")
+        "float" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeFloatArray")
+        "double" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeDoubleArray")
+        "char" -> MemberName(SERIALIZATION_PACKAGE, "safeDecodeString")
         else -> throw IllegalArgumentException("Unknown type: $primitiveType")
     }
 }

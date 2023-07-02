@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.matrixpilot
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -42,19 +42,19 @@ public data class SerialUdbExtraF17(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF17> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueFeedForward)
-    outputBuffer.encodeFloat(sueTurnRateNav)
-    outputBuffer.encodeFloat(sueTurnRateFbw)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(sueFeedForward)
+    encoder.encodeFloat(sueTurnRateNav)
+    encoder.encodeFloat(sueTurnRateFbw)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(sueFeedForward)
-    outputBuffer.encodeFloat(sueTurnRateNav)
-    outputBuffer.encodeFloat(sueTurnRateFbw)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(sueFeedForward)
+    encoder.encodeFloat(sueTurnRateNav)
+    encoder.encodeFloat(sueTurnRateFbw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialUdbExtraF17> {
@@ -67,10 +67,11 @@ public data class SerialUdbExtraF17(
     public override val crcExtra: Byte = -81
 
     public override fun deserialize(bytes: ByteArray): SerialUdbExtraF17 {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val sueFeedForward = inputBuffer.decodeFloat()
-      val sueTurnRateNav = inputBuffer.decodeFloat()
-      val sueTurnRateFbw = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val sueFeedForward = decoder.safeDecodeFloat()
+      val sueTurnRateNav = decoder.safeDecodeFloat()
+      val sueTurnRateFbw = decoder.safeDecodeFloat()
 
       return SerialUdbExtraF17(
         sueFeedForward = sueFeedForward,

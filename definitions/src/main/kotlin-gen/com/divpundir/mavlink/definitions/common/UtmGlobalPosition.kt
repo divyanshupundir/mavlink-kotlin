@@ -5,13 +5,8 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt16
@@ -19,9 +14,14 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -135,49 +135,49 @@ public data class UtmGlobalPosition(
   public override val instanceCompanion: MavMessage.MavCompanion<UtmGlobalPosition> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(time)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeInt32(relativeAlt)
-    outputBuffer.encodeInt32(nextLat)
-    outputBuffer.encodeInt32(nextLon)
-    outputBuffer.encodeInt32(nextAlt)
-    outputBuffer.encodeInt16(vx)
-    outputBuffer.encodeInt16(vy)
-    outputBuffer.encodeInt16(vz)
-    outputBuffer.encodeUInt16(hAcc)
-    outputBuffer.encodeUInt16(vAcc)
-    outputBuffer.encodeUInt16(velAcc)
-    outputBuffer.encodeUInt16(updateRate)
-    outputBuffer.encodeUInt8Array(uasId, 18)
-    outputBuffer.encodeEnumValue(flightState.value, 1)
-    outputBuffer.encodeBitmaskValue(flags.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(time)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeInt32(relativeAlt)
+    encoder.encodeInt32(nextLat)
+    encoder.encodeInt32(nextLon)
+    encoder.encodeInt32(nextAlt)
+    encoder.encodeInt16(vx)
+    encoder.encodeInt16(vy)
+    encoder.encodeInt16(vz)
+    encoder.encodeUInt16(hAcc)
+    encoder.encodeUInt16(vAcc)
+    encoder.encodeUInt16(velAcc)
+    encoder.encodeUInt16(updateRate)
+    encoder.encodeUInt8Array(uasId, 18)
+    encoder.encodeEnumValue(flightState.value, 1)
+    encoder.encodeBitmaskValue(flags.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(time)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeInt32(relativeAlt)
-    outputBuffer.encodeInt32(nextLat)
-    outputBuffer.encodeInt32(nextLon)
-    outputBuffer.encodeInt32(nextAlt)
-    outputBuffer.encodeInt16(vx)
-    outputBuffer.encodeInt16(vy)
-    outputBuffer.encodeInt16(vz)
-    outputBuffer.encodeUInt16(hAcc)
-    outputBuffer.encodeUInt16(vAcc)
-    outputBuffer.encodeUInt16(velAcc)
-    outputBuffer.encodeUInt16(updateRate)
-    outputBuffer.encodeUInt8Array(uasId, 18)
-    outputBuffer.encodeEnumValue(flightState.value, 1)
-    outputBuffer.encodeBitmaskValue(flags.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(time)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeInt32(relativeAlt)
+    encoder.encodeInt32(nextLat)
+    encoder.encodeInt32(nextLon)
+    encoder.encodeInt32(nextAlt)
+    encoder.encodeInt16(vx)
+    encoder.encodeInt16(vy)
+    encoder.encodeInt16(vz)
+    encoder.encodeUInt16(hAcc)
+    encoder.encodeUInt16(vAcc)
+    encoder.encodeUInt16(velAcc)
+    encoder.encodeUInt16(updateRate)
+    encoder.encodeUInt8Array(uasId, 18)
+    encoder.encodeEnumValue(flightState.value, 1)
+    encoder.encodeBitmaskValue(flags.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<UtmGlobalPosition> {
@@ -190,28 +190,29 @@ public data class UtmGlobalPosition(
     public override val crcExtra: Byte = 99
 
     public override fun deserialize(bytes: ByteArray): UtmGlobalPosition {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val time = inputBuffer.decodeUInt64()
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val alt = inputBuffer.decodeInt32()
-      val relativeAlt = inputBuffer.decodeInt32()
-      val nextLat = inputBuffer.decodeInt32()
-      val nextLon = inputBuffer.decodeInt32()
-      val nextAlt = inputBuffer.decodeInt32()
-      val vx = inputBuffer.decodeInt16()
-      val vy = inputBuffer.decodeInt16()
-      val vz = inputBuffer.decodeInt16()
-      val hAcc = inputBuffer.decodeUInt16()
-      val vAcc = inputBuffer.decodeUInt16()
-      val velAcc = inputBuffer.decodeUInt16()
-      val updateRate = inputBuffer.decodeUInt16()
-      val uasId = inputBuffer.decodeUInt8Array(18)
-      val flightState = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val time = decoder.safeDecodeUInt64()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt32()
+      val relativeAlt = decoder.safeDecodeInt32()
+      val nextLat = decoder.safeDecodeInt32()
+      val nextLon = decoder.safeDecodeInt32()
+      val nextAlt = decoder.safeDecodeInt32()
+      val vx = decoder.safeDecodeInt16()
+      val vy = decoder.safeDecodeInt16()
+      val vz = decoder.safeDecodeInt16()
+      val hAcc = decoder.safeDecodeUInt16()
+      val vAcc = decoder.safeDecodeUInt16()
+      val velAcc = decoder.safeDecodeUInt16()
+      val updateRate = decoder.safeDecodeUInt16()
+      val uasId = decoder.safeDecodeUInt8Array(18)
+      val flightState = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = UtmFlightState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val flags = decoder.safeDecodeBitmaskValue(1).let { value ->
         val flags = UtmDataAvailFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

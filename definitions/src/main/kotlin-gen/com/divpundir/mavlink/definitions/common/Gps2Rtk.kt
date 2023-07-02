@@ -4,19 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -103,39 +103,39 @@ public data class Gps2Rtk(
   public override val instanceCompanion: MavMessage.MavCompanion<Gps2Rtk> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeLastBaselineMs)
-    outputBuffer.encodeUInt32(tow)
-    outputBuffer.encodeInt32(baselineAMm)
-    outputBuffer.encodeInt32(baselineBMm)
-    outputBuffer.encodeInt32(baselineCMm)
-    outputBuffer.encodeUInt32(accuracy)
-    outputBuffer.encodeInt32(iarNumHypotheses)
-    outputBuffer.encodeUInt16(wn)
-    outputBuffer.encodeUInt8(rtkReceiverId)
-    outputBuffer.encodeUInt8(rtkHealth)
-    outputBuffer.encodeUInt8(rtkRate)
-    outputBuffer.encodeUInt8(nsats)
-    outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeLastBaselineMs)
+    encoder.encodeUInt32(tow)
+    encoder.encodeInt32(baselineAMm)
+    encoder.encodeInt32(baselineBMm)
+    encoder.encodeInt32(baselineCMm)
+    encoder.encodeUInt32(accuracy)
+    encoder.encodeInt32(iarNumHypotheses)
+    encoder.encodeUInt16(wn)
+    encoder.encodeUInt8(rtkReceiverId)
+    encoder.encodeUInt8(rtkHealth)
+    encoder.encodeUInt8(rtkRate)
+    encoder.encodeUInt8(nsats)
+    encoder.encodeEnumValue(baselineCoordsType.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeLastBaselineMs)
-    outputBuffer.encodeUInt32(tow)
-    outputBuffer.encodeInt32(baselineAMm)
-    outputBuffer.encodeInt32(baselineBMm)
-    outputBuffer.encodeInt32(baselineCMm)
-    outputBuffer.encodeUInt32(accuracy)
-    outputBuffer.encodeInt32(iarNumHypotheses)
-    outputBuffer.encodeUInt16(wn)
-    outputBuffer.encodeUInt8(rtkReceiverId)
-    outputBuffer.encodeUInt8(rtkHealth)
-    outputBuffer.encodeUInt8(rtkRate)
-    outputBuffer.encodeUInt8(nsats)
-    outputBuffer.encodeEnumValue(baselineCoordsType.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeLastBaselineMs)
+    encoder.encodeUInt32(tow)
+    encoder.encodeInt32(baselineAMm)
+    encoder.encodeInt32(baselineBMm)
+    encoder.encodeInt32(baselineCMm)
+    encoder.encodeUInt32(accuracy)
+    encoder.encodeInt32(iarNumHypotheses)
+    encoder.encodeUInt16(wn)
+    encoder.encodeUInt8(rtkReceiverId)
+    encoder.encodeUInt8(rtkHealth)
+    encoder.encodeUInt8(rtkRate)
+    encoder.encodeUInt8(nsats)
+    encoder.encodeEnumValue(baselineCoordsType.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Gps2Rtk> {
@@ -148,20 +148,21 @@ public data class Gps2Rtk(
     public override val crcExtra: Byte = -30
 
     public override fun deserialize(bytes: ByteArray): Gps2Rtk {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeLastBaselineMs = inputBuffer.decodeUInt32()
-      val tow = inputBuffer.decodeUInt32()
-      val baselineAMm = inputBuffer.decodeInt32()
-      val baselineBMm = inputBuffer.decodeInt32()
-      val baselineCMm = inputBuffer.decodeInt32()
-      val accuracy = inputBuffer.decodeUInt32()
-      val iarNumHypotheses = inputBuffer.decodeInt32()
-      val wn = inputBuffer.decodeUInt16()
-      val rtkReceiverId = inputBuffer.decodeUInt8()
-      val rtkHealth = inputBuffer.decodeUInt8()
-      val rtkRate = inputBuffer.decodeUInt8()
-      val nsats = inputBuffer.decodeUInt8()
-      val baselineCoordsType = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeLastBaselineMs = decoder.safeDecodeUInt32()
+      val tow = decoder.safeDecodeUInt32()
+      val baselineAMm = decoder.safeDecodeInt32()
+      val baselineBMm = decoder.safeDecodeInt32()
+      val baselineCMm = decoder.safeDecodeInt32()
+      val accuracy = decoder.safeDecodeUInt32()
+      val iarNumHypotheses = decoder.safeDecodeInt32()
+      val wn = decoder.safeDecodeUInt16()
+      val rtkReceiverId = decoder.safeDecodeUInt8()
+      val rtkHealth = decoder.safeDecodeUInt8()
+      val rtkRate = decoder.safeDecodeUInt8()
+      val nsats = decoder.safeDecodeUInt8()
+      val baselineCoordsType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = RtkBaselineCoordinateSystem.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

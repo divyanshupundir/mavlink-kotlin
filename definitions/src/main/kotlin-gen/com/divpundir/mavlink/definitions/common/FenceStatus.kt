@@ -4,17 +4,17 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -63,22 +63,22 @@ public data class FenceStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(breachTime)
-    outputBuffer.encodeUInt16(breachCount)
-    outputBuffer.encodeUInt8(breachStatus)
-    outputBuffer.encodeEnumValue(breachType.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(breachTime)
+    encoder.encodeUInt16(breachCount)
+    encoder.encodeUInt8(breachStatus)
+    encoder.encodeEnumValue(breachType.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(breachTime)
-    outputBuffer.encodeUInt16(breachCount)
-    outputBuffer.encodeUInt8(breachStatus)
-    outputBuffer.encodeEnumValue(breachType.value, 1)
-    outputBuffer.encodeEnumValue(breachMitigation.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(breachTime)
+    encoder.encodeUInt16(breachCount)
+    encoder.encodeUInt8(breachStatus)
+    encoder.encodeEnumValue(breachType.value, 1)
+    encoder.encodeEnumValue(breachMitigation.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FenceStatus> {
@@ -91,15 +91,16 @@ public data class FenceStatus(
     public override val crcExtra: Byte = -67
 
     public override fun deserialize(bytes: ByteArray): FenceStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val breachTime = inputBuffer.decodeUInt32()
-      val breachCount = inputBuffer.decodeUInt16()
-      val breachStatus = inputBuffer.decodeUInt8()
-      val breachType = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val breachTime = decoder.safeDecodeUInt32()
+      val breachCount = decoder.safeDecodeUInt16()
+      val breachStatus = decoder.safeDecodeUInt8()
+      val breachType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = FenceBreach.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val breachMitigation = inputBuffer.decodeEnumValue(1).let { value ->
+      val breachMitigation = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = FenceMitigate.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt8
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -83,33 +83,33 @@ public data class DigicamControl(
   public override val instanceCompanion: MavMessage.MavCompanion<DigicamControl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(extraValue)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(session)
-    outputBuffer.encodeUInt8(zoomPos)
-    outputBuffer.encodeInt8(zoomStep)
-    outputBuffer.encodeUInt8(focusLock)
-    outputBuffer.encodeUInt8(shot)
-    outputBuffer.encodeUInt8(commandId)
-    outputBuffer.encodeUInt8(extraParam)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(extraValue)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(session)
+    encoder.encodeUInt8(zoomPos)
+    encoder.encodeInt8(zoomStep)
+    encoder.encodeUInt8(focusLock)
+    encoder.encodeUInt8(shot)
+    encoder.encodeUInt8(commandId)
+    encoder.encodeUInt8(extraParam)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(extraValue)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(session)
-    outputBuffer.encodeUInt8(zoomPos)
-    outputBuffer.encodeInt8(zoomStep)
-    outputBuffer.encodeUInt8(focusLock)
-    outputBuffer.encodeUInt8(shot)
-    outputBuffer.encodeUInt8(commandId)
-    outputBuffer.encodeUInt8(extraParam)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(extraValue)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(session)
+    encoder.encodeUInt8(zoomPos)
+    encoder.encodeInt8(zoomStep)
+    encoder.encodeUInt8(focusLock)
+    encoder.encodeUInt8(shot)
+    encoder.encodeUInt8(commandId)
+    encoder.encodeUInt8(extraParam)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DigicamControl> {
@@ -122,17 +122,18 @@ public data class DigicamControl(
     public override val crcExtra: Byte = 22
 
     public override fun deserialize(bytes: ByteArray): DigicamControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val extraValue = inputBuffer.decodeFloat()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val session = inputBuffer.decodeUInt8()
-      val zoomPos = inputBuffer.decodeUInt8()
-      val zoomStep = inputBuffer.decodeInt8()
-      val focusLock = inputBuffer.decodeUInt8()
-      val shot = inputBuffer.decodeUInt8()
-      val commandId = inputBuffer.decodeUInt8()
-      val extraParam = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val extraValue = decoder.safeDecodeFloat()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val session = decoder.safeDecodeUInt8()
+      val zoomPos = decoder.safeDecodeUInt8()
+      val zoomStep = decoder.safeDecodeInt8()
+      val focusLock = decoder.safeDecodeUInt8()
+      val shot = decoder.safeDecodeUInt8()
+      val commandId = decoder.safeDecodeUInt8()
+      val extraParam = decoder.safeDecodeUInt8()
 
       return DigicamControl(
         targetSystem = targetSystem,

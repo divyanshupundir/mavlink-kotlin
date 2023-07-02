@@ -6,14 +6,8 @@ import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.definitions.minimal.MavModeFlag
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeInt8
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt16
@@ -22,9 +16,15 @@ import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Deprecated
@@ -169,61 +169,61 @@ public data class HighLatency(
   public override val instanceCompanion: MavMessage.MavCompanion<HighLatency> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(customMode)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt16(roll)
-    outputBuffer.encodeInt16(pitch)
-    outputBuffer.encodeUInt16(heading)
-    outputBuffer.encodeInt16(headingSp)
-    outputBuffer.encodeInt16(altitudeAmsl)
-    outputBuffer.encodeInt16(altitudeSp)
-    outputBuffer.encodeUInt16(wpDistance)
-    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
-    outputBuffer.encodeEnumValue(landedState.value, 1)
-    outputBuffer.encodeInt8(throttle)
-    outputBuffer.encodeUInt8(airspeed)
-    outputBuffer.encodeUInt8(airspeedSp)
-    outputBuffer.encodeUInt8(groundspeed)
-    outputBuffer.encodeInt8(climbRate)
-    outputBuffer.encodeUInt8(gpsNsat)
-    outputBuffer.encodeEnumValue(gpsFixType.value, 1)
-    outputBuffer.encodeUInt8(batteryRemaining)
-    outputBuffer.encodeInt8(temperature)
-    outputBuffer.encodeInt8(temperatureAir)
-    outputBuffer.encodeUInt8(failsafe)
-    outputBuffer.encodeUInt8(wpNum)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(customMode)
+    encoder.encodeInt32(latitude)
+    encoder.encodeInt32(longitude)
+    encoder.encodeInt16(roll)
+    encoder.encodeInt16(pitch)
+    encoder.encodeUInt16(heading)
+    encoder.encodeInt16(headingSp)
+    encoder.encodeInt16(altitudeAmsl)
+    encoder.encodeInt16(altitudeSp)
+    encoder.encodeUInt16(wpDistance)
+    encoder.encodeBitmaskValue(baseMode.value, 1)
+    encoder.encodeEnumValue(landedState.value, 1)
+    encoder.encodeInt8(throttle)
+    encoder.encodeUInt8(airspeed)
+    encoder.encodeUInt8(airspeedSp)
+    encoder.encodeUInt8(groundspeed)
+    encoder.encodeInt8(climbRate)
+    encoder.encodeUInt8(gpsNsat)
+    encoder.encodeEnumValue(gpsFixType.value, 1)
+    encoder.encodeUInt8(batteryRemaining)
+    encoder.encodeInt8(temperature)
+    encoder.encodeInt8(temperatureAir)
+    encoder.encodeUInt8(failsafe)
+    encoder.encodeUInt8(wpNum)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(customMode)
-    outputBuffer.encodeInt32(latitude)
-    outputBuffer.encodeInt32(longitude)
-    outputBuffer.encodeInt16(roll)
-    outputBuffer.encodeInt16(pitch)
-    outputBuffer.encodeUInt16(heading)
-    outputBuffer.encodeInt16(headingSp)
-    outputBuffer.encodeInt16(altitudeAmsl)
-    outputBuffer.encodeInt16(altitudeSp)
-    outputBuffer.encodeUInt16(wpDistance)
-    outputBuffer.encodeBitmaskValue(baseMode.value, 1)
-    outputBuffer.encodeEnumValue(landedState.value, 1)
-    outputBuffer.encodeInt8(throttle)
-    outputBuffer.encodeUInt8(airspeed)
-    outputBuffer.encodeUInt8(airspeedSp)
-    outputBuffer.encodeUInt8(groundspeed)
-    outputBuffer.encodeInt8(climbRate)
-    outputBuffer.encodeUInt8(gpsNsat)
-    outputBuffer.encodeEnumValue(gpsFixType.value, 1)
-    outputBuffer.encodeUInt8(batteryRemaining)
-    outputBuffer.encodeInt8(temperature)
-    outputBuffer.encodeInt8(temperatureAir)
-    outputBuffer.encodeUInt8(failsafe)
-    outputBuffer.encodeUInt8(wpNum)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(customMode)
+    encoder.encodeInt32(latitude)
+    encoder.encodeInt32(longitude)
+    encoder.encodeInt16(roll)
+    encoder.encodeInt16(pitch)
+    encoder.encodeUInt16(heading)
+    encoder.encodeInt16(headingSp)
+    encoder.encodeInt16(altitudeAmsl)
+    encoder.encodeInt16(altitudeSp)
+    encoder.encodeUInt16(wpDistance)
+    encoder.encodeBitmaskValue(baseMode.value, 1)
+    encoder.encodeEnumValue(landedState.value, 1)
+    encoder.encodeInt8(throttle)
+    encoder.encodeUInt8(airspeed)
+    encoder.encodeUInt8(airspeedSp)
+    encoder.encodeUInt8(groundspeed)
+    encoder.encodeInt8(climbRate)
+    encoder.encodeUInt8(gpsNsat)
+    encoder.encodeEnumValue(gpsFixType.value, 1)
+    encoder.encodeUInt8(batteryRemaining)
+    encoder.encodeInt8(temperature)
+    encoder.encodeInt8(temperatureAir)
+    encoder.encodeUInt8(failsafe)
+    encoder.encodeUInt8(wpNum)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HighLatency> {
@@ -236,40 +236,41 @@ public data class HighLatency(
     public override val crcExtra: Byte = -106
 
     public override fun deserialize(bytes: ByteArray): HighLatency {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val customMode = inputBuffer.decodeUInt32()
-      val latitude = inputBuffer.decodeInt32()
-      val longitude = inputBuffer.decodeInt32()
-      val roll = inputBuffer.decodeInt16()
-      val pitch = inputBuffer.decodeInt16()
-      val heading = inputBuffer.decodeUInt16()
-      val headingSp = inputBuffer.decodeInt16()
-      val altitudeAmsl = inputBuffer.decodeInt16()
-      val altitudeSp = inputBuffer.decodeInt16()
-      val wpDistance = inputBuffer.decodeUInt16()
-      val baseMode = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val customMode = decoder.safeDecodeUInt32()
+      val latitude = decoder.safeDecodeInt32()
+      val longitude = decoder.safeDecodeInt32()
+      val roll = decoder.safeDecodeInt16()
+      val pitch = decoder.safeDecodeInt16()
+      val heading = decoder.safeDecodeUInt16()
+      val headingSp = decoder.safeDecodeInt16()
+      val altitudeAmsl = decoder.safeDecodeInt16()
+      val altitudeSp = decoder.safeDecodeInt16()
+      val wpDistance = decoder.safeDecodeUInt16()
+      val baseMode = decoder.safeDecodeBitmaskValue(1).let { value ->
         val flags = MavModeFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val landedState = inputBuffer.decodeEnumValue(1).let { value ->
+      val landedState = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val throttle = inputBuffer.decodeInt8()
-      val airspeed = inputBuffer.decodeUInt8()
-      val airspeedSp = inputBuffer.decodeUInt8()
-      val groundspeed = inputBuffer.decodeUInt8()
-      val climbRate = inputBuffer.decodeInt8()
-      val gpsNsat = inputBuffer.decodeUInt8()
-      val gpsFixType = inputBuffer.decodeEnumValue(1).let { value ->
+      val throttle = decoder.safeDecodeInt8()
+      val airspeed = decoder.safeDecodeUInt8()
+      val airspeedSp = decoder.safeDecodeUInt8()
+      val groundspeed = decoder.safeDecodeUInt8()
+      val climbRate = decoder.safeDecodeInt8()
+      val gpsNsat = decoder.safeDecodeUInt8()
+      val gpsFixType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = GpsFixType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val batteryRemaining = inputBuffer.decodeUInt8()
-      val temperature = inputBuffer.decodeInt8()
-      val temperatureAir = inputBuffer.decodeInt8()
-      val failsafe = inputBuffer.decodeUInt8()
-      val wpNum = inputBuffer.decodeUInt8()
+      val batteryRemaining = decoder.safeDecodeUInt8()
+      val temperature = decoder.safeDecodeInt8()
+      val temperatureAir = decoder.safeDecodeInt8()
+      val failsafe = decoder.safeDecodeUInt8()
+      val wpNum = decoder.safeDecodeUInt8()
 
       return HighLatency(
         baseMode = baseMode,

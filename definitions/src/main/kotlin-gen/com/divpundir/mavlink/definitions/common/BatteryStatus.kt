@@ -5,13 +5,8 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeInt8
-import com.divpundir.mavlink.serialization.decodeUInt16Array
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt16
@@ -19,9 +14,14 @@ import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -143,36 +143,36 @@ public data class BatteryStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<BatteryStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(currentConsumed)
-    outputBuffer.encodeInt32(energyConsumed)
-    outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeUInt16Array(voltages, 20)
-    outputBuffer.encodeInt16(currentBattery)
-    outputBuffer.encodeUInt8(id)
-    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeInt8(batteryRemaining)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(currentConsumed)
+    encoder.encodeInt32(energyConsumed)
+    encoder.encodeInt16(temperature)
+    encoder.encodeUInt16Array(voltages, 20)
+    encoder.encodeInt16(currentBattery)
+    encoder.encodeUInt8(id)
+    encoder.encodeEnumValue(batteryFunction.value, 1)
+    encoder.encodeEnumValue(type.value, 1)
+    encoder.encodeInt8(batteryRemaining)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(currentConsumed)
-    outputBuffer.encodeInt32(energyConsumed)
-    outputBuffer.encodeInt16(temperature)
-    outputBuffer.encodeUInt16Array(voltages, 20)
-    outputBuffer.encodeInt16(currentBattery)
-    outputBuffer.encodeUInt8(id)
-    outputBuffer.encodeEnumValue(batteryFunction.value, 1)
-    outputBuffer.encodeEnumValue(type.value, 1)
-    outputBuffer.encodeInt8(batteryRemaining)
-    outputBuffer.encodeInt32(timeRemaining)
-    outputBuffer.encodeEnumValue(chargeState.value, 1)
-    outputBuffer.encodeUInt16Array(voltagesExt, 8)
-    outputBuffer.encodeEnumValue(mode.value, 1)
-    outputBuffer.encodeBitmaskValue(faultBitmask.value, 4)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(currentConsumed)
+    encoder.encodeInt32(energyConsumed)
+    encoder.encodeInt16(temperature)
+    encoder.encodeUInt16Array(voltages, 20)
+    encoder.encodeInt16(currentBattery)
+    encoder.encodeUInt8(id)
+    encoder.encodeEnumValue(batteryFunction.value, 1)
+    encoder.encodeEnumValue(type.value, 1)
+    encoder.encodeInt8(batteryRemaining)
+    encoder.encodeInt32(timeRemaining)
+    encoder.encodeEnumValue(chargeState.value, 1)
+    encoder.encodeUInt16Array(voltagesExt, 8)
+    encoder.encodeEnumValue(mode.value, 1)
+    encoder.encodeBitmaskValue(faultBitmask.value, 4)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<BatteryStatus> {
@@ -185,33 +185,34 @@ public data class BatteryStatus(
     public override val crcExtra: Byte = -102
 
     public override fun deserialize(bytes: ByteArray): BatteryStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val currentConsumed = inputBuffer.decodeInt32()
-      val energyConsumed = inputBuffer.decodeInt32()
-      val temperature = inputBuffer.decodeInt16()
-      val voltages = inputBuffer.decodeUInt16Array(20)
-      val currentBattery = inputBuffer.decodeInt16()
-      val id = inputBuffer.decodeUInt8()
-      val batteryFunction = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val currentConsumed = decoder.safeDecodeInt32()
+      val energyConsumed = decoder.safeDecodeInt32()
+      val temperature = decoder.safeDecodeInt16()
+      val voltages = decoder.safeDecodeUInt16Array(20)
+      val currentBattery = decoder.safeDecodeInt16()
+      val id = decoder.safeDecodeUInt8()
+      val batteryFunction = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavBatteryFunction.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type = inputBuffer.decodeEnumValue(1).let { value ->
+      val type = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavBatteryType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val batteryRemaining = inputBuffer.decodeInt8()
-      val timeRemaining = inputBuffer.decodeInt32()
-      val chargeState = inputBuffer.decodeEnumValue(1).let { value ->
+      val batteryRemaining = decoder.safeDecodeInt8()
+      val timeRemaining = decoder.safeDecodeInt32()
+      val chargeState = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavBatteryChargeState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val voltagesExt = inputBuffer.decodeUInt16Array(8)
-      val mode = inputBuffer.decodeEnumValue(1).let { value ->
+      val voltagesExt = decoder.safeDecodeUInt16Array(8)
+      val mode = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = MavBatteryMode.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val faultBitmask = inputBuffer.decodeBitmaskValue(4).let { value ->
+      val faultBitmask = decoder.safeDecodeBitmaskValue(4).let { value ->
         val flags = MavBatteryFault.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

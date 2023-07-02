@@ -17,7 +17,9 @@ tasks.test {
 
 dependencies {
     api(Deps.MavlinkKotlin.api)
-    api(Deps.MavlinkKotlin.serialization)
+
+    implementation(Deps.MavlinkKotlin.serialization)
+    implementation(Deps.okio)
 
     testImplementation(project(":definitions"))
     testImplementation(TestDeps.DroneFleet.mavlink)

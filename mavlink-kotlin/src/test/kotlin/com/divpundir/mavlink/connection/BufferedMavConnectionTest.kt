@@ -2,27 +2,29 @@ package com.divpundir.mavlink.connection
 
 import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.api.MavBitmaskValue
-import com.divpundir.mavlink.connection.stream.StreamMavConnection
 import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.minimal.Heartbeat
 import com.divpundir.mavlink.definitions.minimal.MavAutopilot
 import com.divpundir.mavlink.definitions.minimal.MavState
 import com.divpundir.mavlink.definitions.minimal.MavType
 import com.divpundir.mavlink.wrap
+import okio.buffer
+import okio.sink
+import okio.source
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class StreamMavConnectionTest {
+class BufferedMavConnectionTest {
 
     @Test
     fun read() {
         val socket = Socket()
         socket.connect(InetSocketAddress("127.0.0.1", 5760))
 
-        val connection = StreamMavConnection(
-            socket.getInputStream(),
-            socket.getOutputStream(),
+        val connection = BufferedMavConnection(
+            socket.getInputStream().source().buffer(),
+            socket.getOutputStream().sink().buffer(),
             socket,
             CommonDialect
         )
@@ -40,9 +42,9 @@ class StreamMavConnectionTest {
         val socket = server.accept()
         server.close()
 
-        val connection = StreamMavConnection(
-            socket.getInputStream(),
-            socket.getOutputStream(),
+        val connection = BufferedMavConnection(
+            socket.getInputStream().source().buffer(),
+            socket.getOutputStream().sink().buffer(),
             socket,
             CommonDialect
         )

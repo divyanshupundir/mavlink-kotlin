@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.ualberta
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt64
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -65,27 +65,27 @@ public data class NavFilterBias(
   public override val instanceCompanion: MavMessage.MavCompanion<NavFilterBias> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(usec)
-    outputBuffer.encodeFloat(accel0)
-    outputBuffer.encodeFloat(accel1)
-    outputBuffer.encodeFloat(accel2)
-    outputBuffer.encodeFloat(gyro0)
-    outputBuffer.encodeFloat(gyro1)
-    outputBuffer.encodeFloat(gyro2)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(usec)
+    encoder.encodeFloat(accel0)
+    encoder.encodeFloat(accel1)
+    encoder.encodeFloat(accel2)
+    encoder.encodeFloat(gyro0)
+    encoder.encodeFloat(gyro1)
+    encoder.encodeFloat(gyro2)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(usec)
-    outputBuffer.encodeFloat(accel0)
-    outputBuffer.encodeFloat(accel1)
-    outputBuffer.encodeFloat(accel2)
-    outputBuffer.encodeFloat(gyro0)
-    outputBuffer.encodeFloat(gyro1)
-    outputBuffer.encodeFloat(gyro2)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(usec)
+    encoder.encodeFloat(accel0)
+    encoder.encodeFloat(accel1)
+    encoder.encodeFloat(accel2)
+    encoder.encodeFloat(gyro0)
+    encoder.encodeFloat(gyro1)
+    encoder.encodeFloat(gyro2)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<NavFilterBias> {
@@ -98,14 +98,15 @@ public data class NavFilterBias(
     public override val crcExtra: Byte = 34
 
     public override fun deserialize(bytes: ByteArray): NavFilterBias {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val usec = inputBuffer.decodeUInt64()
-      val accel0 = inputBuffer.decodeFloat()
-      val accel1 = inputBuffer.decodeFloat()
-      val accel2 = inputBuffer.decodeFloat()
-      val gyro0 = inputBuffer.decodeFloat()
-      val gyro1 = inputBuffer.decodeFloat()
-      val gyro2 = inputBuffer.decodeFloat()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val usec = decoder.safeDecodeUInt64()
+      val accel0 = decoder.safeDecodeFloat()
+      val accel1 = decoder.safeDecodeFloat()
+      val accel2 = decoder.safeDecodeFloat()
+      val gyro0 = decoder.safeDecodeFloat()
+      val gyro1 = decoder.safeDecodeFloat()
+      val gyro2 = decoder.safeDecodeFloat()
 
       return NavFilterBias(
         usec = usec,

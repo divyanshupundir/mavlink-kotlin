@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -150,41 +150,41 @@ public data class ServoOutputRaw(
   public override val instanceCompanion: MavMessage.MavCompanion<ServoOutputRaw> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeUsec)
-    outputBuffer.encodeUInt16(servo1Raw)
-    outputBuffer.encodeUInt16(servo2Raw)
-    outputBuffer.encodeUInt16(servo3Raw)
-    outputBuffer.encodeUInt16(servo4Raw)
-    outputBuffer.encodeUInt16(servo5Raw)
-    outputBuffer.encodeUInt16(servo6Raw)
-    outputBuffer.encodeUInt16(servo7Raw)
-    outputBuffer.encodeUInt16(servo8Raw)
-    outputBuffer.encodeUInt8(port)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(timeUsec)
+    encoder.encodeUInt16(servo1Raw)
+    encoder.encodeUInt16(servo2Raw)
+    encoder.encodeUInt16(servo3Raw)
+    encoder.encodeUInt16(servo4Raw)
+    encoder.encodeUInt16(servo5Raw)
+    encoder.encodeUInt16(servo6Raw)
+    encoder.encodeUInt16(servo7Raw)
+    encoder.encodeUInt16(servo8Raw)
+    encoder.encodeUInt8(port)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(timeUsec)
-    outputBuffer.encodeUInt16(servo1Raw)
-    outputBuffer.encodeUInt16(servo2Raw)
-    outputBuffer.encodeUInt16(servo3Raw)
-    outputBuffer.encodeUInt16(servo4Raw)
-    outputBuffer.encodeUInt16(servo5Raw)
-    outputBuffer.encodeUInt16(servo6Raw)
-    outputBuffer.encodeUInt16(servo7Raw)
-    outputBuffer.encodeUInt16(servo8Raw)
-    outputBuffer.encodeUInt8(port)
-    outputBuffer.encodeUInt16(servo9Raw)
-    outputBuffer.encodeUInt16(servo10Raw)
-    outputBuffer.encodeUInt16(servo11Raw)
-    outputBuffer.encodeUInt16(servo12Raw)
-    outputBuffer.encodeUInt16(servo13Raw)
-    outputBuffer.encodeUInt16(servo14Raw)
-    outputBuffer.encodeUInt16(servo15Raw)
-    outputBuffer.encodeUInt16(servo16Raw)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(timeUsec)
+    encoder.encodeUInt16(servo1Raw)
+    encoder.encodeUInt16(servo2Raw)
+    encoder.encodeUInt16(servo3Raw)
+    encoder.encodeUInt16(servo4Raw)
+    encoder.encodeUInt16(servo5Raw)
+    encoder.encodeUInt16(servo6Raw)
+    encoder.encodeUInt16(servo7Raw)
+    encoder.encodeUInt16(servo8Raw)
+    encoder.encodeUInt8(port)
+    encoder.encodeUInt16(servo9Raw)
+    encoder.encodeUInt16(servo10Raw)
+    encoder.encodeUInt16(servo11Raw)
+    encoder.encodeUInt16(servo12Raw)
+    encoder.encodeUInt16(servo13Raw)
+    encoder.encodeUInt16(servo14Raw)
+    encoder.encodeUInt16(servo15Raw)
+    encoder.encodeUInt16(servo16Raw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ServoOutputRaw> {
@@ -197,25 +197,26 @@ public data class ServoOutputRaw(
     public override val crcExtra: Byte = -34
 
     public override fun deserialize(bytes: ByteArray): ServoOutputRaw {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt32()
-      val servo1Raw = inputBuffer.decodeUInt16()
-      val servo2Raw = inputBuffer.decodeUInt16()
-      val servo3Raw = inputBuffer.decodeUInt16()
-      val servo4Raw = inputBuffer.decodeUInt16()
-      val servo5Raw = inputBuffer.decodeUInt16()
-      val servo6Raw = inputBuffer.decodeUInt16()
-      val servo7Raw = inputBuffer.decodeUInt16()
-      val servo8Raw = inputBuffer.decodeUInt16()
-      val port = inputBuffer.decodeUInt8()
-      val servo9Raw = inputBuffer.decodeUInt16()
-      val servo10Raw = inputBuffer.decodeUInt16()
-      val servo11Raw = inputBuffer.decodeUInt16()
-      val servo12Raw = inputBuffer.decodeUInt16()
-      val servo13Raw = inputBuffer.decodeUInt16()
-      val servo14Raw = inputBuffer.decodeUInt16()
-      val servo15Raw = inputBuffer.decodeUInt16()
-      val servo16Raw = inputBuffer.decodeUInt16()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt32()
+      val servo1Raw = decoder.safeDecodeUInt16()
+      val servo2Raw = decoder.safeDecodeUInt16()
+      val servo3Raw = decoder.safeDecodeUInt16()
+      val servo4Raw = decoder.safeDecodeUInt16()
+      val servo5Raw = decoder.safeDecodeUInt16()
+      val servo6Raw = decoder.safeDecodeUInt16()
+      val servo7Raw = decoder.safeDecodeUInt16()
+      val servo8Raw = decoder.safeDecodeUInt16()
+      val port = decoder.safeDecodeUInt8()
+      val servo9Raw = decoder.safeDecodeUInt16()
+      val servo10Raw = decoder.safeDecodeUInt16()
+      val servo11Raw = decoder.safeDecodeUInt16()
+      val servo12Raw = decoder.safeDecodeUInt16()
+      val servo13Raw = decoder.safeDecodeUInt16()
+      val servo14Raw = decoder.safeDecodeUInt16()
+      val servo15Raw = decoder.safeDecodeUInt16()
+      val servo16Raw = decoder.safeDecodeUInt16()
 
       return ServoOutputRaw(
         timeUsec = timeUsec,

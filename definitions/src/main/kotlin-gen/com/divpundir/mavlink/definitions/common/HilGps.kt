@@ -3,19 +3,19 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -124,41 +124,41 @@ public data class HilGps(
   public override val instanceCompanion: MavMessage.MavCompanion<HilGps> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUInt16(eph)
-    outputBuffer.encodeUInt16(epv)
-    outputBuffer.encodeUInt16(vel)
-    outputBuffer.encodeInt16(vn)
-    outputBuffer.encodeInt16(ve)
-    outputBuffer.encodeInt16(vd)
-    outputBuffer.encodeUInt16(cog)
-    outputBuffer.encodeUInt8(fixType)
-    outputBuffer.encodeUInt8(satellitesVisible)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeUInt16(eph)
+    encoder.encodeUInt16(epv)
+    encoder.encodeUInt16(vel)
+    encoder.encodeInt16(vn)
+    encoder.encodeInt16(ve)
+    encoder.encodeInt16(vd)
+    encoder.encodeUInt16(cog)
+    encoder.encodeUInt8(fixType)
+    encoder.encodeUInt8(satellitesVisible)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lon)
-    outputBuffer.encodeInt32(alt)
-    outputBuffer.encodeUInt16(eph)
-    outputBuffer.encodeUInt16(epv)
-    outputBuffer.encodeUInt16(vel)
-    outputBuffer.encodeInt16(vn)
-    outputBuffer.encodeInt16(ve)
-    outputBuffer.encodeInt16(vd)
-    outputBuffer.encodeUInt16(cog)
-    outputBuffer.encodeUInt8(fixType)
-    outputBuffer.encodeUInt8(satellitesVisible)
-    outputBuffer.encodeUInt8(id)
-    outputBuffer.encodeUInt16(yaw)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lon)
+    encoder.encodeInt32(alt)
+    encoder.encodeUInt16(eph)
+    encoder.encodeUInt16(epv)
+    encoder.encodeUInt16(vel)
+    encoder.encodeInt16(vn)
+    encoder.encodeInt16(ve)
+    encoder.encodeInt16(vd)
+    encoder.encodeUInt16(cog)
+    encoder.encodeUInt8(fixType)
+    encoder.encodeUInt8(satellitesVisible)
+    encoder.encodeUInt8(id)
+    encoder.encodeUInt16(yaw)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<HilGps> {
@@ -171,22 +171,23 @@ public data class HilGps(
     public override val crcExtra: Byte = 124
 
     public override fun deserialize(bytes: ByteArray): HilGps {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val lat = inputBuffer.decodeInt32()
-      val lon = inputBuffer.decodeInt32()
-      val alt = inputBuffer.decodeInt32()
-      val eph = inputBuffer.decodeUInt16()
-      val epv = inputBuffer.decodeUInt16()
-      val vel = inputBuffer.decodeUInt16()
-      val vn = inputBuffer.decodeInt16()
-      val ve = inputBuffer.decodeInt16()
-      val vd = inputBuffer.decodeInt16()
-      val cog = inputBuffer.decodeUInt16()
-      val fixType = inputBuffer.decodeUInt8()
-      val satellitesVisible = inputBuffer.decodeUInt8()
-      val id = inputBuffer.decodeUInt8()
-      val yaw = inputBuffer.decodeUInt16()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val lat = decoder.safeDecodeInt32()
+      val lon = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt32()
+      val eph = decoder.safeDecodeUInt16()
+      val epv = decoder.safeDecodeUInt16()
+      val vel = decoder.safeDecodeUInt16()
+      val vn = decoder.safeDecodeInt16()
+      val ve = decoder.safeDecodeInt16()
+      val vd = decoder.safeDecodeInt16()
+      val cog = decoder.safeDecodeUInt16()
+      val fixType = decoder.safeDecodeUInt8()
+      val satellitesVisible = decoder.safeDecodeUInt8()
+      val id = decoder.safeDecodeUInt8()
+      val yaw = decoder.safeDecodeUInt16()
 
       return HilGps(
         timeUsec = timeUsec,

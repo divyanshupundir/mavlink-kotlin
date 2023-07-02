@@ -5,21 +5,21 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -90,27 +90,27 @@ public data class SerialControl(
   public override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(baudrate)
-    outputBuffer.encodeUInt16(timeout)
-    outputBuffer.encodeEnumValue(device.value, 1)
-    outputBuffer.encodeBitmaskValue(flags.value, 1)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeUInt8Array(data, 70)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(baudrate)
+    encoder.encodeUInt16(timeout)
+    encoder.encodeEnumValue(device.value, 1)
+    encoder.encodeBitmaskValue(flags.value, 1)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8Array(data, 70)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(baudrate)
-    outputBuffer.encodeUInt16(timeout)
-    outputBuffer.encodeEnumValue(device.value, 1)
-    outputBuffer.encodeBitmaskValue(flags.value, 1)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeUInt8Array(data, 70)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(baudrate)
+    encoder.encodeUInt16(timeout)
+    encoder.encodeEnumValue(device.value, 1)
+    encoder.encodeBitmaskValue(flags.value, 1)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8Array(data, 70)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<SerialControl> {
@@ -123,21 +123,22 @@ public data class SerialControl(
     public override val crcExtra: Byte = -36
 
     public override fun deserialize(bytes: ByteArray): SerialControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val baudrate = inputBuffer.decodeUInt32()
-      val timeout = inputBuffer.decodeUInt16()
-      val device = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val baudrate = decoder.safeDecodeUInt32()
+      val timeout = decoder.safeDecodeUInt16()
+      val device = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = SerialControlDev.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val flags = decoder.safeDecodeBitmaskValue(1).let { value ->
         val flags = SerialControlFlag.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
-      val count = inputBuffer.decodeUInt8()
-      val data = inputBuffer.decodeUInt8Array(70)
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
+      val count = decoder.safeDecodeUInt8()
+      val data = decoder.safeDecodeUInt8Array(70)
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
 
       return SerialControl(
         device = device,

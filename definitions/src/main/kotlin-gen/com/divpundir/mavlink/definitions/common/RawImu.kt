@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -104,35 +104,35 @@ public data class RawImu(
   public override val instanceCompanion: MavMessage.MavCompanion<RawImu> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt16(xacc)
-    outputBuffer.encodeInt16(yacc)
-    outputBuffer.encodeInt16(zacc)
-    outputBuffer.encodeInt16(xgyro)
-    outputBuffer.encodeInt16(ygyro)
-    outputBuffer.encodeInt16(zgyro)
-    outputBuffer.encodeInt16(xmag)
-    outputBuffer.encodeInt16(ymag)
-    outputBuffer.encodeInt16(zmag)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt16(xacc)
+    encoder.encodeInt16(yacc)
+    encoder.encodeInt16(zacc)
+    encoder.encodeInt16(xgyro)
+    encoder.encodeInt16(ygyro)
+    encoder.encodeInt16(zgyro)
+    encoder.encodeInt16(xmag)
+    encoder.encodeInt16(ymag)
+    encoder.encodeInt16(zmag)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeInt16(xacc)
-    outputBuffer.encodeInt16(yacc)
-    outputBuffer.encodeInt16(zacc)
-    outputBuffer.encodeInt16(xgyro)
-    outputBuffer.encodeInt16(ygyro)
-    outputBuffer.encodeInt16(zgyro)
-    outputBuffer.encodeInt16(xmag)
-    outputBuffer.encodeInt16(ymag)
-    outputBuffer.encodeInt16(zmag)
-    outputBuffer.encodeUInt8(id)
-    outputBuffer.encodeInt16(temperature)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeInt16(xacc)
+    encoder.encodeInt16(yacc)
+    encoder.encodeInt16(zacc)
+    encoder.encodeInt16(xgyro)
+    encoder.encodeInt16(ygyro)
+    encoder.encodeInt16(zgyro)
+    encoder.encodeInt16(xmag)
+    encoder.encodeInt16(ymag)
+    encoder.encodeInt16(zmag)
+    encoder.encodeUInt8(id)
+    encoder.encodeInt16(temperature)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RawImu> {
@@ -145,19 +145,20 @@ public data class RawImu(
     public override val crcExtra: Byte = -112
 
     public override fun deserialize(bytes: ByteArray): RawImu {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val xacc = inputBuffer.decodeInt16()
-      val yacc = inputBuffer.decodeInt16()
-      val zacc = inputBuffer.decodeInt16()
-      val xgyro = inputBuffer.decodeInt16()
-      val ygyro = inputBuffer.decodeInt16()
-      val zgyro = inputBuffer.decodeInt16()
-      val xmag = inputBuffer.decodeInt16()
-      val ymag = inputBuffer.decodeInt16()
-      val zmag = inputBuffer.decodeInt16()
-      val id = inputBuffer.decodeUInt8()
-      val temperature = inputBuffer.decodeInt16()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val xacc = decoder.safeDecodeInt16()
+      val yacc = decoder.safeDecodeInt16()
+      val zacc = decoder.safeDecodeInt16()
+      val xgyro = decoder.safeDecodeInt16()
+      val ygyro = decoder.safeDecodeInt16()
+      val zgyro = decoder.safeDecodeInt16()
+      val xmag = decoder.safeDecodeInt16()
+      val ymag = decoder.safeDecodeInt16()
+      val zmag = decoder.safeDecodeInt16()
+      val id = decoder.safeDecodeUInt8()
+      val temperature = decoder.safeDecodeInt16()
 
       return RawImu(
         timeUsec = timeUsec,

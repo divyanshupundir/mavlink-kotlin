@@ -3,13 +3,13 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -52,19 +52,19 @@ public data class GpsRtcmData(
   public override val instanceCompanion: MavMessage.MavCompanion<GpsRtcmData> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(flags)
-    outputBuffer.encodeUInt8(len)
-    outputBuffer.encodeUInt8Array(data, 180)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt8(flags)
+    encoder.encodeUInt8(len)
+    encoder.encodeUInt8Array(data, 180)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt8(flags)
-    outputBuffer.encodeUInt8(len)
-    outputBuffer.encodeUInt8Array(data, 180)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt8(flags)
+    encoder.encodeUInt8(len)
+    encoder.encodeUInt8Array(data, 180)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GpsRtcmData> {
@@ -77,10 +77,11 @@ public data class GpsRtcmData(
     public override val crcExtra: Byte = 35
 
     public override fun deserialize(bytes: ByteArray): GpsRtcmData {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val flags = inputBuffer.decodeUInt8()
-      val len = inputBuffer.decodeUInt8()
-      val data = inputBuffer.decodeUInt8Array(180)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val flags = decoder.safeDecodeUInt8()
+      val len = decoder.safeDecodeUInt8()
+      val data = decoder.safeDecodeUInt8Array(180)
 
       return GpsRtcmData(
         flags = flags,

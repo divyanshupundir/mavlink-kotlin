@@ -4,19 +4,19 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeInt32
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -89,33 +89,33 @@ public data class RallyPoint(
   public override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lng)
-    outputBuffer.encodeInt16(alt)
-    outputBuffer.encodeInt16(breakAlt)
-    outputBuffer.encodeUInt16(landDir)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(idx)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeBitmaskValue(flags.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lng)
+    encoder.encodeInt16(alt)
+    encoder.encodeInt16(breakAlt)
+    encoder.encodeUInt16(landDir)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(idx)
+    encoder.encodeUInt8(count)
+    encoder.encodeBitmaskValue(flags.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(lat)
-    outputBuffer.encodeInt32(lng)
-    outputBuffer.encodeInt16(alt)
-    outputBuffer.encodeInt16(breakAlt)
-    outputBuffer.encodeUInt16(landDir)
-    outputBuffer.encodeUInt8(targetSystem)
-    outputBuffer.encodeUInt8(targetComponent)
-    outputBuffer.encodeUInt8(idx)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeBitmaskValue(flags.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(lat)
+    encoder.encodeInt32(lng)
+    encoder.encodeInt16(alt)
+    encoder.encodeInt16(breakAlt)
+    encoder.encodeUInt16(landDir)
+    encoder.encodeUInt8(targetSystem)
+    encoder.encodeUInt8(targetComponent)
+    encoder.encodeUInt8(idx)
+    encoder.encodeUInt8(count)
+    encoder.encodeBitmaskValue(flags.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RallyPoint> {
@@ -128,17 +128,18 @@ public data class RallyPoint(
     public override val crcExtra: Byte = -118
 
     public override fun deserialize(bytes: ByteArray): RallyPoint {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val lat = inputBuffer.decodeInt32()
-      val lng = inputBuffer.decodeInt32()
-      val alt = inputBuffer.decodeInt16()
-      val breakAlt = inputBuffer.decodeInt16()
-      val landDir = inputBuffer.decodeUInt16()
-      val targetSystem = inputBuffer.decodeUInt8()
-      val targetComponent = inputBuffer.decodeUInt8()
-      val idx = inputBuffer.decodeUInt8()
-      val count = inputBuffer.decodeUInt8()
-      val flags = inputBuffer.decodeBitmaskValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val lat = decoder.safeDecodeInt32()
+      val lng = decoder.safeDecodeInt32()
+      val alt = decoder.safeDecodeInt16()
+      val breakAlt = decoder.safeDecodeInt16()
+      val landDir = decoder.safeDecodeUInt16()
+      val targetSystem = decoder.safeDecodeUInt8()
+      val targetComponent = decoder.safeDecodeUInt8()
+      val idx = decoder.safeDecodeUInt8()
+      val count = decoder.safeDecodeUInt8()
+      val flags = decoder.safeDecodeBitmaskValue(1).let { value ->
         val flags = RallyFlags.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }

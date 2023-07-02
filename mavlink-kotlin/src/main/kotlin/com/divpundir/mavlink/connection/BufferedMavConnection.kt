@@ -1,25 +1,19 @@
-package com.divpundir.mavlink.connection.stream
+package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.connection.MavConnection
-import com.divpundir.mavlink.frame.MavFrameV1Impl
-import com.divpundir.mavlink.frame.MavFrameV2Impl
-import com.divpundir.mavlink.mavRawFrameReader
-import com.divpundir.mavlink.frame.MavFrameType
-import com.divpundir.mavlink.frame.MavRawFrame
-import java.io.Closeable
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.Closeable
+import okio.IOException
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-internal class StreamMavConnection(
-    inputStream: InputStream,
-    private val outputStream: OutputStream,
+internal class BufferedMavConnection(
+    source: BufferedSource,
+    private val sink: BufferedSink,
     private val streamHandle: Closeable,
     private val dialect: MavDialect,
 ) : MavConnection {
@@ -27,7 +21,7 @@ internal class StreamMavConnection(
     private val readLock: Lock = ReentrantLock()
     private val writeLock: Lock = ReentrantLock()
 
-    private val reader = inputStream.mavRawFrameReader()
+    private val reader = MavRawFrameReader(source)
 
     private var sequence: UByte = 0u
 
@@ -48,21 +42,19 @@ internal class StreamMavConnection(
                 val companion = getMessageCompanionOrNull(rawFrame)
                 if (companion == null) {
                     System.err.println("Message not found in dialect. rawFrame=$rawFrame")
-                    reader.drop()
                     continue
                 }
 
                 val payload = try {
                     companion.deserialize(rawFrame.payload)
-                } catch (e: Exception) {
+                } catch (e: IOException) {
                     System.err.println("Error deserializing MAVLink message. rawFrame=$rawFrame metadata=$companion")
-                    reader.drop()
                     continue
                 }
 
                 return when (rawFrame.stx) {
-                    MavFrameType.V1.magic -> MavFrameV1Impl(rawFrame, payload)
-                    MavFrameType.V2.magic -> MavFrameV2Impl(rawFrame, payload)
+                    MavRawFrame.Stx.V1 -> MavFrameV1Impl(rawFrame, payload)
+                    MavRawFrame.Stx.V2 -> MavFrameV2Impl(rawFrame, payload)
                     else -> throw IllegalStateException()
                 }
             }
@@ -85,12 +77,12 @@ internal class StreamMavConnection(
     ) {
         send(
             MavRawFrame.createV1(
-                sequence++,
-                systemId,
-                componentId,
-                payload.instanceCompanion.id,
-                payload.serializeV1(),
-                payload.instanceCompanion.crcExtra,
+                seq = sequence++,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = payload.instanceCompanion.id,
+                payload = payload.serializeV1(),
+                crcExtra = payload.instanceCompanion.crcExtra,
             )
         )
     }
@@ -103,12 +95,12 @@ internal class StreamMavConnection(
     ) {
         send(
             MavRawFrame.createUnsignedV2(
-                sequence++,
-                systemId,
-                componentId,
-                payload.instanceCompanion.id,
-                payload.serializeV2(),
-                payload.instanceCompanion.crcExtra,
+                seq = sequence++,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = payload.instanceCompanion.id,
+                payload = payload.serializeV2(),
+                crcExtra = payload.instanceCompanion.crcExtra,
             )
         )
     }
@@ -124,15 +116,15 @@ internal class StreamMavConnection(
     ) {
         send(
             MavRawFrame.createSignedV2(
-                sequence++,
-                systemId,
-                componentId,
-                payload.instanceCompanion.id,
-                payload.serializeV2(),
-                payload.instanceCompanion.crcExtra,
-                linkId,
-                timestamp,
-                secretKey
+                seq = sequence++,
+                systemId = systemId,
+                componentId = componentId,
+                messageId = payload.instanceCompanion.id,
+                payload = payload.serializeV2(),
+                crcExtra = payload.instanceCompanion.crcExtra,
+                signatureLinkId = linkId,
+                signatureTimestamp = timestamp,
+                secretKey = secretKey
             )
         )
     }
@@ -140,8 +132,8 @@ internal class StreamMavConnection(
     @Throws(IOException::class)
     private fun send(rawFrame: MavRawFrame) {
         writeLock.withLock {
-            outputStream.write(rawFrame.rawBytes)
-            outputStream.flush()
+            sink.write(rawFrame.rawBytes)
+            sink.flush()
         }
     }
 }

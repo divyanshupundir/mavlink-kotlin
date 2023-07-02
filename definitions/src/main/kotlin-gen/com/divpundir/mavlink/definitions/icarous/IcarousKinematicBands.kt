@@ -4,15 +4,15 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -112,45 +112,45 @@ public data class IcarousKinematicBands(
   public override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(min1)
-    outputBuffer.encodeFloat(max1)
-    outputBuffer.encodeFloat(min2)
-    outputBuffer.encodeFloat(max2)
-    outputBuffer.encodeFloat(min3)
-    outputBuffer.encodeFloat(max3)
-    outputBuffer.encodeFloat(min4)
-    outputBuffer.encodeFloat(max4)
-    outputBuffer.encodeFloat(min5)
-    outputBuffer.encodeFloat(max5)
-    outputBuffer.encodeInt8(numbands)
-    outputBuffer.encodeEnumValue(type1.value, 1)
-    outputBuffer.encodeEnumValue(type2.value, 1)
-    outputBuffer.encodeEnumValue(type3.value, 1)
-    outputBuffer.encodeEnumValue(type4.value, 1)
-    outputBuffer.encodeEnumValue(type5.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeFloat(min1)
+    encoder.encodeFloat(max1)
+    encoder.encodeFloat(min2)
+    encoder.encodeFloat(max2)
+    encoder.encodeFloat(min3)
+    encoder.encodeFloat(max3)
+    encoder.encodeFloat(min4)
+    encoder.encodeFloat(max4)
+    encoder.encodeFloat(min5)
+    encoder.encodeFloat(max5)
+    encoder.encodeInt8(numbands)
+    encoder.encodeEnumValue(type1.value, 1)
+    encoder.encodeEnumValue(type2.value, 1)
+    encoder.encodeEnumValue(type3.value, 1)
+    encoder.encodeEnumValue(type4.value, 1)
+    encoder.encodeEnumValue(type5.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeFloat(min1)
-    outputBuffer.encodeFloat(max1)
-    outputBuffer.encodeFloat(min2)
-    outputBuffer.encodeFloat(max2)
-    outputBuffer.encodeFloat(min3)
-    outputBuffer.encodeFloat(max3)
-    outputBuffer.encodeFloat(min4)
-    outputBuffer.encodeFloat(max4)
-    outputBuffer.encodeFloat(min5)
-    outputBuffer.encodeFloat(max5)
-    outputBuffer.encodeInt8(numbands)
-    outputBuffer.encodeEnumValue(type1.value, 1)
-    outputBuffer.encodeEnumValue(type2.value, 1)
-    outputBuffer.encodeEnumValue(type3.value, 1)
-    outputBuffer.encodeEnumValue(type4.value, 1)
-    outputBuffer.encodeEnumValue(type5.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeFloat(min1)
+    encoder.encodeFloat(max1)
+    encoder.encodeFloat(min2)
+    encoder.encodeFloat(max2)
+    encoder.encodeFloat(min3)
+    encoder.encodeFloat(max3)
+    encoder.encodeFloat(min4)
+    encoder.encodeFloat(max4)
+    encoder.encodeFloat(min5)
+    encoder.encodeFloat(max5)
+    encoder.encodeInt8(numbands)
+    encoder.encodeEnumValue(type1.value, 1)
+    encoder.encodeEnumValue(type2.value, 1)
+    encoder.encodeEnumValue(type3.value, 1)
+    encoder.encodeEnumValue(type4.value, 1)
+    encoder.encodeEnumValue(type5.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<IcarousKinematicBands> {
@@ -163,35 +163,36 @@ public data class IcarousKinematicBands(
     public override val crcExtra: Byte = -17
 
     public override fun deserialize(bytes: ByteArray): IcarousKinematicBands {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val min1 = inputBuffer.decodeFloat()
-      val max1 = inputBuffer.decodeFloat()
-      val min2 = inputBuffer.decodeFloat()
-      val max2 = inputBuffer.decodeFloat()
-      val min3 = inputBuffer.decodeFloat()
-      val max3 = inputBuffer.decodeFloat()
-      val min4 = inputBuffer.decodeFloat()
-      val max4 = inputBuffer.decodeFloat()
-      val min5 = inputBuffer.decodeFloat()
-      val max5 = inputBuffer.decodeFloat()
-      val numbands = inputBuffer.decodeInt8()
-      val type1 = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val min1 = decoder.safeDecodeFloat()
+      val max1 = decoder.safeDecodeFloat()
+      val min2 = decoder.safeDecodeFloat()
+      val max2 = decoder.safeDecodeFloat()
+      val min3 = decoder.safeDecodeFloat()
+      val max3 = decoder.safeDecodeFloat()
+      val min4 = decoder.safeDecodeFloat()
+      val max4 = decoder.safeDecodeFloat()
+      val min5 = decoder.safeDecodeFloat()
+      val max5 = decoder.safeDecodeFloat()
+      val numbands = decoder.safeDecodeInt8()
+      val type1 = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = IcarousTrackBandTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type2 = inputBuffer.decodeEnumValue(1).let { value ->
+      val type2 = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = IcarousTrackBandTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type3 = inputBuffer.decodeEnumValue(1).let { value ->
+      val type3 = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = IcarousTrackBandTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type4 = inputBuffer.decodeEnumValue(1).let { value ->
+      val type4 = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = IcarousTrackBandTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val type5 = inputBuffer.decodeEnumValue(1).let { value ->
+      val type5 = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = IcarousTrackBandTypes.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

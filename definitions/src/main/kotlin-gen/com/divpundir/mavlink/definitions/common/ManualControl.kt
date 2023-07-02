@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeInt16
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -113,29 +113,29 @@ public data class ManualControl(
   public override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(x)
-    outputBuffer.encodeInt16(y)
-    outputBuffer.encodeInt16(z)
-    outputBuffer.encodeInt16(r)
-    outputBuffer.encodeUInt16(buttons)
-    outputBuffer.encodeUInt8(target)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt16(x)
+    encoder.encodeInt16(y)
+    encoder.encodeInt16(z)
+    encoder.encodeInt16(r)
+    encoder.encodeUInt16(buttons)
+    encoder.encodeUInt8(target)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt16(x)
-    outputBuffer.encodeInt16(y)
-    outputBuffer.encodeInt16(z)
-    outputBuffer.encodeInt16(r)
-    outputBuffer.encodeUInt16(buttons)
-    outputBuffer.encodeUInt8(target)
-    outputBuffer.encodeUInt16(buttons2)
-    outputBuffer.encodeUInt8(enabledExtensions)
-    outputBuffer.encodeInt16(s)
-    outputBuffer.encodeInt16(t)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt16(x)
+    encoder.encodeInt16(y)
+    encoder.encodeInt16(z)
+    encoder.encodeInt16(r)
+    encoder.encodeUInt16(buttons)
+    encoder.encodeUInt8(target)
+    encoder.encodeUInt16(buttons2)
+    encoder.encodeUInt8(enabledExtensions)
+    encoder.encodeInt16(s)
+    encoder.encodeInt16(t)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ManualControl> {
@@ -148,17 +148,18 @@ public data class ManualControl(
     public override val crcExtra: Byte = -13
 
     public override fun deserialize(bytes: ByteArray): ManualControl {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val x = inputBuffer.decodeInt16()
-      val y = inputBuffer.decodeInt16()
-      val z = inputBuffer.decodeInt16()
-      val r = inputBuffer.decodeInt16()
-      val buttons = inputBuffer.decodeUInt16()
-      val target = inputBuffer.decodeUInt8()
-      val buttons2 = inputBuffer.decodeUInt16()
-      val enabledExtensions = inputBuffer.decodeUInt8()
-      val s = inputBuffer.decodeInt16()
-      val t = inputBuffer.decodeInt16()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val x = decoder.safeDecodeInt16()
+      val y = decoder.safeDecodeInt16()
+      val z = decoder.safeDecodeInt16()
+      val r = decoder.safeDecodeInt16()
+      val buttons = decoder.safeDecodeUInt16()
+      val target = decoder.safeDecodeUInt8()
+      val buttons2 = decoder.safeDecodeUInt16()
+      val enabledExtensions = decoder.safeDecodeUInt8()
+      val s = decoder.safeDecodeInt16()
+      val t = decoder.safeDecodeInt16()
 
       return ManualControl(
         target = target,

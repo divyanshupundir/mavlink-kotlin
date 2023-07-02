@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.asluav
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -87,35 +87,35 @@ public data class AslctrlDebug(
   public override val instanceCompanion: MavMessage.MavCompanion<AslctrlDebug> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(i321)
-    outputBuffer.encodeFloat(f1)
-    outputBuffer.encodeFloat(f2)
-    outputBuffer.encodeFloat(f3)
-    outputBuffer.encodeFloat(f4)
-    outputBuffer.encodeFloat(f5)
-    outputBuffer.encodeFloat(f6)
-    outputBuffer.encodeFloat(f7)
-    outputBuffer.encodeFloat(f8)
-    outputBuffer.encodeUInt8(i81)
-    outputBuffer.encodeUInt8(i82)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(i321)
+    encoder.encodeFloat(f1)
+    encoder.encodeFloat(f2)
+    encoder.encodeFloat(f3)
+    encoder.encodeFloat(f4)
+    encoder.encodeFloat(f5)
+    encoder.encodeFloat(f6)
+    encoder.encodeFloat(f7)
+    encoder.encodeFloat(f8)
+    encoder.encodeUInt8(i81)
+    encoder.encodeUInt8(i82)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(i321)
-    outputBuffer.encodeFloat(f1)
-    outputBuffer.encodeFloat(f2)
-    outputBuffer.encodeFloat(f3)
-    outputBuffer.encodeFloat(f4)
-    outputBuffer.encodeFloat(f5)
-    outputBuffer.encodeFloat(f6)
-    outputBuffer.encodeFloat(f7)
-    outputBuffer.encodeFloat(f8)
-    outputBuffer.encodeUInt8(i81)
-    outputBuffer.encodeUInt8(i82)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(i321)
+    encoder.encodeFloat(f1)
+    encoder.encodeFloat(f2)
+    encoder.encodeFloat(f3)
+    encoder.encodeFloat(f4)
+    encoder.encodeFloat(f5)
+    encoder.encodeFloat(f6)
+    encoder.encodeFloat(f7)
+    encoder.encodeFloat(f8)
+    encoder.encodeUInt8(i81)
+    encoder.encodeUInt8(i82)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AslctrlDebug> {
@@ -128,18 +128,19 @@ public data class AslctrlDebug(
     public override val crcExtra: Byte = -5
 
     public override fun deserialize(bytes: ByteArray): AslctrlDebug {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val i321 = inputBuffer.decodeUInt32()
-      val f1 = inputBuffer.decodeFloat()
-      val f2 = inputBuffer.decodeFloat()
-      val f3 = inputBuffer.decodeFloat()
-      val f4 = inputBuffer.decodeFloat()
-      val f5 = inputBuffer.decodeFloat()
-      val f6 = inputBuffer.decodeFloat()
-      val f7 = inputBuffer.decodeFloat()
-      val f8 = inputBuffer.decodeFloat()
-      val i81 = inputBuffer.decodeUInt8()
-      val i82 = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val i321 = decoder.safeDecodeUInt32()
+      val f1 = decoder.safeDecodeFloat()
+      val f2 = decoder.safeDecodeFloat()
+      val f3 = decoder.safeDecodeFloat()
+      val f4 = decoder.safeDecodeFloat()
+      val f5 = decoder.safeDecodeFloat()
+      val f6 = decoder.safeDecodeFloat()
+      val f7 = decoder.safeDecodeFloat()
+      val f8 = decoder.safeDecodeFloat()
+      val i81 = decoder.safeDecodeUInt8()
+      val i82 = decoder.safeDecodeUInt8()
 
       return AslctrlDebug(
         i321 = i321,

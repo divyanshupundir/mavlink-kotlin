@@ -3,15 +3,15 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt32
-import com.divpundir.mavlink.serialization.decodeUInt8
-import com.divpundir.mavlink.serialization.decodeUInt8Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -65,24 +65,24 @@ public data class DeviceOpReadReply(
   public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpReadReply> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeUInt8(result)
-    outputBuffer.encodeUInt8(regstart)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeUInt8Array(data, 128)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt32(requestId)
+    encoder.encodeUInt8(result)
+    encoder.encodeUInt8(regstart)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8Array(data, 128)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt32(requestId)
-    outputBuffer.encodeUInt8(result)
-    outputBuffer.encodeUInt8(regstart)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeUInt8Array(data, 128)
-    outputBuffer.encodeUInt8(bank)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt32(requestId)
+    encoder.encodeUInt8(result)
+    encoder.encodeUInt8(regstart)
+    encoder.encodeUInt8(count)
+    encoder.encodeUInt8Array(data, 128)
+    encoder.encodeUInt8(bank)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<DeviceOpReadReply> {
@@ -95,13 +95,14 @@ public data class DeviceOpReadReply(
     public override val crcExtra: Byte = 15
 
     public override fun deserialize(bytes: ByteArray): DeviceOpReadReply {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val requestId = inputBuffer.decodeUInt32()
-      val result = inputBuffer.decodeUInt8()
-      val regstart = inputBuffer.decodeUInt8()
-      val count = inputBuffer.decodeUInt8()
-      val data = inputBuffer.decodeUInt8Array(128)
-      val bank = inputBuffer.decodeUInt8()
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val requestId = decoder.safeDecodeUInt32()
+      val result = decoder.safeDecodeUInt8()
+      val regstart = decoder.safeDecodeUInt8()
+      val count = decoder.safeDecodeUInt8()
+      val data = decoder.safeDecodeUInt8Array(128)
+      val bank = decoder.safeDecodeUInt8()
 
       return DeviceOpReadReply(
         requestId = requestId,

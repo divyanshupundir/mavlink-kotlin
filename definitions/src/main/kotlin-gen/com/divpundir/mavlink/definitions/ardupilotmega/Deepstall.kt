@@ -4,15 +4,15 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeFloat
-import com.divpundir.mavlink.serialization.decodeInt32
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
@@ -82,33 +82,33 @@ public data class Deepstall(
   public override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(landingLat)
-    outputBuffer.encodeInt32(landingLon)
-    outputBuffer.encodeInt32(pathLat)
-    outputBuffer.encodeInt32(pathLon)
-    outputBuffer.encodeInt32(arcEntryLat)
-    outputBuffer.encodeInt32(arcEntryLon)
-    outputBuffer.encodeFloat(altitude)
-    outputBuffer.encodeFloat(expectedTravelDistance)
-    outputBuffer.encodeFloat(crossTrackError)
-    outputBuffer.encodeEnumValue(stage.value, 1)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeInt32(landingLat)
+    encoder.encodeInt32(landingLon)
+    encoder.encodeInt32(pathLat)
+    encoder.encodeInt32(pathLon)
+    encoder.encodeInt32(arcEntryLat)
+    encoder.encodeInt32(arcEntryLon)
+    encoder.encodeFloat(altitude)
+    encoder.encodeFloat(expectedTravelDistance)
+    encoder.encodeFloat(crossTrackError)
+    encoder.encodeEnumValue(stage.value, 1)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeInt32(landingLat)
-    outputBuffer.encodeInt32(landingLon)
-    outputBuffer.encodeInt32(pathLat)
-    outputBuffer.encodeInt32(pathLon)
-    outputBuffer.encodeInt32(arcEntryLat)
-    outputBuffer.encodeInt32(arcEntryLon)
-    outputBuffer.encodeFloat(altitude)
-    outputBuffer.encodeFloat(expectedTravelDistance)
-    outputBuffer.encodeFloat(crossTrackError)
-    outputBuffer.encodeEnumValue(stage.value, 1)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeInt32(landingLat)
+    encoder.encodeInt32(landingLon)
+    encoder.encodeInt32(pathLat)
+    encoder.encodeInt32(pathLon)
+    encoder.encodeInt32(arcEntryLat)
+    encoder.encodeInt32(arcEntryLon)
+    encoder.encodeFloat(altitude)
+    encoder.encodeFloat(expectedTravelDistance)
+    encoder.encodeFloat(crossTrackError)
+    encoder.encodeEnumValue(stage.value, 1)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Deepstall> {
@@ -121,17 +121,18 @@ public data class Deepstall(
     public override val crcExtra: Byte = 120
 
     public override fun deserialize(bytes: ByteArray): Deepstall {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val landingLat = inputBuffer.decodeInt32()
-      val landingLon = inputBuffer.decodeInt32()
-      val pathLat = inputBuffer.decodeInt32()
-      val pathLon = inputBuffer.decodeInt32()
-      val arcEntryLat = inputBuffer.decodeInt32()
-      val arcEntryLon = inputBuffer.decodeInt32()
-      val altitude = inputBuffer.decodeFloat()
-      val expectedTravelDistance = inputBuffer.decodeFloat()
-      val crossTrackError = inputBuffer.decodeFloat()
-      val stage = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val landingLat = decoder.safeDecodeInt32()
+      val landingLon = decoder.safeDecodeInt32()
+      val pathLat = decoder.safeDecodeInt32()
+      val pathLon = decoder.safeDecodeInt32()
+      val arcEntryLat = decoder.safeDecodeInt32()
+      val arcEntryLon = decoder.safeDecodeInt32()
+      val altitude = decoder.safeDecodeFloat()
+      val expectedTravelDistance = decoder.safeDecodeFloat()
+      val crossTrackError = decoder.safeDecodeFloat()
+      val stage = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = DeepstallStage.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }

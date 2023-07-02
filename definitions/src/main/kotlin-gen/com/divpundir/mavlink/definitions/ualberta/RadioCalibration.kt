@@ -3,11 +3,11 @@ package com.divpundir.mavlink.definitions.ualberta
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeUInt16Array
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16Array
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -58,25 +58,25 @@ public data class RadioCalibration(
   public override val instanceCompanion: MavMessage.MavCompanion<RadioCalibration> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16Array(aileron, 6)
-    outputBuffer.encodeUInt16Array(elevator, 6)
-    outputBuffer.encodeUInt16Array(rudder, 6)
-    outputBuffer.encodeUInt16Array(gyro, 4)
-    outputBuffer.encodeUInt16Array(pitch, 10)
-    outputBuffer.encodeUInt16Array(throttle, 10)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16Array(aileron, 6)
+    encoder.encodeUInt16Array(elevator, 6)
+    encoder.encodeUInt16Array(rudder, 6)
+    encoder.encodeUInt16Array(gyro, 4)
+    encoder.encodeUInt16Array(pitch, 10)
+    encoder.encodeUInt16Array(throttle, 10)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16Array(aileron, 6)
-    outputBuffer.encodeUInt16Array(elevator, 6)
-    outputBuffer.encodeUInt16Array(rudder, 6)
-    outputBuffer.encodeUInt16Array(gyro, 4)
-    outputBuffer.encodeUInt16Array(pitch, 10)
-    outputBuffer.encodeUInt16Array(throttle, 10)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16Array(aileron, 6)
+    encoder.encodeUInt16Array(elevator, 6)
+    encoder.encodeUInt16Array(rudder, 6)
+    encoder.encodeUInt16Array(gyro, 4)
+    encoder.encodeUInt16Array(pitch, 10)
+    encoder.encodeUInt16Array(throttle, 10)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<RadioCalibration> {
@@ -89,13 +89,14 @@ public data class RadioCalibration(
     public override val crcExtra: Byte = 71
 
     public override fun deserialize(bytes: ByteArray): RadioCalibration {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val aileron = inputBuffer.decodeUInt16Array(6)
-      val elevator = inputBuffer.decodeUInt16Array(6)
-      val rudder = inputBuffer.decodeUInt16Array(6)
-      val gyro = inputBuffer.decodeUInt16Array(4)
-      val pitch = inputBuffer.decodeUInt16Array(10)
-      val throttle = inputBuffer.decodeUInt16Array(10)
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val aileron = decoder.safeDecodeUInt16Array(6)
+      val elevator = decoder.safeDecodeUInt16Array(6)
+      val rudder = decoder.safeDecodeUInt16Array(6)
+      val gyro = decoder.safeDecodeUInt16Array(4)
+      val pitch = decoder.safeDecodeUInt16Array(10)
+      val throttle = decoder.safeDecodeUInt16Array(10)
 
       return RadioCalibration(
         aileron = aileron,

@@ -5,13 +5,8 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
-import com.divpundir.mavlink.serialization.decodeEnumValue
-import com.divpundir.mavlink.serialization.decodeInt16Array
-import com.divpundir.mavlink.serialization.decodeUInt16
-import com.divpundir.mavlink.serialization.decodeUInt16Array
-import com.divpundir.mavlink.serialization.decodeUInt32Array
-import com.divpundir.mavlink.serialization.decodeUInt64
-import com.divpundir.mavlink.serialization.decodeUInt8
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -19,9 +14,14 @@ import com.divpundir.mavlink.serialization.encodeUInt16Array
 import com.divpundir.mavlink.serialization.encodeUInt32Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeInt16Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt16Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt32Array
+import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -94,31 +94,31 @@ public data class EscInfo(
   public override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32Array(errorCount, 16)
-    outputBuffer.encodeUInt16(counter)
-    outputBuffer.encodeUInt16Array(failureFlags, 8)
-    outputBuffer.encodeInt16Array(temperature, 8)
-    outputBuffer.encodeUInt8(index)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeEnumValue(connectionType.value, 1)
-    outputBuffer.encodeUInt8(info)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32Array(errorCount, 16)
+    encoder.encodeUInt16(counter)
+    encoder.encodeUInt16Array(failureFlags, 8)
+    encoder.encodeInt16Array(temperature, 8)
+    encoder.encodeUInt8(index)
+    encoder.encodeUInt8(count)
+    encoder.encodeEnumValue(connectionType.value, 1)
+    encoder.encodeUInt8(info)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt64(timeUsec)
-    outputBuffer.encodeUInt32Array(errorCount, 16)
-    outputBuffer.encodeUInt16(counter)
-    outputBuffer.encodeUInt16Array(failureFlags, 8)
-    outputBuffer.encodeInt16Array(temperature, 8)
-    outputBuffer.encodeUInt8(index)
-    outputBuffer.encodeUInt8(count)
-    outputBuffer.encodeEnumValue(connectionType.value, 1)
-    outputBuffer.encodeUInt8(info)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt64(timeUsec)
+    encoder.encodeUInt32Array(errorCount, 16)
+    encoder.encodeUInt16(counter)
+    encoder.encodeUInt16Array(failureFlags, 8)
+    encoder.encodeInt16Array(temperature, 8)
+    encoder.encodeUInt8(index)
+    encoder.encodeUInt8(count)
+    encoder.encodeEnumValue(connectionType.value, 1)
+    encoder.encodeUInt8(info)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EscInfo> {
@@ -131,19 +131,20 @@ public data class EscInfo(
     public override val crcExtra: Byte = -5
 
     public override fun deserialize(bytes: ByteArray): EscInfo {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val timeUsec = inputBuffer.decodeUInt64()
-      val errorCount = inputBuffer.decodeUInt32Array(16)
-      val counter = inputBuffer.decodeUInt16()
-      val failureFlags = inputBuffer.decodeUInt16Array(8)
-      val temperature = inputBuffer.decodeInt16Array(8)
-      val index = inputBuffer.decodeUInt8()
-      val count = inputBuffer.decodeUInt8()
-      val connectionType = inputBuffer.decodeEnumValue(1).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val timeUsec = decoder.safeDecodeUInt64()
+      val errorCount = decoder.safeDecodeUInt32Array(16)
+      val counter = decoder.safeDecodeUInt16()
+      val failureFlags = decoder.safeDecodeUInt16Array(8)
+      val temperature = decoder.safeDecodeInt16Array(8)
+      val index = decoder.safeDecodeUInt8()
+      val count = decoder.safeDecodeUInt8()
+      val connectionType = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = EscConnectionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val info = inputBuffer.decodeUInt8()
+      val info = decoder.safeDecodeUInt8()
 
       return EscInfo(
         index = index,

@@ -4,13 +4,13 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.serialization.decodeBitmaskValue
-import com.divpundir.mavlink.serialization.decodeUInt16
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Int
@@ -45,19 +45,19 @@ public data class PowerStatus(
   public override val instanceCompanion: MavMessage.MavCompanion<PowerStatus> = Companion
 
   public override fun serializeV1(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V1).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(vcc)
-    outputBuffer.encodeUInt16(vservo)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    return outputBuffer.array()
+    val encoder = MavDataEncoder.allocate(SIZE_V1)
+    encoder.encodeUInt16(vcc)
+    encoder.encodeUInt16(vservo)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    return encoder.bytes
   }
 
   public override fun serializeV2(): ByteArray {
-    val outputBuffer = ByteBuffer.allocate(SIZE_V2).order(ByteOrder.LITTLE_ENDIAN)
-    outputBuffer.encodeUInt16(vcc)
-    outputBuffer.encodeUInt16(vservo)
-    outputBuffer.encodeBitmaskValue(flags.value, 2)
-    return outputBuffer.array().truncateZeros()
+    val encoder = MavDataEncoder.allocate(SIZE_V2)
+    encoder.encodeUInt16(vcc)
+    encoder.encodeUInt16(vservo)
+    encoder.encodeBitmaskValue(flags.value, 2)
+    return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<PowerStatus> {
@@ -70,10 +70,11 @@ public data class PowerStatus(
     public override val crcExtra: Byte = -53
 
     public override fun deserialize(bytes: ByteArray): PowerStatus {
-      val inputBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
-      val vcc = inputBuffer.decodeUInt16()
-      val vservo = inputBuffer.decodeUInt16()
-      val flags = inputBuffer.decodeBitmaskValue(2).let { value ->
+      val decoder = MavDataDecoder.wrap(bytes)
+
+      val vcc = decoder.safeDecodeUInt16()
+      val vservo = decoder.safeDecodeUInt16()
+      val flags = decoder.safeDecodeBitmaskValue(2).let { value ->
         val flags = MavPowerStatus.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
