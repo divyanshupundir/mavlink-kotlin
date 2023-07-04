@@ -1,4 +1,4 @@
-# rxjava3 adapter
+# RxJava3 Adapter
 
 ## Overview
 
@@ -16,13 +16,13 @@ repositories {
 dependencies { 
     implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
     implementation("com.divpundir.mavlink:definitions:$version")
-    implementation("com.divpundir.mavlink:rxjava3:$version")
+    implementation("com.divpundir.mavlink:adapter-rxjava3:$version")
 }
 ```
 
 ### Connecting
 Create a `MavConnection` object. Currently, `TcpClientMavConnection` and `TcpServerMavConnection` are available. Wrap
-the connection object with the `rxjava3` adapter using the `asRx3` extension function.
+the connection object with the RxJava3 adapter using the `asRx3` extension function.
 
 ```kotlin
 val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asRx3()

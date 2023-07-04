@@ -1,4 +1,4 @@
-# coroutines adapter
+# Coroutines Adapter
 
 ## Overview
 
@@ -16,13 +16,13 @@ repositories {
 dependencies { 
     implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
     implementation("com.divpundir.mavlink:definitions:$version")
-    implementation("com.divpundir.mavlink:coroutines:$version")
+    implementation("com.divpundir.mavlink:adapter-coroutines:$version")
 }
 ```
 
 ### Connecting
 Create a `MavConnection` object. Currently, `TcpClientMavConnection` and `TcpServerMavConnection` are available. Wrap
-the connection object with the `coroutines` adapter using the `asCoroutine` extension function.
+the connection object with the coroutines adapter using the `asCoroutine` extension function.
 
 ```kotlin
 val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()

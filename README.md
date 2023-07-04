@@ -103,11 +103,11 @@ to generate your own. The details on how to do that is available in the `generat
 implementation("com.divpundir.mavlink:definitions:$version")
 ```
 
-Pick an adapter of your preference to wrap the `MavConnection` for handling streams. For example, the `coroutines`
+Pick an adapter of your preference to wrap the `MavConnection` for handling streams. For example, the coroutines
 adapter.
 
 ```kotlin
-implementation("com.divpundir.mavlink:coroutines:$version")
+implementation("com.divpundir.mavlink:adapter-coroutines:$version")
 ```
 
 The `build.gradle.kts` should look like this:
@@ -120,7 +120,7 @@ repositories {
 dependencies { 
     implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
     implementation("com.divpundir.mavlink:definitions:$version")
-    implementation("com.divpundir.mavlink:coroutines:$version")
+    implementation("com.divpundir.mavlink:adapter-coroutines:$version")
 }
 ```
 
