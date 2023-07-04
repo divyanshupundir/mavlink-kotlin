@@ -1,11 +1,10 @@
-package com.divpundir.mavlink.connection.tcp
+package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.connection.MavConnection
 import okio.IOException
 
-public abstract class TcpMavConnection : MavConnection {
+public abstract class AbstractMavConnection : MavConnection {
 
     @Volatile
     protected var state: State = State.Closed

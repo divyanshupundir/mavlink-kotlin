@@ -2,6 +2,7 @@ package com.divpundir.mavlink.connection.tcp
 
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.connection.BufferedMavConnection
+import com.divpundir.mavlink.connection.AbstractMavConnection
 import okio.IOException
 import okio.buffer
 import okio.sink
@@ -17,7 +18,7 @@ import java.net.ServerSocket
 public class TcpServerMavConnection(
     private val port: Int,
     private val dialect: MavDialect
-) : TcpMavConnection() {
+) : AbstractMavConnection() {
 
     @Throws(IOException::class)
     override fun connect() {
