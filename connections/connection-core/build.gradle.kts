@@ -16,11 +16,13 @@ tasks.test {
 }
 
 dependencies {
-    api(Deps.Kotlin.coroutines)
-    implementation(project(":connections:connection-core"))
+    api(Deps.MavlinkKotlin.api)
+    api(Deps.okio)
+
+    implementation(Deps.MavlinkKotlin.serialization)
 
     testImplementation(project(":definitions"))
-    testImplementation(project(":connections:connection-tcp"))
+    testImplementation(TestDeps.DroneFleet.mavlink)
 
     testImplementation(TestDeps.Jupiter.api)
     testRuntimeOnly(TestDeps.Jupiter.engine)

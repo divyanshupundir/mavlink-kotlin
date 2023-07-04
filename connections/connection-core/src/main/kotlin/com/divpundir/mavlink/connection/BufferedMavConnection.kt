@@ -11,7 +11,7 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-internal class BufferedMavConnection(
+public class BufferedMavConnection(
     source: BufferedSource,
     private val sink: BufferedSink,
     private val streamHandle: Closeable,
