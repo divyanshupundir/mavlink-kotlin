@@ -1,16 +1,16 @@
 package com.divpundir.mavlink.connection
 
-import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.api.MavBitmaskValue
+import com.divpundir.mavlink.api.wrap
 import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.minimal.Heartbeat
 import com.divpundir.mavlink.definitions.minimal.MavAutopilot
 import com.divpundir.mavlink.definitions.minimal.MavState
 import com.divpundir.mavlink.definitions.minimal.MavType
-import com.divpundir.mavlink.wrap
 import okio.buffer
 import okio.sink
 import okio.source
+import org.junit.jupiter.api.Test
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket

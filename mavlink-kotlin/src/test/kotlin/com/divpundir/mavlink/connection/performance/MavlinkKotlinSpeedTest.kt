@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.connection.performance
 
+import com.divpundir.mavlink.api.wrap
 import com.divpundir.mavlink.definitions.common.CommandLong
 import com.divpundir.mavlink.definitions.common.MavCmd
-import com.divpundir.mavlink.wrap
 import org.junit.jupiter.api.Test
 import kotlin.system.measureNanoTime
 
