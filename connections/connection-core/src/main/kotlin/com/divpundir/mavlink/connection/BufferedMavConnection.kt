@@ -14,7 +14,7 @@ import kotlin.concurrent.withLock
 public class BufferedMavConnection(
     source: BufferedSource,
     private val sink: BufferedSink,
-    private val streamHandle: Closeable,
+    private val resource: Closeable,
     private val dialect: MavDialect,
 ) : MavConnection {
 
@@ -30,7 +30,7 @@ public class BufferedMavConnection(
 
     @Throws(IOException::class)
     override fun close() {
-        streamHandle.close()
+        resource.close()
     }
 
     @Throws(IOException::class)
