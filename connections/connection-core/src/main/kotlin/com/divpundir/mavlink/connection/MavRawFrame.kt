@@ -3,7 +3,17 @@ package com.divpundir.mavlink.connection
 import com.divpundir.mavlink.serialization.*
 import okio.ByteString.Companion.toByteString
 
-internal data class MavRawFrame(
+/**
+ * Represents a mid-level MAVLink Frame, i.e., a frame that is in between a fully deserialized high-level object, and a
+ * wire-format ByteArray.
+ *
+ * Note: Several functions of this class are not fault-tolerant. They assume that the input raw bytes are valid
+ * ByteArrays. For example, [generateSignature] assumes that its input `frameBytes` is a correct MAVLink v2 frame in the
+ * form of raw bytes. Therefore, the users of this class should be careful while using it.
+ *
+ * Reference: [MAVLink Serialization Guide](https://mavlink.io/en/guide/serialization.html)
+ */
+public data class MavRawFrame(
     val stx: UByte,
     val len: UByte,
     val incompatFlags: UByte,
@@ -19,13 +29,13 @@ internal data class MavRawFrame(
     val signature: ByteArray,
     val rawBytes: ByteArray
 ) {
-    val isSigned: Boolean
+    public val isSigned: Boolean
         get() = incompatFlags == Flags.INCOMPAT_SIGNED
 
-    fun validateCrc(crcExtra: Byte): Boolean =
+    public fun validateCrc(crcExtra: Byte): Boolean =
         generateChecksum(rawBytes, crcExtra) == checksum
 
-    fun validateSignature(secretKey: ByteArray): Boolean =
+    public fun validateSignature(secretKey: ByteArray): Boolean =
         isSigned && signature.contentEquals(
             generateSignature(
                 rawBytes,
@@ -75,42 +85,42 @@ internal data class MavRawFrame(
         return result
     }
 
-    object Stx {
-        const val V1: UByte = 0xFEu
-        const val V2: UByte = 0xFDu
+    public object Stx {
+        public const val V1: UByte = 0xFEu
+        public const val V2: UByte = 0xFDu
     }
 
-    object Flags {
-        const val INCOMPAT_UNSIGNED: UByte = 0x00u
-        const val INCOMPAT_SIGNED: UByte = 0x01u
+    public object Flags {
+        public const val INCOMPAT_UNSIGNED: UByte = 0x00u
+        public const val INCOMPAT_SIGNED: UByte = 0x01u
     }
 
-    object Sizes {
-        const val STX = 1
-        const val LEN = 1
+    public object Sizes {
+        public const val STX: Int = 1
+        public const val LEN: Int = 1
 
-        const val INCOMPAT_FLAGS = 1
-        const val COMPAT_FLAGS = 1
+        public const val INCOMPAT_FLAGS: Int = 1
+        public const val COMPAT_FLAGS: Int = 1
 
-        const val SEQ = 1
-        const val SYS_ID = 1
-        const val COMP_ID = 1
+        public const val SEQ: Int = 1
+        public const val SYS_ID: Int = 1
+        public const val COMP_ID: Int = 1
 
-        const val MSG_ID_V1 = 1
-        const val MSG_ID_V2 = 3
+        public const val MSG_ID_V1: Int = 1
+        public const val MSG_ID_V2: Int = 3
 
-        const val CHECKSUM = 2
+        public const val CHECKSUM: Int = 2
 
-        const val SIGNATURE_LINK_ID = 1
-        const val SIGNATURE_TIMESTAMP = 6
-        const val SIGNATURE = 6
+        public const val SIGNATURE_LINK_ID: Int = 1
+        public const val SIGNATURE_TIMESTAMP: Int = 6
+        public const val SIGNATURE: Int = 6
 
-        const val SECRET_KEY = 32
+        public const val SECRET_KEY: Int = 32
     }
 
-    companion object {
+    public companion object {
 
-        private fun generateChecksum(frameBytes: ByteArray, crcExtra: Byte): UShort {
+        public fun generateChecksum(frameBytes: ByteArray, crcExtra: Byte): UShort {
             val frameSizeTillMsgId = when (frameBytes[0].toUByte()) {
                 Stx.V1 -> Sizes.STX + Sizes.LEN +
                         Sizes.SEQ +
@@ -135,7 +145,7 @@ internal data class MavRawFrame(
             }
         }
 
-        private fun generateSignature(
+        public fun generateSignature(
             frameBytes: ByteArray,
             linkId: UByte,
             timestamp: UInt,
@@ -178,7 +188,7 @@ internal data class MavRawFrame(
                 .toByteArray()
         }
 
-        fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
+        public fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
             val stx = this.safeDecodeUInt8()
             val len = this.safeDecodeUInt8()
             val seq = this.safeDecodeUInt8()
@@ -206,7 +216,7 @@ internal data class MavRawFrame(
             )
         }
 
-        fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
+        public fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
             val stx = this.safeDecodeUInt8()
             val len = this.safeDecodeUInt8()
             val incompatFlags = this.safeDecodeUInt8()
@@ -247,7 +257,7 @@ internal data class MavRawFrame(
             )
         }
 
-        fun createV1(
+        public fun createV1(
             seq: UByte,
             systemId: UByte,
             componentId: UByte,
@@ -290,7 +300,7 @@ internal data class MavRawFrame(
             )
         }
 
-        fun createUnsignedV2(
+        public fun createUnsignedV2(
             seq: UByte,
             systemId: UByte,
             componentId: UByte,
@@ -336,7 +346,7 @@ internal data class MavRawFrame(
             )
         }
 
-        fun createSignedV2(
+        public fun createSignedV2(
             seq: UByte,
             systemId: UByte,
             componentId: UByte,

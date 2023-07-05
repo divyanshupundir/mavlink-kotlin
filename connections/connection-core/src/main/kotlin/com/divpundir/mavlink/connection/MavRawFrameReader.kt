@@ -2,11 +2,21 @@ package com.divpundir.mavlink.connection
 
 import okio.BufferedSource
 import okio.EOFException
+import okio.IOException
+import kotlin.jvm.Throws
 
-internal class MavRawFrameReader(
+/**
+ * Reads [MavRawFrame] from the [BufferedSource] input.
+ */
+public class MavRawFrameReader(
     private val source: BufferedSource
 ) {
-    fun next(): MavRawFrame {
+    /**
+     * Reads the [source] till it finds a valid [MavRawFrame]. The invalid bytes are ignored. Throws an [IOException] if
+     * the [source] is closed.
+     */
+    @Throws(IOException::class)
+    public fun next(): MavRawFrame {
         while (!Thread.currentThread().isInterrupted) {
             val peeked = source.peek()
 
