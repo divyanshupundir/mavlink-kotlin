@@ -11,6 +11,11 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
+/**
+ * A [MavConnection] implementation that reads [MavFrame]s form a [BufferedSource] and writes them to a [BufferedSink].
+ * The [dialect] is used to deserialize the raw frame to a [MavFrame]. The [resource] is the origin of the source and
+ * the sink. For example, a TCP Socket or serial port.
+ */
 public class BufferedMavConnection(
     source: BufferedSource,
     private val sink: BufferedSink,
