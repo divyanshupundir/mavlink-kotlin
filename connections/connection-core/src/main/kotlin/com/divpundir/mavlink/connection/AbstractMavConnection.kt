@@ -8,11 +8,20 @@ import okio.IOException
  * A connection state aware abstract implementation of [MavConnection]. The inheritors of this class only need to
  * implement the [connect] method.
  *
- * All operations that don't explicitly happen in the correct state maintained by the user throw [IOException]. For
- * example, calling [connect] again while the previous connection is active results in an [IOException] being thrown.
+ * All operations that don't explicitly happen in the correct [state] maintained by the user throw [IOException]. For
+ * example, calling [close] again while the previous connection is closed results in an [IOException] being thrown.
+ *
+ * The benefit of using this class is that it makes the state management of the underlying connection saved in the
+ * [State.Open.connection] field more easy and predictable.
  */
 public abstract class AbstractMavConnection : MavConnection {
 
+    /**
+     * The current state of the connection.
+     *
+     * Inheritors of [AbstractMavConnection] while implementing [connect] should make sure that the value of [state] is
+     * [State.Closed] before opening a new connection, and should throw [IOException] otherwise.
+     */
     @Volatile
     protected var state: State = State.Closed
         @Synchronized set
@@ -94,8 +103,14 @@ public abstract class AbstractMavConnection : MavConnection {
         }
     }
 
+    /**
+     * The sealed hierarchy representing the [Open] or the [Closed] state of the connection. This interface is used by
+     * the inheritors of [AbstractMavConnection] to manage the [state] variable.
+     */
     protected sealed interface State {
+
         public class Open(public val connection: MavConnection) : State
+
         public object Closed : State
     }
 }
