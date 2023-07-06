@@ -11,7 +11,7 @@ import okio.ByteString.Companion.toByteString
  * ByteArrays. For example, [generateSignature] assumes that its input `frameBytes` is a correct MAVLink v2 frame in the
  * form of raw bytes. Therefore, the users of this class should be careful while using it.
  *
- * Reference: [MAVLink Serialization Guide](https://mavlink.io/en/guide/serialization.html)
+ * Refer: [MAVLink Serialization](https://mavlink.io/en/guide/serialization.html)
  */
 public data class MavRawFrame(
     val stx: UByte,
@@ -29,12 +29,22 @@ public data class MavRawFrame(
     val signature: ByteArray,
     val rawBytes: ByteArray
 ) {
+    /**
+     * Returns true if the frame is a signed MAVLink v2 frame, false otherwise.
+     */
     public val isSigned: Boolean
         get() = incompatFlags == Flags.INCOMPAT_SIGNED
 
+    /**
+     * Validates the frame's [checksum] using the MAVLink message [crcExtra] and the frame's [rawBytes].
+     */
     public fun validateCrc(crcExtra: Byte): Boolean =
         generateChecksum(rawBytes, crcExtra) == checksum
 
+    /**
+     * Validates the frame's [signature] using the given [secretKey]. If the [secretKey]'s size is less than 32 then it
+     * is padded with zeroes. If the size is more than 32, then only the first 32 bytes are taken.
+     */
     public fun validateSignature(secretKey: ByteArray): Boolean =
         isSigned && signature.contentEquals(
             generateSignature(
@@ -120,6 +130,11 @@ public data class MavRawFrame(
 
     public companion object {
 
+        /**
+         * Generates the MAVLink checksum using the [frameBytes] and the [crcExtra] of the MAVLink message.
+         *
+         * Refer: [MAVLink Checksum and CRC Extra Calculation](https://mavlink.io/en/guide/serialization.html#checksum)
+         */
         public fun generateChecksum(frameBytes: ByteArray, crcExtra: Byte): UShort {
             val frameSizeTillMsgId = when (frameBytes[0].toUByte()) {
                 Stx.V1 -> Sizes.STX + Sizes.LEN +
@@ -145,6 +160,12 @@ public data class MavRawFrame(
             }
         }
 
+        /**
+         * Generates the 6-byte MAVLink signature using the [frameBytes]. If the [secretKey]'s size is less than 32 then it
+         * is padded with zeroes. If the size is more than 32, then only the first 32 bytes are taken.
+         *
+         * Refer: [MAVLink Message Signing](https://mavlink.io/en/guide/message_signing.html)
+         */
         public fun generateSignature(
             frameBytes: ByteArray,
             linkId: UByte,
@@ -188,6 +209,9 @@ public data class MavRawFrame(
                 .toByteArray()
         }
 
+        /**
+         * Creates a MAVLink v1 [MavRawFrame] from the [rawBytes].
+         */
         public fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
             val stx = this.safeDecodeUInt8()
             val len = this.safeDecodeUInt8()
@@ -216,6 +240,9 @@ public data class MavRawFrame(
             )
         }
 
+        /**
+         * Creates a MAVLink v2 [MavRawFrame] from the [rawBytes].
+         */
         public fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
             val stx = this.safeDecodeUInt8()
             val len = this.safeDecodeUInt8()
@@ -257,6 +284,9 @@ public data class MavRawFrame(
             )
         }
 
+        /**
+         * Creates a MAVLink v1 [MavRawFrame].
+         */
         public fun createV1(
             seq: UByte,
             systemId: UByte,
@@ -300,6 +330,9 @@ public data class MavRawFrame(
             )
         }
 
+        /**
+         * Creates an unsigned MAVLink v2 [MavRawFrame].
+         */
         public fun createUnsignedV2(
             seq: UByte,
             systemId: UByte,
@@ -346,6 +379,9 @@ public data class MavRawFrame(
             )
         }
 
+        /**
+         * Creates a signed MAVLink v2 [MavRawFrame].
+         */
         public fun createSignedV2(
             seq: UByte,
             systemId: UByte,
