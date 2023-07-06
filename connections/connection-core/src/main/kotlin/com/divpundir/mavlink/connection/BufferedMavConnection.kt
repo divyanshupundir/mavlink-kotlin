@@ -55,7 +55,7 @@ public class BufferedMavConnection(
                 return when (rawFrame.stx) {
                     MavRawFrame.Stx.V1 -> MavFrameV1Impl(rawFrame, payload)
                     MavRawFrame.Stx.V2 -> MavFrameV2Impl(rawFrame, payload)
-                    else -> throw IllegalStateException()
+                    else -> throw IllegalStateException("Invalid MAVLink frame marker")
                 }
             }
         }
@@ -117,7 +117,7 @@ public class BufferedMavConnection(
             }
         }
 
-        throw EOFException()
+        throw EOFException("Cannot read more frames as the thread is interrupted")
     }
 
     private fun getMessageCompanionOrNull(rawFrame: MavRawFrame): MavMessage.MavCompanion<out MavMessage<*>>? {

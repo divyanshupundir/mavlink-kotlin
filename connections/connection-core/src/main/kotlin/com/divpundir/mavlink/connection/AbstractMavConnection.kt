@@ -34,7 +34,7 @@ public abstract class AbstractMavConnection : MavConnection {
                 state = State.Closed
             }
 
-            State.Closed -> throw IOException("Already closed")
+            State.Closed -> throw IOException("The connection is already closed")
         }
     }
 
@@ -42,7 +42,7 @@ public abstract class AbstractMavConnection : MavConnection {
     final override fun next(): MavFrame<out MavMessage<*>> {
         return when (val s = state) {
             is State.Open -> s.connection.next()
-            State.Closed -> throw IOException("Closed")
+            State.Closed -> throw IOException("The connection is closed")
         }
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractMavConnection : MavConnection {
                 payload
             )
 
-            State.Closed -> throw IOException("Closed")
+            State.Closed -> throw IOException("The connection is closed")
         }
     }
 
@@ -76,7 +76,7 @@ public abstract class AbstractMavConnection : MavConnection {
                 payload
             )
 
-            State.Closed -> throw IOException("Closed")
+            State.Closed -> throw IOException("The connection is closed")
         }
     }
 
@@ -99,7 +99,7 @@ public abstract class AbstractMavConnection : MavConnection {
                 secretKey
             )
 
-            State.Closed -> throw IOException("Closed")
+            State.Closed -> throw IOException("The connection is closed")
         }
     }
 

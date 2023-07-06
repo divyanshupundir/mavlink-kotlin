@@ -23,7 +23,7 @@ public class TcpServerMavConnection(
     @Throws(IOException::class)
     override fun connect() {
         when (state) {
-            is State.Open -> throw IOException("Already Open")
+            is State.Open -> throw IOException("The connection is already open")
 
             State.Closed -> {
                 val server = ServerSocket(port)
