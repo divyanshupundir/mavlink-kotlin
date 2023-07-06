@@ -3,10 +3,7 @@ package com.divpundir.mavlink.connection
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
-import okio.BufferedSink
-import okio.BufferedSource
-import okio.Closeable
-import okio.IOException
+import okio.*
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -14,10 +11,10 @@ import kotlin.concurrent.withLock
 /**
  * A [MavConnection] implementation that reads [MavFrame]s form a [BufferedSource] and writes them to a [BufferedSink].
  * The [dialect] is used to deserialize the raw frame to a [MavFrame]. The [resource] is the origin of the source and
- * the sink. For example, a TCP Socket or serial port.
+ * the sink. For example, a TCP Socket or a serial port.
  */
 public class BufferedMavConnection(
-    source: BufferedSource,
+    private val source: BufferedSource,
     private val sink: BufferedSink,
     private val resource: Closeable,
     private val dialect: MavDialect,
@@ -26,12 +23,10 @@ public class BufferedMavConnection(
     private val readLock: Lock = ReentrantLock()
     private val writeLock: Lock = ReentrantLock()
 
-    private val reader = MavRawFrameReader(source)
-
     private var sequence: UByte = 0u
 
     @Throws(IOException::class)
-    override fun connect() {}
+    override fun connect() { }
 
     @Throws(IOException::class)
     override fun close() {
@@ -42,7 +37,7 @@ public class BufferedMavConnection(
     override fun next(): MavFrame<out MavMessage<*>> {
         readLock.withLock {
             while (true) {
-                val rawFrame = reader.next()
+                val rawFrame = nextRawFrame()
 
                 val companion = getMessageCompanionOrNull(rawFrame)
                 if (companion == null) {
@@ -66,9 +61,66 @@ public class BufferedMavConnection(
         }
     }
 
-    private fun getMessageCompanionOrNull(
-        rawFrame: MavRawFrame,
-    ): MavMessage.MavCompanion<out MavMessage<*>>? {
+    private fun nextRawFrame(): MavRawFrame {
+        while (!Thread.currentThread().isInterrupted) {
+            val peeked = source.peek()
+
+            when (peeked.readByte().toUByte()) {
+                MavRawFrame.Stx.V1 -> {
+                    val payloadSize = peeked.readByte().toUByte().toInt()
+
+                    val remainingSize = MavRawFrame.Sizes.SEQ +
+                            MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V1 +
+                            payloadSize + MavRawFrame.Sizes.CHECKSUM
+
+                    if (!peeked.request(remainingSize.toLong())) {
+                        source.skip(1)
+                        continue
+                    }
+
+                    val totalSize = MavRawFrame.Sizes.STX + MavRawFrame.Sizes.LEN + remainingSize.toLong()
+
+                    return MavRawFrame.fromV1Bytes(source.readByteArray(totalSize))
+                }
+
+                MavRawFrame.Stx.V2 -> {
+                    val payloadSize = peeked.readByte().toUByte().toInt()
+                    val incompatibleFlags = peeked.readByte().toUByte()
+
+                    val signatureTotalSize = if (incompatibleFlags == MavRawFrame.Flags.INCOMPAT_SIGNED) {
+                        MavRawFrame.Sizes.SIGNATURE_LINK_ID + MavRawFrame.Sizes.SIGNATURE_TIMESTAMP + MavRawFrame.Sizes.SIGNATURE
+                    } else {
+                        0
+                    }
+
+                    val remainingSize = MavRawFrame.Sizes.COMPAT_FLAGS +
+                            MavRawFrame.Sizes.SEQ +
+                            MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V2 +
+                            payloadSize + MavRawFrame.Sizes.CHECKSUM +
+                            signatureTotalSize
+
+                    if (!peeked.request(remainingSize.toLong())) {
+                        source.skip(1)
+                        continue
+                    }
+
+                    val totalSize = MavRawFrame.Sizes.STX + MavRawFrame.Sizes.LEN +
+                            MavRawFrame.Sizes.INCOMPAT_FLAGS + remainingSize.toLong()
+
+                    return MavRawFrame.fromV2Bytes(source.readByteArray(totalSize))
+                }
+
+                else -> {
+                    source.skip(1)
+                    continue
+                }
+            }
+        }
+
+        throw EOFException()
+    }
+
+    private fun getMessageCompanionOrNull(rawFrame: MavRawFrame): MavMessage.MavCompanion<out MavMessage<*>>? {
         val metadata = dialect.resolveCompanionOrNull(rawFrame.messageId) ?: return null
         if (!rawFrame.validateCrc(metadata.crcExtra)) return null
         return metadata
