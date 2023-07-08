@@ -46,7 +46,7 @@ allprojects {
                 licenses {
                     license {
                         name.set("The Apache Software License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                         distribution.set("repo")
                     }
                 }
@@ -79,11 +79,12 @@ task("publishPlugin") {
 
 task("publishLibrary") {
     dependsOn(
-        ":mavlink-kotlin:publish",
         ":definitions:publish",
-        ":adapters:rxjava2:publish",
-        ":adapters:rxjava3:publish",
-        ":adapters:coroutines:publish"
+        ":connections:connection-core:publish",
+        ":connections:connection-tcp:publish",
+        ":adapters:adapter-rxjava2:publish",
+        ":adapters:adapter-rxjava3:publish",
+        ":adapters:adapter-coroutines:publish"
     )
 }
 
@@ -96,11 +97,12 @@ task("closeAndReleasePlugin") {
 
 task("closeAndReleaseLibrary") {
     dependsOn(
-        ":mavlink-kotlin:closeAndReleaseRepository",
         ":definitions:closeAndReleaseRepository",
-        ":adapters:rxjava2:closeAndReleaseRepository",
-        ":adapters:rxjava3:closeAndReleaseRepository",
-        ":adapters:coroutines:closeAndReleaseRepository"
+        ":connections:connection-core:closeAndReleaseRepository",
+        ":connections:connection-tcp:closeAndReleaseRepository",
+        ":adapters:adapter-rxjava2:closeAndReleaseRepository",
+        ":adapters:adapter-rxjava3:closeAndReleaseRepository",
+        ":adapters:adapter-coroutines:closeAndReleaseRepository"
     )
 }
 
