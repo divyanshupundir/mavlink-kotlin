@@ -13,9 +13,9 @@ repositories {
     mavenCentral()
 }
 
-dependencies { 
-    implementation("com.divpundir.mavlink:mavlink-kotlin:$version")
+dependencies {
     implementation("com.divpundir.mavlink:definitions:$version")
+    implementation("com.divpundir.mavlink:connection-tcp:$version")
     implementation("com.divpundir.mavlink:adapter-rxjava2:$version")
 }
 ```
