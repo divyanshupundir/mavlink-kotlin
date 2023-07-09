@@ -6,10 +6,10 @@ object Config {
 
     object Plugin {
         const val releaseVersion = "0.30.0-alpha"
-        const val developmentVersion = "0.30.0-alpha.2"
+        const val developmentVersion = "0.30.0"
     }
 
     object Lib {
-        const val developmentVersion = "0.30.0-alpha"
+        const val developmentVersion = "0.30.0"
     }
 }
