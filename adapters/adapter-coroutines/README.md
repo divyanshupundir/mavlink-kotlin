@@ -1,4 +1,4 @@
-# Coroutines Adapter
+# adapter-coroutines
 
 ## Overview
 
@@ -6,7 +6,8 @@ Kotlin Coroutines adapter for `MavConnection`.
 
 ## Usage
 
-Add the required dependencies to your `build.gradle.kts`:
+Add the required dependencies to your `build.gradle.kts`. This example uses the `definitions` module for the messages
+and the `connection-tcp` for the base connection.
 
 ```kotlin
 repositories {
@@ -21,8 +22,8 @@ dependencies {
 ```
 
 ### Connecting
-Create a `MavConnection` object. Currently, `TcpClientMavConnection` and `TcpServerMavConnection` are available. Wrap
-the connection object with the coroutines adapter using the `asCoroutine` extension function.
+
+Create a `MavConnection` object and wrap it with the coroutines adapter using the `asCoroutine` extension function.
 
 ```kotlin
 val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
@@ -51,6 +52,7 @@ val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoro
 ```
 
 ### Reading
+
 The connection starts reading the MAVLink frames on a background thread. They are available via the  `mavFrame`
 `SharedFlow`.
 
@@ -63,6 +65,7 @@ connection.mavFrame
 ```
 
 ### Creating MavMessage objects
+
 To send a message, create the `MavMessage` object that you want to send.
 
 ```kotlin
@@ -95,6 +98,7 @@ val heartbeat = builder.build()
 ```
 
 ### Writing
+
 The library provides three methods to write messages to the byte streams.
 
 ```kotlin
@@ -126,6 +130,7 @@ viewModelScope.launch {
 ```
 
 ### Closing
+
 Use the `close` method to close the connection.
 
 ```kotlin

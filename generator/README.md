@@ -3,12 +3,13 @@
 ## Overview
 
 MAVLink generator Gradle Plugin that uses the `api` and `serialization` modules to generate the MAVLink classes. This
-plugin is available at Gradle Plugin Portal with ID `com.divpundir.mavlink.generator`. It can be used by anyone to generate
-MAVLink classes from their own XML files. No need to fork this project.
+plugin is available at Gradle Plugin Portal with ID `com.divpundir.mavlink.generator`. It can be used by anyone to
+generate MAVLink classes from their own XML files. No need to fork this project.
 
 ## Usage
 
 Declare the plugin.
+
 ```kotlin
 plugins {
   id("com.divpundir.mavlink.generator") version version
@@ -17,6 +18,7 @@ plugins {
 
 Include the `api` and `serialization` artifacts as a dependencies so that the generated code has access to the API
 classes.
+
 ```kotlin
 dependencies {
     implementation("com.divpundir.mavlink:api:$version")
@@ -25,8 +27,9 @@ dependencies {
 ```
 
 Define the `generateMavlink` task by providing the dialect XML files using the `include` method and provide the path to
-the generated sources directory using `generatedSourcesDir`. If your dialect depends on other dialect files, i.e. includes other dialects, then add them to the generation
-task as well and the standard dialects, messages and enums.
+the generated sources directory using `generatedSourcesDir`. If your dialect depends on other dialect files, i.e. 
+includes other dialects, then add them to the generation task as well and the standard dialects, messages and enums.
+
 ```kotlin
 tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
@@ -38,11 +41,12 @@ tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("ge
 ```
 
 Add the generated sources to the build path and build the project.
+
 ```kotlin
 sourceSets.getByName("main") {
     java.srcDir("src/main/kotlin-gen")
 }
 ```
 
-You can now publish these definition files to your private maven repository and use them as a
-replacement for the `definitions` module in your project.
+You can now publish these definition files to your private maven repository and use them as a replacement for the
+`definitions` module in your project.
