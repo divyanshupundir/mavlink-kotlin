@@ -25,8 +25,10 @@ include(":serialization")
 include(":generator")
 
 include(":definitions")
-include(":mavlink-kotlin")
 
-include(":adapters:rxjava2")
-include(":adapters:rxjava3")
-include(":adapters:coroutines")
+include(":connections:connection-core")
+include(":connections:connection-tcp")
+
+include(":adapters:adapter-rxjava2")
+include(":adapters:adapter-rxjava3")
+include(":adapters:adapter-coroutines")

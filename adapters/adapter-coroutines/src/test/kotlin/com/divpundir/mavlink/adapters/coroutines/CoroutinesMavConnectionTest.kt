@@ -1,0 +1,96 @@
+package com.divpundir.mavlink.adapters.coroutines
+
+import com.divpundir.mavlink.api.wrap
+import com.divpundir.mavlink.connection.tcp.TcpClientMavConnection
+import com.divpundir.mavlink.definitions.ardupilotmega.ArdupilotmegaDialect
+import com.divpundir.mavlink.definitions.common.CommandLong
+import com.divpundir.mavlink.definitions.common.CommonDialect
+import com.divpundir.mavlink.definitions.common.MavCmd
+import com.divpundir.mavlink.definitions.common.ScaledImu2
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Test
+
+class CoroutinesMavConnectionTest {
+
+    @Test
+    fun read(): Unit = runBlocking {
+        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
+
+        launch {
+            connection.connect(this)
+            delay(5000)
+            connection.close()
+
+            delay(5000)
+
+            connection.connect(this)
+            delay(5000)
+            connection.close()
+        }
+
+        launch {
+            connection.mavFrame.collect { println(it.message) }
+        }
+    }
+
+    @Test
+    fun write(): Unit = runBlocking {
+        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
+
+        launch {
+            connection.connect(this)
+            connection.sendUnsignedV2(
+                100u, 1u,
+                CommandLong(
+                    1u,
+                    1u,
+                    MavCmd.COMPONENT_ARM_DISARM.wrap(),
+                    param1 = 1f
+                )
+            )
+            connection.trySendUnsignedV2(
+                100u, 1u,
+                CommandLong(
+                    1u,
+                    1u,
+                    MavCmd.NAV_LAND.wrap()
+                )
+            )
+        }
+    }
+
+    @Test
+    fun reconnect(): Unit = runBlocking {
+        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine {
+            launch {
+                while (!tryConnect(this)) {
+                    delay(2000)
+                }
+            }
+        }
+
+        launch {
+            while (!connection.tryConnect(this)) {
+                delay(2000)
+            }
+        }
+
+        launch {
+            connection.mavFrame.collect { println(it.message) }
+        }
+    }
+
+    @Test
+    fun readMessage(): Unit = runBlocking {
+        val connection = TcpClientMavConnection("127.0.0.1", 5790, ArdupilotmegaDialect).asCoroutine()
+        connection.connect(this)
+
+        connection.mavFrame.map { it.message }.filterIsInstance<ScaledImu2>().collect {
+            println(it)
+        }
+    }
+}
