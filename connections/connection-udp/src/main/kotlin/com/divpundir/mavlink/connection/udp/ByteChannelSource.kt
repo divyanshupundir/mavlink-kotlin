@@ -10,7 +10,7 @@ import kotlin.math.min
 
 internal class ByteChannelSource(
     private val channel: ReadableByteChannel,
-    private val timeout: Timeout
+    private val timeout: Timeout = Timeout.NONE
 ) : Source {
 
     private val cursor: Buffer.UnsafeCursor = Buffer.UnsafeCursor()

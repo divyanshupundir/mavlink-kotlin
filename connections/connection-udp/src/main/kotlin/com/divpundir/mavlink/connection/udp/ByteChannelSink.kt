@@ -10,7 +10,7 @@ import kotlin.math.min
 
 internal class ByteChannelSink(
     private val channel: WritableByteChannel,
-    private val timeout: Timeout
+    private val timeout: Timeout = Timeout.NONE
 ) : Sink {
 
     private val cursor: Buffer.UnsafeCursor = Buffer.UnsafeCursor()
