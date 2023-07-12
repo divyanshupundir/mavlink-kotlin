@@ -23,7 +23,7 @@ public class UdpServerMavConnection(
                 val channel = DatagramChannel.open().apply {
                     bind(InetSocketAddress(port))
                     connect(receive(ByteBuffer.allocate(1024)))
-                    configureBlocking(false)
+                    configureBlocking(true)
                 }
 
                 state = State.Open(
