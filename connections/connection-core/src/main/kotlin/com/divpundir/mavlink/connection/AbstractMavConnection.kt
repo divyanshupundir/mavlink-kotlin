@@ -5,14 +5,14 @@ import com.divpundir.mavlink.api.MavMessage
 import okio.IOException
 
 /**
- * A connection state aware abstract implementation of [MavConnection]. The inheritors of this class only need to
- * implement the [connect] method.
+ * A connection state aware abstract implementation of [MavConnection].
  *
  * All operations that don't explicitly happen in the correct [state] maintained by the user throw [IOException]. For
  * example, calling [close] again while the previous connection is closed results in an [IOException] being thrown.
  *
  * The benefit of using this class is that it makes the state management of the underlying connection saved in the
- * [State.Open.connection] field more easy and predictable.
+ * [State.Open.connection] field more easy and predictable. Also, the inheritors of this class only need to implement
+ * the [open] method.
  */
 public abstract class AbstractMavConnection : MavConnection {
 
