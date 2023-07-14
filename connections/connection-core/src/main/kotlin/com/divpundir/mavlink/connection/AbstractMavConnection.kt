@@ -16,15 +16,36 @@ import okio.IOException
  */
 public abstract class AbstractMavConnection : MavConnection {
 
-    /**
-     * The current state of the connection.
-     *
-     * Inheritors of [AbstractMavConnection] while implementing [connect] should make sure that the value of [state] is
-     * [State.Closed] before opening a new connection, and should throw [IOException] otherwise.
-     */
     @Volatile
-    protected var state: State = State.Closed
+    private var state: State = State.Closed
         @Synchronized set
+
+    /**
+     * Opens and returns a new [MavConnection]. This [MavConnection] is a simple/unmanaged one, like
+     * [BufferedMavConnection].
+     *
+     * Ideally, the inheritors of [AbstractMavConnection] will open a data stream (e.g. a TCP socket, a UDP channel and
+     * a serial port) and return a [BufferedMavConnection] created using this. It is preferred that the connection is
+     * created in a blocking manner so that the adapters can handle the threading.
+     *
+     * For implementation examples refer:
+     * - [com.divpundir.mavlink.connection.tcp.TcpClientMavConnection]
+     * - [com.divpundir.mavlink.connection.tcp.TcpServerMavConnection]
+     * - [com.divpundir.mavlink.connection.udp.UdpServerMavConnection]
+     */
+    @Throws(IOException::class)
+    protected abstract fun open(): MavConnection
+
+    @Throws(IOException::class)
+    final override fun connect() {
+        when (state) {
+            is State.Open -> throw IOException("The connection is already open")
+
+            State.Closed -> {
+                state = State.Open(open())
+            }
+        }
+    }
 
     @Throws(IOException::class)
     final override fun close() {
@@ -107,10 +128,10 @@ public abstract class AbstractMavConnection : MavConnection {
      * The sealed hierarchy representing the [Open] or the [Closed] state of the connection. This interface is used by
      * the inheritors of [AbstractMavConnection] to manage the [state] variable.
      */
-    protected sealed interface State {
+    private sealed interface State {
 
-        public class Open(public val connection: MavConnection) : State
+        class Open(val connection: MavConnection) : State
 
-        public object Closed : State
+        object Closed : State
     }
 }

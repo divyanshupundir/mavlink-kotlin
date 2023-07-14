@@ -3,6 +3,7 @@ package com.divpundir.mavlink.connection.tcp
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.connection.BufferedMavConnection
 import com.divpundir.mavlink.connection.AbstractMavConnection
+import com.divpundir.mavlink.connection.MavConnection
 import okio.IOException
 import okio.buffer
 import okio.sink
@@ -21,24 +22,16 @@ public class TcpServerMavConnection(
 ) : AbstractMavConnection() {
 
     @Throws(IOException::class)
-    override fun connect() {
-        when (state) {
-            is State.Open -> throw IOException("The connection is already open")
+    protected override fun open(): MavConnection {
+        val server = ServerSocket(port)
+        val socket = server.accept()
+        server.close()
 
-            State.Closed -> {
-                val server = ServerSocket(port)
-                val socket = server.accept()
-                server.close()
-
-                state = State.Open(
-                    BufferedMavConnection(
-                        socket.source().buffer(),
-                        socket.sink().buffer(),
-                        socket,
-                        dialect
-                    )
-                )
-            }
-        }
+        return BufferedMavConnection(
+            socket.source().buffer(),
+            socket.sink().buffer(),
+            socket,
+            dialect
+        )
     }
 }
