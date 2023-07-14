@@ -16,7 +16,7 @@ public class UdpServerMavConnection(
 ) : AbstractMavConnection() {
 
     @Throws(IOException::class)
-    protected override fun open(): MavConnection {
+    override fun open(): MavConnection {
         val channel = DatagramChannel.open().apply {
             bind(InetSocketAddress(port))
             connect(receive(ByteBuffer.allocate(1024)))

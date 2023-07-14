@@ -22,7 +22,7 @@ public class TcpServerMavConnection(
 ) : AbstractMavConnection() {
 
     @Throws(IOException::class)
-    protected override fun open(): MavConnection {
+    override fun open(): MavConnection {
         val server = ServerSocket(port)
         val socket = server.accept()
         server.close()

@@ -21,7 +21,7 @@ public class TcpClientMavConnection(
 ) : AbstractMavConnection() {
 
     @Throws(IOException::class)
-    protected override fun open(): MavConnection {
+    override fun open(): MavConnection {
         val socket = Socket().apply {
             connect(
                 InetSocketAddress(
