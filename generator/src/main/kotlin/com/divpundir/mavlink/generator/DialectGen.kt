@@ -1,16 +1,14 @@
 package com.divpundir.mavlink.generator
 
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.buildCodeBlock
 import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
 import com.divpundir.mavlink.generator.models.MavlinkModel
+import com.squareup.kotlinpoet.*
 
 internal fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
     val packageName = "$basePackageName.$subPackageName"
     val dialect = TypeSpec.objectBuilder(dialectObjectName)
+        .addModifiers(KModifier.DATA)
         .superclass(AbstractMavDialect::class)
         .addSuperclassConstructorParameter(generateDependencies(basePackageName))
         .addSuperclassConstructorParameter(generateMessages(basePackageName))
