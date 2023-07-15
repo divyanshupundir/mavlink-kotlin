@@ -28,6 +28,7 @@ include(":definitions")
 
 include(":connections:connection-core")
 include(":connections:connection-tcp")
+include(":connections:connection-udp")
 
 include(":adapters:adapter-rxjava2")
 include(":adapters:adapter-rxjava3")
