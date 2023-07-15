@@ -4,7 +4,7 @@ pluginManagement {
         mavenCentral()
     }
     plugins {
-        kotlin("jvm") version "1.8.21"
+        kotlin("jvm") version "1.9.0"
         id("com.vanniktech.maven.publish") version "0.24.0"
     }
 }
