@@ -132,6 +132,6 @@ public abstract class AbstractMavConnection : MavConnection {
 
         class Open(val connection: MavConnection) : State
 
-        object Closed : State
+        data object Closed : State
     }
 }
