@@ -1,21 +1,11 @@
 import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
-    kotlin("jvm")
     id("com.divpundir.mavlink.generator") version Config.Plugin.releaseVersion
     idea
-    id("com.vanniktech.maven.publish.base")
 }
 
 version = Config.Lib.developmentVersion
-
-kotlin {
-    explicitApi()
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
 
 val genSrcDir = file("src/main/kotlin-gen")
 
