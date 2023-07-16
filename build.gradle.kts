@@ -15,10 +15,15 @@ plugins {
     kotlin("jvm")
 }
 
-apply(plugin = "com.vanniktech.maven.publish.base")
-
 allprojects {
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "com.vanniktech.maven.publish.base")
+
     group = Config.group
+
+    kotlin {
+        explicitApi()
+    }
 
     tasks.withType<JavaCompile> {
         sourceCompatibility = Config.javaVersion.toString()
@@ -29,6 +34,10 @@ allprojects {
         kotlinOptions {
             jvmTarget = Config.javaVersion.toString()
         }
+    }
+
+    tasks.test {
+        useJUnitPlatform()
     }
 
     @Suppress("UnstableApiUsage")

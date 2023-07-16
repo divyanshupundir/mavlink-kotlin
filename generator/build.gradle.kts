@@ -1,5 +1,4 @@
 plugins {
-    kotlin("jvm")
     `java-gradle-plugin`
     idea
     id("maven-publish")
@@ -7,14 +6,6 @@ plugins {
 }
 
 version = Config.Plugin.developmentVersion
-
-kotlin {
-    explicitApi()
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
 
 idea {
     module {
