@@ -12,7 +12,7 @@ import java.net.InetSocketAddress
 import java.net.Socket
 
 /**
- * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] interface that acts as a TCP client endpoint.
+ * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a TCP client endpoint.
  */
 public class TcpClientMavConnection(
     private val host: String,

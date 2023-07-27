@@ -11,9 +11,9 @@ import okio.source
 import java.net.ServerSocket
 
 /**
- * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] interface that acts as a TCP server endpoint.
+ * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a TCP server endpoint.
  *
- * This class listens on the specified [port] for a single connection. Once a connection is established, the server
+ * The connection listens on the specified [port] for a single connection. Once a connection is established, the server
  * socket is closed.
  */
 public class TcpServerMavConnection(

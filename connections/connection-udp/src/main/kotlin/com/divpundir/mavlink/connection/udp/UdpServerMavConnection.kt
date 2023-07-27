@@ -10,6 +10,11 @@ import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.DatagramChannel
 
+/**
+ * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a UDP server endpoint.
+ *
+ * Listens on the specified [port] for a 32-byte ping, and connects to the first sender.
+ */
 public class UdpServerMavConnection(
     private val port: Int,
     private val dialect: MavDialect
