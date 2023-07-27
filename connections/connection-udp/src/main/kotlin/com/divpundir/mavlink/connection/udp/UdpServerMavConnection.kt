@@ -18,9 +18,9 @@ public class UdpServerMavConnection(
     @Throws(IOException::class)
     override fun open(): MavConnection {
         val channel = DatagramChannel.open().apply {
-            bind(InetSocketAddress(port))
-            connect(receive(ByteBuffer.allocate(1024)))
             configureBlocking(true)
+            bind(InetSocketAddress(port))
+            connect(receive(ByteBuffer.allocate(32)))
         }
 
         return BufferedMavConnection(

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test
 class UdpServerMavConnectionTest {
 
     @Test
-    fun gen() {
-        val connection = UdpServerMavConnection(14550, CommonDialect)
+    fun connectAndRead() {
+        val connection = UdpServerMavConnection(14555, CommonDialect)
         connection.connect()
 
         repeat(1000) {
