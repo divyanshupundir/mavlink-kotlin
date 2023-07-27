@@ -11,21 +11,24 @@ import java.nio.ByteBuffer
 import java.nio.channels.DatagramChannel
 
 /**
- * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a UDP server endpoint.
+ * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a UDP client endpoint.
  *
- * Listens on the specified [port] for a 32-byte ping, and connects to the first sender.
+ * For connecting, pings the remote server with 32 bytes of data to let the remote server know its address.
  */
-public class UdpServerMavConnection(
+public class UdpClientMavConnection(
+    private val host: String,
     private val port: Int,
     private val dialect: MavDialect
 ) : AbstractMavConnection() {
 
     @Throws(IOException::class)
     override fun open(): MavConnection {
+        val address = InetSocketAddress(host, port)
+
         val channel = DatagramChannel.open().apply {
             configureBlocking(true)
-            bind(InetSocketAddress(port))
-            connect(receive(ByteBuffer.allocate(32)))
+            connect(address)
+            send(ByteBuffer.allocate(32), address)
         }
 
         return BufferedMavConnection(
