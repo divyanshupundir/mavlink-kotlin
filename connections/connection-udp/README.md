@@ -15,3 +15,9 @@ implementation("com.divpundir.mavlink:connection-udp:$version")
 ```kotlin
 val connection = UdpServerMavConnection(14550, CommonDialect)
 ```
+
+### UDP Client
+
+```kotlin
+val connection = UdpClientMavConnection("127.0.0.1", 14550, CommonDialect)
+```
