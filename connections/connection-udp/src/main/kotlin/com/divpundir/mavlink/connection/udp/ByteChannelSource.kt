@@ -17,7 +17,9 @@ internal class ByteChannelSource(
 
     @Throws(IOException::class)
     override fun read(sink: Buffer, byteCount: Long): Long {
-        check(channel.isOpen) { "closed" }
+        if (!channel.isOpen) {
+            throw IOException("The channel is closed")
+        }
 
         sink.readAndWriteUnsafe(cursor).use { _ ->
             timeout.throwIfReached()
