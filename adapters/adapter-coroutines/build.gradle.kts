@@ -8,6 +8,7 @@ dependencies {
 
     testImplementation(project(":definitions"))
     testImplementation(project(":connections:connection-tcp"))
+    testImplementation(project(":connections:connection-udp"))
 
     testImplementation(TestDeps.Jupiter.api)
     testRuntimeOnly(TestDeps.Jupiter.engine)
