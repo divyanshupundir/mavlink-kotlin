@@ -16,7 +16,7 @@ internal class Rx2MavConnectionImpl(
 ) : Rx2MavConnection {
 
     @Volatile
-    private var isOpen = false
+    private var readState = State.STOPPED
         @Synchronized set
 
     private val _mavFrame = PublishProcessor.create<MavFrame<out MavMessage<*>>>()
@@ -24,32 +24,33 @@ internal class Rx2MavConnectionImpl(
 
     override fun connect() = completableSubscribeOn(scheduler) {
         connection.connect()
-        isOpen = true
+        readState = State.RUNNING
         scheduler.scheduleDirect(this::processMavFrames)
     }
 
     private fun processMavFrames() {
-        while (!Thread.currentThread().isInterrupted && isOpen) {
+        while (readState == State.RUNNING) {
             try {
                 _mavFrame.onNext(connection.next())
-            } catch (e: IOException) {
+            } catch (_: IOException) {
+                if (readState == State.RUNNING) {
+                    readState = State.FAILED
+                    kotlin.runCatching { connection.close() }
+                }
+            } catch (_: InterruptedException) {
+                readState = State.STOPPED
                 kotlin.runCatching { connection.close() }
-                break
-            } catch (e: InterruptedException) {
-                kotlin.runCatching { connection.close() }
-                isOpen = false
-                break
             }
         }
 
-        if (isOpen) {
+        if (readState == State.FAILED) {
             onFailure()
         }
     }
 
     override fun close() = completableSubscribeOn(scheduler) {
+        readState = State.STOPPED
         connection.close()
-        isOpen = false
     }
 
     override fun <T : MavMessage<T>> sendV1(
@@ -92,6 +93,12 @@ internal class Rx2MavConnectionImpl(
             timestamp,
             secretKey
         )
+    }
+
+    private enum class State {
+        RUNNING,
+        STOPPED,
+        FAILED
     }
 }
 
