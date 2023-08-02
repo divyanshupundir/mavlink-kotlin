@@ -51,11 +51,8 @@ internal class CoroutinesMavConnectionImpl(
             } catch (e: CancellationException) {
                 readState = State.STOPPED
                 kotlin.runCatching { connection.close() }
-                break
             }
         }
-
-        println(readState)
 
         if (readState == State.FAILED) {
             onFailure()
