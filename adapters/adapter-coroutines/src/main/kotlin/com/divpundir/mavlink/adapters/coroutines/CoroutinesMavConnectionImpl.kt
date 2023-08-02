@@ -18,7 +18,7 @@ internal class CoroutinesMavConnectionImpl(
 ) : CoroutinesMavConnection {
 
     @Volatile
-    private var isOpen = false
+    private var readState = State.STOPPED
         @Synchronized set
 
     private val _mavFrame = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
@@ -31,7 +31,7 @@ internal class CoroutinesMavConnectionImpl(
     override suspend fun connect(readerScope: CoroutineScope) {
         withContext(dispatcher) {
             connection.connect()
-            isOpen = true
+            readState = State.RUNNING
         }
 
         readerScope.launch(dispatcher + CoroutineName("mavlink-read-coroutine")) {
@@ -39,21 +39,25 @@ internal class CoroutinesMavConnectionImpl(
         }
     }
 
-    private suspend fun CoroutineScope.processMavFrames() {
-        while (isActive && isOpen) {
+    private suspend fun processMavFrames() {
+        while (readState == State.RUNNING) {
             try {
                 _mavFrame.emit(connection.next())
             } catch (e: IOException) {
-                kotlin.runCatching { connection.close() }
-                break
+                if (readState == State.RUNNING) {
+                    readState = State.FAILED
+                    kotlin.runCatching { connection.close() }
+                }
             } catch (e: CancellationException) {
+                readState = State.STOPPED
                 kotlin.runCatching { connection.close() }
-                isOpen = false
                 break
             }
         }
 
-        if (isOpen) {
+        println(readState)
+
+        if (readState == State.FAILED) {
             onFailure()
         }
     }
@@ -61,8 +65,8 @@ internal class CoroutinesMavConnectionImpl(
     @Throws(IOException::class)
     override suspend fun close() {
         withContext(dispatcher) {
+            readState = State.STOPPED
             connection.close()
-            isOpen = false
         }
     }
 
@@ -114,5 +118,11 @@ internal class CoroutinesMavConnectionImpl(
                 secretKey
             )
         }
+    }
+
+    private enum class State {
+        RUNNING,
+        STOPPED,
+        FAILED
     }
 }
