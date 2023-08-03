@@ -7,7 +7,7 @@ import com.divpundir.mavlink.definitions.icarous.IcarousDialect
 import com.divpundir.mavlink.definitions.uavionix.UavionixDialect
 
 @GeneratedMavDialect
-public object ArdupilotmegaDialect : AbstractMavDialect(
+public data object ArdupilotmegaDialect : AbstractMavDialect(
   setOf(
     IcarousDialect,
     UavionixDialect,

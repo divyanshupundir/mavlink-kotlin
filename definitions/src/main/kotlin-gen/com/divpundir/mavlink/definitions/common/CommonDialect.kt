@@ -5,7 +5,7 @@ import com.divpundir.mavlink.api.GeneratedMavDialect
 import com.divpundir.mavlink.definitions.minimal.MinimalDialect
 
 @GeneratedMavDialect
-public object CommonDialect : AbstractMavDialect(
+public data object CommonDialect : AbstractMavDialect(
   setOf(
     MinimalDialect,
   ), 

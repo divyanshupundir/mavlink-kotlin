@@ -4,7 +4,7 @@ import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
 
 @GeneratedMavDialect
-public object IcarousDialect : AbstractMavDialect(
+public data object IcarousDialect : AbstractMavDialect(
   emptySet(), 
   mapOf(
     IcarousHeartbeat.id to IcarousHeartbeat,

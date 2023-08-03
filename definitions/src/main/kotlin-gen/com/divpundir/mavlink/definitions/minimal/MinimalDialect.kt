@@ -4,7 +4,7 @@ import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
 
 @GeneratedMavDialect
-public object MinimalDialect : AbstractMavDialect(
+public data object MinimalDialect : AbstractMavDialect(
   emptySet(), 
   mapOf(
     Heartbeat.id to Heartbeat,
