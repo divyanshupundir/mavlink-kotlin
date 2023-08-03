@@ -2,11 +2,13 @@ package com.divpundir.mavlink.adapters.coroutines
 
 import com.divpundir.mavlink.api.wrap
 import com.divpundir.mavlink.connection.tcp.TcpClientMavConnection
+import com.divpundir.mavlink.connection.udp.UdpClientMavConnection
 import com.divpundir.mavlink.definitions.ardupilotmega.ArdupilotmegaDialect
 import com.divpundir.mavlink.definitions.common.CommandLong
 import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.common.MavCmd
 import com.divpundir.mavlink.definitions.common.ScaledImu2
+import com.divpundir.mavlink.definitions.minimal.Heartbeat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
@@ -18,7 +20,7 @@ class CoroutinesMavConnectionTest {
 
     @Test
     fun read(): Unit = runBlocking {
-        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
+        val connection = UdpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
 
         launch {
             connection.connect(this)
@@ -65,7 +67,7 @@ class CoroutinesMavConnectionTest {
 
     @Test
     fun reconnect(): Unit = runBlocking {
-        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine {
+        val connection = UdpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine {
             launch {
                 while (!tryConnect(this)) {
                     delay(2000)
@@ -81,6 +83,13 @@ class CoroutinesMavConnectionTest {
 
         launch {
             connection.mavFrame.collect { println(it.message) }
+        }
+
+        launch {
+            while (true) {
+                delay(1000)
+                connection.trySendUnsignedV2(220u, 1u, Heartbeat())
+            }
         }
     }
 

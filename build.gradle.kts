@@ -91,6 +91,7 @@ task("publishLibrary") {
         ":definitions:publish",
         ":connections:connection-core:publish",
         ":connections:connection-tcp:publish",
+        ":connections:connection-udp:publish",
         ":adapters:adapter-rxjava2:publish",
         ":adapters:adapter-rxjava3:publish",
         ":adapters:adapter-coroutines:publish"
@@ -109,6 +110,7 @@ task("closeAndReleaseLibrary") {
         ":definitions:closeAndReleaseRepository",
         ":connections:connection-core:closeAndReleaseRepository",
         ":connections:connection-tcp:closeAndReleaseRepository",
+        ":connections:connection-udp:closeAndReleaseRepository",
         ":adapters:adapter-rxjava2:closeAndReleaseRepository",
         ":adapters:adapter-rxjava3:closeAndReleaseRepository",
         ":adapters:adapter-coroutines:closeAndReleaseRepository"

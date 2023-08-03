@@ -17,7 +17,9 @@ internal class ByteChannelSink(
 
     @Throws(IOException::class)
     override fun write(source: Buffer, byteCount: Long) {
-        check(channel.isOpen) { "closed" }
+        if (!channel.isOpen) {
+            throw IOException("The channel is closed")
+        }
 
         if (byteCount == 0L) {
             return

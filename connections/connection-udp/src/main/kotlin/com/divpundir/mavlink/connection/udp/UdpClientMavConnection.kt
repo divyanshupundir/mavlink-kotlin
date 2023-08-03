@@ -29,6 +29,7 @@ public class UdpClientMavConnection(
             configureBlocking(true)
             connect(address)
             send(ByteBuffer.allocate(32), address)
+            receive(ByteBuffer.allocate(32))
         }
 
         return BufferedMavConnection(
