@@ -3,10 +3,6 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
-    plugins {
-        kotlin("jvm") version "1.9.0"
-        id("com.vanniktech.maven.publish") version "0.24.0"
-    }
 }
 
 @Suppress("UnstableApiUsage")
