@@ -3,8 +3,8 @@ import com.vanniktech.maven.publish.KotlinJvm
 version = Config.Plugin.developmentVersion
 
 dependencies {
-    testImplementation(TestDeps.Jupiter.api)
-    testRuntimeOnly(TestDeps.Jupiter.engine)
+    testImplementation(testlibs.jupiter.api)
+    testRuntimeOnly(testlibs.jupiter.engine)
 }
 
 @Suppress("UnstableApiUsage")

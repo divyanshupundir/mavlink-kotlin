@@ -3,15 +3,15 @@ import com.vanniktech.maven.publish.KotlinJvm
 version = Config.Lib.developmentVersion
 
 dependencies {
-    api(Deps.Kotlin.coroutines)
+    api(libs.kotlinx.coroutines)
     implementation(project(":connections:connection-core"))
 
     testImplementation(project(":definitions"))
     testImplementation(project(":connections:connection-tcp"))
     testImplementation(project(":connections:connection-udp"))
 
-    testImplementation(TestDeps.Jupiter.api)
-    testRuntimeOnly(TestDeps.Jupiter.engine)
+    testImplementation(testlibs.jupiter.api)
+    testRuntimeOnly(testlibs.jupiter.engine)
 }
 
 @Suppress("UnstableApiUsage")

@@ -30,8 +30,8 @@ sourceSets.getByName("main") {
 }
 
 dependencies {
-    api(Deps.MavlinkKotlin.api)
-    implementation(Deps.MavlinkKotlin.serialization)
+    api(Config.Plugin.releaseApi)
+    implementation(Config.Plugin.releaseSerialization)
 }
 
 @Suppress("UnstableApiUsage")
