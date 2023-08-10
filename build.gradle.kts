@@ -7,12 +7,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.vanniktech:gradle-maven-publish-plugin:0.24.0")
+        classpath(libs.mavenpublish)
     }
 }
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
 }
 
 allprojects {

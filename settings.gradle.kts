@@ -16,6 +16,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("testlibs") {
+            from(files("gradle/testlibs.versions.toml"))
+        }
+    }
 }
 
 rootProject.name = "mavlink-kotlin-root"

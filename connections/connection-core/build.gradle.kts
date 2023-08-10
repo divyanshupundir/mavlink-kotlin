@@ -3,16 +3,16 @@ import com.vanniktech.maven.publish.KotlinJvm
 version = Config.Lib.developmentVersion
 
 dependencies {
-    api(Deps.MavlinkKotlin.api)
-    api(Deps.okio)
+    api(Config.Plugin.releaseApi)
+    api(libs.okio)
 
-    implementation(Deps.MavlinkKotlin.serialization)
+    implementation(Config.Plugin.releaseSerialization)
 
     testImplementation(project(":definitions"))
-    testImplementation(TestDeps.DroneFleet.mavlink)
+    testImplementation(testlibs.dronefleet.mavlink)
 
-    testImplementation(TestDeps.Jupiter.api)
-    testRuntimeOnly(TestDeps.Jupiter.engine)
+    testImplementation(testlibs.jupiter.api)
+    testRuntimeOnly(testlibs.jupiter.engine)
 }
 
 @Suppress("UnstableApiUsage")

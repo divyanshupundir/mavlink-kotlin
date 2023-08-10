@@ -1,8 +1,8 @@
 plugins {
     `java-gradle-plugin`
     idea
-    id("maven-publish")
-    id("com.gradle.plugin-publish") version "1.0.0"
+    `maven-publish`
+    alias(libs.plugins.gradlepublish)
 }
 
 version = Config.Plugin.developmentVersion
@@ -14,18 +14,17 @@ idea {
     }
 }
 
-pluginBundle {
-    website = "https://github.com/divyanshupundir/mavlink-kotlin"
-    vcsUrl = "https://github.com/divyanshupundir/mavlink-kotlin"
-    tags = listOf("mavlink", "kotlin", "jvm", "generator")
-}
-
+@Suppress("UnstableApiUsage")
 gradlePlugin {
+    website.set("https://github.com/divyanshupundir/mavlink-kotlin")
+    vcsUrl.set("https://github.com/divyanshupundir/mavlink-kotlin")
+
     plugins {
         create("mavlinkGenerator") {
             id = "${Config.group}.generator"
             displayName = "MAVLink Kotlin Generator"
             description = "Plugin for generating Kotlin implementation of MAVLink dialects."
+            tags.set(listOf("mavlink", "kotlin", "jvm", "generator"))
             implementationClass = "com.divpundir.mavlink.generator.plugin.MavlinkGeneratorPlugin"
         }
     }
@@ -37,10 +36,10 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":serialization"))
 
-    implementation(Deps.Jackson.dataFormatXml)
-    implementation(Deps.Jackson.moduleKotlin)
-    implementation(Deps.kotlinPoet)
+    implementation(libs.jackson.dataformatxml)
+    implementation(libs.jackson.modulekotlin)
+    implementation(libs.kotlinpoet)
 
-    testImplementation(TestDeps.Jupiter.api)
-    testRuntimeOnly(TestDeps.Jupiter.engine)
+    testImplementation(testlibs.jupiter.api)
+    testRuntimeOnly(testlibs.jupiter.engine)
 }
