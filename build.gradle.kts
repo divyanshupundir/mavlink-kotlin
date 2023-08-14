@@ -2,15 +2,6 @@ import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath(libs.mavenpublish)
-    }
-}
-
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.mavenpublish) apply false
