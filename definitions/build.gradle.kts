@@ -1,11 +1,18 @@
 import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
-    id("com.divpundir.mavlink.generator") version Config.Plugin.releaseVersion
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.mavenpublish)
     idea
+    id("com.divpundir.mavlink.generator") version Config.Plugin.releaseVersion
 }
 
+group = Config.group
 version = Config.Lib.developmentVersion
+
+kotlin {
+    explicitApi()
+}
 
 val genSrcDir = file("src/main/kotlin-gen")
 

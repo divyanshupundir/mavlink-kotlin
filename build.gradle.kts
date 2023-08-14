@@ -2,30 +2,14 @@ import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath(libs.mavenpublish)
-    }
-}
-
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.mavenpublish) apply false
 }
 
 allprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "com.vanniktech.maven.publish.base")
 
-    group = Config.group
-
-    kotlin {
-        explicitApi()
-    }
-
-    tasks.withType<JavaCompile> {
+    tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = Config.javaVersion.toString()
         targetCompatibility = Config.javaVersion.toString()
     }
@@ -36,7 +20,7 @@ allprojects {
         }
     }
 
-    tasks.test {
+    tasks.withType<Test>().configureEach {
         useJUnitPlatform()
     }
 

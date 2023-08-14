@@ -10,8 +10,8 @@ object Config {
         const val releaseVersion = "1.0.0"
         const val developmentVersion = "1.0.1"
 
-        const val releaseApi = "com.divpundir.mavlink:api:$releaseVersion"
-        const val releaseSerialization = "com.divpundir.mavlink:serialization:$releaseVersion"
+        const val releaseApi = "$group:api:$releaseVersion"
+        const val releaseSerialization = "$group:serialization:$releaseVersion"
     }
 
     object Lib {

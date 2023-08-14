@@ -1,6 +1,5 @@
 [versions]
 kotlin = "1.9.0"
-mavenpublish = "0.24.0"
 
 [libraries]
 jackson-dataformatxml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0"
@@ -13,10 +12,9 @@ kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
 kotlinx-immutablecollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
 kotlinpoet = "com.squareup:kotlinpoet:1.13.2"
-mavenpublish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenpublish" }
 okio = "com.squareup.okio:okio:3.3.0"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 gradlepublish = { id = "com.gradle.plugin-publish", version = "1.0.0" }
-mavenpublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenpublish" }
+mavenpublish = { id = "com.vanniktech.maven.publish.base", version = "0.24.0" }
