@@ -1,11 +1,17 @@
 plugins {
-    `java-gradle-plugin`
-    idea
-    `maven-publish`
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.gradlepublish)
+    idea
+    `java-gradle-plugin`
+    `maven-publish`
 }
 
+group = Config.group
 version = Config.Plugin.developmentVersion
+
+kotlin {
+    explicitApi()
+}
 
 idea {
     module {

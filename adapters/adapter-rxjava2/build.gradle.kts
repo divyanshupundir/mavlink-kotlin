@@ -1,6 +1,16 @@
 import com.vanniktech.maven.publish.KotlinJvm
 
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.mavenpublish)
+}
+
+group = Config.group
 version = Config.Lib.developmentVersion
+
+kotlin {
+    explicitApi()
+}
 
 dependencies {
     api(libs.reactivex.rxjava2)

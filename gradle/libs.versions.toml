@@ -19,4 +19,4 @@ okio = "com.squareup.okio:okio:3.3.0"
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 gradlepublish = { id = "com.gradle.plugin-publish", version = "1.0.0" }
-mavenpublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenpublish" }
+mavenpublish = { id = "com.vanniktech.maven.publish.base", version.ref = "mavenpublish" }
