@@ -157,7 +157,6 @@ class DeserializationUtilTest {
         )
         val decoder = MavDataDecoder.wrap(bytes)
 
-
         assertEquals(
             Double.fromBits(
                 BigInteger(
@@ -176,14 +175,13 @@ class DeserializationUtilTest {
     @Test
     fun safeDecodeChar() {
         val bytes = byteArrayOf(
-            0x01.toByte(),
-            0x02.toByte(),
+            0x41.toByte(),
+            0x42.toByte(),
         )
-
         val decoder = MavDataDecoder.wrap(bytes)
 
-        assertEquals(0x01.toChar(), decoder.safeDecodeChar())
-        assertEquals(0x02.toChar(), decoder.safeDecodeChar())
+        assertEquals('A', decoder.safeDecodeChar())
+        assertEquals('B', decoder.safeDecodeChar())
     }
 
     @Test
@@ -194,7 +192,6 @@ class DeserializationUtilTest {
             0x61.toByte(), 0x62.toByte(), 0x63.toByte(), 0x64.toByte(),
             0x65.toByte(), 0x66.toByte(), 0x67.toByte(), 0x68.toByte(),
         )
-
         val decoder = MavDataDecoder.wrap(bytes)
 
         assertEquals("ABCDEFGH", decoder.safeDecodeString(8))
