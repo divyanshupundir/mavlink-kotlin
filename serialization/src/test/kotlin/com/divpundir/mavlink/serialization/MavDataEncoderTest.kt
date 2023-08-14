@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.serialization
 
+import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 class MavDataEncoderTest {
 
