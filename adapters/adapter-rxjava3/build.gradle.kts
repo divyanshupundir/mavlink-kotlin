@@ -3,6 +3,7 @@ import com.vanniktech.maven.publish.KotlinJvm
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.mavenpublish)
+    alias(libs.plugins.dokka)
 }
 
 group = Config.group

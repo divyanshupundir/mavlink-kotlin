@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.gradlepublish)
+    alias(libs.plugins.dokka)
     idea
     `java-gradle-plugin`
     `maven-publish`
