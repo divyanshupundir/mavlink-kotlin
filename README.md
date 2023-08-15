@@ -136,6 +136,10 @@ dependencies {
 
 Refer the different adapter modules for details on how to use them.
 
+### API Docs
+
+For the API docs, please refer the [KDoc](https://divyanshupundir.github.io/mavlink-kotlin/).
+
 ---
 
 ## Supported By
