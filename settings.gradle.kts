@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mavlink-kotlin-root"
+rootProject.name = "mavlink-kotlin"
 
 include(":api")
 include(":serialization")

@@ -15,6 +15,7 @@ kotlinpoet = "com.squareup:kotlinpoet:1.13.2"
 okio = "com.squareup.okio:okio:3.3.0"
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version = "1.8.20" }
 gradlepublish = { id = "com.gradle.plugin-publish", version = "1.0.0" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 mavenpublish = { id = "com.vanniktech.maven.publish.base", version = "0.24.0" }
