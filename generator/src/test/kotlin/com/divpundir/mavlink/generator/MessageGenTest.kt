@@ -7,23 +7,23 @@ class MessageGenTest {
 
     @Test
     fun messageGeneration() {
-        val models = listOf(readMavlinkMinimal(), readMavlinkCommon())
-        val enumHelper = EnumHelper(BASE_PACKAGE, models)
+        val dialects = listOf(readMavlinkMinimal(), readMavlinkCommon())
+        val enumHelper = EnumHelper(BASE_PACKAGE, dialects)
 
-        for (model in models) {
-            model
+        for (dialect in dialects) {
+            dialect
                 .generateDialectFile(BASE_PACKAGE)
                 .writeTo(File(GENERATED_SOURCES_DIR))
 
-            for (enum in model.enums) {
+            for (enum in dialect.enums) {
                 enum
-                    .generateEnumFile("$BASE_PACKAGE.${model.subPackageName}")
+                    .generateEnumFile("$BASE_PACKAGE.${dialect.subPackageName}")
                     .writeTo(File(GENERATED_SOURCES_DIR))
             }
 
-            for (message in model.messages) {
+            for (message in dialect.messages) {
                 message
-                    .generateMessageFile("$BASE_PACKAGE.${model.subPackageName}", enumHelper)
+                    .generateMessageFile("$BASE_PACKAGE.${dialect.subPackageName}", enumHelper)
                     .writeTo(File(GENERATED_SOURCES_DIR))
             }
         }

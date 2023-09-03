@@ -7,7 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.divpundir.mavlink.generator.CaseFormat
 
-internal data class MavlinkModel(
+internal data class DialectModel(
     val name: String,
     val includes: List<String>,
     val version: Int,
@@ -21,7 +21,7 @@ internal data class MavlinkModel(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "mavlink")
-internal data class MavlinkXml(
+internal data class DialectXml(
 
     @JacksonXmlProperty(localName = "version", isAttribute = true)
     val version: Int,
@@ -42,7 +42,7 @@ internal data class MavlinkXml(
         includes += include
     }
 
-    fun toModel(name: String) = MavlinkModel(
+    fun toModel(name: String) = DialectModel(
         name,
         includes,
         version,

@@ -1,3 +1,4 @@
+import com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask
 import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
@@ -16,7 +17,7 @@ kotlin {
 
 val genSrcDir = file("src/main/kotlin-gen")
 
-tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
+tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
     include(file("mavlink/message_definitions/v1.0/ASLUAV.xml"))

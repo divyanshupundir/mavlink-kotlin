@@ -13,7 +13,8 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
 internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: EnumHelper): FileSpec {
-    val message = TypeSpec.classBuilder(formattedName)
+    val message = TypeSpec
+        .classBuilder(formattedName)
         .addModifiers(KModifier.DATA)
         .addSuperinterface(MavMessage::class.asClassName().parameterizedBy(getClassName(packageName)))
         .primaryConstructor(generatePrimaryConstructor(enumHelper))
@@ -31,7 +32,8 @@ internal fun MessageModel.generateMessageFile(packageName: String, enumHelper: E
         .addType(generateBuilderClass(packageName, enumHelper))
         .build()
 
-    return FileSpec.builder(packageName, formattedName)
+    return FileSpec
+        .builder(packageName, formattedName)
         .addType(message)
         .build()
 }
@@ -136,12 +138,14 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     )
     .build()
 
-private fun MessageModel.generateBuilderClass(packageName: String, enumHelper: EnumHelper) = TypeSpec.classBuilder("Builder")
+private fun MessageModel.generateBuilderClass(packageName: String, enumHelper: EnumHelper) = TypeSpec
+    .classBuilder("Builder")
     .apply { fields.sortedByPosition().forEach { addProperty(it.generateBuilderProperty(enumHelper)) } }
     .addFunction(generateBuildMethod(packageName))
     .build()
 
-private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.builder("build")
+private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec
+    .builder("build")
     .returns(getClassName(packageName))
     .addCode(
         buildCodeBlock {
@@ -154,10 +158,20 @@ private fun MessageModel.generateBuildMethod(packageName: String) = FunSpec.buil
     )
     .build()
 
-private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec.builder("invoke")
+private fun MessageModel.generateBuilderFunction(packageName: String) = FunSpec
+    .builder("invoke")
     .addModifiers(KModifier.OPERATOR)
     .returns(getClassName(packageName))
-    .addParameter(ParameterSpec("builderAction", LambdaTypeName.get(getClassName(packageName).nestedClass("Builder"), emptyList(), Unit::class.asTypeName())))
+    .addParameter(
+        ParameterSpec(
+            "builderAction",
+            LambdaTypeName.get(
+                getClassName(packageName).nestedClass("Builder"),
+                emptyList(),
+                Unit::class.asTypeName()
+            )
+        )
+    )
     .addCode("return %T().apply(builderAction).build()", getClassName(packageName).nestedClass("Builder"))
     .build()
 
@@ -169,8 +183,7 @@ private val MessageModel.sizeV2: Int
 
 private val truncateZerosMemberName = MemberName("com.divpundir.mavlink.serialization", "truncateZeros")
 
-private fun MessageModel.getClassName(packageName: String): ClassName =
-    ClassName(packageName, formattedName)
+private fun MessageModel.getClassName(packageName: String): ClassName = ClassName(packageName, formattedName)
 
 internal val MessageModel.crcExtra: Byte
     get() {

@@ -21,22 +21,53 @@ class MessageXmlTest {
         </message>
         """.trimIndent()
 
-        val model = mapper.readValue(inp, MessageXml::class.java).toModel()
-        println(model)
+        val expected = MessageModel(
+            id = 80,
+            name = "COMMAND_CANCEL",
+            fields = listOf(
+                FieldModel.Primitive(
+                    position = 1,
+                    type = "uint8_t",
+                    name = "target_system",
+                    extension = false,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "System executing long running command. Should not be broadcast (0)."
+                ),
+                FieldModel.Primitive(
+                    position = 2,
+                    type = "uint8_t",
+                    name = "target_component",
+                    extension = false,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "Component executing long running command."
+                ),
+                FieldModel.Enum(
+                    enumType = "MAV_CMD",
+                    position = 3,
+                    type = "uint16_t",
+                    name = "command",
+                    extension = false,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "Command ID (of command to cancel)."
+                )
+            ),
+            workInProgress = true,
+            deprecated = null,
+            description = "Cancel a long running command. The target system should respond with a COMMAND_ACK to the original command with result=MAV_RESULT_CANCELLED if the long running process was cancelled. If it has already completed, the cancel action can be ignored. The cancel action can be retried until some sort of acknowledgement to the original command has been received. The command microservice is documented at https://mavlink.io/en/services/command.html"
+        )
 
-        assertTrue(model.workInProgress)
+        val actual = mapper.readValue(inp, MessageXml::class.java).toModel()
 
-        val targetSystem = model.fields[0]
-        assertEquals(targetSystem.name, "target_system")
-        assertFalse(targetSystem.extension)
-
-        val targetComponent = model.fields[1]
-        assertEquals(targetComponent.name, "target_component")
-        assertFalse(targetComponent.extension)
-
-        val command = model.fields[2]
-        assertEquals(command.name, "command")
-        assertFalse(command.extension)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -54,38 +85,96 @@ class MessageXmlTest {
         </message>
         """.trimIndent()
 
-        val model = mapper.readValue(inp, MessageXml::class.java).toModel()
-        println(model)
+        val expected = MessageModel(
+            id = 81,
+            name = "MANUAL_SETPOINT",
+            fields = listOf(
+                FieldModel.Primitive(
+                    position = 1,
+                    type = "uint32_t",
+                    name = "time_boot_ms",
+                    extension = false,
+                    display = null,
+                    units = "ms",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Timestamp (time since system boot)."
+                ),
+                FieldModel.Primitive(
+                    position = 2,
+                    type = "float",
+                    name = "roll",
+                    extension = false,
+                    display = null,
+                    units = "rad/s",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Desired roll rate"
+                ),
+                FieldModel.Primitive(
+                    position = 3,
+                    type = "float",
+                    name = "pitch",
+                    extension = false,
+                    display = null,
+                    units = "rad/s",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Desired pitch rate"
+                ),
+                FieldModel.Primitive(
+                    position = 4,
+                    type = "float",
+                    name = "yaw",
+                    extension = false,
+                    display = null,
+                    units = "rad/s",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Desired yaw rate"
+                ),
+                FieldModel.Primitive(
+                    position = 5,
+                    type = "float",
+                    name = "thrust",
+                    extension = false,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "Collective thrust, normalized to 0 .. 1"
+                ),
+                FieldModel.Primitive(
+                    position = 6,
+                    type = "uint8_t",
+                    name = "mode_switch",
+                    extension = false,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "Flight mode switch position, 0.. 255"
+                ),
+                FieldModel.Primitive(
+                    position = 7,
+                    type = "uint8_t",
+                    name = "manual_override_switch",
+                    extension = false,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "Override mode switch position, 0.. 255"
+                )
+            ),
+            workInProgress = false,
+            deprecated = null,
+            description = "Setpoint in roll, pitch, yaw and thrust from the operator"
+        )
 
-        assertFalse(model.workInProgress)
+        val actual = mapper.readValue(inp, MessageXml::class.java).toModel()
 
-        val timeBootMs = model.fields[0]
-        assertEquals(timeBootMs.name, "time_boot_ms")
-        assertFalse(timeBootMs.extension)
-
-        val roll = model.fields[1]
-        assertEquals(roll.name, "roll")
-        assertFalse(roll.extension)
-
-        val pitch = model.fields[2]
-        assertEquals(pitch.name, "pitch")
-        assertFalse(pitch.extension)
-
-        val yaw = model.fields[3]
-        assertEquals(yaw.name, "yaw")
-        assertFalse(yaw.extension)
-
-        val thrust = model.fields[4]
-        assertEquals(thrust.name, "thrust")
-        assertFalse(thrust.extension)
-
-        val modeSwitch = model.fields[5]
-        assertEquals(modeSwitch.name, "mode_switch")
-        assertFalse(modeSwitch.extension)
-
-        val manualOverrideSwitch = model.fields[6]
-        assertEquals(manualOverrideSwitch.name, "manual_override_switch")
-        assertFalse(manualOverrideSwitch.extension)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -106,45 +195,119 @@ class MessageXmlTest {
         </message>
         """.trimIndent()
 
-        val model = mapper.readValue(inp, MessageXml::class.java).toModel()
-        println(model)
+        val expected = MessageModel(
+            id = 101,
+            name = "GLOBAL_VISION_POSITION_ESTIMATE",
+            fields = listOf(
+                FieldModel.Primitive(
+                    position = 1,
+                    type = "uint64_t",
+                    name = "usec",
+                    extension = false,
+                    display = null,
+                    units = "us",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Timestamp (UNIX time or since system boot)"
+                ),
+                FieldModel.Primitive(
+                    position = 2,
+                    type = "float",
+                    name = "x",
+                    extension = false,
+                    display = null,
+                    units = "m",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Global X position"
+                ),
+                FieldModel.Primitive(
+                    position = 3,
+                    type = "float",
+                    name = "y",
+                    extension = false,
+                    display = null,
+                    units = "m",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Global Y position"
+                ),
+                FieldModel.Primitive(
+                    position = 4,
+                    type = "float",
+                    name = "z",
+                    extension = false,
+                    display = null,
+                    units = "m",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Global Z position"
+                ),
+                FieldModel.Primitive(
+                    position = 5,
+                    type = "float",
+                    name = "roll",
+                    extension = false,
+                    display = null,
+                    units = "rad",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Roll angle"
+                ),
+                FieldModel.Primitive(
+                    position = 6,
+                    type = "float",
+                    name = "pitch",
+                    extension = false,
+                    display = null,
+                    units = "rad",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Pitch angle"
+                ),
+                FieldModel.Primitive(
+                    position = 7,
+                    type = "float",
+                    name = "yaw",
+                    extension = false,
+                    display = null,
+                    units = "rad",
+                    invalid = null,
+                    printFormat = null,
+                    content = "Yaw angle"
+                ),
+                FieldModel.PrimitiveArray(
+                    position = 8,
+                    primitiveType = "float",
+                    arrayLength = 21,
+                    type = "float[21]",
+                    name = "covariance",
+                    extension = true,
+                    display = null,
+                    units = null,
+                    invalid = "[NaN:]",
+                    printFormat = null,
+                    content = "Row-major representation of pose 6x6 cross-covariance matrix upper right triangle (states: x_global, y_global, z_global, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array."
+                ),
+                FieldModel.Primitive(
+                    position = 9,
+                    type = "uint8_t",
+                    name = "reset_counter",
+                    extension = true,
+                    display = null,
+                    units = null,
+                    invalid = null,
+                    printFormat = null,
+                    content = "Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps."
+                )
+            ),
+            workInProgress = false,
+            deprecated = null,
+            description = "Global position/attitude estimate from a vision source."
+        )
 
-        assertFalse(model.workInProgress)
+        val actual = mapper.readValue(inp, MessageXml::class.java).toModel()
 
-        val usec = model.fields[0]
-        assertEquals(usec.name, "usec")
-        assertFalse(usec.extension)
-
-        val x = model.fields[1]
-        assertEquals(x.name, "x")
-        assertFalse(x.extension)
-
-        val y = model.fields[2]
-        assertEquals(y.name, "y")
-        assertFalse(y.extension)
-
-        val z = model.fields[3]
-        assertEquals(z.name, "z")
-        assertFalse(z.extension)
-
-        val roll = model.fields[4]
-        assertEquals(roll.name, "roll")
-        assertFalse(roll.extension)
-
-        val pitch = model.fields[5]
-        assertEquals(pitch.name, "pitch")
-        assertFalse(pitch.extension)
-
-        val yaw = model.fields[6]
-        assertEquals(yaw.name, "yaw")
-        assertFalse(yaw.extension)
-
-        val covariance = model.fields[7]
-        assertEquals(covariance.name, "covariance")
-        assertTrue(covariance.extension)
-
-        val resetCounter = model.fields[8]
-        assertEquals(resetCounter.name, "reset_counter")
-        assertTrue(resetCounter.extension)
+        assertEquals(expected, actual)
     }
 }

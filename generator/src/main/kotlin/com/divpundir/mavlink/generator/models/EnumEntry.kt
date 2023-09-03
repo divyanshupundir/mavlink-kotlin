@@ -37,6 +37,7 @@ internal data class EnumEntryXml(
         params += param
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     var workInProgress: WipXml? = null
         @JsonSetter("wip") set
 

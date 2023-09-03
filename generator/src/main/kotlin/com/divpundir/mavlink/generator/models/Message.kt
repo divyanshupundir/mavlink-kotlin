@@ -34,6 +34,7 @@ internal data class MessageXml(
     val description: String?
 ) {
 
+    @Suppress("MemberVisibilityCanBePrivate")
     var workInProgress: WipXml? = null
         @JsonSetter("wip") set
 

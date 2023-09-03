@@ -9,7 +9,8 @@ import com.divpundir.mavlink.generator.models.EnumEntryModel
 import com.divpundir.mavlink.generator.models.EnumModel
 
 internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
-    val enum = TypeSpec.enumBuilder(formattedName)
+    val enum = TypeSpec
+        .enumBuilder(formattedName)
         .addSuperinterface(if (bitmask) MavBitmask::class else MavEnum::class)
         .primaryConstructor(generatePrimaryConstructor())
         .addProperty(generateValueProperty())
@@ -22,7 +23,8 @@ internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
         .addType(generateCompanionObject(packageName))
         .build()
 
-    return FileSpec.builder(packageName, formattedName)
+    return FileSpec
+        .builder(packageName, formattedName)
         .addType(enum)
         .build()
 }

@@ -2,16 +2,16 @@ package com.divpundir.mavlink.generator
 
 import com.squareup.kotlinpoet.ClassName
 import com.divpundir.mavlink.generator.models.EnumModel
-import com.divpundir.mavlink.generator.models.MavlinkModel
+import com.divpundir.mavlink.generator.models.DialectModel
 
 internal class EnumHelper(
     private val basePackage: String,
-    mavlinkModels: List<MavlinkModel>
+    dialectModels: List<DialectModel>
 ) {
-    private val nameToModels = mutableMapOf<String, Pair<EnumModel, MavlinkModel>>()
+    private val nameToModels = mutableMapOf<String, Pair<EnumModel, DialectModel>>()
 
     init {
-        for (mavlinkModel in mavlinkModels) {
+        for (mavlinkModel in dialectModels) {
             for (enumModel in mavlinkModel.enums) {
                 nameToModels.putIfAbsent(enumModel.name, enumModel to mavlinkModel)
             }
