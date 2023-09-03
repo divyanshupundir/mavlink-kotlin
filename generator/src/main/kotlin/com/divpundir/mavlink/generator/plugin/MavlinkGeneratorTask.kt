@@ -52,30 +52,30 @@ public abstract class MavlinkGeneratorTask : DefaultTask() {
         if (!generatedSourcesDir.mkdirs())
             throw IllegalArgumentException("Cannot create generated sources directory.")
 
-        val mavlinkModels = definitions.map {
+        val dialectModels = definitions.map {
             try {
                 MavlinkDefinitionParser.parse(it)
             } catch (e: IOException) {
-                throw IllegalArgumentException("Invalid mavlink schema: $it")
+                throw IllegalArgumentException("Invalid mavlink dialect: $it")
             }
         }
 
-        val enumHelper = EnumHelper(BASE_PACKAGE, mavlinkModels)
+        val enumHelper = EnumHelper(BASE_PACKAGE, dialectModels)
 
-        for (model in mavlinkModels) {
-            model
+        for (dialect in dialectModels) {
+            dialect
                 .generateDialectFile(BASE_PACKAGE)
                 .writeTo(generatedSourcesDir)
 
-            val packageName = "$BASE_PACKAGE.${model.subPackageName}"
+            val packageName = "$BASE_PACKAGE.${dialect.subPackageName}"
 
-            for (enum in model.enums) {
+            for (enum in dialect.enums) {
                 enum
                     .generateEnumFile(packageName)
                     .writeTo(generatedSourcesDir)
             }
 
-            for (message in model.messages) {
+            for (message in dialect.messages) {
                 message
                     .generateMessageFile(packageName, enumHelper)
                     .writeTo(generatedSourcesDir)

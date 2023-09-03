@@ -2,16 +2,16 @@ package com.divpundir.mavlink.generator
 
 import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
-import com.divpundir.mavlink.generator.models.MavlinkModel
+import com.divpundir.mavlink.generator.models.DialectModel
 import com.squareup.kotlinpoet.*
 
-internal fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec {
+internal fun DialectModel.generateDialectFile(basePackageName: String): FileSpec {
     val packageName = "$basePackageName.$subPackageName"
     val dialect = TypeSpec.objectBuilder(dialectObjectName)
         .addModifiers(KModifier.DATA)
         .superclass(AbstractMavDialect::class)
-        .addSuperclassConstructorParameter(generateDependencies(basePackageName))
-        .addSuperclassConstructorParameter(generateMessages(basePackageName))
+        .addSuperclassConstructorParameter(generateDependencySet(basePackageName))
+        .addSuperclassConstructorParameter(generateMessageMap(basePackageName))
         .addAnnotation(GeneratedMavDialect::class)
         .build()
 
@@ -20,7 +20,7 @@ internal fun MavlinkModel.generateDialectFile(basePackageName: String): FileSpec
         .build()
 }
 
-private fun MavlinkModel.generateDependencies(basePackageName: String) = buildCodeBlock {
+private fun DialectModel.generateDependencySet(basePackageName: String) = buildCodeBlock {
     addStatement("")
     indent()
 
@@ -47,7 +47,7 @@ private fun MavlinkModel.generateDependencies(basePackageName: String) = buildCo
     unindent()
 }
 
-private fun MavlinkModel.generateMessages(basePackageName: String) = buildCodeBlock {
+private fun DialectModel.generateMessageMap(basePackageName: String) = buildCodeBlock {
     addStatement("")
     indent()
 
