@@ -1,8 +1,10 @@
 package com.divpundir.mavlink.generator
 
-internal class CaseFormat(private val words: List<String>) {
+internal class CaseFormat private constructor(val words: List<String>) {
 
     companion object {
+
+        fun fromWords(vararg words: String): CaseFormat = CaseFormat(words.map(String::lowercase))
 
         fun fromDelimited(identifier: String, delimiter: String): CaseFormat =
             CaseFormat(identifier.split(delimiter).map(String::lowercase))
