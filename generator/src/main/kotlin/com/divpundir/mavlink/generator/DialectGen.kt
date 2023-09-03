@@ -7,7 +7,8 @@ import com.squareup.kotlinpoet.*
 
 internal fun DialectModel.generateDialectFile(basePackageName: String): FileSpec {
     val packageName = "$basePackageName.$subPackageName"
-    val dialect = TypeSpec.objectBuilder(dialectObjectName)
+    val dialect = TypeSpec
+        .objectBuilder(dialectObjectName)
         .addModifiers(KModifier.DATA)
         .superclass(AbstractMavDialect::class)
         .addSuperclassConstructorParameter(generateDependencySet(basePackageName))
@@ -15,7 +16,8 @@ internal fun DialectModel.generateDialectFile(basePackageName: String): FileSpec
         .addAnnotation(GeneratedMavDialect::class)
         .build()
 
-    return FileSpec.builder(packageName, dialectObjectName)
+    return FileSpec
+        .builder(packageName, dialectObjectName)
         .addType(dialect)
         .build()
 }
