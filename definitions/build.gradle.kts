@@ -33,6 +33,10 @@ tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     generatedSourcesDir = genSrcDir
 }
 
+tasks.getByName("kotlinSourcesJar") {
+    dependsOn("generateMavlink")
+}
+
 sourceSets.getByName("main") {
     java.srcDir(genSrcDir)
 }
