@@ -8,10 +8,11 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import okio.IOException
+import kotlin.coroutines.CoroutineContext
 
 internal class CoroutinesMavConnectionImpl(
     private val connection: MavConnection,
-    private val dispatcher: CoroutineDispatcher,
+    private val context: CoroutineContext,
     extraBufferCapacity: Int,
     onBufferOverflow: BufferOverflow,
     private val onFailure: CoroutinesMavConnection.() -> Unit
@@ -29,12 +30,12 @@ internal class CoroutinesMavConnectionImpl(
 
     @Throws(IOException::class)
     override suspend fun connect(readerScope: CoroutineScope) {
-        withContext(dispatcher) {
+        withContext(context) {
             connection.connect()
             readState = State.RUNNING
         }
 
-        readerScope.launch(dispatcher + CoroutineName("mavlink-read-coroutine")) {
+        readerScope.launch(context + CoroutineName("mavlink-read-coroutine")) {
             processMavFrames()
         }
     }
@@ -61,7 +62,7 @@ internal class CoroutinesMavConnectionImpl(
 
     @Throws(IOException::class)
     override suspend fun close() {
-        withContext(dispatcher) {
+        withContext(context) {
             readState = State.STOPPED
             connection.close()
         }
@@ -73,7 +74,7 @@ internal class CoroutinesMavConnectionImpl(
         componentId: UByte,
         payload: T
     ) {
-        withContext(dispatcher) {
+        withContext(context) {
             connection.sendV1(
                 systemId,
                 componentId,
@@ -87,7 +88,7 @@ internal class CoroutinesMavConnectionImpl(
         systemId: UByte,
         componentId: UByte, payload: T
     ) {
-        withContext(dispatcher) {
+        withContext(context) {
             connection.sendUnsignedV2(
                 systemId,
                 componentId,
@@ -105,7 +106,7 @@ internal class CoroutinesMavConnectionImpl(
         timestamp: UInt,
         secretKey: ByteArray
     ) {
-        withContext(dispatcher) {
+        withContext(context) {
             connection.sendSignedV2(
                 systemId,
                 componentId,
