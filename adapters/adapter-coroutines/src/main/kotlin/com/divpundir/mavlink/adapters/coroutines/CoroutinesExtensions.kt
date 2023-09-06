@@ -2,24 +2,24 @@ package com.divpundir.mavlink.adapters.coroutines
 
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import okio.IOException
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A helper function to wrap a [MavConnection] as a [CoroutinesMavConnection]. The returned [CoroutinesMavConnection]
- * uses the provided [dispatcher] to perform the IO operations of reading and sending the messages. The [onFailure]
+ * uses the provided [context] to perform the IO operations of reading and sending the messages. The [onFailure]
  * callback is invoked when an exception is thrown while reading the messages. This can be used to implement a custom
  * reconnection strategy.
  */
 public fun MavConnection.asCoroutine(
-    dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    context: CoroutineContext = Dispatchers.IO,
     onFailure: CoroutinesMavConnection.() -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     connection = this,
-    dispatcher = dispatcher,
+    context = context,
     extraBufferCapacity = 128,
     onBufferOverflow = BufferOverflow.DROP_OLDEST,
     onFailure = onFailure
