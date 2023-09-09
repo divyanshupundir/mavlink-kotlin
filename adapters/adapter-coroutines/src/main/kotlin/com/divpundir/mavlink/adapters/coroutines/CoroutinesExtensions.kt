@@ -13,6 +13,14 @@ import kotlin.coroutines.CoroutineContext
  * callback is invoked when an exception is thrown while reading the messages. This can be used to implement a custom
  * reconnection strategy.
  */
+@Deprecated(
+    message = "CoroutinesMavConnection with onFailure callback is deprecated and will be removed in the future releases. " +
+            "For checking the states including failure, use CoroutinesMavConnection.streamState.",
+    replaceWith = ReplaceWith(
+        expression = "asCoroutine(context)",
+        imports = ["com.divpundir.mavlink.adapters.coroutines.asCoroutine"]
+    )
+)
 public fun MavConnection.asCoroutine(
     context: CoroutineContext = Dispatchers.IO,
     onFailure: CoroutinesMavConnection.() -> Unit = {}
@@ -20,6 +28,14 @@ public fun MavConnection.asCoroutine(
     connection = this,
     context = context,
     onFailure = onFailure
+)
+
+public fun MavConnection.asCoroutine(
+    context: CoroutineContext = Dispatchers.IO,
+): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
+    connection = this,
+    context = context,
+    onFailure = {}
 )
 
 /**

@@ -1,6 +1,7 @@
 package com.divpundir.mavlink.adapters.coroutines
 
 import com.divpundir.mavlink.api.wrap
+import com.divpundir.mavlink.connection.StreamState
 import com.divpundir.mavlink.connection.tcp.TcpClientMavConnection
 import com.divpundir.mavlink.connection.udp.UdpClientMavConnection
 import com.divpundir.mavlink.definitions.ardupilotmega.ArdupilotmegaDialect
@@ -67,9 +68,12 @@ class CoroutinesMavConnectionTest {
 
     @Test
     fun reconnect(): Unit = runBlocking {
-        val connection = UdpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine {
-            launch {
-                while (!tryConnect(this)) {
+        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine()
+
+        launch {
+            connection.streamState.filterIsInstance<StreamState.Inactive.Failed>().collect {
+                println(it)
+                while (!connection.tryConnect(this)) {
                     delay(2000)
                 }
             }
@@ -82,7 +86,7 @@ class CoroutinesMavConnectionTest {
         }
 
         launch {
-            connection.mavFrame.collect { println(it.message) }
+            connection.mavFrame.map { it.message }.filterIsInstance<Heartbeat>().collect { println(it) }
         }
 
         launch {

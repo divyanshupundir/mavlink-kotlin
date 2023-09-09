@@ -3,10 +3,10 @@ package com.divpundir.mavlink.adapters.coroutines
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
+import com.divpundir.mavlink.connection.StreamState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import okio.IOException
 import kotlin.coroutines.CoroutineContext
 
@@ -16,9 +16,8 @@ internal class CoroutinesMavConnectionImpl(
     private val onFailure: CoroutinesMavConnection.() -> Unit
 ) : CoroutinesMavConnection {
 
-    @Volatile
-    private var readState = State.STOPPED
-        @Synchronized set
+    private val _streamState = MutableStateFlow<StreamState>(StreamState.Inactive.Stopped)
+    override val streamState: StateFlow<StreamState> = _streamState.asStateFlow()
 
     private val _mavFrame = MutableSharedFlow<MavFrame<out MavMessage<*>>>(
         extraBufferCapacity = 128,
@@ -30,7 +29,7 @@ internal class CoroutinesMavConnectionImpl(
     override suspend fun connect(readerScope: CoroutineScope) {
         withContext(context) {
             connection.connect()
-            readState = State.RUNNING
+            _streamState.value = StreamState.Active
         }
 
         readerScope.launch(context + CoroutineName("mavlink-read-coroutine")) {
@@ -39,21 +38,21 @@ internal class CoroutinesMavConnectionImpl(
     }
 
     private suspend fun processMavFrames() {
-        while (readState == State.RUNNING) {
+        while (_streamState.value == StreamState.Active) {
             try {
                 _mavFrame.emit(connection.next())
             } catch (e: IOException) {
-                if (readState == State.RUNNING) {
-                    readState = State.FAILED
+                if (_streamState.value == StreamState.Active) {
+                    _streamState.value = StreamState.Inactive.Failed(e)
                     kotlin.runCatching { connection.close() }
                 }
             } catch (e: CancellationException) {
-                readState = State.STOPPED
+                _streamState.value = StreamState.Inactive.Stopped
                 kotlin.runCatching { connection.close() }
             }
         }
 
-        if (readState == State.FAILED) {
+        if (_streamState.value is StreamState.Inactive.Failed) {
             onFailure()
         }
     }
@@ -61,7 +60,7 @@ internal class CoroutinesMavConnectionImpl(
     @Throws(IOException::class)
     override suspend fun close() {
         withContext(context) {
-            readState = State.STOPPED
+            _streamState.value = StreamState.Inactive.Stopped
             connection.close()
         }
     }
@@ -114,11 +113,5 @@ internal class CoroutinesMavConnectionImpl(
                 secretKey
             )
         }
-    }
-
-    private enum class State {
-        RUNNING,
-        STOPPED,
-        FAILED
     }
 }
