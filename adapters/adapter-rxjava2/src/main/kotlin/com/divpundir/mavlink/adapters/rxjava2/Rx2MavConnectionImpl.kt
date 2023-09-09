@@ -22,7 +22,7 @@ internal class Rx2MavConnectionImpl(
     override val streamState: Flowable<StreamState> = _streamState.onBackpressureLatest().share()
 
     private val _mavFrame = PublishProcessor.create<MavFrame<out MavMessage<*>>>()
-    override val mavFrame: Flowable<MavFrame<out MavMessage<*>>> = _mavFrame.onBackpressureBuffer().share()
+    override val mavFrame: Flowable<MavFrame<out MavMessage<*>>> = _mavFrame.onBackpressureDrop().share()
 
     override fun connect() = completableSubscribeOn(scheduler) {
         connection.connect()
