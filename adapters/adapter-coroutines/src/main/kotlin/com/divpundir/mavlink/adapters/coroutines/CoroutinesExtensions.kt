@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
 import okio.IOException
 import kotlin.coroutines.CoroutineContext
 
@@ -20,8 +19,6 @@ public fun MavConnection.asCoroutine(
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     connection = this,
     context = context,
-    extraBufferCapacity = 128,
-    onBufferOverflow = BufferOverflow.DROP_OLDEST,
     onFailure = onFailure
 )
 
