@@ -27,6 +27,10 @@ public fun MavConnection.asRx2(
     onFailure = onFailure
 )
 
+/**
+ * A helper function to wrap a [MavConnection] as an [Rx2MavConnection]. The returned [Rx2MavConnection] uses the
+ * provided [scheduler] to perform the IO operations of reading and sending the messages.
+ */
 public fun MavConnection.asRx2(
     scheduler: Scheduler = Schedulers.io(),
 ): Rx2MavConnection = Rx2MavConnectionImpl(

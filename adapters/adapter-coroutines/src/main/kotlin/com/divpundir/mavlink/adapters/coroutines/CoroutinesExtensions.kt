@@ -30,6 +30,10 @@ public fun MavConnection.asCoroutine(
     onFailure = onFailure
 )
 
+/**
+ * A helper function to wrap a [MavConnection] as a [CoroutinesMavConnection]. The returned [CoroutinesMavConnection]
+ * uses the provided [context] to perform the IO operations of reading and sending the messages.
+ */
 public fun MavConnection.asCoroutine(
     context: CoroutineContext = Dispatchers.IO,
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
