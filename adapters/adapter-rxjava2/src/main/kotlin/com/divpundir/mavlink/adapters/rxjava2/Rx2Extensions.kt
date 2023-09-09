@@ -10,6 +10,14 @@ import io.reactivex.schedulers.Schedulers
  * invoked when an exception is thrown while reading the messages. This can be used to implement a custom reconnection
  * strategy.
  */
+@Deprecated(
+    message = "Rx2MavConnection with onFailure callback is deprecated and will be removed in the future releases. " +
+            "For checking the states including failure, use Rx2MavConnection.streamState.",
+    replaceWith = ReplaceWith(
+        expression = "asRx2(scheduler)",
+        imports = ["com.divpundir.mavlink.adapters.rxjava2.asRx2"]
+    )
+)
 public fun MavConnection.asRx2(
     scheduler: Scheduler = Schedulers.io(),
     onFailure: Rx2MavConnection.() -> Unit = {}
@@ -17,4 +25,12 @@ public fun MavConnection.asRx2(
     connection = this,
     scheduler = scheduler,
     onFailure = onFailure
+)
+
+public fun MavConnection.asRx2(
+    scheduler: Scheduler = Schedulers.io(),
+): Rx2MavConnection = Rx2MavConnectionImpl(
+    connection = this,
+    scheduler = scheduler,
+    onFailure = {}
 )

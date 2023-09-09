@@ -2,11 +2,18 @@ package com.divpundir.mavlink.adapters.rxjava2
 
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.connection.StreamState
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.annotations.CheckReturnValue
 
 public interface Rx2MavConnection {
+
+    /**
+     * The current state of the connection stream.
+     */
+    @get:CheckReturnValue
+    public val streamState: Flowable<StreamState>
 
     /**
      * A stream of [MavFrame]s.
