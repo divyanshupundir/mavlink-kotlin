@@ -36,7 +36,6 @@ class DeprecatedXmlTest {
         val actual = mapper.readValue(inp, DeprecatedXml::class.java).toModel()
 
         assertEquals(expected, actual)
-
     }
 
     @Test
