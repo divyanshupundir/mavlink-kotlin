@@ -7,6 +7,7 @@ import com.divpundir.mavlink.connection.StreamState
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
+import io.reactivex.functions.Action
 import io.reactivex.processors.BehaviorProcessor
 import io.reactivex.processors.PublishProcessor
 import okio.IOException
@@ -98,9 +99,5 @@ internal class Rx2MavConnectionImpl(
 
 }
 
-private inline fun completableSubscribeOn(
-    scheduler: Scheduler,
-    crossinline action: () -> Unit
-): Completable = Completable.fromAction {
-    action()
-}.subscribeOn(scheduler)
+private fun completableSubscribeOn(scheduler: Scheduler, action: Action): Completable =
+    Completable.fromAction(action).subscribeOn(scheduler)

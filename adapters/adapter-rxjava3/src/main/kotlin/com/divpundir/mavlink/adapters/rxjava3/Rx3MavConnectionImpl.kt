@@ -7,6 +7,7 @@ import com.divpundir.mavlink.connection.StreamState
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.functions.Action
 import io.reactivex.rxjava3.processors.BehaviorProcessor
 import io.reactivex.rxjava3.processors.PublishProcessor
 import okio.IOException
@@ -97,9 +98,5 @@ internal class Rx3MavConnectionImpl(
     }
 }
 
-private inline fun completableSubscribeOn(
-    scheduler: Scheduler,
-    crossinline action: () -> Unit
-): Completable = Completable.fromAction {
-    action()
-}.subscribeOn(scheduler)
+private fun completableSubscribeOn(scheduler: Scheduler, action: Action): Completable =
+    Completable.fromAction(action).subscribeOn(scheduler)
