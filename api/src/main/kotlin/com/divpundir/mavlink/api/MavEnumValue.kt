@@ -23,11 +23,7 @@ public class MavEnumValue<E : MavEnum> private constructor(public val entry: E?,
         return value == other.value
     }
 
-    override fun hashCode(): Int {
-        return value.hashCode()
-    }
+    override fun hashCode(): Int = value.hashCode()
 
-    override fun toString(): String {
-        return "MavEnumValue(entry=$entry, value=$value)"
-    }
+    override fun toString(): String = "MavEnumValue(entry=$entry, value=$value)"
 }
