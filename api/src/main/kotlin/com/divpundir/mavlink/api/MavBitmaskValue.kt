@@ -31,11 +31,7 @@ public class MavBitmaskValue<E : MavBitmask> private constructor(public val flag
         return value == other.value
     }
 
-    override fun hashCode(): Int {
-        return value.hashCode()
-    }
+    override fun hashCode(): Int = value.hashCode()
 
-    override fun toString(): String {
-        return "MavBitmaskValue(flags=$flags, value=$value)"
-    }
+    override fun toString(): String = "MavBitmaskValue(flags=$flags, value=$value)"
 }

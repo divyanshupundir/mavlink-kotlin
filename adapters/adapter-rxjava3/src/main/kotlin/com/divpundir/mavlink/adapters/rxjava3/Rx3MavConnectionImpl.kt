@@ -3,9 +3,12 @@ package com.divpundir.mavlink.adapters.rxjava3
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.connection.MavConnection
+import com.divpundir.mavlink.connection.StreamState
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.functions.Action
+import io.reactivex.rxjava3.processors.BehaviorProcessor
 import io.reactivex.rxjava3.processors.PublishProcessor
 import okio.IOException
 
@@ -15,41 +18,40 @@ internal class Rx3MavConnectionImpl(
     private val onFailure: Rx3MavConnection.() -> Unit
 ) : Rx3MavConnection {
 
-    @Volatile
-    private var readState = State.STOPPED
-        @Synchronized set
+    private val _streamState = BehaviorProcessor.createDefault<StreamState>(StreamState.Inactive.Stopped)
+    override val streamState: Flowable<StreamState> = _streamState.onBackpressureLatest().share()
 
     private val _mavFrame = PublishProcessor.create<MavFrame<out MavMessage<*>>>()
-    override val mavFrame: Flowable<MavFrame<out MavMessage<*>>> = _mavFrame.onBackpressureBuffer().share()
+    override val mavFrame: Flowable<MavFrame<out MavMessage<*>>> = _mavFrame.onBackpressureDrop().share()
 
     override fun connect() = completableSubscribeOn(scheduler) {
         connection.connect()
-        readState = State.RUNNING
+        _streamState.onNext(StreamState.Active)
         scheduler.scheduleDirect(this::processMavFrames)
     }
 
     private fun processMavFrames() {
-        while (readState == State.RUNNING) {
+        while (_streamState.value == StreamState.Active) {
             try {
                 _mavFrame.onNext(connection.next())
-            } catch (_: IOException) {
-                if (readState == State.RUNNING) {
-                    readState = State.FAILED
+            } catch (e: IOException) {
+                if (_streamState.value == StreamState.Active) {
+                    _streamState.onNext(StreamState.Inactive.Failed(e))
                     kotlin.runCatching { connection.close() }
                 }
             } catch (_: InterruptedException) {
-                readState = State.STOPPED
+                _streamState.onNext(StreamState.Inactive.Stopped)
                 kotlin.runCatching { connection.close() }
             }
         }
 
-        if (readState == State.FAILED) {
+        if (_streamState.value is StreamState.Inactive.Failed) {
             onFailure()
         }
     }
 
     override fun close() = completableSubscribeOn(scheduler) {
-        readState = State.STOPPED
+        _streamState.onNext(StreamState.Inactive.Stopped)
         connection.close()
     }
 
@@ -94,17 +96,7 @@ internal class Rx3MavConnectionImpl(
             secretKey
         )
     }
-
-    private enum class State {
-        RUNNING,
-        STOPPED,
-        FAILED
-    }
 }
 
-private inline fun completableSubscribeOn(
-    scheduler: Scheduler,
-    crossinline action: () -> Unit
-): Completable = Completable.fromAction {
-    action()
-}.subscribeOn(scheduler)
+private fun completableSubscribeOn(scheduler: Scheduler, action: Action): Completable =
+    Completable.fromAction(action).subscribeOn(scheduler)

@@ -2,11 +2,18 @@ package com.divpundir.mavlink.adapters.coroutines
 
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.connection.StreamState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import okio.IOException
 
 public interface CoroutinesMavConnection {
+
+    /**
+     * The current state of the connection stream.
+     */
+    public val streamState: StateFlow<StreamState>
 
     /**
      * A stream of [MavFrame]s.
