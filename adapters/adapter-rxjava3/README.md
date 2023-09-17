@@ -37,21 +37,13 @@ connection.connect().blockingAwait()
 println("Connected")
 
 // Non-blocking
-connection.connect()
+connection
+    .connect()
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe(
         { println("connected") },
         Throwable::printStackTrace
     )
-```
-
-The `asRx3()` extension function also takes a callback to let users handle the case when reading ends due to IO failure.
-In case of ending due to an error, users can use this to reconnect after some delay.
-
-```kotlin
-val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asRx3 {
-    // Reconnect after some delay
-}
 ```
 
 ### Reading
@@ -61,13 +53,15 @@ The connection starts reading the MAVLink frames on a background thread. They ar
 
 ```kotlin
 // Blocking
-connection.mavFrame
+connection
+    .mavFrame
     .map { it.message }
     .ofType(Heartbeat::class.java)
     .blockingSubscribe { println("autopilot: ${it.autopilot}, type: ${it.type}") }
 
 // Non-blocking
-connection.mavFrame
+connection
+    .mavFrame
     .map { it.message }
     .ofType(Heartbeat::class.java)
     .observeOn(AndroidSchedulers.mainThread())
@@ -166,10 +160,36 @@ connection.close().blockingAwait()
 println("Closed")
 
 // Non-blocking
-connection.close()
+connection
+    .close()
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe(
         { println("Closed") },
         Throwable::printStackTrace
     )
+```
+
+### Managing the state
+
+Use the `streamState` `Flowable` to get the current state of the connection.
+
+```kotlin
+connection
+    .streamState
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe {
+        when (it) {
+            StreamState.Active -> {
+                // The connection is active.
+            }
+            
+            StreamState.Inactive.Stopped -> {
+                // The connection is stopped.
+            }
+            
+            is StreamState.Inactive.Failed -> {
+                // The connection failed with the given exception. Use this block to reconnect.
+            }
+        }
+    }
 ```

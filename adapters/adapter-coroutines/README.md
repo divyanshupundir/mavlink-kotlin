@@ -42,22 +42,14 @@ viewModelScope.launch {
 }
 ```
 
-The `asCoroutine()` extension function also takes a callback to let users handle the case when reading ends due to IO
-failure. In case of ending due to an error, users can use this to reconnect after some delay.
-
-```kotlin
-val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect).asCoroutine {
-    // Reconnect after some delay
-}
-```
-
 ### Reading
 
 The connection starts reading the MAVLink frames on a background thread. They are available via the  `mavFrame`
 `SharedFlow`.
 
 ```kotlin
-connection.mavFrame
+connection
+    .mavFrame
     .map { it.message }
     .filterIsInstance<Heartbeat>()
     .onEach { println("autopilot: ${it.autopilot}, type: ${it.type}") }
@@ -138,4 +130,29 @@ viewModelScope.launch {
     connection.close()
     println("Closed")
 }
+```
+
+### Managing the state
+
+Use the `streamState` `Flowable` to get the current state of the connection.
+
+```kotlin
+connection
+    .streamState
+    .onEach {
+        when (it) {
+            StreamState.Active -> {
+                // The connection is active.
+            }
+
+            StreamState.Inactive.Stopped -> {
+                // The connection is stopped.
+            }
+
+            is StreamState.Inactive.Failed -> {
+                // The connection failed with the given exception. Use this block to reconnect.
+            }
+        }
+    }
+    .launchIn(viewModelScope)
 ```

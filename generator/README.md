@@ -12,7 +12,7 @@ Declare the plugin.
 
 ```kotlin
 plugins {
-  id("com.divpundir.mavlink.generator") version version
+    id("com.divpundir.mavlink.generator") version version
 }
 ```
 
