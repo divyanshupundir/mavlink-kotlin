@@ -2,12 +2,12 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
-import com.divpundir.mavlink.definitions.minimal.MinimalDialect
+import com.divpundir.mavlink.definitions.standard.StandardDialect
 
 @GeneratedMavDialect
 public data object CommonDialect : AbstractMavDialect(
   setOf(
-    MinimalDialect,
+    StandardDialect,
   ), 
   mapOf(
     SysStatus.id to SysStatus,
@@ -226,6 +226,8 @@ public data object CommonDialect : AbstractMavDialect(
     OpenDroneIdSystem.id to OpenDroneIdSystem,
     OpenDroneIdOperatorId.id to OpenDroneIdOperatorId,
     OpenDroneIdMessagePack.id to OpenDroneIdMessagePack,
+    OpenDroneIdArmStatus.id to OpenDroneIdArmStatus,
+    OpenDroneIdSystemUpdate.id to OpenDroneIdSystemUpdate,
     HygrometerSensor.id to HygrometerSensor,
   )
 )

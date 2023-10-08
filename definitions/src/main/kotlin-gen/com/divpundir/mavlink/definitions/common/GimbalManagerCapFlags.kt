@@ -76,6 +76,16 @@ public enum class GimbalManagerCapFlags(
   @GeneratedMavEnumEntry
   SUPPORTS_INFINITE_YAW(2_048u),
   /**
+   * Based on GIMBAL_DEVICE_CAP_FLAGS_SUPPORTS_YAW_IN_EARTH_FRAME.
+   */
+  @GeneratedMavEnumEntry
+  SUPPORTS_YAW_IN_EARTH_FRAME(4_096u),
+  /**
+   * Based on GIMBAL_DEVICE_CAP_FLAGS_HAS_RC_INPUTS.
+   */
+  @GeneratedMavEnumEntry
+  HAS_RC_INPUTS(8_192u),
+  /**
    * Gimbal manager supports to point to a local position.
    */
   @GeneratedMavEnumEntry
@@ -101,6 +111,8 @@ public enum class GimbalManagerCapFlags(
       512u -> HAS_YAW_FOLLOW
       1024u -> HAS_YAW_LOCK
       2048u -> SUPPORTS_INFINITE_YAW
+      4096u -> SUPPORTS_YAW_IN_EARTH_FRAME
+      8192u -> HAS_RC_INPUTS
       65536u -> CAN_POINT_LOCATION_LOCAL
       131072u -> CAN_POINT_LOCATION_GLOBAL
       else -> null
@@ -119,6 +131,8 @@ public enum class GimbalManagerCapFlags(
       if (v and 512u == 512u) add(HAS_YAW_FOLLOW)
       if (v and 1024u == 1024u) add(HAS_YAW_LOCK)
       if (v and 2048u == 2048u) add(SUPPORTS_INFINITE_YAW)
+      if (v and 4096u == 4096u) add(SUPPORTS_YAW_IN_EARTH_FRAME)
+      if (v and 8192u == 8192u) add(HAS_RC_INPUTS)
       if (v and 65536u == 65536u) add(CAN_POINT_LOCATION_LOCAL)
       if (v and 131072u == 131072u) add(CAN_POINT_LOCATION_GLOBAL)
     }

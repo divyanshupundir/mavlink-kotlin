@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -25,7 +24,6 @@ import kotlin.Unit
  * Current status about a high level gimbal manager. This message should be broadcast at a low
  * regular rate (e.g. 5Hz).
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 281u,
   crcExtra = 48,
@@ -42,7 +40,8 @@ public data class GimbalManagerStatus(
   @GeneratedMavField(type = "uint32_t")
   public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Gimbal device ID that this gimbal manager is responsible for.
+   * Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or
+   * 1-6 for non-MAVLink gimbal).
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: UByte = 0u,

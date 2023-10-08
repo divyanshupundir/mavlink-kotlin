@@ -7,12 +7,12 @@ import kotlin.Deprecated
 import kotlin.UInt
 
 /**
- * Co-ordinate frames used by MAVLink. Not all frames are supported by all commands, messages, or
+ * Coordinate frames used by MAVLink. Not all frames are supported by all commands, messages, or
  * vehicles.
- *       
+ *
  *       Global frames use the following naming conventions:
- *       - "GLOBAL": Global co-ordinate frame with WGS84 latitude/longitude and altitude positive
- * over mean sea level (MSL) by default. 
+ *       - "GLOBAL": Global coordinate frame with WGS84 latitude/longitude and altitude positive
+ * over mean sea level (MSL) by default.
  *         The following modifiers may be used with "GLOBAL":
  *         - "RELATIVE_ALT": Altitude is relative to the vehicle home position rather than MSL.
  *         - "TERRAIN_ALT": Altitude is relative to ground level rather than MSL.
@@ -87,7 +87,7 @@ public enum class MavFrame(
   LOCAL_OFFSET_NED(7u),
   /**
    * Same as MAV_FRAME_LOCAL_NED when used to represent position values. Same as MAV_FRAME_BODY_FRD
-   * when used with velocity/accelaration values.
+   * when used with velocity/acceleration values.
    */
   @Deprecated(message = "")
   @GeneratedMavEnumEntry
@@ -113,8 +113,8 @@ public enum class MavFrame(
   @GeneratedMavEnumEntry
   GLOBAL_TERRAIN_ALT_INT(11u),
   /**
-   * FRD local tangent frame (x: Forward, y: Right, z: Down) with origin that travels with vehicle.
-   * The forward axis is aligned to the front of the vehicle in the horizontal plane.
+   * FRD local frame aligned to the vehicle's attitude (x: Forward, y: Right, z: Down) with an
+   * origin that travels with vehicle.
    */
   @GeneratedMavEnumEntry
   BODY_FRD(12u),

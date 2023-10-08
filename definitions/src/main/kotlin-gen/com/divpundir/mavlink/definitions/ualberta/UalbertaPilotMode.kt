@@ -12,14 +12,8 @@ import kotlin.UInt
 public enum class UalbertaPilotMode(
   public override val `value`: UInt,
 ) : MavEnum {
-  /**
-   *  sdf
-   */
   @GeneratedMavEnumEntry
   PILOT_MANUAL(1u),
-  /**
-   *  dfs
-   */
   @GeneratedMavEnumEntry
   PILOT_AUTO(2u),
   /**

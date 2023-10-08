@@ -27,7 +27,7 @@ import kotlin.Unit
 )
 public data class RadioStatus(
   /**
-   * Local (message sender) recieved signal strength indication in device-dependent units/scale.
+   * Local (message sender) received signal strength indication in device-dependent units/scale.
    * Values: [0-254], UINT8_MAX: invalid/unknown.
    */
   @GeneratedMavField(type = "uint8_t")

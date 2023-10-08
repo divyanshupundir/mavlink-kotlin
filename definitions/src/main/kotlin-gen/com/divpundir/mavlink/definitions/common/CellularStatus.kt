@@ -35,7 +35,7 @@ public data class CellularStatus(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<CellularStatusFlag> = MavEnumValue.fromValue(0u),
   /**
-   * Failure reason when status in in CELLUAR_STATUS_FAILED
+   * Failure reason when status in in CELLULAR_STATUS_FLAG_FAILED
    */
   @GeneratedMavField(type = "uint8_t")
   public val failureReason: MavEnumValue<CellularNetworkFailedReason> = MavEnumValue.fromValue(0u),

@@ -2,11 +2,11 @@ package com.divpundir.mavlink.definitions.standard
 
 import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
-import com.divpundir.mavlink.definitions.common.CommonDialect
+import com.divpundir.mavlink.definitions.minimal.MinimalDialect
 
 @GeneratedMavDialect
 public data object StandardDialect : AbstractMavDialect(
   setOf(
-    CommonDialect,
+    MinimalDialect,
   ), 
   emptyMap())

@@ -28,7 +28,7 @@ import kotlin.Unit
 
 /**
  * The global position, as returned by the Global Positioning System (GPS). This is
- *                  NOT the global position estimate of the sytem, but rather a RAW sensor value.
+ *                  NOT the global position estimate of the system, but rather a RAW sensor value.
  * See message GLOBAL_POSITION_INT for the global position estimate.
  */
 @GeneratedMavMessage(

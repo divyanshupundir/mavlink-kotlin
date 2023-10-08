@@ -24,7 +24,7 @@ public enum class NavVtolLandOptions(
   @GeneratedMavEnumEntry
   FW_DESCENT(1u),
   /**
-   * Land in multicopter mode on reaching the landing co-ordinates (the whole landing is by "hover
+   * Land in multicopter mode on reaching the landing coordinates (the whole landing is by "hover
    * descent").
    */
   @GeneratedMavEnumEntry

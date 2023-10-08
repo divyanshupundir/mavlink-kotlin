@@ -57,37 +57,37 @@ public data class CameraInformation(
   public val modelName: List<UByte> = emptyList(),
   /**
    * Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
-   * & 0xff) << 8 | (Major & 0xff)
+   * & 0xff) << 8 | (Major & 0xff). Use 0 if not known.
    */
   @GeneratedMavField(type = "uint32_t")
   public val firmwareVersion: UInt = 0u,
   /**
-   * Focal length
+   * Focal length. Use NaN if not known.
    */
   @GeneratedMavField(type = "float")
   public val focalLength: Float = 0F,
   /**
-   * Image sensor size horizontal
+   * Image sensor size horizontal. Use NaN if not known.
    */
   @GeneratedMavField(type = "float")
   public val sensorSizeH: Float = 0F,
   /**
-   * Image sensor size vertical
+   * Image sensor size vertical. Use NaN if not known.
    */
   @GeneratedMavField(type = "float")
   public val sensorSizeV: Float = 0F,
   /**
-   * Horizontal image resolution
+   * Horizontal image resolution. Use 0 if not known.
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionH: UShort = 0u,
   /**
-   * Vertical image resolution
+   * Vertical image resolution. Use 0 if not known.
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionV: UShort = 0u,
   /**
-   * Reserved for a lens ID
+   * Reserved for a lens ID.  Use 0 if not known.
    */
   @GeneratedMavField(type = "uint8_t")
   public val lensId: UByte = 0u,
@@ -97,7 +97,7 @@ public data class CameraInformation(
   @GeneratedMavField(type = "uint32_t")
   public val flags: MavBitmaskValue<CameraCapFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Camera definition version (iteration)
+   * Camera definition version (iteration).  Use 0 if not known.
    */
   @GeneratedMavField(type = "uint16_t")
   public val camDefinitionVersion: UShort = 0u,
@@ -106,10 +106,20 @@ public data class CameraInformation(
    * (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported
    * by any GCS that implements the Camera Protocol). The definition file may be xz compressed, which
    * will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support
-   * decompressing the file). The string needs to be zero terminated.
+   * decompressing the file). The string needs to be zero terminated.  Use a zero-length string if not
+   * known.
    */
   @GeneratedMavField(type = "char[140]")
   public val camDefinitionUri: String = "",
+  /**
+   * Gimbal id of a gimbal associated with this camera. This is the component id of the gimbal
+   * device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the camera.
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<CameraInformation> {
   public override val instanceCompanion: MavMessage.MavCompanion<CameraInformation> = Companion
 
@@ -146,13 +156,14 @@ public data class CameraInformation(
     encoder.encodeUInt8Array(modelName, 32)
     encoder.encodeUInt8(lensId)
     encoder.encodeString(camDefinitionUri, 140)
+    encoder.encodeUInt8(gimbalDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraInformation> {
     private const val SIZE_V1: Int = 235
 
-    private const val SIZE_V2: Int = 235
+    private const val SIZE_V2: Int = 236
 
     public override val id: UInt = 259u
 
@@ -177,6 +188,7 @@ public data class CameraInformation(
       val modelName = decoder.safeDecodeUInt8Array(32)
       val lensId = decoder.safeDecodeUInt8()
       val camDefinitionUri = decoder.safeDecodeString(140)
+      val gimbalDeviceId = decoder.safeDecodeUInt8()
 
       return CameraInformation(
         timeBootMs = timeBootMs,
@@ -192,6 +204,7 @@ public data class CameraInformation(
         flags = flags,
         camDefinitionVersion = camDefinitionVersion,
         camDefinitionUri = camDefinitionUri,
+        gimbalDeviceId = gimbalDeviceId,
       )
     }
 
@@ -226,6 +239,8 @@ public data class CameraInformation(
 
     public var camDefinitionUri: String = ""
 
+    public var gimbalDeviceId: UByte = 0u
+
     public fun build(): CameraInformation = CameraInformation(
       timeBootMs = timeBootMs,
       vendorName = vendorName,
@@ -240,6 +255,7 @@ public data class CameraInformation(
       flags = flags,
       camDefinitionVersion = camDefinitionVersion,
       camDefinitionUri = camDefinitionUri,
+      gimbalDeviceId = gimbalDeviceId,
     )
   }
 }

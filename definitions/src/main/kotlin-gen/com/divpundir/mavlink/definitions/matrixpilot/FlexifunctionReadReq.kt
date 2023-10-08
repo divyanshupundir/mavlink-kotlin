@@ -19,7 +19,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Reqest reading of flexifunction data
+ * Request reading of flexifunction data
  */
 @GeneratedMavMessage(
   id = 151u,

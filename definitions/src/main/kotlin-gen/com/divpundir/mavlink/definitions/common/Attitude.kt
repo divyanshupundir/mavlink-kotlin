@@ -18,7 +18,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right).
+ * The attitude in the aeronautical frame (right-handed, Z-down, Y-right, X-front, ZYX, intrinsic).
  */
 @GeneratedMavMessage(
   id = 30u,

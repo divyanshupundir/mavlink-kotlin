@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
@@ -37,7 +36,6 @@ import kotlin.collections.List
  * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The
  * Location message provides the location, altitude, direction and speed of the aircraft.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 12_901u,
   crcExtra = -2,

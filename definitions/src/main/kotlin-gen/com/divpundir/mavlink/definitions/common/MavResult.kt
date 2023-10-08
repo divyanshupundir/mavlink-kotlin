@@ -57,6 +57,23 @@ public enum class MavResult(
    */
   @GeneratedMavEnumEntry
   CANCELLED(6u),
+  /**
+   * Command is valid, but it is only accepted when sent as a COMMAND_LONG (as it has float values
+   * for params 5 and 6).
+   */
+  @GeneratedMavEnumEntry
+  COMMAND_LONG_ONLY(7u),
+  /**
+   * Command is valid, but it is only accepted when sent as a COMMAND_INT (as it encodes a location
+   * in params 5, 6 and 7, and hence requires a reference MAV_FRAME).
+   */
+  @GeneratedMavEnumEntry
+  COMMAND_INT_ONLY(8u),
+  /**
+   * Command is invalid because a frame is required and the specified frame is not supported.
+   */
+  @GeneratedMavEnumEntry
+  COMMAND_UNSUPPORTED_MAV_FRAME(9u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavResult> {
@@ -68,6 +85,9 @@ public enum class MavResult(
       4u -> FAILED
       5u -> IN_PROGRESS
       6u -> CANCELLED
+      7u -> COMMAND_LONG_ONLY
+      8u -> COMMAND_INT_ONLY
+      9u -> COMMAND_UNSUPPORTED_MAV_FRAME
       else -> null
     }
   }

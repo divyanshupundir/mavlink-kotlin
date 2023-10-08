@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -26,11 +25,24 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Low level message to control a gimbal device's attitude. This message is to be sent from the
- * gimbal manager to the gimbal device component. Angles and rates can be set to NaN according to use
- * case.
+ * Low level message to control a gimbal device's attitude.
+ * 	  This message is to be sent from the gimbal manager to the gimbal device component.
+ * 	  The quaternion and angular velocities can be set to NaN according to use case.
+ * 	  For the angles encoded in the quaternion and the angular velocities holds:
+ * 	  If the flag GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME is set, then they are relative to the
+ * vehicle heading (vehicle frame).
+ * 	  If the flag GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME is set, then they are relative to absolute
+ * North (earth frame).
+ * 	  If neither of these flags are set, then (for backwards compatibility) it holds:
+ * 	  If the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set, then they are relative to absolute North
+ * (earth frame),
+ * 	  else they are relative to the vehicle heading (vehicle frame).
+ * 	  Setting both GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME and
+ * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME is not allowed.
+ * 	  These rules are to ensure backwards compatibility.
+ * 	  New implementations should always set either GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME or
+ * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 284u,
   crcExtra = 99,
@@ -52,24 +64,26 @@ public data class GimbalDeviceSetAttitude(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
-   * whether the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set, set all fields to NaN if only angular
-   * velocity should be used)
+   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). The frame is described in the
+   * message description. Set fields to NaN to be ignored.
    */
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
-   * X component of angular velocity, positive is rolling to the right, NaN to be ignored.
+   * X component of angular velocity (positive: rolling to the right). The frame is described in the
+   * message description. NaN to be ignored.
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityX: Float = 0F,
   /**
-   * Y component of angular velocity, positive is pitching up, NaN to be ignored.
+   * Y component of angular velocity (positive: pitching up). The frame is described in the message
+   * description. NaN to be ignored.
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityY: Float = 0F,
   /**
-   * Z component of angular velocity, positive is yawing to the right, NaN to be ignored.
+   * Z component of angular velocity (positive: yawing to the right). The frame is described in the
+   * message description. NaN to be ignored.
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,

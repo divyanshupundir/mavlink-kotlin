@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -27,7 +26,6 @@ import kotlin.collections.List
  * Information about the field of view of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE
  * command.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 271u,
   crcExtra = 22,

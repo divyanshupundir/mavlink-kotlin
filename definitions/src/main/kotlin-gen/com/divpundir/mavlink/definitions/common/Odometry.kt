@@ -9,11 +9,13 @@ import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
+import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeFloatArray
+import com.divpundir.mavlink.serialization.safeDecodeInt8
 import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
@@ -135,6 +137,15 @@ public data class Odometry(
     extension = true,
   )
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
+  /**
+   * Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 = unknown/unset
+   * quality, 1 = worst quality, 100 = best quality
+   */
+  @GeneratedMavField(
+    type = "int8_t",
+    extension = true,
+  )
+  public val quality: Byte = 0,
 ) : MavMessage<Odometry> {
   public override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
 
@@ -177,13 +188,14 @@ public data class Odometry(
     encoder.encodeEnumValue(childFrameId.value, 1)
     encoder.encodeUInt8(resetCounter)
     encoder.encodeEnumValue(estimatorType.value, 1)
+    encoder.encodeInt8(quality)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<Odometry> {
     private const val SIZE_V1: Int = 230
 
-    private const val SIZE_V2: Int = 232
+    private const val SIZE_V2: Int = 233
 
     public override val id: UInt = 331u
 
@@ -218,6 +230,7 @@ public data class Odometry(
         val entry = MavEstimatorType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val quality = decoder.safeDecodeInt8()
 
       return Odometry(
         timeUsec = timeUsec,
@@ -237,6 +250,7 @@ public data class Odometry(
         velocityCovariance = velocityCovariance,
         resetCounter = resetCounter,
         estimatorType = estimatorType,
+        quality = quality,
       )
     }
 
@@ -279,6 +293,8 @@ public data class Odometry(
 
     public var estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u)
 
+    public var quality: Byte = 0
+
     public fun build(): Odometry = Odometry(
       timeUsec = timeUsec,
       frameId = frameId,
@@ -297,6 +313,7 @@ public data class Odometry(
       velocityCovariance = velocityCovariance,
       resetCounter = resetCounter,
       estimatorType = estimatorType,
+      quality = quality,
     )
   }
 }

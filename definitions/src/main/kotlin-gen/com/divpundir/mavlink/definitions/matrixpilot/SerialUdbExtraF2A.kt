@@ -159,7 +159,7 @@ public data class SerialUdbExtraF2A(
   @GeneratedMavField(type = "int16_t")
   public val sueMagfieldearth2: Short = 0,
   /**
-   * Serial UDB Extra Number of Sattelites in View
+   * Serial UDB Extra Number of Satellites in View
    */
   @GeneratedMavField(type = "int16_t")
   public val sueSvs: Short = 0,

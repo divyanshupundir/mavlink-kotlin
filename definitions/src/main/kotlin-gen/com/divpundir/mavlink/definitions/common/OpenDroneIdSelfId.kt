@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
@@ -32,7 +31,6 @@ import kotlin.collections.List
  * particular area or manner. This message can also be used to provide optional additional
  * clarification in an emergency/remote ID system failure situation.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 12_903u,
   crcExtra = -7,

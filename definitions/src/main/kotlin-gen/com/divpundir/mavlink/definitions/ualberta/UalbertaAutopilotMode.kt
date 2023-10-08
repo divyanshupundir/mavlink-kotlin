@@ -22,19 +22,10 @@ public enum class UalbertaAutopilotMode(
    */
   @GeneratedMavEnumEntry
   MODE_MANUAL_SCALED(2u),
-  /**
-   *  dfsdfs
-   */
   @GeneratedMavEnumEntry
   MODE_AUTO_PID_ATT(3u),
-  /**
-   *  dfsfds
-   */
   @GeneratedMavEnumEntry
   MODE_AUTO_PID_VEL(4u),
-  /**
-   *  dfsdfsdfs
-   */
   @GeneratedMavEnumEntry
   MODE_AUTO_PID_POS(5u),
   ;

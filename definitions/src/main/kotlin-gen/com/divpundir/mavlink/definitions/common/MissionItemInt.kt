@@ -72,7 +72,8 @@ public data class MissionItemInt(
   @GeneratedMavField(type = "uint8_t")
   public val current: UByte = 0u,
   /**
-   * Autocontinue to next waypoint
+   * Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item
+   * completes.
    */
   @GeneratedMavField(type = "uint8_t")
   public val autocontinue: UByte = 0u,

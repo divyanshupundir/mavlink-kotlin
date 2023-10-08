@@ -64,6 +64,12 @@ public enum class WinchActions(
    */
   @GeneratedMavEnumEntry
   WINCH_ABANDON_LINE(8u),
+  /**
+   * Spools out just enough to present the hook to the user to load the payload. Only action and
+   * instance command parameters are used, others are ignored
+   */
+  @GeneratedMavEnumEntry
+  WINCH_LOAD_PAYLOAD(9u),
   ;
 
   public companion object : MavEnum.MavCompanion<WinchActions> {
@@ -77,6 +83,7 @@ public enum class WinchActions(
       6u -> WINCH_RETRACT
       7u -> WINCH_LOAD_LINE
       8u -> WINCH_ABANDON_LINE
+      9u -> WINCH_LOAD_PAYLOAD
       else -> null
     }
   }

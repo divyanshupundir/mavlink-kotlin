@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
@@ -31,7 +30,6 @@ import kotlin.collections.List
  * PageCount, Length and TimeStamp are present and AuthData is only 17 bytes. For data page 1 through
  * 15, PageCount, Length and TimeStamp are not present and the size of AuthData is 23 bytes.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 12_902u,
   crcExtra = -116,

@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -28,13 +27,30 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Message reporting the status of a gimbal device. This message should be broadcasted by a gimbal
- * device component. The angles encoded in the quaternion are relative to absolute North if the flag
- * GIMBAL_DEVICE_FLAGS_YAW_LOCK is set (roll: positive is rolling to the right, pitch: positive is
- * pitching up, yaw is turn to the right) or relative to the vehicle heading if the flag is not set.
- * This message should be broadcast at a low regular rate (e.g. 10Hz).
+ * Message reporting the status of a gimbal device.
+ * 	  This message should be broadcast by a gimbal device component at a low regular rate (e.g. 5
+ * Hz).
+ * 	  For the angles encoded in the quaternion and the angular velocities holds:
+ * 	  If the flag GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME is set, then they are relative to the
+ * vehicle heading (vehicle frame).
+ * 	  If the flag GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME is set, then they are relative to absolute
+ * North (earth frame).
+ * 	  If neither of these flags are set, then (for backwards compatibility) it holds:
+ * 	  If the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set, then they are relative to absolute North
+ * (earth frame),
+ * 	  else they are relative to the vehicle heading (vehicle frame).
+ * 	  Other conditions of the flags are not allowed.
+ * 	  The quaternion and angular velocities in the other frame can be calculated from delta_yaw and
+ * delta_yaw_velocity as
+ * 	  q_earth = q_delta_yaw * q_vehicle and w_earth = w_delta_yaw_velocity + w_vehicle (if not NaN).
+ * 	  If neither the GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME nor the
+ * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME flag is set,
+ * 	  then (for backwards compatibility) the data in the delta_yaw and delta_yaw_velocity fields are
+ * to be ignored.
+ * 	  New implementations should always set either GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME or
+ * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME,
+ * 	  and always should set delta_yaw and delta_yaw_velocity either to the proper value or NaN.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 285u,
   crcExtra = -119,
@@ -61,23 +77,26 @@ public data class GimbalDeviceAttitudeStatus(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
-   * whether the flag GIMBAL_DEVICE_FLAGS_YAW_LOCK is set)
+   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). The frame is described in the
+   * message description.
    */
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
-   * X component of angular velocity (NaN if unknown)
+   * X component of angular velocity (positive: rolling to the right). The frame is described in the
+   * message description. NaN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityX: Float = 0F,
   /**
-   * Y component of angular velocity (NaN if unknown)
+   * Y component of angular velocity (positive: pitching up). The frame is described in the message
+   * description. NaN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityY: Float = 0F,
   /**
-   * Z component of angular velocity (NaN if unknown)
+   * Z component of angular velocity (positive: yawing to the right). The frame is described in the
+   * message description. NaN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
@@ -86,6 +105,34 @@ public data class GimbalDeviceAttitudeStatus(
    */
   @GeneratedMavField(type = "uint32_t")
   public val failureFlags: MavBitmaskValue<GimbalDeviceErrorFlags> = MavBitmaskValue.fromValue(0u),
+  /**
+   * Yaw angle relating the quaternions in earth and body frames (see message description). NaN if
+   * unknown.
+   */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
+  public val deltaYaw: Float = 0F,
+  /**
+   * Yaw angular velocity relating the angular velocities in earth and body frames (see message
+   * description). NaN if unknown.
+   */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
+  public val deltaYawVelocity: Float = 0F,
+  /**
+   * This field is to be used if the gimbal manager and the gimbal device are the same component and
+   * hence have the same component ID. This field is then set a number between 1-6. If the component ID
+   * is separate, this field is not required and must be set to 0.
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<GimbalDeviceAttitudeStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> =
       Companion
@@ -115,13 +162,16 @@ public data class GimbalDeviceAttitudeStatus(
     encoder.encodeBitmaskValue(flags.value, 2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
+    encoder.encodeFloat(deltaYaw)
+    encoder.encodeFloat(deltaYawVelocity)
+    encoder.encodeUInt8(gimbalDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> {
     private const val SIZE_V1: Int = 40
 
-    private const val SIZE_V2: Int = 40
+    private const val SIZE_V2: Int = 49
 
     public override val id: UInt = 285u
 
@@ -145,6 +195,9 @@ public data class GimbalDeviceAttitudeStatus(
       }
       val targetSystem = decoder.safeDecodeUInt8()
       val targetComponent = decoder.safeDecodeUInt8()
+      val deltaYaw = decoder.safeDecodeFloat()
+      val deltaYawVelocity = decoder.safeDecodeFloat()
+      val gimbalDeviceId = decoder.safeDecodeUInt8()
 
       return GimbalDeviceAttitudeStatus(
         targetSystem = targetSystem,
@@ -156,6 +209,9 @@ public data class GimbalDeviceAttitudeStatus(
         angularVelocityY = angularVelocityY,
         angularVelocityZ = angularVelocityZ,
         failureFlags = failureFlags,
+        deltaYaw = deltaYaw,
+        deltaYawVelocity = deltaYawVelocity,
+        gimbalDeviceId = gimbalDeviceId,
       )
     }
 
@@ -182,6 +238,12 @@ public data class GimbalDeviceAttitudeStatus(
 
     public var failureFlags: MavBitmaskValue<GimbalDeviceErrorFlags> = MavBitmaskValue.fromValue(0u)
 
+    public var deltaYaw: Float = 0F
+
+    public var deltaYawVelocity: Float = 0F
+
+    public var gimbalDeviceId: UByte = 0u
+
     public fun build(): GimbalDeviceAttitudeStatus = GimbalDeviceAttitudeStatus(
       targetSystem = targetSystem,
       targetComponent = targetComponent,
@@ -192,6 +254,9 @@ public data class GimbalDeviceAttitudeStatus(
       angularVelocityY = angularVelocityY,
       angularVelocityZ = angularVelocityZ,
       failureFlags = failureFlags,
+      deltaYaw = deltaYaw,
+      deltaYawVelocity = deltaYawVelocity,
+      gimbalDeviceId = gimbalDeviceId,
     )
   }
 }

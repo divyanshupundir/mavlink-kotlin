@@ -5,7 +5,6 @@ import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -35,11 +34,10 @@ import kotlin.collections.List
 
 /**
  * Low level message containing autopilot state relevant for a gimbal device. This message is to be
- * sent from the gimbal manager to the gimbal device component. The data of this message server for the
- * gimbal's estimator corrections in particular horizon compensation, as well as the autopilot's
- * control intention e.g. feed forward angular control in z-axis.
+ * sent from the autopilot to the gimbal device component. The data of this message are for the gimbal
+ * device's estimator corrections, in particular horizon compensation, as well as indicates autopilot
+ * control intentions, e.g. feed forward angular control in the z-axis.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 286u,
   crcExtra = -46,
@@ -67,32 +65,32 @@ public data class AutopilotStateForGimbalDevice(
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
-   * Estimated delay of the attitude data.
+   * Estimated delay of the attitude data. 0 if unknown.
    */
   @GeneratedMavField(type = "uint32_t")
   public val qEstimatedDelayUs: UInt = 0u,
   /**
-   * X Speed in NED (North, East, Down).
+   * X Speed in NED (North, East, Down). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
-   * Y Speed in NED (North, East, Down).
+   * Y Speed in NED (North, East, Down). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
-   * Z Speed in NED (North, East, Down).
+   * Z Speed in NED (North, East, Down). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
-   * Estimated delay of the speed data.
+   * Estimated delay of the speed data. 0 if unknown.
    */
   @GeneratedMavField(type = "uint32_t")
   public val vEstimatedDelayUs: UInt = 0u,
   /**
-   * Feed forward Z component of angular velocity, positive is yawing to the right, NaN to be
+   * Feed forward Z component of angular velocity (positive: yawing to the right). NaN to be
    * ignored. This is to indicate if the autopilot is actively yawing.
    */
   @GeneratedMavField(type = "float")
@@ -107,6 +105,14 @@ public data class AutopilotStateForGimbalDevice(
    */
   @GeneratedMavField(type = "uint8_t")
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u),
+  /**
+   * Z component of angular velocity in NED (North, East, Down). NaN if unknown.
+   */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
+  public val angularVelocityZ: Float = 0F,
 ) : MavMessage<AutopilotStateForGimbalDevice> {
   public override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> =
       Companion
@@ -142,13 +148,14 @@ public data class AutopilotStateForGimbalDevice(
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     encoder.encodeEnumValue(landedState.value, 1)
+    encoder.encodeFloat(angularVelocityZ)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<AutopilotStateForGimbalDevice> {
     private const val SIZE_V1: Int = 53
 
-    private const val SIZE_V2: Int = 53
+    private const val SIZE_V2: Int = 57
 
     public override val id: UInt = 286u
 
@@ -175,6 +182,7 @@ public data class AutopilotStateForGimbalDevice(
         val entry = MavLandedState.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val angularVelocityZ = decoder.safeDecodeFloat()
 
       return AutopilotStateForGimbalDevice(
         targetSystem = targetSystem,
@@ -189,6 +197,7 @@ public data class AutopilotStateForGimbalDevice(
         feedForwardAngularVelocityZ = feedForwardAngularVelocityZ,
         estimatorStatus = estimatorStatus,
         landedState = landedState,
+        angularVelocityZ = angularVelocityZ,
       )
     }
 
@@ -222,6 +231,8 @@ public data class AutopilotStateForGimbalDevice(
 
     public var landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u)
 
+    public var angularVelocityZ: Float = 0F
+
     public fun build(): AutopilotStateForGimbalDevice = AutopilotStateForGimbalDevice(
       targetSystem = targetSystem,
       targetComponent = targetComponent,
@@ -235,6 +246,7 @@ public data class AutopilotStateForGimbalDevice(
       feedForwardAngularVelocityZ = feedForwardAngularVelocityZ,
       estimatorStatus = estimatorStatus,
       landedState = landedState,
+      angularVelocityZ = angularVelocityZ,
     )
   }
 }

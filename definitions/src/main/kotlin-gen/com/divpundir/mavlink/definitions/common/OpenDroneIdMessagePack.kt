@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt8
@@ -25,7 +24,6 @@ import kotlin.collections.List
  * OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended
  * Advertising or on WiFi Neighbor Aware Networking or on WiFi Beacon.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 12_915u,
   crcExtra = 94,
@@ -49,7 +47,7 @@ public data class OpenDroneIdMessagePack(
   public val idOrMac: List<UByte> = emptyList(),
   /**
    * This field must currently always be equal to 25 (bytes), since all encoded OpenDroneID messages
-   * are specificed to have this length.
+   * are specified to have this length.
    */
   @GeneratedMavField(type = "uint8_t")
   public val singleMessageSize: UByte = 0u,
