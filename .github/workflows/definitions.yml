@@ -1,0 +1,66 @@
+name: Update MAVLink definitions
+
+on:
+  # On manual action from the repo's Actions page
+  workflow_dispatch:
+
+  # Every Sunday at midnight
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      upstream-sha: ${{ steps.upstream.outputs.UPSTREAM_SHA }}
+      submodule-sha: ${{ steps.submodule.outputs.SUBMODULE_SHA }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get SHA of upstream repo
+        id: upstream
+        run: |
+          URL="https://api.github.com/repos/mavlink/mavlink/commits?path=message_definitions&page=1&per_page=1"
+          SHA=$(curl -s $URL | jq -r '.[0].sha' | xargs)
+          echo "UPSTREAM_SHA=$SHA" >> $GITHUB_OUTPUT
+
+      - name: Get SHA of submodule
+        id: submodule
+        run: |
+          SHA=$(git submodule status | xargs | cut -d " " -f1)
+          echo "SUBMODULE_SHA=$SHA" >> $GITHUB_OUTPUT
+
+  # Only runs if the upstream MAVLink repo has updated its definition files
+  update:
+    runs-on: ubuntu-latest
+    needs: check
+    if: needs.check.outputs.submodule-sha != needs.check.outputs.upstream-sha
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Update submodules
+        run: git submodule update --remote --recursive
+
+      - name: Generate definition classes
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: definitions:generateMavlink
+          generate-job-summary: false
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          base: main
+          draft: false
+          delete-branch: true
+          title: Update MAVLink definitions
