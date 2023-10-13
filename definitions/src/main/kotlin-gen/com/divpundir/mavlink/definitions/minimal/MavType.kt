@@ -141,10 +141,11 @@ public enum class MavType(
   @GeneratedMavEnumEntry
   VTOL_TAILSITTER(23u),
   /**
-   * VTOL reserved 4
+   * Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any
+   * attached engine, can tilt between vertical and horizontal mode.
    */
   @GeneratedMavEnumEntry
-  VTOL_RESERVED4(24u),
+  VTOL_TILTWING(24u),
   /**
    * VTOL reserved 5
    */
@@ -235,6 +236,11 @@ public enum class MavType(
    */
   @GeneratedMavEnumEntry
   WINCH(42u),
+  /**
+   * Generic multirotor that does not fit into a specific type or whose type is unknown
+   */
+  @GeneratedMavEnumEntry
+  GENERIC_MULTIROTOR(43u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavType> {
@@ -263,7 +269,7 @@ public enum class MavType(
       21u -> VTOL_TILTROTOR
       22u -> VTOL_FIXEDROTOR
       23u -> VTOL_TAILSITTER
-      24u -> VTOL_RESERVED4
+      24u -> VTOL_TILTWING
       25u -> VTOL_RESERVED5
       26u -> GIMBAL
       27u -> ADSB
@@ -282,6 +288,7 @@ public enum class MavType(
       40u -> IMU
       41u -> GPS
       42u -> WINCH
+      43u -> GENERIC_MULTIROTOR
       else -> null
     }
   }

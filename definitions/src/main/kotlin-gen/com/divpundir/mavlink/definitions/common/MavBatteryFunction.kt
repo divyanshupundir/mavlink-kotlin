@@ -36,7 +36,7 @@ public enum class MavBatteryFunction(
    * Payload battery
    */
   @GeneratedMavEnumEntry
-  MAV_BATTERY_TYPE_PAYLOAD(4u),
+  PAYLOAD(4u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavBatteryFunction> {
@@ -45,7 +45,7 @@ public enum class MavBatteryFunction(
       1u -> ALL
       2u -> PROPULSION
       3u -> AVIONICS
-      4u -> MAV_BATTERY_TYPE_PAYLOAD
+      4u -> PAYLOAD
       else -> null
     }
   }

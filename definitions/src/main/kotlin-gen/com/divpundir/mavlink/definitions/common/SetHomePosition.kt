@@ -71,17 +71,17 @@ public data class SetHomePosition(
   @GeneratedMavField(type = "int32_t")
   public val altitude: Int = 0,
   /**
-   * Local X position of this position in the local coordinate frame
+   * Local X position of this position in the local coordinate frame (NED)
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
-   * Local Y position of this position in the local coordinate frame
+   * Local Y position of this position in the local coordinate frame (NED)
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
-   * Local Z position of this position in the local coordinate frame
+   * Local Z position of this position in the local coordinate frame (NED: positive "down")
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,

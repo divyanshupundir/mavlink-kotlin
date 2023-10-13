@@ -56,7 +56,8 @@ public data class SetAttitudeTarget(
   @GeneratedMavField(type = "uint8_t")
   public val typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
-   * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
+   * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from MAV_FRAME_LOCAL_NED to
+   * MAV_FRAME_BODY_FRD
    */
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),

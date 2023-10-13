@@ -35,13 +35,13 @@ public enum class MavState(
   @GeneratedMavEnumEntry
   ACTIVE(4u),
   /**
-   * System is in a non-normal flight mode. It can however still navigate.
+   * System is in a non-normal flight mode (failsafe). It can however still navigate.
    */
   @GeneratedMavEnumEntry
   CRITICAL(5u),
   /**
-   * System is in a non-normal flight mode. It lost control over parts or over the whole airframe.
-   * It is in mayday and going down.
+   * System is in a non-normal flight mode (failsafe). It lost control over parts or over the whole
+   * airframe. It is in mayday and going down.
    */
   @GeneratedMavEnumEntry
   EMERGENCY(6u),
@@ -51,7 +51,7 @@ public enum class MavState(
   @GeneratedMavEnumEntry
   POWEROFF(7u),
   /**
-   * System is terminating itself.
+   * System is terminating itself (failsafe or commanded).
    */
   @GeneratedMavEnumEntry
   FLIGHT_TERMINATION(8u),

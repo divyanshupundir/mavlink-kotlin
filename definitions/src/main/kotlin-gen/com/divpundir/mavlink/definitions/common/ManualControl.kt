@@ -82,7 +82,7 @@ public data class ManualControl(
   public val buttons2: UShort = 0u,
   /**
    * Set bits to 1 to indicate which of the following extension fields contain valid data: bit 0:
-   * pitch, bit 1: roll.
+   * pitch, bit 1: roll, bit 2: aux1, bit 3: aux2, bit 4: aux3, bit 5: aux4, bit 6: aux5, bit 7: aux6
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -109,6 +109,60 @@ public data class ManualControl(
     extension = true,
   )
   public val t: Short = 0,
+  /**
+   * Aux continuous input field 1. Normalized in the range [-1000,1000]. Purpose defined by
+   * recipient. Valid data if bit 2 of enabled_extensions field is set. 0 if bit 2 is unset.
+   */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
+  public val aux1: Short = 0,
+  /**
+   * Aux continuous input field 2. Normalized in the range [-1000,1000]. Purpose defined by
+   * recipient. Valid data if bit 3 of enabled_extensions field is set. 0 if bit 3 is unset.
+   */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
+  public val aux2: Short = 0,
+  /**
+   * Aux continuous input field 3. Normalized in the range [-1000,1000]. Purpose defined by
+   * recipient. Valid data if bit 4 of enabled_extensions field is set. 0 if bit 4 is unset.
+   */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
+  public val aux3: Short = 0,
+  /**
+   * Aux continuous input field 4. Normalized in the range [-1000,1000]. Purpose defined by
+   * recipient. Valid data if bit 5 of enabled_extensions field is set. 0 if bit 5 is unset.
+   */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
+  public val aux4: Short = 0,
+  /**
+   * Aux continuous input field 5. Normalized in the range [-1000,1000]. Purpose defined by
+   * recipient. Valid data if bit 6 of enabled_extensions field is set. 0 if bit 6 is unset.
+   */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
+  public val aux5: Short = 0,
+  /**
+   * Aux continuous input field 6. Normalized in the range [-1000,1000]. Purpose defined by
+   * recipient. Valid data if bit 7 of enabled_extensions field is set. 0 if bit 7 is unset.
+   */
+  @GeneratedMavField(
+    type = "int16_t",
+    extension = true,
+  )
+  public val aux6: Short = 0,
 ) : MavMessage<ManualControl> {
   public override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
 
@@ -135,13 +189,19 @@ public data class ManualControl(
     encoder.encodeUInt8(enabledExtensions)
     encoder.encodeInt16(s)
     encoder.encodeInt16(t)
+    encoder.encodeInt16(aux1)
+    encoder.encodeInt16(aux2)
+    encoder.encodeInt16(aux3)
+    encoder.encodeInt16(aux4)
+    encoder.encodeInt16(aux5)
+    encoder.encodeInt16(aux6)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<ManualControl> {
     private const val SIZE_V1: Int = 11
 
-    private const val SIZE_V2: Int = 18
+    private const val SIZE_V2: Int = 30
 
     public override val id: UInt = 69u
 
@@ -160,6 +220,12 @@ public data class ManualControl(
       val enabledExtensions = decoder.safeDecodeUInt8()
       val s = decoder.safeDecodeInt16()
       val t = decoder.safeDecodeInt16()
+      val aux1 = decoder.safeDecodeInt16()
+      val aux2 = decoder.safeDecodeInt16()
+      val aux3 = decoder.safeDecodeInt16()
+      val aux4 = decoder.safeDecodeInt16()
+      val aux5 = decoder.safeDecodeInt16()
+      val aux6 = decoder.safeDecodeInt16()
 
       return ManualControl(
         target = target,
@@ -172,6 +238,12 @@ public data class ManualControl(
         enabledExtensions = enabledExtensions,
         s = s,
         t = t,
+        aux1 = aux1,
+        aux2 = aux2,
+        aux3 = aux3,
+        aux4 = aux4,
+        aux5 = aux5,
+        aux6 = aux6,
       )
     }
 
@@ -200,6 +272,18 @@ public data class ManualControl(
 
     public var t: Short = 0
 
+    public var aux1: Short = 0
+
+    public var aux2: Short = 0
+
+    public var aux3: Short = 0
+
+    public var aux4: Short = 0
+
+    public var aux5: Short = 0
+
+    public var aux6: Short = 0
+
     public fun build(): ManualControl = ManualControl(
       target = target,
       x = x,
@@ -211,6 +295,12 @@ public data class ManualControl(
       enabledExtensions = enabledExtensions,
       s = s,
       t = t,
+      aux1 = aux1,
+      aux2 = aux2,
+      aux3 = aux3,
+      aux4 = aux4,
+      aux5 = aux5,
+      aux6 = aux6,
     )
   }
 }

@@ -3,12 +3,16 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
 import com.divpundir.mavlink.definitions.common.CommonDialect
+import com.divpundir.mavlink.definitions.csairlink.CsairlinkDialect
+import com.divpundir.mavlink.definitions.cubepilot.CubepilotDialect
 import com.divpundir.mavlink.definitions.icarous.IcarousDialect
 import com.divpundir.mavlink.definitions.uavionix.UavionixDialect
 
 @GeneratedMavDialect
 public data object ArdupilotmegaDialect : AbstractMavDialect(
   setOf(
+    CsairlinkDialect,
+    CubepilotDialect,
     IcarousDialect,
     UavionixDialect,
     CommonDialect,

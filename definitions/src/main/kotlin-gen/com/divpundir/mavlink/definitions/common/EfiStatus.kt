@@ -120,6 +120,15 @@ public data class EfiStatus(
     extension = true,
   )
   public val ignitionVoltage: Float = 0F,
+  /**
+   * Fuel pressure. Zero in this value means "unknown", so if the fuel pressure really is zero kPa
+   * use 0.0001 instead.
+   */
+  @GeneratedMavField(
+    type = "float",
+    extension = true,
+  )
+  public val fuelPressure: Float = 0F,
 ) : MavMessage<EfiStatus> {
   public override val instanceCompanion: MavMessage.MavCompanion<EfiStatus> = Companion
 
@@ -165,13 +174,14 @@ public data class EfiStatus(
     encoder.encodeFloat(ptCompensation)
     encoder.encodeUInt8(health)
     encoder.encodeFloat(ignitionVoltage)
+    encoder.encodeFloat(fuelPressure)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<EfiStatus> {
     private const val SIZE_V1: Int = 65
 
-    private const val SIZE_V2: Int = 69
+    private const val SIZE_V2: Int = 73
 
     public override val id: UInt = 225u
 
@@ -198,6 +208,7 @@ public data class EfiStatus(
       val ptCompensation = decoder.safeDecodeFloat()
       val health = decoder.safeDecodeUInt8()
       val ignitionVoltage = decoder.safeDecodeFloat()
+      val fuelPressure = decoder.safeDecodeFloat()
 
       return EfiStatus(
         health = health,
@@ -218,6 +229,7 @@ public data class EfiStatus(
         throttleOut = throttleOut,
         ptCompensation = ptCompensation,
         ignitionVoltage = ignitionVoltage,
+        fuelPressure = fuelPressure,
       )
     }
 
@@ -262,6 +274,8 @@ public data class EfiStatus(
 
     public var ignitionVoltage: Float = 0F
 
+    public var fuelPressure: Float = 0F
+
     public fun build(): EfiStatus = EfiStatus(
       health = health,
       ecuIndex = ecuIndex,
@@ -281,6 +295,7 @@ public data class EfiStatus(
       throttleOut = throttleOut,
       ptCompensation = ptCompensation,
       ignitionVoltage = ignitionVoltage,
+      fuelPressure = fuelPressure,
     )
   }
 }

@@ -7,19 +7,19 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Gimbal device (low level) capability flags (bitmap)
+ * Gimbal device (low level) capability flags (bitmap).
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class GimbalDeviceCapFlags(
   public override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * Gimbal device supports a retracted position
+   * Gimbal device supports a retracted position.
    */
   @GeneratedMavEnumEntry
   HAS_RETRACT(1u),
   /**
-   * Gimbal device supports a horizontal, forward looking position, stabilized
+   * Gimbal device supports a horizontal, forward looking position, stabilized.
    */
   @GeneratedMavEnumEntry
   HAS_NEUTRAL(2u),
@@ -29,13 +29,13 @@ public enum class GimbalDeviceCapFlags(
   @GeneratedMavEnumEntry
   HAS_ROLL_AXIS(4u),
   /**
-   * Gimbal device supports to follow a roll angle relative to the vehicle
+   * Gimbal device supports to follow a roll angle relative to the vehicle.
    */
   @GeneratedMavEnumEntry
   HAS_ROLL_FOLLOW(8u),
   /**
-   * Gimbal device supports locking to an roll angle (generally that's the default with roll
-   * stabilized)
+   * Gimbal device supports locking to a roll angle (generally that's the default with roll
+   * stabilized).
    */
   @GeneratedMavEnumEntry
   HAS_ROLL_LOCK(16u),
@@ -45,13 +45,13 @@ public enum class GimbalDeviceCapFlags(
   @GeneratedMavEnumEntry
   HAS_PITCH_AXIS(32u),
   /**
-   * Gimbal device supports to follow a pitch angle relative to the vehicle
+   * Gimbal device supports to follow a pitch angle relative to the vehicle.
    */
   @GeneratedMavEnumEntry
   HAS_PITCH_FOLLOW(64u),
   /**
-   * Gimbal device supports locking to an pitch angle (generally that's the default with pitch
-   * stabilized)
+   * Gimbal device supports locking to a pitch angle (generally that's the default with pitch
+   * stabilized).
    */
   @GeneratedMavEnumEntry
   HAS_PITCH_LOCK(128u),
@@ -62,12 +62,13 @@ public enum class GimbalDeviceCapFlags(
   HAS_YAW_AXIS(256u),
   /**
    * Gimbal device supports to follow a yaw angle relative to the vehicle (generally that's the
-   * default)
+   * default).
    */
   @GeneratedMavEnumEntry
   HAS_YAW_FOLLOW(512u),
   /**
-   * Gimbal device supports locking to an absolute heading (often this is an option available)
+   * Gimbal device supports locking to an absolute heading, i.e., yaw angle relative to North (earth
+   * frame, often this is an option available).
    */
   @GeneratedMavEnumEntry
   HAS_YAW_LOCK(1_024u),
@@ -76,6 +77,20 @@ public enum class GimbalDeviceCapFlags(
    */
   @GeneratedMavEnumEntry
   SUPPORTS_INFINITE_YAW(2_048u),
+  /**
+   * Gimbal device supports yaw angles and angular velocities relative to North (earth frame). This
+   * usually requires support by an autopilot via AUTOPILOT_STATE_FOR_GIMBAL_DEVICE. Support can go on
+   * and off during runtime, which is reported by the flag
+   * GIMBAL_DEVICE_FLAGS_CAN_ACCEPT_YAW_IN_EARTH_FRAME.
+   */
+  @GeneratedMavEnumEntry
+  SUPPORTS_YAW_IN_EARTH_FRAME(4_096u),
+  /**
+   * Gimbal device supports radio control inputs as an alternative input for controlling the gimbal
+   * orientation.
+   */
+  @GeneratedMavEnumEntry
+  HAS_RC_INPUTS(8_192u),
   ;
 
   public companion object : MavBitmask.MavCompanion<GimbalDeviceCapFlags> {
@@ -92,6 +107,8 @@ public enum class GimbalDeviceCapFlags(
       512u -> HAS_YAW_FOLLOW
       1024u -> HAS_YAW_LOCK
       2048u -> SUPPORTS_INFINITE_YAW
+      4096u -> SUPPORTS_YAW_IN_EARTH_FRAME
+      8192u -> HAS_RC_INPUTS
       else -> null
     }
 
@@ -108,6 +125,8 @@ public enum class GimbalDeviceCapFlags(
       if (v and 512u == 512u) add(HAS_YAW_FOLLOW)
       if (v and 1024u == 1024u) add(HAS_YAW_LOCK)
       if (v and 2048u == 2048u) add(SUPPORTS_INFINITE_YAW)
+      if (v and 4096u == 4096u) add(SUPPORTS_YAW_IN_EARTH_FRAME)
+      if (v and 8192u == 8192u) add(HAS_RC_INPUTS)
     }
   }
 }

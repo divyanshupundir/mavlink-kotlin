@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -13,18 +12,21 @@ import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
+import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeString
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt64
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.UByte
 import kotlin.UInt
 import kotlin.ULong
 import kotlin.UShort
@@ -36,7 +38,6 @@ import kotlin.Unit
  * hardware. However, the limits by software used are likely different/smaller and dependent on
  * mode/settings/etc..
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 283u,
   crcExtra = 74,
@@ -90,35 +91,47 @@ public data class GimbalDeviceInformation(
   @GeneratedMavField(type = "uint16_t")
   public val customCapFlags: UShort = 0u,
   /**
-   * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
+   * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left).
+   * NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val rollMin: Float = 0F,
   /**
-   * Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
+   * Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left).
+   * NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val rollMax: Float = 0F,
   /**
-   * Minimum hardware pitch angle (positive: up, negative: down)
+   * Minimum hardware pitch angle (positive: up, negative: down). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val pitchMin: Float = 0F,
   /**
-   * Maximum hardware pitch angle (positive: up, negative: down)
+   * Maximum hardware pitch angle (positive: up, negative: down). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val pitchMax: Float = 0F,
   /**
-   * Minimum hardware yaw angle (positive: to the right, negative: to the left)
+   * Minimum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val yawMin: Float = 0F,
   /**
-   * Maximum hardware yaw angle (positive: to the right, negative: to the left)
+   * Maximum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown.
    */
   @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
+  /**
+   * This field is to be used if the gimbal manager and the gimbal device are the same component and
+   * hence have the same component ID. This field is then set to a number between 1-6. If the component
+   * ID is separate, this field is not required and must be set to 0.
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<GimbalDeviceInformation> {
   public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceInformation> =
       Companion
@@ -160,13 +173,14 @@ public data class GimbalDeviceInformation(
     encoder.encodeString(vendorName, 32)
     encoder.encodeString(modelName, 32)
     encoder.encodeString(customName, 32)
+    encoder.encodeUInt8(gimbalDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<GimbalDeviceInformation> {
     private const val SIZE_V1: Int = 144
 
-    private const val SIZE_V2: Int = 144
+    private const val SIZE_V2: Int = 145
 
     public override val id: UInt = 283u
 
@@ -193,6 +207,7 @@ public data class GimbalDeviceInformation(
       val vendorName = decoder.safeDecodeString(32)
       val modelName = decoder.safeDecodeString(32)
       val customName = decoder.safeDecodeString(32)
+      val gimbalDeviceId = decoder.safeDecodeUInt8()
 
       return GimbalDeviceInformation(
         timeBootMs = timeBootMs,
@@ -210,6 +225,7 @@ public data class GimbalDeviceInformation(
         pitchMax = pitchMax,
         yawMin = yawMin,
         yawMax = yawMax,
+        gimbalDeviceId = gimbalDeviceId,
       )
     }
 
@@ -248,6 +264,8 @@ public data class GimbalDeviceInformation(
 
     public var yawMax: Float = 0F
 
+    public var gimbalDeviceId: UByte = 0u
+
     public fun build(): GimbalDeviceInformation = GimbalDeviceInformation(
       timeBootMs = timeBootMs,
       vendorName = vendorName,
@@ -264,6 +282,7 @@ public data class GimbalDeviceInformation(
       pitchMax = pitchMax,
       yawMin = yawMin,
       yawMax = yawMax,
+      gimbalDeviceId = gimbalDeviceId,
     )
   }
 }

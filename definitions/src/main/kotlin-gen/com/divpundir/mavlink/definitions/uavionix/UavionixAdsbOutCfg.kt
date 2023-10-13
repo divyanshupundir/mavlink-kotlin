@@ -76,7 +76,7 @@ public data class UavionixAdsbOutCfg(
   @GeneratedMavField(type = "uint16_t")
   public val stallspeed: UShort = 0u,
   /**
-   * ADS-B transponder reciever and transmit enable flags
+   * ADS-B transponder receiver and transmit enable flags
    */
   @GeneratedMavField(type = "uint8_t")
   public val rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0u),

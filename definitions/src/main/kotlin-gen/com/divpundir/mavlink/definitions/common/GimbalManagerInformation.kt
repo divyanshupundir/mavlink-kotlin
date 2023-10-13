@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -28,7 +27,6 @@ import kotlin.Unit
  * Information about a high level gimbal manager. This message should be requested by a ground
  * station using MAV_CMD_REQUEST_MESSAGE.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 280u,
   crcExtra = 70,
@@ -45,7 +43,8 @@ public data class GimbalManagerInformation(
   @GeneratedMavField(type = "uint32_t")
   public val capFlags: MavBitmaskValue<GimbalManagerCapFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Gimbal device ID that this gimbal manager is responsible for.
+   * Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or
+   * 1-6 for non-MAVLink gimbal).
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: UByte = 0u,

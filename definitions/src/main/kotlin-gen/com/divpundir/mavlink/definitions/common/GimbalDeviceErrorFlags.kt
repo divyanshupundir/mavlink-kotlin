@@ -39,7 +39,7 @@ public enum class GimbalDeviceErrorFlags(
   @GeneratedMavEnumEntry
   POWER_ERROR(16u),
   /**
-   * There is an error with the gimbal motor's.
+   * There is an error with the gimbal motors.
    */
   @GeneratedMavEnumEntry
   MOTOR_ERROR(32u),
@@ -54,10 +54,15 @@ public enum class GimbalDeviceErrorFlags(
   @GeneratedMavEnumEntry
   COMMS_ERROR(128u),
   /**
-   * Gimbal is currently calibrating.
+   * Gimbal device is currently calibrating.
    */
   @GeneratedMavEnumEntry
   CALIBRATION_RUNNING(256u),
+  /**
+   * Gimbal device is not assigned to a gimbal manager.
+   */
+  @GeneratedMavEnumEntry
+  NO_MANAGER(512u),
   ;
 
   public companion object : MavBitmask.MavCompanion<GimbalDeviceErrorFlags> {
@@ -71,6 +76,7 @@ public enum class GimbalDeviceErrorFlags(
       64u -> SOFTWARE_ERROR
       128u -> COMMS_ERROR
       256u -> CALIBRATION_RUNNING
+      512u -> NO_MANAGER
       else -> null
     }
 
@@ -84,6 +90,7 @@ public enum class GimbalDeviceErrorFlags(
       if (v and 64u == 64u) add(SOFTWARE_ERROR)
       if (v and 128u == 128u) add(COMMS_ERROR)
       if (v and 256u == 256u) add(CALIBRATION_RUNNING)
+      if (v and 512u == 512u) add(NO_MANAGER)
     }
   }
 }

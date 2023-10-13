@@ -39,7 +39,7 @@ public data class CameraSettings(
   @GeneratedMavField(type = "uint8_t")
   public val modeId: MavEnumValue<CameraMode> = MavEnumValue.fromValue(0u),
   /**
-   * Current zoom level (0.0 to 100.0, NaN if not known)
+   * Current zoom level as a percentage of the full range (0.0 to 100.0, NaN if not known)
    */
   @GeneratedMavField(
     type = "float",
@@ -47,7 +47,7 @@ public data class CameraSettings(
   )
   public val zoomlevel: Float = 0F,
   /**
-   * Current focus level (0.0 to 100.0, NaN if not known)
+   * Current focus level as a percentage of the full range (0.0 to 100.0, NaN if not known)
    */
   @GeneratedMavField(
     type = "float",

@@ -163,7 +163,7 @@ public enum class AisType(
   @GeneratedMavEnumEntry
   PASSENGER_HAZARDOUS_B(62u),
   @GeneratedMavEnumEntry
-  AIS_TYPE_PASSENGER_HAZARDOUS_C(63u),
+  PASSENGER_HAZARDOUS_C(63u),
   @GeneratedMavEnumEntry
   PASSENGER_HAZARDOUS_D(64u),
   @GeneratedMavEnumEntry
@@ -173,7 +173,7 @@ public enum class AisType(
   @GeneratedMavEnumEntry
   PASSENGER_RESERVED_3(67u),
   @GeneratedMavEnumEntry
-  AIS_TYPE_PASSENGER_RESERVED_4(68u),
+  PASSENGER_RESERVED_4(68u),
   @GeneratedMavEnumEntry
   PASSENGER_UNKNOWN(69u),
   @GeneratedMavEnumEntry
@@ -303,12 +303,12 @@ public enum class AisType(
       60u -> PASSENGER
       61u -> PASSENGER_HAZARDOUS_A
       62u -> PASSENGER_HAZARDOUS_B
-      63u -> AIS_TYPE_PASSENGER_HAZARDOUS_C
+      63u -> PASSENGER_HAZARDOUS_C
       64u -> PASSENGER_HAZARDOUS_D
       65u -> PASSENGER_RESERVED_1
       66u -> PASSENGER_RESERVED_2
       67u -> PASSENGER_RESERVED_3
-      68u -> AIS_TYPE_PASSENGER_RESERVED_4
+      68u -> PASSENGER_RESERVED_4
       69u -> PASSENGER_UNKNOWN
       70u -> CARGO
       71u -> CARGO_HAZARDOUS_A

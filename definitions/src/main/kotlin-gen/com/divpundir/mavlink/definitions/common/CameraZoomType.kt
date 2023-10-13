@@ -23,17 +23,22 @@ public enum class CameraZoomType(
   @GeneratedMavEnumEntry
   ZOOM_TYPE_CONTINUOUS(1u),
   /**
-   * Zoom value as proportion of full camera range (a value between 0.0 and 100.0)
+   * Zoom value as proportion of full camera range (a percentage value between 0.0 and 100.0)
    */
   @GeneratedMavEnumEntry
   ZOOM_TYPE_RANGE(2u),
   /**
-   * Zoom value/variable focal length in milimetres. Note that there is no message to get the valid
+   * Zoom value/variable focal length in millimetres. Note that there is no message to get the valid
    * zoom range of the camera, so this can type can only be used for cameras where the zoom range is
    * known (implying that this cannot reliably be used in a GCS for an arbitrary camera)
    */
   @GeneratedMavEnumEntry
   ZOOM_TYPE_FOCAL_LENGTH(3u),
+  /**
+   * Zoom value as horizontal field of view in degrees.
+   */
+  @GeneratedMavEnumEntry
+  ZOOM_TYPE_HORIZONTAL_FOV(4u),
   ;
 
   public companion object : MavEnum.MavCompanion<CameraZoomType> {
@@ -42,6 +47,7 @@ public enum class CameraZoomType(
       1u -> ZOOM_TYPE_CONTINUOUS
       2u -> ZOOM_TYPE_RANGE
       3u -> ZOOM_TYPE_FOCAL_LENGTH
+      4u -> ZOOM_TYPE_HORIZONTAL_FOV
       else -> null
     }
   }

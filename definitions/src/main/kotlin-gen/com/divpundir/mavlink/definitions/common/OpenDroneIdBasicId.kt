@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
@@ -29,7 +28,6 @@ import kotlin.collections.List
  * Remote ID standard and the ASD-STAN prEN 4709-002 Direct Remote ID standard. Additional information
  * and usage of these messages is documented at https://mavlink.io/en/services/opendroneid.html.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 12_900u,
   crcExtra = 114,

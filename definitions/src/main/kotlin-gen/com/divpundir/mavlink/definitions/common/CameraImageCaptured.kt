@@ -40,7 +40,7 @@ import kotlin.collections.List
  *         MAV_CMD_REQUEST_MESSAGE.param3 is used to specify a range of messages to send:
  *         set to 0 (default) to send just the the message for the sequence number in param 2,
  *         set to -1 to send the message for the sequence number in param 2 and all the following
- * sequence numbers, 
+ * sequence numbers,
  *         set to the sequence number of the final message in the range.
  */
 @GeneratedMavMessage(

@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -28,7 +27,6 @@ import kotlin.Unit
  * This message is to be sent to the gimbal manager (e.g. from a ground station). Angles and rates can
  * be set to NaN according to use case.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 288u,
   crcExtra = 20,

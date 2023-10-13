@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
@@ -23,11 +22,11 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * High level message to control a gimbal's pitch and yaw angles. This message is to be sent to the
- * gimbal manager (e.g. from a ground station). Angles and rates can be set to NaN according to use
- * case.
+ * Set gimbal manager pitch and yaw angles (high rate message). This message is to be sent to the
+ * gimbal manager (e.g. from a ground station) and will be ignored by gimbal devices. Angles and rates
+ * can be set to NaN according to use case. Use MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW for low-rate
+ * adjustments that require confirmation.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 287u,
   crcExtra = 1,

@@ -19,7 +19,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Acknowldge sucess or failure of a flexifunction command
+ * Acknowldge success or failure of a flexifunction command
  */
 @GeneratedMavMessage(
   id = 155u,

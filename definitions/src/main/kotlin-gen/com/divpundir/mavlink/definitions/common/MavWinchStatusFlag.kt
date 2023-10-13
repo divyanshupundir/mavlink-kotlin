@@ -66,10 +66,25 @@ public enum class MavWinchStatusFlag(
   MAV_WINCH_STATUS_REDELIVER(512u),
   /**
    * Winch is abandoning the line and possibly payload. Winch unspools the entire calculated line
-   * length. This is a failover state from REDELIVER if the number of attemps exceeds a threshold.
+   * length. This is a failover state from REDELIVER if the number of attempts exceeds a threshold.
    */
   @GeneratedMavEnumEntry
   MAV_WINCH_STATUS_ABANDON_LINE(1_024u),
+  /**
+   * Winch is engaging the locking mechanism.
+   */
+  @GeneratedMavEnumEntry
+  MAV_WINCH_STATUS_LOCKING(2_048u),
+  /**
+   * Winch is spooling on line.
+   */
+  @GeneratedMavEnumEntry
+  MAV_WINCH_STATUS_LOAD_LINE(4_096u),
+  /**
+   * Winch is loading a payload.
+   */
+  @GeneratedMavEnumEntry
+  MAV_WINCH_STATUS_LOAD_PAYLOAD(8_192u),
   ;
 
   public companion object : MavBitmask.MavCompanion<MavWinchStatusFlag> {
@@ -85,6 +100,9 @@ public enum class MavWinchStatusFlag(
       256u -> MAV_WINCH_STATUS_RETRACTING
       512u -> MAV_WINCH_STATUS_REDELIVER
       1024u -> MAV_WINCH_STATUS_ABANDON_LINE
+      2048u -> MAV_WINCH_STATUS_LOCKING
+      4096u -> MAV_WINCH_STATUS_LOAD_LINE
+      8192u -> MAV_WINCH_STATUS_LOAD_PAYLOAD
       else -> null
     }
 
@@ -100,6 +118,9 @@ public enum class MavWinchStatusFlag(
       if (v and 256u == 256u) add(MAV_WINCH_STATUS_RETRACTING)
       if (v and 512u == 512u) add(MAV_WINCH_STATUS_REDELIVER)
       if (v and 1024u == 1024u) add(MAV_WINCH_STATUS_ABANDON_LINE)
+      if (v and 2048u == 2048u) add(MAV_WINCH_STATUS_LOCKING)
+      if (v and 4096u == 4096u) add(MAV_WINCH_STATUS_LOAD_LINE)
+      if (v and 8192u == 8192u) add(MAV_WINCH_STATUS_LOAD_PAYLOAD)
     }
   }
 }

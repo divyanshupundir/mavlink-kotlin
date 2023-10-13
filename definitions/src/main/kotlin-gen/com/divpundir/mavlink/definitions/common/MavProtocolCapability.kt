@@ -44,7 +44,7 @@ public enum class MavProtocolCapability(
   /**
    * Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields:
    * https://mavlink.io/en/services/parameter.html#parameter-encoding.
-   *           Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be
+   *           Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST should be
    * set if the parameter protocol is supported.
    *         
    */
@@ -76,10 +76,10 @@ public enum class MavProtocolCapability(
   @GeneratedMavEnumEntry
   TERRAIN(512u),
   /**
-   * Autopilot supports direct actuator control.
+   * Reserved for future use.
    */
   @GeneratedMavEnumEntry
-  SET_ACTUATOR_TARGET(1_024u),
+  RESERVED3(1_024u),
   /**
    * Autopilot supports the MAV_CMD_DO_FLIGHTTERMINATION command (flight termination).
    */
@@ -133,7 +133,7 @@ public enum class MavProtocolCapability(
       128u -> SET_POSITION_TARGET_LOCAL_NED
       256u -> SET_POSITION_TARGET_GLOBAL_INT
       512u -> TERRAIN
-      1024u -> SET_ACTUATOR_TARGET
+      1024u -> RESERVED3
       2048u -> FLIGHT_TERMINATION
       4096u -> COMPASS_CALIBRATION
       8192u -> MAVLINK2
@@ -155,7 +155,7 @@ public enum class MavProtocolCapability(
       if (v and 128u == 128u) add(SET_POSITION_TARGET_LOCAL_NED)
       if (v and 256u == 256u) add(SET_POSITION_TARGET_GLOBAL_INT)
       if (v and 512u == 512u) add(TERRAIN)
-      if (v and 1024u == 1024u) add(SET_ACTUATOR_TARGET)
+      if (v and 1024u == 1024u) add(RESERVED3)
       if (v and 2048u == 2048u) add(FLIGHT_TERMINATION)
       if (v and 4096u == 4096u) add(COMPASS_CALIBRATION)
       if (v and 8192u == 8192u) add(MAVLINK2)

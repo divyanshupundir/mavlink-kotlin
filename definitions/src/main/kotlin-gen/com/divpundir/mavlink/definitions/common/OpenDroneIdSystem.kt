@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
@@ -37,7 +36,6 @@ import kotlin.collections.List
  * information including the operator location/altitude and possible aircraft group and/or
  * category/class information.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 12_904u,
   crcExtra = 77,
@@ -82,22 +80,25 @@ public data class OpenDroneIdSystem(
   @GeneratedMavField(type = "int32_t")
   public val operatorLongitude: Int = 0,
   /**
-   * Number of aircraft in the area, group or formation (default 1).
+   * Number of aircraft in the area, group or formation (default 1). Used only for swarms/multiple
+   * UA.
    */
   @GeneratedMavField(type = "uint16_t")
   public val areaCount: UShort = 0u,
   /**
-   * Radius of the cylindrical area of the group or formation (default 0).
+   * Radius of the cylindrical area of the group or formation (default 0). Used only for
+   * swarms/multiple UA.
    */
   @GeneratedMavField(type = "uint16_t")
   public val areaRadius: UShort = 0u,
   /**
-   * Area Operations Ceiling relative to WGS84. If unknown: -1000 m.
+   * Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple
+   * UA.
    */
   @GeneratedMavField(type = "float")
   public val areaCeiling: Float = 0F,
   /**
-   * Area Operations Floor relative to WGS84. If unknown: -1000 m.
+   * Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA.
    */
   @GeneratedMavField(type = "float")
   public val areaFloor: Float = 0F,

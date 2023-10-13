@@ -625,6 +625,11 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_PARACHUTE(161u),
   /**
+   * Winch component.
+   */
+  @GeneratedMavEnumEntry
+  MAV_COMP_ID_WINCH(169u),
+  /**
    * Gimbal #2.
    */
   @GeneratedMavEnumEntry
@@ -774,9 +779,10 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_TUNNEL_NODE(242u),
   /**
-   * Component for handling system messages (e.g. to ARM, takeoff, etc.).
+   * Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.).
    */
-  @Deprecated(message = "System control does not require a separate component ID.")
+  @Deprecated(message =
+      "System control does not require a separate component ID. Instead, system commands should be sent with target_component=MAV_COMP_ID_ALL allowing the target component to use any appropriate component id.")
   @GeneratedMavEnumEntry
   MAV_COMP_ID_SYSTEM_CONTROL(250u),
   ;
@@ -888,6 +894,7 @@ public enum class MavComponent(
       159u -> MAV_COMP_ID_QX1_GIMBAL
       160u -> MAV_COMP_ID_FLARM
       161u -> MAV_COMP_ID_PARACHUTE
+      169u -> MAV_COMP_ID_WINCH
       171u -> MAV_COMP_ID_GIMBAL2
       172u -> MAV_COMP_ID_GIMBAL3
       173u -> MAV_COMP_ID_GIMBAL4

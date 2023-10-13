@@ -28,7 +28,7 @@ public enum class CellularNetworkFailedReason(
   @GeneratedMavEnumEntry
   SIM_MISSING(2u),
   /**
-   * SIM is available, but not usuable for connection
+   * SIM is available, but not usable for connection
    */
   @GeneratedMavEnumEntry
   SIM_ERROR(3u),
