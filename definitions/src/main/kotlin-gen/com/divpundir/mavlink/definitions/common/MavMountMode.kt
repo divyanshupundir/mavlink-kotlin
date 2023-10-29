@@ -46,7 +46,7 @@ public enum class MavMountMode(
   @GeneratedMavEnumEntry
   NEUTRAL(1u),
   /**
-   * Load and keep safe position (Roll,Pitch,Yaw) from permant memory and stop stabilization
+   * Load and keep safe position (Roll,Pitch,Yaw) from permanent memory and stop stabilization
    */
   @GeneratedMavEnumEntry
   RETRACT(0u),
