@@ -73,7 +73,7 @@ public enum class GimbalDeviceCapFlags(
   @GeneratedMavEnumEntry
   HAS_YAW_LOCK(1_024u),
   /**
-   * Gimbal device supports yawing/panning infinetely (e.g. using slip disk).
+   * Gimbal device supports yawing/panning infinitely (e.g. using slip disk).
    */
   @GeneratedMavEnumEntry
   SUPPORTS_INFINITE_YAW(2_048u),

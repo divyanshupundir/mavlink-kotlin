@@ -1087,7 +1087,7 @@ public enum class MavCmd(
   DO_REPEAT_SERVO(184u),
   /**
    * Terminate flight immediately.
-   *           Flight termination immediately and irreversably terminates the current flight,
+   *           Flight termination immediately and irreversibly terminates the current flight,
    * returning the vehicle to ground.
    *           The vehicle will ignore RC or other input until it has been power-cycled.
    *           Termination may trigger safety measures, including: disabling motors and deployment
@@ -1393,13 +1393,13 @@ public enum class MavCmd(
    * index = 4; 
    * Empty
    *
-   * index = 5; label = Pitch Offset; 
+   * index = 5; label = Pitch Offset; units = deg; 
    * Pitch offset from next waypoint, positive pitching up
    *
-   * index = 6; label = Roll Offset; 
+   * index = 6; label = Roll Offset; units = deg; 
    * Roll offset from next waypoint, positive rolling to the right
    *
-   * index = 7; label = Yaw Offset; 
+   * index = 7; label = Yaw Offset; units = deg; 
    * Yaw offset from next waypoint, positive yawing to the right
    */
   @GeneratedMavEnumEntry
@@ -2329,7 +2329,7 @@ public enum class MavCmd(
   RUN_PREARM_CHECKS(401u),
   /**
    * Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark
-   * areas external to the sytstem: e.g. a torch or searchlight (as opposed to a light source for
+   * areas external to the system: e.g. a torch or searchlight (as opposed to a light source for
    * illuminating the system itself, e.g. an indicator light).
    *
    * index = 1; label = Enable; 

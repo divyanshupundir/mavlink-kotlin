@@ -14,7 +14,7 @@ public enum class GimbalDeviceFlags(
   public override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * Set to retracted safe position (no stabilization), takes presedence over all other flags.
+   * Set to retracted safe position (no stabilization), takes precedence over all other flags.
    */
   @GeneratedMavEnumEntry
   RETRACT(1u),

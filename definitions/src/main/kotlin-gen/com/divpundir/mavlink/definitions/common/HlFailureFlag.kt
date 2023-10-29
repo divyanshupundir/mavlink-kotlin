@@ -7,7 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Flags to report failure cases over the high latency telemtry.
+ * Flags to report failure cases over the high latency telemetry.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class HlFailureFlag(
@@ -54,7 +54,7 @@ public enum class HlFailureFlag(
   @GeneratedMavEnumEntry
   BATTERY(128u),
   /**
-   * RC receiver failure/no rc connection.
+   * RC receiver failure/no RC connection.
    */
   @GeneratedMavEnumEntry
   RC_RECEIVER(256u),

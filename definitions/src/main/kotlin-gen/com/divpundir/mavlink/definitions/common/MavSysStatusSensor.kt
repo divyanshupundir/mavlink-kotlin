@@ -94,7 +94,7 @@ public enum class MavSysStatusSensor(
   @GeneratedMavEnumEntry
   MOTOR_OUTPUTS(32_768u),
   /**
-   * 0x10000 rc receiver
+   * 0x10000 RC receiver
    */
   @GeneratedMavEnumEntry
   RC_RECEIVER(65_536u),
