@@ -30,10 +30,10 @@ internal data class DialectXml(
     val dialect: Int,
 
     @JacksonXmlElementWrapper(localName = "enums")
-    val enums: List<EnumXml>,
+    val enums: List<EnumXml>?,
 
     @JacksonXmlElementWrapper(localName = "messages")
-    val messages: List<MessageXml>
+    val messages: List<MessageXml>?
 ) {
     val includes = mutableListOf<String>()
 
@@ -47,7 +47,7 @@ internal data class DialectXml(
         includes,
         version,
         dialect,
-        enums.map { it.toModel() },
-        messages.map { it.toModel() }
+        enums?.map { it.toModel() } ?: emptyList(),
+        messages?.map { it.toModel() } ?: emptyList()
     )
 }
