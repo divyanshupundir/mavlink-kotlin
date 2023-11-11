@@ -7,16 +7,14 @@ public class MavEnumValue<E : MavEnum> private constructor(public val entry: E?,
 
     public companion object {
 
-        @JvmStatic
         public fun <E : MavEnum> of(entry: E): MavEnumValue<E> = MavEnumValue(entry, entry.value)
 
-        @JvmStatic
         public fun <E : MavEnum> fromValue(value: UInt): MavEnumValue<E> = MavEnumValue(null, value)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null || this::class != other::class) return false
 
         other as MavEnumValue<*>
 

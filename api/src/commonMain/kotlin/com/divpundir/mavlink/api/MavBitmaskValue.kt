@@ -7,7 +7,6 @@ public class MavBitmaskValue<E : MavBitmask> private constructor(public val flag
 
     public companion object {
 
-        @JvmStatic
         public fun <E : MavBitmask> of(flags: List<E>): MavBitmaskValue<E> = MavBitmaskValue(
             flags,
             flags.map { it.value }
@@ -15,16 +14,14 @@ public class MavBitmaskValue<E : MavBitmask> private constructor(public val flag
                 ?: 0u
         )
 
-        @JvmStatic
         public fun <E : MavBitmask> of(vararg flags: E): MavBitmaskValue<E> = of(flags.asList())
 
-        @JvmStatic
         public fun <E : MavBitmask> fromValue(value: UInt): MavBitmaskValue<E> = MavBitmaskValue(emptyList(), value)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null || this::class != other::class) return false
 
         other as MavBitmaskValue<*>
 
