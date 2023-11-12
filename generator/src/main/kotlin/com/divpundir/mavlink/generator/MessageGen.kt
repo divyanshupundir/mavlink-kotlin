@@ -88,7 +88,7 @@ private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelp
     .addCode(
         buildCodeBlock {
             val decoderName = if (fields.none { it.name == "decoder" }) "decoder" else "_decoder"
-            addStatement("val $decoderName = %T.wrap(bytes)", JvmMavDataDecoder::class)
+            addStatement("val $decoderName = %T(bytes)", MavDataDecoder::class)
             addStatement("")
             fields.sorted().forEach { add(it.generateDeserializeStatement(decoderName, enumHelper)) }
             addStatement("")
@@ -117,7 +117,7 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .addCode(
         buildCodeBlock {
             val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
-            addStatement("val $encoderName = %T.allocate(SIZE_V1)", JvmMavDataEncoder::class)
+            addStatement("val $encoderName = %T(SIZE_V1)", MavDataEncoder::class)
             fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
             addStatement("return $encoderName.bytes")
         }
@@ -131,7 +131,7 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .addCode(
         buildCodeBlock {
             val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
-            addStatement("val $encoderName = %T.allocate(SIZE_V2)", JvmMavDataEncoder::class)
+            addStatement("val $encoderName = %T(SIZE_V2)", MavDataEncoder::class)
             fields.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
             addStatement("return $encoderName.bytes.%M()", truncateZerosMemberName)
         }
