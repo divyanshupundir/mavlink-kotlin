@@ -15,7 +15,7 @@ private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecode
         val byte1 = bytes[position++]
         val byte2 = bytes[position++]
 
-        return ((byte1.toInt() shl 8) or (byte2.toInt() and 0xFF)).toShort()
+        return ((byte2.toInt() and 0xFF) shl 8 or (byte1.toInt() and 0xFF)).toShort()
     }
 
     override fun decodeInt(): Int {
@@ -24,8 +24,8 @@ private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecode
         val byte3 = bytes[position++]
         val byte4 = bytes[position++]
 
-        return (byte1.toInt() shl 24) or (byte2.toInt() shl 16) or
-            (byte3.toInt() shl 8) or (byte4.toInt() and 0xFF)
+        return (byte4.toInt() shl 24) or (byte3.toInt() shl 16) or
+            (byte2.toInt() shl 8) or (byte1.toInt() and 0xFF)
     }
 
     override fun decodeLong(): Long {
@@ -38,10 +38,10 @@ private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecode
         val byte7 = bytes[position++]
         val byte8 = bytes[position++]
 
-        return (byte1.toLong() shl 56) or (byte2.toLong() shl 48) or
-            (byte3.toLong() shl 40) or (byte4.toLong() shl 32) or
-            (byte5.toLong() shl 24) or (byte6.toLong() shl 16) or
-            (byte7.toLong() shl 8) or (byte8.toLong() and 0xFF)
+        return (byte8.toLong() shl 56) or (byte7.toLong() shl 48) or
+            (byte6.toLong() shl 40) or (byte5.toLong() shl 32) or
+            (byte4.toLong() shl 24) or (byte3.toLong() shl 16) or
+            (byte2.toLong() shl 8) or (byte1.toLong() and 0xFF)
     }
 
     override fun decodeByteArray(dst: ByteArray, offset: Int, length: Int) {

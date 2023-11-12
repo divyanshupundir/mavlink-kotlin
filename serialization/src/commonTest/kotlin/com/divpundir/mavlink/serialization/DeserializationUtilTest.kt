@@ -14,7 +14,7 @@ class DeserializationUtilTest {
         val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFF.toByte(), decoder.safeDecodeInt8())
-        assertEquals(0x02.toByte(), decoder.safeDecodeInt8())
+        assertEquals(0x01.toByte(), decoder.safeDecodeInt8())
         assertEquals(0x00.toByte(), decoder.safeDecodeInt8())
     }
 
@@ -27,7 +27,7 @@ class DeserializationUtilTest {
         val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFF.toUByte(), decoder.safeDecodeUInt8())
-        assertEquals(0x02.toUByte(), decoder.safeDecodeUInt8())
+        assertEquals(0x01.toUByte(), decoder.safeDecodeUInt8())
         assertEquals(0x00.toUByte(), decoder.safeDecodeUInt8())
     }
 
