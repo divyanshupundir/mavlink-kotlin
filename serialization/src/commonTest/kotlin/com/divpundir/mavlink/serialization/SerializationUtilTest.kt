@@ -1,8 +1,7 @@
 package com.divpundir.mavlink.serialization
 
-import org.junit.jupiter.api.Assertions.assertArrayEquals
-import org.junit.jupiter.api.Test
-import java.math.BigInteger
+import kotlin.test.Test
+import kotlin.test.assertContentEquals
 
 class SerializationUtilTest {
 
@@ -17,7 +16,7 @@ class SerializationUtilTest {
         encoder.encodeInt8(0xFF.toByte())
         encoder.encodeInt8(0x01.toByte())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -31,7 +30,7 @@ class SerializationUtilTest {
         encoder.encodeUInt8(0xFF.toUByte())
         encoder.encodeUInt8(0x01.toUByte())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -45,7 +44,7 @@ class SerializationUtilTest {
         encoder.encodeInt16(0xFEFF.toShort())
         encoder.encodeInt16(0x0201.toShort())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -59,7 +58,7 @@ class SerializationUtilTest {
         encoder.encodeUInt16(0xFEFF.toUShort())
         encoder.encodeUInt16(0x0201.toUShort())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Suppress("RemoveRedundantCallsOfConversionMethods")
@@ -74,7 +73,7 @@ class SerializationUtilTest {
         encoder.encodeInt32(0xFCFDFEFF.toInt())
         encoder.encodeInt32(0x04030201.toInt())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -88,54 +87,40 @@ class SerializationUtilTest {
         encoder.encodeUInt32(0xFCFDFEFF.toUInt())
         encoder.encodeUInt32(0x04030201.toUInt())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Suppress("RemoveRedundantCallsOfConversionMethods")
     @Test
     fun encodeInt64() {
         val bytes = byteArrayOf(
-            0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
-            0xFB.toByte(), 0xFA.toByte(), 0xF9.toByte(), 0xF8.toByte(),
+            0x1F.toByte(), 0x1E.toByte(), 0x1D.toByte(), 0x1C.toByte(),
+            0x1B.toByte(), 0x1A.toByte(), 0x19.toByte(), 0x18.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
         val encoder = MavDataEncoder(16)
 
-        encoder.encodeInt64(
-            BigInteger(
-                byteArrayOf(
-                    0xF8.toByte(), 0xF9.toByte(), 0xFA.toByte(), 0xFB.toByte(),
-                    0xFC.toByte(), 0xFD.toByte(), 0xFE.toByte(), 0xFF.toByte(),
-                )
-            ).toLong()
-        )
+        encoder.encodeInt64(0x18191A1B1C1D1E1F.toLong())
         encoder.encodeInt64(0x0807060504030201.toLong())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
     fun encodeUInt64() {
         val bytes = byteArrayOf(
-            0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
-            0xFB.toByte(), 0xFA.toByte(), 0xF9.toByte(), 0xF8.toByte(),
+            0x1F.toByte(), 0x1E.toByte(), 0x1D.toByte(), 0x1C.toByte(),
+            0x1B.toByte(), 0x1A.toByte(), 0x19.toByte(), 0x18.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
         val encoder = MavDataEncoder(16)
 
-        encoder.encodeUInt64(
-            BigInteger(
-                byteArrayOf(
-                    0xF8.toByte(), 0xF9.toByte(), 0xFA.toByte(), 0xFB.toByte(),
-                    0xFC.toByte(), 0xFD.toByte(), 0xFE.toByte(), 0xFF.toByte(),
-                )
-            ).toLong().toULong()
-        )
+        encoder.encodeUInt64(0x18191A1B1C1D1E1F.toULong())
         encoder.encodeUInt64(0x0807060504030201.toULong())
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Suppress("RemoveRedundantCallsOfConversionMethods")
@@ -150,33 +135,24 @@ class SerializationUtilTest {
         encoder.encodeFloat(Float.fromBits(0xFCFDFEFF.toInt()))
         encoder.encodeFloat(Float.fromBits(0x04030201.toInt()))
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Suppress("RemoveRedundantCallsOfConversionMethods")
     @Test
     fun encodeDouble() {
         val bytes = byteArrayOf(
-            0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
-            0xFB.toByte(), 0xFA.toByte(), 0xF9.toByte(), 0xF8.toByte(),
+            0x1F.toByte(), 0x1E.toByte(), 0x1D.toByte(), 0x1C.toByte(),
+            0x1B.toByte(), 0x1A.toByte(), 0x19.toByte(), 0x18.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
-            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
+            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
         val encoder = MavDataEncoder(16)
 
-        encoder.encodeDouble(
-            Double.fromBits(
-                BigInteger(
-                    byteArrayOf(
-                        0xF8.toByte(), 0xF9.toByte(), 0xFA.toByte(), 0xFB.toByte(),
-                        0xFC.toByte(), 0xFD.toByte(), 0xFE.toByte(), 0xFF.toByte(),
-                    )
-                ).toLong()
-            )
-        )
+        encoder.encodeDouble(Double.fromBits(0x18191A1B1C1D1E1F.toLong()))
         encoder.encodeDouble(Double.fromBits(0x0807060504030201.toLong()))
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -190,7 +166,7 @@ class SerializationUtilTest {
         encoder.encodeChar('A')
         encoder.encodeChar('B')
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -206,16 +182,16 @@ class SerializationUtilTest {
         encoder.encodeString("ABCDEFGH", 8)
         encoder.encodeString("abcdefgh", 8)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
     fun truncateZeros() {
-        assertArrayEquals(
+        assertContentEquals(
             byteArrayOf(0x01, 0x02, 0x03, 0x04),
             byteArrayOf(0x01, 0x02, 0x03, 0x04, 0x00, 0x00).truncateZeros()
         )
-        assertArrayEquals(
+        assertContentEquals(
             byteArrayOf(0x00, 0x01, 0x02, 0x03, 0x04),
             byteArrayOf(0x00, 0x01, 0x02, 0x03, 0x04).truncateZeros()
         )

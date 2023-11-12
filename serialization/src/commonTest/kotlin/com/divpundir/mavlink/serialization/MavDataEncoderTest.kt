@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.serialization
 
-import org.junit.jupiter.api.Assertions.assertArrayEquals
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 
 class MavDataEncoderTest {
 
@@ -21,7 +21,7 @@ class MavDataEncoderTest {
         encoder.encodeInt(0x07060504)
         encoder.encodeLong(0x0F0E0D0C0B0A0908)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -50,7 +50,7 @@ class MavDataEncoderTest {
         encoder.encodeByte(0x01)
         encoder.encodeByte(0x02)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -64,7 +64,7 @@ class MavDataEncoderTest {
         encoder.encodeShort(0x0201)
         encoder.encodeShort(0x0403)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -78,7 +78,7 @@ class MavDataEncoderTest {
         encoder.encodeInt(0x04030201)
         encoder.encodeInt(0x08070605)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -94,7 +94,7 @@ class MavDataEncoderTest {
         encoder.encodeLong(0x0807060504030201)
         encoder.encodeLong(0x100F0E0D0C0B0A09)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 
     @Test
@@ -104,6 +104,6 @@ class MavDataEncoderTest {
 
         encoder.encodeByteArray(bytes)
 
-        assertArrayEquals(bytes, encoder.bytes)
+        assertContentEquals(bytes, encoder.bytes)
     }
 }

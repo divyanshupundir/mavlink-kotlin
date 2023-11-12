@@ -1,8 +1,9 @@
 package com.divpundir.mavlink.serialization
 
-import org.junit.jupiter.api.Assertions.assertArrayEquals
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertContains
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 
 class MavDataDecoderTest {
 
@@ -83,6 +84,6 @@ class MavDataDecoderTest {
         val dst = ByteArray(8)
         decoder.decodeByteArray(dst)
 
-        assertArrayEquals(bytes, dst)
+        assertContentEquals(bytes, dst)
     }
 }

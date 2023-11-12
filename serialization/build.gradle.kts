@@ -41,6 +41,12 @@ kotlin {
         nativeMain {
             dependsOn(nonJvmMain)
         }
+
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
     }
 }
 

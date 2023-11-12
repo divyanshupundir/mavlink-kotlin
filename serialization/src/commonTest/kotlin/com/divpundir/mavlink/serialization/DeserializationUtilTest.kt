@@ -1,8 +1,7 @@
 package com.divpundir.mavlink.serialization
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import java.math.BigInteger
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class DeserializationUtilTest {
 
@@ -89,22 +88,14 @@ class DeserializationUtilTest {
     @Test
     fun safeDecodeInt64() {
         val bytes = byteArrayOf(
-            0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
-            0xFB.toByte(), 0xFA.toByte(), 0xF9.toByte(), 0xF8.toByte(),
+            0x1F.toByte(), 0x1E.toByte(), 0x1D.toByte(), 0x1C.toByte(),
+            0x1B.toByte(), 0x1A.toByte(), 0x19.toByte(), 0x18.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
-            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
+            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
         val decoder = MavDataDecoder(bytes)
 
-        assertEquals(
-            BigInteger(
-                byteArrayOf(
-                    0xF8.toByte(), 0xF9.toByte(), 0xFA.toByte(), 0xFB.toByte(),
-                    0xFC.toByte(), 0xFD.toByte(), 0xFE.toByte(), 0xFF.toByte(),
-                )
-            ).toLong(),
-            decoder.safeDecodeInt64()
-        )
+        assertEquals(0x18191A1B1C1D1E1F.toLong(), decoder.safeDecodeInt64())
         assertEquals(0x0807060504030201.toLong(), decoder.safeDecodeInt64())
         assertEquals(0x0000000000000000.toLong(), decoder.safeDecodeInt64())
     }
@@ -112,22 +103,14 @@ class DeserializationUtilTest {
     @Test
     fun safeDecodeUInt64() {
         val bytes = byteArrayOf(
-            0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
-            0xFB.toByte(), 0xFA.toByte(), 0xF9.toByte(), 0xF8.toByte(),
+            0x1F.toByte(), 0x1E.toByte(), 0x1D.toByte(), 0x1C.toByte(),
+            0x1B.toByte(), 0x1A.toByte(), 0x19.toByte(), 0x18.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
-            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
+            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
         val decoder = MavDataDecoder(bytes)
 
-        assertEquals(
-            BigInteger(
-                byteArrayOf(
-                    0xF8.toByte(), 0xF9.toByte(), 0xFA.toByte(), 0xFB.toByte(),
-                    0xFC.toByte(), 0xFD.toByte(), 0xFE.toByte(), 0xFF.toByte(),
-                )
-            ).toLong().toULong(),
-            decoder.safeDecodeUInt64()
-        )
+        assertEquals(0x18191A1B1C1D1E1F.toULong(), decoder.safeDecodeUInt64())
         assertEquals(0x0807060504030201.toULong(), decoder.safeDecodeUInt64())
         assertEquals(0x0000000000000000.toULong(), decoder.safeDecodeUInt64())
     }
@@ -150,24 +133,14 @@ class DeserializationUtilTest {
     @Test
     fun safeDecodeDouble() {
         val bytes = byteArrayOf(
-            0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
-            0xFB.toByte(), 0xFA.toByte(), 0xF9.toByte(), 0xF8.toByte(),
+            0x1F.toByte(), 0x1E.toByte(), 0x1D.toByte(), 0x1C.toByte(),
+            0x1B.toByte(), 0x1A.toByte(), 0x19.toByte(), 0x18.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
-            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
+            0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
         val decoder = MavDataDecoder(bytes)
 
-        assertEquals(
-            Double.fromBits(
-                BigInteger(
-                    byteArrayOf(
-                        0xF8.toByte(), 0xF9.toByte(), 0xFA.toByte(), 0xFB.toByte(),
-                        0xFC.toByte(), 0xFD.toByte(), 0xFE.toByte(), 0xFF.toByte(),
-                    )
-                ).toLong()
-            ),
-            decoder.safeDecodeDouble()
-        )
+        assertEquals(Double.fromBits(0x18191A1B1C1D1E1F.toLong()), decoder.safeDecodeDouble())
         assertEquals(Double.fromBits(0x0807060504030201.toLong()), decoder.safeDecodeDouble())
         assertEquals(Double.fromBits(0x0000000000000000.toLong()), decoder.safeDecodeDouble())
     }
