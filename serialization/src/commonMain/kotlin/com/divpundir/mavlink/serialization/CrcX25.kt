@@ -11,7 +11,7 @@ public class CrcX25 {
      * Adds the given string to the hash. The string is encoded as UTF-8.
      */
     public fun accumulate(str: String) {
-        accumulate(str.toByteArray(Charsets.UTF_8))
+        accumulate(str.encodeToByteArray())
     }
 
     /**

@@ -90,9 +90,9 @@ public fun MavDataDecoder.safeDecodeString(length: Int): String {
     }
 
     for (i in 0 until length) {
-        if (data[i] == 0.toByte()) return String(data, 0, i, Charsets.UTF_8)
+        if (data[i] == 0.toByte()) return data.decodeToString(0, i)
     }
-    return String(data, Charsets.UTF_8)
+    return data.decodeToString()
 }
 
 /**

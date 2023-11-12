@@ -82,7 +82,7 @@ public fun MavDataEncoder.encodeChar(value: Char) {
  * is shorter than the [length] parameter then the remaining positions are filled with empty characters.
  */
 public fun MavDataEncoder.encodeString(value: String, length: Int) {
-    val data = value.toByteArray(charset = Charsets.UTF_8).copyOf(newSize = length)
+    val data = value.encodeToByteArray().copyOf(newSize = length)
     this.encodeByteArray(data)
 }
 
