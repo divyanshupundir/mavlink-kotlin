@@ -8,20 +8,51 @@ class MavDataEncoderTest {
 
     @Test
     fun getBytes() {
-        val bytes = byteArrayOf(
-            0x01,
-            0x02, 0x03,
-            0x04, 0x05, 0x06, 0x07,
-            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
-        )
         val encoder = MavDataEncoder(15)
 
         encoder.encodeByte(0x01)
-        encoder.encodeShort(0x0302)
-        encoder.encodeInt(0x07060504)
-        encoder.encodeLong(0x0F0E0D0C0B0A0908)
+        assertContentEquals(
+            byteArrayOf(
+                0x01,
+                0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ),
+            encoder.bytes
+        )
 
-        assertContentEquals(bytes, encoder.bytes)
+        encoder.encodeShort(0x0302)
+        assertContentEquals(
+            byteArrayOf(
+                0x01,
+                0x02, 0x03,
+                0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ),
+            encoder.bytes
+        )
+
+        encoder.encodeInt(0x07060504)
+        assertContentEquals(
+            byteArrayOf(
+                0x01,
+                0x02, 0x03,
+                0x04, 0x05, 0x06, 0x07,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            ),
+            encoder.bytes
+        )
+
+        encoder.encodeLong(0x0F0E0D0C0B0A0908)
+        assertContentEquals(
+            byteArrayOf(
+                0x01,
+                0x02, 0x03,
+                0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
+            ),
+            encoder.bytes
+        )
     }
 
     @Test
@@ -29,12 +60,16 @@ class MavDataEncoderTest {
         val encoder = MavDataEncoder(15)
 
         assertEquals(15, encoder.remaining)
+
         encoder.encodeByte(0x01)
         assertEquals(14, encoder.remaining)
+
         encoder.encodeShort(0x0201)
         assertEquals(12, encoder.remaining)
+
         encoder.encodeInt(0x04030201)
         assertEquals(8, encoder.remaining)
+
         encoder.encodeLong(0x0807060504030201)
         assertEquals(0, encoder.remaining)
     }

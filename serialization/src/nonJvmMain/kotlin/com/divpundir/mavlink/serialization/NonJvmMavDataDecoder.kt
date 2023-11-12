@@ -1,6 +1,9 @@
 package com.divpundir.mavlink.serialization
 
-private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecoder {
+@OptIn(ExperimentalUnsignedTypes::class)
+private class NativeMavDataDecoder(bytes: ByteArray) : MavDataDecoder {
+
+    private val bytes = bytes.toUByteArray()
 
     private var position = 0
 
@@ -8,14 +11,14 @@ private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecode
         get() = bytes.size - position
 
     override fun decodeByte(): Byte {
-        return bytes[position++]
+        return bytes[position++].toByte()
     }
 
     override fun decodeShort(): Short {
         val byte1 = bytes[position++]
         val byte2 = bytes[position++]
 
-        return ((byte2.toInt() and 0xFF) shl 8 or (byte1.toInt() and 0xFF)).toShort()
+        return ((byte2.toInt() shl 8) or (byte1.toInt() and 0xFF)).toShort()
     }
 
     override fun decodeInt(): Int {
@@ -46,7 +49,7 @@ private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecode
 
     override fun decodeByteArray(dst: ByteArray, offset: Int, length: Int) {
         for (i in offset until offset + length) {
-            dst[i] = bytes[position++]
+            dst[i] = bytes[position++].toByte()
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.divpundir.mavlink.serialization
 
+@OptIn(ExperimentalUnsignedTypes::class)
 private class NonJvmMavDataEncoder(size: Int) : MavDataEncoder {
 
-    override val bytes: ByteArray = ByteArray(size)
+    private val _bytes = UByteArray(size)
+    override val bytes: ByteArray = _bytes.asByteArray()
 
     private var position = 0
 
@@ -10,35 +12,35 @@ private class NonJvmMavDataEncoder(size: Int) : MavDataEncoder {
         get() = bytes.size - position
 
     override fun encodeByte(value: Byte) {
-        bytes[position++] = value
+        _bytes[position++] = value.toUByte()
     }
 
     override fun encodeShort(value: Short) {
-        bytes[position++] = value.toByte()
-        bytes[position++] = (value.toInt() shr 8).toByte()
+        _bytes[position++] = value.toUByte()
+        _bytes[position++] = (value.toInt() shr 8).toUByte()
     }
 
     override fun encodeInt(value: Int) {
-        bytes[position++] = value.toByte()
-        bytes[position++] = (value shr 8).toByte()
-        bytes[position++] = (value shr 16).toByte()
-        bytes[position++] = (value shr 24).toByte()
+        _bytes[position++] = value.toUByte()
+        _bytes[position++] = (value shr 8).toUByte()
+        _bytes[position++] = (value shr 16).toUByte()
+        _bytes[position++] = (value shr 24).toUByte()
     }
 
     override fun encodeLong(value: Long) {
-        bytes[position++] = value.toByte()
-        bytes[position++] = (value shr 8).toByte()
-        bytes[position++] = (value shr 16).toByte()
-        bytes[position++] = (value shr 24).toByte()
-        bytes[position++] = (value shr 32).toByte()
-        bytes[position++] = (value shr 40).toByte()
-        bytes[position++] = (value shr 48).toByte()
-        bytes[position++] = (value shr 56).toByte()
+        _bytes[position++] = value.toUByte()
+        _bytes[position++] = (value shr 8).toUByte()
+        _bytes[position++] = (value shr 16).toUByte()
+        _bytes[position++] = (value shr 24).toUByte()
+        _bytes[position++] = (value shr 32).toUByte()
+        _bytes[position++] = (value shr 40).toUByte()
+        _bytes[position++] = (value shr 48).toUByte()
+        _bytes[position++] = (value shr 56).toUByte()
     }
 
     override fun encodeByteArray(src: ByteArray, offset: Int, length: Int) {
         for (i in offset until offset + length) {
-            bytes[position++] = src[i]
+            _bytes[position++] = src[i].toUByte()
         }
     }
 }
