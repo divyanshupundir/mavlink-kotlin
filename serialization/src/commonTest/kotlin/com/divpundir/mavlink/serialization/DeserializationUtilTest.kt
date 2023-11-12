@@ -12,7 +12,7 @@ class DeserializationUtilTest {
             0xFF.toByte(),
             0x01.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFF.toByte(), decoder.safeDecodeInt8())
         assertEquals(0x02.toByte(), decoder.safeDecodeInt8())
@@ -25,7 +25,7 @@ class DeserializationUtilTest {
             0xFF.toByte(),
             0x01.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFF.toUByte(), decoder.safeDecodeUInt8())
         assertEquals(0x02.toUByte(), decoder.safeDecodeUInt8())
@@ -38,7 +38,7 @@ class DeserializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(),
             0x01.toByte(), 0x02.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFEFF.toShort(), decoder.safeDecodeInt16())
         assertEquals(0x0201.toShort(), decoder.safeDecodeInt16())
@@ -51,7 +51,7 @@ class DeserializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(),
             0x01.toByte(), 0x02.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFEFF.toUShort(), decoder.safeDecodeUInt16())
         assertEquals(0x0201.toUShort(), decoder.safeDecodeUInt16())
@@ -65,7 +65,7 @@ class DeserializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFCFDFEFF.toInt(), decoder.safeDecodeInt32())
         assertEquals(0x04030201.toInt(), decoder.safeDecodeInt32())
@@ -78,7 +78,7 @@ class DeserializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(0xFCFDFEFF.toUInt(), decoder.safeDecodeUInt32())
         assertEquals(0x04030201.toUInt(), decoder.safeDecodeUInt32())
@@ -94,7 +94,7 @@ class DeserializationUtilTest {
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(
             BigInteger(
@@ -117,7 +117,7 @@ class DeserializationUtilTest {
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(
             BigInteger(
@@ -139,7 +139,7 @@ class DeserializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(Float.fromBits(0xFCFDFEFF.toInt()), decoder.safeDecodeFloat())
         assertEquals(Float.fromBits(0x04030201.toInt()), decoder.safeDecodeFloat())
@@ -155,7 +155,7 @@ class DeserializationUtilTest {
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals(
             Double.fromBits(
@@ -178,7 +178,7 @@ class DeserializationUtilTest {
             0x41.toByte(),
             0x42.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals('A', decoder.safeDecodeChar())
         assertEquals('B', decoder.safeDecodeChar())
@@ -192,7 +192,7 @@ class DeserializationUtilTest {
             0x61.toByte(), 0x62.toByte(), 0x63.toByte(), 0x64.toByte(),
             0x65.toByte(), 0x66.toByte(), 0x67.toByte(), 0x68.toByte(),
         )
-        val decoder = MavDataDecoder.wrap(bytes)
+        val decoder = MavDataDecoder(bytes)
 
         assertEquals("ABCDEFGH", decoder.safeDecodeString(8))
         assertEquals("abcdefgh", decoder.safeDecodeString(8))

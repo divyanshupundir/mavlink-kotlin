@@ -7,8 +7,8 @@ import com.divpundir.mavlink.generator.models.FieldModel
 import com.divpundir.mavlink.generator.models.MessageModel
 import com.divpundir.mavlink.generator.models.sortedByPosition
 import com.divpundir.mavlink.serialization.CrcX25
-import com.divpundir.mavlink.serialization.JvmMavDataDecoder
-import com.divpundir.mavlink.serialization.JvmMavDataEncoder
+import com.divpundir.mavlink.serialization.MavDataDecoder
+import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 

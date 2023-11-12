@@ -25,4 +25,4 @@ private class JvmMavDataDecoder(
     }
 }
 
-public actual fun MavDataDecoder.Companion.wrap(bytes: ByteArray): MavDataDecoder = JvmMavDataDecoder(bytes)
+public actual fun MavDataDecoder(bytes: ByteArray): MavDataDecoder = JvmMavDataDecoder(bytes)

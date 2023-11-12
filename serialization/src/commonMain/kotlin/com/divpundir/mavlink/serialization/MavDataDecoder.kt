@@ -42,4 +42,4 @@ public interface MavDataDecoder {
 /**
  * Creates a new [MavDataDecoder] instance that uses the given [bytes] for the reading of data.
  */
-public expect fun MavDataDecoder.Companion.wrap(bytes: ByteArray): MavDataDecoder
+public expect fun MavDataDecoder(bytes: ByteArray): MavDataDecoder

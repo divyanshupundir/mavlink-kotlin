@@ -36,4 +36,4 @@ private class JvmMavDataEncoder(
     }
 }
 
-public actual fun MavDataEncoder.Companion.allocate(size: Int): MavDataEncoder = JvmMavDataEncoder(size)
+public actual fun MavDataEncoder(size: Int): MavDataEncoder = JvmMavDataEncoder(size)

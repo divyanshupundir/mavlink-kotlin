@@ -12,7 +12,7 @@ class SerializationUtilTest {
             0xFF.toByte(),
             0x01.toByte(),
         )
-        val encoder = MavDataEncoder.allocate(2)
+        val encoder = MavDataEncoder(2)
 
         encoder.encodeInt8(0xFF.toByte())
         encoder.encodeInt8(0x01.toByte())
@@ -26,7 +26,7 @@ class SerializationUtilTest {
             0xFF.toByte(),
             0x01.toByte(),
         )
-        val encoder = MavDataEncoder.allocate(2)
+        val encoder = MavDataEncoder(2)
 
         encoder.encodeUInt8(0xFF.toUByte())
         encoder.encodeUInt8(0x01.toUByte())
@@ -40,7 +40,7 @@ class SerializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(),
             0x01.toByte(), 0x02.toByte()
         )
-        val encoder = MavDataEncoder.allocate(4)
+        val encoder = MavDataEncoder(4)
 
         encoder.encodeInt16(0xFEFF.toShort())
         encoder.encodeInt16(0x0201.toShort())
@@ -54,7 +54,7 @@ class SerializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(),
             0x01.toByte(), 0x02.toByte()
         )
-        val encoder = MavDataEncoder.allocate(4)
+        val encoder = MavDataEncoder(4)
 
         encoder.encodeUInt16(0xFEFF.toUShort())
         encoder.encodeUInt16(0x0201.toUShort())
@@ -69,7 +69,7 @@ class SerializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte()
         )
-        val encoder = MavDataEncoder.allocate(8)
+        val encoder = MavDataEncoder(8)
 
         encoder.encodeInt32(0xFCFDFEFF.toInt())
         encoder.encodeInt32(0x04030201.toInt())
@@ -83,7 +83,7 @@ class SerializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte()
         )
-        val encoder = MavDataEncoder.allocate(8)
+        val encoder = MavDataEncoder(8)
 
         encoder.encodeUInt32(0xFCFDFEFF.toUInt())
         encoder.encodeUInt32(0x04030201.toUInt())
@@ -100,7 +100,7 @@ class SerializationUtilTest {
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
-        val encoder = MavDataEncoder.allocate(16)
+        val encoder = MavDataEncoder(16)
 
         encoder.encodeInt64(
             BigInteger(
@@ -123,7 +123,7 @@ class SerializationUtilTest {
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte()
         )
-        val encoder = MavDataEncoder.allocate(16)
+        val encoder = MavDataEncoder(16)
 
         encoder.encodeUInt64(
             BigInteger(
@@ -145,7 +145,7 @@ class SerializationUtilTest {
             0xFF.toByte(), 0xFE.toByte(), 0xFD.toByte(), 0xFC.toByte(),
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
         )
-        val encoder = MavDataEncoder.allocate(8)
+        val encoder = MavDataEncoder(8)
 
         encoder.encodeFloat(Float.fromBits(0xFCFDFEFF.toInt()))
         encoder.encodeFloat(Float.fromBits(0x04030201.toInt()))
@@ -162,7 +162,7 @@ class SerializationUtilTest {
             0x01.toByte(), 0x02.toByte(), 0x03.toByte(), 0x04.toByte(),
             0x05.toByte(), 0x06.toByte(), 0x07.toByte(), 0x08.toByte(),
         )
-        val encoder = MavDataEncoder.allocate(16)
+        val encoder = MavDataEncoder(16)
 
         encoder.encodeDouble(
             Double.fromBits(
@@ -185,7 +185,7 @@ class SerializationUtilTest {
             0x41.toByte(),
             0x42.toByte(),
         )
-        val encoder = MavDataEncoder.allocate(2)
+        val encoder = MavDataEncoder(2)
 
         encoder.encodeChar('A')
         encoder.encodeChar('B')
@@ -201,7 +201,7 @@ class SerializationUtilTest {
             0x61.toByte(), 0x62.toByte(), 0x63.toByte(), 0x64.toByte(),
             0x65.toByte(), 0x66.toByte(), 0x67.toByte(), 0x68.toByte(),
         )
-        val encoder = MavDataEncoder.allocate(16)
+        val encoder = MavDataEncoder(16)
 
         encoder.encodeString("ABCDEFGH", 8)
         encoder.encodeString("abcdefgh", 8)

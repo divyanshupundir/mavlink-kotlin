@@ -1,8 +1,5 @@
 package com.divpundir.mavlink.serialization
 
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-
 /**
  * Writes primitives to a [ByteArray] according to the little-endian byte order.
  */
@@ -50,4 +47,4 @@ public interface MavDataEncoder {
 /**
  * Creates a new [MavDataEncoder] instance that uses an array of the given [size] for the writing of data.
  */
-public expect fun MavDataEncoder.Companion.allocate(size: Int): MavDataEncoder
+public expect fun MavDataEncoder(size: Int): MavDataEncoder

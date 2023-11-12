@@ -249,7 +249,7 @@ private inline fun <T : Any> MavDataDecoder.safeDecodePrimitive(
     val rem = ByteArray(size)
     this.decodeByteArray(rem, offset = 0, length = this.remaining)
 
-    return MavDataDecoder.wrap(rem).decode()
+    return MavDataDecoder(rem).decode()
 }
 
 private inline fun <T : Any> MavDataDecoder.safeDecodeArray(
