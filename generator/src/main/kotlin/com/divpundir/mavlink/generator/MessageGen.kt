@@ -7,8 +7,8 @@ import com.divpundir.mavlink.generator.models.FieldModel
 import com.divpundir.mavlink.generator.models.MessageModel
 import com.divpundir.mavlink.generator.models.sortedByPosition
 import com.divpundir.mavlink.serialization.CrcX25
-import com.divpundir.mavlink.serialization.MavDataDecoder
-import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.JvmMavDataDecoder
+import com.divpundir.mavlink.serialization.JvmMavDataEncoder
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
@@ -88,7 +88,7 @@ private fun MessageModel.generateDeserializeMethod(packageName: String, enumHelp
     .addCode(
         buildCodeBlock {
             val decoderName = if (fields.none { it.name == "decoder" }) "decoder" else "_decoder"
-            addStatement("val $decoderName = %T.wrap(bytes)", MavDataDecoder::class)
+            addStatement("val $decoderName = %T.wrap(bytes)", JvmMavDataDecoder::class)
             addStatement("")
             fields.sorted().forEach { add(it.generateDeserializeStatement(decoderName, enumHelper)) }
             addStatement("")
@@ -117,7 +117,7 @@ private fun MessageModel.generateSerializeV1(enumHelper: EnumHelper) = FunSpec
     .addCode(
         buildCodeBlock {
             val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
-            addStatement("val $encoderName = %T.allocate(SIZE_V1)", MavDataEncoder::class)
+            addStatement("val $encoderName = %T.allocate(SIZE_V1)", JvmMavDataEncoder::class)
             fields.filter { !it.extension }.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
             addStatement("return $encoderName.bytes")
         }
@@ -131,7 +131,7 @@ private fun MessageModel.generateSerializeV2(enumHelper: EnumHelper) = FunSpec
     .addCode(
         buildCodeBlock {
             val encoderName = if (fields.none { it.name == "encoder" }) "encoder" else "_encoder"
-            addStatement("val $encoderName = %T.allocate(SIZE_V2)", MavDataEncoder::class)
+            addStatement("val $encoderName = %T.allocate(SIZE_V2)", JvmMavDataEncoder::class)
             fields.sorted().forEach { add(it.generateSerializeStatement(encoderName, enumHelper)) }
             addStatement("return $encoderName.bytes.%M()", truncateZerosMemberName)
         }
