@@ -27,12 +27,19 @@ kotlin {
     linuxArm64()
     mingwX64()
 
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
-        commonTest {
-            dependencies {
-                implementation(testlibs.jupiter.api)
-                runtimeOnly(testlibs.jupiter.engine)
-            }
+        val nonJvmMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        jsMain {
+            dependsOn(nonJvmMain)
+        }
+
+        nativeMain {
+            dependsOn(nonJvmMain)
         }
     }
 }
