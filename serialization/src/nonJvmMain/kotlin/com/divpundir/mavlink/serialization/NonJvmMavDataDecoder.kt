@@ -1,28 +1,53 @@
 package com.divpundir.mavlink.serialization
 
-private class NativeMavDataDecoder(bytes: ByteArray) : MavDataDecoder {
+private class NativeMavDataDecoder(private val bytes: ByteArray) : MavDataDecoder {
+
+    private var position = 0
 
     override val remaining: Int
-        get() = TODO("Not yet implemented")
+        get() = bytes.size - position
 
     override fun decodeByte(): Byte {
-        TODO("Not yet implemented")
+        return bytes[position++]
     }
 
     override fun decodeShort(): Short {
-        TODO("Not yet implemented")
+        val byte1 = bytes[position++]
+        val byte2 = bytes[position++]
+
+        return ((byte1.toInt() shl 8) or (byte2.toInt() and 0xFF)).toShort()
     }
 
     override fun decodeInt(): Int {
-        TODO("Not yet implemented")
+        val byte1 = bytes[position++]
+        val byte2 = bytes[position++]
+        val byte3 = bytes[position++]
+        val byte4 = bytes[position++]
+
+        return (byte1.toInt() shl 24) or (byte2.toInt() shl 16) or
+            (byte3.toInt() shl 8) or (byte4.toInt() and 0xFF)
     }
 
     override fun decodeLong(): Long {
-        TODO("Not yet implemented")
+        val byte1 = bytes[position++]
+        val byte2 = bytes[position++]
+        val byte3 = bytes[position++]
+        val byte4 = bytes[position++]
+        val byte5 = bytes[position++]
+        val byte6 = bytes[position++]
+        val byte7 = bytes[position++]
+        val byte8 = bytes[position++]
+
+        return (byte1.toLong() shl 56) or (byte2.toLong() shl 48) or
+            (byte3.toLong() shl 40) or (byte4.toLong() shl 32) or
+            (byte5.toLong() shl 24) or (byte6.toLong() shl 16) or
+            (byte7.toLong() shl 8) or (byte8.toLong() and 0xFF)
     }
 
     override fun decodeByteArray(dst: ByteArray, offset: Int, length: Int) {
-        TODO("Not yet implemented")
+        for (i in offset until offset + length) {
+            dst[i] = bytes[position++]
+        }
     }
 }
 
