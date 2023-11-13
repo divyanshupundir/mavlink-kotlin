@@ -3,8 +3,12 @@ package com.divpundir.mavlink.connection
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
-import kotlinx.atomicfu.locks.ReentrantLock
-import okio.*
+import kotlinx.atomicfu.locks.reentrantLock
+import kotlinx.atomicfu.locks.withLock
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.Closeable
+import okio.IOException
 
 /**
  * A [MavConnection] implementation that reads [MavFrame]s form a [BufferedSource] and writes them to a [BufferedSink].
@@ -18,8 +22,8 @@ public class BufferedMavConnection(
     private val dialect: MavDialect,
 ) : MavConnection {
 
-    private val readLock: Lock = ReentrantLock()
-    private val writeLock: Lock = ReentrantLock()
+    private val readLock = reentrantLock()
+    private val writeLock = reentrantLock()
 
     private var sequence: UByte = 0u
 
@@ -32,35 +36,31 @@ public class BufferedMavConnection(
     }
 
     @Throws(IOException::class)
-    override fun next(): MavFrame<out MavMessage<*>> {
-        readLock.withLock {
-            while (true) {
-                val rawFrame = nextRawFrame()
+    override fun next(): MavFrame<out MavMessage<*>> = readLock.withLock {
+        nextFrame()
+    }
 
-                val companion = getMessageCompanionOrNull(rawFrame)
-                if (companion == null) {
-                    System.err.println("Message not found in dialect. rawFrame=$rawFrame")
-                    continue
-                }
+    private fun nextFrame(): MavFrame<out MavMessage<*>> {
+        while (true) {
+            val rawFrame = nextRawFrame()
+            val companion = getMessageCompanionOrNull(rawFrame) ?: continue
 
-                val payload = try {
-                    companion.deserialize(rawFrame.payload)
-                } catch (e: IOException) {
-                    System.err.println("Error deserializing MAVLink message. rawFrame=$rawFrame metadata=$companion")
-                    continue
-                }
+            val payload = try {
+                companion.deserialize(rawFrame.payload)
+            } catch (e: IOException) {
+                continue
+            }
 
-                return when (rawFrame.stx) {
-                    MavRawFrame.Stx.V1 -> MavFrameV1Impl(rawFrame, payload)
-                    MavRawFrame.Stx.V2 -> MavFrameV2Impl(rawFrame, payload)
-                    else -> throw IllegalStateException("Invalid MAVLink frame marker")
-                }
+            return when (rawFrame.stx) {
+                MavRawFrame.Stx.V1 -> MavFrameV1Impl(rawFrame, payload)
+                MavRawFrame.Stx.V2 -> MavFrameV2Impl(rawFrame, payload)
+                else -> throw IllegalStateException("Invalid MAVLink frame marker")
             }
         }
     }
 
     private fun nextRawFrame(): MavRawFrame {
-        while (!Thread.currentThread().isInterrupted) {
+        while (true) {
             val peeked = source.peek()
 
             when (peeked.readByte().toUByte()) {
@@ -114,8 +114,6 @@ public class BufferedMavConnection(
                 }
             }
         }
-
-        throw EOFException("Cannot read more frames as the thread is interrupted")
     }
 
     private fun getMessageCompanionOrNull(rawFrame: MavRawFrame): MavMessage.MavCompanion<out MavMessage<*>>? {
