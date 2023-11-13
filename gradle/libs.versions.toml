@@ -10,6 +10,7 @@ reactivex-rxjava3 = "io.reactivex.rxjava3:rxjava:3.1.6"
 
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
+kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.22.0"
 kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
 kotlinx-immutablecollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
 

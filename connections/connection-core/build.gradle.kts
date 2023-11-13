@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
     alias(libs.plugins.dokka)
+    id("kotlinx-atomicfu")
 }
 
 group = Config.group
