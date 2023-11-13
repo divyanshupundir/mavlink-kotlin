@@ -190,7 +190,7 @@ public data class MavRawFrame(
                     Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
                     payloadLength + Sizes.CHECKSUM
 
-            val signEncoder = MavDataEncoder.allocate(
+            val signEncoder = MavDataEncoder(
                 Sizes.SECRET_KEY +
                         frameSizeTillCrc +
                         Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP
@@ -212,7 +212,7 @@ public data class MavRawFrame(
         /**
          * Creates a MAVLink v1 [MavRawFrame] from the [rawBytes].
          */
-        public fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
+        public fun fromV1Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder(rawBytes)) {
             val stx = this.safeDecodeUInt8()
             val len = this.safeDecodeUInt8()
             val seq = this.safeDecodeUInt8()
@@ -243,7 +243,7 @@ public data class MavRawFrame(
         /**
          * Creates a MAVLink v2 [MavRawFrame] from the [rawBytes].
          */
-        public fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder.wrap(rawBytes)) {
+        public fun fromV2Bytes(rawBytes: ByteArray): MavRawFrame = with(MavDataDecoder(rawBytes)) {
             val stx = this.safeDecodeUInt8()
             val len = this.safeDecodeUInt8()
             val incompatFlags = this.safeDecodeUInt8()
@@ -300,7 +300,7 @@ public data class MavRawFrame(
                     Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1 +
                     payload.size + Sizes.CHECKSUM
 
-            val encoder = MavDataEncoder.allocate(frameLength)
+            val encoder = MavDataEncoder(frameLength)
             encoder.encodeUInt8(Stx.V1)
             encoder.encodeUInt8(payload.size.toUByte())
             encoder.encodeUInt8(seq)
@@ -347,7 +347,7 @@ public data class MavRawFrame(
                     Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
                     payload.size + Sizes.CHECKSUM
 
-            val encoder = MavDataEncoder.allocate(frameLength)
+            val encoder = MavDataEncoder(frameLength)
             encoder.encodeUInt8(Stx.V2)
             encoder.encodeUInt8(payload.size.toUByte())
             encoder.encodeUInt8(Flags.INCOMPAT_UNSIGNED)
@@ -400,7 +400,7 @@ public data class MavRawFrame(
                     payload.size + Sizes.CHECKSUM +
                     Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP + Sizes.SIGNATURE
 
-            val encoder = MavDataEncoder.allocate(frameLength)
+            val encoder = MavDataEncoder(frameLength)
             encoder.encodeUInt8(Stx.V2)
             encoder.encodeUInt8(payload.size.toUByte())
             encoder.encodeUInt8(Flags.INCOMPAT_SIGNED)
