@@ -1,5 +1,6 @@
 package com.divpundir.mavlink.connection
 
+import com.divpundir.mavlink.connection.MavRawFrame.Companion.generateSignature
 import com.divpundir.mavlink.serialization.*
 import okio.ByteString.Companion.toByteString
 
@@ -57,7 +58,7 @@ public data class MavRawFrame(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null || this::class != other::class) return false
 
         other as MavRawFrame
 
@@ -74,7 +75,9 @@ public data class MavRawFrame(
         if (signatureLinkId != other.signatureLinkId) return false
         if (signatureTimestamp != other.signatureTimestamp) return false
         if (!signature.contentEquals(other.signature)) return false
-        return rawBytes.contentEquals(other.rawBytes)
+        if (!rawBytes.contentEquals(other.rawBytes)) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
