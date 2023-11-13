@@ -35,11 +35,11 @@ class DroneFleetMavlinkSpeedTest {
             .build()
 
         for (i in 1..WARMUP_ITERS) {
-            println("Warmup: ${serializationStep(serializer, cmd)} us")
+            println("Warmup: ${serializationStep(serializer, cmd).inWholeMicroseconds} us")
         }
 
         for (i in 1..ACTUAL_ITERS) {
-            println("Actual: ${serializationStep(serializer, cmd)} us")
+            println("Actual: ${serializationStep(serializer, cmd).inWholeMicroseconds} us")
         }
     }
 
@@ -58,11 +58,11 @@ class DroneFleetMavlinkSpeedTest {
         val data = ByteArray(200)
 
         for (i in 1..WARMUP_ITERS) {
-            println("Warmup: ${deserializationStep(deserializer, data)} us")
+            println("Warmup: ${deserializationStep(deserializer, data).inWholeMicroseconds} us")
         }
 
         for (i in 1..ACTUAL_ITERS) {
-            println("Actual: ${deserializationStep(deserializer, data)} us")
+            println("Actual: ${deserializationStep(deserializer, data).inWholeMicroseconds} us")
         }
     }
 

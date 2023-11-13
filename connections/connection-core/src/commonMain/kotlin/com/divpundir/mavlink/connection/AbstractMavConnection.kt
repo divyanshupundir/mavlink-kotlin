@@ -2,9 +2,10 @@ package com.divpundir.mavlink.connection
 
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
+import kotlinx.atomicfu.locks.SynchronizedObject
+import kotlinx.atomicfu.locks.synchronized
 import okio.IOException
 import kotlin.concurrent.Volatile
-import kotlin.jvm.Synchronized
 
 /**
  * A connection state aware abstract implementation of [MavConnection].
@@ -16,11 +17,15 @@ import kotlin.jvm.Synchronized
  * [State.Open.connection] field more easy and predictable. Also, the inheritors of this class only need to implement
  * the [open] method.
  */
-public abstract class AbstractMavConnection : MavConnection {
+public abstract class AbstractMavConnection : SynchronizedObject(), MavConnection {
 
     @Volatile
     private var state: State = State.Closed
-        @Synchronized set
+        set(value) {
+            synchronized(this) {
+                field = value
+            }
+        }
 
     /**
      * Opens and returns a new [MavConnection]. This [MavConnection] is a simple/unmanaged one, like
