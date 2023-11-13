@@ -1,7 +1,7 @@
-import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
     alias(libs.plugins.dokka)
 }
@@ -11,22 +11,46 @@ version = Config.Lib.developmentVersion
 
 kotlin {
     explicitApi()
-}
 
-dependencies {
-    api(Config.Plugin.releaseApi)
-    api(libs.okio)
+    jvm()
+    js {
+        browser()
+        nodejs()
+    }
+//    iosX64()
+//    iosArm64()
+//    iosSimulatorArm64()
+//    macosX64()
+//    macosArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
 
-    implementation(Config.Plugin.releaseSerialization)
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(libs.okio)
+                api(Config.Plugin.releaseApi)
+                implementation(Config.Plugin.releaseSerialization)
+            }
+        }
 
-    testImplementation(project(":definitions"))
-    testImplementation(testlibs.dronefleet.mavlink)
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(project(":definitions"))
+            }
+        }
 
-    testImplementation(testlibs.jupiter.api)
-    testRuntimeOnly(testlibs.jupiter.engine)
+        jvmTest {
+            dependencies {
+                implementation(testlibs.dronefleet.mavlink)
+            }
+        }
+    }
 }
 
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(KotlinJvm())
+    configure(KotlinMultiplatform())
 }

@@ -1,11 +1,11 @@
-package com.divpundir.mavlink.connection.performance
+package com.divpundir.mavlink.connection
 
 import io.dronefleet.mavlink.common.CommandLong
 import io.dronefleet.mavlink.common.MavCmd
 import io.dronefleet.mavlink.serialization.payload.reflection.ReflectionPayloadDeserializer
 import io.dronefleet.mavlink.serialization.payload.reflection.ReflectionPayloadSerializer
-import org.junit.jupiter.api.Test
-import kotlin.system.measureNanoTime
+import kotlin.test.Test
+import kotlin.time.measureTime
 
 class DroneFleetMavlinkSpeedTest {
 
@@ -35,22 +35,22 @@ class DroneFleetMavlinkSpeedTest {
             .build()
 
         for (i in 1..WARMUP_ITERS) {
-            println("Warmup: " + serializationStep(serializer, cmd))
+            println("Warmup: ${serializationStep(serializer, cmd)} us")
         }
 
         for (i in 1..ACTUAL_ITERS) {
-            println("Actual: " + serializationStep(serializer, cmd))
+            println("Actual: ${serializationStep(serializer, cmd)} us")
         }
     }
 
     private fun serializationStep(
         serializer: ReflectionPayloadSerializer,
         cmd: CommandLong
-    ) = measureNanoTime {
+    ) = measureTime {
         for (i in 1..SERIALIZATION_ITERS) {
             serializer.serialize(cmd)
         }
-    } / 1000
+    }
 
     @Test
     fun deserialization() {
@@ -58,20 +58,20 @@ class DroneFleetMavlinkSpeedTest {
         val data = ByteArray(200)
 
         for (i in 1..WARMUP_ITERS) {
-            println("Warmup: " + deserializationStep(deserializer, data))
+            println("Warmup: ${deserializationStep(deserializer, data)} us")
         }
 
         for (i in 1..ACTUAL_ITERS) {
-            println("Actual: " + deserializationStep(deserializer, data))
+            println("Actual: ${deserializationStep(deserializer, data)} us")
         }
     }
 
     private fun deserializationStep(
         deserializer: ReflectionPayloadDeserializer,
         data: ByteArray
-    ) = measureNanoTime {
+    ) = measureTime {
         for (i in 1..DESERIALIZATION_ITERS) {
             deserializer.deserialize(data, CommandLong::class.java)
         }
-    } / 1000
+    }
 }

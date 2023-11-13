@@ -14,7 +14,7 @@ kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
 kotlinx-immutablecollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
 
 kotlinpoet = "com.squareup:kotlinpoet:1.13.2"
-okio = "com.squareup.okio:okio:3.3.0"
+okio = "com.squareup.okio:okio:3.6.0"
 
 [plugins]
 dokka = { id = "org.jetbrains.dokka", version = "1.8.20" }

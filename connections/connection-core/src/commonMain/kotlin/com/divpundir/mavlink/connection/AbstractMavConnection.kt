@@ -3,6 +3,8 @@ package com.divpundir.mavlink.connection
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
 import okio.IOException
+import kotlin.concurrent.Volatile
+import kotlin.jvm.Synchronized
 
 /**
  * A connection state aware abstract implementation of [MavConnection].
