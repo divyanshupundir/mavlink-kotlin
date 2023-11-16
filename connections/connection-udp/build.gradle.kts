@@ -1,7 +1,7 @@
-import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
     alias(libs.plugins.dokka)
 }
@@ -11,18 +11,27 @@ version = Config.Lib.developmentVersion
 
 kotlin {
     explicitApi()
-}
 
-dependencies {
-    api(Config.Plugin.releaseApi)
-    api(project(":connections:connection-core"))
+    jvm()
 
-    testImplementation(project(":definitions"))
-    testImplementation(testlibs.jupiter.api)
-    testRuntimeOnly(testlibs.jupiter.engine)
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(Config.Plugin.releaseApi)
+                api(project(":connections:connection-core"))
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(project(":definitions"))
+            }
+        }
+    }
 }
 
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(KotlinJvm())
+    configure(KotlinMultiplatform())
 }
