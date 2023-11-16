@@ -3,6 +3,8 @@ package com.divpundir.mavlink.serialization
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
+public actual fun MavDataEncoder(size: Int): MavDataEncoder = JvmMavDataEncoder(size)
+
 private class JvmMavDataEncoder(
     size: Int
 ) : MavDataEncoder {
@@ -35,5 +37,3 @@ private class JvmMavDataEncoder(
         buffer.put(src, offset, length)
     }
 }
-
-public actual fun MavDataEncoder(size: Int): MavDataEncoder = JvmMavDataEncoder(size)

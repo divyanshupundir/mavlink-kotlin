@@ -1,7 +1,9 @@
 package com.divpundir.mavlink.serialization
 
+public actual fun MavDataDecoder(bytes: ByteArray): MavDataDecoder = NonJvmMavDataDecoder(bytes)
+
 @OptIn(ExperimentalUnsignedTypes::class)
-private class NativeMavDataDecoder(bytes: ByteArray) : MavDataDecoder {
+private class NonJvmMavDataDecoder(bytes: ByteArray) : MavDataDecoder {
 
     private val bytes = bytes.toUByteArray()
 
@@ -53,5 +55,3 @@ private class NativeMavDataDecoder(bytes: ByteArray) : MavDataDecoder {
         }
     }
 }
-
-public actual fun MavDataDecoder(bytes: ByteArray): MavDataDecoder = NativeMavDataDecoder(bytes)

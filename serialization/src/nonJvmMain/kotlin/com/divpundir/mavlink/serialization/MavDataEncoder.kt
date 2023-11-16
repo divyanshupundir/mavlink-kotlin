@@ -1,5 +1,7 @@
 package com.divpundir.mavlink.serialization
 
+public actual fun MavDataEncoder(size: Int): MavDataEncoder = NonJvmMavDataEncoder(size)
+
 @OptIn(ExperimentalUnsignedTypes::class)
 private class NonJvmMavDataEncoder(size: Int) : MavDataEncoder {
 
@@ -44,5 +46,3 @@ private class NonJvmMavDataEncoder(size: Int) : MavDataEncoder {
         }
     }
 }
-
-public actual fun MavDataEncoder(size: Int): MavDataEncoder = NonJvmMavDataEncoder(size)
