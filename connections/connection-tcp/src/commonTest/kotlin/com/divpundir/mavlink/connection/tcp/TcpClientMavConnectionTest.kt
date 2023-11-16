@@ -1,13 +1,13 @@
 package com.divpundir.mavlink.connection.tcp
 
 import com.divpundir.mavlink.definitions.common.CommonDialect
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
-class TcpServerMavConnectionTest {
+class TcpClientMavConnectionTest {
 
     @Test
     fun read() {
-        val connection = TcpServerMavConnection(5760, CommonDialect)
+        val connection = TcpClientMavConnection("127.0.0.1", 5760, CommonDialect)
         connection.connect()
 
         repeat(100) {

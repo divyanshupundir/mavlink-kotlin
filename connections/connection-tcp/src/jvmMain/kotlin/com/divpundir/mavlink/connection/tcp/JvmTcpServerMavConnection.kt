@@ -10,16 +10,18 @@ import okio.sink
 import okio.source
 import java.net.ServerSocket
 
-/**
- * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a TCP server endpoint.
- *
- * The connection listens on the specified [port] for a single connection. Once a connection is established, the server
- * socket is closed.
- */
-public class TcpServerMavConnection(
+public actual fun TcpServerMavConnection(
+    port: Int,
+    dialect: MavDialect
+): TcpServerMavConnection = JvmTcpServerMavConnection(
+    port,
+    dialect
+)
+
+private class JvmTcpServerMavConnection(
     private val port: Int,
     private val dialect: MavDialect
-) : AbstractMavConnection() {
+) : AbstractMavConnection(), TcpServerMavConnection {
 
     @Throws(IOException::class)
     override fun open(): MavConnection {

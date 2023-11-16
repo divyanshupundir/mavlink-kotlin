@@ -11,22 +11,29 @@ import okio.source
 import java.net.InetSocketAddress
 import java.net.Socket
 
-/**
- * A [MavConnection][com.divpundir.mavlink.connection.MavConnection] implementation that acts as a TCP client endpoint.
- */
-public class TcpClientMavConnection(
+public actual fun TcpClientMavConnection(
+    host: String,
+    port: Int,
+    dialect: MavDialect
+): TcpClientMavConnection = JvmTcpClientMavConnection(
+    host,
+    port,
+    dialect
+)
+
+private class JvmTcpClientMavConnection(
     private val host: String,
     private val port: Int,
     private val dialect: MavDialect
-) : AbstractMavConnection() {
+) : AbstractMavConnection(), TcpClientMavConnection {
 
     @Throws(IOException::class)
     override fun open(): MavConnection {
         val socket = Socket().apply {
             connect(
                 InetSocketAddress(
-                    this@TcpClientMavConnection.host,
-                    this@TcpClientMavConnection.port
+                    this@JvmTcpClientMavConnection.host,
+                    this@JvmTcpClientMavConnection.port
                 )
             )
         }
