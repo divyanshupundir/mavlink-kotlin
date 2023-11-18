@@ -25,7 +25,6 @@ internal class CoroutinesMavConnectionImpl(
     )
     override val mavFrame = _mavFrame.asSharedFlow()
 
-    @Throws(IOException::class)
     override suspend fun connect(readerScope: CoroutineScope) {
         withContext(context) {
             connection.connect()
@@ -57,7 +56,6 @@ internal class CoroutinesMavConnectionImpl(
         }
     }
 
-    @Throws(IOException::class)
     override suspend fun close() {
         withContext(context) {
             _streamState.value = StreamState.Inactive.Stopped
@@ -65,7 +63,6 @@ internal class CoroutinesMavConnectionImpl(
         }
     }
 
-    @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendV1(
         systemId: UByte,
         componentId: UByte,
@@ -80,7 +77,6 @@ internal class CoroutinesMavConnectionImpl(
         }
     }
 
-    @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendUnsignedV2(
         systemId: UByte,
         componentId: UByte, payload: T
@@ -94,7 +90,6 @@ internal class CoroutinesMavConnectionImpl(
         }
     }
 
-    @Throws(IOException::class)
     override suspend fun <T : MavMessage<T>> sendSignedV2(
         systemId: UByte,
         componentId: UByte,

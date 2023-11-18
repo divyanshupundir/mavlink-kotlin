@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
     )
 )
 public fun MavConnection.asCoroutine(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = IoDispatcher,
     onFailure: CoroutinesMavConnection.() -> Unit = {}
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     connection = this,
@@ -35,7 +35,7 @@ public fun MavConnection.asCoroutine(
  * uses the provided [context] to perform the IO operations of reading and sending the messages.
  */
 public fun MavConnection.asCoroutine(
-    context: CoroutineContext = Dispatchers.IO,
+    context: CoroutineContext = IoDispatcher,
 ): CoroutinesMavConnection = CoroutinesMavConnectionImpl(
     connection = this,
     context = context,
