@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -33,6 +34,13 @@ allprojects {
 
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
+    }
+
+    // TODO: Remove this once the CInteropProcess bug is fixed in Kotlin 1.9.21
+    tasks.withType<CInteropProcess>().configureEach {
+        val libraryVersionField = CInteropProcess::class.java.getDeclaredField("libraryVersion")
+        libraryVersionField.isAccessible = true
+        libraryVersionField.set(this, "unspecified")
     }
 
     @Suppress("UnstableApiUsage")
