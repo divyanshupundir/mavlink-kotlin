@@ -1,8 +1,8 @@
 name: Publish library - definitions, connections and adapter modules
 
 on:
-  push:
-    branches: ["multiplatform"]
+#  push:
+#    branches: [ "multiplatform" ]
 
   workflow_dispatch:
 
