@@ -1,9 +1,6 @@
 name: Generate Dokka documentation and publish it to GitHub Pages
 
 on:
-  push:
-    branches: ["main"]
-
   workflow_dispatch:
 
 permissions:
@@ -13,7 +10,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
