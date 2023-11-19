@@ -24,11 +24,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'adopt'
-
-      - name: Set up gradle
-        uses: gradle/gradle-build-action@v2
 
       - name: Write secrets to gradle.properties
         run: |
