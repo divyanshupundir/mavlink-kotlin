@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 
 [libraries]
 jackson-dataformatxml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0"
