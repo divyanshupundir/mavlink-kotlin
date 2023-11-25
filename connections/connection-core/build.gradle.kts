@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.KotlinMultiplatform
-import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -55,11 +54,4 @@ kotlin {
 @Suppress("UnstableApiUsage")
 mavenPublishing {
     configure(KotlinMultiplatform())
-}
-
-// TODO: Remove this once the CInteropProcess bug is fixed in Kotlin 1.9.21
-tasks.withType<CInteropProcess>().configureEach {
-    val libraryVersionField = CInteropProcess::class.java.getDeclaredField("libraryVersion")
-    libraryVersionField.isAccessible = true
-    libraryVersionField.set(this, "unspecified")
 }
