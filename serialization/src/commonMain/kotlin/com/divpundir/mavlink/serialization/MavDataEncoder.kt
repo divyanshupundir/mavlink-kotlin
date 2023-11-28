@@ -40,8 +40,6 @@ public interface MavDataEncoder {
      * position.
      */
     public fun encodeByteArray(src: ByteArray, offset: Int = 0, length: Int = src.size)
-
-    public companion object
 }
 
 /**

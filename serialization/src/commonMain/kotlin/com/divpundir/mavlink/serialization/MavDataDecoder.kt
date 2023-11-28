@@ -35,8 +35,6 @@ public interface MavDataDecoder {
      * increments the position.
      */
     public fun decodeByteArray(dst: ByteArray, offset: Int = 0, length: Int = dst.size)
-
-    public companion object
 }
 
 /**
