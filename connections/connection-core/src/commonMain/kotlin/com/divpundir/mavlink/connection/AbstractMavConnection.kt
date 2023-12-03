@@ -17,12 +17,14 @@ import kotlin.concurrent.Volatile
  * [State.Open.connection] field more easy and predictable. Also, the inheritors of this class only need to implement
  * the [open] method.
  */
-public abstract class AbstractMavConnection : SynchronizedObject(), MavConnection {
+public abstract class AbstractMavConnection : MavConnection {
+
+    private val lock = SynchronizedObject()
 
     @Volatile
     private var state: State = State.Closed
         set(value) {
-            synchronized(this) {
+            synchronized(lock) {
                 field = value
             }
         }
