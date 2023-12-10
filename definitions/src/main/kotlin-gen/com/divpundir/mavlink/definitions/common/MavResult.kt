@@ -58,14 +58,12 @@ public enum class MavResult(
   @GeneratedMavEnumEntry
   CANCELLED(6u),
   /**
-   * Command is valid, but it is only accepted when sent as a COMMAND_LONG (as it has float values
-   * for params 5 and 6).
+   * Command is only accepted when sent as a COMMAND_LONG.
    */
   @GeneratedMavEnumEntry
   COMMAND_LONG_ONLY(7u),
   /**
-   * Command is valid, but it is only accepted when sent as a COMMAND_INT (as it encodes a location
-   * in params 5, 6 and 7, and hence requires a reference MAV_FRAME).
+   * Command is only accepted when sent as a COMMAND_INT.
    */
   @GeneratedMavEnumEntry
   COMMAND_INT_ONLY(8u),
