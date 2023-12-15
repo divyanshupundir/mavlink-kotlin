@@ -12,8 +12,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  publish:
+  publish-plugin:
     runs-on: macos-13
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
