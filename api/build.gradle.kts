@@ -1,7 +1,7 @@
-import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
     alias(libs.plugins.dokka)
 }
@@ -11,16 +11,35 @@ version = Config.Plugin.developmentVersion
 
 kotlin {
     explicitApi()
-}
 
-dependencies {
-    implementation(libs.kotlinx.immutablecollections)
+    jvm()
+    js {
+        browser()
+        nodejs()
+    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    macosX64()
+    macosArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosX64()
+    watchosSimulatorArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
 
-    testImplementation(testlibs.jupiter.api)
-    testRuntimeOnly(testlibs.jupiter.engine)
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.kotlinx.immutablecollections)
+            }
+        }
+    }
 }
 
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(KotlinJvm())
+    configure(KotlinMultiplatform())
 }

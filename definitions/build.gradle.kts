@@ -1,8 +1,8 @@
 import com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask
-import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
     idea
     id("com.divpundir.mavlink.generator") version Config.Plugin.releaseVersion
@@ -13,9 +13,36 @@ version = Config.Lib.developmentVersion
 
 kotlin {
     explicitApi()
+
+    jvm()
+    js {
+        browser()
+        nodejs()
+    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    macosX64()
+    macosArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosX64()
+    watchosSimulatorArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(Config.Plugin.releaseApi)
+                implementation(Config.Plugin.releaseSerialization)
+            }
+        }
+    }
 }
 
-val genSrcDir = file("src/main/kotlin-gen")
+val genSrcDir = file("src/commonMain/kotlin")
 
 tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
@@ -36,20 +63,7 @@ tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     generatedSourcesDir = genSrcDir
 }
 
-tasks.getByName("kotlinSourcesJar") {
-    dependsOn("generateMavlink")
-}
-
-sourceSets.getByName("main") {
-    java.srcDir(genSrcDir)
-}
-
-dependencies {
-    api(Config.Plugin.releaseApi)
-    implementation(Config.Plugin.releaseSerialization)
-}
-
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(KotlinJvm())
+    configure(KotlinMultiplatform())
 }

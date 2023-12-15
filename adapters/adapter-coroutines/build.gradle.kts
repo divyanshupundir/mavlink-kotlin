@@ -1,7 +1,7 @@
-import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
     alias(libs.plugins.dokka)
 }
@@ -11,21 +11,50 @@ version = Config.Lib.developmentVersion
 
 kotlin {
     explicitApi()
-}
 
-dependencies {
-    api(libs.kotlinx.coroutines)
-    implementation(project(":connections:connection-core"))
+    jvm()
+    js {
+        browser()
+        nodejs()
+    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    macosX64()
+    macosArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosX64()
+    watchosSimulatorArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
 
-    testImplementation(project(":definitions"))
-    testImplementation(project(":connections:connection-tcp"))
-    testImplementation(project(":connections:connection-udp"))
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(libs.kotlinx.coroutines)
+                implementation(project(":connections:connection-core"))
+            }
+        }
 
-    testImplementation(testlibs.jupiter.api)
-    testRuntimeOnly(testlibs.jupiter.engine)
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(project(":definitions"))
+            }
+        }
+
+        jvmTest {
+            dependencies {
+                implementation(project(":connections:connection-tcp"))
+                implementation(project(":connections:connection-udp"))
+            }
+        }
+    }
 }
 
 @Suppress("UnstableApiUsage")
 mavenPublishing {
-    configure(KotlinJvm())
+    configure(KotlinMultiplatform())
 }
