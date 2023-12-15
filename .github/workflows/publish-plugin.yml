@@ -1,9 +1,6 @@
 name: Publish plugin - api, serialization and generator modules
 
 on:
-#  push:
-#    branches: [ "multiplatform" ]
-
   workflow_dispatch:
 
 permissions:
