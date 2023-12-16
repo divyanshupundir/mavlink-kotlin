@@ -19,23 +19,28 @@ public actual fun UdpServerMavConnection(
 )
 
 private class JvmUdpServerMavConnection(
-    port: Int,
+    private val port: Int,
     private val dialect: MavDialect
 ) : AbstractMavConnection(), UdpServerMavConnection {
 
-    private val channel = DatagramChannel.open().apply {
-        configureBlocking(true)
-        bind(InetSocketAddress(port))
-    }
+    @Volatile
+    private var channel: DatagramChannel? = null
 
     @Throws(IOException::class)
     override fun open(): MavConnection {
-        channel.connect(channel.receive(ByteBuffer.allocate(32)))
+        val ch = DatagramChannel.open().apply {
+            configureBlocking(true)
+            bind(InetSocketAddress(port))
+        }
+
+        channel = ch
+
+        ch.connect(ch.receive(ByteBuffer.allocate(32)))
 
         return BufferedMavConnection(
-            ByteChannelSource(channel).buffer(),
-            ByteChannelSink(channel).buffer(),
-            channel,
+            ByteChannelSource(ch).buffer(),
+            ByteChannelSink(ch).buffer(),
+            ch,
             dialect
         )
     }
@@ -43,6 +48,6 @@ private class JvmUdpServerMavConnection(
     @Throws(IOException::class)
     override fun interruptOpen() {
         super.interruptOpen()
-        channel.close()
+        channel?.close()
     }
 }

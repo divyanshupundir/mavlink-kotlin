@@ -23,6 +23,7 @@ private class JvmTcpServerMavConnection(
     private val dialect: MavDialect
 ) : AbstractMavConnection(), TcpServerMavConnection {
 
+    @Volatile
     private var server: ServerSocket? = null
 
     @Throws(IOException::class)
