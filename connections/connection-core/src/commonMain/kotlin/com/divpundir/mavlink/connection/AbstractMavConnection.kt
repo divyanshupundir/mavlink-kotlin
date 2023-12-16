@@ -45,34 +45,67 @@ public abstract class AbstractMavConnection : MavConnection {
     @Throws(IOException::class)
     protected abstract fun open(): MavConnection
 
+    /**
+     * Interrupts the blocking calls in the [open] method.
+     *
+     * For example, if the [open] method is blocked on a server socket accept call, then this method can be used to
+     * interrupt the call by closing the server socket.
+     *
+     * This method should be called before the [open] method returns.
+     */
+    @Throws(IOException::class)
+    protected open fun interruptOpen() {}
+
     @Throws(IOException::class)
     final override fun connect() {
         when (state) {
-            is State.Open -> throw IOException("The connection is already open")
-
             State.Closed -> {
                 state = State.Open(open())
+            }
+
+            State.Opening -> {
+                throw IOException("The connection is already opening")
+            }
+
+            is State.Open -> {
+                throw IOException("The connection is already open")
             }
         }
     }
 
     @Throws(IOException::class)
     final override fun close() {
-        when (val s = state) {
-            is State.Open -> {
-                s.connection.close()
-                state = State.Closed
+        state = when (val s = state) {
+            State.Closed -> {
+                throw IOException("The connection is already closed")
             }
 
-            State.Closed -> throw IOException("The connection is already closed")
+            State.Opening -> {
+                interruptOpen()
+                State.Closed
+            }
+
+            is State.Open -> {
+                s.connection.close()
+                State.Closed
+            }
         }
     }
 
     @Throws(IOException::class)
     final override fun next(): MavFrame<out MavMessage<*>> {
         return when (val s = state) {
-            is State.Open -> s.connection.next()
-            State.Closed -> throw IOException("The connection is closed")
+            State.Closed -> {
+                throw IOException("The connection is closed")
+            }
+
+            State.Opening -> {
+                throw IOException("The connection is opening")
+            }
+
+            is State.Open -> {
+                s.connection.next()
+            }
         }
     }
 
@@ -83,13 +116,19 @@ public abstract class AbstractMavConnection : MavConnection {
         payload: T
     ) {
         when (val s = state) {
+            State.Closed -> {
+                throw IOException("The connection is closed")
+            }
+
+            State.Opening -> {
+                throw IOException("The connection is opening")
+            }
+
             is State.Open -> s.connection.sendV1(
                 systemId,
                 componentId,
                 payload
             )
-
-            State.Closed -> throw IOException("The connection is closed")
         }
     }
 
@@ -100,13 +139,19 @@ public abstract class AbstractMavConnection : MavConnection {
         payload: T
     ) {
         when (val s = state) {
+            State.Closed -> {
+                throw IOException("The connection is closed")
+            }
+
+            State.Opening -> {
+                throw IOException("The connection is opening")
+            }
+
             is State.Open -> s.connection.sendUnsignedV2(
                 systemId,
                 componentId,
                 payload
             )
-
-            State.Closed -> throw IOException("The connection is closed")
         }
     }
 
@@ -120,6 +165,14 @@ public abstract class AbstractMavConnection : MavConnection {
         secretKey: ByteArray
     ) {
         when (val s = state) {
+            State.Closed -> {
+                throw IOException("The connection is closed")
+            }
+
+            State.Opening -> {
+                throw IOException("The connection is opening")
+            }
+
             is State.Open -> s.connection.sendSignedV2(
                 systemId,
                 componentId,
@@ -128,8 +181,6 @@ public abstract class AbstractMavConnection : MavConnection {
                 timestamp,
                 secretKey
             )
-
-            State.Closed -> throw IOException("The connection is closed")
         }
     }
 
@@ -139,8 +190,10 @@ public abstract class AbstractMavConnection : MavConnection {
      */
     private sealed interface State {
 
-        class Open(val connection: MavConnection) : State
-
         data object Closed : State
+
+        data object Opening : State
+
+        class Open(val connection: MavConnection) : State
     }
 }
