@@ -1,4 +1,5 @@
 # api
+![badge][badge-android]
 
 ## Overview
 
