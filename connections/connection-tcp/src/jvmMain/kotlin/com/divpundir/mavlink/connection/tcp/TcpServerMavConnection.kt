@@ -19,13 +19,14 @@ public actual fun TcpServerMavConnection(
 )
 
 private class JvmTcpServerMavConnection(
-    private val port: Int,
+    port: Int,
     private val dialect: MavDialect
 ) : AbstractMavConnection(), TcpServerMavConnection {
 
+    private val server = ServerSocket(port)
+
     @Throws(IOException::class)
     override fun open(): MavConnection {
-        val server = ServerSocket(port)
         val socket = server.accept()
         server.close()
 
@@ -35,5 +36,11 @@ private class JvmTcpServerMavConnection(
             socket,
             dialect
         )
+    }
+
+    @Throws(IOException::class)
+    override fun interruptOpen() {
+        super.interruptOpen()
+        server.close()
     }
 }
