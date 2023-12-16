@@ -75,19 +75,25 @@ public abstract class AbstractMavConnection : MavConnection {
 
     @Throws(IOException::class)
     final override fun close() {
-        state = when (val s = state) {
+        when (val s = state) {
             State.Closed -> {
                 throw IOException("The connection is already closed")
             }
 
             State.Opening -> {
-                interruptOpen()
-                State.Closed
+                try {
+                    interruptOpen()
+                } finally {
+                    state = State.Closed
+                }
             }
 
             is State.Open -> {
-                s.connection.close()
-                State.Closed
+                try {
+                    s.connection.close()
+                } finally {
+                    state = State.Closed
+                }
             }
         }
     }
