@@ -115,4 +115,31 @@ class CoroutinesMavConnectionTest {
             println(it)
         }
     }
+
+    @Test
+    fun interruptOpen(): Unit = runBlocking {
+        val connection = UdpServerMavConnection(5790, CommonDialect).asCoroutine()
+        launch {
+            println("Connecting")
+            try {
+                connection.connect(this)
+                println("Connected")
+            } catch (e: Exception) {
+                println("Interrupted")
+            }
+        }
+
+        launch {
+            delay(5000)
+            println("Closing")
+            connection.tryClose()
+            println("Closed")
+        }
+
+        launch {
+            connection.streamState.collect {
+                println(it)
+            }
+        }
+    }
 }

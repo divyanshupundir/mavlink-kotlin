@@ -60,6 +60,7 @@ public abstract class AbstractMavConnection : MavConnection {
     final override fun connect() {
         when (state) {
             State.Closed -> {
+                state = State.Opening
                 state = State.Open(open())
             }
 
