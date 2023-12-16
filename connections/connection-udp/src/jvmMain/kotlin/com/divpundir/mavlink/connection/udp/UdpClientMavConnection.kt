@@ -21,15 +21,15 @@ public actual fun UdpClientMavConnection(
 )
 
 private class JvmUdpClientMavConnection(
-    private val host: String,
-    private val port: Int,
+    host: String,
+    port: Int,
     private val dialect: MavDialect
 ) : AbstractMavConnection(), UdpClientMavConnection {
 
+    private val address = InetSocketAddress(host, port)
+
     @Throws(IOException::class)
     override fun open(): MavConnection {
-        val address = InetSocketAddress(host, port)
-
         val channel = DatagramChannel.open().apply {
             configureBlocking(true)
             connect(address)
