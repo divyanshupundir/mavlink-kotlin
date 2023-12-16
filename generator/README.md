@@ -33,6 +33,7 @@ includes other dialects, then add them to the generation task as well and the st
 ```kotlin
 tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
+    include(file("mavlink/message_definitions/v1.0/standard.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
     include(file("mavlink/message_definitions/v1.0/customDialect.xml"))
     
