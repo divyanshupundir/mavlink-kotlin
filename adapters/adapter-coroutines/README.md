@@ -143,7 +143,7 @@ viewModelScope.launch {
 
 ### Managing the state
 
-Use the `streamState` `Flowable` to get the current state of the connection.
+Use the `streamState` `StateFlow` to get the current state of the connection.
 
 ```kotlin
 connection

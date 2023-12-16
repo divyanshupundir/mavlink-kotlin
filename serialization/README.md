@@ -11,7 +11,7 @@
 
 ## Overview
 
-Tools for serializing and deserializing MAVLink message/frame Kotlin objects to and from `ByteArrays`.
+Tools for serializing and deserializing MAVLink messages/frames to and from `ByteArrays`.
 
 ## Usage
 

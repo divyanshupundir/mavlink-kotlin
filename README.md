@@ -45,13 +45,13 @@ MAVLink XMLs.
 
 ### Support for Kotlin Multiplatform
 
-Target JVM, JS, Apple, Linux and Windows applications using the same codebase.
+Target Android, iOS, JS, JVM, Linux, macOS, watchOS and Windows applications using the same codebase.
 
 ## Project Structure
 
 ### api
 
-Interfaces, annotations and wrapper/helper classes for the MAVLink protocol.
+Core interfaces, classes and annotations for the MAVLink protocol.
 
 ### serialization
 
