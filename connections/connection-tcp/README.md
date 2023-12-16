@@ -1,5 +1,8 @@
 # connection-tcp
 
+![android](http://img.shields.io/badge/android-8A2BE2.svg)
+![jvm](http://img.shields.io/badge/jvm-4169E1.svg)
+
 ## Overview
 
 This module provides the `MavConnection` implementations to handle the TCP client and TCP server connections.
