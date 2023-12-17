@@ -1,5 +1,8 @@
 # adapter-rxjava2
 
+![android](http://img.shields.io/badge/android-8A2BE2.svg)
+![jvm](http://img.shields.io/badge/jvm-4169E1.svg)
+
 ## Overview
 
 RxJava2 adapter for `MavConnection`.

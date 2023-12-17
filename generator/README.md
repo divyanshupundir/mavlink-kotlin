@@ -21,7 +21,7 @@ classes.
 
 ```kotlin
 dependencies {
-    implementation("com.divpundir.mavlink:api:$version")
+    api("com.divpundir.mavlink:api:$version")
     implementation("com.divpundir.mavlink:serialization:$version")
 }
 ```
@@ -33,18 +33,11 @@ includes other dialects, then add them to the generation task as well and the st
 ```kotlin
 tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
+    include(file("mavlink/message_definitions/v1.0/standard.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
     include(file("mavlink/message_definitions/v1.0/customDialect.xml"))
     
-    generatedSourcesDir = "src/main/kotlin-gen"
-}
-```
-
-Add the generated sources to the build path and build the project.
-
-```kotlin
-sourceSets.getByName("main") {
-    java.srcDir("src/main/kotlin-gen")
+    generatedSourcesDir = file("src/main/kotlin")
 }
 ```
 

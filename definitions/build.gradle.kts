@@ -4,7 +4,6 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.mavenpublish)
-    idea
     id("com.divpundir.mavlink.generator") version Config.Plugin.releaseVersion
 }
 
@@ -42,8 +41,6 @@ kotlin {
     }
 }
 
-val genSrcDir = file("src/commonMain/kotlin")
-
 tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
     include(file("mavlink/message_definitions/v1.0/standard.xml"))
@@ -60,7 +57,7 @@ tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     include(file("mavlink/message_definitions/v1.0/ardupilotmega.xml"))
     include(file("mavlink/message_definitions/v1.0/storm32.xml"))
 
-    generatedSourcesDir = genSrcDir
+    generatedSourcesDir = file("src/commonMain/kotlin")
 }
 
 @Suppress("UnstableApiUsage")
