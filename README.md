@@ -1,5 +1,10 @@
 # mavlink-kotlin
 
+[![License](https://img.shields.io/badge/license-Apache%20License%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/divyanshupundir/mavlink-kotlin/blob/main/LICENSE.md)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Maven Central](https://img.shields.io/maven-central/v/com.divpundir.mavlink/api)](https://central.sonatype.com/namespace/com.divpundir.mavlink)
+[![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/com.divpundir.mavlink.generator)](https://plugins.gradle.org/plugin/com.divpundir.mavlink.generator)
+
 A modern MAVLink library for Kotlin Multiplatform.
 
 ## Overview
