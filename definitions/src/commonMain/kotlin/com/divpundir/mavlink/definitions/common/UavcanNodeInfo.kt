@@ -33,6 +33,7 @@ import kotlin.collections.List
  * it can be emitted upon request from the other end of the MAVLink channel (see
  * MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a
  * low frequency. The UAVCAN specification is available at http://uavcan.org.
+ *
  */
 @GeneratedMavMessage(
   id = 311u,
@@ -86,9 +87,9 @@ public data class UavcanNodeInfo(
   @GeneratedMavField(type = "uint32_t")
   public val swVcsCommit: UInt = 0u,
 ) : MavMessage<UavcanNodeInfo> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(uptimeSec)
@@ -102,7 +103,7 @@ public data class UavcanNodeInfo(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(uptimeSec)
@@ -121,11 +122,11 @@ public data class UavcanNodeInfo(
 
     private const val SIZE_V2: Int = 116
 
-    public override val id: UInt = 311u
+    override val id: UInt = 311u
 
-    public override val crcExtra: Byte = 95
+    override val crcExtra: Byte = 95
 
-    public override fun deserialize(bytes: ByteArray): UavcanNodeInfo {
+    override fun deserialize(bytes: ByteArray): UavcanNodeInfo {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

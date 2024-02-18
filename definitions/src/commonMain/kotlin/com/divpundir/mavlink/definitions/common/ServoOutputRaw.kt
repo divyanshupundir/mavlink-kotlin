@@ -24,6 +24,7 @@ import kotlin.Unit
  * Superseded by ACTUATOR_OUTPUT_STATUS. The RAW values of the servo outputs (for RC input from the
  * remote, use the RC_CHANNELS messages). The standard PPM modulation is as follows: 1000 microseconds:
  * 0%, 2000 microseconds: 100%.
+ *
  */
 @GeneratedMavMessage(
   id = 36u,
@@ -147,9 +148,9 @@ public data class ServoOutputRaw(
   )
   public val servo16Raw: UShort = 0u,
 ) : MavMessage<ServoOutputRaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ServoOutputRaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ServoOutputRaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeUsec)
     encoder.encodeUInt16(servo1Raw)
@@ -164,7 +165,7 @@ public data class ServoOutputRaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeUsec)
     encoder.encodeUInt16(servo1Raw)
@@ -192,11 +193,11 @@ public data class ServoOutputRaw(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 36u
+    override val id: UInt = 36u
 
-    public override val crcExtra: Byte = -34
+    override val crcExtra: Byte = -34
 
-    public override fun deserialize(bytes: ByteArray): ServoOutputRaw {
+    override fun deserialize(bytes: ByteArray): ServoOutputRaw {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt32()

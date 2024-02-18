@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Configure on-board Camera Control System.
+ *
  */
 @GeneratedMavMessage(
   id = 154u,
@@ -86,9 +87,9 @@ public data class DigicamConfigure(
   @GeneratedMavField(type = "float")
   public val extraValue: Float = 0F,
 ) : MavMessage<DigicamConfigure> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DigicamConfigure> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DigicamConfigure> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt16(shutterSpeed)
@@ -104,7 +105,7 @@ public data class DigicamConfigure(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt16(shutterSpeed)
@@ -125,11 +126,11 @@ public data class DigicamConfigure(
 
     private const val SIZE_V2: Int = 15
 
-    public override val id: UInt = 154u
+    override val id: UInt = 154u
 
-    public override val crcExtra: Byte = 84
+    override val crcExtra: Byte = 84
 
-    public override fun deserialize(bytes: ByteArray): DigicamConfigure {
+    override fun deserialize(bytes: ByteArray): DigicamConfigure {
       val decoder = MavDataDecoder(bytes)
 
       val extraValue = decoder.safeDecodeFloat()

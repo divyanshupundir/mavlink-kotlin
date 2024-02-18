@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Erase all logs
+ *
  */
 @GeneratedMavMessage(
   id = 121u,
@@ -34,16 +35,16 @@ public data class LogErase(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<LogErase> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LogErase> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LogErase> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -55,11 +56,11 @@ public data class LogErase(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 121u
+    override val id: UInt = 121u
 
-    public override val crcExtra: Byte = -19
+    override val crcExtra: Byte = -19
 
-    public override fun deserialize(bytes: ByteArray): LogErase {
+    override fun deserialize(bytes: ByteArray): LogErase {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

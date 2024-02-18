@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Type of mission items being requested/sent in mission protocol.
+ *
  */
 @GeneratedMavEnum
 public enum class MavMissionType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Items are mission commands for main mission.
@@ -36,7 +37,7 @@ public enum class MavMissionType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavMissionType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavMissionType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavMissionType? = when (v) {
       0u -> MISSION
       1u -> FENCE
       2u -> RALLY

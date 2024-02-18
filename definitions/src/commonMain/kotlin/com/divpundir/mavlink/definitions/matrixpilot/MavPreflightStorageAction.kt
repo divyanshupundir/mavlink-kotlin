@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Action required when performing CMD_PREFLIGHT_STORAGE
+ *
  */
 @GeneratedMavEnum
 public enum class MavPreflightStorageAction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Read all parameters from storage
@@ -50,7 +51,7 @@ public enum class MavPreflightStorageAction(
   ;
 
   public companion object : MavEnum.MavCompanion<MavPreflightStorageAction> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavPreflightStorageAction? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavPreflightStorageAction? = when (v) {
       0u -> MAV_PFS_CMD_READ_ALL
       1u -> MAV_PFS_CMD_WRITE_ALL
       2u -> MAV_PFS_CMD_CLEAR_ALL

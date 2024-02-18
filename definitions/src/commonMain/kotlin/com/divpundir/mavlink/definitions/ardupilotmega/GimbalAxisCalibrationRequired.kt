@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GimbalAxisCalibrationRequired(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Whether or not this axis requires calibration is unknown at this time.
@@ -27,8 +27,7 @@ public enum class GimbalAxisCalibrationRequired(
   ;
 
   public companion object : MavEnum.MavCompanion<GimbalAxisCalibrationRequired> {
-    public override fun getEntryFromValueOrNull(v: UInt): GimbalAxisCalibrationRequired? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): GimbalAxisCalibrationRequired? = when (v) {
       0u -> UNKNOWN
       1u -> TRUE
       2u -> FALSE

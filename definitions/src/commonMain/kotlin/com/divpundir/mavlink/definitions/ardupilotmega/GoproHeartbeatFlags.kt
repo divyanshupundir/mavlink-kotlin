@@ -8,7 +8,7 @@ import kotlin.collections.List
 
 @GeneratedMavEnum(bitmask = true)
 public enum class GoproHeartbeatFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * GoPro is currently recording.
@@ -18,12 +18,12 @@ public enum class GoproHeartbeatFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<GoproHeartbeatFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproHeartbeatFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproHeartbeatFlags? = when (v) {
       1u -> GOPRO_FLAG_RECORDING
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<GoproHeartbeatFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<GoproHeartbeatFlags> = buildList {
       if (v and 1u == 1u) add(GOPRO_FLAG_RECORDING)
     }
   }

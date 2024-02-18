@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * Maximum Power Point Tracker (MPPT) sensor data for solar module power performance tracking
+ *
  */
 @GeneratedMavMessage(
   id = 8_003u,
@@ -98,9 +99,9 @@ public data class SensMppt(
   @GeneratedMavField(type = "uint8_t")
   public val mppt3Status: UByte = 0u,
 ) : MavMessage<SensMppt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensMppt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensMppt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(mpptTimestamp)
     encoder.encodeFloat(mppt1Volt)
@@ -118,7 +119,7 @@ public data class SensMppt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(mpptTimestamp)
     encoder.encodeFloat(mppt1Volt)
@@ -141,11 +142,11 @@ public data class SensMppt(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 8_003u
+    override val id: UInt = 8_003u
 
-    public override val crcExtra: Byte = -25
+    override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): SensMppt {
+    override fun deserialize(bytes: ByteArray): SensMppt {
       val decoder = MavDataDecoder(bytes)
 
       val mpptTimestamp = decoder.safeDecodeUInt64()

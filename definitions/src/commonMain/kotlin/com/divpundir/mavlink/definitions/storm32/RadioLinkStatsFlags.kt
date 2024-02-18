@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * RADIO_LINK_STATS flags (bitmask).
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class RadioLinkStatsFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Rssi are in negative dBm. Values 0..254 corresponds to 0..-254 dBm.
@@ -21,12 +22,12 @@ public enum class RadioLinkStatsFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<RadioLinkStatsFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): RadioLinkStatsFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): RadioLinkStatsFlags? = when (v) {
       1u -> RSSI_DBM
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<RadioLinkStatsFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<RadioLinkStatsFlags> = buildList {
       if (v and 1u == 1u) add(RSSI_DBM)
     }
   }

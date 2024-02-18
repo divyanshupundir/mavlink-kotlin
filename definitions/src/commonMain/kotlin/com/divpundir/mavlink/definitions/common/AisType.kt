@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Type of AIS vessel, enum duplicated from AIS standard, https://gpsd.gitlab.io/gpsd/AIVDM.html
+ *
  */
 @GeneratedMavEnum
 public enum class AisType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not available (default).
@@ -239,7 +240,7 @@ public enum class AisType(
   ;
 
   public companion object : MavEnum.MavCompanion<AisType> {
-    public override fun getEntryFromValueOrNull(v: UInt): AisType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AisType? = when (v) {
       0u -> UNKNOWN
       1u -> RESERVED_1
       2u -> RESERVED_2

@@ -37,6 +37,7 @@ import kotlin.Unit
  * ground station using MAV_CMD_REQUEST_MESSAGE. The maximum angles and rates are the limits by
  * hardware. However, the limits by software used are likely different/smaller and dependent on
  * mode/settings/etc..
+ *
  */
 @GeneratedMavMessage(
   id = 283u,
@@ -133,10 +134,9 @@ public data class GimbalDeviceInformation(
   )
   public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<GimbalDeviceInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceInformation> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(uid)
     encoder.encodeUInt32(timeBootMs)
@@ -156,7 +156,7 @@ public data class GimbalDeviceInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(uid)
     encoder.encodeUInt32(timeBootMs)
@@ -182,11 +182,11 @@ public data class GimbalDeviceInformation(
 
     private const val SIZE_V2: Int = 145
 
-    public override val id: UInt = 283u
+    override val id: UInt = 283u
 
-    public override val crcExtra: Byte = 74
+    override val crcExtra: Byte = 74
 
-    public override fun deserialize(bytes: ByteArray): GimbalDeviceInformation {
+    override fun deserialize(bytes: ByteArray): GimbalDeviceInformation {
       val decoder = MavDataDecoder(bytes)
 
       val uid = decoder.safeDecodeUInt64()

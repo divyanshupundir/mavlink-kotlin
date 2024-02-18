@@ -28,6 +28,7 @@ import kotlin.Unit
  * store different parameters for different autopilots. See also
  * https://mavlink.io/en/services/parameter.html for a full documentation of QGroundControl and IMU
  * code.
+ *
  */
 @GeneratedMavMessage(
   id = 20u,
@@ -58,9 +59,9 @@ public data class ParamRequestRead(
   @GeneratedMavField(type = "int16_t")
   public val paramIndex: Short = 0,
 ) : MavMessage<ParamRequestRead> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(paramIndex)
     encoder.encodeUInt8(targetSystem)
@@ -69,7 +70,7 @@ public data class ParamRequestRead(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(paramIndex)
     encoder.encodeUInt8(targetSystem)
@@ -83,11 +84,11 @@ public data class ParamRequestRead(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 20u
+    override val id: UInt = 20u
 
-    public override val crcExtra: Byte = -42
+    override val crcExtra: Byte = -42
 
-    public override fun deserialize(bytes: ByteArray): ParamRequestRead {
+    override fun deserialize(bytes: ByteArray): ParamRequestRead {
       val decoder = MavDataDecoder(bytes)
 
       val paramIndex = decoder.safeDecodeInt16()

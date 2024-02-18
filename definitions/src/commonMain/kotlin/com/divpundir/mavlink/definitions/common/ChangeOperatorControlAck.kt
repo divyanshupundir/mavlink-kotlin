@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Accept / deny control of this MAV
+ *
  */
 @GeneratedMavMessage(
   id = 6u,
@@ -40,10 +41,9 @@ public data class ChangeOperatorControlAck(
   @GeneratedMavField(type = "uint8_t")
   public val ack: UByte = 0u,
 ) : MavMessage<ChangeOperatorControlAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControlAck> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControlAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(gcsSystemId)
     encoder.encodeUInt8(controlRequest)
@@ -51,7 +51,7 @@ public data class ChangeOperatorControlAck(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(gcsSystemId)
     encoder.encodeUInt8(controlRequest)
@@ -64,11 +64,11 @@ public data class ChangeOperatorControlAck(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 6u
+    override val id: UInt = 6u
 
-    public override val crcExtra: Byte = 104
+    override val crcExtra: Byte = 104
 
-    public override fun deserialize(bytes: ByteArray): ChangeOperatorControlAck {
+    override fun deserialize(bytes: ByteArray): ChangeOperatorControlAck {
       val decoder = MavDataDecoder(bytes)
 
       val gcsSystemId = decoder.safeDecodeUInt8()

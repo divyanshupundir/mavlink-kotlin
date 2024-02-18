@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * Motion capture attitude and position
+ *
  */
 @GeneratedMavMessage(
   id = 138u,
@@ -66,9 +67,9 @@ public data class AttPosMocap(
   )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<AttPosMocap> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AttPosMocap> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AttPosMocap> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(q, 16)
@@ -78,7 +79,7 @@ public data class AttPosMocap(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(q, 16)
@@ -94,11 +95,11 @@ public data class AttPosMocap(
 
     private const val SIZE_V2: Int = 120
 
-    public override val id: UInt = 138u
+    override val id: UInt = 138u
 
-    public override val crcExtra: Byte = 109
+    override val crcExtra: Byte = 109
 
-    public override fun deserialize(bytes: ByteArray): AttPosMocap {
+    override fun deserialize(bytes: ByteArray): AttPosMocap {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

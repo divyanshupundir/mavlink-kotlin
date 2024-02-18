@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidUaType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No UA (Unmanned Aircraft) type defined.
@@ -92,7 +92,7 @@ public enum class MavOdidUaType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidUaType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidUaType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidUaType? = when (v) {
       0u -> NONE
       1u -> AEROPLANE
       2u -> HELICOPTER_OR_MULTIROTOR

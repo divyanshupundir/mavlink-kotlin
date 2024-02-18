@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * Gimbal device (low level) error flags (bitmap, 0 means no error)
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class GimbalDeviceErrorFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Gimbal device is limited by hardware roll limit.
@@ -66,7 +67,7 @@ public enum class GimbalDeviceErrorFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<GimbalDeviceErrorFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceErrorFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceErrorFlags? = when (v) {
       1u -> AT_ROLL_LIMIT
       2u -> AT_PITCH_LIMIT
       4u -> AT_YAW_LIMIT
@@ -80,7 +81,7 @@ public enum class GimbalDeviceErrorFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<GimbalDeviceErrorFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<GimbalDeviceErrorFlags> = buildList {
       if (v and 1u == 1u) add(AT_ROLL_LIMIT)
       if (v and 2u == 2u) add(AT_PITCH_LIMIT)
       if (v and 4u == 4u) add(AT_YAW_LIMIT)

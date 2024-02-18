@@ -20,6 +20,7 @@ import kotlin.collections.List
 
 /**
  * Acknowldge success or failure of a flexifunction command
+ *
  */
 @GeneratedMavMessage(
   id = 155u,
@@ -57,9 +58,9 @@ public data class FlexifunctionDirectory(
   @GeneratedMavField(type = "int8_t[48]")
   public val directoryData: List<Byte> = emptyList(),
 ) : MavMessage<FlexifunctionDirectory> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionDirectory> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionDirectory> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -70,7 +71,7 @@ public data class FlexifunctionDirectory(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -86,11 +87,11 @@ public data class FlexifunctionDirectory(
 
     private const val SIZE_V2: Int = 53
 
-    public override val id: UInt = 155u
+    override val id: UInt = 155u
 
-    public override val crcExtra: Byte = 12
+    override val crcExtra: Byte = 12
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionDirectory {
+    override fun deserialize(bytes: ByteArray): FlexifunctionDirectory {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

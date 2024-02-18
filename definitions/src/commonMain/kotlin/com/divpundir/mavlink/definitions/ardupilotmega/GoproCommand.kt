@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproCommand(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * (Get/Set).
@@ -97,7 +97,7 @@ public enum class GoproCommand(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproCommand> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproCommand? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproCommand? = when (v) {
       0u -> POWER
       1u -> CAPTURE_MODE
       2u -> SHUTTER

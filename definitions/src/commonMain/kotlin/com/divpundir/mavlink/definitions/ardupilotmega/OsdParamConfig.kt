@@ -28,6 +28,7 @@ import kotlin.Unit
 
 /**
  * Configure an OSD parameter slot.
+ *
  */
 @GeneratedMavMessage(
   id = 11_033u,
@@ -87,9 +88,9 @@ public data class OsdParamConfig(
   @GeneratedMavField(type = "float")
   public val increment: Float = 0F,
 ) : MavMessage<OsdParamConfig> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfig> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfig> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(requestId)
     encoder.encodeFloat(minValue)
@@ -104,7 +105,7 @@ public data class OsdParamConfig(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(requestId)
     encoder.encodeFloat(minValue)
@@ -124,11 +125,11 @@ public data class OsdParamConfig(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 11_033u
+    override val id: UInt = 11_033u
 
-    public override val crcExtra: Byte = -61
+    override val crcExtra: Byte = -61
 
-    public override fun deserialize(bytes: ByteArray): OsdParamConfig {
+    override fun deserialize(bytes: ByteArray): OsdParamConfig {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt32()

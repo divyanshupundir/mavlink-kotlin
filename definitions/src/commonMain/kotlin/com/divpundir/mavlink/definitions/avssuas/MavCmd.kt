@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * AVSS defined command. Set PRS arm statuses.
@@ -194,7 +194,7 @@ public enum class MavCmd(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCmd> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       60050u -> PRS_SET_ARM
       60051u -> PRS_GET_ARM
       60052u -> PRS_GET_BATTERY

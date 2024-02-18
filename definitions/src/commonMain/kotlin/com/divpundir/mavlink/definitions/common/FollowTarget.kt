@@ -28,6 +28,7 @@ import kotlin.collections.List
 
 /**
  * Current motion information from a designated system
+ *
  */
 @GeneratedMavMessage(
   id = 144u,
@@ -90,9 +91,9 @@ public data class FollowTarget(
   @GeneratedMavField(type = "uint64_t")
   public val customState: ULong = 0uL,
 ) : MavMessage<FollowTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FollowTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FollowTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(customState)
@@ -108,7 +109,7 @@ public data class FollowTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(customState)
@@ -129,11 +130,11 @@ public data class FollowTarget(
 
     private const val SIZE_V2: Int = 93
 
-    public override val id: UInt = 144u
+    override val id: UInt = 144u
 
-    public override val crcExtra: Byte = 127
+    override val crcExtra: Byte = 127
 
-    public override fun deserialize(bytes: ByteArray): FollowTarget {
+    override fun deserialize(bytes: ByteArray): FollowTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * Flags in EKF_STATUS message.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class EkfStatusFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Set if EKF's attitude estimate is good.
@@ -71,7 +72,7 @@ public enum class EkfStatusFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<EkfStatusFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): EkfStatusFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): EkfStatusFlags? = when (v) {
       1u -> EKF_ATTITUDE
       2u -> EKF_VELOCITY_HORIZ
       4u -> EKF_VELOCITY_VERT
@@ -86,7 +87,7 @@ public enum class EkfStatusFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<EkfStatusFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<EkfStatusFlags> = buildList {
       if (v and 1u == 1u) add(EKF_ATTITUDE)
       if (v and 2u == 2u) add(EKF_VELOCITY_HORIZ)
       if (v and 4u == 4u) add(EKF_VELOCITY_VERT)

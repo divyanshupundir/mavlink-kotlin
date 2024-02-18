@@ -29,6 +29,7 @@ import kotlin.Unit
 /**
  * A rally point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
  * GCS.
+ *
  */
 @GeneratedMavMessage(
   id = 175u,
@@ -86,9 +87,9 @@ public data class RallyPoint(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<RallyPoint> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lng)
@@ -103,7 +104,7 @@ public data class RallyPoint(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lng)
@@ -123,11 +124,11 @@ public data class RallyPoint(
 
     private const val SIZE_V2: Int = 19
 
-    public override val id: UInt = 175u
+    override val id: UInt = 175u
 
-    public override val crcExtra: Byte = -118
+    override val crcExtra: Byte = -118
 
-    public override fun deserialize(bytes: ByteArray): RallyPoint {
+    override fun deserialize(bytes: ByteArray): RallyPoint {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

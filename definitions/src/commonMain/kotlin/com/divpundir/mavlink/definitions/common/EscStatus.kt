@@ -29,6 +29,7 @@ import kotlin.collections.List
  * ESC information for higher rate streaming. Recommended streaming rate is ~10 Hz. Information that
  * changes more slowly is sent in ESC_INFO. It should typically only be streamed on high-bandwidth
  * links (i.e. to a companion computer).
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -63,9 +64,9 @@ public data class EscStatus(
   @GeneratedMavField(type = "float[4]")
   public val current: List<Float> = emptyList(),
 ) : MavMessage<EscStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EscStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EscStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32Array(rpm, 16)
@@ -75,7 +76,7 @@ public data class EscStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32Array(rpm, 16)
@@ -90,11 +91,11 @@ public data class EscStatus(
 
     private const val SIZE_V2: Int = 57
 
-    public override val id: UInt = 291u
+    override val id: UInt = 291u
 
-    public override val crcExtra: Byte = 10
+    override val crcExtra: Byte = 10
 
-    public override fun deserialize(bytes: ByteArray): EscStatus {
+    override fun deserialize(bytes: ByteArray): EscStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

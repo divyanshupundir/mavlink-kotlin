@@ -28,6 +28,7 @@ import kotlin.collections.List
 
 /**
  * Write registers for a device.
+ *
  */
 @GeneratedMavMessage(
   id = 11_002u,
@@ -93,9 +94,9 @@ public data class DeviceOpWrite(
   )
   public val bank: UByte = 0u,
 ) : MavMessage<DeviceOpWrite> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWrite> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWrite> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(requestId)
     encoder.encodeUInt8(targetSystem)
@@ -110,7 +111,7 @@ public data class DeviceOpWrite(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(requestId)
     encoder.encodeUInt8(targetSystem)
@@ -131,11 +132,11 @@ public data class DeviceOpWrite(
 
     private const val SIZE_V2: Int = 180
 
-    public override val id: UInt = 11_002u
+    override val id: UInt = 11_002u
 
-    public override val crcExtra: Byte = -22
+    override val crcExtra: Byte = -22
 
-    public override fun deserialize(bytes: ByteArray): DeviceOpWrite {
+    override fun deserialize(bytes: ByteArray): DeviceOpWrite {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt32()

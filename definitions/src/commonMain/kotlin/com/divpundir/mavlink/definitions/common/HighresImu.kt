@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * The IMU readings in SI units in NED body frame
+ *
  */
 @GeneratedMavMessage(
   id = 105u,
@@ -118,9 +119,9 @@ public data class HighresImu(
   )
   public val id: UByte = 0u,
 ) : MavMessage<HighresImu> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -140,7 +141,7 @@ public data class HighresImu(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -166,11 +167,11 @@ public data class HighresImu(
 
     private const val SIZE_V2: Int = 63
 
-    public override val id: UInt = 105u
+    override val id: UInt = 105u
 
-    public override val crcExtra: Byte = 93
+    override val crcExtra: Byte = 93
 
-    public override fun deserialize(bytes: ByteArray): HighresImu {
+    override fun deserialize(bytes: ByteArray): HighresImu {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -28,6 +28,7 @@ import kotlin.Unit
 
 /**
  * Simulated optical flow from a flow sensor (e.g. PX4FLOW or optical mouse sensor)
+ *
  */
 @GeneratedMavMessage(
   id = 114u,
@@ -100,9 +101,9 @@ public data class HilOpticalFlow(
   @GeneratedMavField(type = "float")
   public val distance: Float = 0F,
 ) : MavMessage<HilOpticalFlow> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilOpticalFlow> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilOpticalFlow> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(integrationTimeUs)
@@ -119,7 +120,7 @@ public data class HilOpticalFlow(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(integrationTimeUs)
@@ -141,11 +142,11 @@ public data class HilOpticalFlow(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 114u
+    override val id: UInt = 114u
 
-    public override val crcExtra: Byte = -19
+    override val crcExtra: Byte = -19
 
-    public override fun deserialize(bytes: ByteArray): HilOpticalFlow {
+    override fun deserialize(bytes: ByteArray): HilOpticalFlow {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

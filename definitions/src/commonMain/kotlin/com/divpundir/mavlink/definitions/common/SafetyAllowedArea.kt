@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Read out the safety zone the MAV currently assumes.
+ *
  */
 @GeneratedMavMessage(
   id = 55u,
@@ -63,9 +64,9 @@ public data class SafetyAllowedArea(
   @GeneratedMavField(type = "float")
   public val p2z: Float = 0F,
 ) : MavMessage<SafetyAllowedArea> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SafetyAllowedArea> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SafetyAllowedArea> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(p1x)
     encoder.encodeFloat(p1y)
@@ -77,7 +78,7 @@ public data class SafetyAllowedArea(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(p1x)
     encoder.encodeFloat(p1y)
@@ -94,11 +95,11 @@ public data class SafetyAllowedArea(
 
     private const val SIZE_V2: Int = 25
 
-    public override val id: UInt = 55u
+    override val id: UInt = 55u
 
-    public override val crcExtra: Byte = 3
+    override val crcExtra: Byte = 3
 
-    public override fun deserialize(bytes: ByteArray): SafetyAllowedArea {
+    override fun deserialize(bytes: ByteArray): SafetyAllowedArea {
       val decoder = MavDataDecoder(bytes)
 
       val p1x = decoder.safeDecodeFloat()

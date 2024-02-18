@@ -24,6 +24,7 @@ import kotlin.Unit
 
 /**
  * Water depth
+ *
  */
 @GeneratedMavMessage(
   id = 11_038u,
@@ -86,9 +87,9 @@ public data class WaterDepth(
   @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
 ) : MavMessage<WaterDepth> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WaterDepth> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WaterDepth> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(lat)
@@ -104,7 +105,7 @@ public data class WaterDepth(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(lat)
@@ -125,11 +126,11 @@ public data class WaterDepth(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 11_038u
+    override val id: UInt = 11_038u
 
-    public override val crcExtra: Byte = 47
+    override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): WaterDepth {
+    override fun deserialize(bytes: ByteArray): WaterDepth {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

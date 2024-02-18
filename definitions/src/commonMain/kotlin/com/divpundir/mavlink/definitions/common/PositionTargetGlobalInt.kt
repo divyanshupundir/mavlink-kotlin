@@ -29,6 +29,7 @@ import kotlin.Unit
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
  * autopilot. This should match the commands sent in SET_POSITION_TARGET_GLOBAL_INT if the vehicle is
  * being controlled this way.
+ *
  */
 @GeneratedMavMessage(
   id = 87u,
@@ -109,10 +110,9 @@ public data class PositionTargetGlobalInt(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<PositionTargetGlobalInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PositionTargetGlobalInt> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PositionTargetGlobalInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latInt)
@@ -131,7 +131,7 @@ public data class PositionTargetGlobalInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latInt)
@@ -155,11 +155,11 @@ public data class PositionTargetGlobalInt(
 
     private const val SIZE_V2: Int = 51
 
-    public override val id: UInt = 87u
+    override val id: UInt = 87u
 
-    public override val crcExtra: Byte = -106
+    override val crcExtra: Byte = -106
 
-    public override fun deserialize(bytes: ByteArray): PositionTargetGlobalInt {
+    override fun deserialize(bytes: ByteArray): PositionTargetGlobalInt {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

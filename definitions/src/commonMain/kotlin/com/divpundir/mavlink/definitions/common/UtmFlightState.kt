@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Airborne status of UAS.
+ *
  */
 @GeneratedMavEnum
 public enum class UtmFlightState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The flight state can't be determined.
@@ -40,7 +41,7 @@ public enum class UtmFlightState(
   ;
 
   public companion object : MavEnum.MavCompanion<UtmFlightState> {
-    public override fun getEntryFromValueOrNull(v: UInt): UtmFlightState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UtmFlightState? = when (v) {
       1u -> UNKNOWN
       2u -> GROUND
       3u -> AIRBORNE

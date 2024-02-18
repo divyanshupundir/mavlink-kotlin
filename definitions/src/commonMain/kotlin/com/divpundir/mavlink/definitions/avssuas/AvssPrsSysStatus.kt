@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  *  AVSS PRS system status.
+ *
  */
 @GeneratedMavMessage(
   id = 60_050u,
@@ -51,9 +52,9 @@ public data class AvssPrsSysStatus(
   @GeneratedMavField(type = "uint8_t")
   public val chargeStatus: UByte = 0u,
 ) : MavMessage<AvssPrsSysStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AvssPrsSysStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AvssPrsSysStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(errorStatus)
@@ -63,7 +64,7 @@ public data class AvssPrsSysStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(errorStatus)
@@ -78,11 +79,11 @@ public data class AvssPrsSysStatus(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 60_050u
+    override val id: UInt = 60_050u
 
-    public override val crcExtra: Byte = -36
+    override val crcExtra: Byte = -36
 
-    public override fun deserialize(bytes: ByteArray): AvssPrsSysStatus {
+    override fun deserialize(bytes: ByteArray): AvssPrsSysStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

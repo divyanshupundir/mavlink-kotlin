@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Deepstall flight stage.
+ *
  */
 @GeneratedMavEnum
 public enum class DeepstallStage(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Flying to the landing point.
@@ -50,7 +51,7 @@ public enum class DeepstallStage(
   ;
 
   public companion object : MavEnum.MavCompanion<DeepstallStage> {
-    public override fun getEntryFromValueOrNull(v: UInt): DeepstallStage? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): DeepstallStage? = when (v) {
       0u -> FLY_TO_LANDING
       1u -> ESTIMATE_WIND
       2u -> WAIT_FOR_BREAKOUT

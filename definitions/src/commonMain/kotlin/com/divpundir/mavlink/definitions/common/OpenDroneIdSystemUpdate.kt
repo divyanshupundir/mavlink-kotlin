@@ -27,6 +27,7 @@ import kotlin.Unit
  * sent to update the location information for the operator when no other information in the SYSTEM
  * message has changed. This message allows for efficient operation on radio links which have limited
  * uplink bandwidth while meeting requirements for update frequency of the operator location.
+ *
  */
 @GeneratedMavMessage(
   id = 12_919u,
@@ -64,10 +65,9 @@ public data class OpenDroneIdSystemUpdate(
   @GeneratedMavField(type = "uint32_t")
   public val timestamp: UInt = 0u,
 ) : MavMessage<OpenDroneIdSystemUpdate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystemUpdate> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystemUpdate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(operatorLatitude)
     encoder.encodeInt32(operatorLongitude)
@@ -78,7 +78,7 @@ public data class OpenDroneIdSystemUpdate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(operatorLatitude)
     encoder.encodeInt32(operatorLongitude)
@@ -94,11 +94,11 @@ public data class OpenDroneIdSystemUpdate(
 
     private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 12_919u
+    override val id: UInt = 12_919u
 
-    public override val crcExtra: Byte = 7
+    override val crcExtra: Byte = 7
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdSystemUpdate {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdSystemUpdate {
       val decoder = MavDataDecoder(bytes)
 
       val operatorLatitude = decoder.safeDecodeInt32()

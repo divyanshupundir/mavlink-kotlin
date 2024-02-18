@@ -10,10 +10,11 @@ import kotlin.UInt
  * enum, but it
  *                simplifies the use of the mode flags. Note that manual input is enabled in all
  * modes as a safety override.
+ *
  */
 @GeneratedMavEnum
 public enum class MavMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * System is not ready to fly, booting, calibrating, etc. No flag is set.
@@ -77,7 +78,7 @@ public enum class MavMode(
   ;
 
   public companion object : MavEnum.MavCompanion<MavMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavMode? = when (v) {
       0u -> PREFLIGHT
       80u -> STABILIZE_DISARMED
       208u -> STABILIZE_ARMED

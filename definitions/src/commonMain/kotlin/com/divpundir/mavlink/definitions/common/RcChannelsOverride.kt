@@ -23,6 +23,7 @@ import kotlin.Unit
  * The standard PPM modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%.
  * Individual receivers/transmitters might violate this specification.  Note carefully the semantic
  * differences between the first 8 channels and the subsequent channels
+ *
  */
 @GeneratedMavMessage(
   id = 70u,
@@ -178,9 +179,9 @@ public data class RcChannelsOverride(
   )
   public val chan18Raw: UShort = 0u,
 ) : MavMessage<RcChannelsOverride> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsOverride> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RcChannelsOverride> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(chan1Raw)
     encoder.encodeUInt16(chan2Raw)
@@ -195,7 +196,7 @@ public data class RcChannelsOverride(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(chan1Raw)
     encoder.encodeUInt16(chan2Raw)
@@ -225,11 +226,11 @@ public data class RcChannelsOverride(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 70u
+    override val id: UInt = 70u
 
-    public override val crcExtra: Byte = 124
+    override val crcExtra: Byte = 124
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsOverride {
+    override fun deserialize(bytes: ByteArray): RcChannelsOverride {
       val decoder = MavDataDecoder(bytes)
 
       val chan1Raw = decoder.safeDecodeUInt16()

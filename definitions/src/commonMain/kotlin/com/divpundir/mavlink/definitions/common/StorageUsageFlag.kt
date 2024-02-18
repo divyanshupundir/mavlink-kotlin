@@ -8,10 +8,11 @@ import kotlin.UInt
 /**
  * Flags to indicate usage for a particular storage (see STORAGE_INFORMATION.storage_usage and
  * MAV_CMD_SET_STORAGE_USAGE).
+ *
  */
 @GeneratedMavEnum
 public enum class StorageUsageFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Always set to 1 (indicates STORAGE_INFORMATION.storage_usage is supported).
@@ -36,7 +37,7 @@ public enum class StorageUsageFlag(
   ;
 
   public companion object : MavEnum.MavCompanion<StorageUsageFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): StorageUsageFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): StorageUsageFlag? = when (v) {
       1u -> SET
       2u -> PHOTO
       4u -> VIDEO

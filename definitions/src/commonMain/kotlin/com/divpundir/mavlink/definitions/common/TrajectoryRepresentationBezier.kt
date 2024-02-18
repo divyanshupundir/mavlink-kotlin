@@ -25,6 +25,7 @@ import kotlin.collections.List
 /**
  * Describe a trajectory using an array of up-to 5 bezier control points in the local frame
  * (MAV_FRAME_LOCAL_NED).
+ *
  */
 @GeneratedMavMessage(
   id = 333u,
@@ -68,10 +69,10 @@ public data class TrajectoryRepresentationBezier(
   @GeneratedMavField(type = "float[5]")
   public val posYaw: List<Float> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationBezier> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationBezier> =
+  override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationBezier> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(posX, 20)
@@ -83,7 +84,7 @@ public data class TrajectoryRepresentationBezier(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(posX, 20)
@@ -100,11 +101,11 @@ public data class TrajectoryRepresentationBezier(
 
     private const val SIZE_V2: Int = 109
 
-    public override val id: UInt = 333u
+    override val id: UInt = 333u
 
-    public override val crcExtra: Byte = -25
+    override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): TrajectoryRepresentationBezier {
+    override fun deserialize(bytes: ByteArray): TrajectoryRepresentationBezier {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

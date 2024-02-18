@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
+ *
  */
 @GeneratedMavMessage(
   id = 50u,
@@ -84,9 +85,9 @@ public data class ParamMapRc(
   @GeneratedMavField(type = "float")
   public val paramValueMax: Float = 0F,
 ) : MavMessage<ParamMapRc> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamMapRc> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamMapRc> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(paramValue0)
     encoder.encodeFloat(scale)
@@ -100,7 +101,7 @@ public data class ParamMapRc(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(paramValue0)
     encoder.encodeFloat(scale)
@@ -119,11 +120,11 @@ public data class ParamMapRc(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 50u
+    override val id: UInt = 50u
 
-    public override val crcExtra: Byte = 78
+    override val crcExtra: Byte = 78
 
-    public override fun deserialize(bytes: ByteArray): ParamMapRc {
+    override fun deserialize(bytes: ByteArray): ParamMapRc {
       val decoder = MavDataDecoder(bytes)
 
       val paramValue0 = decoder.safeDecodeFloat()

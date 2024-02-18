@@ -27,6 +27,7 @@ import kotlin.Unit
 
 /**
  * RTK GPS data. Gives information on the relative baseline calculation the GPS is reporting
+ *
  */
 @GeneratedMavMessage(
   id = 128u,
@@ -100,9 +101,9 @@ public data class Gps2Rtk(
   @GeneratedMavField(type = "int32_t")
   public val iarNumHypotheses: Int = 0,
 ) : MavMessage<Gps2Rtk> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Gps2Rtk> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Gps2Rtk> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeLastBaselineMs)
     encoder.encodeUInt32(tow)
@@ -120,7 +121,7 @@ public data class Gps2Rtk(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeLastBaselineMs)
     encoder.encodeUInt32(tow)
@@ -143,11 +144,11 @@ public data class Gps2Rtk(
 
     private const val SIZE_V2: Int = 35
 
-    public override val id: UInt = 128u
+    override val id: UInt = 128u
 
-    public override val crcExtra: Byte = -30
+    override val crcExtra: Byte = -30
 
-    public override fun deserialize(bytes: ByteArray): Gps2Rtk {
+    override fun deserialize(bytes: ByteArray): Gps2Rtk {
       val decoder = MavDataDecoder(bytes)
 
       val timeLastBaselineMs = decoder.safeDecodeUInt32()

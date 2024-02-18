@@ -22,6 +22,7 @@ import kotlin.collections.List
 
 /**
  * A forwarded CAN frame as requested by MAV_CMD_CAN_FORWARD.
+ *
  */
 @GeneratedMavMessage(
   id = 386u,
@@ -59,9 +60,9 @@ public data class CanFrame(
   @GeneratedMavField(type = "uint8_t[8]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<CanFrame> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CanFrame> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CanFrame> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(id)
     encoder.encodeUInt8(targetSystem)
@@ -72,7 +73,7 @@ public data class CanFrame(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(id)
     encoder.encodeUInt8(targetSystem)
@@ -88,11 +89,11 @@ public data class CanFrame(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 386u
+    override val id: UInt = 386u
 
-    public override val crcExtra: Byte = -124
+    override val crcExtra: Byte = -124
 
-    public override fun deserialize(bytes: ByteArray): CanFrame {
+    override fun deserialize(bytes: ByteArray): CanFrame {
       val decoder = MavDataDecoder(bytes)
 
       val id = decoder.safeDecodeUInt32()

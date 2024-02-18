@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
+ *
  */
 @GeneratedMavMessage(
   id = 74u,
@@ -62,9 +63,9 @@ public data class VfrHud(
   @GeneratedMavField(type = "float")
   public val climb: Float = 0F,
 ) : MavMessage<VfrHud> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(airspeed)
     encoder.encodeFloat(groundspeed)
@@ -75,7 +76,7 @@ public data class VfrHud(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(airspeed)
     encoder.encodeFloat(groundspeed)
@@ -91,11 +92,11 @@ public data class VfrHud(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 74u
+    override val id: UInt = 74u
 
-    public override val crcExtra: Byte = 20
+    override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): VfrHud {
+    override fun deserialize(bytes: ByteArray): VfrHud {
       val decoder = MavDataDecoder(bytes)
 
       val airspeed = decoder.safeDecodeFloat()

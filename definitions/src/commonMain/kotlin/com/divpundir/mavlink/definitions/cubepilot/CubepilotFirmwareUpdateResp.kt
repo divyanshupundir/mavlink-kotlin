@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * offset response to encapsulated data.
+ *
  */
 @GeneratedMavMessage(
   id = 50_005u,
@@ -41,10 +42,9 @@ public data class CubepilotFirmwareUpdateResp(
   @GeneratedMavField(type = "uint32_t")
   public val offset: UInt = 0u,
 ) : MavMessage<CubepilotFirmwareUpdateResp> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CubepilotFirmwareUpdateResp> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CubepilotFirmwareUpdateResp> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(offset)
     encoder.encodeUInt8(targetSystem)
@@ -52,7 +52,7 @@ public data class CubepilotFirmwareUpdateResp(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(offset)
     encoder.encodeUInt8(targetSystem)
@@ -65,11 +65,11 @@ public data class CubepilotFirmwareUpdateResp(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 50_005u
+    override val id: UInt = 50_005u
 
-    public override val crcExtra: Byte = -104
+    override val crcExtra: Byte = -104
 
-    public override fun deserialize(bytes: ByteArray): CubepilotFirmwareUpdateResp {
+    override fun deserialize(bytes: ByteArray): CubepilotFirmwareUpdateResp {
       val decoder = MavDataDecoder(bytes)
 
       val offset = decoder.safeDecodeUInt32()

@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Kinematic multi bands (track) output from Daidalus
+ *
  */
 @GeneratedMavMessage(
   id = 42_001u,
@@ -109,9 +110,9 @@ public data class IcarousKinematicBands(
   @GeneratedMavField(type = "float")
   public val max5: Float = 0F,
 ) : MavMessage<IcarousKinematicBands> {
-  public override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(min1)
     encoder.encodeFloat(max1)
@@ -132,7 +133,7 @@ public data class IcarousKinematicBands(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(min1)
     encoder.encodeFloat(max1)
@@ -158,11 +159,11 @@ public data class IcarousKinematicBands(
 
     private const val SIZE_V2: Int = 46
 
-    public override val id: UInt = 42_001u
+    override val id: UInt = 42_001u
 
-    public override val crcExtra: Byte = -17
+    override val crcExtra: Byte = -17
 
-    public override fun deserialize(bytes: ByteArray): IcarousKinematicBands {
+    override fun deserialize(bytes: ByteArray): IcarousKinematicBands {
       val decoder = MavDataDecoder(bytes)
 
       val min1 = decoder.safeDecodeFloat()

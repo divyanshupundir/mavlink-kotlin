@@ -23,6 +23,7 @@ import kotlin.Unit
 /**
  * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels
  * that are inactive should be set to INT16_MAX.
+ *
  */
 @GeneratedMavMessage(
   id = 34u,
@@ -87,9 +88,9 @@ public data class RcChannelsScaled(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannelsScaled> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsScaled> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RcChannelsScaled> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(chan1Scaled)
@@ -105,7 +106,7 @@ public data class RcChannelsScaled(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(chan1Scaled)
@@ -126,11 +127,11 @@ public data class RcChannelsScaled(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 34u
+    override val id: UInt = 34u
 
-    public override val crcExtra: Byte = -19
+    override val crcExtra: Byte = -19
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsScaled {
+    override fun deserialize(bytes: ByteArray): RcChannelsScaled {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

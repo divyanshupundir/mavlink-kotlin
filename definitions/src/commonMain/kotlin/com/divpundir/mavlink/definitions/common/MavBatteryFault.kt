@@ -10,10 +10,11 @@ import kotlin.collections.List
  * Smart battery supply status/fault flags (bitmask) for health indication. The battery must also
  * report either MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY if any of these
  * are set.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavBatteryFault(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Battery has deep discharged.
@@ -65,7 +66,7 @@ public enum class MavBatteryFault(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavBatteryFault> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryFault? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavBatteryFault? = when (v) {
       1u -> DEEP_DISCHARGE
       2u -> SPIKES
       4u -> CELL_FAIL
@@ -78,7 +79,7 @@ public enum class MavBatteryFault(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavBatteryFault> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavBatteryFault> = buildList {
       if (v and 1u == 1u) add(DEEP_DISCHARGE)
       if (v and 2u == 2u) add(SPIKES)
       if (v and 4u == 4u) add(CELL_FAIL)

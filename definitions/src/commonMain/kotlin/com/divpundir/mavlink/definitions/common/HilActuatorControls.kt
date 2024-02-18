@@ -26,6 +26,7 @@ import kotlin.collections.List
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs (replacement for
  * HIL_CONTROLS)
+ *
  */
 @GeneratedMavMessage(
   id = 93u,
@@ -54,9 +55,9 @@ public data class HilActuatorControls(
   @GeneratedMavField(type = "uint64_t")
   public val flags: ULong = 0uL,
 ) : MavMessage<HilActuatorControls> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilActuatorControls> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilActuatorControls> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt64(flags)
@@ -65,7 +66,7 @@ public data class HilActuatorControls(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt64(flags)
@@ -79,11 +80,11 @@ public data class HilActuatorControls(
 
     private const val SIZE_V2: Int = 81
 
-    public override val id: UInt = 93u
+    override val id: UInt = 93u
 
-    public override val crcExtra: Byte = 47
+    override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): HilActuatorControls {
+    override fun deserialize(bytes: ByteArray): HilActuatorControls {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -10,10 +10,11 @@ import kotlin.collections.List
 /**
  * Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports
  * this capability.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavProtocolCapability(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Autopilot supports the MISSION_ITEM float message type.
@@ -122,7 +123,7 @@ public enum class MavProtocolCapability(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavProtocolCapability> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavProtocolCapability? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavProtocolCapability? = when (v) {
       1u -> MISSION_FLOAT
       2u -> PARAM_FLOAT
       4u -> MISSION_INT
@@ -144,7 +145,7 @@ public enum class MavProtocolCapability(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavProtocolCapability> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavProtocolCapability> = buildList {
       if (v and 1u == 1u) add(MISSION_FLOAT)
       if (v and 2u == 2u) add(PARAM_FLOAT)
       if (v and 4u == 4u) add(MISSION_INT)

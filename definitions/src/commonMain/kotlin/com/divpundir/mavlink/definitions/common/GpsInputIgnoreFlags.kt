@@ -8,7 +8,7 @@ import kotlin.collections.List
 
 @GeneratedMavEnum(bitmask = true)
 public enum class GpsInputIgnoreFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * ignore altitude field
@@ -53,7 +53,7 @@ public enum class GpsInputIgnoreFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<GpsInputIgnoreFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): GpsInputIgnoreFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GpsInputIgnoreFlags? = when (v) {
       1u -> GPS_INPUT_IGNORE_FLAG_ALT
       2u -> GPS_INPUT_IGNORE_FLAG_HDOP
       4u -> GPS_INPUT_IGNORE_FLAG_VDOP
@@ -65,7 +65,7 @@ public enum class GpsInputIgnoreFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<GpsInputIgnoreFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<GpsInputIgnoreFlags> = buildList {
       if (v and 1u == 1u) add(GPS_INPUT_IGNORE_FLAG_ALT)
       if (v and 2u == 2u) add(GPS_INPUT_IGNORE_FLAG_HDOP)
       if (v and 4u == 4u) add(GPS_INPUT_IGNORE_FLAG_VDOP)

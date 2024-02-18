@@ -30,6 +30,7 @@ import kotlin.Unit
 /**
  * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec
  * thereafter)
+ *
  */
 @GeneratedMavMessage(
   id = 10_001u,
@@ -81,9 +82,9 @@ public data class UavionixAdsbOutCfg(
   @GeneratedMavField(type = "uint8_t")
   public val rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UavionixAdsbOutCfg> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutCfg> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutCfg> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(icao)
     encoder.encodeUInt16(stallspeed)
@@ -96,7 +97,7 @@ public data class UavionixAdsbOutCfg(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(icao)
     encoder.encodeUInt16(stallspeed)
@@ -114,11 +115,11 @@ public data class UavionixAdsbOutCfg(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 10_001u
+    override val id: UInt = 10_001u
 
-    public override val crcExtra: Byte = -47
+    override val crcExtra: Byte = -47
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutCfg {
+    override fun deserialize(bytes: ByteArray): UavionixAdsbOutCfg {
       val decoder = MavDataDecoder(bytes)
 
       val icao = decoder.safeDecodeUInt32()

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class FenceBreach(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No last fence breach
@@ -32,7 +32,7 @@ public enum class FenceBreach(
   ;
 
   public companion object : MavEnum.MavCompanion<FenceBreach> {
-    public override fun getEntryFromValueOrNull(v: UInt): FenceBreach? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): FenceBreach? = when (v) {
       0u -> NONE
       1u -> MINALT
       2u -> MAXALT

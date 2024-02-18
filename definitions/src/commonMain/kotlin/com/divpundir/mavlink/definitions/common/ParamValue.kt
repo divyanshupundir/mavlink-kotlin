@@ -29,6 +29,7 @@ import kotlin.Unit
  * message allows the recipient to keep track of received parameters and allows him to re-request
  * missing parameters after a loss or timeout. The parameter microservice is documented at
  * https://mavlink.io/en/services/parameter.html
+ *
  */
 @GeneratedMavMessage(
   id = 22u,
@@ -63,9 +64,9 @@ public data class ParamValue(
   @GeneratedMavField(type = "uint16_t")
   public val paramIndex: UShort = 0u,
 ) : MavMessage<ParamValue> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamValue> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamValue> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(paramValue)
     encoder.encodeUInt16(paramCount)
@@ -75,7 +76,7 @@ public data class ParamValue(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(paramValue)
     encoder.encodeUInt16(paramCount)
@@ -90,11 +91,11 @@ public data class ParamValue(
 
     private const val SIZE_V2: Int = 25
 
-    public override val id: UInt = 22u
+    override val id: UInt = 22u
 
-    public override val crcExtra: Byte = -36
+    override val crcExtra: Byte = -36
 
-    public override fun deserialize(bytes: ByteArray): ParamValue {
+    override fun deserialize(bytes: ByteArray): ParamValue {
       val decoder = MavDataDecoder(bytes)
 
       val paramValue = decoder.safeDecodeFloat()

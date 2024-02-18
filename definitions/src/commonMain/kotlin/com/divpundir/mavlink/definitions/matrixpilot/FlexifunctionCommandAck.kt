@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Acknowldge success or failure of a flexifunction command
+ *
  */
 @GeneratedMavMessage(
   id = 158u,
@@ -34,17 +35,16 @@ public data class FlexifunctionCommandAck(
   @GeneratedMavField(type = "uint16_t")
   public val result: UShort = 0u,
 ) : MavMessage<FlexifunctionCommandAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommandAck> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommandAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(commandType)
     encoder.encodeUInt16(result)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(commandType)
     encoder.encodeUInt16(result)
@@ -56,11 +56,11 @@ public data class FlexifunctionCommandAck(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 158u
+    override val id: UInt = 158u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionCommandAck {
+    override fun deserialize(bytes: ByteArray): FlexifunctionCommandAck {
       val decoder = MavDataDecoder(bytes)
 
       val commandType = decoder.safeDecodeUInt16()

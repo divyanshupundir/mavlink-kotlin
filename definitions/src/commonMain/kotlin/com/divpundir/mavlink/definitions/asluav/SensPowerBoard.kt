@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Monitoring of power board status
+ *
  */
 @GeneratedMavMessage(
   id = 8_013u,
@@ -90,9 +91,9 @@ public data class SensPowerBoard(
   @GeneratedMavField(type = "float")
   public val pwrBrdAuxAmp: Float = 0F,
 ) : MavMessage<SensPowerBoard> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(pwrBrdSystemVolt)
@@ -109,7 +110,7 @@ public data class SensPowerBoard(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(pwrBrdSystemVolt)
@@ -131,11 +132,11 @@ public data class SensPowerBoard(
 
     private const val SIZE_V2: Int = 46
 
-    public override val id: UInt = 8_013u
+    override val id: UInt = 8_013u
 
-    public override val crcExtra: Byte = -34
+    override val crcExtra: Byte = -34
 
-    public override fun deserialize(bytes: ByteArray): SensPowerBoard {
+    override fun deserialize(bytes: ByteArray): SensPowerBoard {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

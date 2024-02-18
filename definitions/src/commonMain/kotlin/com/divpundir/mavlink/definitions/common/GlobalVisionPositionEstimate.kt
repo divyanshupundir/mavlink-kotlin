@@ -26,6 +26,7 @@ import kotlin.collections.List
 
 /**
  * Global position/attitude estimate from a vision source.
+ *
  */
 @GeneratedMavMessage(
   id = 101u,
@@ -88,10 +89,9 @@ public data class GlobalVisionPositionEstimate(
   )
   public val resetCounter: UByte = 0u,
 ) : MavMessage<GlobalVisionPositionEstimate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GlobalVisionPositionEstimate> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GlobalVisionPositionEstimate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -103,7 +103,7 @@ public data class GlobalVisionPositionEstimate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -122,11 +122,11 @@ public data class GlobalVisionPositionEstimate(
 
     private const val SIZE_V2: Int = 117
 
-    public override val id: UInt = 101u
+    override val id: UInt = 101u
 
-    public override val crcExtra: Byte = 102
+    override val crcExtra: Byte = 102
 
-    public override fun deserialize(bytes: ByteArray): GlobalVisionPositionEstimate {
+    override fun deserialize(bytes: ByteArray): GlobalVisionPositionEstimate {
       val decoder = MavDataDecoder(bytes)
 
       val usec = decoder.safeDecodeUInt64()

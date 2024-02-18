@@ -8,9 +8,11 @@ import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
@@ -25,6 +27,7 @@ import kotlin.Unit
  * This message is emitted as response to MISSION_REQUEST_LIST by the MAV and to initiate a write
  * transaction. The GCS can then request the individual mission item based on the knowledge of the
  * total number of waypoints.
+ *
  */
 @GeneratedMavMessage(
   id = 44u,
@@ -54,10 +57,26 @@ public data class MissionCount(
     extension = true,
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
+  /**
+   * Id of current on-vehicle mission, fence, or rally point plan (on download from vehicle).
+   *         This field is used when downloading a plan from a vehicle to a GCS.
+   *         0 on upload to the vehicle from GCS.
+   *         0 if plan ids are not supported.
+   *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to
+   * determine if any part of the plan has changed and needs to be re-uploaded.
+   *         The ids are recalculated by the vehicle when any part of the on-vehicle plan changes
+   * (when a new plan is uploaded, the vehicle returns the new id to the GCS in MISSION_ACK).
+   *       
+   */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
+  public val opaqueId: UInt = 0u,
 ) : MavMessage<MissionCount> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionCount> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionCount> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(count)
     encoder.encodeUInt8(targetSystem)
@@ -65,25 +84,26 @@ public data class MissionCount(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(count)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     encoder.encodeEnumValue(missionType.value, 1)
+    encoder.encodeUInt32(opaqueId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MissionCount> {
     private const val SIZE_V1: Int = 4
 
-    private const val SIZE_V2: Int = 5
+    private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 44u
+    override val id: UInt = 44u
 
-    public override val crcExtra: Byte = -35
+    override val crcExtra: Byte = -35
 
-    public override fun deserialize(bytes: ByteArray): MissionCount {
+    override fun deserialize(bytes: ByteArray): MissionCount {
       val decoder = MavDataDecoder(bytes)
 
       val count = decoder.safeDecodeUInt16()
@@ -93,12 +113,14 @@ public data class MissionCount(
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val opaqueId = decoder.safeDecodeUInt32()
 
       return MissionCount(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         count = count,
         missionType = missionType,
+        opaqueId = opaqueId,
       )
     }
 
@@ -115,11 +137,14 @@ public data class MissionCount(
 
     public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u)
 
+    public var opaqueId: UInt = 0u
+
     public fun build(): MissionCount = MissionCount(
       targetSystem = targetSystem,
       targetComponent = targetComponent,
       count = count,
       missionType = missionType,
+      opaqueId = opaqueId,
     )
   }
 }

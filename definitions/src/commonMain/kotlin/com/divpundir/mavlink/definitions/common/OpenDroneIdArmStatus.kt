@@ -21,6 +21,7 @@ import kotlin.Unit
 /**
  * Transmitter (remote ID system) is enabled and ready to start sending location and other required
  * information. This is streamed by transmitter. A flight controller uses it as a condition to arm.
+ *
  */
 @GeneratedMavMessage(
   id = 12_918u,
@@ -39,16 +40,16 @@ public data class OpenDroneIdArmStatus(
   @GeneratedMavField(type = "char[50]")
   public val error: String = "",
 ) : MavMessage<OpenDroneIdArmStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdArmStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdArmStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(status.value, 1)
     encoder.encodeString(error, 50)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(status.value, 1)
     encoder.encodeString(error, 50)
@@ -60,11 +61,11 @@ public data class OpenDroneIdArmStatus(
 
     private const val SIZE_V2: Int = 51
 
-    public override val id: UInt = 12_918u
+    override val id: UInt = 12_918u
 
-    public override val crcExtra: Byte = -117
+    override val crcExtra: Byte = -117
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdArmStatus {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdArmStatus {
       val decoder = MavDataDecoder(bytes)
 
       val status = decoder.safeDecodeEnumValue(1).let { value ->

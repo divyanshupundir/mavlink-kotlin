@@ -8,10 +8,11 @@ import kotlin.UInt
 /**
  * Gimbal manager client ID. In a prioritizing profile, the priorities are determined by the
  * implementation; they could e.g. be custom1 > onboard > GCS > autopilot/camera > GCS2 > custom2.
+ *
  */
 @GeneratedMavEnum
 public enum class MavStorm32GimbalManagerClient(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * For convenience.
@@ -61,8 +62,7 @@ public enum class MavStorm32GimbalManagerClient(
   ;
 
   public companion object : MavEnum.MavCompanion<MavStorm32GimbalManagerClient> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerClient? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerClient? = when (v) {
       0u -> NONE
       1u -> ONBOARD
       2u -> AUTOPILOT

@@ -26,6 +26,7 @@ import kotlin.Unit
  * Information about a gimbal manager. This message should be requested by a ground station using
  * MAV_CMD_REQUEST_MESSAGE. It mirrors some fields of the GIMBAL_DEVICE_INFORMATION message, but not
  * all. If the additional information is desired, also GIMBAL_DEVICE_INFORMATION should be requested.
+ *
  */
 @GeneratedMavMessage(
   id = 60_010u,
@@ -83,10 +84,10 @@ public data class Storm32GimbalManagerInformation(
   @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerInformation> =
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerInformation> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(deviceCapFlags.value, 4)
     encoder.encodeBitmaskValue(managerCapFlags.value, 4)
@@ -100,7 +101,7 @@ public data class Storm32GimbalManagerInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(deviceCapFlags.value, 4)
     encoder.encodeBitmaskValue(managerCapFlags.value, 4)
@@ -119,11 +120,11 @@ public data class Storm32GimbalManagerInformation(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 60_010u
+    override val id: UInt = 60_010u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerInformation {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerInformation {
       val decoder = MavDataDecoder(bytes)
 
       val deviceCapFlags = decoder.safeDecodeBitmaskValue(4).let { value ->

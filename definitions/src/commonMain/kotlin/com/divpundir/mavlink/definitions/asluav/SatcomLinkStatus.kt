@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Status of the SatCom link
+ *
  */
 @GeneratedMavMessage(
   id = 8_015u,
@@ -70,9 +71,9 @@ public data class SatcomLinkStatus(
   @GeneratedMavField(type = "uint8_t")
   public val rxSessionPending: UByte = 0u,
 ) : MavMessage<SatcomLinkStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SatcomLinkStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SatcomLinkStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(lastHeartbeat)
@@ -85,7 +86,7 @@ public data class SatcomLinkStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(lastHeartbeat)
@@ -103,11 +104,11 @@ public data class SatcomLinkStatus(
 
     private const val SIZE_V2: Int = 24
 
-    public override val id: UInt = 8_015u
+    override val id: UInt = 8_015u
 
-    public override val crcExtra: Byte = 23
+    override val crcExtra: Byte = 23
 
-    public override fun deserialize(bytes: ByteArray): SatcomLinkStatus {
+    override fun deserialize(bytes: ByteArray): SatcomLinkStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

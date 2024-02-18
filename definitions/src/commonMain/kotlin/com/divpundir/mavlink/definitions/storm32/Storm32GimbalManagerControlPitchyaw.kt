@@ -28,6 +28,7 @@ import kotlin.Unit
 /**
  * Message to a gimbal manager to control the gimbal tilt and pan angles. Angles and rates can be
  * set to NaN according to use case. A gimbal device is never to react to this message.
+ *
  */
 @GeneratedMavMessage(
   id = 60_013u,
@@ -90,10 +91,10 @@ public data class Storm32GimbalManagerControlPitchyaw(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerControlPitchyaw> {
-  public override val instanceCompanion:
-      MavMessage.MavCompanion<Storm32GimbalManagerControlPitchyaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControlPitchyaw> =
+      Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(pitch)
     encoder.encodeFloat(yaw)
@@ -108,7 +109,7 @@ public data class Storm32GimbalManagerControlPitchyaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(pitch)
     encoder.encodeFloat(yaw)
@@ -128,11 +129,11 @@ public data class Storm32GimbalManagerControlPitchyaw(
 
     private const val SIZE_V2: Int = 24
 
-    public override val id: UInt = 60_013u
+    override val id: UInt = 60_013u
 
-    public override val crcExtra: Byte = -127
+    override val crcExtra: Byte = -127
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerControlPitchyaw {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerControlPitchyaw {
       val decoder = MavDataDecoder(bytes)
 
       val pitch = decoder.safeDecodeFloat()

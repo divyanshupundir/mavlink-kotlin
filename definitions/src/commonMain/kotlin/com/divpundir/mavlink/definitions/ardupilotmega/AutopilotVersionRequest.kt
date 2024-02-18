@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Request the autopilot version from the system/component.
+ *
  */
 @GeneratedMavMessage(
   id = 183u,
@@ -34,17 +35,16 @@ public data class AutopilotVersionRequest(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<AutopilotVersionRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersionRequest> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersionRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -56,11 +56,11 @@ public data class AutopilotVersionRequest(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 183u
+    override val id: UInt = 183u
 
-    public override val crcExtra: Byte = 85
+    override val crcExtra: Byte = 85
 
-    public override fun deserialize(bytes: ByteArray): AutopilotVersionRequest {
+    override fun deserialize(bytes: ByteArray): AutopilotVersionRequest {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

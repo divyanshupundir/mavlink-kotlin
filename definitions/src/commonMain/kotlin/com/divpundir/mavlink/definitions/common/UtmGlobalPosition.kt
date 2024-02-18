@@ -35,6 +35,7 @@ import kotlin.collections.List
 
 /**
  * The global position resulting from GPS and sensor fusion.
+ *
  */
 @GeneratedMavMessage(
   id = 340u,
@@ -132,9 +133,9 @@ public data class UtmGlobalPosition(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<UtmDataAvailFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UtmGlobalPosition> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UtmGlobalPosition> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UtmGlobalPosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(time)
     encoder.encodeInt32(lat)
@@ -157,7 +158,7 @@ public data class UtmGlobalPosition(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(time)
     encoder.encodeInt32(lat)
@@ -185,11 +186,11 @@ public data class UtmGlobalPosition(
 
     private const val SIZE_V2: Int = 70
 
-    public override val id: UInt = 340u
+    override val id: UInt = 340u
 
-    public override val crcExtra: Byte = 99
+    override val crcExtra: Byte = 99
 
-    public override fun deserialize(bytes: ByteArray): UtmGlobalPosition {
+    override fun deserialize(bytes: ByteArray): UtmGlobalPosition {
       val decoder = MavDataDecoder(bytes)
 
       val time = decoder.safeDecodeUInt64()

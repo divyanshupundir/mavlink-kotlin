@@ -37,6 +37,7 @@ import kotlin.Unit
 
 /**
  * Message appropriate for high latency connections like Iridium (version 2)
+ *
  */
 @GeneratedMavMessage(
   id = 235u,
@@ -180,9 +181,9 @@ public data class HighLatency2(
   @GeneratedMavField(type = "int8_t")
   public val custom2: Byte = 0,
 ) : MavMessage<HighLatency2> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HighLatency2> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HighLatency2> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timestamp)
     encoder.encodeInt32(latitude)
@@ -214,7 +215,7 @@ public data class HighLatency2(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timestamp)
     encoder.encodeInt32(latitude)
@@ -251,11 +252,11 @@ public data class HighLatency2(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 235u
+    override val id: UInt = 235u
 
-    public override val crcExtra: Byte = -77
+    override val crcExtra: Byte = -77
 
-    public override fun deserialize(bytes: ByteArray): HighLatency2 {
+    override fun deserialize(bytes: ByteArray): HighLatency2 {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt32()

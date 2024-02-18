@@ -32,6 +32,7 @@ import kotlin.collections.List
 /**
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147
  * standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
+ *
  */
 @GeneratedMavMessage(
   id = 331u,
@@ -147,9 +148,9 @@ public data class Odometry(
   )
   public val quality: Byte = 0,
 ) : MavMessage<Odometry> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -169,7 +170,7 @@ public data class Odometry(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -197,11 +198,11 @@ public data class Odometry(
 
     private const val SIZE_V2: Int = 233
 
-    public override val id: UInt = 331u
+    override val id: UInt = 331u
 
-    public override val crcExtra: Byte = 91
+    override val crcExtra: Byte = 91
 
-    public override fun deserialize(bytes: ByteArray): Odometry {
+    override fun deserialize(bytes: ByteArray): Odometry {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

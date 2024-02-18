@@ -25,6 +25,7 @@ import kotlin.collections.List
 
 /**
  * Reply to LOG_REQUEST_DATA
+ *
  */
 @GeneratedMavMessage(
   id = 120u,
@@ -52,9 +53,9 @@ public data class LogData(
   @GeneratedMavField(type = "uint8_t[90]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<LogData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LogData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LogData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(ofs)
     encoder.encodeUInt16(id)
@@ -63,7 +64,7 @@ public data class LogData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(ofs)
     encoder.encodeUInt16(id)
@@ -77,11 +78,11 @@ public data class LogData(
 
     private const val SIZE_V2: Int = 97
 
-    public override val id: UInt = 120u
+    override val id: UInt = 120u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): LogData {
+    override fun deserialize(bytes: ByteArray): LogData {
       val decoder = MavDataDecoder(bytes)
 
       val ofs = decoder.safeDecodeUInt32()

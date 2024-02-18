@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class LedControlPattern(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * LED patterns off (return control to regular vehicle control).
@@ -27,7 +27,7 @@ public enum class LedControlPattern(
   ;
 
   public companion object : MavEnum.MavCompanion<LedControlPattern> {
-    public override fun getEntryFromValueOrNull(v: UInt): LedControlPattern? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): LedControlPattern? = when (v) {
       0u -> OFF
       1u -> FIRMWAREUPDATE
       255u -> CUSTOM

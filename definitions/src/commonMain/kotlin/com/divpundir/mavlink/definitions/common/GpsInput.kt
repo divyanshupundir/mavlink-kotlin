@@ -34,6 +34,7 @@ import kotlin.Unit
 /**
  * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global
  * position estimate of the system.
+ *
  */
 @GeneratedMavMessage(
   id = 232u,
@@ -140,9 +141,9 @@ public data class GpsInput(
   )
   public val yaw: UShort = 0u,
 ) : MavMessage<GpsInput> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GpsInput> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GpsInput> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(timeWeekMs)
@@ -165,7 +166,7 @@ public data class GpsInput(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(timeWeekMs)
@@ -194,11 +195,11 @@ public data class GpsInput(
 
     private const val SIZE_V2: Int = 65
 
-    public override val id: UInt = 232u
+    override val id: UInt = 232u
 
-    public override val crcExtra: Byte = -105
+    override val crcExtra: Byte = -105
 
-    public override fun deserialize(bytes: ByteArray): GpsInput {
+    override fun deserialize(bytes: ByteArray): GpsInput {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

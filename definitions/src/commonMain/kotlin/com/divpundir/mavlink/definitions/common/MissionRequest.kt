@@ -25,6 +25,7 @@ import kotlin.Unit
 /**
  * Request the information of the mission item with the sequence number seq. The response of the
  * system to this message should be a MISSION_ITEM message. https://mavlink.io/en/services/mission.html
+ *
  */
 @Deprecated(message =
     "A system that gets this request should respond with MISSION_ITEM_INT (as though MISSION_REQUEST_INT was received).")
@@ -57,9 +58,9 @@ public data class MissionRequest(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionRequest> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seq)
     encoder.encodeUInt8(targetSystem)
@@ -67,7 +68,7 @@ public data class MissionRequest(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seq)
     encoder.encodeUInt8(targetSystem)
@@ -81,11 +82,11 @@ public data class MissionRequest(
 
     private const val SIZE_V2: Int = 5
 
-    public override val id: UInt = 40u
+    override val id: UInt = 40u
 
-    public override val crcExtra: Byte = -26
+    override val crcExtra: Byte = -26
 
-    public override fun deserialize(bytes: ByteArray): MissionRequest {
+    override fun deserialize(bytes: ByteArray): MissionRequest {
       val decoder = MavDataDecoder(bytes)
 
       val seq = decoder.safeDecodeUInt16()

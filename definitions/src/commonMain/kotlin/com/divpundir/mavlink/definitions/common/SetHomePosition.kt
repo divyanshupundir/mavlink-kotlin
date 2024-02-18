@@ -42,6 +42,7 @@ import kotlin.collections.List
  *         Note: the current home position may be emitted in a HOME_POSITION message on request
  * (using MAV_CMD_REQUEST_MESSAGE with param1=242).
  *       
+ *
  */
 @Deprecated(message =
     "The command protocol version (MAV_CMD_DO_SET_HOME) allows a GCS to detect when setting the home position has failed.")
@@ -125,9 +126,9 @@ public data class SetHomePosition(
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<SetHomePosition> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetHomePosition> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetHomePosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -143,7 +144,7 @@ public data class SetHomePosition(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -165,11 +166,11 @@ public data class SetHomePosition(
 
     private const val SIZE_V2: Int = 61
 
-    public override val id: UInt = 243u
+    override val id: UInt = 243u
 
-    public override val crcExtra: Byte = 85
+    override val crcExtra: Byte = 85
 
-    public override fun deserialize(bytes: ByteArray): SetHomePosition {
+    override fun deserialize(bytes: ByteArray): SetHomePosition {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

@@ -24,6 +24,7 @@ import kotlin.collections.List
 
 /**
  * Set the vehicle attitude and body angular rates.
+ *
  */
 @GeneratedMavMessage(
   id = 139u,
@@ -61,10 +62,9 @@ public data class SetActuatorControlTarget(
   @GeneratedMavField(type = "float[8]")
   public val controls: List<Float> = emptyList(),
 ) : MavMessage<SetActuatorControlTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetActuatorControlTarget> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetActuatorControlTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(controls, 32)
@@ -74,7 +74,7 @@ public data class SetActuatorControlTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(controls, 32)
@@ -89,11 +89,11 @@ public data class SetActuatorControlTarget(
 
     private const val SIZE_V2: Int = 43
 
-    public override val id: UInt = 139u
+    override val id: UInt = 139u
 
-    public override val crcExtra: Byte = -88
+    override val crcExtra: Byte = -88
 
-    public override fun deserialize(bytes: ByteArray): SetActuatorControlTarget {
+    override fun deserialize(bytes: ByteArray): SetActuatorControlTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

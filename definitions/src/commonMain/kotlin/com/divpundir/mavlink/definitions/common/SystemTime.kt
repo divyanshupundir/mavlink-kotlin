@@ -20,6 +20,7 @@ import kotlin.Unit
 /**
  * The system time is the time of the master clock, typically the computer clock of the main onboard
  * computer.
+ *
  */
 @GeneratedMavMessage(
   id = 2u,
@@ -37,16 +38,16 @@ public data class SystemTime(
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
 ) : MavMessage<SystemTime> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SystemTime> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SystemTime> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUnixUsec)
     encoder.encodeUInt32(timeBootMs)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUnixUsec)
     encoder.encodeUInt32(timeBootMs)
@@ -58,11 +59,11 @@ public data class SystemTime(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 2u
+    override val id: UInt = 2u
 
-    public override val crcExtra: Byte = -119
+    override val crcExtra: Byte = -119
 
-    public override fun deserialize(bytes: ByteArray): SystemTime {
+    override fun deserialize(bytes: ByteArray): SystemTime {
       val decoder = MavDataDecoder(bytes)
 
       val timeUnixUsec = decoder.safeDecodeUInt64()

@@ -9,10 +9,11 @@ import kotlin.collections.List
 /**
  * Flags for high level gimbal manager operation The first 16 bits are identical to the
  * GIMBAL_DEVICE_FLAGS.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class GimbalManagerFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Based on GIMBAL_DEVICE_FLAGS_RETRACT.
@@ -67,7 +68,7 @@ public enum class GimbalManagerFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<GimbalManagerFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): GimbalManagerFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GimbalManagerFlags? = when (v) {
       1u -> RETRACT
       2u -> NEUTRAL
       4u -> ROLL_LOCK
@@ -81,7 +82,7 @@ public enum class GimbalManagerFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<GimbalManagerFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<GimbalManagerFlags> = buildList {
       if (v and 1u == 1u) add(RETRACT)
       if (v and 2u == 2u) add(NEUTRAL)
       if (v and 4u == 4u) add(ROLL_LOCK)

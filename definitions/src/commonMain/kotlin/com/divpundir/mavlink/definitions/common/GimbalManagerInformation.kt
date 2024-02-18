@@ -26,6 +26,7 @@ import kotlin.Unit
 /**
  * Information about a high level gimbal manager. This message should be requested by a ground
  * station using MAV_CMD_REQUEST_MESSAGE.
+ *
  */
 @GeneratedMavMessage(
   id = 280u,
@@ -79,10 +80,9 @@ public data class GimbalManagerInformation(
   @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
 ) : MavMessage<GimbalManagerInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerInformation> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeBitmaskValue(capFlags.value, 4)
@@ -96,7 +96,7 @@ public data class GimbalManagerInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeBitmaskValue(capFlags.value, 4)
@@ -115,11 +115,11 @@ public data class GimbalManagerInformation(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 280u
+    override val id: UInt = 280u
 
-    public override val crcExtra: Byte = 70
+    override val crcExtra: Byte = 70
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerInformation {
+    override fun deserialize(bytes: ByteArray): GimbalManagerInformation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

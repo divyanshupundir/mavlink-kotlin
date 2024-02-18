@@ -24,6 +24,7 @@ import kotlin.Unit
 /**
  * The MCU status, giving MCU temperature and voltage. The min and max voltages are to allow for
  * detecting power supply instability.
+ *
  */
 @GeneratedMavMessage(
   id = 11_039u,
@@ -56,9 +57,9 @@ public data class McuStatus(
   @GeneratedMavField(type = "uint16_t")
   public val mcuVoltageMax: UShort = 0u,
 ) : MavMessage<McuStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<McuStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<McuStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(mcuTemperature)
     encoder.encodeUInt16(mcuVoltage)
@@ -68,7 +69,7 @@ public data class McuStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(mcuTemperature)
     encoder.encodeUInt16(mcuVoltage)
@@ -83,11 +84,11 @@ public data class McuStatus(
 
     private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 11_039u
+    override val id: UInt = 11_039u
 
-    public override val crcExtra: Byte = -114
+    override val crcExtra: Byte = -114
 
-    public override fun deserialize(bytes: ByteArray): McuStatus {
+    override fun deserialize(bytes: ByteArray): McuStatus {
       val decoder = MavDataDecoder(bytes)
 
       val mcuTemperature = decoder.safeDecodeInt16()

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The status of the (UA) Unmanned Aircraft is undefined.
@@ -37,7 +37,7 @@ public enum class MavOdidStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidStatus? = when (v) {
       0u -> UNDECLARED
       1u -> GROUND
       2u -> AIRBORNE

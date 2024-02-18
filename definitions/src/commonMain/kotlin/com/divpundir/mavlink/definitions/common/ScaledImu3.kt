@@ -20,6 +20,7 @@ import kotlin.Unit
 /**
  * The RAW IMU readings for 3rd 9DOF sensor setup. This message should contain the scaled values to
  * the described units
+ *
  */
 @GeneratedMavMessage(
   id = 129u,
@@ -86,9 +87,9 @@ public data class ScaledImu3(
   )
   public val temperature: Short = 0,
 ) : MavMessage<ScaledImu3> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScaledImu3> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScaledImu3> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(xacc)
@@ -103,7 +104,7 @@ public data class ScaledImu3(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(xacc)
@@ -124,11 +125,11 @@ public data class ScaledImu3(
 
     private const val SIZE_V2: Int = 24
 
-    public override val id: UInt = 129u
+    override val id: UInt = 129u
 
-    public override val crcExtra: Byte = 46
+    override val crcExtra: Byte = 46
 
-    public override fun deserialize(bytes: ByteArray): ScaledImu3 {
+    override fun deserialize(bytes: ByteArray): ScaledImu3 {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

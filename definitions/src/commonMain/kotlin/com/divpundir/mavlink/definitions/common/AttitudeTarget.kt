@@ -27,6 +27,7 @@ import kotlin.collections.List
  * Reports the current commanded attitude of the vehicle as specified by the autopilot. This should
  * match the commands sent in a SET_ATTITUDE_TARGET message if the vehicle is being controlled this
  * way.
+ *
  */
 @GeneratedMavMessage(
   id = 83u,
@@ -69,9 +70,9 @@ public data class AttitudeTarget(
   @GeneratedMavField(type = "float")
   public val thrust: Float = 0F,
 ) : MavMessage<AttitudeTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AttitudeTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AttitudeTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -83,7 +84,7 @@ public data class AttitudeTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -100,11 +101,11 @@ public data class AttitudeTarget(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 83u
+    override val id: UInt = 83u
 
-    public override val crcExtra: Byte = 22
+    override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): AttitudeTarget {
+    override fun deserialize(bytes: ByteArray): AttitudeTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

@@ -24,6 +24,7 @@ import kotlin.collections.List
 /**
  * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp
  * will disable signing
+ *
  */
 @GeneratedMavMessage(
   id = 256u,
@@ -51,9 +52,9 @@ public data class SetupSigning(
   @GeneratedMavField(type = "uint64_t")
   public val initialTimestamp: ULong = 0uL,
 ) : MavMessage<SetupSigning> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetupSigning> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetupSigning> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(initialTimestamp)
     encoder.encodeUInt8(targetSystem)
@@ -62,7 +63,7 @@ public data class SetupSigning(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(initialTimestamp)
     encoder.encodeUInt8(targetSystem)
@@ -76,11 +77,11 @@ public data class SetupSigning(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 256u
+    override val id: UInt = 256u
 
-    public override val crcExtra: Byte = 71
+    override val crcExtra: Byte = 71
 
-    public override fun deserialize(bytes: ByteArray): SetupSigning {
+    override fun deserialize(bytes: ByteArray): SetupSigning {
       val decoder = MavDataDecoder(bytes)
 
       val initialTimestamp = decoder.safeDecodeUInt64()

@@ -35,6 +35,7 @@ import kotlin.collections.List
  * Data for filling the OpenDroneID System message. The System Message contains general system
  * information including the operator location/altitude and possible aircraft group and/or
  * category/class information.
+ *
  */
 @GeneratedMavMessage(
   id = 12_904u,
@@ -123,9 +124,9 @@ public data class OpenDroneIdSystem(
   @GeneratedMavField(type = "uint32_t")
   public val timestamp: UInt = 0u,
 ) : MavMessage<OpenDroneIdSystem> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystem> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystem> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(operatorLatitude)
     encoder.encodeInt32(operatorLongitude)
@@ -145,7 +146,7 @@ public data class OpenDroneIdSystem(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(operatorLatitude)
     encoder.encodeInt32(operatorLongitude)
@@ -170,11 +171,11 @@ public data class OpenDroneIdSystem(
 
     private const val SIZE_V2: Int = 54
 
-    public override val id: UInt = 12_904u
+    override val id: UInt = 12_904u
 
-    public override val crcExtra: Byte = 77
+    override val crcExtra: Byte = 77
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdSystem {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdSystem {
       val decoder = MavDataDecoder(bytes)
 
       val operatorLatitude = decoder.safeDecodeInt32()

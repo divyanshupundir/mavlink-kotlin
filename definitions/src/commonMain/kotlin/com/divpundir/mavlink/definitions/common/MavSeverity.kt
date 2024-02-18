@@ -9,10 +9,11 @@ import kotlin.UInt
  * Indicates the severity level, generally used for status messages to indicate their relative
  * urgency. Based on RFC-5424 using expanded definitions at:
  * http://www.kiwisyslog.com/kb/info:-syslog-message-levels/.
+ *
  */
 @GeneratedMavEnum
 public enum class MavSeverity(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * System is unusable. This is a "panic" condition.
@@ -60,7 +61,7 @@ public enum class MavSeverity(
   ;
 
   public companion object : MavEnum.MavCompanion<MavSeverity> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavSeverity? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavSeverity? = when (v) {
       0u -> EMERGENCY
       1u -> ALERT
       2u -> CRITICAL

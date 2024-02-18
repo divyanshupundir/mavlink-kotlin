@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * Camera capability flags (Bitmap)
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class CameraCapFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Camera is able to record video
@@ -77,7 +78,7 @@ public enum class CameraCapFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<CameraCapFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraCapFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraCapFlags? = when (v) {
       1u -> CAPTURE_VIDEO
       2u -> CAPTURE_IMAGE
       4u -> HAS_MODES
@@ -93,7 +94,7 @@ public enum class CameraCapFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<CameraCapFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<CameraCapFlags> = buildList {
       if (v and 1u == 1u) add(CAPTURE_VIDEO)
       if (v and 2u == 2u) add(CAPTURE_IMAGE)
       if (v and 4u == 4u) add(HAS_MODES)

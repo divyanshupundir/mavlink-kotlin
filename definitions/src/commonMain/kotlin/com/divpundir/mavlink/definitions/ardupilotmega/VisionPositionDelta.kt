@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * Camera vision based attitude and position deltas.
+ *
  */
 @GeneratedMavMessage(
   id = 11_011u,
@@ -57,9 +58,9 @@ public data class VisionPositionDelta(
   @GeneratedMavField(type = "float")
   public val confidence: Float = 0F,
 ) : MavMessage<VisionPositionDelta> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt64(timeDeltaUsec)
@@ -69,7 +70,7 @@ public data class VisionPositionDelta(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt64(timeDeltaUsec)
@@ -84,11 +85,11 @@ public data class VisionPositionDelta(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 11_011u
+    override val id: UInt = 11_011u
 
-    public override val crcExtra: Byte = 106
+    override val crcExtra: Byte = 106
 
-    public override fun deserialize(bytes: ByteArray): VisionPositionDelta {
+    override fun deserialize(bytes: ByteArray): VisionPositionDelta {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

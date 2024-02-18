@@ -25,6 +25,7 @@ import kotlin.Unit
  * A ping message either requesting or responding to a ping. This allows to measure the system
  * latencies, including serial port, radio modem and UDP connections. The ping microservice is
  * documented at https://mavlink.io/en/services/ping.html
+ *
  */
 @Deprecated(message = "to be removed / merged with SYSTEM_TIME")
 @GeneratedMavMessage(
@@ -56,9 +57,9 @@ public data class Ping(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<Ping> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Ping> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Ping> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(seq)
@@ -67,7 +68,7 @@ public data class Ping(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(seq)
@@ -81,11 +82,11 @@ public data class Ping(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 4u
+    override val id: UInt = 4u
 
-    public override val crcExtra: Byte = -19
+    override val crcExtra: Byte = -19
 
-    public override fun deserialize(bytes: ByteArray): Ping {
+    override fun deserialize(bytes: ByteArray): Ping {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

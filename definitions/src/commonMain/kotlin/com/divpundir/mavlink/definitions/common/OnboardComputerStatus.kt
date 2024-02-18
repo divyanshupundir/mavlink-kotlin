@@ -35,6 +35,7 @@ import kotlin.collections.List
 
 /**
  * Hardware status sent by an onboard computer.
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -155,9 +156,9 @@ public data class OnboardComputerStatus(
   @GeneratedMavField(type = "uint32_t[6]")
   public val linkRxMax: List<UInt> = emptyList(),
 ) : MavMessage<OnboardComputerStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OnboardComputerStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OnboardComputerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(uptime)
@@ -182,7 +183,7 @@ public data class OnboardComputerStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(uptime)
@@ -212,11 +213,11 @@ public data class OnboardComputerStatus(
 
     private const val SIZE_V2: Int = 238
 
-    public override val id: UInt = 390u
+    override val id: UInt = 390u
 
-    public override val crcExtra: Byte = -100
+    override val crcExtra: Byte = -100
 
-    public override fun deserialize(bytes: ByteArray): OnboardComputerStatus {
+    override fun deserialize(bytes: ByteArray): OnboardComputerStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

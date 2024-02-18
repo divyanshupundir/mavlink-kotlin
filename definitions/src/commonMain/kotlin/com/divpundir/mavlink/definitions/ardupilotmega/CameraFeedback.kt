@@ -31,6 +31,7 @@ import kotlin.Unit
 
 /**
  * Camera Capture Feedback.
+ *
  */
 @GeneratedMavMessage(
   id = 180u,
@@ -112,9 +113,9 @@ public data class CameraFeedback(
   )
   public val completedCaptures: UShort = 0u,
 ) : MavMessage<CameraFeedback> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraFeedback> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraFeedback> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -132,7 +133,7 @@ public data class CameraFeedback(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -156,11 +157,11 @@ public data class CameraFeedback(
 
     private const val SIZE_V2: Int = 47
 
-    public override val id: UInt = 180u
+    override val id: UInt = 180u
 
-    public override val crcExtra: Byte = 52
+    override val crcExtra: Byte = 52
 
-    public override fun deserialize(bytes: ByteArray): CameraFeedback {
+    override fun deserialize(bytes: ByteArray): CameraFeedback {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

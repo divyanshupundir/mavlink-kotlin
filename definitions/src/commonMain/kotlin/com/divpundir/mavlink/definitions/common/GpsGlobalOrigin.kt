@@ -20,6 +20,7 @@ import kotlin.Unit
 /**
  * Publishes the GPS coordinates of the vehicle local origin (0,0,0) position. Emitted whenever a
  * new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
+ *
  */
 @GeneratedMavMessage(
   id = 49u,
@@ -51,9 +52,9 @@ public data class GpsGlobalOrigin(
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<GpsGlobalOrigin> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GpsGlobalOrigin> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GpsGlobalOrigin> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -61,7 +62,7 @@ public data class GpsGlobalOrigin(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -75,11 +76,11 @@ public data class GpsGlobalOrigin(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 49u
+    override val id: UInt = 49u
 
-    public override val crcExtra: Byte = 39
+    override val crcExtra: Byte = 39
 
-    public override fun deserialize(bytes: ByteArray): GpsGlobalOrigin {
+    override fun deserialize(bytes: ByteArray): GpsGlobalOrigin {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

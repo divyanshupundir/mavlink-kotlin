@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Cellular network radio type
+ *
  */
 @GeneratedMavEnum
 public enum class CellularNetworkRadioType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   NONE(0u),
@@ -25,7 +26,7 @@ public enum class CellularNetworkRadioType(
   ;
 
   public companion object : MavEnum.MavCompanion<CellularNetworkRadioType> {
-    public override fun getEntryFromValueOrNull(v: UInt): CellularNetworkRadioType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CellularNetworkRadioType? = when (v) {
       0u -> NONE
       1u -> GSM
       2u -> CDMA

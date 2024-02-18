@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * These encode the sensors whose status is sent as part of the SYS_STATUS message.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavSysStatusSensor(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 0x01 3D gyro
@@ -177,7 +178,7 @@ public enum class MavSysStatusSensor(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavSysStatusSensor> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensor? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensor? = when (v) {
       1u -> _3D_GYRO
       2u -> _3D_ACCEL
       4u -> _3D_MAG
@@ -213,7 +214,7 @@ public enum class MavSysStatusSensor(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavSysStatusSensor> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavSysStatusSensor> = buildList {
       if (v and 1u == 1u) add(_3D_GYRO)
       if (v and 2u == 2u) add(_3D_ACCEL)
       if (v and 4u == 4u) add(_3D_MAG)

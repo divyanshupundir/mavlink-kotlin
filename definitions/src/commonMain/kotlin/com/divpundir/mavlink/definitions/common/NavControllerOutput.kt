@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * The state of the navigation and position controller.
+ *
  */
 @GeneratedMavMessage(
   id = 62u,
@@ -70,9 +71,9 @@ public data class NavControllerOutput(
   @GeneratedMavField(type = "float")
   public val xtrackError: Float = 0F,
 ) : MavMessage<NavControllerOutput> {
-  public override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(navRoll)
     encoder.encodeFloat(navPitch)
@@ -85,7 +86,7 @@ public data class NavControllerOutput(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(navRoll)
     encoder.encodeFloat(navPitch)
@@ -103,11 +104,11 @@ public data class NavControllerOutput(
 
     private const val SIZE_V2: Int = 26
 
-    public override val id: UInt = 62u
+    override val id: UInt = 62u
 
-    public override val crcExtra: Byte = -73
+    override val crcExtra: Byte = -73
 
-    public override fun deserialize(bytes: ByteArray): NavControllerOutput {
+    override fun deserialize(bytes: ByteArray): NavControllerOutput {
       val decoder = MavDataDecoder(bytes)
 
       val navRoll = decoder.safeDecodeFloat()

@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Actions that may be specified in MAV_CMD_OVERRIDE_GOTO to override mission execution.
+ *
  */
 @GeneratedMavEnum
 public enum class MavGoto(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Hold at the current position.
@@ -35,7 +36,7 @@ public enum class MavGoto(
   ;
 
   public companion object : MavEnum.MavCompanion<MavGoto> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavGoto? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavGoto? = when (v) {
       0u -> DO_HOLD
       1u -> DO_CONTINUE
       2u -> HOLD_AT_CURRENT_POSITION

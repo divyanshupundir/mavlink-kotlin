@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Possible remote log data block statuses.
+ *
  */
 @GeneratedMavEnum
 public enum class MavRemoteLogDataBlockStatuses(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * This block has NOT been received.
@@ -25,8 +26,7 @@ public enum class MavRemoteLogDataBlockStatuses(
   ;
 
   public companion object : MavEnum.MavCompanion<MavRemoteLogDataBlockStatuses> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavRemoteLogDataBlockStatuses? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): MavRemoteLogDataBlockStatuses? = when (v) {
       0u -> MAV_REMOTE_LOG_DATA_BLOCK_NACK
       1u -> MAV_REMOTE_LOG_DATA_BLOCK_ACK
       else -> null

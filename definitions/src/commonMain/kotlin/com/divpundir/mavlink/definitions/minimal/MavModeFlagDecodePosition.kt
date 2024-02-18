@@ -10,10 +10,11 @@ import kotlin.collections.List
  * These values encode the bit positions of the decode position. These values can be used to read
  * the value of a flag bit by combining the base_mode variable with AND with the flag position value.
  * The result will be either 0 or 1, depending on if the flag is set or not.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlagDecodePosition(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * First bit:  10000000
@@ -58,7 +59,7 @@ public enum class MavModeFlagDecodePosition(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavModeFlagDecodePosition> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
       128u -> SAFETY
       64u -> MANUAL
       32u -> HIL
@@ -70,7 +71,7 @@ public enum class MavModeFlagDecodePosition(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavModeFlagDecodePosition> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavModeFlagDecodePosition> = buildList {
       if (v and 128u == 128u) add(SAFETY)
       if (v and 64u == 64u) add(MANUAL)
       if (v and 32u == 32u) add(HIL)

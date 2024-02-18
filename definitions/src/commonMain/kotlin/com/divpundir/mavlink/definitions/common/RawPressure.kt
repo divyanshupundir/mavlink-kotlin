@@ -21,6 +21,7 @@ import kotlin.Unit
 /**
  * The RAW pressure readings for the typical setup of one absolute pressure and one differential
  * pressure sensor. The sensor values should be the raw, UNSCALED ADC values.
+ *
  */
 @GeneratedMavMessage(
   id = 28u,
@@ -54,9 +55,9 @@ public data class RawPressure(
   @GeneratedMavField(type = "int16_t")
   public val temperature: Short = 0,
 ) : MavMessage<RawPressure> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RawPressure> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RawPressure> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt16(pressAbs)
@@ -66,7 +67,7 @@ public data class RawPressure(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt16(pressAbs)
@@ -81,11 +82,11 @@ public data class RawPressure(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 28u
+    override val id: UInt = 28u
 
-    public override val crcExtra: Byte = 67
+    override val crcExtra: Byte = 67
 
-    public override fun deserialize(bytes: ByteArray): RawPressure {
+    override fun deserialize(bytes: ByteArray): RawPressure {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

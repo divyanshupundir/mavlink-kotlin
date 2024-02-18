@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * Status of simulation environment, if used.
+ *
  */
 @GeneratedMavMessage(
   id = 164u,
@@ -81,9 +82,9 @@ public data class Simstate(
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
 ) : MavMessage<Simstate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -99,7 +100,7 @@ public data class Simstate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -120,11 +121,11 @@ public data class Simstate(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 164u
+    override val id: UInt = 164u
 
-    public override val crcExtra: Byte = -102
+    override val crcExtra: Byte = -102
 
-    public override fun deserialize(bytes: ByteArray): Simstate {
+    override fun deserialize(bytes: ByteArray): Simstate {
       val decoder = MavDataDecoder(bytes)
 
       val roll = decoder.safeDecodeFloat()

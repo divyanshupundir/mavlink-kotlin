@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MagCalStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   MAG_CAL_NOT_STARTED(0u),
@@ -28,7 +28,7 @@ public enum class MagCalStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<MagCalStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): MagCalStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MagCalStatus? = when (v) {
       0u -> MAG_CAL_NOT_STARTED
       1u -> MAG_CAL_WAITING_TO_START
       2u -> MAG_CAL_RUNNING_STEP_ONE

@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * A message containing logged data which requires a LOGGING_ACK to be sent back
+ *
  */
 @GeneratedMavMessage(
   id = 267u,
@@ -61,9 +62,9 @@ public data class LoggingDataAcked(
   @GeneratedMavField(type = "uint8_t[249]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<LoggingDataAcked> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LoggingDataAcked> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LoggingDataAcked> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -74,7 +75,7 @@ public data class LoggingDataAcked(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -90,11 +91,11 @@ public data class LoggingDataAcked(
 
     private const val SIZE_V2: Int = 255
 
-    public override val id: UInt = 267u
+    override val id: UInt = 267u
 
-    public override val crcExtra: Byte = 35
+    override val crcExtra: Byte = 35
 
-    public override fun deserialize(bytes: ByteArray): LoggingDataAcked {
+    override fun deserialize(bytes: ByteArray): LoggingDataAcked {
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()

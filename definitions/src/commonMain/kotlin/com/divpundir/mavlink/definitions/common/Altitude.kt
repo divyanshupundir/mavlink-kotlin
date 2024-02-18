@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * The current system altitude.
+ *
  */
 @GeneratedMavMessage(
   id = 141u,
@@ -74,9 +75,9 @@ public data class Altitude(
   @GeneratedMavField(type = "float")
   public val bottomClearance: Float = 0F,
 ) : MavMessage<Altitude> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Altitude> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Altitude> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(altitudeMonotonic)
@@ -88,7 +89,7 @@ public data class Altitude(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(altitudeMonotonic)
@@ -105,11 +106,11 @@ public data class Altitude(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 141u
+    override val id: UInt = 141u
 
-    public override val crcExtra: Byte = 47
+    override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): Altitude {
+    override fun deserialize(bytes: ByteArray): Altitude {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

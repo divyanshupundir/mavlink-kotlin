@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidHorAcc(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The horizontal accuracy is unknown.
@@ -77,7 +77,7 @@ public enum class MavOdidHorAcc(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidHorAcc> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidHorAcc? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidHorAcc? = when (v) {
       0u -> UNKNOWN
       1u -> _10NM
       2u -> _4NM

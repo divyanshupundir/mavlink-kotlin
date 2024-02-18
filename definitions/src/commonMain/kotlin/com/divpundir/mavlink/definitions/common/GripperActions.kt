@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Gripper actions.
+ *
  */
 @GeneratedMavEnum
 public enum class GripperActions(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gripper release cargo.
@@ -25,7 +26,7 @@ public enum class GripperActions(
   ;
 
   public companion object : MavEnum.MavCompanion<GripperActions> {
-    public override fun getEntryFromValueOrNull(v: UInt): GripperActions? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GripperActions? = when (v) {
       0u -> GRIPPER_ACTION_RELEASE
       1u -> GRIPPER_ACTION_GRAB
       else -> null

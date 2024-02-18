@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Enumeration of battery types
+ *
  */
 @GeneratedMavEnum
 public enum class MavBatteryType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not specified.
@@ -40,7 +41,7 @@ public enum class MavBatteryType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavBatteryType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavBatteryType? = when (v) {
       0u -> UNKNOWN
       1u -> LIPO
       2u -> LIFE

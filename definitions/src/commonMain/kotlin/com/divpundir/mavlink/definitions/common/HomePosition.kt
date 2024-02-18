@@ -38,6 +38,7 @@ import kotlin.collections.List
  *         Note: this message can be requested by sending the MAV_CMD_REQUEST_MESSAGE with
  * param1=242 (or the deprecated MAV_CMD_GET_HOME_POSITION command).
  *       
+ *
  */
 @GeneratedMavMessage(
   id = 242u,
@@ -119,9 +120,9 @@ public data class HomePosition(
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<HomePosition> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HomePosition> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HomePosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -136,7 +137,7 @@ public data class HomePosition(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -157,11 +158,11 @@ public data class HomePosition(
 
     private const val SIZE_V2: Int = 60
 
-    public override val id: UInt = 242u
+    override val id: UInt = 242u
 
-    public override val crcExtra: Byte = 104
+    override val crcExtra: Byte = 104
 
-    public override fun deserialize(bytes: ByteArray): HomePosition {
+    override fun deserialize(bytes: ByteArray): HomePosition {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

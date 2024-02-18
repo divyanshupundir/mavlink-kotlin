@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * These flags are used to diagnose the failure state of CELLULAR_STATUS
+ *
  */
 @GeneratedMavEnum
 public enum class CellularNetworkFailedReason(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No error
@@ -35,7 +36,7 @@ public enum class CellularNetworkFailedReason(
   ;
 
   public companion object : MavEnum.MavCompanion<CellularNetworkFailedReason> {
-    public override fun getEntryFromValueOrNull(v: UInt): CellularNetworkFailedReason? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CellularNetworkFailedReason? = when (v) {
       0u -> NONE
       1u -> UNKNOWN
       2u -> SIM_MISSING

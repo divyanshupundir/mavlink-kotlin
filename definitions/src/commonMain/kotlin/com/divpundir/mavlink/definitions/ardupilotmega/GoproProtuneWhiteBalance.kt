@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproProtuneWhiteBalance(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Auto.
@@ -37,7 +37,7 @@ public enum class GoproProtuneWhiteBalance(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproProtuneWhiteBalance> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneWhiteBalance? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproProtuneWhiteBalance? = when (v) {
       0u -> AUTO
       1u -> _3000K
       2u -> _5500K

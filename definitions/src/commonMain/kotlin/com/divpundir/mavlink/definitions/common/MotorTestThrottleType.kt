@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Defines how throttle value is represented in MAV_CMD_DO_MOTOR_TEST.
+ *
  */
 @GeneratedMavEnum
 public enum class MotorTestThrottleType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Throttle as a percentage (0 ~ 100)
@@ -35,7 +36,7 @@ public enum class MotorTestThrottleType(
   ;
 
   public companion object : MavEnum.MavCompanion<MotorTestThrottleType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MotorTestThrottleType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MotorTestThrottleType? = when (v) {
       0u -> MOTOR_TEST_THROTTLE_PERCENT
       1u -> MOTOR_TEST_THROTTLE_PWM
       2u -> MOTOR_TEST_THROTTLE_PILOT

@@ -28,6 +28,7 @@ import kotlin.Unit
 
 /**
  * Information about video stream
+ *
  */
 @GeneratedMavMessage(
   id = 50_002u,
@@ -76,10 +77,10 @@ public data class HerelinkVideoStreamInformation(
   @GeneratedMavField(type = "char[230]")
   public val uri: String = "",
 ) : MavMessage<HerelinkVideoStreamInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HerelinkVideoStreamInformation> =
+  override val instanceCompanion: MavMessage.MavCompanion<HerelinkVideoStreamInformation> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -92,7 +93,7 @@ public data class HerelinkVideoStreamInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -110,11 +111,11 @@ public data class HerelinkVideoStreamInformation(
 
     private const val SIZE_V2: Int = 246
 
-    public override val id: UInt = 50_002u
+    override val id: UInt = 50_002u
 
-    public override val crcExtra: Byte = -75
+    override val crcExtra: Byte = -75
 
-    public override fun deserialize(bytes: ByteArray): HerelinkVideoStreamInformation {
+    override fun deserialize(bytes: ByteArray): HerelinkVideoStreamInformation {
       val decoder = MavDataDecoder(bytes)
 
       val framerate = decoder.safeDecodeFloat()

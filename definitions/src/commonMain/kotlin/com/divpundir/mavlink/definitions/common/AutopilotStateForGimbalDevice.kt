@@ -37,6 +37,7 @@ import kotlin.collections.List
  * sent from the autopilot to the gimbal device component. The data of this message are for the gimbal
  * device's estimator corrections, in particular horizon compensation, as well as indicates autopilot
  * control intentions, e.g. feed forward angular control in the z-axis.
+ *
  */
 @GeneratedMavMessage(
   id = 286u,
@@ -114,10 +115,9 @@ public data class AutopilotStateForGimbalDevice(
   )
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<AutopilotStateForGimbalDevice> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeBootUs)
     encoder.encodeFloatArray(q, 16)
@@ -134,7 +134,7 @@ public data class AutopilotStateForGimbalDevice(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeBootUs)
     encoder.encodeFloatArray(q, 16)
@@ -157,11 +157,11 @@ public data class AutopilotStateForGimbalDevice(
 
     private const val SIZE_V2: Int = 57
 
-    public override val id: UInt = 286u
+    override val id: UInt = 286u
 
-    public override val crcExtra: Byte = -46
+    override val crcExtra: Byte = -46
 
-    public override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
+    override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootUs = decoder.safeDecodeUInt64()

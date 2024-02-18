@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Zoom types for MAV_CMD_SET_CAMERA_ZOOM
+ *
  */
 @GeneratedMavEnum
 public enum class CameraZoomType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Zoom one step increment (-1 for wide, 1 for tele)
@@ -42,7 +43,7 @@ public enum class CameraZoomType(
   ;
 
   public companion object : MavEnum.MavCompanion<CameraZoomType> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraZoomType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraZoomType? = when (v) {
       0u -> ZOOM_TYPE_STEP
       1u -> ZOOM_TYPE_CONTINUOUS
       2u -> ZOOM_TYPE_RANGE

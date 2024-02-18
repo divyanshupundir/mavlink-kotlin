@@ -32,6 +32,7 @@ import kotlin.collections.List
  * sufficient. NOTE: This message is intended for onboard networks / companion computers and
  * higher-bandwidth links and optimized for accuracy and completeness. Please use the
  * GLOBAL_POSITION_INT message for a minimal subset.
+ *
  */
 @GeneratedMavMessage(
   id = 63u,
@@ -92,9 +93,9 @@ public data class GlobalPositionIntCov(
   @GeneratedMavField(type = "float[36]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<GlobalPositionIntCov> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionIntCov> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionIntCov> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -109,7 +110,7 @@ public data class GlobalPositionIntCov(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -129,11 +130,11 @@ public data class GlobalPositionIntCov(
 
     private const val SIZE_V2: Int = 181
 
-    public override val id: UInt = 63u
+    override val id: UInt = 63u
 
-    public override val crcExtra: Byte = 119
+    override val crcExtra: Byte = 119
 
-    public override fun deserialize(bytes: ByteArray): GlobalPositionIntCov {
+    override fun deserialize(bytes: ByteArray): GlobalPositionIntCov {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

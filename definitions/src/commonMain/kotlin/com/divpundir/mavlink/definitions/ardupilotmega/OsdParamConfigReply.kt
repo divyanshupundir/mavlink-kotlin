@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * Configure OSD parameter reply.
+ *
  */
 @GeneratedMavMessage(
   id = 11_034u,
@@ -36,16 +37,16 @@ public data class OsdParamConfigReply(
   @GeneratedMavField(type = "uint8_t")
   public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0u),
 ) : MavMessage<OsdParamConfigReply> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfigReply> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfigReply> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(requestId)
     encoder.encodeEnumValue(result.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(requestId)
     encoder.encodeEnumValue(result.value, 1)
@@ -57,11 +58,11 @@ public data class OsdParamConfigReply(
 
     private const val SIZE_V2: Int = 5
 
-    public override val id: UInt = 11_034u
+    override val id: UInt = 11_034u
 
-    public override val crcExtra: Byte = 79
+    override val crcExtra: Byte = 79
 
-    public override fun deserialize(bytes: ByteArray): OsdParamConfigReply {
+    override fun deserialize(bytes: ByteArray): OsdParamConfigReply {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt32()

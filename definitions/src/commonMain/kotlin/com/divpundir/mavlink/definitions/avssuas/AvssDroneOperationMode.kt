@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  *  Drone operation mode.
+ *
  */
 @GeneratedMavMessage(
   id = 60_053u,
@@ -41,9 +42,9 @@ public data class AvssDroneOperationMode(
   @GeneratedMavField(type = "uint8_t")
   public val horseflyOperationMode: UByte = 0u,
 ) : MavMessage<AvssDroneOperationMode> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AvssDroneOperationMode> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AvssDroneOperationMode> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt8(m300OperationMode)
@@ -51,7 +52,7 @@ public data class AvssDroneOperationMode(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt8(m300OperationMode)
@@ -64,11 +65,11 @@ public data class AvssDroneOperationMode(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 60_053u
+    override val id: UInt = 60_053u
 
-    public override val crcExtra: Byte = 45
+    override val crcExtra: Byte = 45
 
-    public override fun deserialize(bytes: ByteArray): AvssDroneOperationMode {
+    override fun deserialize(bytes: ByteArray): AvssDroneOperationMode {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

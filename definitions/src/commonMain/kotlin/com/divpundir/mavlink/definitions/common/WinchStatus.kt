@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * Winch status.
+ *
  */
 @GeneratedMavMessage(
   id = 9_005u,
@@ -74,9 +75,9 @@ public data class WinchStatus(
   @GeneratedMavField(type = "uint32_t")
   public val status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<WinchStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WinchStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WinchStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(lineLength)
@@ -89,7 +90,7 @@ public data class WinchStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(lineLength)
@@ -107,11 +108,11 @@ public data class WinchStatus(
 
     private const val SIZE_V2: Int = 34
 
-    public override val id: UInt = 9_005u
+    override val id: UInt = 9_005u
 
-    public override val crcExtra: Byte = 117
+    override val crcExtra: Byte = 117
 
-    public override fun deserialize(bytes: ByteArray): WinchStatus {
+    override fun deserialize(bytes: ByteArray): WinchStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -35,6 +35,7 @@ import kotlin.Unit
  * MAV_CMD_PARAM_TRANSACTION). Within a transaction the receiving component should respond with
  * PARAM_ACK_TRANSACTION to the setter component (instead of broadcasting PARAM_VALUE), and PARAM_SET
  * should be re-sent if this is ACK not received.
+ *
  */
 @GeneratedMavMessage(
   id = 23u,
@@ -69,9 +70,9 @@ public data class ParamSet(
   @GeneratedMavField(type = "uint8_t")
   public val paramType: MavEnumValue<MavParamType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ParamSet> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamSet> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamSet> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(paramValue)
     encoder.encodeUInt8(targetSystem)
@@ -81,7 +82,7 @@ public data class ParamSet(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(paramValue)
     encoder.encodeUInt8(targetSystem)
@@ -96,11 +97,11 @@ public data class ParamSet(
 
     private const val SIZE_V2: Int = 23
 
-    public override val id: UInt = 23u
+    override val id: UInt = 23u
 
-    public override val crcExtra: Byte = -88
+    override val crcExtra: Byte = -88
 
-    public override fun deserialize(bytes: ByteArray): ParamSet {
+    override fun deserialize(bytes: ByteArray): ParamSet {
       val decoder = MavDataDecoder(bytes)
 
       val paramValue = decoder.safeDecodeFloat()

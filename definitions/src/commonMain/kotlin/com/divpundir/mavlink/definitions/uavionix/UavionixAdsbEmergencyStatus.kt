@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Emergency status encoding
+ *
  */
 @GeneratedMavEnum
 public enum class UavionixAdsbEmergencyStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   UAVIONIX_ADSB_OUT_NO_EMERGENCY(0u),
@@ -31,7 +32,7 @@ public enum class UavionixAdsbEmergencyStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<UavionixAdsbEmergencyStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbEmergencyStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbEmergencyStatus? = when (v) {
       0u -> UAVIONIX_ADSB_OUT_NO_EMERGENCY
       1u -> UAVIONIX_ADSB_OUT_GENERAL_EMERGENCY
       2u -> UAVIONIX_ADSB_OUT_LIFEGUARD_EMERGENCY

@@ -30,6 +30,7 @@ import kotlin.Unit
 
 /**
  * Second GPS data.
+ *
  */
 @GeneratedMavMessage(
   id = 124u,
@@ -148,9 +149,9 @@ public data class Gps2Raw(
   )
   public val hdgAcc: UInt = 0u,
 ) : MavMessage<Gps2Raw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Gps2Raw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Gps2Raw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -167,7 +168,7 @@ public data class Gps2Raw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -195,11 +196,11 @@ public data class Gps2Raw(
 
     private const val SIZE_V2: Int = 57
 
-    public override val id: UInt = 124u
+    override val id: UInt = 124u
 
-    public override val crcExtra: Byte = 87
+    override val crcExtra: Byte = 87
 
-    public override fun deserialize(bytes: ByteArray): Gps2Raw {
+    override fun deserialize(bytes: ByteArray): Gps2Raw {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

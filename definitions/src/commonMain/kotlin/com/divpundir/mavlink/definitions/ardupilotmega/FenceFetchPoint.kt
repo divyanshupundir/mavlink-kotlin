@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Request a current fence point from MAV.
+ *
  */
 @GeneratedMavMessage(
   id = 161u,
@@ -39,9 +40,9 @@ public data class FenceFetchPoint(
   @GeneratedMavField(type = "uint8_t")
   public val idx: UByte = 0u,
 ) : MavMessage<FenceFetchPoint> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FenceFetchPoint> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FenceFetchPoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -49,7 +50,7 @@ public data class FenceFetchPoint(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -62,11 +63,11 @@ public data class FenceFetchPoint(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 161u
+    override val id: UInt = 161u
 
-    public override val crcExtra: Byte = 68
+    override val crcExtra: Byte = 68
 
-    public override fun deserialize(bytes: ByteArray): FenceFetchPoint {
+    override fun deserialize(bytes: ByteArray): FenceFetchPoint {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

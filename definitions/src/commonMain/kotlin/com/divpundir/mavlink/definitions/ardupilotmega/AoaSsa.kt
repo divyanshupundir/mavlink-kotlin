@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Angle of Attack and Side Slip Angle.
+ *
  */
 @GeneratedMavMessage(
   id = 11_020u,
@@ -42,9 +43,9 @@ public data class AoaSsa(
   @GeneratedMavField(type = "float")
   public val ssa: Float = 0F,
 ) : MavMessage<AoaSsa> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AoaSsa> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AoaSsa> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(aoa)
@@ -52,7 +53,7 @@ public data class AoaSsa(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(aoa)
@@ -65,11 +66,11 @@ public data class AoaSsa(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 11_020u
+    override val id: UInt = 11_020u
 
-    public override val crcExtra: Byte = -51
+    override val crcExtra: Byte = -51
 
-    public override fun deserialize(bytes: ByteArray): AoaSsa {
+    override fun deserialize(bytes: ByteArray): AoaSsa {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

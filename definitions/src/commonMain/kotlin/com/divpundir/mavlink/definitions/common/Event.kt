@@ -29,6 +29,7 @@ import kotlin.collections.List
  * message might be sent multiple times if (re-)requested. Most events are broadcast, some can be
  * specific to a target component (as receivers keep track of the sequence for missed events, all
  * events need to be broadcast. Thus we use destination_component instead of target_component).
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -74,9 +75,9 @@ public data class Event(
   @GeneratedMavField(type = "uint8_t[40]")
   public val arguments: List<UByte> = emptyList(),
 ) : MavMessage<Event> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Event> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Event> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(id)
     encoder.encodeUInt32(eventTimeBootMs)
@@ -88,7 +89,7 @@ public data class Event(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(id)
     encoder.encodeUInt32(eventTimeBootMs)
@@ -105,11 +106,11 @@ public data class Event(
 
     private const val SIZE_V2: Int = 53
 
-    public override val id: UInt = 410u
+    override val id: UInt = 410u
 
-    public override val crcExtra: Byte = -96
+    override val crcExtra: Byte = -96
 
-    public override fun deserialize(bytes: ByteArray): Event {
+    override fun deserialize(bytes: ByteArray): Event {
       val decoder = MavDataDecoder(bytes)
 
       val id = decoder.safeDecodeUInt32()

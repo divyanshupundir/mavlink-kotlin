@@ -25,6 +25,7 @@ import kotlin.Unit
  * This message provides an API for manually controlling the vehicle using standard joystick axes
  * nomenclature, along with a joystick-like input device. Unused axes can be disabled and buttons
  * states are transmitted as individual on/off bits of a bitmask
+ *
  */
 @GeneratedMavMessage(
   id = 69u,
@@ -164,9 +165,9 @@ public data class ManualControl(
   )
   public val aux6: Short = 0,
 ) : MavMessage<ManualControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(x)
     encoder.encodeInt16(y)
@@ -177,7 +178,7 @@ public data class ManualControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(x)
     encoder.encodeInt16(y)
@@ -203,11 +204,11 @@ public data class ManualControl(
 
     private const val SIZE_V2: Int = 30
 
-    public override val id: UInt = 69u
+    override val id: UInt = 69u
 
-    public override val crcExtra: Byte = -13
+    override val crcExtra: Byte = -13
 
-    public override fun deserialize(bytes: ByteArray): ManualControl {
+    override fun deserialize(bytes: ByteArray): ManualControl {
       val decoder = MavDataDecoder(bytes)
 
       val x = decoder.safeDecodeInt16()

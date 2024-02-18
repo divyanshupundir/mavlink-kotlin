@@ -22,6 +22,7 @@ import kotlin.Unit
 /**
  * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but
  * a quite efficient way for testing new messages and getting experimental debug output.
+ *
  */
 @GeneratedMavMessage(
   id = 252u,
@@ -44,9 +45,9 @@ public data class NamedValueInt(
   @GeneratedMavField(type = "int32_t")
   public val `value`: Int = 0,
 ) : MavMessage<NamedValueInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<NamedValueInt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<NamedValueInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(value)
@@ -54,7 +55,7 @@ public data class NamedValueInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(value)
@@ -67,11 +68,11 @@ public data class NamedValueInt(
 
     private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 252u
+    override val id: UInt = 252u
 
-    public override val crcExtra: Byte = 44
+    override val crcExtra: Byte = 44
 
-    public override fun deserialize(bytes: ByteArray): NamedValueInt {
+    override fun deserialize(bytes: ByteArray): NamedValueInt {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Calibrated airflow angle measurements
+ *
  */
 @GeneratedMavMessage(
   id = 8_016u,
@@ -55,9 +56,9 @@ public data class SensorAirflowAngles(
   @GeneratedMavField(type = "uint8_t")
   public val sideslipValid: UByte = 0u,
 ) : MavMessage<SensorAirflowAngles> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensorAirflowAngles> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensorAirflowAngles> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(angleofattack)
@@ -67,7 +68,7 @@ public data class SensorAirflowAngles(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(angleofattack)
@@ -82,11 +83,11 @@ public data class SensorAirflowAngles(
 
     private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 8_016u
+    override val id: UInt = 8_016u
 
-    public override val crcExtra: Byte = -107
+    override val crcExtra: Byte = -107
 
-    public override fun deserialize(bytes: ByteArray): SensorAirflowAngles {
+    override fun deserialize(bytes: ByteArray): SensorAirflowAngles {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

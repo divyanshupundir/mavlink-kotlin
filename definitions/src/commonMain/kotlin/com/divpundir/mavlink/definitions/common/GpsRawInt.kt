@@ -32,6 +32,7 @@ import kotlin.Unit
  * The global position, as returned by the Global Positioning System (GPS). This is
  *                 NOT the global position estimate of the system, but rather a RAW sensor value.
  * See message GLOBAL_POSITION_INT for the global position estimate.
+ *
  */
 @GeneratedMavMessage(
   id = 24u,
@@ -141,9 +142,9 @@ public data class GpsRawInt(
   )
   public val yaw: UShort = 0u,
 ) : MavMessage<GpsRawInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GpsRawInt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GpsRawInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -158,7 +159,7 @@ public data class GpsRawInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -184,11 +185,11 @@ public data class GpsRawInt(
 
     private const val SIZE_V2: Int = 52
 
-    public override val id: UInt = 24u
+    override val id: UInt = 24u
 
-    public override val crcExtra: Byte = 24
+    override val crcExtra: Byte = 24
 
-    public override fun deserialize(bytes: ByteArray): GpsRawInt {
+    override fun deserialize(bytes: ByteArray): GpsRawInt {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

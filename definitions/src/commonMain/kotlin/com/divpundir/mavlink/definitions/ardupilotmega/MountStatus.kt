@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Message with some status from autopilot to GCS about camera or antenna mount.
+ *
  */
 @GeneratedMavMessage(
   id = 158u,
@@ -63,9 +64,9 @@ public data class MountStatus(
   )
   public val mountMode: MavEnumValue<MavMountMode> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MountStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MountStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MountStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(pointingA)
     encoder.encodeInt32(pointingB)
@@ -75,7 +76,7 @@ public data class MountStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(pointingA)
     encoder.encodeInt32(pointingB)
@@ -91,11 +92,11 @@ public data class MountStatus(
 
     private const val SIZE_V2: Int = 15
 
-    public override val id: UInt = 158u
+    override val id: UInt = 158u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): MountStatus {
+    override fun deserialize(bytes: ByteArray): MountStatus {
       val decoder = MavDataDecoder(bytes)
 
       val pointingA = decoder.safeDecodeInt32()

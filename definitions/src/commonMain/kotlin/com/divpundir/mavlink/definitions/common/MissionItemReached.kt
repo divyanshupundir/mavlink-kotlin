@@ -18,6 +18,7 @@ import kotlin.Unit
 /**
  * A certain mission item has been reached. The system will either hold this position (or circle on
  * the orbit) or (if the autocontinue on the WP was set) continue to the next waypoint.
+ *
  */
 @GeneratedMavMessage(
   id = 46u,
@@ -30,15 +31,15 @@ public data class MissionItemReached(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
 ) : MavMessage<MissionItemReached> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionItemReached> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionItemReached> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seq)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seq)
     return encoder.bytes.truncateZeros()
@@ -49,11 +50,11 @@ public data class MissionItemReached(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 46u
+    override val id: UInt = 46u
 
-    public override val crcExtra: Byte = 11
+    override val crcExtra: Byte = 11
 
-    public override fun deserialize(bytes: ByteArray): MissionItemReached {
+    override fun deserialize(bytes: ByteArray): MissionItemReached {
       val decoder = MavDataDecoder(bytes)
 
       val seq = decoder.safeDecodeUInt16()

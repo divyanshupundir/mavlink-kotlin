@@ -33,6 +33,7 @@ import kotlin.collections.List
 /**
  * Obstacle distances in front of the sensor, starting from the left in increment degrees to the
  * right
+ *
  */
 @GeneratedMavMessage(
   id = 330u,
@@ -104,9 +105,9 @@ public data class ObstacleDistance(
   )
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ObstacleDistance> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16Array(distances, 144)
@@ -117,7 +118,7 @@ public data class ObstacleDistance(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16Array(distances, 144)
@@ -136,11 +137,11 @@ public data class ObstacleDistance(
 
     private const val SIZE_V2: Int = 167
 
-    public override val id: UInt = 330u
+    override val id: UInt = 330u
 
-    public override val crcExtra: Byte = 23
+    override val crcExtra: Byte = 23
 
-    public override fun deserialize(bytes: ByteArray): ObstacleDistance {
+    override fun deserialize(bytes: ByteArray): ObstacleDistance {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

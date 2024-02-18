@@ -23,6 +23,7 @@ import kotlin.Unit
 /**
  * Report status of a command. Includes feedback whether the command was executed. The command
  * microservice is documented at https://mavlink.io/en/services/command.html
+ *
  */
 @GeneratedMavMessage(
   id = 77u,
@@ -78,16 +79,16 @@ public data class CommandAck(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<CommandAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandAck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(command.value, 2)
     encoder.encodeEnumValue(result.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(command.value, 2)
     encoder.encodeEnumValue(result.value, 1)
@@ -103,11 +104,11 @@ public data class CommandAck(
 
     private const val SIZE_V2: Int = 10
 
-    public override val id: UInt = 77u
+    override val id: UInt = 77u
 
-    public override val crcExtra: Byte = -113
+    override val crcExtra: Byte = -113
 
-    public override fun deserialize(bytes: ByteArray): CommandAck {
+    override fun deserialize(bytes: ByteArray): CommandAck {
       val decoder = MavDataDecoder(bytes)
 
       val command = decoder.safeDecodeEnumValue(2).let { value ->

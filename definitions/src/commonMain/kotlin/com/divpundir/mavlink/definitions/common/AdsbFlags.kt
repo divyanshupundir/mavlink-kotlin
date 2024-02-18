@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * These flags indicate status such as data validity of each data source. Set = data valid
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AdsbFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   @GeneratedMavEnumEntry
   VALID_COORDS(1u),
@@ -36,7 +37,7 @@ public enum class AdsbFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<AdsbFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): AdsbFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AdsbFlags? = when (v) {
       1u -> VALID_COORDS
       2u -> VALID_ALTITUDE
       4u -> VALID_HEADING
@@ -50,7 +51,7 @@ public enum class AdsbFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<AdsbFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<AdsbFlags> = buildList {
       if (v and 1u == 1u) add(VALID_COORDS)
       if (v and 2u == 2u) add(VALID_ALTITUDE)
       if (v and 4u == 4u) add(VALID_HEADING)

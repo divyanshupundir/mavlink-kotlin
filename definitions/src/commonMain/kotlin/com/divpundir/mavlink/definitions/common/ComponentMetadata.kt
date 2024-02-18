@@ -33,6 +33,7 @@ import kotlin.Unit
  *         Note: Camera components should use CAMERA_INFORMATION instead, and autopilots may use
  * both this message and AUTOPILOT_VERSION.
  *       
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -59,9 +60,9 @@ public data class ComponentMetadata(
   @GeneratedMavField(type = "char[100]")
   public val uri: String = "",
 ) : MavMessage<ComponentMetadata> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ComponentMetadata> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ComponentMetadata> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(fileCrc)
@@ -69,7 +70,7 @@ public data class ComponentMetadata(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(fileCrc)
@@ -82,11 +83,11 @@ public data class ComponentMetadata(
 
     private const val SIZE_V2: Int = 108
 
-    public override val id: UInt = 397u
+    override val id: UInt = 397u
 
-    public override val crcExtra: Byte = -74
+    override val crcExtra: Byte = -74
 
-    public override fun deserialize(bytes: ByteArray): ComponentMetadata {
+    override fun deserialize(bytes: ByteArray): ComponentMetadata {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

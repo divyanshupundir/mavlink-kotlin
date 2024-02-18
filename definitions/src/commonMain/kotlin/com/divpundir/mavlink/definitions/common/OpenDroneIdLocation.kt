@@ -35,6 +35,7 @@ import kotlin.collections.List
 /**
  * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The
  * Location message provides the location, altitude, direction and speed of the aircraft.
+ *
  */
 @GeneratedMavMessage(
   id = 12_901u,
@@ -145,9 +146,9 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "uint8_t")
   public val timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0u),
 ) : MavMessage<OpenDroneIdLocation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdLocation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdLocation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -171,7 +172,7 @@ public data class OpenDroneIdLocation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -200,11 +201,11 @@ public data class OpenDroneIdLocation(
 
     private const val SIZE_V2: Int = 59
 
-    public override val id: UInt = 12_901u
+    override val id: UInt = 12_901u
 
-    public override val crcExtra: Byte = -2
+    override val crcExtra: Byte = -2
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdLocation {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdLocation {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

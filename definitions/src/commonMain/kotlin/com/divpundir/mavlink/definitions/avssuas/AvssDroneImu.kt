@@ -20,6 +20,7 @@ import kotlin.Unit
 /**
  *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0
  * 0).
+ *
  */
 @GeneratedMavMessage(
   id = 60_052u,
@@ -82,9 +83,9 @@ public data class AvssDroneImu(
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
 ) : MavMessage<AvssDroneImu> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -100,7 +101,7 @@ public data class AvssDroneImu(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -121,11 +122,11 @@ public data class AvssDroneImu(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 60_052u
+    override val id: UInt = 60_052u
 
-    public override val crcExtra: Byte = 101
+    override val crcExtra: Byte = 101
 
-    public override fun deserialize(bytes: ByteArray): AvssDroneImu {
+    override fun deserialize(bytes: ByteArray): AvssDroneImu {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

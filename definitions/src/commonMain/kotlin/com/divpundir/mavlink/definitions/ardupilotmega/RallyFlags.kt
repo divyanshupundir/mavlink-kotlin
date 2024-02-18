@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * Flags in RALLY_POINT message.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class RallyFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Flag set when requiring favorable winds for landing.
@@ -27,13 +28,13 @@ public enum class RallyFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<RallyFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): RallyFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): RallyFlags? = when (v) {
       1u -> FAVORABLE_WIND
       2u -> LAND_IMMEDIATELY
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<RallyFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<RallyFlags> = buildList {
       if (v and 1u == 1u) add(FAVORABLE_WIND)
       if (v and 2u == 2u) add(LAND_IMMEDIATELY)
     }

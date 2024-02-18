@@ -27,6 +27,7 @@ import kotlin.collections.List
  * forwarding work well on low bandwidth links. The filtering is applied on bits 8 to 24 of the CAN id
  * (2nd and 3rd bytes) which corresponds to the DroneCAN message ID for DroneCAN. Filters with more
  * than 16 IDs can be constructed by sending multiple CAN_FILTER_MODIFY messages.
+ *
  */
 @GeneratedMavMessage(
   id = 388u,
@@ -64,9 +65,9 @@ public data class CanFilterModify(
   @GeneratedMavField(type = "uint16_t[16]")
   public val ids: List<UShort> = emptyList(),
 ) : MavMessage<CanFilterModify> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CanFilterModify> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CanFilterModify> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16Array(ids, 32)
     encoder.encodeUInt8(targetSystem)
@@ -77,7 +78,7 @@ public data class CanFilterModify(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16Array(ids, 32)
     encoder.encodeUInt8(targetSystem)
@@ -93,11 +94,11 @@ public data class CanFilterModify(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 388u
+    override val id: UInt = 388u
 
-    public override val crcExtra: Byte = 8
+    override val crcExtra: Byte = 8
 
-    public override fun deserialize(bytes: ByteArray): CanFilterModify {
+    override fun deserialize(bytes: ByteArray): CanFilterModify {
       val decoder = MavDataDecoder(bytes)
 
       val ids = decoder.safeDecodeUInt16Array(32)

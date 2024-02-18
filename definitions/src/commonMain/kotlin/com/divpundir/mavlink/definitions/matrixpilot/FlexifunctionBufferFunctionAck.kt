@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Flexifunction type and parameters for component at function index from buffer
+ *
  */
 @GeneratedMavMessage(
   id = 153u,
@@ -47,10 +48,10 @@ public data class FlexifunctionBufferFunctionAck(
   @GeneratedMavField(type = "uint16_t")
   public val result: UShort = 0u,
 ) : MavMessage<FlexifunctionBufferFunctionAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunctionAck> =
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunctionAck> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(funcIndex)
     encoder.encodeUInt16(result)
@@ -59,7 +60,7 @@ public data class FlexifunctionBufferFunctionAck(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(funcIndex)
     encoder.encodeUInt16(result)
@@ -73,11 +74,11 @@ public data class FlexifunctionBufferFunctionAck(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 153u
+    override val id: UInt = 153u
 
-    public override val crcExtra: Byte = 109
+    override val crcExtra: Byte = 109
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunctionAck {
+    override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunctionAck {
       val decoder = MavDataDecoder(bytes)
 
       val funcIndex = decoder.safeDecodeUInt16()

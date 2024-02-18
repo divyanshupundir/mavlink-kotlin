@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * Message to control a camera mount, directional antenna, etc.
+ *
  */
 @GeneratedMavMessage(
   id = 157u,
@@ -56,9 +57,9 @@ public data class MountControl(
   @GeneratedMavField(type = "uint8_t")
   public val savePosition: UByte = 0u,
 ) : MavMessage<MountControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MountControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MountControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(inputA)
     encoder.encodeInt32(inputB)
@@ -69,7 +70,7 @@ public data class MountControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(inputA)
     encoder.encodeInt32(inputB)
@@ -85,11 +86,11 @@ public data class MountControl(
 
     private const val SIZE_V2: Int = 15
 
-    public override val id: UInt = 157u
+    override val id: UInt = 157u
 
-    public override val crcExtra: Byte = 21
+    override val crcExtra: Byte = 21
 
-    public override fun deserialize(bytes: ByteArray): MountControl {
+    override fun deserialize(bytes: ByteArray): MountControl {
       val decoder = MavDataDecoder(bytes)
 
       val inputA = decoder.safeDecodeInt32()

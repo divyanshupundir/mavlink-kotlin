@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Enumeration of battery functions
+ *
  */
 @GeneratedMavEnum
 public enum class MavBatteryFunction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Battery function is unknown
@@ -40,7 +41,7 @@ public enum class MavBatteryFunction(
   ;
 
   public companion object : MavEnum.MavCompanion<MavBatteryFunction> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryFunction? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavBatteryFunction? = when (v) {
       0u -> UNKNOWN
       1u -> ALL
       2u -> PROPULSION

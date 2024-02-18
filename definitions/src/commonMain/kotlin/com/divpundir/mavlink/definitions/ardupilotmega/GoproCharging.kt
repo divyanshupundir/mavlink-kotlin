@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproCharging(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Charging disabled.
@@ -22,7 +22,7 @@ public enum class GoproCharging(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproCharging> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproCharging? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproCharging? = when (v) {
       0u -> DISABLED
       1u -> ENABLED
       else -> null

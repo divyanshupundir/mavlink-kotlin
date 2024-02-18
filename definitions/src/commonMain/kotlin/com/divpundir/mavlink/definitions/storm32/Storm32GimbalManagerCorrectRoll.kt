@@ -25,6 +25,7 @@ import kotlin.Unit
  * Message to a gimbal manager to correct the gimbal roll angle. This message is typically used to
  * manually correct for a tilted horizon in operation. A gimbal device is never to react to this
  * message.
+ *
  */
 @GeneratedMavMessage(
   id = 60_014u,
@@ -58,10 +59,10 @@ public data class Storm32GimbalManagerCorrectRoll(
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerCorrectRoll> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerCorrectRoll> =
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerCorrectRoll> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(roll)
     encoder.encodeUInt8(targetSystem)
@@ -71,7 +72,7 @@ public data class Storm32GimbalManagerCorrectRoll(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(roll)
     encoder.encodeUInt8(targetSystem)
@@ -86,11 +87,11 @@ public data class Storm32GimbalManagerCorrectRoll(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 60_014u
+    override val id: UInt = 60_014u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerCorrectRoll {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerCorrectRoll {
       val decoder = MavDataDecoder(bytes)
 
       val roll = decoder.safeDecodeFloat()

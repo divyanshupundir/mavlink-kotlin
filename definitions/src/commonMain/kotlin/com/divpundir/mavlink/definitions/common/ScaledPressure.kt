@@ -23,6 +23,7 @@ import kotlin.Unit
 /**
  * The pressure readings for the typical setup of one absolute and differential pressure sensor. The
  * units are as specified in each field.
+ *
  */
 @GeneratedMavMessage(
   id = 29u,
@@ -58,9 +59,9 @@ public data class ScaledPressure(
   )
   public val temperaturePressDiff: Short = 0,
 ) : MavMessage<ScaledPressure> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(pressAbs)
@@ -69,7 +70,7 @@ public data class ScaledPressure(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(pressAbs)
@@ -84,11 +85,11 @@ public data class ScaledPressure(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 29u
+    override val id: UInt = 29u
 
-    public override val crcExtra: Byte = 115
+    override val crcExtra: Byte = 115
 
-    public override fun deserialize(bytes: ByteArray): ScaledPressure {
+    override fun deserialize(bytes: ByteArray): ScaledPressure {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

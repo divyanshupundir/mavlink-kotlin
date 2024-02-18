@@ -34,6 +34,7 @@ import kotlin.Unit
  * EMERGENCY states the MAV is still considered to be active, but should start emergency procedures
  * autonomously. After a failure occurred it should first move from active to critical to allow manual
  * intervention and then move to emergency after a certain timeout.
+ *
  */
 @GeneratedMavMessage(
   id = 1u,
@@ -144,9 +145,9 @@ public data class SysStatus(
   public val onboardControlSensorsHealthExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
       MavBitmaskValue.fromValue(0u),
 ) : MavMessage<SysStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
     encoder.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
@@ -164,7 +165,7 @@ public data class SysStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
     encoder.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
@@ -190,11 +191,11 @@ public data class SysStatus(
 
     private const val SIZE_V2: Int = 43
 
-    public override val id: UInt = 1u
+    override val id: UInt = 1u
 
-    public override val crcExtra: Byte = 124
+    override val crcExtra: Byte = 124
 
-    public override fun deserialize(bytes: ByteArray): SysStatus {
+    override fun deserialize(bytes: ByteArray): SysStatus {
       val decoder = MavDataDecoder(bytes)
 
       val onboardControlSensorsPresent = decoder.safeDecodeBitmaskValue(4).let { value ->

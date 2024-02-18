@@ -37,6 +37,7 @@ import kotlin.Unit
  *         The message sequence is repeated numerous times with results being filtered/averaged to
  * estimate the offset.
  *       
+ *
  */
 @GeneratedMavMessage(
   id = 111u,
@@ -72,16 +73,16 @@ public data class Timesync(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<Timesync> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt64(tc1)
     encoder.encodeInt64(ts1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt64(tc1)
     encoder.encodeInt64(ts1)
@@ -95,11 +96,11 @@ public data class Timesync(
 
     private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 111u
+    override val id: UInt = 111u
 
-    public override val crcExtra: Byte = 34
+    override val crcExtra: Byte = 34
 
-    public override fun deserialize(bytes: ByteArray): Timesync {
+    override fun deserialize(bytes: ByteArray): Timesync {
       val decoder = MavDataDecoder(bytes)
 
       val tc1 = decoder.safeDecodeInt64()

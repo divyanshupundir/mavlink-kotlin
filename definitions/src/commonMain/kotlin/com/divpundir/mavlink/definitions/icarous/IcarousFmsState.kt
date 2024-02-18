@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class IcarousFmsState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   IDLE(0u),
@@ -24,7 +24,7 @@ public enum class IcarousFmsState(
   ;
 
   public companion object : MavEnum.MavCompanion<IcarousFmsState> {
-    public override fun getEntryFromValueOrNull(v: UInt): IcarousFmsState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): IcarousFmsState? = when (v) {
       0u -> IDLE
       1u -> TAKEOFF
       2u -> CLIMB

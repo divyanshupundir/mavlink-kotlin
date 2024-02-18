@@ -23,6 +23,7 @@ import kotlin.Unit
 /**
  * Current status about a high level gimbal manager. This message should be broadcast at a low
  * regular rate (e.g. 5Hz).
+ *
  */
 @GeneratedMavMessage(
   id = 281u,
@@ -66,9 +67,9 @@ public data class GimbalManagerStatus(
   @GeneratedMavField(type = "uint8_t")
   public val secondaryControlCompid: UByte = 0u,
 ) : MavMessage<GimbalManagerStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeBitmaskValue(flags.value, 4)
@@ -80,7 +81,7 @@ public data class GimbalManagerStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeBitmaskValue(flags.value, 4)
@@ -97,11 +98,11 @@ public data class GimbalManagerStatus(
 
     private const val SIZE_V2: Int = 13
 
-    public override val id: UInt = 281u
+    override val id: UInt = 281u
 
-    public override val crcExtra: Byte = 48
+    override val crcExtra: Byte = 48
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerStatus {
+    override fun deserialize(bytes: ByteArray): GimbalManagerStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

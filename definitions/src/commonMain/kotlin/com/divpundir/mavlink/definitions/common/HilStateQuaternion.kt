@@ -32,6 +32,7 @@ import kotlin.collections.List
 /**
  * Sent from simulation to autopilot, avoids in contrast to HIL_STATE singularities. This packet is
  * useful for high throughput applications such as hardware in the loop simulations.
+ *
  */
 @GeneratedMavMessage(
   id = 115u,
@@ -121,9 +122,9 @@ public data class HilStateQuaternion(
   @GeneratedMavField(type = "int16_t")
   public val zacc: Short = 0,
 ) : MavMessage<HilStateQuaternion> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilStateQuaternion> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilStateQuaternion> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(attitudeQuaternion, 16)
@@ -144,7 +145,7 @@ public data class HilStateQuaternion(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(attitudeQuaternion, 16)
@@ -170,11 +171,11 @@ public data class HilStateQuaternion(
 
     private const val SIZE_V2: Int = 64
 
-    public override val id: UInt = 115u
+    override val id: UInt = 115u
 
-    public override val crcExtra: Byte = 4
+    override val crcExtra: Byte = 4
 
-    public override fun deserialize(bytes: ByteArray): HilStateQuaternion {
+    override fun deserialize(bytes: ByteArray): HilStateQuaternion {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

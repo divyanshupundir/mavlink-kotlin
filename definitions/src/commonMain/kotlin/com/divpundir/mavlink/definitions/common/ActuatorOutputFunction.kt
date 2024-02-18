@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Actuator output function. Values greater or equal to 1000 are autopilot-specific.
+ *
  */
 @GeneratedMavEnum
 public enum class ActuatorOutputFunction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No function (disabled).
@@ -180,7 +181,7 @@ public enum class ActuatorOutputFunction(
   ;
 
   public companion object : MavEnum.MavCompanion<ActuatorOutputFunction> {
-    public override fun getEntryFromValueOrNull(v: UInt): ActuatorOutputFunction? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): ActuatorOutputFunction? = when (v) {
       0u -> NONE
       1u -> MOTOR1
       2u -> MOTOR2

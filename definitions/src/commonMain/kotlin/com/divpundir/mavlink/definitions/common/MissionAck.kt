@@ -7,8 +7,10 @@ import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
+import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
@@ -21,6 +23,7 @@ import kotlin.Unit
 /**
  * Acknowledgment message during waypoint handling. The type field states if this message is a
  * positive ack (type=0) or if an error happened (type=non-zero).
+ *
  */
 @GeneratedMavMessage(
   id = 47u,
@@ -50,10 +53,26 @@ public data class MissionAck(
     extension = true,
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
+  /**
+   * Id of new on-vehicle mission, fence, or rally point plan (on upload to vehicle).
+   *         The id is calculated and returned by a vehicle when a new plan is uploaded by a GCS.
+   *         The only requirement on the id is that it must change when there is any change to the
+   * on-vehicle plan type (there is no requirement that the id be globally unique).
+   *         0 on download from the vehicle to the GCS (on download the ID is set in MISSION_COUNT).
+   *         0 if plan ids are not supported.
+   *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to
+   * determine if any part of the plan has changed and needs to be re-uploaded.
+   *       
+   */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
+  public val opaqueId: UInt = 0u,
 ) : MavMessage<MissionAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionAck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -61,25 +80,26 @@ public data class MissionAck(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     encoder.encodeEnumValue(type.value, 1)
     encoder.encodeEnumValue(missionType.value, 1)
+    encoder.encodeUInt32(opaqueId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MissionAck> {
     private const val SIZE_V1: Int = 3
 
-    private const val SIZE_V2: Int = 4
+    private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 47u
+    override val id: UInt = 47u
 
-    public override val crcExtra: Byte = -103
+    override val crcExtra: Byte = -103
 
-    public override fun deserialize(bytes: ByteArray): MissionAck {
+    override fun deserialize(bytes: ByteArray): MissionAck {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()
@@ -92,12 +112,14 @@ public data class MissionAck(
         val entry = MavMissionType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val opaqueId = decoder.safeDecodeUInt32()
 
       return MissionAck(
         targetSystem = targetSystem,
         targetComponent = targetComponent,
         type = type,
         missionType = missionType,
+        opaqueId = opaqueId,
       )
     }
 
@@ -114,11 +136,14 @@ public data class MissionAck(
 
     public var missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u)
 
+    public var opaqueId: UInt = 0u
+
     public fun build(): MissionAck = MissionAck(
       targetSystem = targetSystem,
       targetComponent = targetComponent,
       type = type,
       missionType = missionType,
+      opaqueId = opaqueId,
     )
   }
 }

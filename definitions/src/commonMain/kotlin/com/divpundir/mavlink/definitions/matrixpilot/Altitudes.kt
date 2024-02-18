@@ -18,6 +18,7 @@ import kotlin.Unit
 
 /**
  * The altitude measured by sensors and IMU
+ *
  */
 @GeneratedMavMessage(
   id = 181u,
@@ -60,9 +61,9 @@ public data class Altitudes(
   @GeneratedMavField(type = "int32_t")
   public val altExtra: Int = 0,
 ) : MavMessage<Altitudes> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Altitudes> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Altitudes> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(altGps)
@@ -74,7 +75,7 @@ public data class Altitudes(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(altGps)
@@ -91,11 +92,11 @@ public data class Altitudes(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 181u
+    override val id: UInt = 181u
 
-    public override val crcExtra: Byte = 55
+    override val crcExtra: Byte = 55
 
-    public override fun deserialize(bytes: ByteArray): Altitudes {
+    override fun deserialize(bytes: ByteArray): Altitudes {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

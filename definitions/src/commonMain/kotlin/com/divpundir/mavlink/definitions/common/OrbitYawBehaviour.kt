@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Yaw behaviour during orbit flight.
+ *
  */
 @GeneratedMavEnum
 public enum class OrbitYawBehaviour(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Vehicle front points to the center (default).
@@ -40,7 +41,7 @@ public enum class OrbitYawBehaviour(
   ;
 
   public companion object : MavEnum.MavCompanion<OrbitYawBehaviour> {
-    public override fun getEntryFromValueOrNull(v: UInt): OrbitYawBehaviour? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): OrbitYawBehaviour? = when (v) {
       0u -> HOLD_FRONT_TO_CIRCLE_CENTER
       1u -> HOLD_INITIAL_HEADING
       2u -> UNCONTROLLED

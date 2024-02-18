@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Temperature and humidity from hygrometer.
+ *
  */
 @GeneratedMavMessage(
   id = 12_920u,
@@ -45,9 +46,9 @@ public data class HygrometerSensor(
   @GeneratedMavField(type = "uint16_t")
   public val humidity: UShort = 0u,
 ) : MavMessage<HygrometerSensor> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HygrometerSensor> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HygrometerSensor> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(temperature)
     encoder.encodeUInt16(humidity)
@@ -55,7 +56,7 @@ public data class HygrometerSensor(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(temperature)
     encoder.encodeUInt16(humidity)
@@ -68,11 +69,11 @@ public data class HygrometerSensor(
 
     private const val SIZE_V2: Int = 5
 
-    public override val id: UInt = 12_920u
+    override val id: UInt = 12_920u
 
-    public override val crcExtra: Byte = 20
+    override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): HygrometerSensor {
+    override fun deserialize(bytes: ByteArray): HygrometerSensor {
       val decoder = MavDataDecoder(bytes)
 
       val temperature = decoder.safeDecodeInt16()

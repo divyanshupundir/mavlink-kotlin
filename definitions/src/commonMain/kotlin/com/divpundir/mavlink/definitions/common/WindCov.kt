@@ -21,6 +21,7 @@ import kotlin.Unit
 /**
  * Wind estimate from vehicle. Note that despite the name, this message does not actually contain
  * any covariances but instead variability and accuracy fields in terms of standard deviation (1-STD).
+ *
  */
 @GeneratedMavMessage(
   id = 231u,
@@ -74,9 +75,9 @@ public data class WindCov(
   @GeneratedMavField(type = "float")
   public val vertAccuracy: Float = 0F,
 ) : MavMessage<WindCov> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(windX)
@@ -90,7 +91,7 @@ public data class WindCov(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(windX)
@@ -109,11 +110,11 @@ public data class WindCov(
 
     private const val SIZE_V2: Int = 40
 
-    public override val id: UInt = 231u
+    override val id: UInt = 231u
 
-    public override val crcExtra: Byte = 105
+    override val crcExtra: Byte = 105
 
-    public override fun deserialize(bytes: ByteArray): WindCov {
+    override fun deserialize(bytes: ByteArray): WindCov {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

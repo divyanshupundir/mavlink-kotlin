@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class PidTuningAxis(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   PID_TUNING_ROLL(1u),
@@ -24,7 +24,7 @@ public enum class PidTuningAxis(
   ;
 
   public companion object : MavEnum.MavCompanion<PidTuningAxis> {
-    public override fun getEntryFromValueOrNull(v: UInt): PidTuningAxis? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): PidTuningAxis? = when (v) {
       1u -> PID_TUNING_ROLL
       2u -> PID_TUNING_PITCH
       3u -> PID_TUNING_YAW

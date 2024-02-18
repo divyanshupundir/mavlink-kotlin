@@ -27,6 +27,7 @@ import kotlin.collections.List
 /**
  * Data for filling the OpenDroneID Operator ID message, which contains the CAA (Civil Aviation
  * Authority) issued operator ID.
+ *
  */
 @GeneratedMavMessage(
   id = 12_905u,
@@ -61,9 +62,9 @@ public data class OpenDroneIdOperatorId(
   @GeneratedMavField(type = "char[20]")
   public val operatorId: String = "",
 ) : MavMessage<OpenDroneIdOperatorId> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdOperatorId> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdOperatorId> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -73,7 +74,7 @@ public data class OpenDroneIdOperatorId(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -88,11 +89,11 @@ public data class OpenDroneIdOperatorId(
 
     private const val SIZE_V2: Int = 43
 
-    public override val id: UInt = 12_905u
+    override val id: UInt = 12_905u
 
-    public override val crcExtra: Byte = 49
+    override val crcExtra: Byte = 49
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdOperatorId {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdOperatorId {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

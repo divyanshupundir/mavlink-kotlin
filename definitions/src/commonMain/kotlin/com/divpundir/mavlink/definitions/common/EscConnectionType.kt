@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Indicates the ESC connection type.
+ *
  */
 @GeneratedMavEnum
 public enum class EscConnectionType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Traditional PPM ESC.
@@ -45,7 +46,7 @@ public enum class EscConnectionType(
   ;
 
   public companion object : MavEnum.MavCompanion<EscConnectionType> {
-    public override fun getEntryFromValueOrNull(v: UInt): EscConnectionType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): EscConnectionType? = when (v) {
       0u -> PPM
       1u -> SERIAL
       2u -> ONESHOT

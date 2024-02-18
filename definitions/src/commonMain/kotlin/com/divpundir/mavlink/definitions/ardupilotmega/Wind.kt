@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Wind estimation.
+ *
  */
 @GeneratedMavMessage(
   id = 168u,
@@ -39,9 +40,9 @@ public data class Wind(
   @GeneratedMavField(type = "float")
   public val speedZ: Float = 0F,
 ) : MavMessage<Wind> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(direction)
     encoder.encodeFloat(speed)
@@ -49,7 +50,7 @@ public data class Wind(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(direction)
     encoder.encodeFloat(speed)
@@ -62,11 +63,11 @@ public data class Wind(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 168u
+    override val id: UInt = 168u
 
-    public override val crcExtra: Byte = 1
+    override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): Wind {
+    override fun deserialize(bytes: ByteArray): Wind {
       val decoder = MavDataDecoder(bytes)
 
       val direction = decoder.safeDecodeFloat()

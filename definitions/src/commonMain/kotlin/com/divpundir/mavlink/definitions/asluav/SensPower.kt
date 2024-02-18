@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Voltage and current sensor data
+ *
  */
 @GeneratedMavMessage(
   id = 8_002u,
@@ -44,9 +45,9 @@ public data class SensPower(
   @GeneratedMavField(type = "float")
   public val adc121Cs2Amp: Float = 0F,
 ) : MavMessage<SensPower> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(adc121VspbVolt)
     encoder.encodeFloat(adc121CspbAmp)
@@ -55,7 +56,7 @@ public data class SensPower(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(adc121VspbVolt)
     encoder.encodeFloat(adc121CspbAmp)
@@ -69,11 +70,11 @@ public data class SensPower(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 8_002u
+    override val id: UInt = 8_002u
 
-    public override val crcExtra: Byte = -38
+    override val crcExtra: Byte = -38
 
-    public override fun deserialize(bytes: ByteArray): SensPower {
+    override fun deserialize(bytes: ByteArray): SensPower {
       val decoder = MavDataDecoder(bytes)
 
       val adc121VspbVolt = decoder.safeDecodeFloat()

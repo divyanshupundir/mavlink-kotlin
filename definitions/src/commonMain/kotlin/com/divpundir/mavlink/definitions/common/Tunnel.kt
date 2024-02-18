@@ -26,6 +26,7 @@ import kotlin.collections.List
  * (broadcast is not forbidden, but discouraged). The encoding of the data is usually extension
  * specific, i.e. determined by the source, and is usually not documented as part of the MAVLink
  * specification.
+ *
  */
 @GeneratedMavMessage(
   id = 385u,
@@ -63,9 +64,9 @@ public data class Tunnel(
   @GeneratedMavField(type = "uint8_t[128]")
   public val payload: List<UByte> = emptyList(),
 ) : MavMessage<Tunnel> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Tunnel> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Tunnel> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(payloadType.value, 2)
     encoder.encodeUInt8(targetSystem)
@@ -75,7 +76,7 @@ public data class Tunnel(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(payloadType.value, 2)
     encoder.encodeUInt8(targetSystem)
@@ -90,11 +91,11 @@ public data class Tunnel(
 
     private const val SIZE_V2: Int = 133
 
-    public override val id: UInt = 385u
+    override val id: UInt = 385u
 
-    public override val crcExtra: Byte = -109
+    override val crcExtra: Byte = -109
 
-    public override fun deserialize(bytes: ByteArray): Tunnel {
+    override fun deserialize(bytes: ByteArray): Tunnel {
       val decoder = MavDataDecoder(bytes)
 
       val payloadType = decoder.safeDecodeEnumValue(2).let { value ->

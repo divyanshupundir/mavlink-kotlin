@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Direction of VTOL transition
+ *
  */
 @GeneratedMavEnum
 public enum class VtolTransitionHeading(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Respect the heading configuration of the vehicle.
@@ -41,7 +42,7 @@ public enum class VtolTransitionHeading(
   ;
 
   public companion object : MavEnum.MavCompanion<VtolTransitionHeading> {
-    public override fun getEntryFromValueOrNull(v: UInt): VtolTransitionHeading? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): VtolTransitionHeading? = when (v) {
       0u -> VEHICLE_DEFAULT
       1u -> NEXT_WAYPOINT
       2u -> TAKEOFF

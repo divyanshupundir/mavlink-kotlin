@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F14: format
+ *
  */
 @GeneratedMavMessage(
   id = 178u,
@@ -84,9 +85,9 @@ public data class SerialUdbExtraF14(
   @GeneratedMavField(type = "uint8_t")
   public val sueFlightPlanType: UByte = 0u,
 ) : MavMessage<SerialUdbExtraF14> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF14> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF14> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(sueTrapSource)
     encoder.encodeInt16(sueRcon)
@@ -102,7 +103,7 @@ public data class SerialUdbExtraF14(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(sueTrapSource)
     encoder.encodeInt16(sueRcon)
@@ -123,11 +124,11 @@ public data class SerialUdbExtraF14(
 
     private const val SIZE_V2: Int = 17
 
-    public override val id: UInt = 178u
+    override val id: UInt = 178u
 
-    public override val crcExtra: Byte = 123
+    override val crcExtra: Byte = 123
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF14 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF14 {
       val decoder = MavDataDecoder(bytes)
 
       val sueTrapSource = decoder.safeDecodeUInt32()

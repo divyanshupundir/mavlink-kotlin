@@ -8,10 +8,11 @@ import kotlin.UInt
 /**
  * Actuator configuration, used to change a setting on an actuator. Component information metadata
  * can be used to know which outputs support which commands.
+ *
  */
 @GeneratedMavEnum
 public enum class ActuatorConfiguration(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Do nothing.
@@ -47,7 +48,7 @@ public enum class ActuatorConfiguration(
   ;
 
   public companion object : MavEnum.MavCompanion<ActuatorConfiguration> {
-    public override fun getEntryFromValueOrNull(v: UInt): ActuatorConfiguration? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): ActuatorConfiguration? = when (v) {
       0u -> NONE
       1u -> BEEP
       2u -> _3D_MODE_ON

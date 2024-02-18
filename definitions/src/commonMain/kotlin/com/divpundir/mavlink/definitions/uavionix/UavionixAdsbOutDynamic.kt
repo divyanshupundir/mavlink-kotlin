@@ -33,6 +33,7 @@ import kotlin.Unit
 
 /**
  * Dynamic data used to generate ADS-B out transponder data (send at 5Hz)
+ *
  */
 @GeneratedMavMessage(
   id = 10_002u,
@@ -122,9 +123,9 @@ public data class UavionixAdsbOutDynamic(
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
 ) : MavMessage<UavionixAdsbOutDynamic> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutDynamic> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutDynamic> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(utctime)
     encoder.encodeInt32(gpslat)
@@ -145,7 +146,7 @@ public data class UavionixAdsbOutDynamic(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(utctime)
     encoder.encodeInt32(gpslat)
@@ -171,11 +172,11 @@ public data class UavionixAdsbOutDynamic(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 10_002u
+    override val id: UInt = 10_002u
 
-    public override val crcExtra: Byte = -70
+    override val crcExtra: Byte = -70
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutDynamic {
+    override fun deserialize(bytes: ByteArray): UavionixAdsbOutDynamic {
       val decoder = MavDataDecoder(bytes)
 
       val utctime = decoder.safeDecodeUInt32()

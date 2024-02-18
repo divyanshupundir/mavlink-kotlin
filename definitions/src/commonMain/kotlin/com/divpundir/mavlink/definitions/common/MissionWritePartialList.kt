@@ -25,6 +25,7 @@ import kotlin.Unit
  * This message is sent to the MAV to write a partial list. If start index == end index, only one
  * item will be transmitted / updated. If the start index is NOT 0 and above the current list size,
  * this request should be REJECTED!
+ *
  */
 @GeneratedMavMessage(
   id = 38u,
@@ -60,10 +61,9 @@ public data class MissionWritePartialList(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionWritePartialList> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionWritePartialList> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionWritePartialList> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(startIndex)
     encoder.encodeInt16(endIndex)
@@ -72,7 +72,7 @@ public data class MissionWritePartialList(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(startIndex)
     encoder.encodeInt16(endIndex)
@@ -87,11 +87,11 @@ public data class MissionWritePartialList(
 
     private const val SIZE_V2: Int = 7
 
-    public override val id: UInt = 38u
+    override val id: UInt = 38u
 
-    public override val crcExtra: Byte = 9
+    override val crcExtra: Byte = 9
 
-    public override fun deserialize(bytes: ByteArray): MissionWritePartialList {
+    override fun deserialize(bytes: ByteArray): MissionWritePartialList {
       val decoder = MavDataDecoder(bytes)
 
       val startIndex = decoder.safeDecodeInt16()

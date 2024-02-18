@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Status of GSM modem (connected to onboard computer)
+ *
  */
 @GeneratedMavMessage(
   id = 8_014u,
@@ -65,9 +66,9 @@ public data class GsmLinkStatus(
   @GeneratedMavField(type = "uint8_t")
   public val rsrq: UByte = 0u,
 ) : MavMessage<GsmLinkStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GsmLinkStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GsmLinkStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeEnumValue(gsmModemType.value, 1)
@@ -79,7 +80,7 @@ public data class GsmLinkStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeEnumValue(gsmModemType.value, 1)
@@ -96,11 +97,11 @@ public data class GsmLinkStatus(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 8_014u
+    override val id: UInt = 8_014u
 
-    public override val crcExtra: Byte = -56
+    override val crcExtra: Byte = -56
 
-    public override fun deserialize(bytes: ByteArray): GsmLinkStatus {
+    override fun deserialize(bytes: ByteArray): GsmLinkStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

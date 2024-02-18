@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class NavVtolLandOptions(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Default autopilot landing behaviour.
@@ -32,7 +32,7 @@ public enum class NavVtolLandOptions(
   ;
 
   public companion object : MavEnum.MavCompanion<NavVtolLandOptions> {
-    public override fun getEntryFromValueOrNull(v: UInt): NavVtolLandOptions? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): NavVtolLandOptions? = when (v) {
       0u -> DEFAULT
       1u -> FW_DESCENT
       2u -> HOVER_DESCENT

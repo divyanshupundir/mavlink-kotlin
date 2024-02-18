@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Tune formats supported by vehicle. This should be emitted as response to MAV_CMD_REQUEST_MESSAGE.
+ *
  */
 @GeneratedMavMessage(
   id = 401u,
@@ -42,9 +43,9 @@ public data class SupportedTunes(
   @GeneratedMavField(type = "uint32_t")
   public val format: MavEnumValue<TuneFormat> = MavEnumValue.fromValue(0u),
 ) : MavMessage<SupportedTunes> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SupportedTunes> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SupportedTunes> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(format.value, 4)
     encoder.encodeUInt8(targetSystem)
@@ -52,7 +53,7 @@ public data class SupportedTunes(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(format.value, 4)
     encoder.encodeUInt8(targetSystem)
@@ -65,11 +66,11 @@ public data class SupportedTunes(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 401u
+    override val id: UInt = 401u
 
-    public override val crcExtra: Byte = -73
+    override val crcExtra: Byte = -73
 
-    public override fun deserialize(bytes: ByteArray): SupportedTunes {
+    override fun deserialize(bytes: ByteArray): SupportedTunes {
       val decoder = MavDataDecoder(bytes)
 
       val format = decoder.safeDecodeEnumValue(4).let { value ->

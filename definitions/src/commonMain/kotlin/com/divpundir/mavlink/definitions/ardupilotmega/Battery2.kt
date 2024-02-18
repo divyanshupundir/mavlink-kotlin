@@ -21,6 +21,7 @@ import kotlin.Unit
 
 /**
  * 2nd Battery status
+ *
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -39,16 +40,16 @@ public data class Battery2(
   @GeneratedMavField(type = "int16_t")
   public val currentBattery: Short = 0,
 ) : MavMessage<Battery2> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Battery2> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Battery2> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(voltage)
     encoder.encodeInt16(currentBattery)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(voltage)
     encoder.encodeInt16(currentBattery)
@@ -60,11 +61,11 @@ public data class Battery2(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 181u
+    override val id: UInt = 181u
 
-    public override val crcExtra: Byte = -82
+    override val crcExtra: Byte = -82
 
-    public override fun deserialize(bytes: ByteArray): Battery2 {
+    override fun deserialize(bytes: ByteArray): Battery2 {
       val decoder = MavDataDecoder(bytes)
 
       val voltage = decoder.safeDecodeUInt16()

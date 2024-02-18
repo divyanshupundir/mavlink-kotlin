@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class AvssHorseflyOperationMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * In manual control mode
@@ -37,7 +37,7 @@ public enum class AvssHorseflyOperationMode(
   ;
 
   public companion object : MavEnum.MavCompanion<AvssHorseflyOperationMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): AvssHorseflyOperationMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AvssHorseflyOperationMode? = when (v) {
       0u -> MODE_HORSEFLY_MANUAL_CTRL
       1u -> MODE_HORSEFLY_AUTO_TAKEOFF
       2u -> MODE_HORSEFLY_AUTO_LANDING

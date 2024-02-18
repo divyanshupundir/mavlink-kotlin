@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * ASL-fixed-wing controller data
+ *
  */
 @GeneratedMavMessage(
   id = 8_004u,
@@ -110,9 +111,9 @@ public data class AslctrlData(
   @GeneratedMavField(type = "float")
   public val urud: Float = 0F,
 ) : MavMessage<AslctrlData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AslctrlData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AslctrlData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(h)
@@ -142,7 +143,7 @@ public data class AslctrlData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(h)
@@ -177,11 +178,11 @@ public data class AslctrlData(
 
     private const val SIZE_V2: Int = 98
 
-    public override val id: UInt = 8_004u
+    override val id: UInt = 8_004u
 
-    public override val crcExtra: Byte = -84
+    override val crcExtra: Byte = -84
 
-    public override fun deserialize(bytes: ByteArray): AslctrlData {
+    override fun deserialize(bytes: ByteArray): AslctrlData {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

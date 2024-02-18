@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * 100 Hz gimbal torque command telemetry.
+ *
  */
 @GeneratedMavMessage(
   id = 214u,
@@ -52,9 +53,9 @@ public data class GimbalTorqueCmdReport(
   @GeneratedMavField(type = "int16_t")
   public val azTorqueCmd: Short = 0,
 ) : MavMessage<GimbalTorqueCmdReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalTorqueCmdReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalTorqueCmdReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(rlTorqueCmd)
     encoder.encodeInt16(elTorqueCmd)
@@ -64,7 +65,7 @@ public data class GimbalTorqueCmdReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(rlTorqueCmd)
     encoder.encodeInt16(elTorqueCmd)
@@ -79,11 +80,11 @@ public data class GimbalTorqueCmdReport(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 214u
+    override val id: UInt = 214u
 
-    public override val crcExtra: Byte = 69
+    override val crcExtra: Byte = 69
 
-    public override fun deserialize(bytes: ByteArray): GimbalTorqueCmdReport {
+    override fun deserialize(bytes: ByteArray): GimbalTorqueCmdReport {
       val decoder = MavDataDecoder(bytes)
 
       val rlTorqueCmd = decoder.safeDecodeInt16()

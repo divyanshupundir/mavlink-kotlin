@@ -50,6 +50,7 @@ import kotlin.collections.List
  * 	  New implementations should always set either GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME or
  * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME,
  * 	  and always should set delta_yaw and delta_yaw_velocity either to the proper value or NaN.
+ *
  */
 @GeneratedMavMessage(
   id = 285u,
@@ -134,10 +135,9 @@ public data class GimbalDeviceAttitudeStatus(
   )
   public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<GimbalDeviceAttitudeStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -151,7 +151,7 @@ public data class GimbalDeviceAttitudeStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -173,11 +173,11 @@ public data class GimbalDeviceAttitudeStatus(
 
     private const val SIZE_V2: Int = 49
 
-    public override val id: UInt = 285u
+    override val id: UInt = 285u
 
-    public override val crcExtra: Byte = -119
+    override val crcExtra: Byte = -119
 
-    public override fun deserialize(bytes: ByteArray): GimbalDeviceAttitudeStatus {
+    override fun deserialize(bytes: ByteArray): GimbalDeviceAttitudeStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

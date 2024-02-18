@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Barometer readings for 2nd barometer
+ *
  */
 @GeneratedMavMessage(
   id = 137u,
@@ -57,9 +58,9 @@ public data class ScaledPressure2(
   )
   public val temperaturePressDiff: Short = 0,
 ) : MavMessage<ScaledPressure2> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure2> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure2> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(pressAbs)
@@ -68,7 +69,7 @@ public data class ScaledPressure2(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(pressAbs)
@@ -83,11 +84,11 @@ public data class ScaledPressure2(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 137u
+    override val id: UInt = 137u
 
-    public override val crcExtra: Byte = -61
+    override val crcExtra: Byte = -61
 
-    public override fun deserialize(bytes: ByteArray): ScaledPressure2 {
+    override fun deserialize(bytes: ByteArray): ScaledPressure2 {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

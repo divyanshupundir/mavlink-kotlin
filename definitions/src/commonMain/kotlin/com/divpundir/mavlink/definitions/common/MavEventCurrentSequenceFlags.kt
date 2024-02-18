@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Flags for CURRENT_EVENT_SEQUENCE.
+ *
  */
 @GeneratedMavEnum
 public enum class MavEventCurrentSequenceFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * A sequence reset has happened (e.g. vehicle reboot).
@@ -20,7 +21,7 @@ public enum class MavEventCurrentSequenceFlags(
   ;
 
   public companion object : MavEnum.MavCompanion<MavEventCurrentSequenceFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavEventCurrentSequenceFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavEventCurrentSequenceFlags? = when (v) {
       1u -> RESET
       else -> null
     }

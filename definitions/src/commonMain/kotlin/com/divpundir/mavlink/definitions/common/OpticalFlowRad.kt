@@ -28,6 +28,7 @@ import kotlin.Unit
 
 /**
  * Optical flow from an angular rate flow sensor (e.g. PX4FLOW or mouse sensor)
+ *
  */
 @GeneratedMavMessage(
   id = 106u,
@@ -100,9 +101,9 @@ public data class OpticalFlowRad(
   @GeneratedMavField(type = "float")
   public val distance: Float = 0F,
 ) : MavMessage<OpticalFlowRad> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpticalFlowRad> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpticalFlowRad> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(integrationTimeUs)
@@ -119,7 +120,7 @@ public data class OpticalFlowRad(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(integrationTimeUs)
@@ -141,11 +142,11 @@ public data class OpticalFlowRad(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 106u
+    override val id: UInt = 106u
 
-    public override val crcExtra: Byte = -118
+    override val crcExtra: Byte = -118
 
-    public override fun deserialize(bytes: ByteArray): OpticalFlowRad {
+    override fun deserialize(bytes: ByteArray): OpticalFlowRad {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

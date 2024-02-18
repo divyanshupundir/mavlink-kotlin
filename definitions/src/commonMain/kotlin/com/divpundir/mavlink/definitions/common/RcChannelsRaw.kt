@@ -24,6 +24,7 @@ import kotlin.Unit
  * The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000
  * microseconds: 0%, 2000 microseconds: 100%. A value of UINT16_MAX implies the channel is unused.
  * Individual receivers/transmitters might violate this specification.
+ *
  */
 @GeneratedMavMessage(
   id = 35u,
@@ -88,9 +89,9 @@ public data class RcChannelsRaw(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannelsRaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt16(chan1Raw)
@@ -106,7 +107,7 @@ public data class RcChannelsRaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt16(chan1Raw)
@@ -127,11 +128,11 @@ public data class RcChannelsRaw(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 35u
+    override val id: UInt = 35u
 
-    public override val crcExtra: Byte = -12
+    override val crcExtra: Byte = -12
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsRaw {
+    override fun deserialize(bytes: ByteArray): RcChannelsRaw {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

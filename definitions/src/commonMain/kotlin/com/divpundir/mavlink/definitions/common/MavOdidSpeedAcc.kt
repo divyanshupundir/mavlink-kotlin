@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidSpeedAcc(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The speed accuracy is unknown.
@@ -37,7 +37,7 @@ public enum class MavOdidSpeedAcc(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidSpeedAcc> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidSpeedAcc? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidSpeedAcc? = when (v) {
       0u -> UNKNOWN
       1u -> _10_METERS_PER_SECOND
       2u -> _3_METERS_PER_SECOND

@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Parachute actions. Trigger release and enable/disable auto-release.
+ *
  */
 @GeneratedMavEnum
 public enum class ParachuteAction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Disable auto-release of parachute (i.e. release triggered by crash detectors).
@@ -30,7 +31,7 @@ public enum class ParachuteAction(
   ;
 
   public companion object : MavEnum.MavCompanion<ParachuteAction> {
-    public override fun getEntryFromValueOrNull(v: UInt): ParachuteAction? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): ParachuteAction? = when (v) {
       0u -> PARACHUTE_DISABLE
       1u -> PARACHUTE_ENABLE
       2u -> PARACHUTE_RELEASE

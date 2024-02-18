@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Report current used cellular network status
+ *
  */
 @GeneratedMavMessage(
   id = 334u,
@@ -65,9 +66,9 @@ public data class CellularStatus(
   @GeneratedMavField(type = "uint16_t")
   public val lac: UShort = 0u,
 ) : MavMessage<CellularStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CellularStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CellularStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(mcc)
     encoder.encodeUInt16(mnc)
@@ -79,7 +80,7 @@ public data class CellularStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(mcc)
     encoder.encodeUInt16(mnc)
@@ -96,11 +97,11 @@ public data class CellularStatus(
 
     private const val SIZE_V2: Int = 10
 
-    public override val id: UInt = 334u
+    override val id: UInt = 334u
 
-    public override val crcExtra: Byte = 72
+    override val crcExtra: Byte = 72
 
-    public override fun deserialize(bytes: ByteArray): CellularStatus {
+    override fun deserialize(bytes: ByteArray): CellularStatus {
       val decoder = MavDataDecoder(bytes)
 
       val mcc = decoder.safeDecodeUInt16()

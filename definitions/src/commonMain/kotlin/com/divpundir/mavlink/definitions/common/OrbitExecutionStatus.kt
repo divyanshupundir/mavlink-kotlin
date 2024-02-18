@@ -27,6 +27,7 @@ import kotlin.Unit
 /**
  * Vehicle status report that is sent out while orbit execution is in progress (see
  * MAV_CMD_DO_ORBIT).
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -69,9 +70,9 @@ public data class OrbitExecutionStatus(
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<OrbitExecutionStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OrbitExecutionStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OrbitExecutionStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(radius)
@@ -82,7 +83,7 @@ public data class OrbitExecutionStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(radius)
@@ -98,11 +99,11 @@ public data class OrbitExecutionStatus(
 
     private const val SIZE_V2: Int = 25
 
-    public override val id: UInt = 360u
+    override val id: UInt = 360u
 
-    public override val crcExtra: Byte = 11
+    override val crcExtra: Byte = 11
 
-    public override fun deserialize(bytes: ByteArray): OrbitExecutionStatus {
+    override fun deserialize(bytes: ByteArray): OrbitExecutionStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

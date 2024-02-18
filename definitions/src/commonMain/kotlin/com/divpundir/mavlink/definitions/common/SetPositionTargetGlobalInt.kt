@@ -31,6 +31,7 @@ import kotlin.Unit
 /**
  * Sets a desired vehicle position, velocity, and/or acceleration in a global coordinate system
  * (WGS84). Used by an external controller to command the vehicle (manual controller or other system).
+ *
  */
 @GeneratedMavMessage(
   id = 86u,
@@ -121,10 +122,9 @@ public data class SetPositionTargetGlobalInt(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<SetPositionTargetGlobalInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetPositionTargetGlobalInt> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetPositionTargetGlobalInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latInt)
@@ -145,7 +145,7 @@ public data class SetPositionTargetGlobalInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latInt)
@@ -171,11 +171,11 @@ public data class SetPositionTargetGlobalInt(
 
     private const val SIZE_V2: Int = 53
 
-    public override val id: UInt = 86u
+    override val id: UInt = 86u
 
-    public override val crcExtra: Byte = 5
+    override val crcExtra: Byte = 5
 
-    public override fun deserialize(bytes: ByteArray): SetPositionTargetGlobalInt {
+    override fun deserialize(bytes: ByteArray): SetPositionTargetGlobalInt {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

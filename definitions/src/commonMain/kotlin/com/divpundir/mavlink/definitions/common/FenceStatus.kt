@@ -25,6 +25,7 @@ import kotlin.Unit
 
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
+ *
  */
 @GeneratedMavMessage(
   id = 162u,
@@ -60,9 +61,9 @@ public data class FenceStatus(
   )
   public val breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0u),
 ) : MavMessage<FenceStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(breachTime)
     encoder.encodeUInt16(breachCount)
@@ -71,7 +72,7 @@ public data class FenceStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(breachTime)
     encoder.encodeUInt16(breachCount)
@@ -86,11 +87,11 @@ public data class FenceStatus(
 
     private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 162u
+    override val id: UInt = 162u
 
-    public override val crcExtra: Byte = -67
+    override val crcExtra: Byte = -67
 
-    public override fun deserialize(bytes: ByteArray): FenceStatus {
+    override fun deserialize(bytes: ByteArray): FenceStatus {
       val decoder = MavDataDecoder(bytes)
 
       val breachTime = decoder.safeDecodeUInt32()

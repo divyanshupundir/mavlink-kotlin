@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * List of possible units where failures can be injected.
+ *
  */
 @GeneratedMavEnum
 public enum class FailureUnit(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   SENSOR_GYRO(0u),
@@ -45,7 +46,7 @@ public enum class FailureUnit(
   ;
 
   public companion object : MavEnum.MavCompanion<FailureUnit> {
-    public override fun getEntryFromValueOrNull(v: UInt): FailureUnit? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): FailureUnit? = when (v) {
       0u -> SENSOR_GYRO
       1u -> SENSOR_ACCEL
       2u -> SENSOR_MAG

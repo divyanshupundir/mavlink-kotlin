@@ -18,9 +18,14 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Information about flight since last arming.
+ * Flight information.
+ *         This includes time since boot for arm, takeoff, and land, and a flight number.
+ *         Takeoff and landing values reset to zero on arm.
  *         This can be requested using MAV_CMD_REQUEST_MESSAGE.
+ *         Note, some fields are misnamed - timestamps are from boot (not UTC) and the flight_uuid
+ * is a sequence number.
  *       
+ *
  */
 @GeneratedMavMessage(
   id = 264u,
@@ -33,24 +38,34 @@ public data class FlightInformation(
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
-   * Timestamp at arming (time since UNIX epoch) in UTC, 0 for unknown
+   * Timestamp at arming (since system boot). Set to 0 on boot. Set value on arming. Note, field is
+   * misnamed UTC.
    */
   @GeneratedMavField(type = "uint64_t")
   public val armingTimeUtc: ULong = 0uL,
   /**
-   * Timestamp at takeoff (time since UNIX epoch) in UTC, 0 for unknown
+   * Timestamp at takeoff (since system boot). Set to 0 at boot and on arming. Note, field is
+   * misnamed UTC.
    */
   @GeneratedMavField(type = "uint64_t")
   public val takeoffTimeUtc: ULong = 0uL,
   /**
-   * Universally unique identifier (UUID) of flight, should correspond to name of log files
+   * Flight number. Note, field is misnamed UUID.
    */
   @GeneratedMavField(type = "uint64_t")
   public val flightUuid: ULong = 0uL,
+  /**
+   * Timestamp at landing (in ms since system boot). Set to 0 at boot and on arming.
+   */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
+  public val landingTime: UInt = 0u,
 ) : MavMessage<FlightInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlightInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlightInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(armingTimeUtc)
     encoder.encodeUInt64(takeoffTimeUtc)
@@ -59,37 +74,40 @@ public data class FlightInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(armingTimeUtc)
     encoder.encodeUInt64(takeoffTimeUtc)
     encoder.encodeUInt64(flightUuid)
     encoder.encodeUInt32(timeBootMs)
+    encoder.encodeUInt32(landingTime)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<FlightInformation> {
     private const val SIZE_V1: Int = 28
 
-    private const val SIZE_V2: Int = 28
+    private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 264u
+    override val id: UInt = 264u
 
-    public override val crcExtra: Byte = 49
+    override val crcExtra: Byte = 49
 
-    public override fun deserialize(bytes: ByteArray): FlightInformation {
+    override fun deserialize(bytes: ByteArray): FlightInformation {
       val decoder = MavDataDecoder(bytes)
 
       val armingTimeUtc = decoder.safeDecodeUInt64()
       val takeoffTimeUtc = decoder.safeDecodeUInt64()
       val flightUuid = decoder.safeDecodeUInt64()
       val timeBootMs = decoder.safeDecodeUInt32()
+      val landingTime = decoder.safeDecodeUInt32()
 
       return FlightInformation(
         timeBootMs = timeBootMs,
         armingTimeUtc = armingTimeUtc,
         takeoffTimeUtc = takeoffTimeUtc,
         flightUuid = flightUuid,
+        landingTime = landingTime,
       )
     }
 
@@ -106,11 +124,14 @@ public data class FlightInformation(
 
     public var flightUuid: ULong = 0uL
 
+    public var landingTime: UInt = 0u
+
     public fun build(): FlightInformation = FlightInformation(
       timeBootMs = timeBootMs,
       armingTimeUtc = armingTimeUtc,
       takeoffTimeUtc = takeoffTimeUtc,
       flightUuid = flightUuid,
+      landingTime = landingTime,
     )
   }
 }

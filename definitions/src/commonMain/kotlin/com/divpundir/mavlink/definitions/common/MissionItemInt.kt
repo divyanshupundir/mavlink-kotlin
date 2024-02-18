@@ -34,6 +34,7 @@ import kotlin.Unit
  * used in float/integer params (respectively) to indicate optional/default values (e.g. to use the
  * component's current latitude, yaw rather than a specific value). See also
  * https://mavlink.io/en/services/mission.html.
+ *
  */
 @GeneratedMavMessage(
   id = 73u,
@@ -121,9 +122,9 @@ public data class MissionItemInt(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionItemInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionItemInt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionItemInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -142,7 +143,7 @@ public data class MissionItemInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -167,11 +168,11 @@ public data class MissionItemInt(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 73u
+    override val id: UInt = 73u
 
-    public override val crcExtra: Byte = 38
+    override val crcExtra: Byte = 38
 
-    public override fun deserialize(bytes: ByteArray): MissionItemInt {
+    override fun deserialize(bytes: ByteArray): MissionItemInt {
       val decoder = MavDataDecoder(bytes)
 
       val param1 = decoder.safeDecodeFloat()

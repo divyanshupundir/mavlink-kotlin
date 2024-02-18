@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * The smoothed, monotonic system state used to feed the control loops of the system.
+ *
  */
 @GeneratedMavMessage(
   id = 146u,
@@ -116,9 +117,9 @@ public data class ControlSystemState(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<ControlSystemState> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xAcc)
@@ -140,7 +141,7 @@ public data class ControlSystemState(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xAcc)
@@ -167,11 +168,11 @@ public data class ControlSystemState(
 
     private const val SIZE_V2: Int = 100
 
-    public override val id: UInt = 146u
+    override val id: UInt = 146u
 
-    public override val crcExtra: Byte = 103
+    override val crcExtra: Byte = 103
 
-    public override fun deserialize(bytes: ByteArray): ControlSystemState {
+    override fun deserialize(bytes: ByteArray): ControlSystemState {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

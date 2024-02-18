@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Available autopilot modes for ualberta uav
+ *
  */
 @GeneratedMavEnum
 public enum class UalbertaAutopilotMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Raw input pulse widts sent to output
@@ -31,7 +32,7 @@ public enum class UalbertaAutopilotMode(
   ;
 
   public companion object : MavEnum.MavCompanion<UalbertaAutopilotMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): UalbertaAutopilotMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UalbertaAutopilotMode? = when (v) {
       1u -> MODE_MANUAL_DIRECT
       2u -> MODE_MANUAL_SCALED
       3u -> MODE_AUTO_PID_ATT

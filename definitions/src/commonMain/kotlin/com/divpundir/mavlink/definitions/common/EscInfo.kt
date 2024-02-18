@@ -36,6 +36,7 @@ import kotlin.collections.List
 /**
  * ESC information for lower rate streaming. Recommended streaming rate 1Hz. See ESC_STATUS for
  * higher-rate ESC data.
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -91,9 +92,9 @@ public data class EscInfo(
   @GeneratedMavField(type = "int16_t[4]")
   public val temperature: List<Short> = emptyList(),
 ) : MavMessage<EscInfo> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32Array(errorCount, 16)
@@ -107,7 +108,7 @@ public data class EscInfo(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32Array(errorCount, 16)
@@ -126,11 +127,11 @@ public data class EscInfo(
 
     private const val SIZE_V2: Int = 46
 
-    public override val id: UInt = 290u
+    override val id: UInt = 290u
 
-    public override val crcExtra: Byte = -5
+    override val crcExtra: Byte = -5
 
-    public override fun deserialize(bytes: ByteArray): EscInfo {
+    override fun deserialize(bytes: ByteArray): EscInfo {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

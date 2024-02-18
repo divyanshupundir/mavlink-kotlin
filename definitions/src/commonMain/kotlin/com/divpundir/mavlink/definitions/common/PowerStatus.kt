@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Power supply status
+ *
  */
 @GeneratedMavMessage(
   id = 125u,
@@ -42,9 +43,9 @@ public data class PowerStatus(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<MavPowerStatus> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<PowerStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PowerStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PowerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(vcc)
     encoder.encodeUInt16(vservo)
@@ -52,7 +53,7 @@ public data class PowerStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(vcc)
     encoder.encodeUInt16(vservo)
@@ -65,11 +66,11 @@ public data class PowerStatus(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 125u
+    override val id: UInt = 125u
 
-    public override val crcExtra: Byte = -53
+    override val crcExtra: Byte = -53
 
-    public override fun deserialize(bytes: ByteArray): PowerStatus {
+    override fun deserialize(bytes: ByteArray): PowerStatus {
       val decoder = MavDataDecoder(bytes)
 
       val vcc = decoder.safeDecodeUInt16()

@@ -42,6 +42,7 @@ import kotlin.collections.List
  *         set to -1 to send the message for the sequence number in param 2 and all the following
  * sequence numbers,
  *         set to the sequence number of the final message in the range.
+ *
  */
 @GeneratedMavMessage(
   id = 263u,
@@ -106,9 +107,9 @@ public data class CameraImageCaptured(
   @GeneratedMavField(type = "char[205]")
   public val fileUrl: String = "",
 ) : MavMessage<CameraImageCaptured> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraImageCaptured> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraImageCaptured> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUtc)
     encoder.encodeUInt32(timeBootMs)
@@ -124,7 +125,7 @@ public data class CameraImageCaptured(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUtc)
     encoder.encodeUInt32(timeBootMs)
@@ -145,11 +146,11 @@ public data class CameraImageCaptured(
 
     private const val SIZE_V2: Int = 255
 
-    public override val id: UInt = 263u
+    override val id: UInt = 263u
 
-    public override val crcExtra: Byte = -123
+    override val crcExtra: Byte = -123
 
-    public override fun deserialize(bytes: ByteArray): CameraImageCaptured {
+    override fun deserialize(bytes: ByteArray): CameraImageCaptured {
       val decoder = MavDataDecoder(bytes)
 
       val timeUtc = decoder.safeDecodeUInt64()

@@ -29,6 +29,7 @@ import kotlin.collections.List
  * Large debug/prototyping array. The message uses the maximum available payload for data. The
  * array_id and name fields are used to discriminate between messages in code and in user interfaces
  * (respectively). Do not use in production code.
+ *
  */
 @GeneratedMavMessage(
   id = 350u,
@@ -60,9 +61,9 @@ public data class DebugFloatArray(
   )
   public val `data`: List<Float> = emptyList(),
 ) : MavMessage<DebugFloatArray> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(arrayId)
@@ -70,7 +71,7 @@ public data class DebugFloatArray(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(arrayId)
@@ -84,11 +85,11 @@ public data class DebugFloatArray(
 
     private const val SIZE_V2: Int = 252
 
-    public override val id: UInt = 350u
+    override val id: UInt = 350u
 
-    public override val crcExtra: Byte = -24
+    override val crcExtra: Byte = -24
 
-    public override fun deserialize(bytes: ByteArray): DebugFloatArray {
+    override fun deserialize(bytes: ByteArray): DebugFloatArray {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

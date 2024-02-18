@@ -21,6 +21,7 @@ import kotlin.Unit
 /**
  * This message is emitted as response to SCRIPT_REQUEST_LIST by the MAV to get the number of
  * mission scripts.
+ *
  */
 @GeneratedMavMessage(
   id = 183u,
@@ -43,9 +44,9 @@ public data class ScriptCount(
   @GeneratedMavField(type = "uint16_t")
   public val count: UShort = 0u,
 ) : MavMessage<ScriptCount> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScriptCount> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScriptCount> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(count)
     encoder.encodeUInt8(targetSystem)
@@ -53,7 +54,7 @@ public data class ScriptCount(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(count)
     encoder.encodeUInt8(targetSystem)
@@ -66,11 +67,11 @@ public data class ScriptCount(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 183u
+    override val id: UInt = 183u
 
-    public override val crcExtra: Byte = -70
+    override val crcExtra: Byte = -70
 
-    public override fun deserialize(bytes: ByteArray): ScriptCount {
+    override fun deserialize(bytes: ByteArray): ScriptCount {
       val decoder = MavDataDecoder(bytes)
 
       val count = decoder.safeDecodeUInt16()

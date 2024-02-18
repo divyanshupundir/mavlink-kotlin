@@ -34,6 +34,7 @@ import kotlin.collections.List
  * GPS or telemetry radio. It is designed to make it possible to update the devices firmware via
  * MAVLink messages or change the devices settings. A message with zero bytes can be used to change
  * just the baudrate.
+ *
  */
 @GeneratedMavMessage(
   id = 126u,
@@ -87,9 +88,9 @@ public data class SerialControl(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<SerialControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(baudrate)
     encoder.encodeUInt16(timeout)
@@ -100,7 +101,7 @@ public data class SerialControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(baudrate)
     encoder.encodeUInt16(timeout)
@@ -118,11 +119,11 @@ public data class SerialControl(
 
     private const val SIZE_V2: Int = 81
 
-    public override val id: UInt = 126u
+    override val id: UInt = 126u
 
-    public override val crcExtra: Byte = -36
+    override val crcExtra: Byte = -36
 
-    public override fun deserialize(bytes: ByteArray): SerialControl {
+    override fun deserialize(bytes: ByteArray): SerialControl {
       val decoder = MavDataDecoder(bytes)
 
       val baudrate = decoder.safeDecodeUInt32()

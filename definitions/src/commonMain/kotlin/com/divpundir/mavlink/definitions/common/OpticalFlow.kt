@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
+ *
  */
 @GeneratedMavMessage(
   id = 100u,
@@ -90,9 +91,9 @@ public data class OpticalFlow(
   )
   public val flowRateY: Float = 0F,
 ) : MavMessage<OpticalFlow> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpticalFlow> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpticalFlow> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(flowCompMX)
@@ -105,7 +106,7 @@ public data class OpticalFlow(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(flowCompMX)
@@ -125,11 +126,11 @@ public data class OpticalFlow(
 
     private const val SIZE_V2: Int = 34
 
-    public override val id: UInt = 100u
+    override val id: UInt = 100u
 
-    public override val crcExtra: Byte = -81
+    override val crcExtra: Byte = -81
 
-    public override fun deserialize(bytes: ByteArray): OpticalFlow {
+    override fun deserialize(bytes: ByteArray): OpticalFlow {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

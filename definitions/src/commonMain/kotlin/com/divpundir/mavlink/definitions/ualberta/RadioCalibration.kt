@@ -18,6 +18,7 @@ import kotlin.collections.List
 
 /**
  * Complete set of calibration parameters for the radio
+ *
  */
 @GeneratedMavMessage(
   id = 221u,
@@ -55,9 +56,9 @@ public data class RadioCalibration(
   @GeneratedMavField(type = "uint16_t[5]")
   public val throttle: List<UShort> = emptyList(),
 ) : MavMessage<RadioCalibration> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RadioCalibration> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RadioCalibration> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16Array(aileron, 6)
     encoder.encodeUInt16Array(elevator, 6)
@@ -68,7 +69,7 @@ public data class RadioCalibration(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16Array(aileron, 6)
     encoder.encodeUInt16Array(elevator, 6)
@@ -84,11 +85,11 @@ public data class RadioCalibration(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 221u
+    override val id: UInt = 221u
 
-    public override val crcExtra: Byte = 71
+    override val crcExtra: Byte = 71
 
-    public override fun deserialize(bytes: ByteArray): RadioCalibration {
+    override fun deserialize(bytes: ByteArray): RadioCalibration {
       val decoder = MavDataDecoder(bytes)
 
       val aileron = decoder.safeDecodeUInt16Array(6)

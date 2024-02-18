@@ -31,6 +31,7 @@ import kotlin.Unit
 
 /**
  * Battery pack monitoring data for Li-Ion batteries
+ *
  */
 @GeneratedMavMessage(
   id = 8_010u,
@@ -113,9 +114,9 @@ public data class SensBatmon(
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage6: UShort = 0u,
 ) : MavMessage<SensBatmon> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(batmonTimestamp)
     encoder.encodeFloat(temperature)
@@ -135,7 +136,7 @@ public data class SensBatmon(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(batmonTimestamp)
     encoder.encodeFloat(temperature)
@@ -160,11 +161,11 @@ public data class SensBatmon(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 8_010u
+    override val id: UInt = 8_010u
 
-    public override val crcExtra: Byte = -101
+    override val crcExtra: Byte = -101
 
-    public override fun deserialize(bytes: ByteArray): SensBatmon {
+    override fun deserialize(bytes: ByteArray): SensBatmon {
       val decoder = MavDataDecoder(bytes)
 
       val batmonTimestamp = decoder.safeDecodeUInt64()

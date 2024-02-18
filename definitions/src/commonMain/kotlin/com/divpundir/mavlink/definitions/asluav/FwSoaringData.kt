@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Fixed-wing soaring (i.e. thermal seeking) data
+ *
  */
 @GeneratedMavMessage(
   id = 8_011u,
@@ -155,9 +156,9 @@ public data class FwSoaringData(
   @GeneratedMavField(type = "uint8_t")
   public val valid: UByte = 0u,
 ) : MavMessage<FwSoaringData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FwSoaringData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FwSoaringData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(timestampmodechanged)
@@ -187,7 +188,7 @@ public data class FwSoaringData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(timestampmodechanged)
@@ -222,11 +223,11 @@ public data class FwSoaringData(
 
     private const val SIZE_V2: Int = 102
 
-    public override val id: UInt = 8_011u
+    override val id: UInt = 8_011u
 
-    public override val crcExtra: Byte = 20
+    override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): FwSoaringData {
+    override fun deserialize(bytes: ByteArray): FwSoaringData {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

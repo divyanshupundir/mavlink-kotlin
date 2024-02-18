@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GsmModemType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * not specified
@@ -22,7 +22,7 @@ public enum class GsmModemType(
   ;
 
   public companion object : MavEnum.MavCompanion<GsmModemType> {
-    public override fun getEntryFromValueOrNull(v: UInt): GsmModemType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GsmModemType? = when (v) {
       0u -> UNKNOWN
       1u -> HUAWEI_E3372
       else -> null

@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * Request to set a GOPRO_COMMAND with a desired.
+ *
  */
 @GeneratedMavMessage(
   id = 218u,
@@ -50,9 +51,9 @@ public data class GoproSetRequest(
   @GeneratedMavField(type = "uint8_t[4]")
   public val `value`: List<UByte> = emptyList(),
 ) : MavMessage<GoproSetRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GoproSetRequest> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GoproSetRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -61,7 +62,7 @@ public data class GoproSetRequest(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -75,11 +76,11 @@ public data class GoproSetRequest(
 
     private const val SIZE_V2: Int = 7
 
-    public override val id: UInt = 218u
+    override val id: UInt = 218u
 
-    public override val crcExtra: Byte = 17
+    override val crcExtra: Byte = 17
 
-    public override fun deserialize(bytes: ByteArray): GoproSetRequest {
+    override fun deserialize(bytes: ByteArray): GoproSetRequest {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

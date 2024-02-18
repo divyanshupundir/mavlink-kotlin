@@ -18,6 +18,7 @@ import kotlin.Unit
 /**
  * Time/duration estimates for various events and actions given the current vehicle state and
  * position.
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -57,9 +58,9 @@ public data class TimeEstimateToTarget(
   @GeneratedMavField(type = "int32_t")
   public val commandedAction: Int = 0,
 ) : MavMessage<TimeEstimateToTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TimeEstimateToTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TimeEstimateToTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(safeReturn)
     encoder.encodeInt32(land)
@@ -69,7 +70,7 @@ public data class TimeEstimateToTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(safeReturn)
     encoder.encodeInt32(land)
@@ -84,11 +85,11 @@ public data class TimeEstimateToTarget(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 380u
+    override val id: UInt = 380u
 
-    public override val crcExtra: Byte = -24
+    override val crcExtra: Byte = -24
 
-    public override fun deserialize(bytes: ByteArray): TimeEstimateToTarget {
+    override fun deserialize(bytes: ByteArray): TimeEstimateToTarget {
       val decoder = MavDataDecoder(bytes)
 
       val safeReturn = decoder.safeDecodeInt32()

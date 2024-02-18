@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Transceiver heartbeat with health report (updated every 10s)
+ *
  */
 @GeneratedMavMessage(
   id = 10_003u,
@@ -29,16 +30,16 @@ public data class UavionixAdsbTransceiverHealthReport(
   @GeneratedMavField(type = "uint8_t")
   public val rfhealth: MavBitmaskValue<UavionixAdsbRfHealth> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UavionixAdsbTransceiverHealthReport> {
-  public override val instanceCompanion:
-      MavMessage.MavCompanion<UavionixAdsbTransceiverHealthReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbTransceiverHealthReport> =
+      Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(rfhealth.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(rfhealth.value, 1)
     return encoder.bytes.truncateZeros()
@@ -49,11 +50,11 @@ public data class UavionixAdsbTransceiverHealthReport(
 
     private const val SIZE_V2: Int = 1
 
-    public override val id: UInt = 10_003u
+    override val id: UInt = 10_003u
 
-    public override val crcExtra: Byte = 4
+    override val crcExtra: Byte = 4
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbTransceiverHealthReport {
+    override fun deserialize(bytes: ByteArray): UavionixAdsbTransceiverHealthReport {
       val decoder = MavDataDecoder(bytes)
 
       val rfhealth = decoder.safeDecodeBitmaskValue(1).let { value ->

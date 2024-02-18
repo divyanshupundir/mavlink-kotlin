@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Focus types for MAV_CMD_SET_CAMERA_FOCUS
+ *
  */
 @GeneratedMavEnum
 public enum class SetFocusType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Focus one step increment (-1 for focusing in, 1 for focusing out towards infinity).
@@ -53,7 +54,7 @@ public enum class SetFocusType(
   ;
 
   public companion object : MavEnum.MavCompanion<SetFocusType> {
-    public override fun getEntryFromValueOrNull(v: UInt): SetFocusType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): SetFocusType? = when (v) {
       0u -> FOCUS_TYPE_STEP
       1u -> FOCUS_TYPE_CONTINUOUS
       2u -> FOCUS_TYPE_RANGE

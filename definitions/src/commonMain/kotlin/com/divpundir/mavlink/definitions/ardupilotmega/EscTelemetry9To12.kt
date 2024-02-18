@@ -21,6 +21,7 @@ import kotlin.collections.List
 
 /**
  * ESC Telemetry Data for ESCs 9 to 12, matching data sent by BLHeli ESCs.
+ *
  */
 @GeneratedMavMessage(
   id = 11_032u,
@@ -58,9 +59,9 @@ public data class EscTelemetry9To12(
   @GeneratedMavField(type = "uint16_t[4]")
   public val count: List<UShort> = emptyList(),
 ) : MavMessage<EscTelemetry9To12> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry9To12> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry9To12> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16Array(voltage, 8)
     encoder.encodeUInt16Array(current, 8)
@@ -71,7 +72,7 @@ public data class EscTelemetry9To12(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16Array(voltage, 8)
     encoder.encodeUInt16Array(current, 8)
@@ -87,11 +88,11 @@ public data class EscTelemetry9To12(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 11_032u
+    override val id: UInt = 11_032u
 
-    public override val crcExtra: Byte = 85
+    override val crcExtra: Byte = 85
 
-    public override fun deserialize(bytes: ByteArray): EscTelemetry9To12 {
+    override fun deserialize(bytes: ByteArray): EscTelemetry9To12 {
       val decoder = MavDataDecoder(bytes)
 
       val voltage = decoder.safeDecodeUInt16Array(8)

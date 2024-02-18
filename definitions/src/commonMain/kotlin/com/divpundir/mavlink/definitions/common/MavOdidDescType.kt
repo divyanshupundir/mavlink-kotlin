@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidDescType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Optional free-form text description of the purpose of the flight.
@@ -27,7 +27,7 @@ public enum class MavOdidDescType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidDescType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidDescType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidDescType? = when (v) {
       0u -> TEXT
       1u -> EMERGENCY
       2u -> EXTENDED_STATUS

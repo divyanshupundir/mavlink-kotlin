@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs
+ *
  */
 @GeneratedMavMessage(
   id = 91u,
@@ -89,9 +90,9 @@ public data class HilControls(
   @GeneratedMavField(type = "uint8_t")
   public val navMode: UByte = 0u,
 ) : MavMessage<HilControls> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilControls> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilControls> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(rollAilerons)
@@ -107,7 +108,7 @@ public data class HilControls(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(rollAilerons)
@@ -128,11 +129,11 @@ public data class HilControls(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 91u
+    override val id: UInt = 91u
 
-    public override val crcExtra: Byte = 63
+    override val crcExtra: Byte = 63
 
-    public override fun deserialize(bytes: ByteArray): HilControls {
+    override fun deserialize(bytes: ByteArray): HilControls {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -26,6 +26,7 @@ import kotlin.Unit
  * Message reporting the current status of a gimbal manager. This message should be broadcast at a
  * low regular rate (e.g. 1 Hz, may be increase momentarily to e.g. 5 Hz for a period of 1 sec after a
  * change).
+ *
  */
 @GeneratedMavMessage(
   id = 60_011u,
@@ -60,10 +61,9 @@ public data class Storm32GimbalManagerStatus(
   @GeneratedMavField(type = "uint8_t")
   public val profile: MavEnumValue<MavStorm32GimbalManagerProfile> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Storm32GimbalManagerStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerStatus> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(deviceFlags.value, 2)
     encoder.encodeBitmaskValue(managerFlags.value, 2)
@@ -73,7 +73,7 @@ public data class Storm32GimbalManagerStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(deviceFlags.value, 2)
     encoder.encodeBitmaskValue(managerFlags.value, 2)
@@ -88,11 +88,11 @@ public data class Storm32GimbalManagerStatus(
 
     private const val SIZE_V2: Int = 7
 
-    public override val id: UInt = 60_011u
+    override val id: UInt = 60_011u
 
-    public override val crcExtra: Byte = -73
+    override val crcExtra: Byte = -73
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerStatus {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerStatus {
       val decoder = MavDataDecoder(bytes)
 
       val deviceFlags = decoder.safeDecodeBitmaskValue(2).let { value ->

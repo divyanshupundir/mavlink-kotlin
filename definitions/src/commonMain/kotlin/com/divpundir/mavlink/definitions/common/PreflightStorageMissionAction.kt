@@ -12,10 +12,11 @@ import kotlin.UInt
  *         (Commonly missions are loaded from persistent storage (flash/EEPROM) into volatile
  * storage (RAM) on startup and written back when they are changed.)
  *       
+ *
  */
 @GeneratedMavEnum
 public enum class PreflightStorageMissionAction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Read current mission data from persistent storage
@@ -35,8 +36,7 @@ public enum class PreflightStorageMissionAction(
   ;
 
   public companion object : MavEnum.MavCompanion<PreflightStorageMissionAction> {
-    public override fun getEntryFromValueOrNull(v: UInt): PreflightStorageMissionAction? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): PreflightStorageMissionAction? = when (v) {
       0u -> MISSION_READ_PERSISTENT
       1u -> MISSION_WRITE_PERSISTENT
       2u -> MISSION_RESET_DEFAULT

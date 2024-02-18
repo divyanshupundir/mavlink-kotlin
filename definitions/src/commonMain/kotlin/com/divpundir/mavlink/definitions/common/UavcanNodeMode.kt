@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Generalized UAVCAN node mode
+ *
  */
 @GeneratedMavEnum
 public enum class UavcanNodeMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The node is performing its primary functions.
@@ -40,7 +41,7 @@ public enum class UavcanNodeMode(
   ;
 
   public companion object : MavEnum.MavCompanion<UavcanNodeMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavcanNodeMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UavcanNodeMode? = when (v) {
       0u -> OPERATIONAL
       1u -> INITIALIZATION
       2u -> MAINTENANCE

@@ -25,6 +25,7 @@ import kotlin.Unit
  * Sent from simulation to autopilot. The RAW values of the RC channels received. The standard PPM
  * modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
  * receivers/transmitters might violate this specification.
+ *
  */
 @GeneratedMavMessage(
   id = 92u,
@@ -104,9 +105,9 @@ public data class HilRcInputsRaw(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<HilRcInputsRaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilRcInputsRaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilRcInputsRaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(chan1Raw)
@@ -125,7 +126,7 @@ public data class HilRcInputsRaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(chan1Raw)
@@ -149,11 +150,11 @@ public data class HilRcInputsRaw(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 92u
+    override val id: UInt = 92u
 
-    public override val crcExtra: Byte = 54
+    override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): HilRcInputsRaw {
+    override fun deserialize(bytes: ByteArray): HilRcInputsRaw {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

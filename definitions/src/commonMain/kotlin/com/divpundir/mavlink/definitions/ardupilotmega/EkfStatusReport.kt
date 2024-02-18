@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * EKF Status message including flags and variances.
+ *
  */
 @GeneratedMavMessage(
   id = 193u,
@@ -65,9 +66,9 @@ public data class EkfStatusReport(
   )
   public val airspeedVariance: Float = 0F,
 ) : MavMessage<EkfStatusReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EkfStatusReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EkfStatusReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(velocityVariance)
     encoder.encodeFloat(posHorizVariance)
@@ -78,7 +79,7 @@ public data class EkfStatusReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(velocityVariance)
     encoder.encodeFloat(posHorizVariance)
@@ -95,11 +96,11 @@ public data class EkfStatusReport(
 
     private const val SIZE_V2: Int = 26
 
-    public override val id: UInt = 193u
+    override val id: UInt = 193u
 
-    public override val crcExtra: Byte = 71
+    override val crcExtra: Byte = 71
 
-    public override fun deserialize(bytes: ByteArray): EkfStatusReport {
+    override fun deserialize(bytes: ByteArray): EkfStatusReport {
       val decoder = MavDataDecoder(bytes)
 
       val velocityVariance = decoder.safeDecodeFloat()

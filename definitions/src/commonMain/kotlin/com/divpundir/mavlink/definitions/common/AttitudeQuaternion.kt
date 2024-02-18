@@ -23,6 +23,7 @@ import kotlin.collections.List
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
  * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
+ *
  */
 @GeneratedMavMessage(
   id = 31u,
@@ -83,9 +84,9 @@ public data class AttitudeQuaternion(
   )
   public val reprOffsetQ: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternion> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternion> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternion> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -98,7 +99,7 @@ public data class AttitudeQuaternion(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -117,11 +118,11 @@ public data class AttitudeQuaternion(
 
     private const val SIZE_V2: Int = 48
 
-    public override val id: UInt = 31u
+    override val id: UInt = 31u
 
-    public override val crcExtra: Byte = -10
+    override val crcExtra: Byte = -10
 
-    public override fun deserialize(bytes: ByteArray): AttitudeQuaternion {
+    override fun deserialize(bytes: ByteArray): AttitudeQuaternion {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

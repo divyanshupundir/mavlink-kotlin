@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class CameraFeedbackFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Shooting photos, not video.
@@ -38,7 +38,7 @@ public enum class CameraFeedbackFlags(
   ;
 
   public companion object : MavEnum.MavCompanion<CameraFeedbackFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraFeedbackFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraFeedbackFlags? = when (v) {
       0u -> CAMERA_FEEDBACK_PHOTO
       1u -> CAMERA_FEEDBACK_VIDEO
       2u -> CAMERA_FEEDBACK_BADEXPOSURE

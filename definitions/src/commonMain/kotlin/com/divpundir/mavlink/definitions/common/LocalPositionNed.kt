@@ -20,6 +20,7 @@ import kotlin.Unit
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
  * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
+ *
  */
 @GeneratedMavMessage(
   id = 32u,
@@ -62,9 +63,9 @@ public data class LocalPositionNed(
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
 ) : MavMessage<LocalPositionNed> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNed> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNed> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -76,7 +77,7 @@ public data class LocalPositionNed(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -93,11 +94,11 @@ public data class LocalPositionNed(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 32u
+    override val id: UInt = 32u
 
-    public override val crcExtra: Byte = -71
+    override val crcExtra: Byte = -71
 
-    public override fun deserialize(bytes: ByteArray): LocalPositionNed {
+    override fun deserialize(bytes: ByteArray): LocalPositionNed {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

@@ -21,6 +21,7 @@ import kotlin.Unit
 
 /**
  * Control vehicle tone generation (buzzer).
+ *
  */
 @Deprecated(message = "New version explicitly defines format. More interoperable.")
 @GeneratedMavMessage(
@@ -52,9 +53,9 @@ public data class PlayTune(
   )
   public val tune2: String = "",
 ) : MavMessage<PlayTune> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PlayTune> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PlayTune> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -62,7 +63,7 @@ public data class PlayTune(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -76,11 +77,11 @@ public data class PlayTune(
 
     private const val SIZE_V2: Int = 232
 
-    public override val id: UInt = 258u
+    override val id: UInt = 258u
 
-    public override val crcExtra: Byte = -69
+    override val crcExtra: Byte = -69
 
-    public override fun deserialize(bytes: ByteArray): PlayTune {
+    override fun deserialize(bytes: ByteArray): PlayTune {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

@@ -30,6 +30,7 @@ import kotlin.collections.List
 /**
  * Version and capability of autopilot software. This should be emitted in response to a request
  * with MAV_CMD_REQUEST_MESSAGE.
+ *
  */
 @GeneratedMavMessage(
   id = 148u,
@@ -108,9 +109,9 @@ public data class AutopilotVersion(
   )
   public val uid2: List<UByte> = emptyList(),
 ) : MavMessage<AutopilotVersion> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(capabilities.value, 8)
     encoder.encodeUInt64(uid)
@@ -126,7 +127,7 @@ public data class AutopilotVersion(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(capabilities.value, 8)
     encoder.encodeUInt64(uid)
@@ -148,11 +149,11 @@ public data class AutopilotVersion(
 
     private const val SIZE_V2: Int = 78
 
-    public override val id: UInt = 148u
+    override val id: UInt = 148u
 
-    public override val crcExtra: Byte = -78
+    override val crcExtra: Byte = -78
 
-    public override fun deserialize(bytes: ByteArray): AutopilotVersion {
+    override fun deserialize(bytes: ByteArray): AutopilotVersion {
       val decoder = MavDataDecoder(bytes)
 
       val capabilities = decoder.safeDecodeBitmaskValue(8).let { value ->

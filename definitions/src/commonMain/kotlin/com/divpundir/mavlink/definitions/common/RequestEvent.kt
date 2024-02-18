@@ -23,6 +23,7 @@ import kotlin.Unit
  * Request one or more events to be (re-)sent. If first_sequence==last_sequence, only a single event
  * is requested. Note that first_sequence can be larger than last_sequence (because the sequence number
  * can wrap). Each sequence will trigger an EVENT or EVENT_ERROR response.
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -51,9 +52,9 @@ public data class RequestEvent(
   @GeneratedMavField(type = "uint16_t")
   public val lastSequence: UShort = 0u,
 ) : MavMessage<RequestEvent> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RequestEvent> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RequestEvent> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(firstSequence)
     encoder.encodeUInt16(lastSequence)
@@ -62,7 +63,7 @@ public data class RequestEvent(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(firstSequence)
     encoder.encodeUInt16(lastSequence)
@@ -76,11 +77,11 @@ public data class RequestEvent(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 412u
+    override val id: UInt = 412u
 
-    public override val crcExtra: Byte = 33
+    override val crcExtra: Byte = 33
 
-    public override fun deserialize(bytes: ByteArray): RequestEvent {
+    override fun deserialize(bytes: ByteArray): RequestEvent {
       val decoder = MavDataDecoder(bytes)
 
       val firstSequence = decoder.safeDecodeUInt16()

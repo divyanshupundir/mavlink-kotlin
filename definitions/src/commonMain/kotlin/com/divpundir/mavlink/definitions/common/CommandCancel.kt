@@ -25,6 +25,7 @@ import kotlin.Unit
  * has already completed, the cancel action can be ignored. The cancel action can be retried until some
  * sort of acknowledgement to the original command has been received. The command microservice is
  * documented at https://mavlink.io/en/services/command.html
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -48,9 +49,9 @@ public data class CommandCancel(
   @GeneratedMavField(type = "uint16_t")
   public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CommandCancel> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandCancel> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandCancel> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(command.value, 2)
     encoder.encodeUInt8(targetSystem)
@@ -58,7 +59,7 @@ public data class CommandCancel(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(command.value, 2)
     encoder.encodeUInt8(targetSystem)
@@ -71,11 +72,11 @@ public data class CommandCancel(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 80u
+    override val id: UInt = 80u
 
-    public override val crcExtra: Byte = 14
+    override val crcExtra: Byte = 14
 
-    public override fun deserialize(bytes: ByteArray): CommandCancel {
+    override fun deserialize(bytes: ByteArray): CommandCancel {
       val decoder = MavDataDecoder(bytes)
 
       val command = decoder.safeDecodeEnumValue(2).let { value ->

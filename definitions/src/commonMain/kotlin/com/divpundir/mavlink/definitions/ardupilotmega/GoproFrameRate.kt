@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproFrameRate(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * 12 FPS.
@@ -82,7 +82,7 @@ public enum class GoproFrameRate(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproFrameRate> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproFrameRate? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproFrameRate? = when (v) {
       0u -> _12
       1u -> _15
       2u -> _24

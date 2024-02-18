@@ -12,10 +12,11 @@ import kotlin.UInt
  * execute mission items or not (is suspended).
  *         They may not all be relevant on all vehicles.
  *       
+ *
  */
 @GeneratedMavEnum
 public enum class MissionState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The mission status reporting is not supported.
@@ -51,7 +52,7 @@ public enum class MissionState(
   ;
 
   public companion object : MavEnum.MavCompanion<MissionState> {
-    public override fun getEntryFromValueOrNull(v: UInt): MissionState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MissionState? = when (v) {
       0u -> UNKNOWN
       1u -> NO_MISSION
       2u -> NOT_STARTED

@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * System status specific to ualberta uav
+ *
  */
 @GeneratedMavMessage(
   id = 222u,
@@ -39,9 +40,9 @@ public data class UalbertaSysStatus(
   @GeneratedMavField(type = "uint8_t")
   public val pilot: UByte = 0u,
 ) : MavMessage<UalbertaSysStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UalbertaSysStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UalbertaSysStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(mode)
     encoder.encodeUInt8(navMode)
@@ -49,7 +50,7 @@ public data class UalbertaSysStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(mode)
     encoder.encodeUInt8(navMode)
@@ -62,11 +63,11 @@ public data class UalbertaSysStatus(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 222u
+    override val id: UInt = 222u
 
-    public override val crcExtra: Byte = 15
+    override val crcExtra: Byte = 15
 
-    public override fun deserialize(bytes: ByteArray): UalbertaSysStatus {
+    override fun deserialize(bytes: ByteArray): UalbertaSysStatus {
       val decoder = MavDataDecoder(bytes)
 
       val mode = decoder.safeDecodeUInt8()

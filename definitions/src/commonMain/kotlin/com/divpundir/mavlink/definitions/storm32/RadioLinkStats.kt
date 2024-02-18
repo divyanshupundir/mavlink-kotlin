@@ -25,6 +25,7 @@ import kotlin.Unit
  * MAV_COMP_ID_TELEMETRY_RADIO. Per default, rssi values are in MAVLink units: 0 represents weakest
  * signal, 254 represents maximum signal; can be changed to dBm with the flag
  * RADIO_LINK_STATS_FLAGS_RSSI_DBM.
+ *
  */
 @GeneratedMavMessage(
   id = 60_046u,
@@ -107,9 +108,9 @@ public data class RadioLinkStats(
   @GeneratedMavField(type = "uint8_t")
   public val txTransmitAntenna: UByte = 0u,
 ) : MavMessage<RadioLinkStats> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RadioLinkStats> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RadioLinkStats> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(flags.value, 1)
     encoder.encodeUInt8(rxLq)
@@ -129,7 +130,7 @@ public data class RadioLinkStats(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(flags.value, 1)
     encoder.encodeUInt8(rxLq)
@@ -154,11 +155,11 @@ public data class RadioLinkStats(
 
     private const val SIZE_V2: Int = 15
 
-    public override val id: UInt = 60_046u
+    override val id: UInt = 60_046u
 
-    public override val crcExtra: Byte = -18
+    override val crcExtra: Byte = -18
 
-    public override fun deserialize(bytes: ByteArray): RadioLinkStats {
+    override fun deserialize(bytes: ByteArray): RadioLinkStats {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeBitmaskValue(1).let { value ->

@@ -24,6 +24,7 @@ import kotlin.Unit
  * Streamed from drone to report progress of terrain map download (initiated by TERRAIN_REQUEST), or
  * sent as a response to a TERRAIN_CHECK request. See terrain protocol docs:
  * https://mavlink.io/en/services/terrain.html
+ *
  */
 @GeneratedMavMessage(
   id = 136u,
@@ -66,9 +67,9 @@ public data class TerrainReport(
   @GeneratedMavField(type = "uint16_t")
   public val loaded: UShort = 0u,
 ) : MavMessage<TerrainReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TerrainReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TerrainReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -80,7 +81,7 @@ public data class TerrainReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -97,11 +98,11 @@ public data class TerrainReport(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 136u
+    override val id: UInt = 136u
 
-    public override val crcExtra: Byte = 1
+    override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): TerrainReport {
+    override fun deserialize(bytes: ByteArray): TerrainReport {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

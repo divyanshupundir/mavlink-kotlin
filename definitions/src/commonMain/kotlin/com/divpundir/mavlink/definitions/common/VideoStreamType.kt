@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Video stream types
+ *
  */
 @GeneratedMavEnum
 public enum class VideoStreamType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Stream is RTSP
@@ -35,7 +36,7 @@ public enum class VideoStreamType(
   ;
 
   public companion object : MavEnum.MavCompanion<VideoStreamType> {
-    public override fun getEntryFromValueOrNull(v: UInt): VideoStreamType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): VideoStreamType? = when (v) {
       0u -> RTSP
       1u -> RTPUDP
       2u -> TCP_MPEG

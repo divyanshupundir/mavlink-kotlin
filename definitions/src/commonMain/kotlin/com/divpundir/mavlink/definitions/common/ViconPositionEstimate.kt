@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * Global position estimate from a Vicon motion system source.
+ *
  */
 @GeneratedMavMessage(
   id = 104u,
@@ -75,9 +76,9 @@ public data class ViconPositionEstimate(
   )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<ViconPositionEstimate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ViconPositionEstimate> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ViconPositionEstimate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -89,7 +90,7 @@ public data class ViconPositionEstimate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -107,11 +108,11 @@ public data class ViconPositionEstimate(
 
     private const val SIZE_V2: Int = 116
 
-    public override val id: UInt = 104u
+    override val id: UInt = 104u
 
-    public override val crcExtra: Byte = 56
+    override val crcExtra: Byte = 56
 
-    public override fun deserialize(bytes: ByteArray): ViconPositionEstimate {
+    override fun deserialize(bytes: ByteArray): ViconPositionEstimate {
       val decoder = MavDataDecoder(bytes)
 
       val usec = decoder.safeDecodeUInt64()

@@ -35,6 +35,7 @@ import kotlin.Unit
 
 /**
  * The location and information of an AIS vessel
+ *
  */
 @GeneratedMavMessage(
   id = 301u,
@@ -127,9 +128,9 @@ public data class AisVessel(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<AisFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<AisVessel> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AisVessel> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AisVessel> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(mmsi)
     encoder.encodeInt32(lat)
@@ -151,7 +152,7 @@ public data class AisVessel(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(mmsi)
     encoder.encodeInt32(lat)
@@ -178,11 +179,11 @@ public data class AisVessel(
 
     private const val SIZE_V2: Int = 58
 
-    public override val id: UInt = 301u
+    override val id: UInt = 301u
 
-    public override val crcExtra: Byte = -13
+    override val crcExtra: Byte = -13
 
-    public override fun deserialize(bytes: ByteArray): AisVessel {
+    override fun deserialize(bytes: ByteArray): AisVessel {
       val decoder = MavDataDecoder(bytes)
 
       val mmsi = decoder.safeDecodeUInt32()

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class LimitsState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Pre-initialization.
@@ -42,7 +42,7 @@ public enum class LimitsState(
   ;
 
   public companion object : MavEnum.MavCompanion<LimitsState> {
-    public override fun getEntryFromValueOrNull(v: UInt): LimitsState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): LimitsState? = when (v) {
       0u -> LIMITS_INIT
       1u -> LIMITS_DISABLED
       2u -> LIMITS_ENABLED

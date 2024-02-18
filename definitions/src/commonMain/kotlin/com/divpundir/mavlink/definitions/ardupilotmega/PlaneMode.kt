@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * A mapping of plane flight modes for custom_mode field of heartbeat.
+ *
  */
 @GeneratedMavEnum
 public enum class PlaneMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   MANUAL(0u),
@@ -63,7 +64,7 @@ public enum class PlaneMode(
   ;
 
   public companion object : MavEnum.MavCompanion<PlaneMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): PlaneMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): PlaneMode? = when (v) {
       0u -> MANUAL
       1u -> CIRCLE
       2u -> STABILIZE

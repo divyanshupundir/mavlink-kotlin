@@ -18,6 +18,7 @@ import kotlin.Unit
 /**
  * Emit an encrypted signature / key identifying this system. PLEASE NOTE: This protocol has been
  * kept simple, so transmitting the key requires an encrypted channel for true safety.
+ *
  */
 @GeneratedMavMessage(
   id = 7u,
@@ -30,15 +31,15 @@ public data class AuthKey(
   @GeneratedMavField(type = "char[32]")
   public val key: String = "",
 ) : MavMessage<AuthKey> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AuthKey> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AuthKey> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeString(key, 32)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeString(key, 32)
     return encoder.bytes.truncateZeros()
@@ -49,11 +50,11 @@ public data class AuthKey(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 7u
+    override val id: UInt = 7u
 
-    public override val crcExtra: Byte = 119
+    override val crcExtra: Byte = 119
 
-    public override fun deserialize(bytes: ByteArray): AuthKey {
+    override fun deserialize(bytes: ByteArray): AuthKey {
       val decoder = MavDataDecoder(bytes)
 
       val key = decoder.safeDecodeString(32)

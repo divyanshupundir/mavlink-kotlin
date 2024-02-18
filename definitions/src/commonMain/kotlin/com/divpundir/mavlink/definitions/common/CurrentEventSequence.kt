@@ -22,6 +22,7 @@ import kotlin.Unit
 /**
  * Regular broadcast for the current latest event sequence number for a component. This is used to
  * check for dropped events.
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -40,16 +41,16 @@ public data class CurrentEventSequence(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavEnumValue<MavEventCurrentSequenceFlags> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CurrentEventSequence> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CurrentEventSequence> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CurrentEventSequence> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
     encoder.encodeEnumValue(flags.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
     encoder.encodeEnumValue(flags.value, 1)
@@ -61,11 +62,11 @@ public data class CurrentEventSequence(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 411u
+    override val id: UInt = 411u
 
-    public override val crcExtra: Byte = 106
+    override val crcExtra: Byte = 106
 
-    public override fun deserialize(bytes: ByteArray): CurrentEventSequence {
+    override fun deserialize(bytes: ByteArray): CurrentEventSequence {
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()

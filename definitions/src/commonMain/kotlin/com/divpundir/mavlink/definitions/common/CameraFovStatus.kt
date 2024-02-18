@@ -25,6 +25,7 @@ import kotlin.collections.List
 /**
  * Information about the field of view of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE
  * command.
+ *
  */
 @GeneratedMavMessage(
   id = 271u,
@@ -85,9 +86,9 @@ public data class CameraFovStatus(
   @GeneratedMavField(type = "float")
   public val vfov: Float = 0F,
 ) : MavMessage<CameraFovStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraFovStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraFovStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latCamera)
@@ -102,7 +103,7 @@ public data class CameraFovStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latCamera)
@@ -122,11 +123,11 @@ public data class CameraFovStatus(
 
     private const val SIZE_V2: Int = 52
 
-    public override val id: UInt = 271u
+    override val id: UInt = 271u
 
-    public override val crcExtra: Byte = 22
+    override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): CameraFovStatus {
+    override fun deserialize(bytes: ByteArray): CameraFovStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Settings of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
+ *
  */
 @GeneratedMavMessage(
   id = 260u,
@@ -55,16 +56,16 @@ public data class CameraSettings(
   )
   public val focuslevel: Float = 0F,
 ) : MavMessage<CameraSettings> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraSettings> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraSettings> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeEnumValue(modeId.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeEnumValue(modeId.value, 1)
@@ -78,11 +79,11 @@ public data class CameraSettings(
 
     private const val SIZE_V2: Int = 13
 
-    public override val id: UInt = 260u
+    override val id: UInt = 260u
 
-    public override val crcExtra: Byte = -110
+    override val crcExtra: Byte = -110
 
-    public override fun deserialize(bytes: ByteArray): CameraSettings {
+    override fun deserialize(bytes: ByteArray): CameraSettings {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

@@ -31,6 +31,7 @@ import kotlin.Unit
  * MAV_CMD_REQUEST_MESSAGE and whenever the status of the storage changes (STORAGE_STATUS). Use
  * MAV_CMD_REQUEST_MESSAGE.param2 to indicate the index/id of requested storage: 0 for all, 1 for
  * first, 2 for second, etc.
+ *
  */
 @GeneratedMavMessage(
   id = 261u,
@@ -115,9 +116,9 @@ public data class StorageInformation(
   )
   public val storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u),
 ) : MavMessage<StorageInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(totalCapacity)
@@ -131,7 +132,7 @@ public data class StorageInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(totalCapacity)
@@ -153,11 +154,11 @@ public data class StorageInformation(
 
     private const val SIZE_V2: Int = 61
 
-    public override val id: UInt = 261u
+    override val id: UInt = 261u
 
-    public override val crcExtra: Byte = -77
+    override val crcExtra: Byte = -77
 
-    public override fun deserialize(bytes: ByteArray): StorageInformation {
+    override fun deserialize(bytes: ByteArray): StorageInformation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

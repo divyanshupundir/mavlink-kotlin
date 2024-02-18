@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Possible actions an aircraft can take to avoid a collision.
+ *
  */
 @GeneratedMavEnum
 public enum class MavCollisionAction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Ignore any potential collisions
@@ -50,7 +51,7 @@ public enum class MavCollisionAction(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCollisionAction> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCollisionAction? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCollisionAction? = when (v) {
       0u -> NONE
       1u -> REPORT
       2u -> ASCEND_OR_DESCEND

@@ -25,6 +25,7 @@ import kotlin.Unit
  * The RAW IMU readings for a 9DOF sensor, which is identified by the id (default IMU1). This
  * message should always contain the true raw values without any scaling to allow data capture and
  * system debugging.
+ *
  */
 @GeneratedMavMessage(
   id = 27u,
@@ -101,9 +102,9 @@ public data class RawImu(
   )
   public val temperature: Short = 0,
 ) : MavMessage<RawImu> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RawImu> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RawImu> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt16(xacc)
@@ -118,7 +119,7 @@ public data class RawImu(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt16(xacc)
@@ -140,11 +141,11 @@ public data class RawImu(
 
     private const val SIZE_V2: Int = 29
 
-    public override val id: UInt = 27u
+    override val id: UInt = 27u
 
-    public override val crcExtra: Byte = -112
+    override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): RawImu {
+    override fun deserialize(bytes: ByteArray): RawImu {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

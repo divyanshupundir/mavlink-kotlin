@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * PID tuning information.
+ *
  */
 @GeneratedMavMessage(
   id = 194u,
@@ -78,9 +79,9 @@ public data class PidTuning(
   )
   public val pdmod: Float = 0F,
 ) : MavMessage<PidTuning> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PidTuning> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PidTuning> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(desired)
     encoder.encodeFloat(achieved)
@@ -92,7 +93,7 @@ public data class PidTuning(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(desired)
     encoder.encodeFloat(achieved)
@@ -111,11 +112,11 @@ public data class PidTuning(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 194u
+    override val id: UInt = 194u
 
-    public override val crcExtra: Byte = 98
+    override val crcExtra: Byte = 98
 
-    public override fun deserialize(bytes: ByteArray): PidTuning {
+    override fun deserialize(bytes: ByteArray): PidTuning {
       val decoder = MavDataDecoder(bytes)
 
       val desired = decoder.safeDecodeFloat()

@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * Status of third AHRS filter if available. This is for ANU research group (Ali and Sean).
+ *
  */
 @GeneratedMavMessage(
   id = 182u,
@@ -76,9 +77,9 @@ public data class Ahrs3(
   @GeneratedMavField(type = "float")
   public val v4: Float = 0F,
 ) : MavMessage<Ahrs3> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Ahrs3> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Ahrs3> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -93,7 +94,7 @@ public data class Ahrs3(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -113,11 +114,11 @@ public data class Ahrs3(
 
     private const val SIZE_V2: Int = 40
 
-    public override val id: UInt = 182u
+    override val id: UInt = 182u
 
-    public override val crcExtra: Byte = -27
+    override val crcExtra: Byte = -27
 
-    public override fun deserialize(bytes: ByteArray): Ahrs3 {
+    override fun deserialize(bytes: ByteArray): Ahrs3 {
       val decoder = MavDataDecoder(bytes)
 
       val roll = decoder.safeDecodeFloat()

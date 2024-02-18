@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Information about a potential collision
+ *
  */
 @GeneratedMavMessage(
   id = 247u,
@@ -64,9 +65,9 @@ public data class Collision(
   @GeneratedMavField(type = "float")
   public val horizontalMinimumDelta: Float = 0F,
 ) : MavMessage<Collision> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Collision> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Collision> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(id)
     encoder.encodeFloat(timeToMinimumDelta)
@@ -78,7 +79,7 @@ public data class Collision(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(id)
     encoder.encodeFloat(timeToMinimumDelta)
@@ -95,11 +96,11 @@ public data class Collision(
 
     private const val SIZE_V2: Int = 19
 
-    public override val id: UInt = 247u
+    override val id: UInt = 247u
 
-    public override val crcExtra: Byte = 81
+    override val crcExtra: Byte = 81
 
-    public override fun deserialize(bytes: ByteArray): Collision {
+    override fun deserialize(bytes: ByteArray): Collision {
       val decoder = MavDataDecoder(bytes)
 
       val id = decoder.safeDecodeUInt32()

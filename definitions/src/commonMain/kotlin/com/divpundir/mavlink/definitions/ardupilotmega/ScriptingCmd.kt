@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class ScriptingCmd(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Start a REPL session.
@@ -32,7 +32,7 @@ public enum class ScriptingCmd(
   ;
 
   public companion object : MavEnum.MavCompanion<ScriptingCmd> {
-    public override fun getEntryFromValueOrNull(v: UInt): ScriptingCmd? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): ScriptingCmd? = when (v) {
       0u -> REPL_START
       1u -> REPL_STOP
       2u -> STOP

@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * EFI status output
+ *
  */
 @GeneratedMavMessage(
   id = 225u,
@@ -130,9 +131,9 @@ public data class EfiStatus(
   )
   public val fuelPressure: Float = 0F,
 ) : MavMessage<EfiStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EfiStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EfiStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(ecuIndex)
     encoder.encodeFloat(rpm)
@@ -154,7 +155,7 @@ public data class EfiStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(ecuIndex)
     encoder.encodeFloat(rpm)
@@ -183,11 +184,11 @@ public data class EfiStatus(
 
     private const val SIZE_V2: Int = 73
 
-    public override val id: UInt = 225u
+    override val id: UInt = 225u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): EfiStatus {
+    override fun deserialize(bytes: ByteArray): EfiStatus {
       val decoder = MavDataDecoder(bytes)
 
       val ecuIndex = decoder.safeDecodeFloat()

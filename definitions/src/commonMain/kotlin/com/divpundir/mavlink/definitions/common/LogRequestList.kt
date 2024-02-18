@@ -22,6 +22,7 @@ import kotlin.Unit
  * Request a list of available logs. On some systems calling this may stop on-board logging until
  * LOG_REQUEST_END is called. If there are no log files available this request shall be answered with
  * one LOG_ENTRY message with id = 0 and num_logs = 0.
+ *
  */
 @GeneratedMavMessage(
   id = 117u,
@@ -49,9 +50,9 @@ public data class LogRequestList(
   @GeneratedMavField(type = "uint16_t")
   public val end: UShort = 0u,
 ) : MavMessage<LogRequestList> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LogRequestList> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LogRequestList> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(start)
     encoder.encodeUInt16(end)
@@ -60,7 +61,7 @@ public data class LogRequestList(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(start)
     encoder.encodeUInt16(end)
@@ -74,11 +75,11 @@ public data class LogRequestList(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 117u
+    override val id: UInt = 117u
 
-    public override val crcExtra: Byte = -128
+    override val crcExtra: Byte = -128
 
-    public override fun deserialize(bytes: ByteArray): LogRequestList {
+    override fun deserialize(bytes: ByteArray): LogRequestList {
       val decoder = MavDataDecoder(bytes)
 
       val start = decoder.safeDecodeUInt16()

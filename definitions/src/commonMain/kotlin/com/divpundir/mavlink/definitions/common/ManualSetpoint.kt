@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Setpoint in roll, pitch, yaw and thrust from the operator
+ *
  */
 @GeneratedMavMessage(
   id = 81u,
@@ -64,9 +65,9 @@ public data class ManualSetpoint(
   @GeneratedMavField(type = "uint8_t")
   public val manualOverrideSwitch: UByte = 0u,
 ) : MavMessage<ManualSetpoint> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ManualSetpoint> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ManualSetpoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(roll)
@@ -78,7 +79,7 @@ public data class ManualSetpoint(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(roll)
@@ -95,11 +96,11 @@ public data class ManualSetpoint(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 81u
+    override val id: UInt = 81u
 
-    public override val crcExtra: Byte = 106
+    override val crcExtra: Byte = 106
 
-    public override fun deserialize(bytes: ByteArray): ManualSetpoint {
+    override fun deserialize(bytes: ByteArray): ManualSetpoint {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

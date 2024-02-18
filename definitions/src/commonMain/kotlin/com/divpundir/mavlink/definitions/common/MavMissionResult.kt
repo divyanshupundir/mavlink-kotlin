@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Result of mission operation (in a MISSION_ACK message).
+ *
  */
 @GeneratedMavEnum
 public enum class MavMissionResult(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * mission accepted OK
@@ -95,7 +96,7 @@ public enum class MavMissionResult(
   ;
 
   public companion object : MavEnum.MavCompanion<MavMissionResult> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavMissionResult? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavMissionResult? = when (v) {
       0u -> MAV_MISSION_ACCEPTED
       1u -> MAV_MISSION_ERROR
       2u -> MAV_MISSION_UNSUPPORTED_FRAME

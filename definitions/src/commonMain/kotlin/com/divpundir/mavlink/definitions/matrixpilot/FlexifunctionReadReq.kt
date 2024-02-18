@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Request reading of flexifunction data
+ *
  */
 @GeneratedMavMessage(
   id = 151u,
@@ -47,9 +48,9 @@ public data class FlexifunctionReadReq(
   @GeneratedMavField(type = "int16_t")
   public val dataIndex: Short = 0,
 ) : MavMessage<FlexifunctionReadReq> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionReadReq> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionReadReq> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(readReqType)
     encoder.encodeInt16(dataIndex)
@@ -58,7 +59,7 @@ public data class FlexifunctionReadReq(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(readReqType)
     encoder.encodeInt16(dataIndex)
@@ -72,11 +73,11 @@ public data class FlexifunctionReadReq(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 151u
+    override val id: UInt = 151u
 
-    public override val crcExtra: Byte = 26
+    override val crcExtra: Byte = 26
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionReadReq {
+    override fun deserialize(bytes: ByteArray): FlexifunctionReadReq {
       val decoder = MavDataDecoder(bytes)
 
       val readReqType = decoder.safeDecodeInt16()

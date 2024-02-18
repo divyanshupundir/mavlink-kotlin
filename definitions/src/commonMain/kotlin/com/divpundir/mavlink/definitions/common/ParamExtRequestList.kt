@@ -18,6 +18,7 @@ import kotlin.Unit
 /**
  * Request all parameters of this component. All parameters should be emitted in response as
  * PARAM_EXT_VALUE.
+ *
  */
 @GeneratedMavMessage(
   id = 321u,
@@ -35,16 +36,16 @@ public data class ParamExtRequestList(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<ParamExtRequestList> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamExtRequestList> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamExtRequestList> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -56,11 +57,11 @@ public data class ParamExtRequestList(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 321u
+    override val id: UInt = 321u
 
-    public override val crcExtra: Byte = 88
+    override val crcExtra: Byte = 88
 
-    public override fun deserialize(bytes: ByteArray): ParamExtRequestList {
+    override fun deserialize(bytes: ByteArray): ParamExtRequestList {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

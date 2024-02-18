@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Specifies the datatype of a MAVLink parameter.
+ *
  */
 @GeneratedMavEnum
 public enum class MavParamType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * 8-bit unsigned integer
@@ -65,7 +66,7 @@ public enum class MavParamType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavParamType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavParamType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavParamType? = when (v) {
       1u -> UINT8
       2u -> INT8
       3u -> UINT16

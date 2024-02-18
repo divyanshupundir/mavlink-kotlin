@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavTunnelPayloadType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Encoding of payload unknown.
@@ -67,7 +67,7 @@ public enum class MavTunnelPayloadType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavTunnelPayloadType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavTunnelPayloadType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavTunnelPayloadType? = when (v) {
       0u -> UNKNOWN
       200u -> STORM32_RESERVED0
       201u -> STORM32_RESERVED1

@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * A message containing logged data (see also MAV_CMD_LOGGING_START)
+ *
  */
 @GeneratedMavMessage(
   id = 266u,
@@ -61,9 +62,9 @@ public data class LoggingData(
   @GeneratedMavField(type = "uint8_t[249]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<LoggingData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LoggingData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LoggingData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -74,7 +75,7 @@ public data class LoggingData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -90,11 +91,11 @@ public data class LoggingData(
 
     private const val SIZE_V2: Int = 255
 
-    public override val id: UInt = 266u
+    override val id: UInt = 266u
 
-    public override val crcExtra: Byte = -63
+    override val crcExtra: Byte = -63
 
-    public override fun deserialize(bytes: ByteArray): LoggingData {
+    override fun deserialize(bytes: ByteArray): LoggingData {
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()

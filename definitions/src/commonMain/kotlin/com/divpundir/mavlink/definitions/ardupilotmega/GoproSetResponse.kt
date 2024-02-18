@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Response from a GOPRO_COMMAND set request.
+ *
  */
 @GeneratedMavMessage(
   id = 219u,
@@ -34,16 +35,16 @@ public data class GoproSetResponse(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<GoproRequestStatus> = MavEnumValue.fromValue(0u),
 ) : MavMessage<GoproSetResponse> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GoproSetResponse> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GoproSetResponse> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(cmdId.value, 1)
     encoder.encodeEnumValue(status.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(cmdId.value, 1)
     encoder.encodeEnumValue(status.value, 1)
@@ -55,11 +56,11 @@ public data class GoproSetResponse(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 219u
+    override val id: UInt = 219u
 
-    public override val crcExtra: Byte = -94
+    override val crcExtra: Byte = -94
 
-    public override fun deserialize(bytes: ByteArray): GoproSetResponse {
+    override fun deserialize(bytes: ByteArray): GoproSetResponse {
       val decoder = MavDataDecoder(bytes)
 
       val cmdId = decoder.safeDecodeEnumValue(1).let { value ->

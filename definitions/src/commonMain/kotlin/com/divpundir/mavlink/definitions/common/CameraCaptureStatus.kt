@@ -25,6 +25,7 @@ import kotlin.Unit
 /**
  * Information about the status of a capture. Can be requested with a MAV_CMD_REQUEST_MESSAGE
  * command.
+ *
  */
 @GeneratedMavMessage(
   id = 262u,
@@ -72,9 +73,9 @@ public data class CameraCaptureStatus(
   )
   public val imageCount: Int = 0,
 ) : MavMessage<CameraCaptureStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(imageInterval)
@@ -85,7 +86,7 @@ public data class CameraCaptureStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(imageInterval)
@@ -102,11 +103,11 @@ public data class CameraCaptureStatus(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 262u
+    override val id: UInt = 262u
 
-    public override val crcExtra: Byte = 12
+    override val crcExtra: Byte = 12
 
-    public override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
+    override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

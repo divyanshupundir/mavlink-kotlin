@@ -27,6 +27,7 @@ import kotlin.Unit
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
  * autopilot. This should match the commands sent in SET_POSITION_TARGET_LOCAL_NED if the vehicle is
  * being controlled this way.
+ *
  */
 @GeneratedMavMessage(
   id = 85u,
@@ -105,9 +106,9 @@ public data class PositionTargetLocalNed(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<PositionTargetLocalNed> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PositionTargetLocalNed> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PositionTargetLocalNed> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -126,7 +127,7 @@ public data class PositionTargetLocalNed(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -150,11 +151,11 @@ public data class PositionTargetLocalNed(
 
     private const val SIZE_V2: Int = 51
 
-    public override val id: UInt = 85u
+    override val id: UInt = 85u
 
-    public override val crcExtra: Byte = -116
+    override val crcExtra: Byte = -116
 
-    public override fun deserialize(bytes: ByteArray): PositionTargetLocalNed {
+    override fun deserialize(bytes: ByteArray): PositionTargetLocalNed {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

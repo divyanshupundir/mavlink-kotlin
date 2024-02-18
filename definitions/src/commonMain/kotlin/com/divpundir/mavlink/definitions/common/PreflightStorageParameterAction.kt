@@ -12,10 +12,11 @@ import kotlin.UInt
  *         (Commonly parameters are loaded from persistent storage (flash/EEPROM) into volatile
  * storage (RAM) on startup and written back when they are changed.)
  *       
+ *
  */
 @GeneratedMavEnum
 public enum class PreflightStorageParameterAction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Read all parameters from persistent storage. Replaces values in volatile storage.
@@ -48,8 +49,7 @@ public enum class PreflightStorageParameterAction(
   ;
 
   public companion object : MavEnum.MavCompanion<PreflightStorageParameterAction> {
-    public override fun getEntryFromValueOrNull(v: UInt): PreflightStorageParameterAction? = when
-        (v) {
+    override fun getEntryFromValueOrNull(v: UInt): PreflightStorageParameterAction? = when (v) {
       0u -> PARAM_READ_PERSISTENT
       1u -> PARAM_WRITE_PERSISTENT
       2u -> PARAM_RESET_CONFIG_DEFAULT

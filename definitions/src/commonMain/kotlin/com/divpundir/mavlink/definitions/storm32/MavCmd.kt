@@ -8,7 +8,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Command to a gimbal manager to control the gimbal tilt and pan angles. It is possible to set
@@ -72,7 +72,7 @@ public enum class MavCmd(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCmd> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       60002u -> STORM32_DO_GIMBAL_MANAGER_CONTROL_PITCHYAW
       60010u -> STORM32_DO_GIMBAL_MANAGER_SETUP
       60020u -> QSHOT_DO_CONFIGURE

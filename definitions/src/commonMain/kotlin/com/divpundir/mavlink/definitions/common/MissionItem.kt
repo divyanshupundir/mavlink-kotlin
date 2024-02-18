@@ -32,6 +32,7 @@ import kotlin.Unit
  * is Z-down, right handed (NED), global frame is Z-up, right handed (ENU). NaN may be used to indicate
  * an optional/default value (e.g. to use the system's current latitude or yaw rather than a specific
  * value). See also https://mavlink.io/en/services/mission.html.
+ *
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -119,9 +120,9 @@ public data class MissionItem(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionItem> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionItem> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionItem> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -140,7 +141,7 @@ public data class MissionItem(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -165,11 +166,11 @@ public data class MissionItem(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 39u
+    override val id: UInt = 39u
 
-    public override val crcExtra: Byte = -2
+    override val crcExtra: Byte = -2
 
-    public override fun deserialize(bytes: ByteArray): MissionItem {
+    override fun deserialize(bytes: ByteArray): MissionItem {
       val decoder = MavDataDecoder(bytes)
 
       val param1 = decoder.safeDecodeFloat()

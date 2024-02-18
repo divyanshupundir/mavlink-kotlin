@@ -27,6 +27,7 @@ import kotlin.collections.List
 /**
  * High level message to control a gimbal's attitude. This message is to be sent to the gimbal
  * manager (e.g. from a ground station). Angles and rates can be set to NaN according to use case.
+ *
  */
 @GeneratedMavMessage(
   id = 282u,
@@ -76,10 +77,9 @@ public data class GimbalManagerSetAttitude(
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<GimbalManagerSetAttitude> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetAttitude> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetAttitude> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloatArray(q, 16)
@@ -92,7 +92,7 @@ public data class GimbalManagerSetAttitude(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloatArray(q, 16)
@@ -110,11 +110,11 @@ public data class GimbalManagerSetAttitude(
 
     private const val SIZE_V2: Int = 35
 
-    public override val id: UInt = 282u
+    override val id: UInt = 282u
 
-    public override val crcExtra: Byte = 123
+    override val crcExtra: Byte = 123
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerSetAttitude {
+    override fun deserialize(bytes: ByteArray): GimbalManagerSetAttitude {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeBitmaskValue(4).let { value ->

@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * Status generated in each node in the communication chain and injected into MAVLink stream.
+ *
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -89,9 +90,9 @@ public data class LinkNodeStatus(
   @GeneratedMavField(type = "uint32_t")
   public val messagesLost: UInt = 0u,
 ) : MavMessage<LinkNodeStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LinkNodeStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LinkNodeStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt32(txRate)
@@ -107,7 +108,7 @@ public data class LinkNodeStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt32(txRate)
@@ -128,11 +129,11 @@ public data class LinkNodeStatus(
 
     private const val SIZE_V2: Int = 36
 
-    public override val id: UInt = 8u
+    override val id: UInt = 8u
 
-    public override val crcExtra: Byte = 117
+    override val crcExtra: Byte = 117
 
-    public override fun deserialize(bytes: ByteArray): LinkNodeStatus {
+    override fun deserialize(bytes: ByteArray): LinkNodeStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

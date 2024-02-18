@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Heartbeat from a HeroBus attached GoPro.
+ *
  */
 @GeneratedMavMessage(
   id = 215u,
@@ -42,9 +43,9 @@ public data class GoproHeartbeat(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<GoproHeartbeatFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<GoproHeartbeat> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GoproHeartbeat> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GoproHeartbeat> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(status.value, 1)
     encoder.encodeEnumValue(captureMode.value, 1)
@@ -52,7 +53,7 @@ public data class GoproHeartbeat(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(status.value, 1)
     encoder.encodeEnumValue(captureMode.value, 1)
@@ -65,11 +66,11 @@ public data class GoproHeartbeat(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 215u
+    override val id: UInt = 215u
 
-    public override val crcExtra: Byte = 101
+    override val crcExtra: Byte = 101
 
-    public override fun deserialize(bytes: ByteArray): GoproHeartbeat {
+    override fun deserialize(bytes: ByteArray): GoproHeartbeat {
       val decoder = MavDataDecoder(bytes)
 
       val status = decoder.safeDecodeEnumValue(1).let { value ->

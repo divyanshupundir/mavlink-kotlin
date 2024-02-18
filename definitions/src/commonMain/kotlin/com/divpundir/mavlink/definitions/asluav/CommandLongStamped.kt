@@ -29,6 +29,7 @@ import kotlin.Unit
 
 /**
  * Send a command with up to seven parameters to the MAV and additional metadata
+ *
  */
 @GeneratedMavMessage(
   id = 224u,
@@ -102,9 +103,9 @@ public data class CommandLongStamped(
   @GeneratedMavField(type = "float")
   public val param7: Float = 0F,
 ) : MavMessage<CommandLongStamped> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandLongStamped> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandLongStamped> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(vehicleTimestamp)
     encoder.encodeUInt32(utcTime)
@@ -122,7 +123,7 @@ public data class CommandLongStamped(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(vehicleTimestamp)
     encoder.encodeUInt32(utcTime)
@@ -145,11 +146,11 @@ public data class CommandLongStamped(
 
     private const val SIZE_V2: Int = 45
 
-    public override val id: UInt = 224u
+    override val id: UInt = 224u
 
-    public override val crcExtra: Byte = 102
+    override val crcExtra: Byte = 102
 
-    public override fun deserialize(bytes: ByteArray): CommandLongStamped {
+    override fun deserialize(bytes: ByteArray): CommandLongStamped {
       val decoder = MavDataDecoder(bytes)
 
       val vehicleTimestamp = decoder.safeDecodeUInt64()

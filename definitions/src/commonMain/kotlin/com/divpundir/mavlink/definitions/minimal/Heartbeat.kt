@@ -28,6 +28,7 @@ import kotlin.Unit
  * autopilot fields (along with the message component id), allow the receiving system to treat further
  * messages from this system appropriately (e.g. by laying out the user interface based on the
  * autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html
+ *
  */
 @GeneratedMavMessage(
   id = 0u,
@@ -69,9 +70,9 @@ public data class Heartbeat(
   @GeneratedMavField(type = "uint8_t_mavlink_version")
   public val mavlinkVersion: UByte = 0u,
 ) : MavMessage<Heartbeat> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Heartbeat> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Heartbeat> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(customMode)
     encoder.encodeEnumValue(type.value, 1)
@@ -82,7 +83,7 @@ public data class Heartbeat(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(customMode)
     encoder.encodeEnumValue(type.value, 1)
@@ -98,11 +99,11 @@ public data class Heartbeat(
 
     private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 0u
+    override val id: UInt = 0u
 
-    public override val crcExtra: Byte = 50
+    override val crcExtra: Byte = 50
 
-    public override fun deserialize(bytes: ByteArray): Heartbeat {
+    override fun deserialize(bytes: ByteArray): Heartbeat {
       val decoder = MavDataDecoder(bytes)
 
       val customMode = decoder.safeDecodeUInt32()

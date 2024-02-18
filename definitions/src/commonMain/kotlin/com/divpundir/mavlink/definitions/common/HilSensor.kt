@@ -26,6 +26,7 @@ import kotlin.Unit
 
 /**
  * The IMU readings in SI units in NED body frame
+ *
  */
 @GeneratedMavMessage(
   id = 107u,
@@ -117,9 +118,9 @@ public data class HilSensor(
   )
   public val id: UByte = 0u,
 ) : MavMessage<HilSensor> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilSensor> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilSensor> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -139,7 +140,7 @@ public data class HilSensor(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -165,11 +166,11 @@ public data class HilSensor(
 
     private const val SIZE_V2: Int = 65
 
-    public override val id: UInt = 107u
+    override val id: UInt = 107u
 
-    public override val crcExtra: Byte = 108
+    override val crcExtra: Byte = 108
 
-    public override fun deserialize(bytes: ByteArray): HilSensor {
+    override fun deserialize(bytes: ByteArray): HilSensor {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Request to control this MAV
+ *
  */
 @GeneratedMavMessage(
   id = 5u,
@@ -50,9 +51,9 @@ public data class ChangeOperatorControl(
   @GeneratedMavField(type = "char[25]")
   public val passkey: String = "",
 ) : MavMessage<ChangeOperatorControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(controlRequest)
@@ -61,7 +62,7 @@ public data class ChangeOperatorControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(controlRequest)
@@ -75,11 +76,11 @@ public data class ChangeOperatorControl(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 5u
+    override val id: UInt = 5u
 
-    public override val crcExtra: Byte = -39
+    override val crcExtra: Byte = -39
 
-    public override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
+    override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

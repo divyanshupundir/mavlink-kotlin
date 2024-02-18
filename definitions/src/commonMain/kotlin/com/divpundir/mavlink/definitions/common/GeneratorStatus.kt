@@ -30,6 +30,7 @@ import kotlin.Unit
 
 /**
  * Telemetry of power generation system. Alternator or mechanical generator.
+ *
  */
 @GeneratedMavMessage(
   id = 373u,
@@ -96,9 +97,9 @@ public data class GeneratorStatus(
   @GeneratedMavField(type = "int32_t")
   public val timeUntilMaintenance: Int = 0,
 ) : MavMessage<GeneratorStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GeneratorStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GeneratorStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(status.value, 8)
     encoder.encodeFloat(batteryCurrent)
@@ -114,7 +115,7 @@ public data class GeneratorStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(status.value, 8)
     encoder.encodeFloat(batteryCurrent)
@@ -135,11 +136,11 @@ public data class GeneratorStatus(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 373u
+    override val id: UInt = 373u
 
-    public override val crcExtra: Byte = 117
+    override val crcExtra: Byte = 117
 
-    public override fun deserialize(bytes: ByteArray): GeneratorStatus {
+    override fun deserialize(bytes: ByteArray): GeneratorStatus {
       val decoder = MavDataDecoder(bytes)
 
       val status = decoder.safeDecodeBitmaskValue(8).let { value ->

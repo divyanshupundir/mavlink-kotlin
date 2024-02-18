@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Enumeration of sensor orientation, according to its rotations
+ *
  */
 @GeneratedMavEnum
 public enum class MavSensorOrientation(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Roll: 0, Pitch: 0, Yaw: 0
@@ -225,7 +226,7 @@ public enum class MavSensorOrientation(
   ;
 
   public companion object : MavEnum.MavCompanion<MavSensorOrientation> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavSensorOrientation? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavSensorOrientation? = when (v) {
       0u -> MAV_SENSOR_ROTATION_NONE
       1u -> MAV_SENSOR_ROTATION_YAW_45
       2u -> MAV_SENSOR_ROTATION_YAW_90

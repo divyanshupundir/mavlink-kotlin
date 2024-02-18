@@ -22,6 +22,7 @@ import kotlin.collections.List
  * The positioning status, as reported by GPS. This message is intended to display status
  * information about each satellite visible to the receiver. See message GLOBAL_POSITION_INT for the
  * global position estimate. This message can contain information for up to 20 satellites.
+ *
  */
 @GeneratedMavMessage(
   id = 25u,
@@ -59,9 +60,9 @@ public data class GpsStatus(
   @GeneratedMavField(type = "uint8_t[20]")
   public val satelliteSnr: List<UByte> = emptyList(),
 ) : MavMessage<GpsStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GpsStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GpsStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(satellitesVisible)
     encoder.encodeUInt8Array(satellitePrn, 20)
@@ -72,7 +73,7 @@ public data class GpsStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(satellitesVisible)
     encoder.encodeUInt8Array(satellitePrn, 20)
@@ -88,11 +89,11 @@ public data class GpsStatus(
 
     private const val SIZE_V2: Int = 101
 
-    public override val id: UInt = 25u
+    override val id: UInt = 25u
 
-    public override val crcExtra: Byte = 23
+    override val crcExtra: Byte = 23
 
-    public override fun deserialize(bytes: ByteArray): GpsStatus {
+    override fun deserialize(bytes: ByteArray): GpsStatus {
       val decoder = MavDataDecoder(bytes)
 
       val satellitesVisible = decoder.safeDecodeUInt8()

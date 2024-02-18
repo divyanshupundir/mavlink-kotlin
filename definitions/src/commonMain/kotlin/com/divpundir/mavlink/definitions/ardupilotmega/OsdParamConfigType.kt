@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * The type of parameter for the OSD parameter editor.
+ *
  */
 @GeneratedMavEnum
 public enum class OsdParamConfigType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   OSD_PARAM_NONE(0u),
@@ -33,7 +34,7 @@ public enum class OsdParamConfigType(
   ;
 
   public companion object : MavEnum.MavCompanion<OsdParamConfigType> {
-    public override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigType? = when (v) {
       0u -> OSD_PARAM_NONE
       1u -> OSD_PARAM_SERIAL_PROTOCOL
       2u -> OSD_PARAM_SERVO_FUNCTION

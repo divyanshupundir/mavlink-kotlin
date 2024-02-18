@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Control on-board Camera Control System to take shots.
+ *
  */
 @GeneratedMavMessage(
   id = 155u,
@@ -80,9 +81,9 @@ public data class DigicamControl(
   @GeneratedMavField(type = "float")
   public val extraValue: Float = 0F,
 ) : MavMessage<DigicamControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DigicamControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DigicamControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt8(targetSystem)
@@ -97,7 +98,7 @@ public data class DigicamControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt8(targetSystem)
@@ -117,11 +118,11 @@ public data class DigicamControl(
 
     private const val SIZE_V2: Int = 13
 
-    public override val id: UInt = 155u
+    override val id: UInt = 155u
 
-    public override val crcExtra: Byte = 22
+    override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): DigicamControl {
+    override fun deserialize(bytes: ByteArray): DigicamControl {
       val decoder = MavDataDecoder(bytes)
 
       val extraValue = decoder.safeDecodeFloat()

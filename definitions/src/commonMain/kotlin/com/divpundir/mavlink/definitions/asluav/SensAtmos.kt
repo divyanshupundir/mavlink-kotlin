@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Atmospheric sensors (temperature, humidity, ...) 
+ *
  */
 @GeneratedMavMessage(
   id = 8_009u,
@@ -42,9 +43,9 @@ public data class SensAtmos(
   @GeneratedMavField(type = "float")
   public val humidity: Float = 0F,
 ) : MavMessage<SensAtmos> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensAtmos> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensAtmos> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(tempambient)
@@ -52,7 +53,7 @@ public data class SensAtmos(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(tempambient)
@@ -65,11 +66,11 @@ public data class SensAtmos(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 8_009u
+    override val id: UInt = 8_009u
 
-    public override val crcExtra: Byte = -112
+    override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): SensAtmos {
+    override fun deserialize(bytes: ByteArray): SensAtmos {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

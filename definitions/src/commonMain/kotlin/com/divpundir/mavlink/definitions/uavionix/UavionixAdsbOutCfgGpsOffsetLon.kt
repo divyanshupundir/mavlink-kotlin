@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * GPS longitudinal offset encoding
+ *
  */
 @GeneratedMavEnum
 public enum class UavionixAdsbOutCfgGpsOffsetLon(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   NO_DATA(0u),
@@ -19,8 +20,7 @@ public enum class UavionixAdsbOutCfgGpsOffsetLon(
   ;
 
   public companion object : MavEnum.MavCompanion<UavionixAdsbOutCfgGpsOffsetLon> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgGpsOffsetLon? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgGpsOffsetLon? = when (v) {
       0u -> NO_DATA
       1u -> APPLIED_BY_SENSOR
       else -> null

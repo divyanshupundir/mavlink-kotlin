@@ -29,6 +29,7 @@ import kotlin.Unit
 
 /**
  * Camera Event.
+ *
  */
 @GeneratedMavMessage(
   id = 179u,
@@ -81,9 +82,9 @@ public data class CameraStatus(
   @GeneratedMavField(type = "float")
   public val p4: Float = 0F,
 ) : MavMessage<CameraStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(p1)
@@ -97,7 +98,7 @@ public data class CameraStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(p1)
@@ -116,11 +117,11 @@ public data class CameraStatus(
 
     private const val SIZE_V2: Int = 29
 
-    public override val id: UInt = 179u
+    override val id: UInt = 179u
 
-    public override val crcExtra: Byte = -67
+    override val crcExtra: Byte = -67
 
-    public override fun deserialize(bytes: ByteArray): CameraStatus {
+    override fun deserialize(bytes: ByteArray): CameraStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

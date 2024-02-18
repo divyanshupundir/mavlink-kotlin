@@ -15,10 +15,11 @@ import kotlin.UInt
  *       When creating new entries, components that can have multiple instances (e.g. cameras,
  * servos etc.) should be allocated sequential values. An appropriate number of values should be left
  * free after these components to allow the number of instances to be expanded.
+ *
  */
 @GeneratedMavEnum
 public enum class MavComponent(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Target id (target_component) used to broadcast messages to all components of the receiving
@@ -788,7 +789,7 @@ public enum class MavComponent(
   ;
 
   public companion object : MavEnum.MavCompanion<MavComponent> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavComponent? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavComponent? = when (v) {
       0u -> MAV_COMP_ID_ALL
       1u -> MAV_COMP_ID_AUTOPILOT1
       25u -> MAV_COMP_ID_USER1

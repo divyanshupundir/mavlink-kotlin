@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * These flags encode the cellular network status
+ *
  */
 @GeneratedMavEnum
 public enum class CellularStatusFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * State unknown or not reportable.
@@ -85,7 +86,7 @@ public enum class CellularStatusFlag(
   ;
 
   public companion object : MavEnum.MavCompanion<CellularStatusFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): CellularStatusFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CellularStatusFlag? = when (v) {
       0u -> UNKNOWN
       1u -> FAILED
       2u -> INITIALIZING

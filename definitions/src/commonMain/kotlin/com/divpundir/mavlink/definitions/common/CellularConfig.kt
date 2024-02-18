@@ -25,6 +25,7 @@ import kotlin.Unit
  * Configure cellular modems.
  *         This message is re-emitted as an acknowledgement by the modem.
  *         The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE.
+ *
  */
 @GeneratedMavMessage(
   id = 336u,
@@ -79,9 +80,9 @@ public data class CellularConfig(
   @GeneratedMavField(type = "uint8_t")
   public val response: MavEnumValue<CellularConfigResponse> = MavEnumValue.fromValue(0u),
 ) : MavMessage<CellularConfig> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CellularConfig> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CellularConfig> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(enableLte)
     encoder.encodeUInt8(enablePin)
@@ -94,7 +95,7 @@ public data class CellularConfig(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(enableLte)
     encoder.encodeUInt8(enablePin)
@@ -112,11 +113,11 @@ public data class CellularConfig(
 
     private const val SIZE_V2: Int = 84
 
-    public override val id: UInt = 336u
+    override val id: UInt = 336u
 
-    public override val crcExtra: Byte = -11
+    override val crcExtra: Byte = -11
 
-    public override fun deserialize(bytes: ByteArray): CellularConfig {
+    override fun deserialize(bytes: ByteArray): CellularConfig {
       val decoder = MavDataDecoder(bytes)
 
       val enableLte = decoder.safeDecodeUInt8()

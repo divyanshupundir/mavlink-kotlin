@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Aircraft-rated danger from this threat.
+ *
  */
 @GeneratedMavEnum
 public enum class MavCollisionThreatLevel(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not a threat
@@ -30,7 +31,7 @@ public enum class MavCollisionThreatLevel(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCollisionThreatLevel> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCollisionThreatLevel? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCollisionThreatLevel? = when (v) {
       0u -> NONE
       1u -> LOW
       2u -> HIGH

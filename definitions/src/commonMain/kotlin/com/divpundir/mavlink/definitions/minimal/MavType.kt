@@ -9,10 +9,11 @@ import kotlin.UInt
  * MAVLINK component type reported in HEARTBEAT message. Flight controllers must report the type of
  * the vehicle on which they are mounted (e.g. MAV_TYPE_OCTOROTOR). All other components must report a
  * value appropriate for their type (e.g. a camera must use MAV_TYPE_CAMERA).
+ *
  */
 @GeneratedMavEnum
 public enum class MavType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Generic micro air vehicle
@@ -135,8 +136,8 @@ public enum class MavType(
   VTOL_FIXEDROTOR(22u),
   /**
    * Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for
-   * hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or
-   * MAV_TYPE_VTOL_QUADROTOR if appropriate.
+   * hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_TAILSITTER_DUOROTOR or
+   * MAV_TYPE_VTOL_TAILSITTER_QUADROTOR if appropriate.
    */
   @GeneratedMavEnumEntry
   VTOL_TAILSITTER(23u),
@@ -244,7 +245,7 @@ public enum class MavType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavType? = when (v) {
       0u -> GENERIC
       1u -> FIXED_WING
       2u -> QUADROTOR

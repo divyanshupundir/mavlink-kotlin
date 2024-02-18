@@ -21,6 +21,7 @@ import kotlin.collections.List
 
 /**
  * Data for injecting into the onboard GPS (used for DGPS)
+ *
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -49,9 +50,9 @@ public data class GpsInjectData(
   @GeneratedMavField(type = "uint8_t[110]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<GpsInjectData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GpsInjectData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GpsInjectData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -60,7 +61,7 @@ public data class GpsInjectData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -74,11 +75,11 @@ public data class GpsInjectData(
 
     private const val SIZE_V2: Int = 113
 
-    public override val id: UInt = 123u
+    override val id: UInt = 123u
 
-    public override val crcExtra: Byte = -6
+    override val crcExtra: Byte = -6
 
-    public override fun deserialize(bytes: ByteArray): GpsInjectData {
+    override fun deserialize(bytes: ByteArray): GpsInjectData {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

@@ -27,6 +27,7 @@ import kotlin.Unit
 /**
  * Sent from simulation to autopilot. This packet is useful for high throughput applications such as
  * hardware in the loop simulations.
+ *
  */
 @Deprecated(message = "Suffers from missing airspeed fields and singularities due to Euler angles")
 @GeneratedMavMessage(
@@ -116,9 +117,9 @@ public data class HilState(
   @GeneratedMavField(type = "int16_t")
   public val zacc: Short = 0,
 ) : MavMessage<HilState> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilState> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilState> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(roll)
@@ -139,7 +140,7 @@ public data class HilState(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(roll)
@@ -165,11 +166,11 @@ public data class HilState(
 
     private const val SIZE_V2: Int = 56
 
-    public override val id: UInt = 90u
+    override val id: UInt = 90u
 
-    public override val crcExtra: Byte = -73
+    override val crcExtra: Byte = -73
 
-    public override fun deserialize(bytes: ByteArray): HilState {
+    override fun deserialize(bytes: ByteArray): HilState {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

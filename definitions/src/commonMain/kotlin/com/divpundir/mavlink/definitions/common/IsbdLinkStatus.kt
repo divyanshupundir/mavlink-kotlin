@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Status of the Iridium SBD link.
+ *
  */
 @GeneratedMavMessage(
   id = 335u,
@@ -73,9 +74,9 @@ public data class IsbdLinkStatus(
   @GeneratedMavField(type = "uint8_t")
   public val rxSessionPending: UByte = 0u,
 ) : MavMessage<IsbdLinkStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<IsbdLinkStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<IsbdLinkStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(lastHeartbeat)
@@ -88,7 +89,7 @@ public data class IsbdLinkStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(lastHeartbeat)
@@ -106,11 +107,11 @@ public data class IsbdLinkStatus(
 
     private const val SIZE_V2: Int = 24
 
-    public override val id: UInt = 335u
+    override val id: UInt = 335u
 
-    public override val crcExtra: Byte = -31
+    override val crcExtra: Byte = -31
 
-    public override fun deserialize(bytes: ByteArray): IsbdLinkStatus {
+    override fun deserialize(bytes: ByteArray): IsbdLinkStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

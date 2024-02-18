@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * To debug something using a named 3D vector.
+ *
  */
 @GeneratedMavMessage(
   id = 250u,
@@ -56,9 +57,9 @@ public data class DebugVect(
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<DebugVect> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DebugVect> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DebugVect> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -68,7 +69,7 @@ public data class DebugVect(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -83,11 +84,11 @@ public data class DebugVect(
 
     private const val SIZE_V2: Int = 30
 
-    public override val id: UInt = 250u
+    override val id: UInt = 250u
 
-    public override val crcExtra: Byte = 49
+    override val crcExtra: Byte = 49
 
-    public override fun deserialize(bytes: ByteArray): DebugVect {
+    override fun deserialize(bytes: ByteArray): DebugVect {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

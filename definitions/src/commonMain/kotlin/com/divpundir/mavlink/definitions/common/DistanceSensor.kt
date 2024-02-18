@@ -31,6 +31,7 @@ import kotlin.collections.List
 
 /**
  * Distance sensor information for an onboard rangefinder.
+ *
  */
 @GeneratedMavMessage(
   id = 132u,
@@ -118,9 +119,9 @@ public data class DistanceSensor(
   )
   public val signalQuality: UByte = 0u,
 ) : MavMessage<DistanceSensor> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DistanceSensor> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DistanceSensor> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt16(minDistance)
@@ -133,7 +134,7 @@ public data class DistanceSensor(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt16(minDistance)
@@ -155,11 +156,11 @@ public data class DistanceSensor(
 
     private const val SIZE_V2: Int = 39
 
-    public override val id: UInt = 132u
+    override val id: UInt = 132u
 
-    public override val crcExtra: Byte = 85
+    override val crcExtra: Byte = 85
 
-    public override fun deserialize(bytes: ByteArray): DistanceSensor {
+    override fun deserialize(bytes: ByteArray): DistanceSensor {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

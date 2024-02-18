@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Actions being taken to mitigate/prevent fence breach
+ *
  */
 @GeneratedMavEnum
 public enum class FenceMitigate(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Unknown
@@ -30,7 +31,7 @@ public enum class FenceMitigate(
   ;
 
   public companion object : MavEnum.MavCompanion<FenceMitigate> {
-    public override fun getEntryFromValueOrNull(v: UInt): FenceMitigate? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): FenceMitigate? = when (v) {
       0u -> UNKNOWN
       1u -> NONE
       2u -> VEL_LIMIT

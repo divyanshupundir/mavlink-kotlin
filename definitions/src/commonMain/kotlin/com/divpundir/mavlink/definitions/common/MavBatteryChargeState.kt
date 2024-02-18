@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Enumeration for battery charge states.
+ *
  */
 @GeneratedMavEnum
 public enum class MavBatteryChargeState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Low battery state is not provided
@@ -57,7 +58,7 @@ public enum class MavBatteryChargeState(
   ;
 
   public companion object : MavEnum.MavCompanion<MavBatteryChargeState> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryChargeState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavBatteryChargeState? = when (v) {
       0u -> UNDEFINED
       1u -> OK
       2u -> LOW

@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Airspeed auto-calibration.
+ *
  */
 @GeneratedMavMessage(
   id = 174u,
@@ -84,9 +85,9 @@ public data class AirspeedAutocal(
   @GeneratedMavField(type = "float")
   public val pcz: Float = 0F,
 ) : MavMessage<AirspeedAutocal> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AirspeedAutocal> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AirspeedAutocal> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(vx)
     encoder.encodeFloat(vy)
@@ -103,7 +104,7 @@ public data class AirspeedAutocal(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(vx)
     encoder.encodeFloat(vy)
@@ -125,11 +126,11 @@ public data class AirspeedAutocal(
 
     private const val SIZE_V2: Int = 48
 
-    public override val id: UInt = 174u
+    override val id: UInt = 174u
 
-    public override val crcExtra: Byte = -89
+    override val crcExtra: Byte = -89
 
-    public override fun deserialize(bytes: ByteArray): AirspeedAutocal {
+    override fun deserialize(bytes: ByteArray): AirspeedAutocal {
       val decoder = MavDataDecoder(bytes)
 
       val vx = decoder.safeDecodeFloat()

@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Enumeration of the ADSB altimeter types
+ *
  */
 @GeneratedMavEnum
 public enum class AdsbAltitudeType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Altitude reported from a Baro source using QNH reference
@@ -25,7 +26,7 @@ public enum class AdsbAltitudeType(
   ;
 
   public companion object : MavEnum.MavCompanion<AdsbAltitudeType> {
-    public override fun getEntryFromValueOrNull(v: UInt): AdsbAltitudeType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AdsbAltitudeType? = when (v) {
       0u -> PRESSURE_QNH
       1u -> GEOMETRIC
       else -> null

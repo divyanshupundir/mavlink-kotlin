@@ -23,6 +23,7 @@ import kotlin.Unit
 
 /**
  * Reports results of completed compass calibration. Sent until MAG_CAL_ACK received.
+ *
  */
 @GeneratedMavMessage(
   id = 192u,
@@ -132,9 +133,9 @@ public data class MagCalReport(
   )
   public val scaleFactor: Float = 0F,
 ) : MavMessage<MagCalReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MagCalReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MagCalReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(fitness)
     encoder.encodeFloat(ofsX)
@@ -153,7 +154,7 @@ public data class MagCalReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(fitness)
     encoder.encodeFloat(ofsX)
@@ -181,11 +182,11 @@ public data class MagCalReport(
 
     private const val SIZE_V2: Int = 54
 
-    public override val id: UInt = 192u
+    override val id: UInt = 192u
 
-    public override val crcExtra: Byte = 36
+    override val crcExtra: Byte = 36
 
-    public override fun deserialize(bytes: ByteArray): MagCalReport {
+    override fun deserialize(bytes: ByteArray): MagCalReport {
       val decoder = MavDataDecoder(bytes)
 
       val fitness = decoder.safeDecodeFloat()

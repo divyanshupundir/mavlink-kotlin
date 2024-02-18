@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * Start firmware update with encapsulated data.
+ *
  */
 @GeneratedMavMessage(
   id = 50_004u,
@@ -46,10 +47,9 @@ public data class CubepilotFirmwareUpdateStart(
   @GeneratedMavField(type = "uint32_t")
   public val crc: UInt = 0u,
 ) : MavMessage<CubepilotFirmwareUpdateStart> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CubepilotFirmwareUpdateStart> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CubepilotFirmwareUpdateStart> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(size)
     encoder.encodeUInt32(crc)
@@ -58,7 +58,7 @@ public data class CubepilotFirmwareUpdateStart(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(size)
     encoder.encodeUInt32(crc)
@@ -72,11 +72,11 @@ public data class CubepilotFirmwareUpdateStart(
 
     private const val SIZE_V2: Int = 10
 
-    public override val id: UInt = 50_004u
+    override val id: UInt = 50_004u
 
-    public override val crcExtra: Byte = -16
+    override val crcExtra: Byte = -16
 
-    public override fun deserialize(bytes: ByteArray): CubepilotFirmwareUpdateStart {
+    override fun deserialize(bytes: ByteArray): CubepilotFirmwareUpdateStart {
       val decoder = MavDataDecoder(bytes)
 
       val size = decoder.safeDecodeUInt32()

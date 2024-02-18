@@ -21,6 +21,7 @@ import kotlin.Unit
  * The offset in X, Y, Z and yaw between the LOCAL_POSITION_NED messages of MAV X and the global
  * coordinate frame in NED coordinates. Coordinate frame is right-handed, Z-axis down (aeronautical
  * frame, NED / north-east-down convention)
+ *
  */
 @GeneratedMavMessage(
   id = 89u,
@@ -63,10 +64,10 @@ public data class LocalPositionNedSystemGlobalOffset(
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
 ) : MavMessage<LocalPositionNedSystemGlobalOffset> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset>
-      = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset> =
+      Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -78,7 +79,7 @@ public data class LocalPositionNedSystemGlobalOffset(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -95,11 +96,11 @@ public data class LocalPositionNedSystemGlobalOffset(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 89u
+    override val id: UInt = 89u
 
-    public override val crcExtra: Byte = -25
+    override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): LocalPositionNedSystemGlobalOffset {
+    override fun deserialize(bytes: ByteArray): LocalPositionNedSystemGlobalOffset {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

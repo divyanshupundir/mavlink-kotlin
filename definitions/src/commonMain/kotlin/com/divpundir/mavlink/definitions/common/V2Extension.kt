@@ -23,6 +23,7 @@ import kotlin.collections.List
 
 /**
  * Message implementing parts of the V2 payload specs in V1 frames for transitional support.
+ *
  */
 @GeneratedMavMessage(
   id = 248u,
@@ -66,9 +67,9 @@ public data class V2Extension(
   @GeneratedMavField(type = "uint8_t[249]")
   public val payload: List<UByte> = emptyList(),
 ) : MavMessage<V2Extension> {
-  public override val instanceCompanion: MavMessage.MavCompanion<V2Extension> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<V2Extension> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(messageType)
     encoder.encodeUInt8(targetNetwork)
@@ -78,7 +79,7 @@ public data class V2Extension(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(messageType)
     encoder.encodeUInt8(targetNetwork)
@@ -93,11 +94,11 @@ public data class V2Extension(
 
     private const val SIZE_V2: Int = 254
 
-    public override val id: UInt = 248u
+    override val id: UInt = 248u
 
-    public override val crcExtra: Byte = 8
+    override val crcExtra: Byte = 8
 
-    public override fun deserialize(bytes: ByteArray): V2Extension {
+    override fun deserialize(bytes: ByteArray): V2Extension {
       val decoder = MavDataDecoder(bytes)
 
       val messageType = decoder.safeDecodeUInt16()

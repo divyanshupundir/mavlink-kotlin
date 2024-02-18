@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Camera tracking status flags
+ *
  */
 @GeneratedMavEnum
 public enum class CameraTrackingStatusFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Camera is not tracking
@@ -30,7 +31,7 @@ public enum class CameraTrackingStatusFlags(
   ;
 
   public companion object : MavEnum.MavCompanion<CameraTrackingStatusFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingStatusFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraTrackingStatusFlags? = when (v) {
       0u -> IDLE
       1u -> ACTIVE
       2u -> ERROR

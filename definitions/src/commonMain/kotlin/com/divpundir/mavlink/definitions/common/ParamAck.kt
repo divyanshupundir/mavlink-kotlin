@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * Result from PARAM_EXT_SET message (or a PARAM_SET within a transaction).
+ *
  */
 @GeneratedMavEnum
 public enum class ParamAck(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Parameter value ACCEPTED and SET
@@ -38,7 +39,7 @@ public enum class ParamAck(
   ;
 
   public companion object : MavEnum.MavCompanion<ParamAck> {
-    public override fun getEntryFromValueOrNull(v: UInt): ParamAck? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): ParamAck? = when (v) {
       0u -> ACCEPTED
       1u -> VALUE_UNSUPPORTED
       2u -> FAILED

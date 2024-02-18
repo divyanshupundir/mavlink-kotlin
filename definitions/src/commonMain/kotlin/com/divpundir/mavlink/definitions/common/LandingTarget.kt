@@ -29,6 +29,7 @@ import kotlin.collections.List
 
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
+ *
  */
 @GeneratedMavMessage(
   id = 149u,
@@ -126,9 +127,9 @@ public data class LandingTarget(
   )
   public val positionValid: UByte = 0u,
 ) : MavMessage<LandingTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LandingTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LandingTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(angleX)
@@ -141,7 +142,7 @@ public data class LandingTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(angleX)
@@ -165,11 +166,11 @@ public data class LandingTarget(
 
     private const val SIZE_V2: Int = 60
 
-    public override val id: UInt = 149u
+    override val id: UInt = 149u
 
-    public override val crcExtra: Byte = -56
+    override val crcExtra: Byte = -56
 
-    public override fun deserialize(bytes: ByteArray): LandingTarget {
+    override fun deserialize(bytes: ByteArray): LandingTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

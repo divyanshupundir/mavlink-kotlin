@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * Winch status flags used in WINCH_STATUS
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavWinchStatusFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Winch is healthy
@@ -88,7 +89,7 @@ public enum class MavWinchStatusFlag(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavWinchStatusFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavWinchStatusFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavWinchStatusFlag? = when (v) {
       1u -> MAV_WINCH_STATUS_HEALTHY
       2u -> MAV_WINCH_STATUS_FULLY_RETRACTED
       4u -> MAV_WINCH_STATUS_MOVING
@@ -106,7 +107,7 @@ public enum class MavWinchStatusFlag(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavWinchStatusFlag> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavWinchStatusFlag> = buildList {
       if (v and 1u == 1u) add(MAV_WINCH_STATUS_HEALTHY)
       if (v and 2u == 2u) add(MAV_WINCH_STATUS_FULLY_RETRACTED)
       if (v and 4u == 4u) add(MAV_WINCH_STATUS_MOVING)

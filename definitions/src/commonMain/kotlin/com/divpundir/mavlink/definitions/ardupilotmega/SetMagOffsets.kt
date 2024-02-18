@@ -21,6 +21,7 @@ import kotlin.Unit
 
 /**
  * Set the magnetometer offsets
+ *
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -54,9 +55,9 @@ public data class SetMagOffsets(
   @GeneratedMavField(type = "int16_t")
   public val magOfsZ: Short = 0,
 ) : MavMessage<SetMagOffsets> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetMagOffsets> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetMagOffsets> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(magOfsX)
     encoder.encodeInt16(magOfsY)
@@ -66,7 +67,7 @@ public data class SetMagOffsets(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(magOfsX)
     encoder.encodeInt16(magOfsY)
@@ -81,11 +82,11 @@ public data class SetMagOffsets(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 151u
+    override val id: UInt = 151u
 
-    public override val crcExtra: Byte = -37
+    override val crcExtra: Byte = -37
 
-    public override fun deserialize(bytes: ByteArray): SetMagOffsets {
+    override fun deserialize(bytes: ByteArray): SetMagOffsets {
       val decoder = MavDataDecoder(bytes)
 
       val magOfsX = decoder.safeDecodeInt16()

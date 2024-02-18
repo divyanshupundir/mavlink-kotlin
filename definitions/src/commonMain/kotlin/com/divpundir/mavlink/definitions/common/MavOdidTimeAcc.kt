@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidTimeAcc(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The timestamp accuracy is unknown.
@@ -92,7 +92,7 @@ public enum class MavOdidTimeAcc(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidTimeAcc> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidTimeAcc? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidTimeAcc? = when (v) {
       0u -> UNKNOWN
       1u -> _0_1_SECOND
       2u -> _0_2_SECOND

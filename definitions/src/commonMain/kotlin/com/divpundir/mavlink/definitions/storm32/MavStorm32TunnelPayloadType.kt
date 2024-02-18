@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavStorm32TunnelPayloadType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Registered for STorM32 gimbal controller. For communication with gimbal or camera.
@@ -42,7 +42,7 @@ public enum class MavStorm32TunnelPayloadType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavStorm32TunnelPayloadType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavStorm32TunnelPayloadType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavStorm32TunnelPayloadType? = when (v) {
       200u -> STORM32_CH1_IN
       201u -> STORM32_CH1_OUT
       202u -> STORM32_CH2_IN

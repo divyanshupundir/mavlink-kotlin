@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * Adaptive Controller tuning information.
+ *
  */
 @GeneratedMavMessage(
   id = 11_010u,
@@ -92,9 +93,9 @@ public data class AdapTuning(
   @GeneratedMavField(type = "float")
   public val u: Float = 0F,
 ) : MavMessage<AdapTuning> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AdapTuning> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AdapTuning> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(desired)
     encoder.encodeFloat(achieved)
@@ -112,7 +113,7 @@ public data class AdapTuning(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(desired)
     encoder.encodeFloat(achieved)
@@ -135,11 +136,11 @@ public data class AdapTuning(
 
     private const val SIZE_V2: Int = 49
 
-    public override val id: UInt = 11_010u
+    override val id: UInt = 11_010u
 
-    public override val crcExtra: Byte = 46
+    override val crcExtra: Byte = 46
 
-    public override fun deserialize(bytes: ByteArray): AdapTuning {
+    override fun deserialize(bytes: ByteArray): AdapTuning {
       val decoder = MavDataDecoder(bytes)
 
       val desired = decoder.safeDecodeFloat()

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproRequestStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The write message with ID indicated succeeded.
@@ -22,7 +22,7 @@ public enum class GoproRequestStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproRequestStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproRequestStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproRequestStatus? = when (v) {
       0u -> GOPRO_REQUEST_SUCCESS
       1u -> GOPRO_REQUEST_FAILED
       else -> null

@@ -26,6 +26,7 @@ import kotlin.Unit
  * actual rates will depend on internal gimbal manager settings/configuration (e.g. set by parameters).
  * This message is to be sent to the gimbal manager (e.g. from a ground station). Angles and rates can
  * be set to NaN according to use case.
+ *
  */
 @GeneratedMavMessage(
   id = 288u,
@@ -75,10 +76,9 @@ public data class GimbalManagerSetManualControl(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<GimbalManagerSetManualControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetManualControl> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetManualControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloat(pitch)
@@ -91,7 +91,7 @@ public data class GimbalManagerSetManualControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloat(pitch)
@@ -109,11 +109,11 @@ public data class GimbalManagerSetManualControl(
 
     private const val SIZE_V2: Int = 23
 
-    public override val id: UInt = 288u
+    override val id: UInt = 288u
 
-    public override val crcExtra: Byte = 20
+    override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerSetManualControl {
+    override fun deserialize(bytes: ByteArray): GimbalManagerSetManualControl {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeBitmaskValue(4).let { value ->

@@ -29,6 +29,7 @@ import kotlin.Unit
 /**
  * Information about the status of a video stream. It may be requested using
  * MAV_CMD_REQUEST_MESSAGE.
+ *
  */
 @GeneratedMavMessage(
   id = 270u,
@@ -76,9 +77,9 @@ public data class VideoStreamStatus(
   @GeneratedMavField(type = "uint16_t")
   public val hfov: UShort = 0u,
 ) : MavMessage<VideoStreamStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -91,7 +92,7 @@ public data class VideoStreamStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -109,11 +110,11 @@ public data class VideoStreamStatus(
 
     private const val SIZE_V2: Int = 19
 
-    public override val id: UInt = 270u
+    override val id: UInt = 270u
 
-    public override val crcExtra: Byte = 59
+    override val crcExtra: Byte = 59
 
-    public override fun deserialize(bytes: ByteArray): VideoStreamStatus {
+    override fun deserialize(bytes: ByteArray): VideoStreamStatus {
       val decoder = MavDataDecoder(bytes)
 
       val framerate = decoder.safeDecodeFloat()

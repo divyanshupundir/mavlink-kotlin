@@ -31,6 +31,7 @@ import kotlin.Unit
  * filter. The user should be notified if an innovation test ratio greater than 1.0 is recorded.
  * Notifications for values in the range between 0.5 and 1.0 should be optional and controllable by the
  * user.
+ *
  */
 @GeneratedMavMessage(
   id = 230u,
@@ -89,9 +90,9 @@ public data class EstimatorStatus(
   @GeneratedMavField(type = "float")
   public val posVertAccuracy: Float = 0F,
 ) : MavMessage<EstimatorStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EstimatorStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EstimatorStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(velRatio)
@@ -106,7 +107,7 @@ public data class EstimatorStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(velRatio)
@@ -126,11 +127,11 @@ public data class EstimatorStatus(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 230u
+    override val id: UInt = 230u
 
-    public override val crcExtra: Byte = -93
+    override val crcExtra: Byte = -93
 
-    public override fun deserialize(bytes: ByteArray): EstimatorStatus {
+    override fun deserialize(bytes: ByteArray): EstimatorStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

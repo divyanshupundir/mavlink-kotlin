@@ -34,7 +34,8 @@ import kotlin.collections.List
 
 /**
  * Battery information. Updates GCS with flight controller battery status. Smart batteries also use
- * this message, but may additionally send SMART_BATTERY_INFO.
+ * this message, but may additionally send BATTERY_INFO.
+ *
  */
 @GeneratedMavMessage(
   id = 147u,
@@ -140,9 +141,9 @@ public data class BatteryStatus(
   )
   public val faultBitmask: MavBitmaskValue<MavBatteryFault> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<BatteryStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<BatteryStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<BatteryStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(currentConsumed)
     encoder.encodeInt32(energyConsumed)
@@ -156,7 +157,7 @@ public data class BatteryStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(currentConsumed)
     encoder.encodeInt32(energyConsumed)
@@ -180,11 +181,11 @@ public data class BatteryStatus(
 
     private const val SIZE_V2: Int = 54
 
-    public override val id: UInt = 147u
+    override val id: UInt = 147u
 
-    public override val crcExtra: Byte = -102
+    override val crcExtra: Byte = -102
 
-    public override fun deserialize(bytes: ByteArray): BatteryStatus {
+    override fun deserialize(bytes: ByteArray): BatteryStatus {
       val decoder = MavDataDecoder(bytes)
 
       val currentConsumed = decoder.safeDecodeInt32()

@@ -26,6 +26,7 @@ import kotlin.Unit
  * gimbal manager (e.g. from a ground station) and will be ignored by gimbal devices. Angles and rates
  * can be set to NaN according to use case. Use MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW for low-rate
  * adjustments that require confirmation.
+ *
  */
 @GeneratedMavMessage(
   id = 287u,
@@ -74,10 +75,9 @@ public data class GimbalManagerSetPitchyaw(
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<GimbalManagerSetPitchyaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloat(pitch)
@@ -90,7 +90,7 @@ public data class GimbalManagerSetPitchyaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloat(pitch)
@@ -108,11 +108,11 @@ public data class GimbalManagerSetPitchyaw(
 
     private const val SIZE_V2: Int = 23
 
-    public override val id: UInt = 287u
+    override val id: UInt = 287u
 
-    public override val crcExtra: Byte = 1
+    override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerSetPitchyaw {
+    override fun deserialize(bytes: ByteArray): GimbalManagerSetPitchyaw {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeBitmaskValue(4).let { value ->

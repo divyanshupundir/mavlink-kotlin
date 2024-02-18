@@ -19,6 +19,7 @@ import kotlin.Unit
 
 /**
  * State of autopilot RAM.
+ *
  */
 @GeneratedMavMessage(
   id = 152u,
@@ -44,16 +45,16 @@ public data class Meminfo(
   )
   public val freemem32: UInt = 0u,
 ) : MavMessage<Meminfo> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Meminfo> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Meminfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(brkval)
     encoder.encodeUInt16(freemem)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(brkval)
     encoder.encodeUInt16(freemem)
@@ -66,11 +67,11 @@ public data class Meminfo(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 152u
+    override val id: UInt = 152u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): Meminfo {
+    override fun deserialize(bytes: ByteArray): Meminfo {
       val decoder = MavDataDecoder(bytes)
 
       val brkval = decoder.safeDecodeUInt16()

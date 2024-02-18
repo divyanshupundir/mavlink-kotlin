@@ -28,6 +28,7 @@ import kotlin.collections.List
 /**
  * Describe a trajectory using an array of up-to 5 waypoints in the local frame
  * (MAV_FRAME_LOCAL_NED).
+ *
  */
 @GeneratedMavMessage(
   id = 332u,
@@ -106,10 +107,10 @@ public data class TrajectoryRepresentationWaypoints(
   @GeneratedMavField(type = "uint16_t[5]")
   public val command: List<UShort> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationWaypoints> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationWaypoints>
-      = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationWaypoints> =
+      Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(posX, 20)
@@ -128,7 +129,7 @@ public data class TrajectoryRepresentationWaypoints(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(posX, 20)
@@ -152,11 +153,11 @@ public data class TrajectoryRepresentationWaypoints(
 
     private const val SIZE_V2: Int = 239
 
-    public override val id: UInt = 332u
+    override val id: UInt = 332u
 
-    public override val crcExtra: Byte = -20
+    override val crcExtra: Byte = -20
 
-    public override fun deserialize(bytes: ByteArray): TrajectoryRepresentationWaypoints {
+    override fun deserialize(bytes: ByteArray): TrajectoryRepresentationWaypoints {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

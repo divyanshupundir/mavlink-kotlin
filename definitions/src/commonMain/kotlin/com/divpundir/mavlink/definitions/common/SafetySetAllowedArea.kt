@@ -25,6 +25,7 @@ import kotlin.Unit
  * Set a safety zone (volume), which is defined by two corners of a cube. This message can be used
  * to tell the MAV which setpoints/waypoints to accept and which to reject. Safety areas are often
  * enforced by national or competition regulations.
+ *
  */
 @GeneratedMavMessage(
   id = 54u,
@@ -78,9 +79,9 @@ public data class SafetySetAllowedArea(
   @GeneratedMavField(type = "float")
   public val p2z: Float = 0F,
 ) : MavMessage<SafetySetAllowedArea> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SafetySetAllowedArea> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SafetySetAllowedArea> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(p1x)
     encoder.encodeFloat(p1y)
@@ -94,7 +95,7 @@ public data class SafetySetAllowedArea(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(p1x)
     encoder.encodeFloat(p1y)
@@ -113,11 +114,11 @@ public data class SafetySetAllowedArea(
 
     private const val SIZE_V2: Int = 27
 
-    public override val id: UInt = 54u
+    override val id: UInt = 54u
 
-    public override val crcExtra: Byte = 15
+    override val crcExtra: Byte = 15
 
-    public override fun deserialize(bytes: ByteArray): SafetySetAllowedArea {
+    override fun deserialize(bytes: ByteArray): SafetySetAllowedArea {
       val decoder = MavDataDecoder(bytes)
 
       val p1x = decoder.safeDecodeFloat()

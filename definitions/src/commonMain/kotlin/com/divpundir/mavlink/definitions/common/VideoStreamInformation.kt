@@ -35,6 +35,7 @@ import kotlin.Unit
 /**
  * Information about video stream. It may be requested using MAV_CMD_REQUEST_MESSAGE, where param2
  * indicates the video stream id: 0 for all streams, 1 for first, 2 for second, etc.
+ *
  */
 @GeneratedMavMessage(
   id = 269u,
@@ -103,9 +104,9 @@ public data class VideoStreamInformation(
   @GeneratedMavField(type = "char[160]")
   public val uri: String = "",
 ) : MavMessage<VideoStreamInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VideoStreamInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VideoStreamInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -122,7 +123,7 @@ public data class VideoStreamInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -144,11 +145,11 @@ public data class VideoStreamInformation(
 
     private const val SIZE_V2: Int = 213
 
-    public override val id: UInt = 269u
+    override val id: UInt = 269u
 
-    public override val crcExtra: Byte = 109
+    override val crcExtra: Byte = 109
 
-    public override fun deserialize(bytes: ByteArray): VideoStreamInformation {
+    override fun deserialize(bytes: ByteArray): VideoStreamInformation {
       val decoder = MavDataDecoder(bytes)
 
       val framerate = decoder.safeDecodeFloat()

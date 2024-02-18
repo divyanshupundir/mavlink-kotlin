@@ -31,6 +31,7 @@ import kotlin.collections.List
 /**
  * Message to a gimbal manager to control the gimbal attitude. Angles and rates can be set to NaN
  * according to use case. A gimbal device is never to react to this message.
+ *
  */
 @GeneratedMavMessage(
   id = 60_012u,
@@ -93,10 +94,9 @@ public data class Storm32GimbalManagerControl(
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControl> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(angularVelocityX)
@@ -111,7 +111,7 @@ public data class Storm32GimbalManagerControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(angularVelocityX)
@@ -131,11 +131,11 @@ public data class Storm32GimbalManagerControl(
 
     private const val SIZE_V2: Int = 36
 
-    public override val id: UInt = 60_012u
+    override val id: UInt = 60_012u
 
-    public override val crcExtra: Byte = 99
+    override val crcExtra: Byte = 99
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerControl {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerControl {
       val decoder = MavDataDecoder(bytes)
 
       val q = decoder.safeDecodeFloatArray(16)

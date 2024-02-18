@@ -25,6 +25,7 @@ import kotlin.Unit
 
 /**
  * Status of AP_Limits. Sent in extended status stream when AP_Limits is enabled.
+ *
  */
 @GeneratedMavMessage(
   id = 167u,
@@ -77,9 +78,9 @@ public data class LimitsStatus(
   @GeneratedMavField(type = "uint8_t")
   public val modsTriggered: MavBitmaskValue<LimitModule> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<LimitsStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LimitsStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LimitsStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(lastTrigger)
     encoder.encodeUInt32(lastAction)
@@ -93,7 +94,7 @@ public data class LimitsStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(lastTrigger)
     encoder.encodeUInt32(lastAction)
@@ -112,11 +113,11 @@ public data class LimitsStatus(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 167u
+    override val id: UInt = 167u
 
-    public override val crcExtra: Byte = -112
+    override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): LimitsStatus {
+    override fun deserialize(bytes: ByteArray): LimitsStatus {
       val decoder = MavDataDecoder(bytes)
 
       val lastTrigger = decoder.safeDecodeUInt32()

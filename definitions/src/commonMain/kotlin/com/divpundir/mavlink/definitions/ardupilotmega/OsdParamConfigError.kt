@@ -7,10 +7,11 @@ import kotlin.UInt
 
 /**
  * The error type for the OSD parameter editor.
+ *
  */
 @GeneratedMavEnum
 public enum class OsdParamConfigError(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   OSD_PARAM_SUCCESS(0u),
@@ -23,7 +24,7 @@ public enum class OsdParamConfigError(
   ;
 
   public companion object : MavEnum.MavCompanion<OsdParamConfigError> {
-    public override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigError? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): OsdParamConfigError? = when (v) {
       0u -> OSD_PARAM_SUCCESS
       1u -> OSD_PARAM_INVALID_SCREEN
       2u -> OSD_PARAM_INVALID_PARAMETER_INDEX

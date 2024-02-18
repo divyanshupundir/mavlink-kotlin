@@ -23,6 +23,7 @@ import kotlin.Unit
 /**
  * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
  * message interval.
+ *
  */
 @GeneratedMavMessage(
   id = 276u,
@@ -95,10 +96,9 @@ public data class CameraTrackingGeoStatus(
   @GeneratedMavField(type = "float")
   public val hdgAcc: Float = 0F,
 ) : MavMessage<CameraTrackingGeoStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -116,7 +116,7 @@ public data class CameraTrackingGeoStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -139,11 +139,11 @@ public data class CameraTrackingGeoStatus(
 
     private const val SIZE_V2: Int = 49
 
-    public override val id: UInt = 276u
+    override val id: UInt = 276u
 
-    public override val crcExtra: Byte = 18
+    override val crcExtra: Byte = 18
 
-    public override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
+    override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

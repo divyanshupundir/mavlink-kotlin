@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Deepstall path planning.
+ *
  */
 @GeneratedMavMessage(
   id = 195u,
@@ -79,9 +80,9 @@ public data class Deepstall(
   @GeneratedMavField(type = "uint8_t")
   public val stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Deepstall> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(landingLat)
     encoder.encodeInt32(landingLon)
@@ -96,7 +97,7 @@ public data class Deepstall(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(landingLat)
     encoder.encodeInt32(landingLon)
@@ -116,11 +117,11 @@ public data class Deepstall(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 195u
+    override val id: UInt = 195u
 
-    public override val crcExtra: Byte = 120
+    override val crcExtra: Byte = 120
 
-    public override fun deserialize(bytes: ByteArray): Deepstall {
+    override fun deserialize(bytes: ByteArray): Deepstall {
       val decoder = MavDataDecoder(bytes)
 
       val landingLat = decoder.safeDecodeInt32()

@@ -8,10 +8,11 @@ import kotlin.collections.List
 
 /**
  * Flags to report failure cases over the high latency telemetry.
+ *
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class HlFailureFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * GPS failure.
@@ -86,7 +87,7 @@ public enum class HlFailureFlag(
   ;
 
   public companion object : MavBitmask.MavCompanion<HlFailureFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): HlFailureFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): HlFailureFlag? = when (v) {
       1u -> GPS
       2u -> DIFFERENTIAL_PRESSURE
       4u -> ABSOLUTE_PRESSURE
@@ -104,7 +105,7 @@ public enum class HlFailureFlag(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<HlFailureFlag> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<HlFailureFlag> = buildList {
       if (v and 1u == 1u) add(GPS)
       if (v and 2u == 2u) add(DIFFERENTIAL_PRESSURE)
       if (v and 4u == 4u) add(ABSOLUTE_PRESSURE)

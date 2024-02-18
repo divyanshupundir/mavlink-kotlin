@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Status of DCM attitude estimator.
+ *
  */
 @GeneratedMavMessage(
   id = 163u,
@@ -59,9 +60,9 @@ public data class Ahrs(
   @GeneratedMavField(type = "float")
   public val errorYaw: Float = 0F,
 ) : MavMessage<Ahrs> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Ahrs> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Ahrs> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(omegaix)
     encoder.encodeFloat(omegaiy)
@@ -73,7 +74,7 @@ public data class Ahrs(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(omegaix)
     encoder.encodeFloat(omegaiy)
@@ -90,11 +91,11 @@ public data class Ahrs(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 163u
+    override val id: UInt = 163u
 
-    public override val crcExtra: Byte = 127
+    override val crcExtra: Byte = 127
 
-    public override fun deserialize(bytes: ByteArray): Ahrs {
+    override fun deserialize(bytes: ByteArray): Ahrs {
       val decoder = MavDataDecoder(bytes)
 
       val omegaix = decoder.safeDecodeFloat()

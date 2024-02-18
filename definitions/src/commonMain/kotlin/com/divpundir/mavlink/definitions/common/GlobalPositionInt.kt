@@ -27,6 +27,7 @@ import kotlin.Unit
  * (right-handed, Z-up). It
  *                is designed as scaled integer message since the resolution of float is not
  * sufficient.
+ *
  */
 @GeneratedMavMessage(
   id = 33u,
@@ -79,9 +80,9 @@ public data class GlobalPositionInt(
   @GeneratedMavField(type = "uint16_t")
   public val hdg: UShort = 0u,
 ) : MavMessage<GlobalPositionInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionInt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(lat)
@@ -95,7 +96,7 @@ public data class GlobalPositionInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(lat)
@@ -114,11 +115,11 @@ public data class GlobalPositionInt(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 33u
+    override val id: UInt = 33u
 
-    public override val crcExtra: Byte = 104
+    override val crcExtra: Byte = 104
 
-    public override fun deserialize(bytes: ByteArray): GlobalPositionInt {
+    override fun deserialize(bytes: ByteArray): GlobalPositionInt {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

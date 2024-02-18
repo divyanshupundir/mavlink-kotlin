@@ -20,6 +20,7 @@ import kotlin.Unit
 
 /**
  * 3 axis gimbal measurements.
+ *
  */
 @GeneratedMavMessage(
   id = 200u,
@@ -87,9 +88,9 @@ public data class GimbalReport(
   @GeneratedMavField(type = "float")
   public val jointAz: Float = 0F,
 ) : MavMessage<GimbalReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(deltaTime)
     encoder.encodeFloat(deltaAngleX)
@@ -106,7 +107,7 @@ public data class GimbalReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(deltaTime)
     encoder.encodeFloat(deltaAngleX)
@@ -128,11 +129,11 @@ public data class GimbalReport(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 200u
+    override val id: UInt = 200u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): GimbalReport {
+    override fun deserialize(bytes: ByteArray): GimbalReport {
       val decoder = MavDataDecoder(bytes)
 
       val deltaTime = decoder.safeDecodeFloat()

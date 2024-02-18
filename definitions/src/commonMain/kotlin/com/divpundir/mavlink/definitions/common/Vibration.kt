@@ -22,6 +22,7 @@ import kotlin.Unit
 
 /**
  * Vibration levels and accelerometer clipping
+ *
  */
 @GeneratedMavMessage(
   id = 241u,
@@ -65,9 +66,9 @@ public data class Vibration(
   @GeneratedMavField(type = "uint32_t")
   public val clipping2: UInt = 0u,
 ) : MavMessage<Vibration> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Vibration> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Vibration> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(vibrationX)
@@ -79,7 +80,7 @@ public data class Vibration(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(vibrationX)
@@ -96,11 +97,11 @@ public data class Vibration(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 241u
+    override val id: UInt = 241u
 
-    public override val crcExtra: Byte = 90
+    override val crcExtra: Byte = 90
 
-    public override fun deserialize(bytes: ByteArray): Vibration {
+    override fun deserialize(bytes: ByteArray): Vibration {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

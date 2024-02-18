@@ -8,9 +8,11 @@ import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
@@ -29,6 +31,7 @@ import kotlin.Unit
  *         This message should be emitted following a call to MAV_CMD_DO_SET_MISSION_CURRENT or
  * SET_MISSION_CURRENT.
  *       
+ *
  */
 @GeneratedMavMessage(
   id = 42u,
@@ -67,34 +70,67 @@ public data class MissionCurrent(
     extension = true,
   )
   public val missionMode: UByte = 0u,
+  /**
+   * Id of current on-vehicle mission plan, or 0 if IDs are not supported or there is no mission
+   * loaded. GCS can use this to track changes to the mission plan type. The same value is returned on
+   * mission upload (in the MISSION_ACK).
+   */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
+  public val missionId: UInt = 0u,
+  /**
+   * Id of current on-vehicle fence plan, or 0 if IDs are not supported or there is no fence loaded.
+   * GCS can use this to track changes to the fence plan type. The same value is returned on fence
+   * upload (in the MISSION_ACK).
+   */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
+  public val fenceId: UInt = 0u,
+  /**
+   * Id of current on-vehicle rally point plan, or 0 if IDs are not supported or there are no rally
+   * points loaded. GCS can use this to track changes to the rally point plan type. The same value is
+   * returned on rally point upload (in the MISSION_ACK).
+   */
+  @GeneratedMavField(
+    type = "uint32_t",
+    extension = true,
+  )
+  public val rallyPointsId: UInt = 0u,
 ) : MavMessage<MissionCurrent> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionCurrent> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionCurrent> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seq)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seq)
     encoder.encodeUInt16(total)
     encoder.encodeEnumValue(missionState.value, 1)
     encoder.encodeUInt8(missionMode)
+    encoder.encodeUInt32(missionId)
+    encoder.encodeUInt32(fenceId)
+    encoder.encodeUInt32(rallyPointsId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<MissionCurrent> {
     private const val SIZE_V1: Int = 2
 
-    private const val SIZE_V2: Int = 6
+    private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 42u
+    override val id: UInt = 42u
 
-    public override val crcExtra: Byte = 28
+    override val crcExtra: Byte = 28
 
-    public override fun deserialize(bytes: ByteArray): MissionCurrent {
+    override fun deserialize(bytes: ByteArray): MissionCurrent {
       val decoder = MavDataDecoder(bytes)
 
       val seq = decoder.safeDecodeUInt16()
@@ -104,12 +140,18 @@ public data class MissionCurrent(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val missionMode = decoder.safeDecodeUInt8()
+      val missionId = decoder.safeDecodeUInt32()
+      val fenceId = decoder.safeDecodeUInt32()
+      val rallyPointsId = decoder.safeDecodeUInt32()
 
       return MissionCurrent(
         seq = seq,
         total = total,
         missionState = missionState,
         missionMode = missionMode,
+        missionId = missionId,
+        fenceId = fenceId,
+        rallyPointsId = rallyPointsId,
       )
     }
 
@@ -126,11 +168,20 @@ public data class MissionCurrent(
 
     public var missionMode: UByte = 0u
 
+    public var missionId: UInt = 0u
+
+    public var fenceId: UInt = 0u
+
+    public var rallyPointsId: UInt = 0u
+
     public fun build(): MissionCurrent = MissionCurrent(
       seq = seq,
       total = total,
       missionState = missionState,
       missionMode = missionMode,
+      missionId = missionId,
+      fenceId = fenceId,
+      rallyPointsId = rallyPointsId,
     )
   }
 }

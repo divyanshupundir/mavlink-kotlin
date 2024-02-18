@@ -17,6 +17,7 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F8: format
+ *
  */
 @GeneratedMavMessage(
   id = 176u,
@@ -59,9 +60,9 @@ public data class SerialUdbExtraF8(
   @GeneratedMavField(type = "float")
   public val sueAltHoldPitchHigh: Float = 0F,
 ) : MavMessage<SerialUdbExtraF8> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF8> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF8> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(sueHeightTargetMax)
     encoder.encodeFloat(sueHeightTargetMin)
@@ -73,7 +74,7 @@ public data class SerialUdbExtraF8(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(sueHeightTargetMax)
     encoder.encodeFloat(sueHeightTargetMin)
@@ -90,11 +91,11 @@ public data class SerialUdbExtraF8(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 176u
+    override val id: UInt = 176u
 
-    public override val crcExtra: Byte = -114
+    override val crcExtra: Byte = -114
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF8 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF8 {
       val decoder = MavDataDecoder(bytes)
 
       val sueHeightTargetMax = decoder.safeDecodeFloat()

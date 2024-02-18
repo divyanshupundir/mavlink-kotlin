@@ -24,6 +24,7 @@ import kotlin.collections.List
 
 /**
  * Cumulative distance traveled for each reported wheel.
+ *
  */
 @GeneratedMavMessage(
   id = 9_000u,
@@ -48,9 +49,9 @@ public data class WheelDistance(
   @GeneratedMavField(type = "double[16]")
   public val distance: List<Double> = emptyList(),
 ) : MavMessage<WheelDistance> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeDoubleArray(distance, 128)
@@ -58,7 +59,7 @@ public data class WheelDistance(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeDoubleArray(distance, 128)
@@ -71,11 +72,11 @@ public data class WheelDistance(
 
     private const val SIZE_V2: Int = 137
 
-    public override val id: UInt = 9_000u
+    override val id: UInt = 9_000u
 
-    public override val crcExtra: Byte = 113
+    override val crcExtra: Byte = 113
 
-    public override fun deserialize(bytes: ByteArray): WheelDistance {
+    override fun deserialize(bytes: ByteArray): WheelDistance {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

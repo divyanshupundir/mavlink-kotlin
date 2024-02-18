@@ -36,6 +36,7 @@ import kotlin.Unit
 
 /**
  * The location and information of an ADSB vehicle
+ *
  */
 @GeneratedMavMessage(
   id = 246u,
@@ -108,9 +109,9 @@ public data class AdsbVehicle(
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
 ) : MavMessage<AdsbVehicle> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AdsbVehicle> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AdsbVehicle> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(icaoAddress)
     encoder.encodeInt32(lat)
@@ -128,7 +129,7 @@ public data class AdsbVehicle(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(icaoAddress)
     encoder.encodeInt32(lat)
@@ -151,11 +152,11 @@ public data class AdsbVehicle(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 246u
+    override val id: UInt = 246u
 
-    public override val crcExtra: Byte = -72
+    override val crcExtra: Byte = -72
 
-    public override fun deserialize(bytes: ByteArray): AdsbVehicle {
+    override fun deserialize(bytes: ByteArray): AdsbVehicle {
       val decoder = MavDataDecoder(bytes)
 
       val icaoAddress = decoder.safeDecodeUInt32()

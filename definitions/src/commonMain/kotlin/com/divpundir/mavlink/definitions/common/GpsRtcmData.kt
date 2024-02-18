@@ -20,6 +20,7 @@ import kotlin.collections.List
 
 /**
  * RTCM message for injecting into the onboard GPS (used for DGPS)
+ *
  */
 @GeneratedMavMessage(
   id = 233u,
@@ -49,9 +50,9 @@ public data class GpsRtcmData(
   @GeneratedMavField(type = "uint8_t[180]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<GpsRtcmData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GpsRtcmData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GpsRtcmData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(flags)
     encoder.encodeUInt8(len)
@@ -59,7 +60,7 @@ public data class GpsRtcmData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(flags)
     encoder.encodeUInt8(len)
@@ -72,11 +73,11 @@ public data class GpsRtcmData(
 
     private const val SIZE_V2: Int = 182
 
-    public override val id: UInt = 233u
+    override val id: UInt = 233u
 
-    public override val crcExtra: Byte = 35
+    override val crcExtra: Byte = 35
 
-    public override fun deserialize(bytes: ByteArray): GpsRtcmData {
+    override fun deserialize(bytes: ByteArray): GpsRtcmData {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeUInt8()

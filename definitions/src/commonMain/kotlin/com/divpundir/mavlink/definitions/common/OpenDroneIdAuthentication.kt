@@ -29,6 +29,7 @@ import kotlin.collections.List
  * System). The Authentication message can have two different formats. For data page 0, the fields
  * PageCount, Length and TimeStamp are present and AuthData is only 17 bytes. For data page 1 through
  * 15, PageCount, Length and TimeStamp are not present and the size of AuthData is 23 bytes.
+ *
  */
 @GeneratedMavMessage(
   id = 12_902u,
@@ -88,10 +89,9 @@ public data class OpenDroneIdAuthentication(
   @GeneratedMavField(type = "uint8_t[23]")
   public val authenticationData: List<UByte> = emptyList(),
 ) : MavMessage<OpenDroneIdAuthentication> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdAuthentication> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdAuthentication> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timestamp)
     encoder.encodeUInt8(targetSystem)
@@ -105,7 +105,7 @@ public data class OpenDroneIdAuthentication(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timestamp)
     encoder.encodeUInt8(targetSystem)
@@ -124,11 +124,11 @@ public data class OpenDroneIdAuthentication(
 
     private const val SIZE_V2: Int = 53
 
-    public override val id: UInt = 12_902u
+    override val id: UInt = 12_902u
 
-    public override val crcExtra: Byte = -116
+    override val crcExtra: Byte = -116
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdAuthentication {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdAuthentication {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt32()

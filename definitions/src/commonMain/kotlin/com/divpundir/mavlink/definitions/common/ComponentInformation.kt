@@ -22,6 +22,7 @@ import kotlin.Unit
  *
  *         Component information message, which may be requested using MAV_CMD_REQUEST_MESSAGE.
  *       
+ *
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -61,9 +62,9 @@ public data class ComponentInformation(
   @GeneratedMavField(type = "char[100]")
   public val peripheralsMetadataUri: String = "",
 ) : MavMessage<ComponentInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ComponentInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ComponentInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(generalMetadataFileCrc)
@@ -73,7 +74,7 @@ public data class ComponentInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(generalMetadataFileCrc)
@@ -88,11 +89,11 @@ public data class ComponentInformation(
 
     private const val SIZE_V2: Int = 212
 
-    public override val id: UInt = 395u
+    override val id: UInt = 395u
 
-    public override val crcExtra: Byte = 0
+    override val crcExtra: Byte = 0
 
-    public override fun deserialize(bytes: ByteArray): ComponentInformation {
+    override fun deserialize(bytes: ByteArray): ComponentInformation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

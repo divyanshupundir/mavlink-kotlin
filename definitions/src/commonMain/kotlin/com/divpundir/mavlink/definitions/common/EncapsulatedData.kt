@@ -22,6 +22,7 @@ import kotlin.collections.List
 /**
  * Data packet for images sent using the Image Transmission Protocol:
  * https://mavlink.io/en/services/image_transmission.html.
+ *
  */
 @GeneratedMavMessage(
   id = 131u,
@@ -39,16 +40,16 @@ public data class EncapsulatedData(
   @GeneratedMavField(type = "uint8_t[253]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<EncapsulatedData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EncapsulatedData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EncapsulatedData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seqnr)
     encoder.encodeUInt8Array(data, 253)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seqnr)
     encoder.encodeUInt8Array(data, 253)
@@ -60,11 +61,11 @@ public data class EncapsulatedData(
 
     private const val SIZE_V2: Int = 255
 
-    public override val id: UInt = 131u
+    override val id: UInt = 131u
 
-    public override val crcExtra: Byte = -33
+    override val crcExtra: Byte = -33
 
-    public override fun deserialize(bytes: ByteArray): EncapsulatedData {
+    override fun deserialize(bytes: ByteArray): EncapsulatedData {
       val decoder = MavDataDecoder(bytes)
 
       val seqnr = decoder.safeDecodeUInt16()

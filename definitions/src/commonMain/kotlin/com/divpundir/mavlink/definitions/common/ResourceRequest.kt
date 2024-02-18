@@ -20,6 +20,7 @@ import kotlin.collections.List
 
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
+ *
  */
 @GeneratedMavMessage(
   id = 142u,
@@ -54,9 +55,9 @@ public data class ResourceRequest(
   @GeneratedMavField(type = "uint8_t[120]")
   public val storage: List<UByte> = emptyList(),
 ) : MavMessage<ResourceRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(requestId)
     encoder.encodeUInt8(uriType)
@@ -66,7 +67,7 @@ public data class ResourceRequest(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(requestId)
     encoder.encodeUInt8(uriType)
@@ -81,11 +82,11 @@ public data class ResourceRequest(
 
     private const val SIZE_V2: Int = 243
 
-    public override val id: UInt = 142u
+    override val id: UInt = 142u
 
-    public override val crcExtra: Byte = 72
+    override val crcExtra: Byte = 72
 
-    public override fun deserialize(bytes: ByteArray): ResourceRequest {
+    override fun deserialize(bytes: ByteArray): ResourceRequest {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt8()

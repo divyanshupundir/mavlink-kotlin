@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidOperatorLocationType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The location/altitude of the operator is the same as the take-off location.
@@ -27,7 +27,7 @@ public enum class MavOdidOperatorLocationType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidOperatorLocationType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidOperatorLocationType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidOperatorLocationType? = when (v) {
       0u -> TAKEOFF
       1u -> LIVE_GNSS
       2u -> FIXED
