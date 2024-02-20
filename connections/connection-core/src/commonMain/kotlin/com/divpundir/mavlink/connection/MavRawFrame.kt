@@ -141,13 +141,13 @@ public data class MavRawFrame(
         public fun generateChecksum(frameBytes: ByteArray, crcExtra: Byte): UShort {
             val frameSizeTillMsgId = when (frameBytes[0].toUByte()) {
                 Stx.V1 -> Sizes.STX + Sizes.LEN +
-                        Sizes.SEQ +
-                        Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1
+                    Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1
 
                 Stx.V2 -> Sizes.STX + Sizes.LEN +
-                        Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
-                        Sizes.SEQ +
-                        Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2
+                    Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
+                    Sizes.SEQ +
+                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2
 
                 else -> throw IllegalArgumentException("Not a MAVLink frame")
             }
@@ -188,15 +188,15 @@ public data class MavRawFrame(
             val payloadLength = frameBytes[1].toUByte().toInt()
 
             val frameSizeTillCrc = Sizes.STX + Sizes.LEN +
-                    Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
-                    Sizes.SEQ +
-                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
-                    payloadLength + Sizes.CHECKSUM
+                Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
+                Sizes.SEQ +
+                Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
+                payloadLength + Sizes.CHECKSUM
 
             val signEncoder = MavDataEncoder(
                 Sizes.SECRET_KEY +
-                        frameSizeTillCrc +
-                        Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP
+                    frameSizeTillCrc +
+                    Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP
             )
 
             signEncoder.encodeByteArray(secretKey.copyOf(Sizes.SECRET_KEY))
@@ -299,9 +299,9 @@ public data class MavRawFrame(
             crcExtra: Byte
         ): MavRawFrame {
             val frameLength = Sizes.STX + Sizes.LEN +
-                    Sizes.SEQ +
-                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1 +
-                    payload.size + Sizes.CHECKSUM
+                Sizes.SEQ +
+                Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V1 +
+                payload.size + Sizes.CHECKSUM
 
             val encoder = MavDataEncoder(frameLength)
             encoder.encodeUInt8(Stx.V1)
@@ -345,10 +345,10 @@ public data class MavRawFrame(
             crcExtra: Byte
         ): MavRawFrame {
             val frameLength = Sizes.STX + Sizes.LEN +
-                    Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
-                    Sizes.SEQ +
-                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
-                    payload.size + Sizes.CHECKSUM
+                Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
+                Sizes.SEQ +
+                Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
+                payload.size + Sizes.CHECKSUM
 
             val encoder = MavDataEncoder(frameLength)
             encoder.encodeUInt8(Stx.V2)
@@ -397,11 +397,11 @@ public data class MavRawFrame(
             secretKey: ByteArray
         ): MavRawFrame {
             val frameLength = Sizes.STX + Sizes.LEN +
-                    Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
-                    Sizes.SEQ +
-                    Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
-                    payload.size + Sizes.CHECKSUM +
-                    Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP + Sizes.SIGNATURE
+                Sizes.INCOMPAT_FLAGS + Sizes.COMPAT_FLAGS +
+                Sizes.SEQ +
+                Sizes.SYS_ID + Sizes.COMP_ID + Sizes.MSG_ID_V2 +
+                payload.size + Sizes.CHECKSUM +
+                Sizes.SIGNATURE_LINK_ID + Sizes.SIGNATURE_TIMESTAMP + Sizes.SIGNATURE
 
             val encoder = MavDataEncoder(frameLength)
             encoder.encodeUInt8(Stx.V2)

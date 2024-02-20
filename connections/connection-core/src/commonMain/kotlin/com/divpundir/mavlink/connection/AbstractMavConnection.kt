@@ -54,7 +54,7 @@ public abstract class AbstractMavConnection : MavConnection {
      * This method should be called before the [open] method returns.
      */
     @Throws(IOException::class)
-    protected open fun interruptOpen() {}
+    protected open fun interruptOpen() { }
 
     @Throws(IOException::class)
     final override fun connect() {

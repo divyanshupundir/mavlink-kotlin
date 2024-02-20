@@ -1,11 +1,11 @@
 package com.divpundir.mavlink.generator
 
-import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.generator.models.FieldModel
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
 internal fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
     .builder(formattedName, resolveKotlinType(enumHelper))
@@ -72,20 +72,39 @@ internal fun FieldModel.generateDeserializeStatement(inputName: String, enumHelp
     val decode = CodeBlock.builder()
     when (this) {
         is FieldModel.Enum -> if (enumHelper.isBitmask(enumType)) {
-            decode.beginControlFlow("val $formattedName = $inputName.%M($size).let { value ->", decodeMethodName(enumHelper))
+            decode.beginControlFlow(
+                "val $formattedName = $inputName.%M($size).let { value ->",
+                decodeMethodName(enumHelper)
+            )
             decode.addStatement("val flags = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getFlagsFromValue(value)")
-            decode.addStatement("if (flags.isNotEmpty()) %1T.of(flags) else %1T.fromValue(value)", MavBitmaskValue::class)
+            decode.addStatement(
+                "if (flags.isNotEmpty()) %1T.of(flags) else %1T.fromValue(value)",
+                MavBitmaskValue::class
+            )
             decode.endControlFlow()
         } else {
-            decode.beginControlFlow("val $formattedName = $inputName.%M($size).let { value ->", decodeMethodName(enumHelper))
-            decode.addStatement("val entry = ${CaseFormat.fromSnake(enumType).toUpperCamel()}.getEntryFromValueOrNull(value)")
+            decode.beginControlFlow(
+                "val $formattedName = $inputName.%M($size).let { value ->",
+                decodeMethodName(enumHelper)
+            )
+            decode.addStatement(
+                "val entry = ${
+                    CaseFormat.fromSnake(enumType).toUpperCamel()
+                }.getEntryFromValueOrNull(value)"
+            )
             decode.addStatement("if (entry != null) %1T.of(entry) else %1T.fromValue(value)", MavEnumValue::class)
             decode.endControlFlow()
         }
 
-        is FieldModel.Primitive -> decode.addStatement("val $formattedName = $inputName.%M()", decodeMethodName(enumHelper))
+        is FieldModel.Primitive -> decode.addStatement(
+            "val $formattedName = $inputName.%M()",
+            decodeMethodName(enumHelper)
+        )
 
-        is FieldModel.PrimitiveArray -> decode.addStatement("val $formattedName = $inputName.%M($size)", decodeMethodName(enumHelper))
+        is FieldModel.PrimitiveArray -> decode.addStatement(
+            "val $formattedName = $inputName.%M($size)",
+            decodeMethodName(enumHelper)
+        )
     }
     return decode.build()
 }

@@ -1,7 +1,7 @@
 package com.divpundir.mavlink.generator
 
 import com.divpundir.mavlink.generator.plugin.MavlinkDefinitionParser
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test
 import java.io.File
 

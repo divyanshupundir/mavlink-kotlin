@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.generator.models
 
-import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.generator.createXmlMapper
 import org.gradle.internal.impldep.org.junit.Assert.assertEquals
+import org.junit.jupiter.api.Test
 
 class EnumEntryXmlTest {
 

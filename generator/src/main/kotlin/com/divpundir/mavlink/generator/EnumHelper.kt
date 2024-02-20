@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.generator
 
-import com.squareup.kotlinpoet.ClassName
-import com.divpundir.mavlink.generator.models.EnumModel
 import com.divpundir.mavlink.generator.models.DialectModel
+import com.divpundir.mavlink.generator.models.EnumModel
+import com.squareup.kotlinpoet.ClassName
 
 internal class EnumHelper(
     private val basePackage: String,

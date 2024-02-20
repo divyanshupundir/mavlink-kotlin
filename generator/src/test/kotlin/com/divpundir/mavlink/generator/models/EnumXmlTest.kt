@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.generator.models
 
-import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.generator.createXmlMapper
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class EnumXmlTest {
 

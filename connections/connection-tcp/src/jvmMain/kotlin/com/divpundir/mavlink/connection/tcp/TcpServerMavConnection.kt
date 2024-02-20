@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.connection.tcp
 
 import com.divpundir.mavlink.api.MavDialect
-import com.divpundir.mavlink.connection.BufferedMavConnection
 import com.divpundir.mavlink.connection.AbstractMavConnection
+import com.divpundir.mavlink.connection.BufferedMavConnection
 import com.divpundir.mavlink.connection.MavConnection
 import okio.IOException
 import okio.buffer

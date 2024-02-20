@@ -1,12 +1,12 @@
 package com.divpundir.mavlink.generator
 
-import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.MavBitmask
 import com.divpundir.mavlink.api.MavEnum
 import com.divpundir.mavlink.generator.models.EnumEntryModel
 import com.divpundir.mavlink.generator.models.EnumModel
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
 internal fun EnumModel.generateEnumFile(packageName: String): FileSpec {
     val enum = TypeSpec

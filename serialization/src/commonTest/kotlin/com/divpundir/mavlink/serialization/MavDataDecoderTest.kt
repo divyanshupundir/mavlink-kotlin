@@ -1,7 +1,6 @@
 package com.divpundir.mavlink.serialization
 
 import kotlin.test.Test
-import kotlin.test.assertContains
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
