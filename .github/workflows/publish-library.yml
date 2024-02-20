@@ -37,8 +37,8 @@ jobs:
           echo "signingInMemoryKeyId=${{ secrets.SIGNING_IN_MEMORY_KEY_ID }}" >> gradle.properties
           echo "signingInMemoryKeyPassword=${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}" >> gradle.properties
 
-      - name: Publish plugin
+      - name: Publish library
         run: ./gradlew publishLibrary
 
-      - name: Close and release plugin
+      - name: Close and release library
         run: ./gradlew closeAndReleaseLibrary

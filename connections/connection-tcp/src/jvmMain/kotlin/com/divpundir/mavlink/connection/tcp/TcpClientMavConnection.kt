@@ -22,20 +22,17 @@ public actual fun TcpClientMavConnection(
 )
 
 private class JvmTcpClientMavConnection(
-    private val host: String,
-    private val port: Int,
+    host: String,
+    port: Int,
     private val dialect: MavDialect
 ) : AbstractMavConnection(), TcpClientMavConnection {
+
+    private val address = InetSocketAddress(host, port)
 
     @Throws(IOException::class)
     override fun open(): MavConnection {
         val socket = Socket().apply {
-            connect(
-                InetSocketAddress(
-                    this@JvmTcpClientMavConnection.host,
-                    this@JvmTcpClientMavConnection.port
-                )
-            )
+            connect(address)
         }
 
         return BufferedMavConnection(
