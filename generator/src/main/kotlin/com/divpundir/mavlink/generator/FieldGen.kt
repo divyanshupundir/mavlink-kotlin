@@ -12,7 +12,7 @@ internal fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = P
     .defaultValue(defaultKotlinValue(enumHelper))
     .apply {
         if (content != null) addKdoc(content!!.replace("%", "%%"))
-        if (units != null) addKdoc("\nunits: %L", units!!)
+        if (units != null) addKdoc("\nunits = %L", units!!)
     }
     .build()
 
