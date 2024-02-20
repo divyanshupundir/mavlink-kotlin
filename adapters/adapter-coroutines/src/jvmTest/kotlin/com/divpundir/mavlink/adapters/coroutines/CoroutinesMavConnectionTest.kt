@@ -3,7 +3,6 @@ package com.divpundir.mavlink.adapters.coroutines
 import com.divpundir.mavlink.api.wrap
 import com.divpundir.mavlink.connection.StreamState
 import com.divpundir.mavlink.connection.tcp.TcpClientMavConnection
-import com.divpundir.mavlink.connection.tcp.TcpServerMavConnection
 import com.divpundir.mavlink.connection.udp.UdpClientMavConnection
 import com.divpundir.mavlink.connection.udp.UdpServerMavConnection
 import com.divpundir.mavlink.definitions.ardupilotmega.ArdupilotmegaDialect

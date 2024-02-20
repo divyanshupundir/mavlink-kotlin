@@ -1,11 +1,11 @@
 package com.divpundir.mavlink.adapters.rxjava2
 
 import com.divpundir.mavlink.connection.StreamState
-import io.reactivex.schedulers.Schedulers
-import org.junit.jupiter.api.Test
 import com.divpundir.mavlink.connection.tcp.TcpClientMavConnection
 import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.minimal.Heartbeat
+import io.reactivex.schedulers.Schedulers
+import org.junit.jupiter.api.Test
 import java.util.concurrent.TimeUnit
 
 class Rx2MavConnectionImplTest {

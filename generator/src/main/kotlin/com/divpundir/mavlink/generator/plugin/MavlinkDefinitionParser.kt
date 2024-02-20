@@ -1,9 +1,9 @@
 package com.divpundir.mavlink.generator.plugin
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.divpundir.mavlink.generator.models.DialectModel
 import com.divpundir.mavlink.generator.models.DialectXml
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
 import java.io.IOException
 

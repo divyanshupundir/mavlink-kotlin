@@ -15,7 +15,7 @@ import kotlin.coroutines.CoroutineContext
  */
 @Deprecated(
     message = "CoroutinesMavConnection with onFailure callback is deprecated and will be removed in the future releases. " +
-            "For checking the states including failure, use CoroutinesMavConnection.streamState.",
+        "For checking the states including failure, use CoroutinesMavConnection.streamState.",
     replaceWith = ReplaceWith(
         expression = "asCoroutine(context)",
         imports = ["com.divpundir.mavlink.adapters.coroutines.asCoroutine"]

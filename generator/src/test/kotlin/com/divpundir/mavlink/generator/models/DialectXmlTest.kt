@@ -14,7 +14,7 @@ class DialectXmlTest {
         model.messages
             .flatMap { it.fields }
             .forEach {
-                when(it) {
+                when (it) {
                     is FieldModel.Enum -> {}
                     is FieldModel.Primitive -> println(it.type)
                     is FieldModel.PrimitiveArray -> println(it.primitiveType)

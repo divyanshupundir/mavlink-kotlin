@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
  */
 @Deprecated(
     message = "Rx2MavConnection with onFailure callback is deprecated and will be removed in the future releases. " +
-            "For checking the states including failure, use Rx2MavConnection.streamState.",
+        "For checking the states including failure, use Rx2MavConnection.streamState.",
     replaceWith = ReplaceWith(
         expression = "asRx2(scheduler)",
         imports = ["com.divpundir.mavlink.adapters.rxjava2.asRx2"]

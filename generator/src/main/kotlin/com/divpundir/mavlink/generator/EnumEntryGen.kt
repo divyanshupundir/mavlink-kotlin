@@ -1,9 +1,9 @@
 package com.divpundir.mavlink.generator
 
-import com.squareup.kotlinpoet.TypeSpec
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.generator.models.EnumEntryModel
+import com.squareup.kotlinpoet.TypeSpec
 
 internal fun EnumEntryModel.generateEnumConstant() = TypeSpec
     .anonymousClassBuilder()

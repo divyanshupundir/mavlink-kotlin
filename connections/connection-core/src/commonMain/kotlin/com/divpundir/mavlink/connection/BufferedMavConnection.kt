@@ -3,6 +3,7 @@ package com.divpundir.mavlink.connection
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
+import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.locks.reentrantLock
 import kotlinx.atomicfu.locks.withLock
 import okio.BufferedSink
@@ -25,7 +26,7 @@ public class BufferedMavConnection(
     private val readLock = reentrantLock()
     private val writeLock = reentrantLock()
 
-    private var sequence: UByte = 0u
+    private val sequence = atomic(0)
 
     @Throws(IOException::class)
     override fun connect() { }
@@ -68,8 +69,8 @@ public class BufferedMavConnection(
                     val payloadSize = peeked.readByte().toUByte().toInt()
 
                     val remainingSize = MavRawFrame.Sizes.SEQ +
-                            MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V1 +
-                            payloadSize + MavRawFrame.Sizes.CHECKSUM
+                        MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V1 +
+                        payloadSize + MavRawFrame.Sizes.CHECKSUM
 
                     if (!peeked.request(remainingSize.toLong())) {
                         source.skip(1)
@@ -92,10 +93,10 @@ public class BufferedMavConnection(
                     }
 
                     val remainingSize = MavRawFrame.Sizes.COMPAT_FLAGS +
-                            MavRawFrame.Sizes.SEQ +
-                            MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V2 +
-                            payloadSize + MavRawFrame.Sizes.CHECKSUM +
-                            signatureTotalSize
+                        MavRawFrame.Sizes.SEQ +
+                        MavRawFrame.Sizes.SYS_ID + MavRawFrame.Sizes.COMP_ID + MavRawFrame.Sizes.MSG_ID_V2 +
+                        payloadSize + MavRawFrame.Sizes.CHECKSUM +
+                        signatureTotalSize
 
                     if (!peeked.request(remainingSize.toLong())) {
                         source.skip(1)
@@ -103,7 +104,7 @@ public class BufferedMavConnection(
                     }
 
                     val totalSize = MavRawFrame.Sizes.STX + MavRawFrame.Sizes.LEN +
-                            MavRawFrame.Sizes.INCOMPAT_FLAGS + remainingSize.toLong()
+                        MavRawFrame.Sizes.INCOMPAT_FLAGS + remainingSize.toLong()
 
                     return MavRawFrame.fromV2Bytes(source.readByteArray(totalSize))
                 }
@@ -130,7 +131,7 @@ public class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createV1(
-                seq = sequence++,
+                seq = sequence.getAndIncrement().toUByte(),
                 systemId = systemId,
                 componentId = componentId,
                 messageId = payload.instanceCompanion.id,
@@ -148,7 +149,7 @@ public class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createUnsignedV2(
-                seq = sequence++,
+                seq = sequence.getAndIncrement().toUByte(),
                 systemId = systemId,
                 componentId = componentId,
                 messageId = payload.instanceCompanion.id,
@@ -169,7 +170,7 @@ public class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createSignedV2(
-                seq = sequence++,
+                seq = sequence.getAndIncrement().toUByte(),
                 systemId = systemId,
                 componentId = componentId,
                 messageId = payload.instanceCompanion.id,

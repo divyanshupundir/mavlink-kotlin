@@ -1,8 +1,8 @@
 package com.divpundir.mavlink.generator
 
+import com.divpundir.mavlink.generator.plugin.MavlinkDefinitionParser
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.divpundir.mavlink.generator.plugin.MavlinkDefinitionParser
 import java.io.File
 
 internal const val BASE_PACKAGE = "com.divpundir.mavlink.test"

@@ -1,11 +1,11 @@
 package com.divpundir.mavlink.generator.models
 
+import com.divpundir.mavlink.generator.CaseFormat
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
-import com.divpundir.mavlink.generator.CaseFormat
 
 internal data class DialectModel(
     val name: String,
