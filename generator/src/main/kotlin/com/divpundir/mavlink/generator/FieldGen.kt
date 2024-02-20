@@ -10,7 +10,10 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 internal fun FieldModel.generateConstructorParameter(enumHelper: EnumHelper) = ParameterSpec
     .builder(formattedName, resolveKotlinType(enumHelper))
     .defaultValue(defaultKotlinValue(enumHelper))
-    .apply { if (content != null) addKdoc(content.replace("%", "%%")) }
+    .apply {
+        if (content != null) addKdoc(content!!.replace("%", "%%"))
+        if (units != null) addKdoc("\nunits: %L", units!!)
+    }
     .build()
 
 internal fun FieldModel.generateProperty(enumHelper: EnumHelper) = PropertySpec
