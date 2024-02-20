@@ -19,7 +19,7 @@ internal data class EnumEntryModel(
 internal data class EnumEntryXml(
 
     @JacksonXmlProperty(localName = "value", isAttribute = true)
-    val value: Long,
+    val value: String,
 
     @JacksonXmlProperty(localName = "name", isAttribute = true)
     val name: String,
@@ -42,7 +42,7 @@ internal data class EnumEntryXml(
         @JsonSetter("wip") set
 
     fun toModel() = EnumEntryModel(
-        value,
+        value.parseValue(),
         name,
         params
             .let { if (deprecated == null) it.reversed() else it } // Deprecate tag reverses content
@@ -51,4 +51,11 @@ internal data class EnumEntryXml(
         deprecated?.toModel(),
         description
     )
+}
+
+private fun String.parseValue(): Long = if (startsWith("2**")) {
+    val exponent = substringAfter("2**").toInt()
+    1L shl exponent
+} else {
+    toLong()
 }
