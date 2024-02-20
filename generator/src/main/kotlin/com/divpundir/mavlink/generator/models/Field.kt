@@ -6,21 +6,21 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText
 
-internal sealed class FieldModel : Comparable<FieldModel> {
+internal sealed interface FieldModel : Comparable<FieldModel> {
 
-    abstract val position: Int
-    abstract val type: String
-    abstract val name: String
-    abstract val extension: Boolean
-    abstract val display: String?
-    abstract val units: String?
-    abstract val invalid: String?
-    abstract val printFormat: String?
-    abstract val content: String?
+    val position: Int
+    val type: String
+    val name: String
+    val extension: Boolean
+    val display: String?
+    val units: String?
+    val invalid: String?
+    val printFormat: String?
+    val content: String?
 
-    abstract val unitSize: Int
-    abstract val size: Int
-    abstract val formattedName: String
+    val unitSize: Int
+    val size: Int
+    val formattedName: String
 
     data class Primitive(
         override val position: Int,
@@ -32,7 +32,7 @@ internal sealed class FieldModel : Comparable<FieldModel> {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldModel() {
+    ) : FieldModel {
         override val unitSize: Int = resolveKotlinPrimitiveSize(type)
         override val size = unitSize
         override val formattedName: String = CaseFormat.fromSnake(name).toLowerCamel()
@@ -50,7 +50,7 @@ internal sealed class FieldModel : Comparable<FieldModel> {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldModel() {
+    ) : FieldModel {
         override val unitSize = resolveKotlinPrimitiveSize(primitiveType)
         override val size = unitSize * arrayLength
         override val formattedName: String = CaseFormat.fromSnake(name).toLowerCamel()
@@ -67,7 +67,7 @@ internal sealed class FieldModel : Comparable<FieldModel> {
         override val invalid: String?,
         override val printFormat: String?,
         override val content: String?
-    ) : FieldModel() {
+    ) : FieldModel {
         override val unitSize: Int = resolveKotlinPrimitiveSize(type)
         override val size = unitSize
         override val formattedName: String = CaseFormat.fromSnake(name).toLowerCamel()
