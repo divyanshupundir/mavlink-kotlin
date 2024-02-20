@@ -3,6 +3,7 @@ package com.divpundir.mavlink.connection
 import com.divpundir.mavlink.api.MavDialect
 import com.divpundir.mavlink.api.MavFrame
 import com.divpundir.mavlink.api.MavMessage
+import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.locks.reentrantLock
 import kotlinx.atomicfu.locks.withLock
 import okio.BufferedSink
@@ -25,7 +26,7 @@ public class BufferedMavConnection(
     private val readLock = reentrantLock()
     private val writeLock = reentrantLock()
 
-    private var sequence: UByte = 0u
+    private val sequence = atomic(0)
 
     @Throws(IOException::class)
     override fun connect() { }
@@ -130,7 +131,7 @@ public class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createV1(
-                seq = sequence++,
+                seq = sequence.getAndIncrement().toUByte(),
                 systemId = systemId,
                 componentId = componentId,
                 messageId = payload.instanceCompanion.id,
@@ -148,7 +149,7 @@ public class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createUnsignedV2(
-                seq = sequence++,
+                seq = sequence.getAndIncrement().toUByte(),
                 systemId = systemId,
                 componentId = componentId,
                 messageId = payload.instanceCompanion.id,
@@ -169,7 +170,7 @@ public class BufferedMavConnection(
     ) {
         send(
             MavRawFrame.createSignedV2(
-                seq = sequence++,
+                seq = sequence.getAndIncrement().toUByte(),
                 systemId = systemId,
                 componentId = componentId,
                 messageId = payload.instanceCompanion.id,
