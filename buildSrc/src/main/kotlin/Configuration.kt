@@ -8,7 +8,7 @@ object Config {
 
     object Plugin {
         const val releaseVersion = "1.2.1-alpha"
-        const val developmentVersion = "1.2.1-alpha.2"
+        const val developmentVersion = "1.2.1"
 
         const val releaseApi = "$group:api:$releaseVersion"
         const val releaseSerialization = "$group:serialization:$releaseVersion"
