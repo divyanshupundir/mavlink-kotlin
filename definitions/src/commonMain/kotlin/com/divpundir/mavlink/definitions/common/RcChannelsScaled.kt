@@ -23,6 +23,21 @@ import kotlin.Unit
 /**
  * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels
  * that are inactive should be set to INT16_MAX.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param port Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk
+ * should use: 0 = MAIN, 1 = AUX.
+ * @param chan1Scaled RC channel 1 value scaled.
+ * @param chan2Scaled RC channel 2 value scaled.
+ * @param chan3Scaled RC channel 3 value scaled.
+ * @param chan4Scaled RC channel 4 value scaled.
+ * @param chan5Scaled RC channel 5 value scaled.
+ * @param chan6Scaled RC channel 6 value scaled.
+ * @param chan7Scaled RC channel 7 value scaled.
+ * @param chan8Scaled RC channel 8 value scaled.
+ * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254],
+ * UINT8_MAX: invalid/unknown.
  */
 @GeneratedMavMessage(
   id = 34u,
@@ -31,6 +46,7 @@ import kotlin.Unit
 public data class RcChannelsScaled(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -87,9 +103,9 @@ public data class RcChannelsScaled(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannelsScaled> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsScaled> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RcChannelsScaled> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(chan1Scaled)
@@ -105,7 +121,7 @@ public data class RcChannelsScaled(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(chan1Scaled)
@@ -126,11 +142,11 @@ public data class RcChannelsScaled(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 34u
+    override val id: UInt = 34u
 
-    public override val crcExtra: Byte = -19
+    override val crcExtra: Byte = -19
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsScaled {
+    override fun deserialize(bytes: ByteArray): RcChannelsScaled {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

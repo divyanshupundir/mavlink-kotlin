@@ -23,6 +23,63 @@ import kotlin.Unit
  * The standard PPM modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%.
  * Individual receivers/transmitters might violate this specification.  Note carefully the semantic
  * differences between the first 8 channels and the subsequent channels
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param chan1Raw RC channel 1 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan2Raw RC channel 2 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan3Raw RC channel 3 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan4Raw RC channel 4 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan5Raw RC channel 5 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan6Raw RC channel 6 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan7Raw RC channel 7 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan8Raw RC channel 8 value. A value of UINT16_MAX means to ignore this field. A value of
+ * 0 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan9Raw RC channel 9 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan10Raw RC channel 10 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan11Raw RC channel 11 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan12Raw RC channel 12 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan13Raw RC channel 13 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan14Raw RC channel 14 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan15Raw RC channel 15 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan16Raw RC channel 16 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan17Raw RC channel 17 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
+ * @param chan18Raw RC channel 18 value. A value of 0 or UINT16_MAX means to ignore this field. A
+ * value of UINT16_MAX-1 means to release this channel back to the RC radio.
+ * units = us
  */
 @GeneratedMavMessage(
   id = 70u,
@@ -42,54 +99,63 @@ public data class RcChannelsOverride(
   /**
    * RC channel 1 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value. A value of UINT16_MAX means to ignore this field. A value of 0 means to
    * release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan8Raw: UShort = 0u,
   /**
    * RC channel 9 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -99,6 +165,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 10 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -108,6 +175,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 11 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -117,6 +185,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 12 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -126,6 +195,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 13 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -135,6 +205,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 14 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -144,6 +215,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 15 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -153,6 +225,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 16 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -162,6 +235,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 17 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -171,6 +245,7 @@ public data class RcChannelsOverride(
   /**
    * RC channel 18 value. A value of 0 or UINT16_MAX means to ignore this field. A value of
    * UINT16_MAX-1 means to release this channel back to the RC radio.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -178,9 +253,9 @@ public data class RcChannelsOverride(
   )
   public val chan18Raw: UShort = 0u,
 ) : MavMessage<RcChannelsOverride> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsOverride> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RcChannelsOverride> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(chan1Raw)
     encoder.encodeUInt16(chan2Raw)
@@ -195,7 +270,7 @@ public data class RcChannelsOverride(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(chan1Raw)
     encoder.encodeUInt16(chan2Raw)
@@ -225,11 +300,11 @@ public data class RcChannelsOverride(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 70u
+    override val id: UInt = 70u
 
-    public override val crcExtra: Byte = 124
+    override val crcExtra: Byte = 124
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsOverride {
+    override fun deserialize(bytes: ByteArray): RcChannelsOverride {
       val decoder = MavDataDecoder(bytes)
 
       val chan1Raw = decoder.safeDecodeUInt16()

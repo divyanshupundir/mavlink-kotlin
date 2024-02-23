@@ -32,7 +32,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavFrame(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y:
@@ -181,7 +181,7 @@ public enum class MavFrame(
   ;
 
   public companion object : MavEnum.MavCompanion<MavFrame> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavFrame? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavFrame? = when (v) {
       0u -> GLOBAL
       1u -> LOCAL_NED
       2u -> MISSION

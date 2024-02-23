@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproFieldOfView(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * 0x00: Wide.
@@ -27,7 +27,7 @@ public enum class GoproFieldOfView(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproFieldOfView> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproFieldOfView? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproFieldOfView? = when (v) {
       0u -> WIDE
       1u -> MEDIUM
       2u -> NARROW

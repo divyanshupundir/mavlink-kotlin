@@ -25,6 +25,26 @@ import kotlin.Unit
  * MAV_COMP_ID_TELEMETRY_RADIO. Per default, rssi values are in MAVLink units: 0 represents weakest
  * signal, 254 represents maximum signal; can be changed to dBm with the flag
  * RADIO_LINK_STATS_FLAGS_RSSI_DBM.
+ *
+ * @param flags Radio link statistics flags.
+ * @param rxLq Values: 0..100. UINT8_MAX: invalid/unknown.
+ * units = c%
+ * @param rxRssi1 Rssi of antenna1. UINT8_MAX: invalid/unknown.
+ * @param rxSnr1 Noise on antenna1. Radio dependent. INT8_MAX: invalid/unknown.
+ * @param rxRssi2 Rssi of antenna2. UINT8_MAX: ignore/unknown, use rx_rssi1.
+ * @param rxSnr2 Noise on antenna2. Radio dependent. INT8_MAX: ignore/unknown, use rx_snr1.
+ * @param rxReceiveAntenna 0: antenna1, 1: antenna2, UINT8_MAX: ignore, no Rx receive diversity, use
+ * rx_rssi1, rx_snr1.
+ * @param rxTransmitAntenna 0: antenna1, 1: antenna2, UINT8_MAX: ignore, no Rx transmit diversity.
+ * @param txLq Values: 0..100. UINT8_MAX: invalid/unknown.
+ * units = c%
+ * @param txRssi1 Rssi of antenna1. UINT8_MAX: invalid/unknown.
+ * @param txSnr1 Noise on antenna1. Radio dependent. INT8_MAX: invalid/unknown.
+ * @param txRssi2 Rssi of antenna2. UINT8_MAX: ignore/unknown, use tx_rssi1.
+ * @param txSnr2 Noise on antenna2. Radio dependent. INT8_MAX: ignore/unknown, use tx_snr1.
+ * @param txReceiveAntenna 0: antenna1, 1: antenna2, UINT8_MAX: ignore, no Tx receive diversity, use
+ * tx_rssi1, tx_snr1.
+ * @param txTransmitAntenna 0: antenna1, 1: antenna2, UINT8_MAX: ignore, no Tx transmit diversity.
  */
 @GeneratedMavMessage(
   id = 60_046u,
@@ -38,6 +58,7 @@ public data class RadioLinkStats(
   public val flags: MavBitmaskValue<RadioLinkStatsFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Values: 0..100. UINT8_MAX: invalid/unknown.
+   * units = c%
    */
   @GeneratedMavField(type = "uint8_t")
   public val rxLq: UByte = 0u,
@@ -73,6 +94,7 @@ public data class RadioLinkStats(
   public val rxTransmitAntenna: UByte = 0u,
   /**
    * Values: 0..100. UINT8_MAX: invalid/unknown.
+   * units = c%
    */
   @GeneratedMavField(type = "uint8_t")
   public val txLq: UByte = 0u,
@@ -107,9 +129,9 @@ public data class RadioLinkStats(
   @GeneratedMavField(type = "uint8_t")
   public val txTransmitAntenna: UByte = 0u,
 ) : MavMessage<RadioLinkStats> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RadioLinkStats> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RadioLinkStats> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(flags.value, 1)
     encoder.encodeUInt8(rxLq)
@@ -129,7 +151,7 @@ public data class RadioLinkStats(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(flags.value, 1)
     encoder.encodeUInt8(rxLq)
@@ -154,11 +176,11 @@ public data class RadioLinkStats(
 
     private const val SIZE_V2: Int = 15
 
-    public override val id: UInt = 60_046u
+    override val id: UInt = 60_046u
 
-    public override val crcExtra: Byte = -18
+    override val crcExtra: Byte = -18
 
-    public override fun deserialize(bytes: ByteArray): RadioLinkStats {
+    override fun deserialize(bytes: ByteArray): RadioLinkStats {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeBitmaskValue(1).let { value ->

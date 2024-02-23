@@ -23,6 +23,18 @@ import kotlin.collections.List
  * the format given for the above message descriptions but after encoding into the compressed
  * OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended
  * Advertising or on WiFi Neighbor Aware Networking or on WiFi Beacon.
+ *
+ * @param targetSystem System ID (0 for broadcast).
+ * @param targetComponent Component ID (0 for broadcast).
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
+ * https://mavlink.io/en/services/opendroneid.html. 
+ * @param singleMessageSize This field must currently always be equal to 25 (bytes), since all
+ * encoded OpenDroneID messages are specified to have this length.
+ * units = bytes
+ * @param msgPackSize Number of encoded messages in the pack (not the number of bytes). Allowed
+ * range is 1 - 9.
+ * @param messages Concatenation of encoded OpenDroneID messages. Shall be filled with nulls in the
+ * unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_915u,
@@ -48,6 +60,7 @@ public data class OpenDroneIdMessagePack(
   /**
    * This field must currently always be equal to 25 (bytes), since all encoded OpenDroneID messages
    * are specified to have this length.
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val singleMessageSize: UByte = 0u,
@@ -63,9 +76,9 @@ public data class OpenDroneIdMessagePack(
   @GeneratedMavField(type = "uint8_t[225]")
   public val messages: List<UByte> = emptyList(),
 ) : MavMessage<OpenDroneIdMessagePack> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdMessagePack> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdMessagePack> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -76,7 +89,7 @@ public data class OpenDroneIdMessagePack(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -92,11 +105,11 @@ public data class OpenDroneIdMessagePack(
 
     private const val SIZE_V2: Int = 249
 
-    public override val id: UInt = 12_915u
+    override val id: UInt = 12_915u
 
-    public override val crcExtra: Byte = 94
+    override val crcExtra: Byte = 94
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdMessagePack {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdMessagePack {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

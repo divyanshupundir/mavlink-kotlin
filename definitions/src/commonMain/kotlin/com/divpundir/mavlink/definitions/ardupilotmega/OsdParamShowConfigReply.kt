@@ -25,6 +25,16 @@ import kotlin.Unit
 
 /**
  * Read configured OSD parameter reply.
+ *
+ * @param requestId Request ID - copied from request.
+ * @param result Config error type.
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
+ * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
+ * applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param configType Config type.
+ * @param minValue OSD parameter minimum value.
+ * @param maxValue OSD parameter maximum value.
+ * @param increment OSD parameter increment.
  */
 @GeneratedMavMessage(
   id = 11_036u,
@@ -69,10 +79,9 @@ public data class OsdParamShowConfigReply(
   @GeneratedMavField(type = "float")
   public val increment: Float = 0F,
 ) : MavMessage<OsdParamShowConfigReply> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OsdParamShowConfigReply> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OsdParamShowConfigReply> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(requestId)
     encoder.encodeFloat(minValue)
@@ -84,7 +93,7 @@ public data class OsdParamShowConfigReply(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(requestId)
     encoder.encodeFloat(minValue)
@@ -101,11 +110,11 @@ public data class OsdParamShowConfigReply(
 
     private const val SIZE_V2: Int = 34
 
-    public override val id: UInt = 11_036u
+    override val id: UInt = 11_036u
 
-    public override val crcExtra: Byte = -79
+    override val crcExtra: Byte = -79
 
-    public override fun deserialize(bytes: ByteArray): OsdParamShowConfigReply {
+    override fun deserialize(bytes: ByteArray): OsdParamShowConfigReply {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt32()

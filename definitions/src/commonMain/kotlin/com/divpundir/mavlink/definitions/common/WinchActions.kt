@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class WinchActions(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Allow motor to freewheel.
@@ -73,7 +73,7 @@ public enum class WinchActions(
   ;
 
   public companion object : MavEnum.MavCompanion<WinchActions> {
-    public override fun getEntryFromValueOrNull(v: UInt): WinchActions? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): WinchActions? = when (v) {
       0u -> WINCH_RELAXED
       1u -> WINCH_RELATIVE_LENGTH_CONTROL
       2u -> WINCH_RATE_CONTROL

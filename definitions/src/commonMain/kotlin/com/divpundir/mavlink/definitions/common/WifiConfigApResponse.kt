@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class WifiConfigApResponse(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Undefined response. Likely an indicative of a system that doesn't support this request.
@@ -45,7 +45,7 @@ public enum class WifiConfigApResponse(
   ;
 
   public companion object : MavEnum.MavCompanion<WifiConfigApResponse> {
-    public override fun getEntryFromValueOrNull(v: UInt): WifiConfigApResponse? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): WifiConfigApResponse? = when (v) {
       0u -> UNDEFINED
       1u -> ACCEPTED
       2u -> REJECTED

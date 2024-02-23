@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class GpsFixType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No GPS connected
@@ -60,7 +60,7 @@ public enum class GpsFixType(
   ;
 
   public companion object : MavEnum.MavCompanion<GpsFixType> {
-    public override fun getEntryFromValueOrNull(v: UInt): GpsFixType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GpsFixType? = when (v) {
       0u -> NO_GPS
       1u -> NO_FIX
       2u -> _2D_FIX

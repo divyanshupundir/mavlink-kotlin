@@ -22,6 +22,20 @@ import kotlin.Unit
  *
  *         Component information message, which may be requested using MAV_CMD_REQUEST_MESSAGE.
  *       
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param generalMetadataFileCrc CRC32 of the general metadata file (general_metadata_uri).
+ * @param generalMetadataUri MAVLink FTP URI for the general metadata file
+ * (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component
+ * metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The
+ * information is static from boot, and may be generated at compile time. The string needs to be zero
+ * terminated.
+ * @param peripheralsMetadataFileCrc CRC32 of peripherals metadata file (peripherals_metadata_uri).
+ * @param peripheralsMetadataUri (Optional) MAVLink FTP URI for the peripherals metadata file
+ * (COMP_METADATA_TYPE_PERIPHERALS), which may be compressed with xz. This contains data about
+ * "attached components" such as UAVCAN nodes. The peripherals are in a separate file because the
+ * information must be generated dynamically at runtime. The string needs to be zero terminated.
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -31,6 +45,7 @@ import kotlin.Unit
 public data class ComponentInformation(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -61,9 +76,9 @@ public data class ComponentInformation(
   @GeneratedMavField(type = "char[100]")
   public val peripheralsMetadataUri: String = "",
 ) : MavMessage<ComponentInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ComponentInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ComponentInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(generalMetadataFileCrc)
@@ -73,7 +88,7 @@ public data class ComponentInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(generalMetadataFileCrc)
@@ -88,11 +103,11 @@ public data class ComponentInformation(
 
     private const val SIZE_V2: Int = 212
 
-    public override val id: UInt = 395u
+    override val id: UInt = 395u
 
-    public override val crcExtra: Byte = 0
+    override val crcExtra: Byte = 0
 
-    public override fun deserialize(bytes: ByteArray): ComponentInformation {
+    override fun deserialize(bytes: ByteArray): ComponentInformation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

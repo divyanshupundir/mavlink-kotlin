@@ -27,6 +27,34 @@ import kotlin.collections.List
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
  * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param estimatorType Class id of the estimator this estimate originated from.
+ * @param x X Position
+ * units = m
+ * @param y Y Position
+ * units = m
+ * @param z Z Position
+ * units = m
+ * @param vx X Speed
+ * units = m/s
+ * @param vy Y Speed
+ * units = m/s
+ * @param vz Z Speed
+ * units = m/s
+ * @param ax X Acceleration
+ * units = m/s/s
+ * @param ay Y Acceleration
+ * units = m/s/s
+ * @param az Z Acceleration
+ * units = m/s/s
+ * @param covariance Row-major representation of position, velocity and acceleration 9x9
+ * cross-covariance matrix upper right triangle (states: x, y, z, vx, vy, vz, ax, ay, az; first nine
+ * entries are the first ROW, next eight entries are the second row, etc.). If unknown, assign NaN
+ * value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 64u,
@@ -36,6 +64,7 @@ public data class LocalPositionNedCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -46,46 +75,55 @@ public data class LocalPositionNedCov(
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
   /**
    * X Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * X Speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y Speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z Speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * X Acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val ax: Float = 0F,
   /**
    * Y Acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val ay: Float = 0F,
   /**
    * Z Acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val az: Float = 0F,
@@ -98,9 +136,9 @@ public data class LocalPositionNedCov(
   @GeneratedMavField(type = "float[45]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<LocalPositionNedCov> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedCov> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedCov> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -117,7 +155,7 @@ public data class LocalPositionNedCov(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -139,11 +177,11 @@ public data class LocalPositionNedCov(
 
     private const val SIZE_V2: Int = 225
 
-    public override val id: UInt = 64u
+    override val id: UInt = 64u
 
-    public override val crcExtra: Byte = -65
+    override val crcExtra: Byte = -65
 
-    public override fun deserialize(bytes: ByteArray): LocalPositionNedCov {
+    override fun deserialize(bytes: ByteArray): LocalPositionNedCov {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

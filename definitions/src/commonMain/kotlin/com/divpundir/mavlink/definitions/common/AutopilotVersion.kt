@@ -30,6 +30,27 @@ import kotlin.collections.List
 /**
  * Version and capability of autopilot software. This should be emitted in response to a request
  * with MAV_CMD_REQUEST_MESSAGE.
+ *
+ * @param capabilities Bitmap of capabilities
+ * @param flightSwVersion Firmware version number
+ * @param middlewareSwVersion Middleware version number
+ * @param osSwVersion Operating system version number
+ * @param boardVersion HW / board version (last 8 bits should be silicon ID, if any). The first 16
+ * bits of this field specify https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt
+ * @param flightCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This
+ * is not an unique identifier, but should allow to identify the commit using the main version number
+ * even for very large code bases.
+ * @param middlewareCustomVersion Custom version field, commonly the first 8 bytes of the git hash.
+ * This is not an unique identifier, but should allow to identify the commit using the main version
+ * number even for very large code bases.
+ * @param osCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This is
+ * not an unique identifier, but should allow to identify the commit using the main version number even
+ * for very large code bases.
+ * @param vendorId ID of the board vendor
+ * @param productId ID of the product
+ * @param uid UID if provided by hardware (see uid2)
+ * @param uid2 UID if provided by hardware (supersedes the uid field. If this is non-zero, use this
+ * field, otherwise use uid)
  */
 @GeneratedMavMessage(
   id = 148u,
@@ -108,9 +129,9 @@ public data class AutopilotVersion(
   )
   public val uid2: List<UByte> = emptyList(),
 ) : MavMessage<AutopilotVersion> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AutopilotVersion> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(capabilities.value, 8)
     encoder.encodeUInt64(uid)
@@ -126,7 +147,7 @@ public data class AutopilotVersion(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(capabilities.value, 8)
     encoder.encodeUInt64(uid)
@@ -148,11 +169,11 @@ public data class AutopilotVersion(
 
     private const val SIZE_V2: Int = 78
 
-    public override val id: UInt = 148u
+    override val id: UInt = 148u
 
-    public override val crcExtra: Byte = -78
+    override val crcExtra: Byte = -78
 
-    public override fun deserialize(bytes: ByteArray): AutopilotVersion {
+    override fun deserialize(bytes: ByteArray): AutopilotVersion {
       val decoder = MavDataDecoder(bytes)
 
       val capabilities = decoder.safeDecodeBitmaskValue(8).let { value ->

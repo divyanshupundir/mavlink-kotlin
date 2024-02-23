@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidHeightRef(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The height field is relative to the take-off location.
@@ -22,7 +22,7 @@ public enum class MavOdidHeightRef(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidHeightRef> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidHeightRef? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidHeightRef? = when (v) {
       0u -> OVER_TAKEOFF
       1u -> OVER_GROUND
       else -> null

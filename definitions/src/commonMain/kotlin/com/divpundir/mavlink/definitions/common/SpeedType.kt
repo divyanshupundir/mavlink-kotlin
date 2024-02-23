@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class SpeedType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Airspeed
@@ -35,7 +35,7 @@ public enum class SpeedType(
   ;
 
   public companion object : MavEnum.MavCompanion<SpeedType> {
-    public override fun getEntryFromValueOrNull(v: UInt): SpeedType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): SpeedType? = when (v) {
       0u -> AIRSPEED
       1u -> GROUNDSPEED
       2u -> CLIMB_SPEED

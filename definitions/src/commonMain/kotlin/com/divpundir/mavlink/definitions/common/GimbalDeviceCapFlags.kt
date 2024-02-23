@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class GimbalDeviceCapFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Gimbal device supports a retracted position.
@@ -94,7 +94,7 @@ public enum class GimbalDeviceCapFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<GimbalDeviceCapFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceCapFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GimbalDeviceCapFlags? = when (v) {
       1u -> HAS_RETRACT
       2u -> HAS_NEUTRAL
       4u -> HAS_ROLL_AXIS
@@ -112,7 +112,7 @@ public enum class GimbalDeviceCapFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<GimbalDeviceCapFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<GimbalDeviceCapFlags> = buildList {
       if (v and 1u == 1u) add(HAS_RETRACT)
       if (v and 2u == 2u) add(HAS_NEUTRAL)
       if (v and 4u == 4u) add(HAS_ROLL_AXIS)

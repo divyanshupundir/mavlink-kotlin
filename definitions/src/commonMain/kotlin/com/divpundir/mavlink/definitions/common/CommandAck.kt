@@ -23,6 +23,20 @@ import kotlin.Unit
 /**
  * Report status of a command. Includes feedback whether the command was executed. The command
  * microservice is documented at https://mavlink.io/en/services/command.html
+ *
+ * @param command Command ID (of acknowledged command).
+ * @param result Result of command.
+ * @param progress The progress percentage when result is MAV_RESULT_IN_PROGRESS. Values: [0-100],
+ * or UINT8_MAX if the progress is unknown.
+ * units = %
+ * @param resultParam2 Additional result information. Can be set with a command-specific enum
+ * containing command-specific error reasons for why the command might be denied. If used, the
+ * associated enum must be documented in the corresponding MAV_CMD (this enum should have a 0 value to
+ * indicate "unused" or "unknown").
+ * @param targetSystem System ID of the target recipient. This is the ID of the system that sent the
+ * command for which this COMMAND_ACK is an acknowledgement.
+ * @param targetComponent Component ID of the target recipient. This is the ID of the system that
+ * sent the command for which this COMMAND_ACK is an acknowledgement.
  */
 @GeneratedMavMessage(
   id = 77u,
@@ -42,6 +56,7 @@ public data class CommandAck(
   /**
    * The progress percentage when result is MAV_RESULT_IN_PROGRESS. Values: [0-100], or UINT8_MAX if
    * the progress is unknown.
+   * units = %
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -78,16 +93,16 @@ public data class CommandAck(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<CommandAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandAck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(command.value, 2)
     encoder.encodeEnumValue(result.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(command.value, 2)
     encoder.encodeEnumValue(result.value, 1)
@@ -103,11 +118,11 @@ public data class CommandAck(
 
     private const val SIZE_V2: Int = 10
 
-    public override val id: UInt = 77u
+    override val id: UInt = 77u
 
-    public override val crcExtra: Byte = -113
+    override val crcExtra: Byte = -113
 
-    public override fun deserialize(bytes: ByteArray): CommandAck {
+    override fun deserialize(bytes: ByteArray): CommandAck {
       val decoder = MavDataDecoder(bytes)
 
       val command = decoder.safeDecodeEnumValue(2).let { value ->

@@ -17,6 +17,9 @@ import kotlin.Unit
 
 /**
  * Stop log transfer and resume normal logging
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
  */
 @GeneratedMavMessage(
   id = 122u,
@@ -34,16 +37,16 @@ public data class LogRequestEnd(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<LogRequestEnd> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LogRequestEnd> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LogRequestEnd> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -55,11 +58,11 @@ public data class LogRequestEnd(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 122u
+    override val id: UInt = 122u
 
-    public override val crcExtra: Byte = -53
+    override val crcExtra: Byte = -53
 
-    public override fun deserialize(bytes: ByteArray): LogRequestEnd {
+    override fun deserialize(bytes: ByteArray): LogRequestEnd {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

@@ -25,6 +25,18 @@ import kotlin.Unit
  * GPS_GLOBAL_ORIGIN irrespective of whether the origin is changed. This enables transform between the
  * local coordinate frame and the global (GPS) coordinate frame, which may be necessary when (for
  * example) indoor and outdoor settings are connected and the MAV should move from in- to outdoor.
+ *
+ * @param targetSystem System ID
+ * @param latitude Latitude (WGS84)
+ * units = degE7
+ * @param longitude Longitude (WGS84)
+ * units = degE7
+ * @param altitude Altitude (MSL). Positive for up.
+ * units = mm
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
  */
 @GeneratedMavMessage(
   id = 48u,
@@ -38,22 +50,26 @@ public data class SetGpsGlobalOrigin(
   public val targetSystem: UByte = 0u,
   /**
    * Latitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val latitude: Int = 0,
   /**
    * Longitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val longitude: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val altitude: Int = 0,
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint64_t",
@@ -61,9 +77,9 @@ public data class SetGpsGlobalOrigin(
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<SetGpsGlobalOrigin> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetGpsGlobalOrigin> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetGpsGlobalOrigin> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -72,7 +88,7 @@ public data class SetGpsGlobalOrigin(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -87,11 +103,11 @@ public data class SetGpsGlobalOrigin(
 
     private const val SIZE_V2: Int = 21
 
-    public override val id: UInt = 48u
+    override val id: UInt = 48u
 
-    public override val crcExtra: Byte = 41
+    override val crcExtra: Byte = 41
 
-    public override fun deserialize(bytes: ByteArray): SetGpsGlobalOrigin {
+    override fun deserialize(bytes: ByteArray): SetGpsGlobalOrigin {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

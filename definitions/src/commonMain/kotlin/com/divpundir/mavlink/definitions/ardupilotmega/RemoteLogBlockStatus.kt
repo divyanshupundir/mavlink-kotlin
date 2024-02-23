@@ -22,6 +22,11 @@ import kotlin.Unit
 
 /**
  * Send Status of each log block that autopilot board might have sent.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param seqno Log data block sequence number.
+ * @param status Log data block status.
  */
 @GeneratedMavMessage(
   id = 185u,
@@ -49,9 +54,9 @@ public data class RemoteLogBlockStatus(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<MavRemoteLogDataBlockStatuses> = MavEnumValue.fromValue(0u),
 ) : MavMessage<RemoteLogBlockStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RemoteLogBlockStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RemoteLogBlockStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(seqno)
     encoder.encodeUInt8(targetSystem)
@@ -60,7 +65,7 @@ public data class RemoteLogBlockStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(seqno)
     encoder.encodeUInt8(targetSystem)
@@ -74,11 +79,11 @@ public data class RemoteLogBlockStatus(
 
     private const val SIZE_V2: Int = 7
 
-    public override val id: UInt = 185u
+    override val id: UInt = 185u
 
-    public override val crcExtra: Byte = -70
+    override val crcExtra: Byte = -70
 
-    public override fun deserialize(bytes: ByteArray): RemoteLogBlockStatus {
+    override fun deserialize(bytes: ByteArray): RemoteLogBlockStatus {
       val decoder = MavDataDecoder(bytes)
 
       val seqno = decoder.safeDecodeUInt32()

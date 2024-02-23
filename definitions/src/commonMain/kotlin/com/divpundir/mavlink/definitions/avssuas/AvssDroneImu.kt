@@ -20,6 +20,25 @@ import kotlin.Unit
 /**
  *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0
  * 0).
+ *
+ * @param timeBootMs Timestamp (time since FC boot).
+ * units = ms
+ * @param q1 Quaternion component 1, w (1 in null-rotation)
+ * @param q2 Quaternion component 2, x (0 in null-rotation)
+ * @param q3 Quaternion component 3, y (0 in null-rotation)
+ * @param q4 Quaternion component 4, z (0 in null-rotation)
+ * @param xacc X acceleration
+ * units = m/s/s
+ * @param yacc Y acceleration
+ * units = m/s/s
+ * @param zacc Z acceleration
+ * units = m/s/s
+ * @param xgyro Angular speed around X axis
+ * units = rad/s
+ * @param ygyro Angular speed around Y axis
+ * units = rad/s
+ * @param zgyro Angular speed around Z axis
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 60_052u,
@@ -28,6 +47,7 @@ import kotlin.Unit
 public data class AvssDroneImu(
   /**
    * Timestamp (time since FC boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -53,38 +73,44 @@ public data class AvssDroneImu(
   public val q4: Float = 0F,
   /**
    * X acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
 ) : MavMessage<AvssDroneImu> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -100,7 +126,7 @@ public data class AvssDroneImu(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -121,11 +147,11 @@ public data class AvssDroneImu(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 60_052u
+    override val id: UInt = 60_052u
 
-    public override val crcExtra: Byte = 101
+    override val crcExtra: Byte = 101
 
-    public override fun deserialize(bytes: ByteArray): AvssDroneImu {
+    override fun deserialize(bytes: ByteArray): AvssDroneImu {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

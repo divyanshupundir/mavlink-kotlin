@@ -23,6 +23,21 @@ import kotlin.collections.List
 
 /**
  * Motion capture attitude and position
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param q Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
+ * @param x X position (NED)
+ * units = m
+ * @param y Y position (NED)
+ * units = m
+ * @param z Z position (NED)
+ * units = m
+ * @param covariance Row-major representation of a pose 6x6 cross-covariance matrix upper right
+ * triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries
+ * are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 138u,
@@ -32,6 +47,7 @@ public data class AttPosMocap(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -42,16 +58,19 @@ public data class AttPosMocap(
   public val q: List<Float> = emptyList(),
   /**
    * X position (NED)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y position (NED)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z position (NED)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
@@ -66,9 +85,9 @@ public data class AttPosMocap(
   )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<AttPosMocap> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AttPosMocap> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AttPosMocap> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(q, 16)
@@ -78,7 +97,7 @@ public data class AttPosMocap(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(q, 16)
@@ -94,11 +113,11 @@ public data class AttPosMocap(
 
     private const val SIZE_V2: Int = 120
 
-    public override val id: UInt = 138u
+    override val id: UInt = 138u
 
-    public override val crcExtra: Byte = 109
+    override val crcExtra: Byte = 109
 
-    public override fun deserialize(bytes: ByteArray): AttPosMocap {
+    override fun deserialize(bytes: ByteArray): AttPosMocap {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

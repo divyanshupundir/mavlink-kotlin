@@ -17,6 +17,11 @@ import kotlin.Unit
 /**
  * Request that the vehicle report terrain height at the given location (expected response is a
  * TERRAIN_REPORT). Used by GCS to check if vehicle has all terrain data needed for a mission.
+ *
+ * @param lat Latitude
+ * units = degE7
+ * @param lon Longitude
+ * units = degE7
  */
 @GeneratedMavMessage(
   id = 135u,
@@ -25,25 +30,27 @@ import kotlin.Unit
 public data class TerrainCheck(
   /**
    * Latitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
 ) : MavMessage<TerrainCheck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TerrainCheck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TerrainCheck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -55,11 +62,11 @@ public data class TerrainCheck(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 135u
+    override val id: UInt = 135u
 
-    public override val crcExtra: Byte = -53
+    override val crcExtra: Byte = -53
 
-    public override fun deserialize(bytes: ByteArray): TerrainCheck {
+    override fun deserialize(bytes: ByteArray): TerrainCheck {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

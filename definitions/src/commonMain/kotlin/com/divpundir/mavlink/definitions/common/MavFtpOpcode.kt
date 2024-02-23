@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavFtpOpcode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * None. Ignored, always ACKed
@@ -105,7 +105,7 @@ public enum class MavFtpOpcode(
   ;
 
   public companion object : MavEnum.MavCompanion<MavFtpOpcode> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavFtpOpcode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavFtpOpcode? = when (v) {
       0u -> NONE
       1u -> TERMINATESESSION
       2u -> RESETSESSION

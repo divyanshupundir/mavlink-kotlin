@@ -18,6 +18,9 @@ import kotlin.collections.List
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F15 format
+ *
+ * @param sueIdVehicleModelName Serial UDB Extra Model Name Of Vehicle
+ * @param sueIdVehicleRegistration Serial UDB Extra Registraton Number of Vehicle
  */
 @GeneratedMavMessage(
   id = 179u,
@@ -35,16 +38,16 @@ public data class SerialUdbExtraF15(
   @GeneratedMavField(type = "uint8_t[20]")
   public val sueIdVehicleRegistration: List<UByte> = emptyList(),
 ) : MavMessage<SerialUdbExtraF15> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF15> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF15> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8Array(sueIdVehicleModelName, 40)
     encoder.encodeUInt8Array(sueIdVehicleRegistration, 20)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8Array(sueIdVehicleModelName, 40)
     encoder.encodeUInt8Array(sueIdVehicleRegistration, 20)
@@ -56,11 +59,11 @@ public data class SerialUdbExtraF15(
 
     private const val SIZE_V2: Int = 60
 
-    public override val id: UInt = 179u
+    override val id: UInt = 179u
 
-    public override val crcExtra: Byte = 7
+    override val crcExtra: Byte = 7
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF15 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF15 {
       val decoder = MavDataDecoder(bytes)
 
       val sueIdVehicleModelName = decoder.safeDecodeUInt8Array(40)

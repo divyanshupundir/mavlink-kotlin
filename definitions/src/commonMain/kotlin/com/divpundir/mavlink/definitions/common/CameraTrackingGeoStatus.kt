@@ -23,6 +23,32 @@ import kotlin.Unit
 /**
  * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
  * message interval.
+ *
+ * @param trackingStatus Current tracking status
+ * @param lat Latitude of tracked object
+ * units = degE7
+ * @param lon Longitude of tracked object
+ * units = degE7
+ * @param alt Altitude of tracked object(AMSL, WGS84)
+ * units = m
+ * @param hAcc Horizontal accuracy. NAN if unknown
+ * units = m
+ * @param vAcc Vertical accuracy. NAN if unknown
+ * units = m
+ * @param velN North velocity of tracked object. NAN if unknown
+ * units = m/s
+ * @param velE East velocity of tracked object. NAN if unknown
+ * units = m/s
+ * @param velD Down velocity of tracked object. NAN if unknown
+ * units = m/s
+ * @param velAcc Velocity accuracy. NAN if unknown
+ * units = m/s
+ * @param dist Distance between camera and tracked object. NAN if unknown
+ * units = m
+ * @param hdg Heading in radians, in NED. NAN if unknown
+ * units = rad
+ * @param hdgAcc Accuracy of heading, in NED. NAN if unknown
+ * units = rad
  */
 @GeneratedMavMessage(
   id = 276u,
@@ -36,69 +62,80 @@ public data class CameraTrackingGeoStatus(
   public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u),
   /**
    * Latitude of tracked object
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude of tracked object
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude of tracked object(AMSL, WGS84)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * Horizontal accuracy. NAN if unknown
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val hAcc: Float = 0F,
   /**
    * Vertical accuracy. NAN if unknown
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val vAcc: Float = 0F,
   /**
    * North velocity of tracked object. NAN if unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val velN: Float = 0F,
   /**
    * East velocity of tracked object. NAN if unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val velE: Float = 0F,
   /**
    * Down velocity of tracked object. NAN if unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val velD: Float = 0F,
   /**
    * Velocity accuracy. NAN if unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val velAcc: Float = 0F,
   /**
    * Distance between camera and tracked object. NAN if unknown
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val dist: Float = 0F,
   /**
    * Heading in radians, in NED. NAN if unknown
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val hdg: Float = 0F,
   /**
    * Accuracy of heading, in NED. NAN if unknown
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val hdgAcc: Float = 0F,
 ) : MavMessage<CameraTrackingGeoStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -116,7 +153,7 @@ public data class CameraTrackingGeoStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -139,11 +176,11 @@ public data class CameraTrackingGeoStatus(
 
     private const val SIZE_V2: Int = 49
 
-    public override val id: UInt = 276u
+    override val id: UInt = 276u
 
-    public override val crcExtra: Byte = 18
+    override val crcExtra: Byte = 18
 
-    public override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
+    override fun deserialize(bytes: ByteArray): CameraTrackingGeoStatus {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

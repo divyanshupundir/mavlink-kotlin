@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class CameraStatusTypes(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Camera heartbeat, announce camera component ID at 1Hz.
@@ -47,7 +47,7 @@ public enum class CameraStatusTypes(
   ;
 
   public companion object : MavEnum.MavCompanion<CameraStatusTypes> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraStatusTypes? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraStatusTypes? = when (v) {
       0u -> CAMERA_STATUS_TYPE_HEARTBEAT
       1u -> CAMERA_STATUS_TYPE_TRIGGER
       2u -> CAMERA_STATUS_TYPE_DISCONNECT

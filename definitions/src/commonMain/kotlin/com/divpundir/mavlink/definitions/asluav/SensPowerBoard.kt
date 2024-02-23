@@ -23,6 +23,29 @@ import kotlin.Unit
 
 /**
  * Monitoring of power board status
+ *
+ * @param timestamp Timestamp
+ * units = us
+ * @param pwrBrdStatus Power board status register
+ * @param pwrBrdLedStatus Power board leds status
+ * @param pwrBrdSystemVolt Power board system voltage
+ * units = V
+ * @param pwrBrdServoVolt Power board servo voltage
+ * units = V
+ * @param pwrBrdDigitalVolt Power board digital voltage
+ * units = V
+ * @param pwrBrdMotLAmp Power board left motor current sensor
+ * units = A
+ * @param pwrBrdMotRAmp Power board right motor current sensor
+ * units = A
+ * @param pwrBrdAnalogAmp Power board analog current sensor
+ * units = A
+ * @param pwrBrdDigitalAmp Power board digital current sensor
+ * units = A
+ * @param pwrBrdExtAmp Power board extension current sensor
+ * units = A
+ * @param pwrBrdAuxAmp Power board aux current sensor
+ * units = A
  */
 @GeneratedMavMessage(
   id = 8_013u,
@@ -31,6 +54,7 @@ import kotlin.Unit
 public data class SensPowerBoard(
   /**
    * Timestamp
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
@@ -46,53 +70,62 @@ public data class SensPowerBoard(
   public val pwrBrdLedStatus: UByte = 0u,
   /**
    * Power board system voltage
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdSystemVolt: Float = 0F,
   /**
    * Power board servo voltage
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdServoVolt: Float = 0F,
   /**
    * Power board digital voltage
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdDigitalVolt: Float = 0F,
   /**
    * Power board left motor current sensor
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdMotLAmp: Float = 0F,
   /**
    * Power board right motor current sensor
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdMotRAmp: Float = 0F,
   /**
    * Power board analog current sensor
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdAnalogAmp: Float = 0F,
   /**
    * Power board digital current sensor
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdDigitalAmp: Float = 0F,
   /**
    * Power board extension current sensor
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdExtAmp: Float = 0F,
   /**
    * Power board aux current sensor
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val pwrBrdAuxAmp: Float = 0F,
 ) : MavMessage<SensPowerBoard> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(pwrBrdSystemVolt)
@@ -109,7 +142,7 @@ public data class SensPowerBoard(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(pwrBrdSystemVolt)
@@ -131,11 +164,11 @@ public data class SensPowerBoard(
 
     private const val SIZE_V2: Int = 46
 
-    public override val id: UInt = 8_013u
+    override val id: UInt = 8_013u
 
-    public override val crcExtra: Byte = -34
+    override val crcExtra: Byte = -34
 
-    public override fun deserialize(bytes: ByteArray): SensPowerBoard {
+    override fun deserialize(bytes: ByteArray): SensPowerBoard {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavAutopilot(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Generic autopilot, full support for everything
@@ -120,7 +120,7 @@ public enum class MavAutopilot(
   ;
 
   public companion object : MavEnum.MavCompanion<MavAutopilot> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavAutopilot? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavAutopilot? = when (v) {
       0u -> GENERIC
       1u -> RESERVED
       2u -> SLUGS

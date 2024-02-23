@@ -22,6 +22,17 @@ import kotlin.Unit
 
 /**
  * Vibration levels and accelerometer clipping
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param vibrationX Vibration levels on X-axis
+ * @param vibrationY Vibration levels on Y-axis
+ * @param vibrationZ Vibration levels on Z-axis
+ * @param clipping0 first accelerometer clipping count
+ * @param clipping1 second accelerometer clipping count
+ * @param clipping2 third accelerometer clipping count
  */
 @GeneratedMavMessage(
   id = 241u,
@@ -31,6 +42,7 @@ public data class Vibration(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -65,9 +77,9 @@ public data class Vibration(
   @GeneratedMavField(type = "uint32_t")
   public val clipping2: UInt = 0u,
 ) : MavMessage<Vibration> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Vibration> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Vibration> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(vibrationX)
@@ -79,7 +91,7 @@ public data class Vibration(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(vibrationX)
@@ -96,11 +108,11 @@ public data class Vibration(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 241u
+    override val id: UInt = 241u
 
-    public override val crcExtra: Byte = 90
+    override val crcExtra: Byte = 90
 
-    public override fun deserialize(bytes: ByteArray): Vibration {
+    override fun deserialize(bytes: ByteArray): Vibration {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

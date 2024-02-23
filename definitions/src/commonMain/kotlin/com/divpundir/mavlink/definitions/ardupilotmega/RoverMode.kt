@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class RoverMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   MANUAL(0u),
@@ -39,7 +39,7 @@ public enum class RoverMode(
   ;
 
   public companion object : MavEnum.MavCompanion<RoverMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): RoverMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): RoverMode? = when (v) {
       0u -> MANUAL
       1u -> ACRO
       3u -> STEERING

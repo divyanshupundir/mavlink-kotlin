@@ -21,6 +21,29 @@ import kotlin.Unit
 /**
  * Wind estimate from vehicle. Note that despite the name, this message does not actually contain
  * any covariances but instead variability and accuracy fields in terms of standard deviation (1-STD).
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param windX Wind in North (NED) direction (NAN if unknown)
+ * units = m/s
+ * @param windY Wind in East (NED) direction (NAN if unknown)
+ * units = m/s
+ * @param windZ Wind in down (NED) direction (NAN if unknown)
+ * units = m/s
+ * @param varHoriz Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate
+ * (NAN if unknown)
+ * units = m/s
+ * @param varVert Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN
+ * if unknown)
+ * units = m/s
+ * @param windAlt Altitude (MSL) that this measurement was taken at (NAN if unknown)
+ * units = m
+ * @param horizAccuracy Horizontal speed 1-STD accuracy (0 if unknown)
+ * units = m/s
+ * @param vertAccuracy Vertical speed 1-STD accuracy (0 if unknown)
+ * units = m/s
  */
 @GeneratedMavMessage(
   id = 231u,
@@ -30,53 +53,62 @@ public data class WindCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * Wind in North (NED) direction (NAN if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val windX: Float = 0F,
   /**
    * Wind in East (NED) direction (NAN if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val windY: Float = 0F,
   /**
    * Wind in down (NED) direction (NAN if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val windZ: Float = 0F,
   /**
    * Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val varHoriz: Float = 0F,
   /**
    * Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val varVert: Float = 0F,
   /**
    * Altitude (MSL) that this measurement was taken at (NAN if unknown)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val windAlt: Float = 0F,
   /**
    * Horizontal speed 1-STD accuracy (0 if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val horizAccuracy: Float = 0F,
   /**
    * Vertical speed 1-STD accuracy (0 if unknown)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vertAccuracy: Float = 0F,
 ) : MavMessage<WindCov> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(windX)
@@ -90,7 +122,7 @@ public data class WindCov(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(windX)
@@ -109,11 +141,11 @@ public data class WindCov(
 
     private const val SIZE_V2: Int = 40
 
-    public override val id: UInt = 231u
+    override val id: UInt = 231u
 
-    public override val crcExtra: Byte = 105
+    override val crcExtra: Byte = 105
 
-    public override fun deserialize(bytes: ByteArray): WindCov {
+    override fun deserialize(bytes: ByteArray): WindCov {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -20,6 +20,14 @@ import kotlin.Unit
 
 /**
  * Accelerometer and Gyro biases from the navigation filter
+ *
+ * @param usec Timestamp (microseconds)
+ * @param accel0 b_f[0]
+ * @param accel1 b_f[1]
+ * @param accel2 b_f[2]
+ * @param gyro0 b_f[0]
+ * @param gyro1 b_f[1]
+ * @param gyro2 b_f[2]
  */
 @GeneratedMavMessage(
   id = 220u,
@@ -62,9 +70,9 @@ public data class NavFilterBias(
   @GeneratedMavField(type = "float")
   public val gyro2: Float = 0F,
 ) : MavMessage<NavFilterBias> {
-  public override val instanceCompanion: MavMessage.MavCompanion<NavFilterBias> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<NavFilterBias> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(accel0)
@@ -76,7 +84,7 @@ public data class NavFilterBias(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(accel0)
@@ -93,11 +101,11 @@ public data class NavFilterBias(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 220u
+    override val id: UInt = 220u
 
-    public override val crcExtra: Byte = 34
+    override val crcExtra: Byte = 34
 
-    public override fun deserialize(bytes: ByteArray): NavFilterBias {
+    override fun deserialize(bytes: ByteArray): NavFilterBias {
       val decoder = MavDataDecoder(bytes)
 
       val usec = decoder.safeDecodeUInt64()

@@ -17,6 +17,11 @@ import kotlin.Unit
 
 /**
  * Provides state for additional features
+ *
+ * @param vtolState The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not
+ * in VTOL configuration.
+ * @param landedState The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is
+ * unknown.
  */
 @GeneratedMavMessage(
   id = 245u,
@@ -35,16 +40,16 @@ public data class ExtendedSysState(
   @GeneratedMavField(type = "uint8_t")
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ExtendedSysState> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ExtendedSysState> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ExtendedSysState> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(vtolState.value, 1)
     encoder.encodeEnumValue(landedState.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(vtolState.value, 1)
     encoder.encodeEnumValue(landedState.value, 1)
@@ -56,11 +61,11 @@ public data class ExtendedSysState(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 245u
+    override val id: UInt = 245u
 
-    public override val crcExtra: Byte = -126
+    override val crcExtra: Byte = -126
 
-    public override fun deserialize(bytes: ByteArray): ExtendedSysState {
+    override fun deserialize(bytes: ByteArray): ExtendedSysState {
       val decoder = MavDataDecoder(bytes)
 
       val vtolState = decoder.safeDecodeEnumValue(1).let { value ->

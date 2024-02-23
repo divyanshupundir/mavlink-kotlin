@@ -24,6 +24,11 @@ import kotlin.collections.List
 /**
  * The raw values of the actuator outputs (e.g. on Pixhawk, from MAIN, AUX ports). This message
  * supersedes SERVO_OUTPUT_RAW.
+ *
+ * @param timeUsec Timestamp (since system boot).
+ * units = us
+ * @param active Active outputs
+ * @param actuator Servo / motor output array values. Zero values indicate unused channels.
  */
 @GeneratedMavMessage(
   id = 375u,
@@ -32,6 +37,7 @@ import kotlin.collections.List
 public data class ActuatorOutputStatus(
   /**
    * Timestamp (since system boot).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -46,9 +52,9 @@ public data class ActuatorOutputStatus(
   @GeneratedMavField(type = "float[32]")
   public val actuator: List<Float> = emptyList(),
 ) : MavMessage<ActuatorOutputStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ActuatorOutputStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ActuatorOutputStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(active)
@@ -56,7 +62,7 @@ public data class ActuatorOutputStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(active)
@@ -69,11 +75,11 @@ public data class ActuatorOutputStatus(
 
     private const val SIZE_V2: Int = 140
 
-    public override val id: UInt = 375u
+    override val id: UInt = 375u
 
-    public override val crcExtra: Byte = -5
+    override val crcExtra: Byte = -5
 
-    public override fun deserialize(bytes: ByteArray): ActuatorOutputStatus {
+    override fun deserialize(bytes: ByteArray): ActuatorOutputStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

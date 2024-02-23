@@ -18,6 +18,10 @@ import kotlin.Unit
 /**
  * Request a current rally point from MAV. MAV should respond with a RALLY_POINT message. MAV should
  * not respond if the request is invalid.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param idx Point index (first point is 0).
  */
 @GeneratedMavMessage(
   id = 176u,
@@ -40,9 +44,9 @@ public data class RallyFetchPoint(
   @GeneratedMavField(type = "uint8_t")
   public val idx: UByte = 0u,
 ) : MavMessage<RallyFetchPoint> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RallyFetchPoint> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RallyFetchPoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -50,7 +54,7 @@ public data class RallyFetchPoint(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -63,11 +67,11 @@ public data class RallyFetchPoint(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 176u
+    override val id: UInt = 176u
 
-    public override val crcExtra: Byte = -22
+    override val crcExtra: Byte = -22
 
-    public override fun deserialize(bytes: ByteArray): RallyFetchPoint {
+    override fun deserialize(bytes: ByteArray): RallyFetchPoint {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

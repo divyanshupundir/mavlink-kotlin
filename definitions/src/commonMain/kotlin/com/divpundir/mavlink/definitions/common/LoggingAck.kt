@@ -20,6 +20,10 @@ import kotlin.Unit
 
 /**
  * An ack for a LOGGING_DATA_ACKED message
+ *
+ * @param targetSystem system ID of the target
+ * @param targetComponent component ID of the target
+ * @param sequence sequence number (must match the one in LOGGING_DATA_ACKED)
  */
 @GeneratedMavMessage(
   id = 268u,
@@ -42,9 +46,9 @@ public data class LoggingAck(
   @GeneratedMavField(type = "uint16_t")
   public val sequence: UShort = 0u,
 ) : MavMessage<LoggingAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LoggingAck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LoggingAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -52,7 +56,7 @@ public data class LoggingAck(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -65,11 +69,11 @@ public data class LoggingAck(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 268u
+    override val id: UInt = 268u
 
-    public override val crcExtra: Byte = 14
+    override val crcExtra: Byte = 14
 
-    public override fun deserialize(bytes: ByteArray): LoggingAck {
+    override fun deserialize(bytes: ByteArray): LoggingAck {
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()

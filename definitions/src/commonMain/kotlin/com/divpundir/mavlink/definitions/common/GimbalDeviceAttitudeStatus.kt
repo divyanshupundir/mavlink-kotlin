@@ -50,6 +50,33 @@ import kotlin.collections.List
  * 	  New implementations should always set either GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME or
  * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME,
  * 	  and always should set delta_yaw and delta_yaw_velocity either to the proper value or NaN.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param flags Current gimbal flags set.
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). The frame is described
+ * in the message description.
+ * @param angularVelocityX X component of angular velocity (positive: rolling to the right). The
+ * frame is described in the message description. NaN if unknown.
+ * units = rad/s
+ * @param angularVelocityY Y component of angular velocity (positive: pitching up). The frame is
+ * described in the message description. NaN if unknown.
+ * units = rad/s
+ * @param angularVelocityZ Z component of angular velocity (positive: yawing to the right). The
+ * frame is described in the message description. NaN if unknown.
+ * units = rad/s
+ * @param failureFlags Failure flags (0 for no failure)
+ * @param deltaYaw Yaw angle relating the quaternions in earth and body frames (see message
+ * description). NaN if unknown.
+ * units = rad
+ * @param deltaYawVelocity Yaw angular velocity relating the angular velocities in earth and body
+ * frames (see message description). NaN if unknown.
+ * units = rad/s
+ * @param gimbalDeviceId This field is to be used if the gimbal manager and the gimbal device are
+ * the same component and hence have the same component ID. This field is then set a number between
+ * 1-6. If the component ID is separate, this field is not required and must be set to 0.
  */
 @GeneratedMavMessage(
   id = 285u,
@@ -68,6 +95,7 @@ public data class GimbalDeviceAttitudeStatus(
   public val targetComponent: UByte = 0u,
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -85,18 +113,21 @@ public data class GimbalDeviceAttitudeStatus(
   /**
    * X component of angular velocity (positive: rolling to the right). The frame is described in the
    * message description. NaN if unknown.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityX: Float = 0F,
   /**
    * Y component of angular velocity (positive: pitching up). The frame is described in the message
    * description. NaN if unknown.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityY: Float = 0F,
   /**
    * Z component of angular velocity (positive: yawing to the right). The frame is described in the
    * message description. NaN if unknown.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
@@ -108,6 +139,7 @@ public data class GimbalDeviceAttitudeStatus(
   /**
    * Yaw angle relating the quaternions in earth and body frames (see message description). NaN if
    * unknown.
+   * units = rad
    */
   @GeneratedMavField(
     type = "float",
@@ -117,6 +149,7 @@ public data class GimbalDeviceAttitudeStatus(
   /**
    * Yaw angular velocity relating the angular velocities in earth and body frames (see message
    * description). NaN if unknown.
+   * units = rad/s
    */
   @GeneratedMavField(
     type = "float",
@@ -134,10 +167,9 @@ public data class GimbalDeviceAttitudeStatus(
   )
   public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<GimbalDeviceAttitudeStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceAttitudeStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -151,7 +183,7 @@ public data class GimbalDeviceAttitudeStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -173,11 +205,11 @@ public data class GimbalDeviceAttitudeStatus(
 
     private const val SIZE_V2: Int = 49
 
-    public override val id: UInt = 285u
+    override val id: UInt = 285u
 
-    public override val crcExtra: Byte = -119
+    override val crcExtra: Byte = -119
 
-    public override fun deserialize(bytes: ByteArray): GimbalDeviceAttitudeStatus {
+    override fun deserialize(bytes: ByteArray): GimbalDeviceAttitudeStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

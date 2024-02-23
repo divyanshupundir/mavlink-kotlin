@@ -20,6 +20,29 @@ import kotlin.Unit
 
 /**
  * 3 axis gimbal measurements.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param deltaTime Time since last update.
+ * units = s
+ * @param deltaAngleX Delta angle X.
+ * units = rad
+ * @param deltaAngleY Delta angle Y.
+ * units = rad
+ * @param deltaAngleZ Delta angle X.
+ * units = rad
+ * @param deltaVelocityX Delta velocity X.
+ * units = m/s
+ * @param deltaVelocityY Delta velocity Y.
+ * units = m/s
+ * @param deltaVelocityZ Delta velocity Z.
+ * units = m/s
+ * @param jointRoll Joint ROLL.
+ * units = rad
+ * @param jointEl Joint EL.
+ * units = rad
+ * @param jointAz Joint AZ.
+ * units = rad
  */
 @GeneratedMavMessage(
   id = 200u,
@@ -38,58 +61,68 @@ public data class GimbalReport(
   public val targetComponent: UByte = 0u,
   /**
    * Time since last update.
+   * units = s
    */
   @GeneratedMavField(type = "float")
   public val deltaTime: Float = 0F,
   /**
    * Delta angle X.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val deltaAngleX: Float = 0F,
   /**
    * Delta angle Y.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val deltaAngleY: Float = 0F,
   /**
    * Delta angle X.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val deltaAngleZ: Float = 0F,
   /**
    * Delta velocity X.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val deltaVelocityX: Float = 0F,
   /**
    * Delta velocity Y.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val deltaVelocityY: Float = 0F,
   /**
    * Delta velocity Z.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val deltaVelocityZ: Float = 0F,
   /**
    * Joint ROLL.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val jointRoll: Float = 0F,
   /**
    * Joint EL.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val jointEl: Float = 0F,
   /**
    * Joint AZ.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val jointAz: Float = 0F,
 ) : MavMessage<GimbalReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(deltaTime)
     encoder.encodeFloat(deltaAngleX)
@@ -106,7 +139,7 @@ public data class GimbalReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(deltaTime)
     encoder.encodeFloat(deltaAngleX)
@@ -128,11 +161,11 @@ public data class GimbalReport(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 200u
+    override val id: UInt = 200u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): GimbalReport {
+    override fun deserialize(bytes: ByteArray): GimbalReport {
       val decoder = MavDataDecoder(bytes)
 
       val deltaTime = decoder.safeDecodeFloat()

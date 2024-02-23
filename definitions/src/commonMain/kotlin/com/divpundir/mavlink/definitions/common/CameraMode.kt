@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class CameraMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Camera is in image/photo capture mode.
@@ -31,7 +31,7 @@ public enum class CameraMode(
   ;
 
   public companion object : MavEnum.MavCompanion<CameraMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraMode? = when (v) {
       0u -> IMAGE
       1u -> VIDEO
       2u -> IMAGE_SURVEY

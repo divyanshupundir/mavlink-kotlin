@@ -17,6 +17,12 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F18 format
+ *
+ * @param angleOfAttackNormal SUE Angle of Attack Normal
+ * @param angleOfAttackInverted SUE Angle of Attack Inverted
+ * @param elevatorTrimNormal SUE Elevator Trim Normal
+ * @param elevatorTrimInverted SUE Elevator Trim Inverted
+ * @param referenceSpeed SUE reference_speed
  */
 @GeneratedMavMessage(
   id = 184u,
@@ -49,9 +55,9 @@ public data class SerialUdbExtraF18(
   @GeneratedMavField(type = "float")
   public val referenceSpeed: Float = 0F,
 ) : MavMessage<SerialUdbExtraF18> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF18> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF18> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(angleOfAttackNormal)
     encoder.encodeFloat(angleOfAttackInverted)
@@ -61,7 +67,7 @@ public data class SerialUdbExtraF18(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(angleOfAttackNormal)
     encoder.encodeFloat(angleOfAttackInverted)
@@ -76,11 +82,11 @@ public data class SerialUdbExtraF18(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 184u
+    override val id: UInt = 184u
 
-    public override val crcExtra: Byte = 41
+    override val crcExtra: Byte = 41
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF18 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF18 {
       val decoder = MavDataDecoder(bytes)
 
       val angleOfAttackNormal = decoder.safeDecodeFloat()

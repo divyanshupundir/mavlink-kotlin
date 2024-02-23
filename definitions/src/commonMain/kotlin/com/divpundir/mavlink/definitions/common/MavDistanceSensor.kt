@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavDistanceSensor(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Laser rangefinder, e.g. LightWare SF02/F or PulsedLight units
@@ -40,7 +40,7 @@ public enum class MavDistanceSensor(
   ;
 
   public companion object : MavEnum.MavCompanion<MavDistanceSensor> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavDistanceSensor? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavDistanceSensor? = when (v) {
       0u -> LASER
       1u -> ULTRASOUND
       2u -> INFRARED

@@ -29,6 +29,17 @@ import kotlin.Unit
 
 /**
  * Camera Event.
+ *
+ * @param timeUsec Image timestamp (since UNIX epoch, according to camera clock).
+ * units = us
+ * @param targetSystem System ID.
+ * @param camIdx Camera ID.
+ * @param imgIdx Image index.
+ * @param eventId Event type.
+ * @param p1 Parameter 1 (meaning depends on event_id, see CAMERA_STATUS_TYPES enum).
+ * @param p2 Parameter 2 (meaning depends on event_id, see CAMERA_STATUS_TYPES enum).
+ * @param p3 Parameter 3 (meaning depends on event_id, see CAMERA_STATUS_TYPES enum).
+ * @param p4 Parameter 4 (meaning depends on event_id, see CAMERA_STATUS_TYPES enum).
  */
 @GeneratedMavMessage(
   id = 179u,
@@ -37,6 +48,7 @@ import kotlin.Unit
 public data class CameraStatus(
   /**
    * Image timestamp (since UNIX epoch, according to camera clock).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -81,9 +93,9 @@ public data class CameraStatus(
   @GeneratedMavField(type = "float")
   public val p4: Float = 0F,
 ) : MavMessage<CameraStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(p1)
@@ -97,7 +109,7 @@ public data class CameraStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(p1)
@@ -116,11 +128,11 @@ public data class CameraStatus(
 
     private const val SIZE_V2: Int = 29
 
-    public override val id: UInt = 179u
+    override val id: UInt = 179u
 
-    public override val crcExtra: Byte = -67
+    override val crcExtra: Byte = -67
 
-    public override fun deserialize(bytes: ByteArray): CameraStatus {
+    override fun deserialize(bytes: ByteArray): CameraStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

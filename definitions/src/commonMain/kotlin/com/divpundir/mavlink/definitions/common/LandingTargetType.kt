@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class LandingTargetType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Landing target signaled by light beacon (ex: IR-LOCK)
@@ -36,7 +36,7 @@ public enum class LandingTargetType(
   ;
 
   public companion object : MavEnum.MavCompanion<LandingTargetType> {
-    public override fun getEntryFromValueOrNull(v: UInt): LandingTargetType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): LandingTargetType? = when (v) {
       0u -> LIGHT_BEACON
       1u -> RADIO_BEACON
       2u -> VISION_FIDUCIAL

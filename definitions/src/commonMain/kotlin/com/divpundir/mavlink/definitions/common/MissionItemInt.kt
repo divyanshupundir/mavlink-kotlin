@@ -34,6 +34,26 @@ import kotlin.Unit
  * used in float/integer params (respectively) to indicate optional/default values (e.g. to use the
  * component's current latitude, yaw rather than a specific value). See also
  * https://mavlink.io/en/services/mission.html.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param seq Waypoint ID (sequence number). Starts at zero. Increases monotonically for each
+ * waypoint, no gaps in the sequence (0,1,2,3,4).
+ * @param frame The coordinate system of the waypoint.
+ * @param command The scheduled action for the waypoint.
+ * @param current false:0, true:1
+ * @param autocontinue Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission
+ * after the item completes.
+ * @param param1 PARAM1, see MAV_CMD enum
+ * @param param2 PARAM2, see MAV_CMD enum
+ * @param param3 PARAM3, see MAV_CMD enum
+ * @param param4 PARAM4, see MAV_CMD enum
+ * @param x PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
+ * @param y PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees
+ * *10^7
+ * @param z PARAM7 / z position: global: altitude in meters (relative or absolute, depending on
+ * frame.
+ * @param missionType Mission type.
  */
 @GeneratedMavMessage(
   id = 73u,
@@ -121,9 +141,9 @@ public data class MissionItemInt(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionItemInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionItemInt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionItemInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -142,7 +162,7 @@ public data class MissionItemInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -167,11 +187,11 @@ public data class MissionItemInt(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 73u
+    override val id: UInt = 73u
 
-    public override val crcExtra: Byte = 38
+    override val crcExtra: Byte = 38
 
-    public override fun deserialize(bytes: ByteArray): MissionItemInt {
+    override fun deserialize(bytes: ByteArray): MissionItemInt {
       val decoder = MavDataDecoder(bytes)
 
       val param1 = decoder.safeDecodeFloat()

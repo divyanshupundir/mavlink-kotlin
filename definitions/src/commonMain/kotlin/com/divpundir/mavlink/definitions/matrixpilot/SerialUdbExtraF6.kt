@@ -17,6 +17,12 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F6: format
+ *
+ * @param suePitchgain Serial UDB Extra PITCHGAIN Proportional Control
+ * @param suePitchkd Serial UDB Extra Pitch Rate Control
+ * @param sueRudderElevMix Serial UDB Extra Rudder to Elevator Mix
+ * @param sueRollElevMix Serial UDB Extra Roll to Elevator Mix
+ * @param sueElevatorBoost Gain For Boosting Manual Elevator control When Plane Stabilized
  */
 @GeneratedMavMessage(
   id = 174u,
@@ -49,9 +55,9 @@ public data class SerialUdbExtraF6(
   @GeneratedMavField(type = "float")
   public val sueElevatorBoost: Float = 0F,
 ) : MavMessage<SerialUdbExtraF6> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF6> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF6> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(suePitchgain)
     encoder.encodeFloat(suePitchkd)
@@ -61,7 +67,7 @@ public data class SerialUdbExtraF6(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(suePitchgain)
     encoder.encodeFloat(suePitchkd)
@@ -76,11 +82,11 @@ public data class SerialUdbExtraF6(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 174u
+    override val id: UInt = 174u
 
-    public override val crcExtra: Byte = 54
+    override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF6 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF6 {
       val decoder = MavDataDecoder(bytes)
 
       val suePitchgain = decoder.safeDecodeFloat()

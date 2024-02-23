@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Mission command to reset Maximum Power Point Tracker (MPPT)
@@ -64,7 +64,7 @@ public enum class MavCmd(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCmd> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       40001u -> RESET_MPPT
       40002u -> PAYLOAD_CONTROL
       else -> null

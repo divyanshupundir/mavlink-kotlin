@@ -34,6 +34,35 @@ import kotlin.collections.List
 
 /**
  * Information about a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param vendorName Name of the camera vendor
+ * @param modelName Name of the camera model
+ * @param firmwareVersion Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch &
+ * 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff). Use 0 if not known.
+ * @param focalLength Focal length. Use NaN if not known.
+ * units = mm
+ * @param sensorSizeH Image sensor size horizontal. Use NaN if not known.
+ * units = mm
+ * @param sensorSizeV Image sensor size vertical. Use NaN if not known.
+ * units = mm
+ * @param resolutionH Horizontal image resolution. Use 0 if not known.
+ * units = pix
+ * @param resolutionV Vertical image resolution. Use 0 if not known.
+ * units = pix
+ * @param lensId Reserved for a lens ID.  Use 0 if not known.
+ * @param flags Bitmap of camera capability flags.
+ * @param camDefinitionVersion Camera definition version (iteration).  Use 0 if not known.
+ * @param camDefinitionUri Camera definition URI (if any, otherwise only basic functions will be
+ * available). HTTP- (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both
+ * must be supported by any GCS that implements the Camera Protocol). The definition file may be xz
+ * compressed, which will be indicated by the file extension .xml.xz (a GCS that implements the
+ * protocol must support decompressing the file). The string needs to be zero terminated.  Use a
+ * zero-length string if not known.
+ * @param gimbalDeviceId Gimbal id of a gimbal associated with this camera. This is the component id
+ * of the gimbal device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the
+ * camera.
  */
 @GeneratedMavMessage(
   id = 259u,
@@ -42,6 +71,7 @@ import kotlin.collections.List
 public data class CameraInformation(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -63,26 +93,31 @@ public data class CameraInformation(
   public val firmwareVersion: UInt = 0u,
   /**
    * Focal length. Use NaN if not known.
+   * units = mm
    */
   @GeneratedMavField(type = "float")
   public val focalLength: Float = 0F,
   /**
    * Image sensor size horizontal. Use NaN if not known.
+   * units = mm
    */
   @GeneratedMavField(type = "float")
   public val sensorSizeH: Float = 0F,
   /**
    * Image sensor size vertical. Use NaN if not known.
+   * units = mm
    */
   @GeneratedMavField(type = "float")
   public val sensorSizeV: Float = 0F,
   /**
    * Horizontal image resolution. Use 0 if not known.
+   * units = pix
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionH: UShort = 0u,
   /**
    * Vertical image resolution. Use 0 if not known.
+   * units = pix
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionV: UShort = 0u,
@@ -121,9 +156,9 @@ public data class CameraInformation(
   )
   public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<CameraInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(firmwareVersion)
@@ -141,7 +176,7 @@ public data class CameraInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(firmwareVersion)
@@ -165,11 +200,11 @@ public data class CameraInformation(
 
     private const val SIZE_V2: Int = 236
 
-    public override val id: UInt = 259u
+    override val id: UInt = 259u
 
-    public override val crcExtra: Byte = 92
+    override val crcExtra: Byte = 92
 
-    public override fun deserialize(bytes: ByteArray): CameraInformation {
+    override fun deserialize(bytes: ByteArray): CameraInformation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

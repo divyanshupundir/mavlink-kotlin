@@ -22,6 +22,19 @@ import kotlin.Unit
 
 /**
  * Control on-board Camera Control System to take shots.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param session 0: stop, 1: start or keep it up //Session control e.g. show/hide lens.
+ * @param zoomPos 1 to N //Zoom's absolute position (0 means ignore).
+ * @param zoomStep -100 to 100 //Zooming step value to offset zoom from the current position.
+ * @param focusLock 0: unlock focus or keep unlocked, 1: lock focus or keep locked, 3: re-lock
+ * focus.
+ * @param shot 0: ignore, 1: shot or start filming.
+ * @param commandId Command Identity (incremental loop: 0 to 255)//A command sent multiple times
+ * will be executed or pooled just once.
+ * @param extraParam Extra parameters enumeration (0 means ignore).
+ * @param extraValue Correspondent value to given extra_param.
  */
 @GeneratedMavMessage(
   id = 155u,
@@ -80,9 +93,9 @@ public data class DigicamControl(
   @GeneratedMavField(type = "float")
   public val extraValue: Float = 0F,
 ) : MavMessage<DigicamControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DigicamControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DigicamControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt8(targetSystem)
@@ -97,7 +110,7 @@ public data class DigicamControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt8(targetSystem)
@@ -117,11 +130,11 @@ public data class DigicamControl(
 
     private const val SIZE_V2: Int = 13
 
-    public override val id: UInt = 155u
+    override val id: UInt = 155u
 
-    public override val crcExtra: Byte = 22
+    override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): DigicamControl {
+    override fun deserialize(bytes: ByteArray): DigicamControl {
       val decoder = MavDataDecoder(bytes)
 
       val extraValue = decoder.safeDecodeFloat()

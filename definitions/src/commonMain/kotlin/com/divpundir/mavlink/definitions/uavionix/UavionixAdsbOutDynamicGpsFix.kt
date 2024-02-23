@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class UavionixAdsbOutDynamicGpsFix(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   NONE_0(0u),
@@ -27,7 +27,7 @@ public enum class UavionixAdsbOutDynamicGpsFix(
   ;
 
   public companion object : MavEnum.MavCompanion<UavionixAdsbOutDynamicGpsFix> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicGpsFix? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicGpsFix? = when (v) {
       0u -> NONE_0
       1u -> NONE_1
       2u -> _2D

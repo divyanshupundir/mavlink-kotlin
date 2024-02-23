@@ -29,6 +29,14 @@ import kotlin.Unit
  * WARNING: They consume quite some bandwidth, so use only for important status and error messages. If
  * implemented wisely, these messages are buffered on the MCU and sent only at a limited rate (e.g. 10
  * Hz).
+ *
+ * @param severity Severity of status. Relies on the definitions within RFC-5424.
+ * @param text Status text message, without null termination character
+ * @param id Unique (opaque) identifier for this statustext message.  May be used to reassemble a
+ * logical long-statustext message from a sequence of chunks.  A value of zero indicates this is the
+ * only chunk in the sequence and the message can be emitted immediately.
+ * @param chunkSeq This chunk's sequence number; indexing is from zero.  Any null character in the
+ * text field is taken to mean this was the last chunk.
  */
 @GeneratedMavMessage(
   id = 253u,
@@ -65,16 +73,16 @@ public data class Statustext(
   )
   public val chunkSeq: UByte = 0u,
 ) : MavMessage<Statustext> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Statustext> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Statustext> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(severity.value, 1)
     encoder.encodeString(text, 50)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(severity.value, 1)
     encoder.encodeString(text, 50)
@@ -88,11 +96,11 @@ public data class Statustext(
 
     private const val SIZE_V2: Int = 54
 
-    public override val id: UInt = 253u
+    override val id: UInt = 253u
 
-    public override val crcExtra: Byte = 83
+    override val crcExtra: Byte = 83
 
-    public override fun deserialize(bytes: ByteArray): Statustext {
+    override fun deserialize(bytes: ByteArray): Statustext {
       val decoder = MavDataDecoder(bytes)
 
       val severity = decoder.safeDecodeEnumValue(1).let { value ->

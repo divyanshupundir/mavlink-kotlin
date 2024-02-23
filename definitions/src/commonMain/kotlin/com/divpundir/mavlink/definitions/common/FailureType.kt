@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class FailureType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No failure injected, used to reset a previous failure.
@@ -55,7 +55,7 @@ public enum class FailureType(
   ;
 
   public companion object : MavEnum.MavCompanion<FailureType> {
-    public override fun getEntryFromValueOrNull(v: UInt): FailureType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): FailureType? = when (v) {
       0u -> OK
       1u -> OFF
       2u -> STUCK

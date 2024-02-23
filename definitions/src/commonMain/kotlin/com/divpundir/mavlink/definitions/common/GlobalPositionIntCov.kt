@@ -32,6 +32,29 @@ import kotlin.collections.List
  * sufficient. NOTE: This message is intended for onboard networks / companion computers and
  * higher-bandwidth links and optimized for accuracy and completeness. Please use the
  * GLOBAL_POSITION_INT message for a minimal subset.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param estimatorType Class id of the estimator this estimate originated from.
+ * @param lat Latitude
+ * units = degE7
+ * @param lon Longitude
+ * units = degE7
+ * @param alt Altitude in meters above MSL
+ * units = mm
+ * @param relativeAlt Altitude above ground
+ * units = mm
+ * @param vx Ground X Speed (Latitude)
+ * units = m/s
+ * @param vy Ground Y Speed (Longitude)
+ * units = m/s
+ * @param vz Ground Z Speed (Altitude)
+ * units = m/s
+ * @param covariance Row-major representation of a 6x6 position and velocity 6x6 cross-covariance
+ * matrix (states: lat, lon, alt, vx, vy, vz; first six entries are the first ROW, next six entries are
+ * the second row, etc.). If unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 63u,
@@ -41,6 +64,7 @@ public data class GlobalPositionIntCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -51,36 +75,43 @@ public data class GlobalPositionIntCov(
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
   /**
    * Latitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude in meters above MSL
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val relativeAlt: Int = 0,
   /**
    * Ground X Speed (Latitude)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Ground Y Speed (Longitude)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Ground Z Speed (Altitude)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
@@ -92,9 +123,9 @@ public data class GlobalPositionIntCov(
   @GeneratedMavField(type = "float[36]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<GlobalPositionIntCov> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionIntCov> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionIntCov> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -109,7 +140,7 @@ public data class GlobalPositionIntCov(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -129,11 +160,11 @@ public data class GlobalPositionIntCov(
 
     private const val SIZE_V2: Int = 181
 
-    public override val id: UInt = 63u
+    override val id: UInt = 63u
 
-    public override val crcExtra: Byte = 119
+    override val crcExtra: Byte = 119
 
-    public override fun deserialize(bytes: ByteArray): GlobalPositionIntCov {
+    override fun deserialize(bytes: ByteArray): GlobalPositionIntCov {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

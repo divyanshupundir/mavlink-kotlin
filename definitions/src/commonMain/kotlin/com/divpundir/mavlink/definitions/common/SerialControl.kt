@@ -34,6 +34,18 @@ import kotlin.collections.List
  * GPS or telemetry radio. It is designed to make it possible to update the devices firmware via
  * MAVLink messages or change the devices settings. A message with zero bytes can be used to change
  * just the baudrate.
+ *
+ * @param device Serial control device type.
+ * @param flags Bitmap of serial control flags.
+ * @param timeout Timeout for reply data
+ * units = ms
+ * @param baudrate Baudrate of transfer. Zero means no change.
+ * units = bits/s
+ * @param count how many bytes in this transfer
+ * units = bytes
+ * @param data serial data
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
  */
 @GeneratedMavMessage(
   id = 126u,
@@ -52,16 +64,19 @@ public data class SerialControl(
   public val flags: MavBitmaskValue<SerialControlFlag> = MavBitmaskValue.fromValue(0u),
   /**
    * Timeout for reply data
+   * units = ms
    */
   @GeneratedMavField(type = "uint16_t")
   public val timeout: UShort = 0u,
   /**
    * Baudrate of transfer. Zero means no change.
+   * units = bits/s
    */
   @GeneratedMavField(type = "uint32_t")
   public val baudrate: UInt = 0u,
   /**
    * how many bytes in this transfer
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val count: UByte = 0u,
@@ -87,9 +102,9 @@ public data class SerialControl(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<SerialControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(baudrate)
     encoder.encodeUInt16(timeout)
@@ -100,7 +115,7 @@ public data class SerialControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(baudrate)
     encoder.encodeUInt16(timeout)
@@ -118,11 +133,11 @@ public data class SerialControl(
 
     private const val SIZE_V2: Int = 81
 
-    public override val id: UInt = 126u
+    override val id: UInt = 126u
 
-    public override val crcExtra: Byte = -36
+    override val crcExtra: Byte = -36
 
-    public override fun deserialize(bytes: ByteArray): SerialControl {
+    override fun deserialize(bytes: ByteArray): SerialControl {
       val decoder = MavDataDecoder(bytes)
 
       val baudrate = decoder.safeDecodeUInt32()

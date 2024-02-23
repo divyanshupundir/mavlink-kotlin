@@ -20,6 +20,21 @@ import kotlin.Unit
 /**
  * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
  * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param x X Position
+ * units = m
+ * @param y Y Position
+ * units = m
+ * @param z Z Position
+ * units = m
+ * @param vx X Speed
+ * units = m/s
+ * @param vy Y Speed
+ * units = m/s
+ * @param vz Z Speed
+ * units = m/s
  */
 @GeneratedMavMessage(
   id = 32u,
@@ -28,43 +43,50 @@ import kotlin.Unit
 public data class LocalPositionNed(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
    * X Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * X Speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y Speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z Speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
 ) : MavMessage<LocalPositionNed> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNed> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNed> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -76,7 +98,7 @@ public data class LocalPositionNed(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -93,11 +115,11 @@ public data class LocalPositionNed(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 32u
+    override val id: UInt = 32u
 
-    public override val crcExtra: Byte = -71
+    override val crcExtra: Byte = -71
 
-    public override fun deserialize(bytes: ByteArray): LocalPositionNed {
+    override fun deserialize(bytes: ByteArray): LocalPositionNed {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

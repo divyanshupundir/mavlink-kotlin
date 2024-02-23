@@ -22,6 +22,13 @@ import kotlin.Unit
 
 /**
  * Request a chunk of a log
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param id Log id (from LOG_ENTRY reply)
+ * @param ofs Offset into the log
+ * @param count Number of bytes
+ * units = bytes
  */
 @GeneratedMavMessage(
   id = 119u,
@@ -50,13 +57,14 @@ public data class LogRequestData(
   public val ofs: UInt = 0u,
   /**
    * Number of bytes
+   * units = bytes
    */
   @GeneratedMavField(type = "uint32_t")
   public val count: UInt = 0u,
 ) : MavMessage<LogRequestData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LogRequestData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LogRequestData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(ofs)
     encoder.encodeUInt32(count)
@@ -66,7 +74,7 @@ public data class LogRequestData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(ofs)
     encoder.encodeUInt32(count)
@@ -81,11 +89,11 @@ public data class LogRequestData(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 119u
+    override val id: UInt = 119u
 
-    public override val crcExtra: Byte = 116
+    override val crcExtra: Byte = 116
 
-    public override fun deserialize(bytes: ByteArray): LogRequestData {
+    override fun deserialize(bytes: ByteArray): LogRequestData {
       val decoder = MavDataDecoder(bytes)
 
       val ofs = decoder.safeDecodeUInt32()

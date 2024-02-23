@@ -26,6 +26,38 @@ import kotlin.Unit
 
 /**
  * The IMU readings in SI units in NED body frame
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param xacc X acceleration
+ * units = m/s/s
+ * @param yacc Y acceleration
+ * units = m/s/s
+ * @param zacc Z acceleration
+ * units = m/s/s
+ * @param xgyro Angular speed around X axis in body frame
+ * units = rad/s
+ * @param ygyro Angular speed around Y axis in body frame
+ * units = rad/s
+ * @param zgyro Angular speed around Z axis in body frame
+ * units = rad/s
+ * @param xmag X Magnetic field
+ * units = gauss
+ * @param ymag Y Magnetic field
+ * units = gauss
+ * @param zmag Z Magnetic field
+ * units = gauss
+ * @param absPressure Absolute pressure
+ * units = hPa
+ * @param diffPressure Differential pressure (airspeed)
+ * units = hPa
+ * @param pressureAlt Altitude calculated from pressure
+ * @param temperature Temperature
+ * units = degC
+ * @param fieldsUpdated Bitmap for fields that have updated since last message
+ * @param id Sensor ID (zero indexed). Used for multiple sensor inputs
  */
 @GeneratedMavMessage(
   id = 107u,
@@ -35,61 +67,73 @@ public data class HilSensor(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * X acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis in body frame
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis in body frame
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis in body frame
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * X Magnetic field
+   * units = gauss
    */
   @GeneratedMavField(type = "float")
   public val xmag: Float = 0F,
   /**
    * Y Magnetic field
+   * units = gauss
    */
   @GeneratedMavField(type = "float")
   public val ymag: Float = 0F,
   /**
    * Z Magnetic field
+   * units = gauss
    */
   @GeneratedMavField(type = "float")
   public val zmag: Float = 0F,
   /**
    * Absolute pressure
+   * units = hPa
    */
   @GeneratedMavField(type = "float")
   public val absPressure: Float = 0F,
   /**
    * Differential pressure (airspeed)
+   * units = hPa
    */
   @GeneratedMavField(type = "float")
   public val diffPressure: Float = 0F,
@@ -100,6 +144,7 @@ public data class HilSensor(
   public val pressureAlt: Float = 0F,
   /**
    * Temperature
+   * units = degC
    */
   @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
@@ -117,9 +162,9 @@ public data class HilSensor(
   )
   public val id: UByte = 0u,
 ) : MavMessage<HilSensor> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilSensor> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilSensor> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -139,7 +184,7 @@ public data class HilSensor(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -165,11 +210,11 @@ public data class HilSensor(
 
     private const val SIZE_V2: Int = 65
 
-    public override val id: UInt = 107u
+    override val id: UInt = 107u
 
-    public override val crcExtra: Byte = 108
+    override val crcExtra: Byte = 108
 
-    public override fun deserialize(bytes: ByteArray): HilSensor {
+    override fun deserialize(bytes: ByteArray): HilSensor {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

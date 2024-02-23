@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class WifiConfigApMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * WiFi mode is undefined.
@@ -35,7 +35,7 @@ public enum class WifiConfigApMode(
   ;
 
   public companion object : MavEnum.MavCompanion<WifiConfigApMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): WifiConfigApMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): WifiConfigApMode? = when (v) {
       0u -> UNDEFINED
       1u -> AP
       2u -> STATION

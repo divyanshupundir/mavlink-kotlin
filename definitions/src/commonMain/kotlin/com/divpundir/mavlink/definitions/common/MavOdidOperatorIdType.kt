@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidOperatorIdType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * CAA (Civil Aviation Authority) registered operator ID.
@@ -17,7 +17,7 @@ public enum class MavOdidOperatorIdType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidOperatorIdType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidOperatorIdType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidOperatorIdType? = when (v) {
       0u -> CAA
       else -> null
     }

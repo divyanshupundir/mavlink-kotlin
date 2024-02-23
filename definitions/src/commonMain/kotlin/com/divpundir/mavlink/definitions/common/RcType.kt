@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class RcType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Spektrum DSM2
@@ -25,7 +25,7 @@ public enum class RcType(
   ;
 
   public companion object : MavEnum.MavCompanion<RcType> {
-    public override fun getEntryFromValueOrNull(v: UInt): RcType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): RcType? = when (v) {
       0u -> SPEKTRUM_DSM2
       1u -> SPEKTRUM_DSMX
       else -> null

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidIdType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No type defined.
@@ -38,7 +38,7 @@ public enum class MavOdidIdType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidIdType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidIdType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidIdType? = when (v) {
       0u -> NONE
       1u -> SERIAL_NUMBER
       2u -> CAA_REGISTRATION_ID

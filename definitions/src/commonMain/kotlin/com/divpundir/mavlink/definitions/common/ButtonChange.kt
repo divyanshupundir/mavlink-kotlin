@@ -19,6 +19,12 @@ import kotlin.Unit
 
 /**
  * Report button state change.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param lastChangeMs Time of last change of button state.
+ * units = ms
+ * @param state Bitmap for state of buttons.
  */
 @GeneratedMavMessage(
   id = 257u,
@@ -27,11 +33,13 @@ import kotlin.Unit
 public data class ButtonChange(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
    * Time of last change of button state.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val lastChangeMs: UInt = 0u,
@@ -41,9 +49,9 @@ public data class ButtonChange(
   @GeneratedMavField(type = "uint8_t")
   public val state: UByte = 0u,
 ) : MavMessage<ButtonChange> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ButtonChange> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ButtonChange> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(lastChangeMs)
@@ -51,7 +59,7 @@ public data class ButtonChange(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt32(lastChangeMs)
@@ -64,11 +72,11 @@ public data class ButtonChange(
 
     private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 257u
+    override val id: UInt = 257u
 
-    public override val crcExtra: Byte = -125
+    override val crcExtra: Byte = -125
 
-    public override fun deserialize(bytes: ByteArray): ButtonChange {
+    override fun deserialize(bytes: ByteArray): ButtonChange {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

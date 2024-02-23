@@ -24,6 +24,18 @@ import kotlin.Unit
  * Streamed from drone to report progress of terrain map download (initiated by TERRAIN_REQUEST), or
  * sent as a response to a TERRAIN_CHECK request. See terrain protocol docs:
  * https://mavlink.io/en/services/terrain.html
+ *
+ * @param lat Latitude
+ * units = degE7
+ * @param lon Longitude
+ * units = degE7
+ * @param spacing grid spacing (zero if terrain at this location unavailable)
+ * @param terrainHeight Terrain height MSL
+ * units = m
+ * @param currentHeight Current vehicle height above lat/lon terrain height
+ * units = m
+ * @param pending Number of 4x4 terrain blocks waiting to be received or read from disk
+ * @param loaded Number of 4x4 terrain blocks in memory
  */
 @GeneratedMavMessage(
   id = 136u,
@@ -32,11 +44,13 @@ import kotlin.Unit
 public data class TerrainReport(
   /**
    * Latitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
@@ -47,11 +61,13 @@ public data class TerrainReport(
   public val spacing: UShort = 0u,
   /**
    * Terrain height MSL
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val terrainHeight: Float = 0F,
   /**
    * Current vehicle height above lat/lon terrain height
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val currentHeight: Float = 0F,
@@ -66,9 +82,9 @@ public data class TerrainReport(
   @GeneratedMavField(type = "uint16_t")
   public val loaded: UShort = 0u,
 ) : MavMessage<TerrainReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TerrainReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TerrainReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -80,7 +96,7 @@ public data class TerrainReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -97,11 +113,11 @@ public data class TerrainReport(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 136u
+    override val id: UInt = 136u
 
-    public override val crcExtra: Byte = 1
+    override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): TerrainReport {
+    override fun deserialize(bytes: ByteArray): TerrainReport {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

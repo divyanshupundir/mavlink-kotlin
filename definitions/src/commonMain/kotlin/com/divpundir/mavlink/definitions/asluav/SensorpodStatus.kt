@@ -23,6 +23,17 @@ import kotlin.Unit
 
 /**
  * Monitoring of sensorpod status
+ *
+ * @param timestamp Timestamp in linuxtime (since 1.1.1970)
+ * units = ms
+ * @param visensorRate1 Rate of ROS topic 1
+ * @param visensorRate2 Rate of ROS topic 2
+ * @param visensorRate3 Rate of ROS topic 3
+ * @param visensorRate4 Rate of ROS topic 4
+ * @param recordingNodesCount Number of recording nodes
+ * @param cpuTemp Temperature of sensorpod CPU in
+ * units = degC
+ * @param freeSpace Free space available in recordings directory in [Gb] * 1e2
  */
 @GeneratedMavMessage(
   id = 8_012u,
@@ -31,6 +42,7 @@ import kotlin.Unit
 public data class SensorpodStatus(
   /**
    * Timestamp in linuxtime (since 1.1.1970)
+   * units = ms
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
@@ -61,6 +73,7 @@ public data class SensorpodStatus(
   public val recordingNodesCount: UByte = 0u,
   /**
    * Temperature of sensorpod CPU in
+   * units = degC
    */
   @GeneratedMavField(type = "uint8_t")
   public val cpuTemp: UByte = 0u,
@@ -70,9 +83,9 @@ public data class SensorpodStatus(
   @GeneratedMavField(type = "uint16_t")
   public val freeSpace: UShort = 0u,
 ) : MavMessage<SensorpodStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensorpodStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensorpodStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt16(freeSpace)
@@ -85,7 +98,7 @@ public data class SensorpodStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt16(freeSpace)
@@ -103,11 +116,11 @@ public data class SensorpodStatus(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 8_012u
+    override val id: UInt = 8_012u
 
-    public override val crcExtra: Byte = 54
+    override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): SensorpodStatus {
+    override fun deserialize(bytes: ByteArray): SensorpodStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

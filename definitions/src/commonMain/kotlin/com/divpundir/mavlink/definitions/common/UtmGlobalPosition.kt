@@ -35,6 +35,40 @@ import kotlin.collections.List
 
 /**
  * The global position resulting from GPS and sensor fusion.
+ *
+ * @param time Time of applicability of position (microseconds since UNIX epoch).
+ * units = us
+ * @param uasId Unique UAS ID.
+ * @param lat Latitude (WGS84)
+ * units = degE7
+ * @param lon Longitude (WGS84)
+ * units = degE7
+ * @param alt Altitude (WGS84)
+ * units = mm
+ * @param relativeAlt Altitude above ground
+ * units = mm
+ * @param vx Ground X speed (latitude, positive north)
+ * units = cm/s
+ * @param vy Ground Y speed (longitude, positive east)
+ * units = cm/s
+ * @param vz Ground Z speed (altitude, positive down)
+ * units = cm/s
+ * @param hAcc Horizontal position uncertainty (standard deviation)
+ * units = mm
+ * @param vAcc Altitude uncertainty (standard deviation)
+ * units = mm
+ * @param velAcc Speed uncertainty (standard deviation)
+ * units = cm/s
+ * @param nextLat Next waypoint, latitude (WGS84)
+ * units = degE7
+ * @param nextLon Next waypoint, longitude (WGS84)
+ * units = degE7
+ * @param nextAlt Next waypoint, altitude (WGS84)
+ * units = mm
+ * @param updateRate Time until next update. Set to 0 if unknown or in data driven mode.
+ * units = cs
+ * @param flightState Flight state
+ * @param flags Bitwise OR combination of the data available flags.
  */
 @GeneratedMavMessage(
   id = 340u,
@@ -43,6 +77,7 @@ import kotlin.collections.List
 public data class UtmGlobalPosition(
   /**
    * Time of applicability of position (microseconds since UNIX epoch).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val time: ULong = 0uL,
@@ -53,71 +88,85 @@ public data class UtmGlobalPosition(
   public val uasId: List<UByte> = emptyList(),
   /**
    * Latitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (WGS84)
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val relativeAlt: Int = 0,
   /**
    * Ground X speed (latitude, positive north)
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val vx: Short = 0,
   /**
    * Ground Y speed (longitude, positive east)
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val vy: Short = 0,
   /**
    * Ground Z speed (altitude, positive down)
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val vz: Short = 0,
   /**
    * Horizontal position uncertainty (standard deviation)
+   * units = mm
    */
   @GeneratedMavField(type = "uint16_t")
   public val hAcc: UShort = 0u,
   /**
    * Altitude uncertainty (standard deviation)
+   * units = mm
    */
   @GeneratedMavField(type = "uint16_t")
   public val vAcc: UShort = 0u,
   /**
    * Speed uncertainty (standard deviation)
+   * units = cm/s
    */
   @GeneratedMavField(type = "uint16_t")
   public val velAcc: UShort = 0u,
   /**
    * Next waypoint, latitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val nextLat: Int = 0,
   /**
    * Next waypoint, longitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val nextLon: Int = 0,
   /**
    * Next waypoint, altitude (WGS84)
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val nextAlt: Int = 0,
   /**
    * Time until next update. Set to 0 if unknown or in data driven mode.
+   * units = cs
    */
   @GeneratedMavField(type = "uint16_t")
   public val updateRate: UShort = 0u,
@@ -132,9 +181,9 @@ public data class UtmGlobalPosition(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<UtmDataAvailFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UtmGlobalPosition> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UtmGlobalPosition> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UtmGlobalPosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(time)
     encoder.encodeInt32(lat)
@@ -157,7 +206,7 @@ public data class UtmGlobalPosition(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(time)
     encoder.encodeInt32(lat)
@@ -185,11 +234,11 @@ public data class UtmGlobalPosition(
 
     private const val SIZE_V2: Int = 70
 
-    public override val id: UInt = 340u
+    override val id: UInt = 340u
 
-    public override val crcExtra: Byte = 99
+    override val crcExtra: Byte = 99
 
-    public override fun deserialize(bytes: ByteArray): UtmGlobalPosition {
+    override fun deserialize(bytes: ByteArray): UtmGlobalPosition {
       val decoder = MavDataDecoder(bytes)
 
       val time = decoder.safeDecodeUInt64()

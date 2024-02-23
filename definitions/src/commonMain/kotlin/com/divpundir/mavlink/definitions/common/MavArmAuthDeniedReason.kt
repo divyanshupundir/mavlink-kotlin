@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavArmAuthDeniedReason(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not a specific reason
@@ -43,7 +43,7 @@ public enum class MavArmAuthDeniedReason(
   ;
 
   public companion object : MavEnum.MavCompanion<MavArmAuthDeniedReason> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavArmAuthDeniedReason? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavArmAuthDeniedReason? = when (v) {
       0u -> GENERIC
       1u -> NONE
       2u -> INVALID_WAYPOINT

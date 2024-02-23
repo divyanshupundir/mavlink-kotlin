@@ -23,6 +23,25 @@ import kotlin.collections.List
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
  * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param q1 Quaternion component 1, w (1 in null-rotation)
+ * @param q2 Quaternion component 2, x (0 in null-rotation)
+ * @param q3 Quaternion component 3, y (0 in null-rotation)
+ * @param q4 Quaternion component 4, z (0 in null-rotation)
+ * @param rollspeed Roll angular speed
+ * units = rad/s
+ * @param pitchspeed Pitch angular speed
+ * units = rad/s
+ * @param yawspeed Yaw angular speed
+ * units = rad/s
+ * @param reprOffsetQ Rotation offset by which the attitude quaternion and angular speed vector
+ * should be rotated for user display (quaternion with [w, x, y, z] order, zero-rotation is [1, 0, 0,
+ * 0], send [0, 0, 0, 0] if field not supported). This field is intended for systems in which the
+ * reference attitude may change during flight. For example, tailsitters VTOLs rotate their reference
+ * attitude by 90 degrees between hover mode and fixed wing mode, thus repr_offset_q is equal to [1, 0,
+ * 0, 0] in hover mode and equal to [0.7071, 0, 0.7071, 0] in fixed wing mode.
  */
 @GeneratedMavMessage(
   id = 31u,
@@ -31,6 +50,7 @@ import kotlin.collections.List
 public data class AttitudeQuaternion(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -56,16 +76,19 @@ public data class AttitudeQuaternion(
   public val q4: Float = 0F,
   /**
    * Roll angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
@@ -83,9 +106,9 @@ public data class AttitudeQuaternion(
   )
   public val reprOffsetQ: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternion> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternion> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternion> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -98,7 +121,7 @@ public data class AttitudeQuaternion(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(q1)
@@ -117,11 +140,11 @@ public data class AttitudeQuaternion(
 
     private const val SIZE_V2: Int = 48
 
-    public override val id: UInt = 31u
+    override val id: UInt = 31u
 
-    public override val crcExtra: Byte = -10
+    override val crcExtra: Byte = -10
 
-    public override fun deserialize(bytes: ByteArray): AttitudeQuaternion {
+    override fun deserialize(bytes: ByteArray): AttitudeQuaternion {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

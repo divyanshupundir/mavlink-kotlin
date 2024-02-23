@@ -20,6 +20,22 @@ import kotlin.Unit
 
 /**
  * Adaptive Controller tuning information.
+ *
+ * @param axis Axis.
+ * @param desired Desired rate.
+ * units = deg/s
+ * @param achieved Achieved rate.
+ * units = deg/s
+ * @param error Error between model and vehicle.
+ * @param theta Theta estimated state predictor.
+ * @param omega Omega estimated state predictor.
+ * @param sigma Sigma estimated state predictor.
+ * @param thetaDot Theta derivative.
+ * @param omegaDot Omega derivative.
+ * @param sigmaDot Sigma derivative.
+ * @param f Projection operator value.
+ * @param fDot Projection operator derivative.
+ * @param u u adaptive controlled output command.
  */
 @GeneratedMavMessage(
   id = 11_010u,
@@ -33,11 +49,13 @@ public data class AdapTuning(
   public val axis: MavEnumValue<PidTuningAxis> = MavEnumValue.fromValue(0u),
   /**
    * Desired rate.
+   * units = deg/s
    */
   @GeneratedMavField(type = "float")
   public val desired: Float = 0F,
   /**
    * Achieved rate.
+   * units = deg/s
    */
   @GeneratedMavField(type = "float")
   public val achieved: Float = 0F,
@@ -92,9 +110,9 @@ public data class AdapTuning(
   @GeneratedMavField(type = "float")
   public val u: Float = 0F,
 ) : MavMessage<AdapTuning> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AdapTuning> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AdapTuning> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(desired)
     encoder.encodeFloat(achieved)
@@ -112,7 +130,7 @@ public data class AdapTuning(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(desired)
     encoder.encodeFloat(achieved)
@@ -135,11 +153,11 @@ public data class AdapTuning(
 
     private const val SIZE_V2: Int = 49
 
-    public override val id: UInt = 11_010u
+    override val id: UInt = 11_010u
 
-    public override val crcExtra: Byte = 46
+    override val crcExtra: Byte = 46
 
-    public override fun deserialize(bytes: ByteArray): AdapTuning {
+    override fun deserialize(bytes: ByteArray): AdapTuning {
       val decoder = MavDataDecoder(bytes)
 
       val desired = decoder.safeDecodeFloat()

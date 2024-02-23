@@ -8,7 +8,7 @@ import kotlin.collections.List
 
 @GeneratedMavEnum(bitmask = true)
 public enum class LimitModule(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Pre-initialization.
@@ -28,14 +28,14 @@ public enum class LimitModule(
   ;
 
   public companion object : MavBitmask.MavCompanion<LimitModule> {
-    public override fun getEntryFromValueOrNull(v: UInt): LimitModule? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): LimitModule? = when (v) {
       1u -> LIMIT_GPSLOCK
       2u -> LIMIT_GEOFENCE
       4u -> LIMIT_ALTITUDE
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<LimitModule> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<LimitModule> = buildList {
       if (v and 1u == 1u) add(LIMIT_GPSLOCK)
       if (v and 2u == 2u) add(LIMIT_GEOFENCE)
       if (v and 4u == 4u) add(LIMIT_ALTITUDE)

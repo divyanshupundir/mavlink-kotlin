@@ -26,6 +26,26 @@ import kotlin.Unit
 
 /**
  * Status generated in each node in the communication chain and injected into MAVLink stream.
+ *
+ * @param timestamp Timestamp (time since system boot).
+ * units = ms
+ * @param txBuf Remaining free transmit buffer space
+ * units = %
+ * @param rxBuf Remaining free receive buffer space
+ * units = %
+ * @param txRate Transmit rate
+ * units = bytes/s
+ * @param rxRate Receive rate
+ * units = bytes/s
+ * @param rxParseErr Number of bytes that could not be parsed correctly.
+ * units = bytes
+ * @param txOverflows Transmit buffer overflows. This number wraps around as it reaches UINT16_MAX
+ * units = bytes
+ * @param rxOverflows Receive buffer overflows. This number wraps around as it reaches UINT16_MAX
+ * units = bytes
+ * @param messagesSent Messages sent
+ * @param messagesReceived Messages received (estimated from counting seq)
+ * @param messagesLost Messages lost (estimated from counting seq)
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -35,41 +55,49 @@ import kotlin.Unit
 public data class LinkNodeStatus(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
   /**
    * Remaining free transmit buffer space
+   * units = %
    */
   @GeneratedMavField(type = "uint8_t")
   public val txBuf: UByte = 0u,
   /**
    * Remaining free receive buffer space
+   * units = %
    */
   @GeneratedMavField(type = "uint8_t")
   public val rxBuf: UByte = 0u,
   /**
    * Transmit rate
+   * units = bytes/s
    */
   @GeneratedMavField(type = "uint32_t")
   public val txRate: UInt = 0u,
   /**
    * Receive rate
+   * units = bytes/s
    */
   @GeneratedMavField(type = "uint32_t")
   public val rxRate: UInt = 0u,
   /**
    * Number of bytes that could not be parsed correctly.
+   * units = bytes
    */
   @GeneratedMavField(type = "uint16_t")
   public val rxParseErr: UShort = 0u,
   /**
    * Transmit buffer overflows. This number wraps around as it reaches UINT16_MAX
+   * units = bytes
    */
   @GeneratedMavField(type = "uint16_t")
   public val txOverflows: UShort = 0u,
   /**
    * Receive buffer overflows. This number wraps around as it reaches UINT16_MAX
+   * units = bytes
    */
   @GeneratedMavField(type = "uint16_t")
   public val rxOverflows: UShort = 0u,
@@ -89,9 +117,9 @@ public data class LinkNodeStatus(
   @GeneratedMavField(type = "uint32_t")
   public val messagesLost: UInt = 0u,
 ) : MavMessage<LinkNodeStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LinkNodeStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LinkNodeStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt32(txRate)
@@ -107,7 +135,7 @@ public data class LinkNodeStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt32(txRate)
@@ -128,11 +156,11 @@ public data class LinkNodeStatus(
 
     private const val SIZE_V2: Int = 36
 
-    public override val id: UInt = 8u
+    override val id: UInt = 8u
 
-    public override val crcExtra: Byte = 117
+    override val crcExtra: Byte = 117
 
-    public override fun deserialize(bytes: ByteArray): LinkNodeStatus {
+    override fun deserialize(bytes: ByteArray): LinkNodeStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

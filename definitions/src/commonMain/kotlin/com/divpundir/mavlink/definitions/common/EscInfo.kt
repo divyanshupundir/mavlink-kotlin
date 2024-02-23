@@ -36,6 +36,21 @@ import kotlin.collections.List
 /**
  * ESC information for lower rate streaming. Recommended streaming rate 1Hz. See ESC_STATUS for
  * higher-rate ESC data.
+ *
+ * @param index Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the
+ * number.
+ * units = us
+ * @param counter Counter of data packets received.
+ * @param count Total number of ESCs in all messages of this type. Message fields with an index
+ * higher than this should be ignored because they contain invalid data.
+ * @param connectionType Connection type protocol for all ESC.
+ * @param info Information regarding online/offline status of each ESC.
+ * @param failureFlags Bitmap of ESC failure flags.
+ * @param errorCount Number of reported errors by each ESC since boot.
+ * @param temperature Temperature of each ESC. INT16_MAX: if data not supplied by ESC.
+ * units = cdegC
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -51,6 +66,7 @@ public data class EscInfo(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -87,13 +103,14 @@ public data class EscInfo(
   public val errorCount: List<UInt> = emptyList(),
   /**
    * Temperature of each ESC. INT16_MAX: if data not supplied by ESC.
+   * units = cdegC
    */
   @GeneratedMavField(type = "int16_t[4]")
   public val temperature: List<Short> = emptyList(),
 ) : MavMessage<EscInfo> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32Array(errorCount, 16)
@@ -107,7 +124,7 @@ public data class EscInfo(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32Array(errorCount, 16)
@@ -126,11 +143,11 @@ public data class EscInfo(
 
     private const val SIZE_V2: Int = 46
 
-    public override val id: UInt = 290u
+    override val id: UInt = 290u
 
-    public override val crcExtra: Byte = -5
+    override val crcExtra: Byte = -5
 
-    public override fun deserialize(bytes: ByteArray): EscInfo {
+    override fun deserialize(bytes: ByteArray): EscInfo {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

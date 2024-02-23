@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class UalbertaPilotMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   PILOT_MANUAL(1u),
@@ -24,7 +24,7 @@ public enum class UalbertaPilotMode(
   ;
 
   public companion object : MavEnum.MavCompanion<UalbertaPilotMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): UalbertaPilotMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UalbertaPilotMode? = when (v) {
       1u -> PILOT_MANUAL
       2u -> PILOT_AUTO
       3u -> PILOT_ROTO

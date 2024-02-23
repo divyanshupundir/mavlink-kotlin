@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavQshotMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Undefined shot mode. Can be used to determine if qshots should be used or not.
@@ -65,7 +65,7 @@ public enum class MavQshotMode(
   ;
 
   public companion object : MavEnum.MavCompanion<MavQshotMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavQshotMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavQshotMode? = when (v) {
       0u -> UNDEFINED
       1u -> DEFAULT
       2u -> GIMBAL_RETRACT

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class PrecisionLandMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Normal (non-precision) landing.
@@ -31,7 +31,7 @@ public enum class PrecisionLandMode(
   ;
 
   public companion object : MavEnum.MavCompanion<PrecisionLandMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): PrecisionLandMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): PrecisionLandMode? = when (v) {
       0u -> DISABLED
       1u -> OPPORTUNISTIC
       2u -> REQUIRED

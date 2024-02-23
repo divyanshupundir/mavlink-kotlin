@@ -22,6 +22,26 @@ import kotlin.Unit
 
 /**
  * Deepstall path planning.
+ *
+ * @param landingLat Landing latitude.
+ * units = degE7
+ * @param landingLon Landing longitude.
+ * units = degE7
+ * @param pathLat Final heading start point, latitude.
+ * units = degE7
+ * @param pathLon Final heading start point, longitude.
+ * units = degE7
+ * @param arcEntryLat Arc entry point, latitude.
+ * units = degE7
+ * @param arcEntryLon Arc entry point, longitude.
+ * units = degE7
+ * @param altitude Altitude.
+ * units = m
+ * @param expectedTravelDistance Distance the aircraft expects to travel during the deepstall.
+ * units = m
+ * @param crossTrackError Deepstall cross track error (only valid when in DEEPSTALL_STAGE_LAND).
+ * units = m
+ * @param stage Deepstall stage.
  */
 @GeneratedMavMessage(
   id = 195u,
@@ -30,46 +50,55 @@ import kotlin.Unit
 public data class Deepstall(
   /**
    * Landing latitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val landingLat: Int = 0,
   /**
    * Landing longitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val landingLon: Int = 0,
   /**
    * Final heading start point, latitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val pathLat: Int = 0,
   /**
    * Final heading start point, longitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val pathLon: Int = 0,
   /**
    * Arc entry point, latitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val arcEntryLat: Int = 0,
   /**
    * Arc entry point, longitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val arcEntryLon: Int = 0,
   /**
    * Altitude.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitude: Float = 0F,
   /**
    * Distance the aircraft expects to travel during the deepstall.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val expectedTravelDistance: Float = 0F,
   /**
    * Deepstall cross track error (only valid when in DEEPSTALL_STAGE_LAND).
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val crossTrackError: Float = 0F,
@@ -79,9 +108,9 @@ public data class Deepstall(
   @GeneratedMavField(type = "uint8_t")
   public val stage: MavEnumValue<DeepstallStage> = MavEnumValue.fromValue(0u),
 ) : MavMessage<Deepstall> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Deepstall> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(landingLat)
     encoder.encodeInt32(landingLon)
@@ -96,7 +125,7 @@ public data class Deepstall(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(landingLat)
     encoder.encodeInt32(landingLon)
@@ -116,11 +145,11 @@ public data class Deepstall(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 195u
+    override val id: UInt = 195u
 
-    public override val crcExtra: Byte = 120
+    override val crcExtra: Byte = 120
 
-    public override fun deserialize(bytes: ByteArray): Deepstall {
+    override fun deserialize(bytes: ByteArray): Deepstall {
       val decoder = MavDataDecoder(bytes)
 
       val landingLat = decoder.safeDecodeInt32()

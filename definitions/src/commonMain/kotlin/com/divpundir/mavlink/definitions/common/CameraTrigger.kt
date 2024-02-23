@@ -19,6 +19,12 @@ import kotlin.Unit
 
 /**
  * Camera-IMU triggering and synchronisation message.
+ *
+ * @param timeUsec Timestamp for image frame (UNIX Epoch time or time since system boot). The
+ * receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the
+ * magnitude of the number.
+ * units = us
+ * @param seq Image frame sequence
  */
 @GeneratedMavMessage(
   id = 112u,
@@ -29,6 +35,7 @@ public data class CameraTrigger(
    * Timestamp for image frame (UNIX Epoch time or time since system boot). The receiving end can
    * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
    * number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -38,16 +45,16 @@ public data class CameraTrigger(
   @GeneratedMavField(type = "uint32_t")
   public val seq: UInt = 0u,
 ) : MavMessage<CameraTrigger> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraTrigger> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraTrigger> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(seq)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(seq)
@@ -59,11 +66,11 @@ public data class CameraTrigger(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 112u
+    override val id: UInt = 112u
 
-    public override val crcExtra: Byte = -82
+    override val crcExtra: Byte = -82
 
-    public override fun deserialize(bytes: ByteArray): CameraTrigger {
+    override fun deserialize(bytes: ByteArray): CameraTrigger {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

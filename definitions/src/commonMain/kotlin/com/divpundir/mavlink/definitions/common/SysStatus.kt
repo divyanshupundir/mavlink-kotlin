@@ -34,6 +34,38 @@ import kotlin.Unit
  * EMERGENCY states the MAV is still considered to be active, but should start emergency procedures
  * autonomously. After a failure occurred it should first move from active to critical to allow manual
  * intervention and then move to emergency after a certain timeout.
+ *
+ * @param onboardControlSensorsPresent Bitmap showing which onboard controllers and sensors are
+ * present. Value of 0: not present. Value of 1: present.
+ * @param onboardControlSensorsEnabled Bitmap showing which onboard controllers and sensors are
+ * enabled:  Value of 0: not enabled. Value of 1: enabled.
+ * @param onboardControlSensorsHealth Bitmap showing which onboard controllers and sensors have an
+ * error (or are operational). Value of 0: error. Value of 1: healthy.
+ * @param load Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be
+ * below 1000
+ * units = d%
+ * @param voltageBattery Battery voltage, UINT16_MAX: Voltage not sent by autopilot
+ * units = mV
+ * @param currentBattery Battery current, -1: Current not sent by autopilot
+ * units = cA
+ * @param batteryRemaining Battery energy remaining, -1: Battery remaining energy not sent by
+ * autopilot
+ * units = %
+ * @param dropRateComm Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links
+ * (packets that were corrupted on reception on the MAV)
+ * units = c%
+ * @param errorsComm Communication errors (UART, I2C, SPI, CAN), dropped packets on all links
+ * (packets that were corrupted on reception on the MAV)
+ * @param errorsCount1 Autopilot-specific errors
+ * @param errorsCount2 Autopilot-specific errors
+ * @param errorsCount3 Autopilot-specific errors
+ * @param errorsCount4 Autopilot-specific errors
+ * @param onboardControlSensorsPresentExtended Bitmap showing which onboard controllers and sensors
+ * are present. Value of 0: not present. Value of 1: present.
+ * @param onboardControlSensorsEnabledExtended Bitmap showing which onboard controllers and sensors
+ * are enabled:  Value of 0: not enabled. Value of 1: enabled.
+ * @param onboardControlSensorsHealthExtended Bitmap showing which onboard controllers and sensors
+ * have an error (or are operational). Value of 0: error. Value of 1: healthy.
  */
 @GeneratedMavMessage(
   id = 1u,
@@ -63,27 +95,32 @@ public data class SysStatus(
       MavBitmaskValue.fromValue(0u),
   /**
    * Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be below 1000
+   * units = d%
    */
   @GeneratedMavField(type = "uint16_t")
   public val load: UShort = 0u,
   /**
    * Battery voltage, UINT16_MAX: Voltage not sent by autopilot
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val voltageBattery: UShort = 0u,
   /**
    * Battery current, -1: Current not sent by autopilot
+   * units = cA
    */
   @GeneratedMavField(type = "int16_t")
   public val currentBattery: Short = 0,
   /**
    * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
+   * units = %
    */
   @GeneratedMavField(type = "int8_t")
   public val batteryRemaining: Byte = 0,
   /**
    * Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
    * corrupted on reception on the MAV)
+   * units = c%
    */
   @GeneratedMavField(type = "uint16_t")
   public val dropRateComm: UShort = 0u,
@@ -144,9 +181,9 @@ public data class SysStatus(
   public val onboardControlSensorsHealthExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
       MavBitmaskValue.fromValue(0u),
 ) : MavMessage<SysStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
     encoder.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
@@ -164,7 +201,7 @@ public data class SysStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(onboardControlSensorsPresent.value, 4)
     encoder.encodeBitmaskValue(onboardControlSensorsEnabled.value, 4)
@@ -190,11 +227,11 @@ public data class SysStatus(
 
     private const val SIZE_V2: Int = 43
 
-    public override val id: UInt = 1u
+    override val id: UInt = 1u
 
-    public override val crcExtra: Byte = 124
+    override val crcExtra: Byte = 124
 
-    public override fun deserialize(bytes: ByteArray): SysStatus {
+    override fun deserialize(bytes: ByteArray): SysStatus {
       val decoder = MavDataDecoder(bytes)
 
       val onboardControlSensorsPresent = decoder.safeDecodeBitmaskValue(4).let { value ->

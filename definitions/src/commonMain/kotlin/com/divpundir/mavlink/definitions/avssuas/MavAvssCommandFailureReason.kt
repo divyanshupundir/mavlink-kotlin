@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavAvssCommandFailureReason(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * AVSS defined command failure reason. PRS not steady.
@@ -27,7 +27,7 @@ public enum class MavAvssCommandFailureReason(
   ;
 
   public companion object : MavEnum.MavCompanion<MavAvssCommandFailureReason> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavAvssCommandFailureReason? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavAvssCommandFailureReason? = when (v) {
       1u -> PRS_NOT_STEADY
       2u -> PRS_DTM_NOT_ARMED
       3u -> PRS_OTM_NOT_ARMED

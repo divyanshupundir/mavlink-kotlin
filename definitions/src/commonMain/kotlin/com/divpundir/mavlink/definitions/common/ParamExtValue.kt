@@ -25,6 +25,14 @@ import kotlin.Unit
  * Emit the value of a parameter. The inclusion of param_count and param_index in the message allows
  * the recipient to keep track of received parameters and allows them to re-request missing parameters
  * after a loss or timeout.
+ *
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
+ * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
+ * to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramValue Parameter value
+ * @param paramType Parameter type.
+ * @param paramCount Total number of parameters
+ * @param paramIndex Index of this parameter
  */
 @GeneratedMavMessage(
   id = 322u,
@@ -59,9 +67,9 @@ public data class ParamExtValue(
   @GeneratedMavField(type = "uint16_t")
   public val paramIndex: UShort = 0u,
 ) : MavMessage<ParamExtValue> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamExtValue> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamExtValue> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(paramCount)
     encoder.encodeUInt16(paramIndex)
@@ -71,7 +79,7 @@ public data class ParamExtValue(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(paramCount)
     encoder.encodeUInt16(paramIndex)
@@ -86,11 +94,11 @@ public data class ParamExtValue(
 
     private const val SIZE_V2: Int = 149
 
-    public override val id: UInt = 322u
+    override val id: UInt = 322u
 
-    public override val crcExtra: Byte = -13
+    override val crcExtra: Byte = -13
 
-    public override fun deserialize(bytes: ByteArray): ParamExtValue {
+    override fun deserialize(bytes: ByteArray): ParamExtValue {
       val decoder = MavDataDecoder(bytes)
 
       val paramCount = decoder.safeDecodeUInt16()

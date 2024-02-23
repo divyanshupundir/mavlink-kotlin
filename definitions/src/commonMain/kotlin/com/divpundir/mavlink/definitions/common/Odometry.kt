@@ -32,6 +32,46 @@ import kotlin.collections.List
 /**
  * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147
  * standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param frameId Coordinate frame of reference for the pose data.
+ * @param childFrameId Coordinate frame of reference for the velocity in free space (twist) data.
+ * @param x X Position
+ * units = m
+ * @param y Y Position
+ * units = m
+ * @param z Z Position
+ * units = m
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
+ * @param vx X linear speed
+ * units = m/s
+ * @param vy Y linear speed
+ * units = m/s
+ * @param vz Z linear speed
+ * units = m/s
+ * @param rollspeed Roll angular speed
+ * units = rad/s
+ * @param pitchspeed Pitch angular speed
+ * units = rad/s
+ * @param yawspeed Yaw angular speed
+ * units = rad/s
+ * @param poseCovariance Row-major representation of a 6x6 pose cross-covariance matrix upper right
+ * triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries
+ * are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+ * @param velocityCovariance Row-major representation of a 6x6 velocity cross-covariance matrix
+ * upper right triangle (states: vx, vy, vz, rollspeed, pitchspeed, yawspeed; first six entries are the
+ * first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first
+ * element in the array.
+ * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets
+ * in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used
+ * when e.g an external SLAM system detects a loop-closure and the estimate jumps.
+ * @param estimatorType Type of estimator that is providing the odometry.
+ * @param quality Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 =
+ * unknown/unset quality, 1 = worst quality, 100 = best quality
+ * units = %
  */
 @GeneratedMavMessage(
   id = 331u,
@@ -41,6 +81,7 @@ public data class Odometry(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -56,16 +97,19 @@ public data class Odometry(
   public val childFrameId: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * X Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Y Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Z Position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
@@ -76,31 +120,37 @@ public data class Odometry(
   public val q: List<Float> = emptyList(),
   /**
    * X linear speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y linear speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z linear speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * Roll angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
@@ -140,6 +190,7 @@ public data class Odometry(
   /**
    * Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 = unknown/unset
    * quality, 1 = worst quality, 100 = best quality
+   * units = %
    */
   @GeneratedMavField(
     type = "int8_t",
@@ -147,9 +198,9 @@ public data class Odometry(
   )
   public val quality: Byte = 0,
 ) : MavMessage<Odometry> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Odometry> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -169,7 +220,7 @@ public data class Odometry(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(x)
@@ -197,11 +248,11 @@ public data class Odometry(
 
     private const val SIZE_V2: Int = 233
 
-    public override val id: UInt = 331u
+    override val id: UInt = 331u
 
-    public override val crcExtra: Byte = 91
+    override val crcExtra: Byte = 91
 
-    public override fun deserialize(bytes: ByteArray): Odometry {
+    override fun deserialize(bytes: ByteArray): Odometry {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

@@ -26,6 +26,23 @@ import kotlin.Unit
 
 /**
  * Winch status.
+ *
+ * @param timeUsec Timestamp (synced to UNIX time or since system boot).
+ * units = us
+ * @param lineLength Length of line released. NaN if unknown
+ * units = m
+ * @param speed Speed line is being released or retracted. Positive values if being released,
+ * negative values if being retracted, NaN if unknown
+ * units = m/s
+ * @param tension Tension on the line. NaN if unknown
+ * units = kg
+ * @param voltage Voltage of the battery supplying the winch. NaN if unknown
+ * units = V
+ * @param current Current draw from the winch. NaN if unknown
+ * units = A
+ * @param temperature Temperature of the motor. INT16_MAX if unknown
+ * units = degC
+ * @param status Status flags
  */
 @GeneratedMavMessage(
   id = 9_005u,
@@ -34,37 +51,44 @@ import kotlin.Unit
 public data class WinchStatus(
   /**
    * Timestamp (synced to UNIX time or since system boot).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * Length of line released. NaN if unknown
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val lineLength: Float = 0F,
   /**
    * Speed line is being released or retracted. Positive values if being released, negative values
    * if being retracted, NaN if unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val speed: Float = 0F,
   /**
    * Tension on the line. NaN if unknown
+   * units = kg
    */
   @GeneratedMavField(type = "float")
   public val tension: Float = 0F,
   /**
    * Voltage of the battery supplying the winch. NaN if unknown
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val voltage: Float = 0F,
   /**
    * Current draw from the winch. NaN if unknown
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val current: Float = 0F,
   /**
    * Temperature of the motor. INT16_MAX if unknown
+   * units = degC
    */
   @GeneratedMavField(type = "int16_t")
   public val temperature: Short = 0,
@@ -74,9 +98,9 @@ public data class WinchStatus(
   @GeneratedMavField(type = "uint32_t")
   public val status: MavBitmaskValue<MavWinchStatusFlag> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<WinchStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WinchStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WinchStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(lineLength)
@@ -89,7 +113,7 @@ public data class WinchStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(lineLength)
@@ -107,11 +131,11 @@ public data class WinchStatus(
 
     private const val SIZE_V2: Int = 34
 
-    public override val id: UInt = 9_005u
+    override val id: UInt = 9_005u
 
-    public override val crcExtra: Byte = 117
+    override val crcExtra: Byte = 117
 
-    public override fun deserialize(bytes: ByteArray): WinchStatus {
+    override fun deserialize(bytes: ByteArray): WinchStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

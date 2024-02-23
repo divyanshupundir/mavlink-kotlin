@@ -29,6 +29,21 @@ import kotlin.Unit
 
 /**
  * Send a command with up to seven parameters to the MAV and additional metadata
+ *
+ * @param utcTime UTC time, seconds elapsed since 01.01.1970
+ * @param vehicleTimestamp Microseconds elapsed since vehicle boot
+ * @param targetSystem System which should execute the command
+ * @param targetComponent Component which should execute the command, 0 for all components
+ * @param command Command ID, as defined by MAV_CMD enum.
+ * @param confirmation 0: First transmission of this command. 1-255: Confirmation transmissions
+ * (e.g. for kill command)
+ * @param param1 Parameter 1, as defined by MAV_CMD enum.
+ * @param param2 Parameter 2, as defined by MAV_CMD enum.
+ * @param param3 Parameter 3, as defined by MAV_CMD enum.
+ * @param param4 Parameter 4, as defined by MAV_CMD enum.
+ * @param param5 Parameter 5, as defined by MAV_CMD enum.
+ * @param param6 Parameter 6, as defined by MAV_CMD enum.
+ * @param param7 Parameter 7, as defined by MAV_CMD enum.
  */
 @GeneratedMavMessage(
   id = 224u,
@@ -102,9 +117,9 @@ public data class CommandLongStamped(
   @GeneratedMavField(type = "float")
   public val param7: Float = 0F,
 ) : MavMessage<CommandLongStamped> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandLongStamped> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandLongStamped> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(vehicleTimestamp)
     encoder.encodeUInt32(utcTime)
@@ -122,7 +137,7 @@ public data class CommandLongStamped(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(vehicleTimestamp)
     encoder.encodeUInt32(utcTime)
@@ -145,11 +160,11 @@ public data class CommandLongStamped(
 
     private const val SIZE_V2: Int = 45
 
-    public override val id: UInt = 224u
+    override val id: UInt = 224u
 
-    public override val crcExtra: Byte = 102
+    override val crcExtra: Byte = 102
 
-    public override fun deserialize(bytes: ByteArray): CommandLongStamped {
+    override fun deserialize(bytes: ByteArray): CommandLongStamped {
       val decoder = MavDataDecoder(bytes)
 
       val vehicleTimestamp = decoder.safeDecodeUInt64()

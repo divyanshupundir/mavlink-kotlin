@@ -17,6 +17,23 @@ import kotlin.Unit
 
 /**
  * Airspeed auto-calibration.
+ *
+ * @param vx GPS velocity north.
+ * units = m/s
+ * @param vy GPS velocity east.
+ * units = m/s
+ * @param vz GPS velocity down.
+ * units = m/s
+ * @param diffPressure Differential pressure.
+ * units = Pa
+ * @param eas2tas Estimated to true airspeed ratio.
+ * @param ratio Airspeed ratio.
+ * @param stateX EKF state x.
+ * @param stateY EKF state y.
+ * @param stateZ EKF state z.
+ * @param pax EKF Pax.
+ * @param pby EKF Pby.
+ * @param pcz EKF Pcz.
  */
 @GeneratedMavMessage(
   id = 174u,
@@ -25,21 +42,25 @@ import kotlin.Unit
 public data class AirspeedAutocal(
   /**
    * GPS velocity north.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * GPS velocity east.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * GPS velocity down.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * Differential pressure.
+   * units = Pa
    */
   @GeneratedMavField(type = "float")
   public val diffPressure: Float = 0F,
@@ -84,9 +105,9 @@ public data class AirspeedAutocal(
   @GeneratedMavField(type = "float")
   public val pcz: Float = 0F,
 ) : MavMessage<AirspeedAutocal> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AirspeedAutocal> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AirspeedAutocal> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(vx)
     encoder.encodeFloat(vy)
@@ -103,7 +124,7 @@ public data class AirspeedAutocal(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(vx)
     encoder.encodeFloat(vy)
@@ -125,11 +146,11 @@ public data class AirspeedAutocal(
 
     private const val SIZE_V2: Int = 48
 
-    public override val id: UInt = 174u
+    override val id: UInt = 174u
 
-    public override val crcExtra: Byte = -89
+    override val crcExtra: Byte = -89
 
-    public override fun deserialize(bytes: ByteArray): AirspeedAutocal {
+    override fun deserialize(bytes: ByteArray): AirspeedAutocal {
       val decoder = MavDataDecoder(bytes)
 
       val vx = decoder.safeDecodeFloat()

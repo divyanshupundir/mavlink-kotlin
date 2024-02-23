@@ -19,6 +19,9 @@ import kotlin.Unit
 
 /**
  * Write registers reply.
+ *
+ * @param requestId Request ID - copied from request.
+ * @param result 0 for success, anything else is failure code.
  */
 @GeneratedMavMessage(
   id = 11_003u,
@@ -36,16 +39,16 @@ public data class DeviceOpWriteReply(
   @GeneratedMavField(type = "uint8_t")
   public val result: UByte = 0u,
 ) : MavMessage<DeviceOpWriteReply> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWriteReply> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DeviceOpWriteReply> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(requestId)
     encoder.encodeUInt8(result)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(requestId)
     encoder.encodeUInt8(result)
@@ -57,11 +60,11 @@ public data class DeviceOpWriteReply(
 
     private const val SIZE_V2: Int = 5
 
-    public override val id: UInt = 11_003u
+    override val id: UInt = 11_003u
 
-    public override val crcExtra: Byte = 64
+    override val crcExtra: Byte = 64
 
-    public override fun deserialize(bytes: ByteArray): DeviceOpWriteReply {
+    override fun deserialize(bytes: ByteArray): DeviceOpWriteReply {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt32()

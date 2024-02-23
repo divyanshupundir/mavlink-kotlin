@@ -25,6 +25,23 @@ import kotlin.Unit
  * Set a safety zone (volume), which is defined by two corners of a cube. This message can be used
  * to tell the MAV which setpoints/waypoints to accept and which to reject. Safety areas are often
  * enforced by national or competition regulations.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param frame Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local,
+ * right handed, Z axis down.
+ * @param p1x x position 1 / Latitude 1
+ * units = m
+ * @param p1y y position 1 / Longitude 1
+ * units = m
+ * @param p1z z position 1 / Altitude 1
+ * units = m
+ * @param p2x x position 2 / Latitude 2
+ * units = m
+ * @param p2y y position 2 / Longitude 2
+ * units = m
+ * @param p2z z position 2 / Altitude 2
+ * units = m
  */
 @GeneratedMavMessage(
   id = 54u,
@@ -49,38 +66,44 @@ public data class SafetySetAllowedArea(
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
    * x position 1 / Latitude 1
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val p1x: Float = 0F,
   /**
    * y position 1 / Longitude 1
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val p1y: Float = 0F,
   /**
    * z position 1 / Altitude 1
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val p1z: Float = 0F,
   /**
    * x position 2 / Latitude 2
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val p2x: Float = 0F,
   /**
    * y position 2 / Longitude 2
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val p2y: Float = 0F,
   /**
    * z position 2 / Altitude 2
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val p2z: Float = 0F,
 ) : MavMessage<SafetySetAllowedArea> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SafetySetAllowedArea> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SafetySetAllowedArea> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(p1x)
     encoder.encodeFloat(p1y)
@@ -94,7 +117,7 @@ public data class SafetySetAllowedArea(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(p1x)
     encoder.encodeFloat(p1y)
@@ -113,11 +136,11 @@ public data class SafetySetAllowedArea(
 
     private const val SIZE_V2: Int = 27
 
-    public override val id: UInt = 54u
+    override val id: UInt = 54u
 
-    public override val crcExtra: Byte = 15
+    override val crcExtra: Byte = 15
 
-    public override fun deserialize(bytes: ByteArray): SafetySetAllowedArea {
+    override fun deserialize(bytes: ByteArray): SafetySetAllowedArea {
       val decoder = MavDataDecoder(bytes)
 
       val p1x = decoder.safeDecodeFloat()

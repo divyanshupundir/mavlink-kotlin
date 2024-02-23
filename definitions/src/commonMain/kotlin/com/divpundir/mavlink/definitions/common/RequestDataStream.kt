@@ -21,6 +21,13 @@ import kotlin.Unit
 
 /**
  * Request a data stream.
+ *
+ * @param targetSystem The target requested to send the message stream.
+ * @param targetComponent The target requested to send the message stream.
+ * @param reqStreamId The ID of the requested data stream
+ * @param reqMessageRate The requested message rate
+ * units = Hz
+ * @param startStop 1 to start sending, 0 to stop sending.
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -45,6 +52,7 @@ public data class RequestDataStream(
   public val reqStreamId: UByte = 0u,
   /**
    * The requested message rate
+   * units = Hz
    */
   @GeneratedMavField(type = "uint16_t")
   public val reqMessageRate: UShort = 0u,
@@ -54,9 +62,9 @@ public data class RequestDataStream(
   @GeneratedMavField(type = "uint8_t")
   public val startStop: UByte = 0u,
 ) : MavMessage<RequestDataStream> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RequestDataStream> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RequestDataStream> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(reqMessageRate)
     encoder.encodeUInt8(targetSystem)
@@ -66,7 +74,7 @@ public data class RequestDataStream(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(reqMessageRate)
     encoder.encodeUInt8(targetSystem)
@@ -81,11 +89,11 @@ public data class RequestDataStream(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 66u
+    override val id: UInt = 66u
 
-    public override val crcExtra: Byte = -108
+    override val crcExtra: Byte = -108
 
-    public override fun deserialize(bytes: ByteArray): RequestDataStream {
+    override fun deserialize(bytes: ByteArray): RequestDataStream {
       val decoder = MavDataDecoder(bytes)
 
       val reqMessageRate = decoder.safeDecodeUInt16()

@@ -17,6 +17,17 @@ import kotlin.Unit
 
 /**
  * Status of DCM attitude estimator.
+ *
+ * @param omegaix X gyro drift estimate.
+ * units = rad/s
+ * @param omegaiy Y gyro drift estimate.
+ * units = rad/s
+ * @param omegaiz Z gyro drift estimate.
+ * units = rad/s
+ * @param accelWeight Average accel_weight.
+ * @param renormVal Average renormalisation value.
+ * @param errorRp Average error_roll_pitch value.
+ * @param errorYaw Average error_yaw value.
  */
 @GeneratedMavMessage(
   id = 163u,
@@ -25,16 +36,19 @@ import kotlin.Unit
 public data class Ahrs(
   /**
    * X gyro drift estimate.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val omegaix: Float = 0F,
   /**
    * Y gyro drift estimate.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val omegaiy: Float = 0F,
   /**
    * Z gyro drift estimate.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val omegaiz: Float = 0F,
@@ -59,9 +73,9 @@ public data class Ahrs(
   @GeneratedMavField(type = "float")
   public val errorYaw: Float = 0F,
 ) : MavMessage<Ahrs> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Ahrs> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Ahrs> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(omegaix)
     encoder.encodeFloat(omegaiy)
@@ -73,7 +87,7 @@ public data class Ahrs(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(omegaix)
     encoder.encodeFloat(omegaiy)
@@ -90,11 +104,11 @@ public data class Ahrs(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 163u
+    override val id: UInt = 163u
 
-    public override val crcExtra: Byte = 127
+    override val crcExtra: Byte = 127
 
-    public override fun deserialize(bytes: ByteArray): Ahrs {
+    override fun deserialize(bytes: ByteArray): Ahrs {
       val decoder = MavDataDecoder(bytes)
 
       val omegaix = decoder.safeDecodeFloat()

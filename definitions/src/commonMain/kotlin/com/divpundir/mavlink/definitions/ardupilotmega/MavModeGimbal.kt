@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavModeGimbal(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gimbal is powered on but has not started initializing yet.
@@ -49,7 +49,7 @@ public enum class MavModeGimbal(
   ;
 
   public companion object : MavEnum.MavCompanion<MavModeGimbal> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavModeGimbal? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavModeGimbal? = when (v) {
       0u -> UNINITIALIZED
       1u -> CALIBRATING_PITCH
       2u -> CALIBRATING_ROLL

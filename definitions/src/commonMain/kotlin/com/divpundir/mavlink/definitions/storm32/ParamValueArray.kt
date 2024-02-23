@@ -23,6 +23,13 @@ import kotlin.collections.List
 
 /**
  * Parameter multi param value container.
+ *
+ * @param paramCount Total number of onboard parameters.
+ * @param paramIndexFirst Index of the first onboard parameter in this array.
+ * @param paramArrayLen Number of onboard parameters in this array.
+ * @param flags Flags.
+ * @param packetBuf Parameters buffer. Contains a series of variable length parameter blocks, one
+ * per parameter, with format as specifed elsewhere.
  */
 @GeneratedMavMessage(
   id = 60_041u,
@@ -56,9 +63,9 @@ public data class ParamValueArray(
   @GeneratedMavField(type = "uint8_t[248]")
   public val packetBuf: List<UByte> = emptyList(),
 ) : MavMessage<ParamValueArray> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamValueArray> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamValueArray> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(paramCount)
     encoder.encodeUInt16(paramIndexFirst)
@@ -68,7 +75,7 @@ public data class ParamValueArray(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(paramCount)
     encoder.encodeUInt16(paramIndexFirst)
@@ -83,11 +90,11 @@ public data class ParamValueArray(
 
     private const val SIZE_V2: Int = 255
 
-    public override val id: UInt = 60_041u
+    override val id: UInt = 60_041u
 
-    public override val crcExtra: Byte = -65
+    override val crcExtra: Byte = -65
 
-    public override fun deserialize(bytes: ByteArray): ParamValueArray {
+    override fun deserialize(bytes: ByteArray): ParamValueArray {
       val decoder = MavDataDecoder(bytes)
 
       val paramCount = decoder.safeDecodeUInt16()

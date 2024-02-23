@@ -29,6 +29,14 @@ import kotlin.collections.List
  * Large debug/prototyping array. The message uses the maximum available payload for data. The
  * array_id and name fields are used to discriminate between messages in code and in user interfaces
  * (respectively). Do not use in production code.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param name Name, for human-friendly display in a Ground Control Station
+ * @param arrayId Unique ID used to discriminate between arrays
+ * @param data data
  */
 @GeneratedMavMessage(
   id = 350u,
@@ -38,6 +46,7 @@ public data class DebugFloatArray(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -60,9 +69,9 @@ public data class DebugFloatArray(
   )
   public val `data`: List<Float> = emptyList(),
 ) : MavMessage<DebugFloatArray> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DebugFloatArray> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(arrayId)
@@ -70,7 +79,7 @@ public data class DebugFloatArray(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(arrayId)
@@ -84,11 +93,11 @@ public data class DebugFloatArray(
 
     private const val SIZE_V2: Int = 252
 
-    public override val id: UInt = 350u
+    override val id: UInt = 350u
 
-    public override val crcExtra: Byte = -24
+    override val crcExtra: Byte = -24
 
-    public override fun deserialize(bytes: ByteArray): DebugFloatArray {
+    override fun deserialize(bytes: ByteArray): DebugFloatArray {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

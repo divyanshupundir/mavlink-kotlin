@@ -25,6 +25,13 @@ import kotlin.Unit
 
 /**
  * Status of geo-fencing. Sent in extended status stream when fencing enabled.
+ *
+ * @param breachStatus Breach status (0 if currently inside fence, 1 if outside).
+ * @param breachCount Number of fence breaches.
+ * @param breachType Last breach type.
+ * @param breachTime Time (since boot) of last breach.
+ * units = ms
+ * @param breachMitigation Active action to prevent fence breach
  */
 @GeneratedMavMessage(
   id = 162u,
@@ -48,6 +55,7 @@ public data class FenceStatus(
   public val breachType: MavEnumValue<FenceBreach> = MavEnumValue.fromValue(0u),
   /**
    * Time (since boot) of last breach.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val breachTime: UInt = 0u,
@@ -60,9 +68,9 @@ public data class FenceStatus(
   )
   public val breachMitigation: MavEnumValue<FenceMitigate> = MavEnumValue.fromValue(0u),
 ) : MavMessage<FenceStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FenceStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(breachTime)
     encoder.encodeUInt16(breachCount)
@@ -71,7 +79,7 @@ public data class FenceStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(breachTime)
     encoder.encodeUInt16(breachCount)
@@ -86,11 +94,11 @@ public data class FenceStatus(
 
     private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 162u
+    override val id: UInt = 162u
 
-    public override val crcExtra: Byte = -67
+    override val crcExtra: Byte = -67
 
-    public override fun deserialize(bytes: ByteArray): FenceStatus {
+    override fun deserialize(bytes: ByteArray): FenceStatus {
       val decoder = MavDataDecoder(bytes)
 
       val breachTime = decoder.safeDecodeUInt32()

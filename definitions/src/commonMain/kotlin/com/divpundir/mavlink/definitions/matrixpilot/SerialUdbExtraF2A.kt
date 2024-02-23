@@ -27,6 +27,34 @@ import kotlin.Unit
 
 /**
  * Backwards compatible MAVLink version of SERIAL_UDB_EXTRA - F2: Format Part A
+ *
+ * @param sueTime Serial UDB Extra Time
+ * @param sueStatus Serial UDB Extra Status
+ * @param sueLatitude Serial UDB Extra Latitude
+ * @param sueLongitude Serial UDB Extra Longitude
+ * @param sueAltitude Serial UDB Extra Altitude
+ * @param sueWaypointIndex Serial UDB Extra Waypoint Index
+ * @param sueRmat0 Serial UDB Extra Rmat 0
+ * @param sueRmat1 Serial UDB Extra Rmat 1
+ * @param sueRmat2 Serial UDB Extra Rmat 2
+ * @param sueRmat3 Serial UDB Extra Rmat 3
+ * @param sueRmat4 Serial UDB Extra Rmat 4
+ * @param sueRmat5 Serial UDB Extra Rmat 5
+ * @param sueRmat6 Serial UDB Extra Rmat 6
+ * @param sueRmat7 Serial UDB Extra Rmat 7
+ * @param sueRmat8 Serial UDB Extra Rmat 8
+ * @param sueCog Serial UDB Extra GPS Course Over Ground
+ * @param sueSog Serial UDB Extra Speed Over Ground
+ * @param sueCpuLoad Serial UDB Extra CPU Load
+ * @param sueAirSpeed3dimu Serial UDB Extra 3D IMU Air Speed
+ * @param sueEstimatedWind0 Serial UDB Extra Estimated Wind 0
+ * @param sueEstimatedWind1 Serial UDB Extra Estimated Wind 1
+ * @param sueEstimatedWind2 Serial UDB Extra Estimated Wind 2
+ * @param sueMagfieldearth0 Serial UDB Extra Magnetic Field Earth 0 
+ * @param sueMagfieldearth1 Serial UDB Extra Magnetic Field Earth 1 
+ * @param sueMagfieldearth2 Serial UDB Extra Magnetic Field Earth 2 
+ * @param sueSvs Serial UDB Extra Number of Satellites in View
+ * @param sueHdop Serial UDB Extra GPS Horizontal Dilution of Precision
  */
 @GeneratedMavMessage(
   id = 170u,
@@ -169,9 +197,9 @@ public data class SerialUdbExtraF2A(
   @GeneratedMavField(type = "int16_t")
   public val sueHdop: Short = 0,
 ) : MavMessage<SerialUdbExtraF2A> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF2A> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF2A> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(sueTime)
     encoder.encodeInt32(sueLatitude)
@@ -203,7 +231,7 @@ public data class SerialUdbExtraF2A(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(sueTime)
     encoder.encodeInt32(sueLatitude)
@@ -240,11 +268,11 @@ public data class SerialUdbExtraF2A(
 
     private const val SIZE_V2: Int = 61
 
-    public override val id: UInt = 170u
+    override val id: UInt = 170u
 
-    public override val crcExtra: Byte = 103
+    override val crcExtra: Byte = 103
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF2A {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF2A {
       val decoder = MavDataDecoder(bytes)
 
       val sueTime = decoder.safeDecodeUInt32()

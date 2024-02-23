@@ -17,6 +17,15 @@ import kotlin.Unit
 
 /**
  * Voltage and current sensor data
+ *
+ * @param adc121VspbVolt  Power board voltage sensor reading
+ * units = V
+ * @param adc121CspbAmp  Power board current sensor reading
+ * units = A
+ * @param adc121Cs1Amp  Board current sensor 1 reading
+ * units = A
+ * @param adc121Cs2Amp  Board current sensor 2 reading
+ * units = A
  */
 @GeneratedMavMessage(
   id = 8_002u,
@@ -25,28 +34,32 @@ import kotlin.Unit
 public data class SensPower(
   /**
    *  Power board voltage sensor reading
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val adc121VspbVolt: Float = 0F,
   /**
    *  Power board current sensor reading
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val adc121CspbAmp: Float = 0F,
   /**
    *  Board current sensor 1 reading
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val adc121Cs1Amp: Float = 0F,
   /**
    *  Board current sensor 2 reading
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val adc121Cs2Amp: Float = 0F,
 ) : MavMessage<SensPower> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(adc121VspbVolt)
     encoder.encodeFloat(adc121CspbAmp)
@@ -55,7 +68,7 @@ public data class SensPower(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(adc121VspbVolt)
     encoder.encodeFloat(adc121CspbAmp)
@@ -69,11 +82,11 @@ public data class SensPower(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 8_002u
+    override val id: UInt = 8_002u
 
-    public override val crcExtra: Byte = -38
+    override val crcExtra: Byte = -38
 
-    public override fun deserialize(bytes: ByteArray): SensPower {
+    override fun deserialize(bytes: ByteArray): SensPower {
       val decoder = MavDataDecoder(bytes)
 
       val adc121VspbVolt = decoder.safeDecodeFloat()

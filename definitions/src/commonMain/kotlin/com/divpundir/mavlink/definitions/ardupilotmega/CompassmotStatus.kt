@@ -20,6 +20,16 @@ import kotlin.Unit
 
 /**
  * Status of compassmot calibration.
+ *
+ * @param throttle Throttle.
+ * units = d%
+ * @param current Current.
+ * units = A
+ * @param interference Interference.
+ * units = %
+ * @param compensationx Motor Compensation X.
+ * @param compensationy Motor Compensation Y.
+ * @param compensationz Motor Compensation Z.
  */
 @GeneratedMavMessage(
   id = 177u,
@@ -28,16 +38,19 @@ import kotlin.Unit
 public data class CompassmotStatus(
   /**
    * Throttle.
+   * units = d%
    */
   @GeneratedMavField(type = "uint16_t")
   public val throttle: UShort = 0u,
   /**
    * Current.
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val current: Float = 0F,
   /**
    * Interference.
+   * units = %
    */
   @GeneratedMavField(type = "uint16_t")
   public val interference: UShort = 0u,
@@ -57,9 +70,9 @@ public data class CompassmotStatus(
   @GeneratedMavField(type = "float")
   public val compensationz: Float = 0F,
 ) : MavMessage<CompassmotStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CompassmotStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CompassmotStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(current)
     encoder.encodeFloat(compensationx)
@@ -70,7 +83,7 @@ public data class CompassmotStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(current)
     encoder.encodeFloat(compensationx)
@@ -86,11 +99,11 @@ public data class CompassmotStatus(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 177u
+    override val id: UInt = 177u
 
-    public override val crcExtra: Byte = -16
+    override val crcExtra: Byte = -16
 
-    public override fun deserialize(bytes: ByteArray): CompassmotStatus {
+    override fun deserialize(bytes: ByteArray): CompassmotStatus {
       val decoder = MavDataDecoder(bytes)
 
       val current = decoder.safeDecodeFloat()

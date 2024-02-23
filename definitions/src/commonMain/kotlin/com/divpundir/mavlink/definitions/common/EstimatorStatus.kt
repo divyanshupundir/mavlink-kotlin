@@ -31,6 +31,22 @@ import kotlin.Unit
  * filter. The user should be notified if an innovation test ratio greater than 1.0 is recorded.
  * Notifications for values in the range between 0.5 and 1.0 should be optional and controllable by the
  * user.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param flags Bitmap indicating which EKF outputs are valid.
+ * @param velRatio Velocity innovation test ratio
+ * @param posHorizRatio Horizontal position innovation test ratio
+ * @param posVertRatio Vertical position innovation test ratio
+ * @param magRatio Magnetometer innovation test ratio
+ * @param haglRatio Height above terrain innovation test ratio
+ * @param tasRatio True airspeed innovation test ratio
+ * @param posHorizAccuracy Horizontal position 1-STD accuracy relative to the EKF local origin
+ * units = m
+ * @param posVertAccuracy Vertical position 1-STD accuracy relative to the EKF local origin
+ * units = m
  */
 @GeneratedMavMessage(
   id = 230u,
@@ -40,6 +56,7 @@ public data class EstimatorStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -80,18 +97,20 @@ public data class EstimatorStatus(
   public val tasRatio: Float = 0F,
   /**
    * Horizontal position 1-STD accuracy relative to the EKF local origin
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val posHorizAccuracy: Float = 0F,
   /**
    * Vertical position 1-STD accuracy relative to the EKF local origin
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val posVertAccuracy: Float = 0F,
 ) : MavMessage<EstimatorStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EstimatorStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EstimatorStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(velRatio)
@@ -106,7 +125,7 @@ public data class EstimatorStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(velRatio)
@@ -126,11 +145,11 @@ public data class EstimatorStatus(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 230u
+    override val id: UInt = 230u
 
-    public override val crcExtra: Byte = -93
+    override val crcExtra: Byte = -93
 
-    public override fun deserialize(bytes: ByteArray): EstimatorStatus {
+    override fun deserialize(bytes: ByteArray): EstimatorStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

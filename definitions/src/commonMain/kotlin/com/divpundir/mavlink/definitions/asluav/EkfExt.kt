@@ -20,6 +20,21 @@ import kotlin.Unit
 
 /**
  * Extended EKF state estimates for ASLUAVs
+ *
+ * @param timestamp  Time since system start
+ * units = us
+ * @param windspeed  Magnitude of wind velocity (in lateral inertial plane)
+ * units = m/s
+ * @param winddir  Wind heading angle from North
+ * units = rad
+ * @param windz  Z (Down) component of inertial wind velocity
+ * units = m/s
+ * @param airspeed  Magnitude of air velocity
+ * units = m/s
+ * @param beta  Sideslip angle
+ * units = rad
+ * @param alpha  Angle of attack
+ * units = rad
  */
 @GeneratedMavMessage(
   id = 8_007u,
@@ -28,43 +43,50 @@ import kotlin.Unit
 public data class EkfExt(
   /**
    *  Time since system start
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
   /**
    *  Magnitude of wind velocity (in lateral inertial plane)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val windspeed: Float = 0F,
   /**
    *  Wind heading angle from North
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val winddir: Float = 0F,
   /**
    *  Z (Down) component of inertial wind velocity
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val windz: Float = 0F,
   /**
    *  Magnitude of air velocity
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val airspeed: Float = 0F,
   /**
    *  Sideslip angle
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val beta: Float = 0F,
   /**
    *  Angle of attack
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val alpha: Float = 0F,
 ) : MavMessage<EkfExt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EkfExt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EkfExt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(windspeed)
@@ -76,7 +98,7 @@ public data class EkfExt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(windspeed)
@@ -93,11 +115,11 @@ public data class EkfExt(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 8_007u
+    override val id: UInt = 8_007u
 
-    public override val crcExtra: Byte = 64
+    override val crcExtra: Byte = 64
 
-    public override fun deserialize(bytes: ByteArray): EkfExt {
+    override fun deserialize(bytes: ByteArray): EkfExt {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

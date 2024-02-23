@@ -21,6 +21,11 @@ import kotlin.Unit
 
 /**
  * Data stream status information.
+ *
+ * @param streamId The ID of the requested data stream
+ * @param messageRate The message rate
+ * units = Hz
+ * @param onOff 1 stream is enabled, 0 stream is stopped.
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -35,6 +40,7 @@ public data class DataStream(
   public val streamId: UByte = 0u,
   /**
    * The message rate
+   * units = Hz
    */
   @GeneratedMavField(type = "uint16_t")
   public val messageRate: UShort = 0u,
@@ -44,9 +50,9 @@ public data class DataStream(
   @GeneratedMavField(type = "uint8_t")
   public val onOff: UByte = 0u,
 ) : MavMessage<DataStream> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DataStream> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DataStream> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(messageRate)
     encoder.encodeUInt8(streamId)
@@ -54,7 +60,7 @@ public data class DataStream(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(messageRate)
     encoder.encodeUInt8(streamId)
@@ -67,11 +73,11 @@ public data class DataStream(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 67u
+    override val id: UInt = 67u
 
-    public override val crcExtra: Byte = 21
+    override val crcExtra: Byte = 21
 
-    public override fun deserialize(bytes: ByteArray): DataStream {
+    override fun deserialize(bytes: ByteArray): DataStream {
       val decoder = MavDataDecoder(bytes)
 
       val messageRate = decoder.safeDecodeUInt16()

@@ -35,6 +35,43 @@ import kotlin.collections.List
 /**
  * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The
  * Location message provides the location, altitude, direction and speed of the aircraft.
+ *
+ * @param targetSystem System ID (0 for broadcast).
+ * @param targetComponent Component ID (0 for broadcast).
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
+ * https://mavlink.io/en/services/opendroneid.html. 
+ * @param status Indicates whether the unmanned aircraft is on the ground or in the air.
+ * @param direction Direction over ground (not heading, but direction of movement) measured
+ * clockwise from true North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
+ * units = cdeg
+ * @param speedHorizontal Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger
+ * than 25425 cm/s, use 25425 cm/s.
+ * units = cm/s
+ * @param speedVertical The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is
+ * larger than 6200 cm/s, use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
+ * units = cm/s
+ * @param latitude Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
+ * units = degE7
+ * @param longitude Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
+ * units = degE7
+ * @param altitudeBarometric The altitude calculated from the barometric pressue. Reference is
+ * against 29.92inHg or 1013.2mb. If unknown: -1000 m.
+ * units = m
+ * @param altitudeGeodetic The geodetic altitude as defined by WGS84. If unknown: -1000 m.
+ * units = m
+ * @param heightReference Indicates the reference point for the height field.
+ * @param height The current height of the unmanned aircraft above the take-off location or the
+ * ground as indicated by height_reference. If unknown: -1000 m.
+ * units = m
+ * @param horizontalAccuracy The accuracy of the horizontal position.
+ * @param verticalAccuracy The accuracy of the vertical position.
+ * @param barometerAccuracy The accuracy of the barometric altitude.
+ * @param speedAccuracy The accuracy of the horizontal and vertical speed.
+ * @param timestamp Seconds after the full hour with reference to UTC time. Typically the GPS
+ * outputs a time-of-week value in milliseconds. First convert that to UTC and then convert for this
+ * field using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
+ * units = s
+ * @param timestampAccuracy The accuracy of the timestamps.
  */
 @GeneratedMavMessage(
   id = 12_901u,
@@ -65,39 +102,46 @@ public data class OpenDroneIdLocation(
   /**
    * Direction over ground (not heading, but direction of movement) measured clockwise from true
    * North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
+   * units = cdeg
    */
   @GeneratedMavField(type = "uint16_t")
   public val direction: UShort = 0u,
   /**
    * Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use
    * 25425 cm/s.
+   * units = cm/s
    */
   @GeneratedMavField(type = "uint16_t")
   public val speedHorizontal: UShort = 0u,
   /**
    * The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s,
    * use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val speedVertical: Short = 0,
   /**
    * Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val latitude: Int = 0,
   /**
    * Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val longitude: Int = 0,
   /**
    * The altitude calculated from the barometric pressue. Reference is against 29.92inHg or
    * 1013.2mb. If unknown: -1000 m.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeBarometric: Float = 0F,
   /**
    * The geodetic altitude as defined by WGS84. If unknown: -1000 m.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeGeodetic: Float = 0F,
@@ -109,6 +153,7 @@ public data class OpenDroneIdLocation(
   /**
    * The current height of the unmanned aircraft above the take-off location or the ground as
    * indicated by height_reference. If unknown: -1000 m.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val height: Float = 0F,
@@ -136,6 +181,7 @@ public data class OpenDroneIdLocation(
    * Seconds after the full hour with reference to UTC time. Typically the GPS outputs a
    * time-of-week value in milliseconds. First convert that to UTC and then convert for this field
    * using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
+   * units = s
    */
   @GeneratedMavField(type = "float")
   public val timestamp: Float = 0F,
@@ -145,9 +191,9 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "uint8_t")
   public val timestampAccuracy: MavEnumValue<MavOdidTimeAcc> = MavEnumValue.fromValue(0u),
 ) : MavMessage<OpenDroneIdLocation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdLocation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdLocation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -171,7 +217,7 @@ public data class OpenDroneIdLocation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -200,11 +246,11 @@ public data class OpenDroneIdLocation(
 
     private const val SIZE_V2: Int = 59
 
-    public override val id: UInt = 12_901u
+    override val id: UInt = 12_901u
 
-    public override val crcExtra: Byte = -2
+    override val crcExtra: Byte = -2
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdLocation {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdLocation {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

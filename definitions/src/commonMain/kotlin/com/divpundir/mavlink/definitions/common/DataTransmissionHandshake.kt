@@ -26,6 +26,18 @@ import kotlin.Unit
 /**
  * Handshake message to initiate, control and stop image streaming when using the Image Transmission
  * Protocol: https://mavlink.io/en/services/image_transmission.html.
+ *
+ * @param type Type of requested/acknowledged data.
+ * @param size total data size (set on ACK only).
+ * units = bytes
+ * @param width Width of a matrix or image.
+ * @param height Height of a matrix or image.
+ * @param packets Number of packets being sent (set on ACK only).
+ * @param payload Payload size per packet (normally 253 byte, see DATA field size in message
+ * ENCAPSULATED_DATA) (set on ACK only).
+ * units = bytes
+ * @param jpgQuality JPEG quality. Values: [1-100].
+ * units = %
  */
 @GeneratedMavMessage(
   id = 130u,
@@ -39,6 +51,7 @@ public data class DataTransmissionHandshake(
   public val type: MavEnumValue<MavlinkDataStreamType> = MavEnumValue.fromValue(0u),
   /**
    * total data size (set on ACK only).
+   * units = bytes
    */
   @GeneratedMavField(type = "uint32_t")
   public val size: UInt = 0u,
@@ -60,19 +73,20 @@ public data class DataTransmissionHandshake(
   /**
    * Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA)
    * (set on ACK only).
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val payload: UByte = 0u,
   /**
    * JPEG quality. Values: [1-100].
+   * units = %
    */
   @GeneratedMavField(type = "uint8_t")
   public val jpgQuality: UByte = 0u,
 ) : MavMessage<DataTransmissionHandshake> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DataTransmissionHandshake> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DataTransmissionHandshake> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(size)
     encoder.encodeUInt16(width)
@@ -84,7 +98,7 @@ public data class DataTransmissionHandshake(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(size)
     encoder.encodeUInt16(width)
@@ -101,11 +115,11 @@ public data class DataTransmissionHandshake(
 
     private const val SIZE_V2: Int = 13
 
-    public override val id: UInt = 130u
+    override val id: UInt = 130u
 
-    public override val crcExtra: Byte = 29
+    override val crcExtra: Byte = 29
 
-    public override fun deserialize(bytes: ByteArray): DataTransmissionHandshake {
+    override fun deserialize(bytes: ByteArray): DataTransmissionHandshake {
       val decoder = MavDataDecoder(bytes)
 
       val size = decoder.safeDecodeUInt32()

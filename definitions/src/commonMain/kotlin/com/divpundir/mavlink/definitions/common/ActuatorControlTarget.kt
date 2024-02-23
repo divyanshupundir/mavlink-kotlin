@@ -24,6 +24,17 @@ import kotlin.collections.List
 
 /**
  * Set the vehicle attitude and body angular rates.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param groupMlx Actuator group. The "_mlx" indicates this is a multi-instance message and a
+ * MAVLink parser should use this field to difference between instances.
+ * @param controls Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for
+ * single rotation direction motors is 0..1, negative range for reverse direction. Standard mapping for
+ * attitude controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes,
+ * landing gear. Load a pass-through mixer to repurpose them as generic outputs.
  */
 @GeneratedMavMessage(
   id = 140u,
@@ -33,6 +44,7 @@ public data class ActuatorControlTarget(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -51,9 +63,9 @@ public data class ActuatorControlTarget(
   @GeneratedMavField(type = "float[8]")
   public val controls: List<Float> = emptyList(),
 ) : MavMessage<ActuatorControlTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ActuatorControlTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ActuatorControlTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(controls, 32)
@@ -61,7 +73,7 @@ public data class ActuatorControlTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(controls, 32)
@@ -74,11 +86,11 @@ public data class ActuatorControlTarget(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 140u
+    override val id: UInt = 140u
 
-    public override val crcExtra: Byte = -75
+    override val crcExtra: Byte = -75
 
-    public override fun deserialize(bytes: ByteArray): ActuatorControlTarget {
+    override fun deserialize(bytes: ByteArray): ActuatorControlTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

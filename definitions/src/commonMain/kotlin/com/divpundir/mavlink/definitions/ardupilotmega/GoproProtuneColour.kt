@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproProtuneColour(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Auto.
@@ -22,7 +22,7 @@ public enum class GoproProtuneColour(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproProtuneColour> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneColour? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproProtuneColour? = when (v) {
       0u -> STANDARD
       1u -> NEUTRAL
       else -> null

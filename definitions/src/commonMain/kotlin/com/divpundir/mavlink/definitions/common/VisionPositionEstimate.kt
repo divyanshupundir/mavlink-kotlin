@@ -26,6 +26,27 @@ import kotlin.collections.List
 
 /**
  * Local position/attitude estimate from a vision source.
+ *
+ * @param usec Timestamp (UNIX time or time since system boot)
+ * units = us
+ * @param x Local X position
+ * units = m
+ * @param y Local Y position
+ * units = m
+ * @param z Local Z position
+ * units = m
+ * @param roll Roll angle
+ * units = rad
+ * @param pitch Pitch angle
+ * units = rad
+ * @param yaw Yaw angle
+ * units = rad
+ * @param covariance Row-major representation of pose 6x6 cross-covariance matrix upper right
+ * triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries
+ * are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+ * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets
+ * in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used
+ * when e.g an external SLAM system detects a loop-closure and the estimate jumps.
  */
 @GeneratedMavMessage(
   id = 102u,
@@ -34,36 +55,43 @@ import kotlin.collections.List
 public data class VisionPositionEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val usec: ULong = 0uL,
   /**
    * Local X position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Local Y position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Local Z position
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * Roll angle
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
@@ -88,9 +116,9 @@ public data class VisionPositionEstimate(
   )
   public val resetCounter: UByte = 0u,
 ) : MavMessage<VisionPositionEstimate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VisionPositionEstimate> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VisionPositionEstimate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -102,7 +130,7 @@ public data class VisionPositionEstimate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -121,11 +149,11 @@ public data class VisionPositionEstimate(
 
     private const val SIZE_V2: Int = 117
 
-    public override val id: UInt = 102u
+    override val id: UInt = 102u
 
-    public override val crcExtra: Byte = -98
+    override val crcExtra: Byte = -98
 
-    public override fun deserialize(bytes: ByteArray): VisionPositionEstimate {
+    override fun deserialize(bytes: ByteArray): VisionPositionEstimate {
       val decoder = MavDataDecoder(bytes)
 
       val usec = decoder.safeDecodeUInt64()

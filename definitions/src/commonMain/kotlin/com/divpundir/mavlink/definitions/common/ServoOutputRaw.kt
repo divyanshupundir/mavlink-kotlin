@@ -24,6 +24,45 @@ import kotlin.Unit
  * Superseded by ACTUATOR_OUTPUT_STATUS. The RAW values of the servo outputs (for RC input from the
  * remote, use the RC_CHANNELS messages). The standard PPM modulation is as follows: 1000 microseconds:
  * 0%, 2000 microseconds: 100%.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param port Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk
+ * should use: 0 = MAIN, 1 = AUX.
+ * @param servo1Raw Servo output 1 value
+ * units = us
+ * @param servo2Raw Servo output 2 value
+ * units = us
+ * @param servo3Raw Servo output 3 value
+ * units = us
+ * @param servo4Raw Servo output 4 value
+ * units = us
+ * @param servo5Raw Servo output 5 value
+ * units = us
+ * @param servo6Raw Servo output 6 value
+ * units = us
+ * @param servo7Raw Servo output 7 value
+ * units = us
+ * @param servo8Raw Servo output 8 value
+ * units = us
+ * @param servo9Raw Servo output 9 value
+ * units = us
+ * @param servo10Raw Servo output 10 value
+ * units = us
+ * @param servo11Raw Servo output 11 value
+ * units = us
+ * @param servo12Raw Servo output 12 value
+ * units = us
+ * @param servo13Raw Servo output 13 value
+ * units = us
+ * @param servo14Raw Servo output 14 value
+ * units = us
+ * @param servo15Raw Servo output 15 value
+ * units = us
+ * @param servo16Raw Servo output 16 value
+ * units = us
  */
 @GeneratedMavMessage(
   id = 36u,
@@ -33,6 +72,7 @@ public data class ServoOutputRaw(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeUsec: UInt = 0u,
@@ -44,46 +84,55 @@ public data class ServoOutputRaw(
   public val port: UByte = 0u,
   /**
    * Servo output 1 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo1Raw: UShort = 0u,
   /**
    * Servo output 2 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo2Raw: UShort = 0u,
   /**
    * Servo output 3 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo3Raw: UShort = 0u,
   /**
    * Servo output 4 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo4Raw: UShort = 0u,
   /**
    * Servo output 5 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo5Raw: UShort = 0u,
   /**
    * Servo output 6 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo6Raw: UShort = 0u,
   /**
    * Servo output 7 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo7Raw: UShort = 0u,
   /**
    * Servo output 8 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val servo8Raw: UShort = 0u,
   /**
    * Servo output 9 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -92,6 +141,7 @@ public data class ServoOutputRaw(
   public val servo9Raw: UShort = 0u,
   /**
    * Servo output 10 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -100,6 +150,7 @@ public data class ServoOutputRaw(
   public val servo10Raw: UShort = 0u,
   /**
    * Servo output 11 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -108,6 +159,7 @@ public data class ServoOutputRaw(
   public val servo11Raw: UShort = 0u,
   /**
    * Servo output 12 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -116,6 +168,7 @@ public data class ServoOutputRaw(
   public val servo12Raw: UShort = 0u,
   /**
    * Servo output 13 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -124,6 +177,7 @@ public data class ServoOutputRaw(
   public val servo13Raw: UShort = 0u,
   /**
    * Servo output 14 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -132,6 +186,7 @@ public data class ServoOutputRaw(
   public val servo14Raw: UShort = 0u,
   /**
    * Servo output 15 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -140,6 +195,7 @@ public data class ServoOutputRaw(
   public val servo15Raw: UShort = 0u,
   /**
    * Servo output 16 value
+   * units = us
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -147,9 +203,9 @@ public data class ServoOutputRaw(
   )
   public val servo16Raw: UShort = 0u,
 ) : MavMessage<ServoOutputRaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ServoOutputRaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ServoOutputRaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeUsec)
     encoder.encodeUInt16(servo1Raw)
@@ -164,7 +220,7 @@ public data class ServoOutputRaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeUsec)
     encoder.encodeUInt16(servo1Raw)
@@ -192,11 +248,11 @@ public data class ServoOutputRaw(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 36u
+    override val id: UInt = 36u
 
-    public override val crcExtra: Byte = -34
+    override val crcExtra: Byte = -34
 
-    public override fun deserialize(bytes: ByteArray): ServoOutputRaw {
+    override fun deserialize(bytes: ByteArray): ServoOutputRaw {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt32()

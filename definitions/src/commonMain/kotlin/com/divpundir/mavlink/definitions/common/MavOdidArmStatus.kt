@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidArmStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Passing arming checks.
@@ -22,7 +22,7 @@ public enum class MavOdidArmStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidArmStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidArmStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidArmStatus? = when (v) {
       0u -> GOOD_TO_ARM
       1u -> PRE_ARM_FAIL_GENERIC
       else -> null

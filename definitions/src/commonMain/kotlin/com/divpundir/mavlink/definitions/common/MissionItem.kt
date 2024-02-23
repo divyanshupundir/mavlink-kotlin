@@ -32,6 +32,24 @@ import kotlin.Unit
  * is Z-down, right handed (NED), global frame is Z-up, right handed (ENU). NaN may be used to indicate
  * an optional/default value (e.g. to use the system's current latitude or yaw rather than a specific
  * value). See also https://mavlink.io/en/services/mission.html.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param seq Sequence
+ * @param frame The coordinate system of the waypoint.
+ * @param command The scheduled action for the waypoint.
+ * @param current false:0, true:1
+ * @param autocontinue Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission
+ * after the item completes.
+ * @param param1 PARAM1, see MAV_CMD enum
+ * @param param2 PARAM2, see MAV_CMD enum
+ * @param param3 PARAM3, see MAV_CMD enum
+ * @param param4 PARAM4, see MAV_CMD enum
+ * @param x PARAM5 / local: X coordinate, global: latitude
+ * @param y PARAM6 / local: Y coordinate, global: longitude
+ * @param z PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on
+ * frame).
+ * @param missionType Mission type.
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -119,9 +137,9 @@ public data class MissionItem(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionItem> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionItem> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionItem> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -140,7 +158,7 @@ public data class MissionItem(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -165,11 +183,11 @@ public data class MissionItem(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 39u
+    override val id: UInt = 39u
 
-    public override val crcExtra: Byte = -2
+    override val crcExtra: Byte = -2
 
-    public override fun deserialize(bytes: ByteArray): MissionItem {
+    override fun deserialize(bytes: ByteArray): MissionItem {
       val decoder = MavDataDecoder(bytes)
 
       val param1 = decoder.safeDecodeFloat()

@@ -12,7 +12,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class CompMetadataType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * General information about the component. General metadata includes information about other
@@ -49,7 +49,7 @@ public enum class CompMetadataType(
   ;
 
   public companion object : MavEnum.MavCompanion<CompMetadataType> {
-    public override fun getEntryFromValueOrNull(v: UInt): CompMetadataType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CompMetadataType? = when (v) {
       0u -> GENERAL
       1u -> PARAMETER
       2u -> COMMANDS

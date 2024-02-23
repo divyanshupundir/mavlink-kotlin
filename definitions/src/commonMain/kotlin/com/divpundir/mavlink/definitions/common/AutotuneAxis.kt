@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AutotuneAxis(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Flight stack tunes axis according to its default settings.
@@ -36,7 +36,7 @@ public enum class AutotuneAxis(
   ;
 
   public companion object : MavBitmask.MavCompanion<AutotuneAxis> {
-    public override fun getEntryFromValueOrNull(v: UInt): AutotuneAxis? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AutotuneAxis? = when (v) {
       0u -> DEFAULT
       1u -> ROLL
       2u -> PITCH
@@ -44,7 +44,7 @@ public enum class AutotuneAxis(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<AutotuneAxis> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<AutotuneAxis> = buildList {
       if (v and 0u == 0u) add(DEFAULT)
       if (v and 1u == 1u) add(ROLL)
       if (v and 2u == 2u) add(PITCH)

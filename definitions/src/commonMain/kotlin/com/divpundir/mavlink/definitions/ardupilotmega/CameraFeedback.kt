@@ -31,6 +31,31 @@ import kotlin.Unit
 
 /**
  * Camera Capture Feedback.
+ *
+ * @param timeUsec Image timestamp (since UNIX epoch), as passed in by CAMERA_STATUS message (or
+ * autopilot if no CCB).
+ * units = us
+ * @param targetSystem System ID.
+ * @param camIdx Camera ID.
+ * @param imgIdx Image index.
+ * @param lat Latitude.
+ * units = degE7
+ * @param lng Longitude.
+ * units = degE7
+ * @param altMsl Altitude (MSL).
+ * units = m
+ * @param altRel Altitude (Relative to HOME location).
+ * units = m
+ * @param roll Camera Roll angle (earth frame, +-180).
+ * units = deg
+ * @param pitch Camera Pitch angle (earth frame, +-180).
+ * units = deg
+ * @param yaw Camera Yaw (earth frame, 0-360, true).
+ * units = deg
+ * @param focLen Focal Length.
+ * units = mm
+ * @param flags Feedback flags.
+ * @param completedCaptures Completed image captures.
  */
 @GeneratedMavMessage(
   id = 180u,
@@ -40,6 +65,7 @@ public data class CameraFeedback(
   /**
    * Image timestamp (since UNIX epoch), as passed in by CAMERA_STATUS message (or autopilot if no
    * CCB).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -60,41 +86,49 @@ public data class CameraFeedback(
   public val imgIdx: UShort = 0u,
   /**
    * Latitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
   /**
    * Altitude (MSL).
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altMsl: Float = 0F,
   /**
    * Altitude (Relative to HOME location).
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altRel: Float = 0F,
   /**
    * Camera Roll angle (earth frame, +-180).
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Camera Pitch angle (earth frame, +-180).
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Camera Yaw (earth frame, 0-360, true).
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Focal Length.
+   * units = mm
    */
   @GeneratedMavField(type = "float")
   public val focLen: Float = 0F,
@@ -112,9 +146,9 @@ public data class CameraFeedback(
   )
   public val completedCaptures: UShort = 0u,
 ) : MavMessage<CameraFeedback> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraFeedback> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraFeedback> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -132,7 +166,7 @@ public data class CameraFeedback(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -156,11 +190,11 @@ public data class CameraFeedback(
 
     private const val SIZE_V2: Int = 47
 
-    public override val id: UInt = 180u
+    override val id: UInt = 180u
 
-    public override val crcExtra: Byte = 52
+    override val crcExtra: Byte = 52
 
-    public override fun deserialize(bytes: ByteArray): CameraFeedback {
+    override fun deserialize(bytes: ByteArray): CameraFeedback {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

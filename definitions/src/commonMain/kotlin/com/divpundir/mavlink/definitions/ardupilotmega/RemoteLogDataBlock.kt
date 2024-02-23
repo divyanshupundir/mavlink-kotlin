@@ -23,6 +23,11 @@ import kotlin.collections.List
 
 /**
  * Send a block of log data to remote location.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param seqno Log data block sequence number.
+ * @param data Log data block.
  */
 @GeneratedMavMessage(
   id = 184u,
@@ -50,9 +55,9 @@ public data class RemoteLogDataBlock(
   @GeneratedMavField(type = "uint8_t[200]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<RemoteLogDataBlock> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RemoteLogDataBlock> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RemoteLogDataBlock> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(seqno.value, 4)
     encoder.encodeUInt8(targetSystem)
@@ -61,7 +66,7 @@ public data class RemoteLogDataBlock(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(seqno.value, 4)
     encoder.encodeUInt8(targetSystem)
@@ -75,11 +80,11 @@ public data class RemoteLogDataBlock(
 
     private const val SIZE_V2: Int = 206
 
-    public override val id: UInt = 184u
+    override val id: UInt = 184u
 
-    public override val crcExtra: Byte = -97
+    override val crcExtra: Byte = -97
 
-    public override fun deserialize(bytes: ByteArray): RemoteLogDataBlock {
+    override fun deserialize(bytes: ByteArray): RemoteLogDataBlock {
       val decoder = MavDataDecoder(bytes)
 
       val seqno = decoder.safeDecodeEnumValue(4).let { value ->

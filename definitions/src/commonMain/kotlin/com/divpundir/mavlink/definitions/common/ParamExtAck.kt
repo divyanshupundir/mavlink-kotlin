@@ -20,6 +20,13 @@ import kotlin.Unit
 
 /**
  * Response from a PARAM_EXT_SET message.
+ *
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
+ * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
+ * to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramValue Parameter value (new value if PARAM_ACK_ACCEPTED, current value otherwise)
+ * @param paramType Parameter type.
+ * @param paramResult Result code.
  */
 @GeneratedMavMessage(
   id = 324u,
@@ -49,9 +56,9 @@ public data class ParamExtAck(
   @GeneratedMavField(type = "uint8_t")
   public val paramResult: MavEnumValue<ParamAck> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ParamExtAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamExtAck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamExtAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeString(paramId, 16)
     encoder.encodeString(paramValue, 128)
@@ -60,7 +67,7 @@ public data class ParamExtAck(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeString(paramId, 16)
     encoder.encodeString(paramValue, 128)
@@ -74,11 +81,11 @@ public data class ParamExtAck(
 
     private const val SIZE_V2: Int = 146
 
-    public override val id: UInt = 324u
+    override val id: UInt = 324u
 
-    public override val crcExtra: Byte = -124
+    override val crcExtra: Byte = -124
 
-    public override fun deserialize(bytes: ByteArray): ParamExtAck {
+    override fun deserialize(bytes: ByteArray): ParamExtAck {
       val decoder = MavDataDecoder(bytes)
 
       val paramId = decoder.safeDecodeString(16)

@@ -20,6 +20,15 @@ import kotlin.Unit
 
 /**
  * Request to control this MAV
+ *
+ * @param targetSystem System the GCS requests control for
+ * @param controlRequest 0: request control of this MAV, 1: Release control of this MAV
+ * @param version 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS
+ * should in general use the safest mode possible initially and then gradually move down the encryption
+ * level if it gets a NACK message indicating an encryption mismatch.
+ * units = rad
+ * @param passkey Password / Key, depending on version plaintext or encrypted. 25 or less
+ * characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
  */
 @GeneratedMavMessage(
   id = 5u,
@@ -40,6 +49,7 @@ public data class ChangeOperatorControl(
    * 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in
    * general use the safest mode possible initially and then gradually move down the encryption level
    * if it gets a NACK message indicating an encryption mismatch.
+   * units = rad
    */
   @GeneratedMavField(type = "uint8_t")
   public val version: UByte = 0u,
@@ -50,9 +60,9 @@ public data class ChangeOperatorControl(
   @GeneratedMavField(type = "char[25]")
   public val passkey: String = "",
 ) : MavMessage<ChangeOperatorControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ChangeOperatorControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(controlRequest)
@@ -61,7 +71,7 @@ public data class ChangeOperatorControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(controlRequest)
@@ -75,11 +85,11 @@ public data class ChangeOperatorControl(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 5u
+    override val id: UInt = 5u
 
-    public override val crcExtra: Byte = -39
+    override val crcExtra: Byte = -39
 
-    public override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
+    override fun deserialize(bytes: ByteArray): ChangeOperatorControl {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class StorageType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Storage type is not known.
@@ -60,7 +60,7 @@ public enum class StorageType(
   ;
 
   public companion object : MavEnum.MavCompanion<StorageType> {
-    public override fun getEntryFromValueOrNull(v: UInt): StorageType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): StorageType? = when (v) {
       0u -> UNKNOWN
       1u -> USB_STICK
       2u -> SD

@@ -17,6 +17,8 @@ import kotlin.Unit
 
 /**
  * This message informs about the currently active SCRIPT.
+ *
+ * @param seq Active Sequence
  */
 @GeneratedMavMessage(
   id = 184u,
@@ -29,15 +31,15 @@ public data class ScriptCurrent(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
 ) : MavMessage<ScriptCurrent> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScriptCurrent> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScriptCurrent> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seq)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seq)
     return encoder.bytes.truncateZeros()
@@ -48,11 +50,11 @@ public data class ScriptCurrent(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 184u
+    override val id: UInt = 184u
 
-    public override val crcExtra: Byte = 40
+    override val crcExtra: Byte = 40
 
-    public override fun deserialize(bytes: ByteArray): ScriptCurrent {
+    override fun deserialize(bytes: ByteArray): ScriptCurrent {
       val decoder = MavDataDecoder(bytes)
 
       val seq = decoder.safeDecodeUInt16()

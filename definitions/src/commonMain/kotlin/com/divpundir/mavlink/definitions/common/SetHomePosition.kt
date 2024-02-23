@@ -42,6 +42,41 @@ import kotlin.collections.List
  *         Note: the current home position may be emitted in a HOME_POSITION message on request
  * (using MAV_CMD_REQUEST_MESSAGE with param1=242).
  *       
+ *
+ * @param targetSystem System ID.
+ * @param latitude Latitude (WGS84)
+ * units = degE7
+ * @param longitude Longitude (WGS84)
+ * units = degE7
+ * @param altitude Altitude (MSL). Positive for up.
+ * units = mm
+ * @param x Local X position of this position in the local coordinate frame (NED)
+ * units = m
+ * @param y Local Y position of this position in the local coordinate frame (NED)
+ * units = m
+ * @param z Local Z position of this position in the local coordinate frame (NED: positive "down")
+ * units = m
+ * @param q World to surface normal and heading transformation of the takeoff position. Used to
+ * indicate the heading and slope of the ground
+ * @param approachX Local X position of the end of the approach vector. Multicopters should set this
+ * position based on their takeoff path. Grass-landing fixed wing aircraft should set it the same way
+ * as multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
+ * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+ * units = m
+ * @param approachY Local Y position of the end of the approach vector. Multicopters should set this
+ * position based on their takeoff path. Grass-landing fixed wing aircraft should set it the same way
+ * as multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
+ * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+ * units = m
+ * @param approachZ Local Z position of the end of the approach vector. Multicopters should set this
+ * position based on their takeoff path. Grass-landing fixed wing aircraft should set it the same way
+ * as multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
+ * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+ * units = m
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
  */
 @Deprecated(message =
     "The command protocol version (MAV_CMD_DO_SET_HOME) allows a GCS to detect when setting the home position has failed.")
@@ -57,31 +92,37 @@ public data class SetHomePosition(
   public val targetSystem: UByte = 0u,
   /**
    * Latitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val latitude: Int = 0,
   /**
    * Longitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val longitude: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val altitude: Int = 0,
   /**
    * Local X position of this position in the local coordinate frame (NED)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Local Y position of this position in the local coordinate frame (NED)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Local Z position of this position in the local coordinate frame (NED: positive "down")
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
@@ -96,6 +137,7 @@ public data class SetHomePosition(
    * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
    * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
    * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val approachX: Float = 0F,
@@ -104,6 +146,7 @@ public data class SetHomePosition(
    * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
    * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
    * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val approachY: Float = 0F,
@@ -112,12 +155,14 @@ public data class SetHomePosition(
    * on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as
    * multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the
    * takeoff, assuming the takeoff happened from the threshold / touchdown zone.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val approachZ: Float = 0F,
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(
     type = "uint64_t",
@@ -125,9 +170,9 @@ public data class SetHomePosition(
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<SetHomePosition> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetHomePosition> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetHomePosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -143,7 +188,7 @@ public data class SetHomePosition(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(latitude)
     encoder.encodeInt32(longitude)
@@ -165,11 +210,11 @@ public data class SetHomePosition(
 
     private const val SIZE_V2: Int = 61
 
-    public override val id: UInt = 243u
+    override val id: UInt = 243u
 
-    public override val crcExtra: Byte = 85
+    override val crcExtra: Byte = 85
 
-    public override fun deserialize(bytes: ByteArray): SetHomePosition {
+    override fun deserialize(bytes: ByteArray): SetHomePosition {
       val decoder = MavDataDecoder(bytes)
 
       val latitude = decoder.safeDecodeInt32()

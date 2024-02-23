@@ -31,6 +31,25 @@ import kotlin.collections.List
 /**
  * Message to a gimbal manager to control the gimbal attitude. Angles and rates can be set to NaN
  * according to use case. A gimbal device is never to react to this message.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink
+ * gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
+ * @param client Client which is contacting the gimbal manager (must be set).
+ * @param deviceFlags Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as
+ * used in GIMBAL_DEVICE_SET_ATTITUDE.
+ * @param managerFlags Gimbal manager flags to be applied (0 to be ignored).
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). Set first element to
+ * NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+ * @param angularVelocityX X component of angular velocity (positive: roll to the right). NaN to be
+ * ignored.
+ * units = rad/s
+ * @param angularVelocityY Y component of angular velocity (positive: tilt up). NaN to be ignored.
+ * units = rad/s
+ * @param angularVelocityZ Z component of angular velocity (positive: pan to the right). NaN to be
+ * ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 60_012u,
@@ -78,25 +97,27 @@ public data class Storm32GimbalManagerControl(
   public val q: List<Float> = emptyList(),
   /**
    * X component of angular velocity (positive: roll to the right). NaN to be ignored.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityX: Float = 0F,
   /**
    * Y component of angular velocity (positive: tilt up). NaN to be ignored.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityY: Float = 0F,
   /**
    * Z component of angular velocity (positive: pan to the right). NaN to be ignored. The frame is
    * determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControl> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(angularVelocityX)
@@ -111,7 +132,7 @@ public data class Storm32GimbalManagerControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(angularVelocityX)
@@ -131,11 +152,11 @@ public data class Storm32GimbalManagerControl(
 
     private const val SIZE_V2: Int = 36
 
-    public override val id: UInt = 60_012u
+    override val id: UInt = 60_012u
 
-    public override val crcExtra: Byte = 99
+    override val crcExtra: Byte = 99
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerControl {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerControl {
       val decoder = MavDataDecoder(bytes)
 
       val q = decoder.safeDecodeFloatArray(16)

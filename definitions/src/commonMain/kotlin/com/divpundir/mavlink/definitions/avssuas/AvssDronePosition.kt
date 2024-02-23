@@ -21,6 +21,20 @@ import kotlin.Unit
 
 /**
  *  Drone position.
+ *
+ * @param timeBootMs Timestamp (time since FC boot).
+ * units = ms
+ * @param lat Latitude, expressed
+ * units = degE7
+ * @param lon Longitude, expressed
+ * units = degE7
+ * @param alt Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
+ * units = mm
+ * @param groundAlt Altitude above ground, This altitude is measured by a ultrasound, Laser
+ * rangefinder or millimeter-wave radar
+ * units = m
+ * @param barometerAlt This altitude is measured by a barometer
+ * units = m
  */
 @GeneratedMavMessage(
   id = 60_051u,
@@ -29,39 +43,45 @@ import kotlin.Unit
 public data class AvssDronePosition(
   /**
    * Timestamp (time since FC boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
    * Latitude, expressed
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude, expressed
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
    * Altitude above ground, This altitude is measured by a ultrasound, Laser rangefinder or
    * millimeter-wave radar
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val groundAlt: Float = 0F,
   /**
    * This altitude is measured by a barometer
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val barometerAlt: Float = 0F,
 ) : MavMessage<AvssDronePosition> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AvssDronePosition> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AvssDronePosition> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(lat)
@@ -72,7 +92,7 @@ public data class AvssDronePosition(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(lat)
@@ -88,11 +108,11 @@ public data class AvssDronePosition(
 
     private const val SIZE_V2: Int = 24
 
-    public override val id: UInt = 60_051u
+    override val id: UInt = 60_051u
 
-    public override val crcExtra: Byte = -11
+    override val crcExtra: Byte = -11
 
-    public override fun deserialize(bytes: ByteArray): AvssDronePosition {
+    override fun deserialize(bytes: ByteArray): AvssDronePosition {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

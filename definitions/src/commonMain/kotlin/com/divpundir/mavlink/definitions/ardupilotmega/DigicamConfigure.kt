@@ -23,6 +23,20 @@ import kotlin.Unit
 
 /**
  * Configure on-board Camera Control System.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param mode Mode enumeration from 1 to N //P, TV, AV, M, etc. (0 means ignore).
+ * @param shutterSpeed Divisor number //e.g. 1000 means 1/1000 (0 means ignore).
+ * @param aperture F stop number x 10 //e.g. 28 means 2.8 (0 means ignore).
+ * @param iso ISO enumeration from 1 to N //e.g. 80, 100, 200, Etc (0 means ignore).
+ * @param exposureType Exposure type enumeration from 1 to N (0 means ignore).
+ * @param commandId Command Identity (incremental loop: 0 to 255). //A command sent multiple times
+ * will be executed or pooled just once.
+ * @param engineCutOff Main engine cut-off time before camera trigger (0 means no cut-off).
+ * units = ds
+ * @param extraParam Extra parameters enumeration (0 means ignore).
+ * @param extraValue Correspondent value to given extra_param.
  */
 @GeneratedMavMessage(
   id = 154u,
@@ -72,6 +86,7 @@ public data class DigicamConfigure(
   public val commandId: UByte = 0u,
   /**
    * Main engine cut-off time before camera trigger (0 means no cut-off).
+   * units = ds
    */
   @GeneratedMavField(type = "uint8_t")
   public val engineCutOff: UByte = 0u,
@@ -86,9 +101,9 @@ public data class DigicamConfigure(
   @GeneratedMavField(type = "float")
   public val extraValue: Float = 0F,
 ) : MavMessage<DigicamConfigure> {
-  public override val instanceCompanion: MavMessage.MavCompanion<DigicamConfigure> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<DigicamConfigure> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt16(shutterSpeed)
@@ -104,7 +119,7 @@ public data class DigicamConfigure(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(extraValue)
     encoder.encodeUInt16(shutterSpeed)
@@ -125,11 +140,11 @@ public data class DigicamConfigure(
 
     private const val SIZE_V2: Int = 15
 
-    public override val id: UInt = 154u
+    override val id: UInt = 154u
 
-    public override val crcExtra: Byte = 84
+    override val crcExtra: Byte = 84
 
-    public override fun deserialize(bytes: ByteArray): DigicamConfigure {
+    override fun deserialize(bytes: ByteArray): DigicamConfigure {
       val decoder = MavDataDecoder(bytes)
 
       val extraValue = decoder.safeDecodeFloat()

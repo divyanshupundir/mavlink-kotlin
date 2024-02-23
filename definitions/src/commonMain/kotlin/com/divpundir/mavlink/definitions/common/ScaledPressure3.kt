@@ -22,6 +22,18 @@ import kotlin.Unit
 
 /**
  * Barometer readings for 3rd barometer
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param pressAbs Absolute pressure
+ * units = hPa
+ * @param pressDiff Differential pressure
+ * units = hPa
+ * @param temperature Absolute pressure temperature
+ * units = cdegC
+ * @param temperaturePressDiff Differential pressure temperature (0, if not available). Report
+ * values of 0 (or 1) as 1 cdegC.
+ * units = cdegC
  */
 @GeneratedMavMessage(
   id = 143u,
@@ -30,26 +42,31 @@ import kotlin.Unit
 public data class ScaledPressure3(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
    * Absolute pressure
+   * units = hPa
    */
   @GeneratedMavField(type = "float")
   public val pressAbs: Float = 0F,
   /**
    * Differential pressure
+   * units = hPa
    */
   @GeneratedMavField(type = "float")
   public val pressDiff: Float = 0F,
   /**
    * Absolute pressure temperature
+   * units = cdegC
    */
   @GeneratedMavField(type = "int16_t")
   public val temperature: Short = 0,
   /**
    * Differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.
+   * units = cdegC
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -57,9 +74,9 @@ public data class ScaledPressure3(
   )
   public val temperaturePressDiff: Short = 0,
 ) : MavMessage<ScaledPressure3> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure3> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScaledPressure3> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(pressAbs)
@@ -68,7 +85,7 @@ public data class ScaledPressure3(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(pressAbs)
@@ -83,11 +100,11 @@ public data class ScaledPressure3(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 143u
+    override val id: UInt = 143u
 
-    public override val crcExtra: Byte = -125
+    override val crcExtra: Byte = -125
 
-    public override fun deserialize(bytes: ByteArray): ScaledPressure3 {
+    override fun deserialize(bytes: ByteArray): ScaledPressure3 {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

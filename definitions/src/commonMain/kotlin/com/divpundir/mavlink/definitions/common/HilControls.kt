@@ -26,6 +26,21 @@ import kotlin.Unit
 
 /**
  * Sent from autopilot to simulation. Hardware in the loop control outputs
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param rollAilerons Control output -1 .. 1
+ * @param pitchElevator Control output -1 .. 1
+ * @param yawRudder Control output -1 .. 1
+ * @param throttle Throttle 0 .. 1
+ * @param aux1 Aux 1, -1 .. 1
+ * @param aux2 Aux 2, -1 .. 1
+ * @param aux3 Aux 3, -1 .. 1
+ * @param aux4 Aux 4, -1 .. 1
+ * @param mode System mode.
+ * @param navMode Navigation mode (MAV_NAV_MODE)
  */
 @GeneratedMavMessage(
   id = 91u,
@@ -35,6 +50,7 @@ public data class HilControls(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -89,9 +105,9 @@ public data class HilControls(
   @GeneratedMavField(type = "uint8_t")
   public val navMode: UByte = 0u,
 ) : MavMessage<HilControls> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilControls> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilControls> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(rollAilerons)
@@ -107,7 +123,7 @@ public data class HilControls(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(rollAilerons)
@@ -128,11 +144,11 @@ public data class HilControls(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 91u
+    override val id: UInt = 91u
 
-    public override val crcExtra: Byte = 63
+    override val crcExtra: Byte = 63
 
-    public override fun deserialize(bytes: ByteArray): HilControls {
+    override fun deserialize(bytes: ByteArray): HilControls {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

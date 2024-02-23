@@ -35,6 +35,37 @@ import kotlin.collections.List
  * Data for filling the OpenDroneID System message. The System Message contains general system
  * information including the operator location/altitude and possible aircraft group and/or
  * category/class information.
+ *
+ * @param targetSystem System ID (0 for broadcast).
+ * @param targetComponent Component ID (0 for broadcast).
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
+ * https://mavlink.io/en/services/opendroneid.html. 
+ * @param operatorLocationType Specifies the operator location type.
+ * @param classificationType Specifies the classification type of the UA.
+ * @param operatorLatitude Latitude of the operator. If unknown: 0 (both Lat/Lon).
+ * units = degE7
+ * @param operatorLongitude Longitude of the operator. If unknown: 0 (both Lat/Lon).
+ * units = degE7
+ * @param areaCount Number of aircraft in the area, group or formation (default 1). Used only for
+ * swarms/multiple UA.
+ * @param areaRadius Radius of the cylindrical area of the group or formation (default 0). Used only
+ * for swarms/multiple UA.
+ * units = m
+ * @param areaCeiling Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for
+ * swarms/multiple UA.
+ * units = m
+ * @param areaFloor Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for
+ * swarms/multiple UA.
+ * units = m
+ * @param categoryEu When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the
+ * category of the UA.
+ * @param classEu When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class
+ * of the UA.
+ * @param operatorAltitudeGeo Geodetic altitude of the operator relative to WGS84. If unknown: -1000
+ * m.
+ * units = m
+ * @param timestamp 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
+ * units = s
  */
 @GeneratedMavMessage(
   id = 12_904u,
@@ -71,11 +102,13 @@ public data class OpenDroneIdSystem(
       MavEnumValue.fromValue(0u),
   /**
    * Latitude of the operator. If unknown: 0 (both Lat/Lon).
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val operatorLatitude: Int = 0,
   /**
    * Longitude of the operator. If unknown: 0 (both Lat/Lon).
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val operatorLongitude: Int = 0,
@@ -88,17 +121,20 @@ public data class OpenDroneIdSystem(
   /**
    * Radius of the cylindrical area of the group or formation (default 0). Used only for
    * swarms/multiple UA.
+   * units = m
    */
   @GeneratedMavField(type = "uint16_t")
   public val areaRadius: UShort = 0u,
   /**
    * Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple
    * UA.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val areaCeiling: Float = 0F,
   /**
    * Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val areaFloor: Float = 0F,
@@ -114,18 +150,20 @@ public data class OpenDroneIdSystem(
   public val classEu: MavEnumValue<MavOdidClassEu> = MavEnumValue.fromValue(0u),
   /**
    * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val operatorAltitudeGeo: Float = 0F,
   /**
    * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
+   * units = s
    */
   @GeneratedMavField(type = "uint32_t")
   public val timestamp: UInt = 0u,
 ) : MavMessage<OpenDroneIdSystem> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystem> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystem> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(operatorLatitude)
     encoder.encodeInt32(operatorLongitude)
@@ -145,7 +183,7 @@ public data class OpenDroneIdSystem(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(operatorLatitude)
     encoder.encodeInt32(operatorLongitude)
@@ -170,11 +208,11 @@ public data class OpenDroneIdSystem(
 
     private const val SIZE_V2: Int = 54
 
-    public override val id: UInt = 12_904u
+    override val id: UInt = 12_904u
 
-    public override val crcExtra: Byte = 77
+    override val crcExtra: Byte = 77
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdSystem {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdSystem {
       val decoder = MavDataDecoder(bytes)
 
       val operatorLatitude = decoder.safeDecodeInt32()

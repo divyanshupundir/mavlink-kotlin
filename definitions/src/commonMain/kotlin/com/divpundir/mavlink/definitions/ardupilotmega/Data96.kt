@@ -20,6 +20,11 @@ import kotlin.collections.List
 
 /**
  * Data packet, size 96.
+ *
+ * @param type Data type.
+ * @param len Data length.
+ * units = bytes
+ * @param data Raw data.
  */
 @GeneratedMavMessage(
   id = 172u,
@@ -33,6 +38,7 @@ public data class Data96(
   public val type: UByte = 0u,
   /**
    * Data length.
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val len: UByte = 0u,
@@ -42,9 +48,9 @@ public data class Data96(
   @GeneratedMavField(type = "uint8_t[96]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<Data96> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Data96> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Data96> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(type)
     encoder.encodeUInt8(len)
@@ -52,7 +58,7 @@ public data class Data96(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(type)
     encoder.encodeUInt8(len)
@@ -65,11 +71,11 @@ public data class Data96(
 
     private const val SIZE_V2: Int = 98
 
-    public override val id: UInt = 172u
+    override val id: UInt = 172u
 
-    public override val crcExtra: Byte = 22
+    override val crcExtra: Byte = 22
 
-    public override fun deserialize(bytes: ByteArray): Data96 {
+    override fun deserialize(bytes: ByteArray): Data96 {
       val decoder = MavDataDecoder(bytes)
 
       val type = decoder.safeDecodeUInt8()

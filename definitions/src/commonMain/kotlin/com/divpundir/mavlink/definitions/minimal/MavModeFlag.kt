@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 0b10000000 MAV safety set to armed. Motors are enabled / running / can start. Ready to fly.
@@ -63,7 +63,7 @@ public enum class MavModeFlag(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavModeFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavModeFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavModeFlag? = when (v) {
       128u -> SAFETY_ARMED
       64u -> MANUAL_INPUT_ENABLED
       32u -> HIL_ENABLED
@@ -75,7 +75,7 @@ public enum class MavModeFlag(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavModeFlag> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavModeFlag> = buildList {
       if (v and 128u == 128u) add(SAFETY_ARMED)
       if (v and 64u == 64u) add(MANUAL_INPUT_ENABLED)
       if (v and 32u == 32u) add(HIL_ENABLED)

@@ -31,6 +31,40 @@ import kotlin.Unit
 /**
  * Smart Battery information (static/infrequent update). Use for updates from: smart battery to
  * flight stack, flight stack to GCS. Use BATTERY_STATUS for smart battery frequent updates.
+ *
+ * @param id Battery ID
+ * @param batteryFunction Function of the battery
+ * @param type Type (chemistry) of the battery
+ * @param capacityFullSpecification Capacity when full according to manufacturer, -1: field not
+ * provided.
+ * units = mAh
+ * @param capacityFull Capacity when full (accounting for battery degradation), -1: field not
+ * provided.
+ * units = mAh
+ * @param cycleCount Charge/discharge cycle count. UINT16_MAX: field not provided.
+ * @param serialNumber Serial number in ASCII characters, 0 terminated. All 0: field not provided.
+ * @param deviceName Static device name in ASCII characters, 0 terminated. All 0: field not
+ * provided. Encode as manufacturer name then product name separated using an underscore.
+ * @param weight Battery weight. 0: field not provided.
+ * units = g
+ * @param dischargeMinimumVoltage Minimum per-cell voltage when discharging. If not supplied set to
+ * UINT16_MAX value.
+ * units = mV
+ * @param chargingMinimumVoltage Minimum per-cell voltage when charging. If not supplied set to
+ * UINT16_MAX value.
+ * units = mV
+ * @param restingMinimumVoltage Minimum per-cell voltage when resting. If not supplied set to
+ * UINT16_MAX value.
+ * units = mV
+ * @param chargingMaximumVoltage Maximum per-cell voltage when charged. 0: field not provided.
+ * units = mV
+ * @param cellsInSeries Number of battery cells in series. 0: field not provided.
+ * @param dischargeMaximumCurrent Maximum pack discharge current. 0: field not provided.
+ * units = mA
+ * @param dischargeMaximumBurstCurrent Maximum pack discharge burst current. 0: field not provided.
+ * units = mA
+ * @param manufactureDate Manufacture date (DD/MM/YYYY) in ASCII characters, 0 terminated. All 0:
+ * field not provided.
  */
 @GeneratedMavMessage(
   id = 370u,
@@ -54,11 +88,13 @@ public data class SmartBatteryInfo(
   public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0u),
   /**
    * Capacity when full according to manufacturer, -1: field not provided.
+   * units = mAh
    */
   @GeneratedMavField(type = "int32_t")
   public val capacityFullSpecification: Int = 0,
   /**
    * Capacity when full (accounting for battery degradation), -1: field not provided.
+   * units = mAh
    */
   @GeneratedMavField(type = "int32_t")
   public val capacityFull: Int = 0,
@@ -80,26 +116,31 @@ public data class SmartBatteryInfo(
   public val deviceName: String = "",
   /**
    * Battery weight. 0: field not provided.
+   * units = g
    */
   @GeneratedMavField(type = "uint16_t")
   public val weight: UShort = 0u,
   /**
    * Minimum per-cell voltage when discharging. If not supplied set to UINT16_MAX value.
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val dischargeMinimumVoltage: UShort = 0u,
   /**
    * Minimum per-cell voltage when charging. If not supplied set to UINT16_MAX value.
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val chargingMinimumVoltage: UShort = 0u,
   /**
    * Minimum per-cell voltage when resting. If not supplied set to UINT16_MAX value.
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val restingMinimumVoltage: UShort = 0u,
   /**
    * Maximum per-cell voltage when charged. 0: field not provided.
+   * units = mV
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -116,6 +157,7 @@ public data class SmartBatteryInfo(
   public val cellsInSeries: UByte = 0u,
   /**
    * Maximum pack discharge current. 0: field not provided.
+   * units = mA
    */
   @GeneratedMavField(
     type = "uint32_t",
@@ -124,6 +166,7 @@ public data class SmartBatteryInfo(
   public val dischargeMaximumCurrent: UInt = 0u,
   /**
    * Maximum pack discharge burst current. 0: field not provided.
+   * units = mA
    */
   @GeneratedMavField(
     type = "uint32_t",
@@ -139,9 +182,9 @@ public data class SmartBatteryInfo(
   )
   public val manufactureDate: String = "",
 ) : MavMessage<SmartBatteryInfo> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SmartBatteryInfo> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SmartBatteryInfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(capacityFullSpecification)
     encoder.encodeInt32(capacityFull)
@@ -158,7 +201,7 @@ public data class SmartBatteryInfo(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(capacityFullSpecification)
     encoder.encodeInt32(capacityFull)
@@ -185,11 +228,11 @@ public data class SmartBatteryInfo(
 
     private const val SIZE_V2: Int = 109
 
-    public override val id: UInt = 370u
+    override val id: UInt = 370u
 
-    public override val crcExtra: Byte = 75
+    override val crcExtra: Byte = 75
 
-    public override fun deserialize(bytes: ByteArray): SmartBatteryInfo {
+    override fun deserialize(bytes: ByteArray): SmartBatteryInfo {
       val decoder = MavDataDecoder(bytes)
 
       val capacityFullSpecification = decoder.safeDecodeInt32()

@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavDoRepositionFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * The aircraft should immediately transition into guided. This should not be set for follow me
@@ -22,12 +22,12 @@ public enum class MavDoRepositionFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavDoRepositionFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavDoRepositionFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavDoRepositionFlags? = when (v) {
       1u -> CHANGE_MODE
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavDoRepositionFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavDoRepositionFlags> = buildList {
       if (v and 1u == 1u) add(CHANGE_MODE)
     }
   }

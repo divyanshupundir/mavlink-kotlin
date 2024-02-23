@@ -17,6 +17,8 @@ import kotlin.Unit
 
 /**
  * Response to the authorization request
+ *
+ * @param respType Response type
  */
 @GeneratedMavMessage(
   id = 52_001u,
@@ -29,15 +31,15 @@ public data class AirlinkAuthResponse(
   @GeneratedMavField(type = "uint8_t")
   public val respType: MavEnumValue<AirlinkAuthResponseType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<AirlinkAuthResponse> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AirlinkAuthResponse> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AirlinkAuthResponse> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(respType.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(respType.value, 1)
     return encoder.bytes.truncateZeros()
@@ -48,11 +50,11 @@ public data class AirlinkAuthResponse(
 
     private const val SIZE_V2: Int = 1
 
-    public override val id: UInt = 52_001u
+    override val id: UInt = 52_001u
 
-    public override val crcExtra: Byte = -17
+    override val crcExtra: Byte = -17
 
-    public override fun deserialize(bytes: ByteArray): AirlinkAuthResponse {
+    override fun deserialize(bytes: ByteArray): AirlinkAuthResponse {
       val decoder = MavDataDecoder(bytes)
 
       val respType = decoder.safeDecodeEnumValue(1).let { value ->

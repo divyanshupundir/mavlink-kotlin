@@ -21,6 +21,10 @@ import kotlin.Unit
 /**
  * Request script item with the sequence number seq. The response of the system to this message
  * should be a SCRIPT_ITEM message.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param seq Sequence
  */
 @GeneratedMavMessage(
   id = 181u,
@@ -43,9 +47,9 @@ public data class ScriptRequest(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
 ) : MavMessage<ScriptRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScriptRequest> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScriptRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seq)
     encoder.encodeUInt8(targetSystem)
@@ -53,7 +57,7 @@ public data class ScriptRequest(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seq)
     encoder.encodeUInt8(targetSystem)
@@ -66,11 +70,11 @@ public data class ScriptRequest(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 181u
+    override val id: UInt = 181u
 
-    public override val crcExtra: Byte = -127
+    override val crcExtra: Byte = -127
 
-    public override fun deserialize(bytes: ByteArray): ScriptRequest {
+    override fun deserialize(bytes: ByteArray): ScriptRequest {
       val decoder = MavDataDecoder(bytes)
 
       val seq = decoder.safeDecodeUInt16()

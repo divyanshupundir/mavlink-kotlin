@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Uninitialized system, state is unknown.
@@ -58,7 +58,7 @@ public enum class MavState(
   ;
 
   public companion object : MavEnum.MavCompanion<MavState> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavState? = when (v) {
       0u -> UNINIT
       1u -> BOOT
       2u -> CALIBRATING

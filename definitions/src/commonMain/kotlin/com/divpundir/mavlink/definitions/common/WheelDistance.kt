@@ -24,6 +24,14 @@ import kotlin.collections.List
 
 /**
  * Cumulative distance traveled for each reported wheel.
+ *
+ * @param timeUsec Timestamp (synced to UNIX time or since system boot).
+ * units = us
+ * @param count Number of wheels reported.
+ * @param distance Distance reported by individual wheel encoders. Forward rotations increase
+ * values, reverse rotations decrease them. Not all wheels will necessarily have wheel encoders; the
+ * mapping of encoders to wheel positions must be agreed/understood by the endpoints.
+ * units = m
  */
 @GeneratedMavMessage(
   id = 9_000u,
@@ -32,6 +40,7 @@ import kotlin.collections.List
 public data class WheelDistance(
   /**
    * Timestamp (synced to UNIX time or since system boot).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -44,13 +53,14 @@ public data class WheelDistance(
    * Distance reported by individual wheel encoders. Forward rotations increase values, reverse
    * rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of
    * encoders to wheel positions must be agreed/understood by the endpoints.
+   * units = m
    */
   @GeneratedMavField(type = "double[16]")
   public val distance: List<Double> = emptyList(),
 ) : MavMessage<WheelDistance> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeDoubleArray(distance, 128)
@@ -58,7 +68,7 @@ public data class WheelDistance(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeDoubleArray(distance, 128)
@@ -71,11 +81,11 @@ public data class WheelDistance(
 
     private const val SIZE_V2: Int = 137
 
-    public override val id: UInt = 9_000u
+    override val id: UInt = 9_000u
 
-    public override val crcExtra: Byte = 113
+    override val crcExtra: Byte = 113
 
-    public override fun deserialize(bytes: ByteArray): WheelDistance {
+    override fun deserialize(bytes: ByteArray): WheelDistance {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

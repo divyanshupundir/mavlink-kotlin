@@ -23,6 +23,17 @@ import kotlin.Unit
 /**
  * Current status about a high level gimbal manager. This message should be broadcast at a low
  * regular rate (e.g. 5Hz).
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param flags High level gimbal manager flags currently applied.
+ * @param gimbalDeviceId Gimbal device ID that this gimbal manager is responsible for. Component ID
+ * of gimbal device (or 1-6 for non-MAVLink gimbal).
+ * @param primaryControlSysid System ID of MAVLink component with primary control, 0 for none.
+ * @param primaryControlCompid Component ID of MAVLink component with primary control, 0 for none.
+ * @param secondaryControlSysid System ID of MAVLink component with secondary control, 0 for none.
+ * @param secondaryControlCompid Component ID of MAVLink component with secondary control, 0 for
+ * none.
  */
 @GeneratedMavMessage(
   id = 281u,
@@ -31,6 +42,7 @@ import kotlin.Unit
 public data class GimbalManagerStatus(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -66,9 +78,9 @@ public data class GimbalManagerStatus(
   @GeneratedMavField(type = "uint8_t")
   public val secondaryControlCompid: UByte = 0u,
 ) : MavMessage<GimbalManagerStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeBitmaskValue(flags.value, 4)
@@ -80,7 +92,7 @@ public data class GimbalManagerStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeBitmaskValue(flags.value, 4)
@@ -97,11 +109,11 @@ public data class GimbalManagerStatus(
 
     private const val SIZE_V2: Int = 13
 
-    public override val id: UInt = 281u
+    override val id: UInt = 281u
 
-    public override val crcExtra: Byte = 48
+    override val crcExtra: Byte = 48
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerStatus {
+    override fun deserialize(bytes: ByteArray): GimbalManagerStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

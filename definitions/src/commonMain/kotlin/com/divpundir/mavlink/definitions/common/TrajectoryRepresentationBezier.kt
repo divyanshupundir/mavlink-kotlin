@@ -25,6 +25,22 @@ import kotlin.collections.List
 /**
  * Describe a trajectory using an array of up-to 5 bezier control points in the local frame
  * (MAV_FRAME_LOCAL_NED).
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param validPoints Number of valid control points (up-to 5 points are possible)
+ * @param posX X-coordinate of bezier control points. Set to NaN if not being used
+ * units = m
+ * @param posY Y-coordinate of bezier control points. Set to NaN if not being used
+ * units = m
+ * @param posZ Z-coordinate of bezier control points. Set to NaN if not being used
+ * units = m
+ * @param delta Bezier time horizon. Set to NaN if velocity/acceleration should not be incorporated
+ * units = s
+ * @param posYaw Yaw. Set to NaN for unchanged
+ * units = rad
  */
 @GeneratedMavMessage(
   id = 333u,
@@ -34,6 +50,7 @@ public data class TrajectoryRepresentationBezier(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -44,34 +61,39 @@ public data class TrajectoryRepresentationBezier(
   public val validPoints: UByte = 0u,
   /**
    * X-coordinate of bezier control points. Set to NaN if not being used
+   * units = m
    */
   @GeneratedMavField(type = "float[5]")
   public val posX: List<Float> = emptyList(),
   /**
    * Y-coordinate of bezier control points. Set to NaN if not being used
+   * units = m
    */
   @GeneratedMavField(type = "float[5]")
   public val posY: List<Float> = emptyList(),
   /**
    * Z-coordinate of bezier control points. Set to NaN if not being used
+   * units = m
    */
   @GeneratedMavField(type = "float[5]")
   public val posZ: List<Float> = emptyList(),
   /**
    * Bezier time horizon. Set to NaN if velocity/acceleration should not be incorporated
+   * units = s
    */
   @GeneratedMavField(type = "float[5]")
   public val delta: List<Float> = emptyList(),
   /**
    * Yaw. Set to NaN for unchanged
+   * units = rad
    */
   @GeneratedMavField(type = "float[5]")
   public val posYaw: List<Float> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationBezier> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationBezier> =
+  override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationBezier> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(posX, 20)
@@ -83,7 +105,7 @@ public data class TrajectoryRepresentationBezier(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(posX, 20)
@@ -100,11 +122,11 @@ public data class TrajectoryRepresentationBezier(
 
     private const val SIZE_V2: Int = 109
 
-    public override val id: UInt = 333u
+    override val id: UInt = 333u
 
-    public override val crcExtra: Byte = -25
+    override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): TrajectoryRepresentationBezier {
+    override fun deserialize(bytes: ByteArray): TrajectoryRepresentationBezier {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

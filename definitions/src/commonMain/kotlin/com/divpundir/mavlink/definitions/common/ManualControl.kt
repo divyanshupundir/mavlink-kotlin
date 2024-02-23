@@ -25,6 +25,46 @@ import kotlin.Unit
  * This message provides an API for manually controlling the vehicle using standard joystick axes
  * nomenclature, along with a joystick-like input device. Unused axes can be disabled and buttons
  * states are transmitted as individual on/off bits of a bitmask
+ *
+ * @param target The system to be controlled.
+ * @param x X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
+ * axis is invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and
+ * the pitch of a vehicle.
+ * @param y Y-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
+ * axis is invalid. Generally corresponds to left(-1000)-right(1000) movement on a joystick and the
+ * roll of a vehicle.
+ * @param z Z-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
+ * axis is invalid. Generally corresponds to a separate slider movement with maximum being 1000 and
+ * minimum being -1000 on a joystick and the thrust of a vehicle. Positive values are positive thrust,
+ * negative values are negative thrust.
+ * @param r R-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
+ * axis is invalid. Generally corresponds to a twisting of the joystick, with counter-clockwise being
+ * 1000 and clockwise being -1000, and the yaw of a vehicle.
+ * @param buttons A bitfield corresponding to the joystick buttons' 0-15 current state, 1 for
+ * pressed, 0 for released. The lowest bit corresponds to Button 1.
+ * @param buttons2 A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for
+ * pressed, 0 for released. The lowest bit corresponds to Button 16.
+ * @param enabledExtensions Set bits to 1 to indicate which of the following extension fields
+ * contain valid data: bit 0: pitch, bit 1: roll, bit 2: aux1, bit 3: aux2, bit 4: aux3, bit 5: aux4,
+ * bit 6: aux5, bit 7: aux6
+ * @param s Pitch-only-axis, normalized to the range [-1000,1000]. Generally corresponds to pitch on
+ * vehicles with additional degrees of freedom. Valid if bit 0 of enabled_extensions field is set. Set
+ * to 0 if invalid.
+ * @param t Roll-only-axis, normalized to the range [-1000,1000]. Generally corresponds to roll on
+ * vehicles with additional degrees of freedom. Valid if bit 1 of enabled_extensions field is set. Set
+ * to 0 if invalid.
+ * @param aux1 Aux continuous input field 1. Normalized in the range [-1000,1000]. Purpose defined
+ * by recipient. Valid data if bit 2 of enabled_extensions field is set. 0 if bit 2 is unset.
+ * @param aux2 Aux continuous input field 2. Normalized in the range [-1000,1000]. Purpose defined
+ * by recipient. Valid data if bit 3 of enabled_extensions field is set. 0 if bit 3 is unset.
+ * @param aux3 Aux continuous input field 3. Normalized in the range [-1000,1000]. Purpose defined
+ * by recipient. Valid data if bit 4 of enabled_extensions field is set. 0 if bit 4 is unset.
+ * @param aux4 Aux continuous input field 4. Normalized in the range [-1000,1000]. Purpose defined
+ * by recipient. Valid data if bit 5 of enabled_extensions field is set. 0 if bit 5 is unset.
+ * @param aux5 Aux continuous input field 5. Normalized in the range [-1000,1000]. Purpose defined
+ * by recipient. Valid data if bit 6 of enabled_extensions field is set. 0 if bit 6 is unset.
+ * @param aux6 Aux continuous input field 6. Normalized in the range [-1000,1000]. Purpose defined
+ * by recipient. Valid data if bit 7 of enabled_extensions field is set. 0 if bit 7 is unset.
  */
 @GeneratedMavMessage(
   id = 69u,
@@ -164,9 +204,9 @@ public data class ManualControl(
   )
   public val aux6: Short = 0,
 ) : MavMessage<ManualControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ManualControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(x)
     encoder.encodeInt16(y)
@@ -177,7 +217,7 @@ public data class ManualControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(x)
     encoder.encodeInt16(y)
@@ -203,11 +243,11 @@ public data class ManualControl(
 
     private const val SIZE_V2: Int = 30
 
-    public override val id: UInt = 69u
+    override val id: UInt = 69u
 
-    public override val crcExtra: Byte = -13
+    override val crcExtra: Byte = -13
 
-    public override fun deserialize(bytes: ByteArray): ManualControl {
+    override fun deserialize(bytes: ByteArray): ManualControl {
       val decoder = MavDataDecoder(bytes)
 
       val x = decoder.safeDecodeInt16()

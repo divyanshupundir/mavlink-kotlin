@@ -20,6 +20,13 @@ import kotlin.collections.List
 
 /**
  * File transfer protocol message: https://mavlink.io/en/services/ftp.html.
+ *
+ * @param targetNetwork Network ID (0 for broadcast)
+ * @param targetSystem System ID (0 for broadcast)
+ * @param targetComponent Component ID (0 for broadcast)
+ * @param payload Variable length payload. The length is defined by the remaining message length
+ * when subtracting the header and other fields. The content/format of this block is defined in
+ * https://mavlink.io/en/services/ftp.html.
  */
 @GeneratedMavMessage(
   id = 110u,
@@ -49,9 +56,9 @@ public data class FileTransferProtocol(
   @GeneratedMavField(type = "uint8_t[251]")
   public val payload: List<UByte> = emptyList(),
 ) : MavMessage<FileTransferProtocol> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FileTransferProtocol> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FileTransferProtocol> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetNetwork)
     encoder.encodeUInt8(targetSystem)
@@ -60,7 +67,7 @@ public data class FileTransferProtocol(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetNetwork)
     encoder.encodeUInt8(targetSystem)
@@ -74,11 +81,11 @@ public data class FileTransferProtocol(
 
     private const val SIZE_V2: Int = 254
 
-    public override val id: UInt = 110u
+    override val id: UInt = 110u
 
-    public override val crcExtra: Byte = 84
+    override val crcExtra: Byte = 84
 
-    public override fun deserialize(bytes: ByteArray): FileTransferProtocol {
+    override fun deserialize(bytes: ByteArray): FileTransferProtocol {
       val decoder = MavDataDecoder(bytes)
 
       val targetNetwork = decoder.safeDecodeUInt8()

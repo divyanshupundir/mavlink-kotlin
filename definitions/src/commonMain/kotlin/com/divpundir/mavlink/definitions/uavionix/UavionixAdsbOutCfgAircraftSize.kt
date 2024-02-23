@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class UavionixAdsbOutCfgAircraftSize(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   NO_DATA(0u),
@@ -47,8 +47,7 @@ public enum class UavionixAdsbOutCfgAircraftSize(
   ;
 
   public companion object : MavEnum.MavCompanion<UavionixAdsbOutCfgAircraftSize> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgAircraftSize? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutCfgAircraftSize? = when (v) {
       0u -> NO_DATA
       1u -> L15M_W23M
       2u -> L25M_W28P5M

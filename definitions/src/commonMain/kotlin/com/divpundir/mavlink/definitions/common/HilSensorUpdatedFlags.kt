@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class HilSensorUpdatedFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * None of the fields in HIL_SENSOR have been updated
@@ -91,7 +91,7 @@ public enum class HilSensorUpdatedFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<HilSensorUpdatedFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): HilSensorUpdatedFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): HilSensorUpdatedFlags? = when (v) {
       0u -> HIL_SENSOR_UPDATED_NONE
       1u -> HIL_SENSOR_UPDATED_XACC
       2u -> HIL_SENSOR_UPDATED_YACC
@@ -110,7 +110,7 @@ public enum class HilSensorUpdatedFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<HilSensorUpdatedFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<HilSensorUpdatedFlags> = buildList {
       if (v and 0u == 0u) add(HIL_SENSOR_UPDATED_NONE)
       if (v and 1u == 1u) add(HIL_SENSOR_UPDATED_XACC)
       if (v and 2u == 2u) add(HIL_SENSOR_UPDATED_YACC)

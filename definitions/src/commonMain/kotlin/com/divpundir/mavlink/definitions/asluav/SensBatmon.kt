@@ -31,6 +31,32 @@ import kotlin.Unit
 
 /**
  * Battery pack monitoring data for Li-Ion batteries
+ *
+ * @param batmonTimestamp Time since system start
+ * units = us
+ * @param temperature Battery pack temperature
+ * units = degC
+ * @param voltage Battery pack voltage
+ * units = mV
+ * @param current Battery pack current
+ * units = mA
+ * @param soc Battery pack state-of-charge
+ * @param batterystatus Battery monitor status report bits in Hex
+ * @param serialnumber Battery monitor serial number in Hex
+ * @param safetystatus Battery monitor safetystatus report bits in Hex
+ * @param operationstatus Battery monitor operation status report bits in Hex
+ * @param cellvoltage1 Battery pack cell 1 voltage
+ * units = mV
+ * @param cellvoltage2 Battery pack cell 2 voltage
+ * units = mV
+ * @param cellvoltage3 Battery pack cell 3 voltage
+ * units = mV
+ * @param cellvoltage4 Battery pack cell 4 voltage
+ * units = mV
+ * @param cellvoltage5 Battery pack cell 5 voltage
+ * units = mV
+ * @param cellvoltage6 Battery pack cell 6 voltage
+ * units = mV
  */
 @GeneratedMavMessage(
   id = 8_010u,
@@ -39,21 +65,25 @@ import kotlin.Unit
 public data class SensBatmon(
   /**
    * Time since system start
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val batmonTimestamp: ULong = 0uL,
   /**
    * Battery pack temperature
+   * units = degC
    */
   @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
   /**
    * Battery pack voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val voltage: UShort = 0u,
   /**
    * Battery pack current
+   * units = mA
    */
   @GeneratedMavField(type = "int16_t")
   public val current: Short = 0,
@@ -84,38 +114,44 @@ public data class SensBatmon(
   public val operationstatus: UInt = 0u,
   /**
    * Battery pack cell 1 voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage1: UShort = 0u,
   /**
    * Battery pack cell 2 voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage2: UShort = 0u,
   /**
    * Battery pack cell 3 voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage3: UShort = 0u,
   /**
    * Battery pack cell 4 voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage4: UShort = 0u,
   /**
    * Battery pack cell 5 voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage5: UShort = 0u,
   /**
    * Battery pack cell 6 voltage
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val cellvoltage6: UShort = 0u,
 ) : MavMessage<SensBatmon> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(batmonTimestamp)
     encoder.encodeFloat(temperature)
@@ -135,7 +171,7 @@ public data class SensBatmon(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(batmonTimestamp)
     encoder.encodeFloat(temperature)
@@ -160,11 +196,11 @@ public data class SensBatmon(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 8_010u
+    override val id: UInt = 8_010u
 
-    public override val crcExtra: Byte = -101
+    override val crcExtra: Byte = -101
 
-    public override fun deserialize(bytes: ByteArray): SensBatmon {
+    override fun deserialize(bytes: ByteArray): SensBatmon {
       val decoder = MavDataDecoder(bytes)
 
       val batmonTimestamp = decoder.safeDecodeUInt64()

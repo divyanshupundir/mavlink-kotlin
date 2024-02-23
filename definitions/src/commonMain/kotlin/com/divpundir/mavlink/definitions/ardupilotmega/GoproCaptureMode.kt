@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproCaptureMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Video mode.
@@ -52,7 +52,7 @@ public enum class GoproCaptureMode(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproCaptureMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproCaptureMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproCaptureMode? = when (v) {
       0u -> VIDEO
       1u -> PHOTO
       2u -> BURST

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class SubMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   STABILIZE(0u),
@@ -33,7 +33,7 @@ public enum class SubMode(
   ;
 
   public companion object : MavEnum.MavCompanion<SubMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): SubMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): SubMode? = when (v) {
       0u -> STABILIZE
       1u -> ACRO
       2u -> ALT_HOLD

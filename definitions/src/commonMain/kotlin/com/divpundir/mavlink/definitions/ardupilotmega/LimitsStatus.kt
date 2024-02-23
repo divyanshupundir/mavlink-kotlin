@@ -25,6 +25,20 @@ import kotlin.Unit
 
 /**
  * Status of AP_Limits. Sent in extended status stream when AP_Limits is enabled.
+ *
+ * @param limitsState State of AP_Limits.
+ * @param lastTrigger Time (since boot) of last breach.
+ * units = ms
+ * @param lastAction Time (since boot) of last recovery action.
+ * units = ms
+ * @param lastRecovery Time (since boot) of last successful recovery.
+ * units = ms
+ * @param lastClear Time (since boot) of last all-clear.
+ * units = ms
+ * @param breachCount Number of fence breaches.
+ * @param modsEnabled AP_Limit_Module bitfield of enabled modules.
+ * @param modsRequired AP_Limit_Module bitfield of required modules.
+ * @param modsTriggered AP_Limit_Module bitfield of triggered modules.
  */
 @GeneratedMavMessage(
   id = 167u,
@@ -38,21 +52,25 @@ public data class LimitsStatus(
   public val limitsState: MavEnumValue<LimitsState> = MavEnumValue.fromValue(0u),
   /**
    * Time (since boot) of last breach.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val lastTrigger: UInt = 0u,
   /**
    * Time (since boot) of last recovery action.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val lastAction: UInt = 0u,
   /**
    * Time (since boot) of last successful recovery.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val lastRecovery: UInt = 0u,
   /**
    * Time (since boot) of last all-clear.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val lastClear: UInt = 0u,
@@ -77,9 +95,9 @@ public data class LimitsStatus(
   @GeneratedMavField(type = "uint8_t")
   public val modsTriggered: MavBitmaskValue<LimitModule> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<LimitsStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LimitsStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LimitsStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(lastTrigger)
     encoder.encodeUInt32(lastAction)
@@ -93,7 +111,7 @@ public data class LimitsStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(lastTrigger)
     encoder.encodeUInt32(lastAction)
@@ -112,11 +130,11 @@ public data class LimitsStatus(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 167u
+    override val id: UInt = 167u
 
-    public override val crcExtra: Byte = -112
+    override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): LimitsStatus {
+    override fun deserialize(bytes: ByteArray): LimitsStatus {
       val decoder = MavDataDecoder(bytes)
 
       val lastTrigger = decoder.safeDecodeUInt32()

@@ -24,6 +24,13 @@ import kotlin.collections.List
 /**
  * Send raw controller memory. The use of this message is discouraged for normal packets, but a
  * quite efficient way for testing new messages and getting experimental debug output.
+ *
+ * @param address Starting address of the debug variables
+ * @param ver Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as
+ * below
+ * @param type Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16
+ * x Q15, 3=16 x 1Q14
+ * @param value Memory contents at specified address
  */
 @GeneratedMavMessage(
   id = 249u,
@@ -52,9 +59,9 @@ public data class MemoryVect(
   @GeneratedMavField(type = "int8_t[32]")
   public val `value`: List<Byte> = emptyList(),
 ) : MavMessage<MemoryVect> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MemoryVect> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MemoryVect> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(address)
     encoder.encodeUInt8(ver)
@@ -63,7 +70,7 @@ public data class MemoryVect(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(address)
     encoder.encodeUInt8(ver)
@@ -77,11 +84,11 @@ public data class MemoryVect(
 
     private const val SIZE_V2: Int = 36
 
-    public override val id: UInt = 249u
+    override val id: UInt = 249u
 
-    public override val crcExtra: Byte = -52
+    override val crcExtra: Byte = -52
 
-    public override fun deserialize(bytes: ByteArray): MemoryVect {
+    override fun deserialize(bytes: ByteArray): MemoryVect {
       val decoder = MavDataDecoder(bytes)
 
       val address = decoder.safeDecodeUInt16()

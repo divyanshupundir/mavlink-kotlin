@@ -26,6 +26,30 @@ import kotlin.Unit
 
 /**
  * Maximum Power Point Tracker (MPPT) sensor data for solar module power performance tracking
+ *
+ * @param mpptTimestamp  MPPT last timestamp 
+ * units = us
+ * @param mppt1Volt  MPPT1 voltage 
+ * units = V
+ * @param mppt1Amp  MPPT1 current 
+ * units = A
+ * @param mppt1Pwm  MPPT1 pwm 
+ * units = us
+ * @param mppt1Status  MPPT1 status 
+ * @param mppt2Volt  MPPT2 voltage 
+ * units = V
+ * @param mppt2Amp  MPPT2 current 
+ * units = A
+ * @param mppt2Pwm  MPPT2 pwm 
+ * units = us
+ * @param mppt2Status  MPPT2 status 
+ * @param mppt3Volt MPPT3 voltage 
+ * units = V
+ * @param mppt3Amp  MPPT3 current 
+ * units = A
+ * @param mppt3Pwm  MPPT3 pwm 
+ * units = us
+ * @param mppt3Status  MPPT3 status 
  */
 @GeneratedMavMessage(
   id = 8_003u,
@@ -34,21 +58,25 @@ import kotlin.Unit
 public data class SensMppt(
   /**
    *  MPPT last timestamp 
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val mpptTimestamp: ULong = 0uL,
   /**
    *  MPPT1 voltage 
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val mppt1Volt: Float = 0F,
   /**
    *  MPPT1 current 
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val mppt1Amp: Float = 0F,
   /**
    *  MPPT1 pwm 
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val mppt1Pwm: UShort = 0u,
@@ -59,16 +87,19 @@ public data class SensMppt(
   public val mppt1Status: UByte = 0u,
   /**
    *  MPPT2 voltage 
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val mppt2Volt: Float = 0F,
   /**
    *  MPPT2 current 
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val mppt2Amp: Float = 0F,
   /**
    *  MPPT2 pwm 
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val mppt2Pwm: UShort = 0u,
@@ -79,16 +110,19 @@ public data class SensMppt(
   public val mppt2Status: UByte = 0u,
   /**
    * MPPT3 voltage 
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val mppt3Volt: Float = 0F,
   /**
    *  MPPT3 current 
+   * units = A
    */
   @GeneratedMavField(type = "float")
   public val mppt3Amp: Float = 0F,
   /**
    *  MPPT3 pwm 
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val mppt3Pwm: UShort = 0u,
@@ -98,9 +132,9 @@ public data class SensMppt(
   @GeneratedMavField(type = "uint8_t")
   public val mppt3Status: UByte = 0u,
 ) : MavMessage<SensMppt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensMppt> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensMppt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(mpptTimestamp)
     encoder.encodeFloat(mppt1Volt)
@@ -118,7 +152,7 @@ public data class SensMppt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(mpptTimestamp)
     encoder.encodeFloat(mppt1Volt)
@@ -141,11 +175,11 @@ public data class SensMppt(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 8_003u
+    override val id: UInt = 8_003u
 
-    public override val crcExtra: Byte = -25
+    override val crcExtra: Byte = -25
 
-    public override fun deserialize(bytes: ByteArray): SensMppt {
+    override fun deserialize(bytes: ByteArray): SensMppt {
       val decoder = MavDataDecoder(bytes)
 
       val mpptTimestamp = decoder.safeDecodeUInt64()

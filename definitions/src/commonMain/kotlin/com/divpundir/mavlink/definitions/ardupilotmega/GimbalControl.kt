@@ -20,6 +20,15 @@ import kotlin.Unit
 
 /**
  * Control message for rate gimbal.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param demandedRateX Demanded angular rate X.
+ * units = rad/s
+ * @param demandedRateY Demanded angular rate Y.
+ * units = rad/s
+ * @param demandedRateZ Demanded angular rate Z.
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 201u,
@@ -38,23 +47,26 @@ public data class GimbalControl(
   public val targetComponent: UByte = 0u,
   /**
    * Demanded angular rate X.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val demandedRateX: Float = 0F,
   /**
    * Demanded angular rate Y.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val demandedRateY: Float = 0F,
   /**
    * Demanded angular rate Z.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val demandedRateZ: Float = 0F,
 ) : MavMessage<GimbalControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(demandedRateX)
     encoder.encodeFloat(demandedRateY)
@@ -64,7 +76,7 @@ public data class GimbalControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(demandedRateX)
     encoder.encodeFloat(demandedRateY)
@@ -79,11 +91,11 @@ public data class GimbalControl(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 201u
+    override val id: UInt = 201u
 
-    public override val crcExtra: Byte = -51
+    override val crcExtra: Byte = -51
 
-    public override fun deserialize(bytes: ByteArray): GimbalControl {
+    override fun deserialize(bytes: ByteArray): GimbalControl {
       val decoder = MavDataDecoder(bytes)
 
       val demandedRateX = decoder.safeDecodeFloat()

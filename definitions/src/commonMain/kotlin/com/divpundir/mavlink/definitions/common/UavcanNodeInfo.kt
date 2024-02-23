@@ -33,6 +33,21 @@ import kotlin.collections.List
  * it can be emitted upon request from the other end of the MAVLink channel (see
  * MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a
  * low frequency. The UAVCAN specification is available at http://uavcan.org.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param uptimeSec Time since the start-up of the node.
+ * units = s
+ * @param name Node name string. For example, "sapog.px4.io".
+ * @param hwVersionMajor Hardware major version number.
+ * @param hwVersionMinor Hardware minor version number.
+ * @param hwUniqueId Hardware unique 128-bit ID.
+ * @param swVersionMajor Software major version number.
+ * @param swVersionMinor Software minor version number.
+ * @param swVcsCommit Version control system (VCS) revision identifier (e.g. git short commit hash).
+ * 0 if unknown.
  */
 @GeneratedMavMessage(
   id = 311u,
@@ -42,11 +57,13 @@ public data class UavcanNodeInfo(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * Time since the start-up of the node.
+   * units = s
    */
   @GeneratedMavField(type = "uint32_t")
   public val uptimeSec: UInt = 0u,
@@ -86,9 +103,9 @@ public data class UavcanNodeInfo(
   @GeneratedMavField(type = "uint32_t")
   public val swVcsCommit: UInt = 0u,
 ) : MavMessage<UavcanNodeInfo> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(uptimeSec)
@@ -102,7 +119,7 @@ public data class UavcanNodeInfo(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt32(uptimeSec)
@@ -121,11 +138,11 @@ public data class UavcanNodeInfo(
 
     private const val SIZE_V2: Int = 116
 
-    public override val id: UInt = 311u
+    override val id: UInt = 311u
 
-    public override val crcExtra: Byte = 95
+    override val crcExtra: Byte = 95
 
-    public override fun deserialize(bytes: ByteArray): UavcanNodeInfo {
+    override fun deserialize(bytes: ByteArray): UavcanNodeInfo {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

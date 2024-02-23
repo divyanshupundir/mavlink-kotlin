@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavLandedState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * MAV landed state is unknown
@@ -40,7 +40,7 @@ public enum class MavLandedState(
   ;
 
   public companion object : MavEnum.MavCompanion<MavLandedState> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavLandedState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavLandedState? = when (v) {
       0u -> UNDEFINED
       1u -> ON_GROUND
       2u -> IN_AIR

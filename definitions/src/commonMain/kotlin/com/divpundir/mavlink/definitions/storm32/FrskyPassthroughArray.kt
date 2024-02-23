@@ -22,6 +22,12 @@ import kotlin.collections.List
 
 /**
  * Frsky SPort passthrough multi packet container.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param count Number of passthrough packets in this message.
+ * @param packetBuf Passthrough packet buffer. A packet has 6 bytes: uint16_t id + uint32_t data.
+ * The array has space for 40 packets.
  */
 @GeneratedMavMessage(
   id = 60_040u,
@@ -30,6 +36,7 @@ import kotlin.collections.List
 public data class FrskyPassthroughArray(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -45,9 +52,9 @@ public data class FrskyPassthroughArray(
   @GeneratedMavField(type = "uint8_t[240]")
   public val packetBuf: List<UByte> = emptyList(),
 ) : MavMessage<FrskyPassthroughArray> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FrskyPassthroughArray> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FrskyPassthroughArray> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt8(count)
@@ -55,7 +62,7 @@ public data class FrskyPassthroughArray(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt8(count)
@@ -68,11 +75,11 @@ public data class FrskyPassthroughArray(
 
     private const val SIZE_V2: Int = 245
 
-    public override val id: UInt = 60_040u
+    override val id: UInt = 60_040u
 
-    public override val crcExtra: Byte = -100
+    override val crcExtra: Byte = -100
 
-    public override fun deserialize(bytes: ByteArray): FrskyPassthroughArray {
+    override fun deserialize(bytes: ByteArray): FrskyPassthroughArray {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

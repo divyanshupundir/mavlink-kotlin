@@ -19,6 +19,14 @@ import kotlin.Unit
 
 /**
  * Reply to LOG_REQUEST_LIST
+ *
+ * @param id Log id
+ * @param numLogs Total number of logs
+ * @param lastLogNum High log number
+ * @param timeUtc UTC timestamp of log since 1970, or 0 if not available
+ * units = s
+ * @param size Size of the log (may be approximate)
+ * units = bytes
  */
 @GeneratedMavMessage(
   id = 118u,
@@ -42,18 +50,20 @@ public data class LogEntry(
   public val lastLogNum: UShort = 0u,
   /**
    * UTC timestamp of log since 1970, or 0 if not available
+   * units = s
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeUtc: UInt = 0u,
   /**
    * Size of the log (may be approximate)
+   * units = bytes
    */
   @GeneratedMavField(type = "uint32_t")
   public val size: UInt = 0u,
 ) : MavMessage<LogEntry> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LogEntry> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LogEntry> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeUtc)
     encoder.encodeUInt32(size)
@@ -63,7 +73,7 @@ public data class LogEntry(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeUtc)
     encoder.encodeUInt32(size)
@@ -78,11 +88,11 @@ public data class LogEntry(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 118u
+    override val id: UInt = 118u
 
-    public override val crcExtra: Byte = 56
+    override val crcExtra: Byte = 56
 
-    public override fun deserialize(bytes: ByteArray): LogEntry {
+    override fun deserialize(bytes: ByteArray): LogEntry {
       val decoder = MavDataDecoder(bytes)
 
       val timeUtc = decoder.safeDecodeUInt32()

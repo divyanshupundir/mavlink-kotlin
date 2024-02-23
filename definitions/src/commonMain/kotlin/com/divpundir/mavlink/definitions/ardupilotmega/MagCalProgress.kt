@@ -27,6 +27,18 @@ import kotlin.collections.List
 
 /**
  * Reports progress of compass calibration.
+ *
+ * @param compassId Compass being calibrated.
+ * @param calMask Bitmask of compasses being calibrated.
+ * @param calStatus Calibration Status.
+ * @param attempt Attempt number.
+ * @param completionPct Completion percentage.
+ * units = %
+ * @param completionMask Bitmask of sphere sections (see
+ * http://en.wikipedia.org/wiki/Geodesic_grid).
+ * @param directionX Body frame direction vector for display.
+ * @param directionY Body frame direction vector for display.
+ * @param directionZ Body frame direction vector for display.
  */
 @GeneratedMavMessage(
   id = 191u,
@@ -55,6 +67,7 @@ public data class MagCalProgress(
   public val attempt: UByte = 0u,
   /**
    * Completion percentage.
+   * units = %
    */
   @GeneratedMavField(type = "uint8_t")
   public val completionPct: UByte = 0u,
@@ -79,9 +92,9 @@ public data class MagCalProgress(
   @GeneratedMavField(type = "float")
   public val directionZ: Float = 0F,
 ) : MavMessage<MagCalProgress> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MagCalProgress> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MagCalProgress> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(directionX)
     encoder.encodeFloat(directionY)
@@ -95,7 +108,7 @@ public data class MagCalProgress(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(directionX)
     encoder.encodeFloat(directionY)
@@ -114,11 +127,11 @@ public data class MagCalProgress(
 
     private const val SIZE_V2: Int = 27
 
-    public override val id: UInt = 191u
+    override val id: UInt = 191u
 
-    public override val crcExtra: Byte = 92
+    override val crcExtra: Byte = 92
 
-    public override fun deserialize(bytes: ByteArray): MagCalProgress {
+    override fun deserialize(bytes: ByteArray): MagCalProgress {
       val decoder = MavDataDecoder(bytes)
 
       val directionX = decoder.safeDecodeFloat()

@@ -17,6 +17,17 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F4: format
+ *
+ * @param sueRollStabilizationAilerons Serial UDB Extra Roll Stabilization with Ailerons Enabled
+ * @param sueRollStabilizationRudder Serial UDB Extra Roll Stabilization with Rudder Enabled
+ * @param suePitchStabilization Serial UDB Extra Pitch Stabilization Enabled
+ * @param sueYawStabilizationRudder Serial UDB Extra Yaw Stabilization using Rudder Enabled
+ * @param sueYawStabilizationAileron Serial UDB Extra Yaw Stabilization using Ailerons Enabled
+ * @param sueAileronNavigation Serial UDB Extra Navigation with Ailerons Enabled
+ * @param sueRudderNavigation Serial UDB Extra Navigation with Rudder Enabled
+ * @param sueAltitudeholdStabilized Serial UDB Extra Type of Alitude Hold when in Stabilized Mode
+ * @param sueAltitudeholdWaypoint Serial UDB Extra Type of Alitude Hold when in Waypoint Mode
+ * @param sueRacingMode Serial UDB Extra Firmware racing mode enabled
  */
 @GeneratedMavMessage(
   id = 172u,
@@ -74,9 +85,9 @@ public data class SerialUdbExtraF4(
   @GeneratedMavField(type = "uint8_t")
   public val sueRacingMode: UByte = 0u,
 ) : MavMessage<SerialUdbExtraF4> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF4> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF4> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(sueRollStabilizationAilerons)
     encoder.encodeUInt8(sueRollStabilizationRudder)
@@ -91,7 +102,7 @@ public data class SerialUdbExtraF4(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(sueRollStabilizationAilerons)
     encoder.encodeUInt8(sueRollStabilizationRudder)
@@ -111,11 +122,11 @@ public data class SerialUdbExtraF4(
 
     private const val SIZE_V2: Int = 10
 
-    public override val id: UInt = 172u
+    override val id: UInt = 172u
 
-    public override val crcExtra: Byte = -65
+    override val crcExtra: Byte = -65
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF4 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF4 {
       val decoder = MavDataDecoder(bytes)
 
       val sueRollStabilizationAilerons = decoder.safeDecodeUInt8()

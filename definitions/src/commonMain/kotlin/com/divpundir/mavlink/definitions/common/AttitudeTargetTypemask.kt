@@ -12,7 +12,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AttitudeTargetTypemask(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Ignore body roll rate
@@ -47,7 +47,7 @@ public enum class AttitudeTargetTypemask(
   ;
 
   public companion object : MavBitmask.MavCompanion<AttitudeTargetTypemask> {
-    public override fun getEntryFromValueOrNull(v: UInt): AttitudeTargetTypemask? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AttitudeTargetTypemask? = when (v) {
       1u -> BODY_ROLL_RATE_IGNORE
       2u -> BODY_PITCH_RATE_IGNORE
       4u -> BODY_YAW_RATE_IGNORE
@@ -57,7 +57,7 @@ public enum class AttitudeTargetTypemask(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<AttitudeTargetTypemask> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<AttitudeTargetTypemask> = buildList {
       if (v and 1u == 1u) add(BODY_ROLL_RATE_IGNORE)
       if (v and 2u == 2u) add(BODY_PITCH_RATE_IGNORE)
       if (v and 4u == 4u) add(BODY_YAW_RATE_IGNORE)

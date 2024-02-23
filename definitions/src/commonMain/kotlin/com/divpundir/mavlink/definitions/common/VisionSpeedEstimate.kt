@@ -26,6 +26,21 @@ import kotlin.collections.List
 
 /**
  * Speed estimate from a vision source.
+ *
+ * @param usec Timestamp (UNIX time or time since system boot)
+ * units = us
+ * @param x Global X speed
+ * units = m/s
+ * @param y Global Y speed
+ * units = m/s
+ * @param z Global Z speed
+ * units = m/s
+ * @param covariance Row-major representation of 3x3 linear velocity covariance matrix (states: vx,
+ * vy, vz; 1st three entries - 1st row, etc.). If unknown, assign NaN value to first element in the
+ * array.
+ * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets
+ * in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used
+ * when e.g an external SLAM system detects a loop-closure and the estimate jumps.
  */
 @GeneratedMavMessage(
   id = 103u,
@@ -34,21 +49,25 @@ import kotlin.collections.List
 public data class VisionSpeedEstimate(
   /**
    * Timestamp (UNIX time or time since system boot)
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val usec: ULong = 0uL,
   /**
    * Global X speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    * Global Y speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    * Global Z speed
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
@@ -72,9 +91,9 @@ public data class VisionSpeedEstimate(
   )
   public val resetCounter: UByte = 0u,
 ) : MavMessage<VisionSpeedEstimate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VisionSpeedEstimate> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VisionSpeedEstimate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -83,7 +102,7 @@ public data class VisionSpeedEstimate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(usec)
     encoder.encodeFloat(x)
@@ -99,11 +118,11 @@ public data class VisionSpeedEstimate(
 
     private const val SIZE_V2: Int = 57
 
-    public override val id: UInt = 103u
+    override val id: UInt = 103u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): VisionSpeedEstimate {
+    override fun deserialize(bytes: ByteArray): VisionSpeedEstimate {
       val decoder = MavDataDecoder(bytes)
 
       val usec = decoder.safeDecodeUInt64()

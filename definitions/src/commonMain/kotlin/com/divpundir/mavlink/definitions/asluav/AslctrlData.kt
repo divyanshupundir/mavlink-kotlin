@@ -23,6 +23,25 @@ import kotlin.Unit
 
 /**
  * ASL-fixed-wing controller data
+ *
+ * @param timestamp  Timestamp
+ * units = us
+ * @param aslctrlMode  ASLCTRL control-mode (manual, stabilized, auto, etc...)
+ * @param h  See sourcecode for a description of these values... 
+ * @param pitchangle Pitch angle
+ * units = deg
+ * @param pitchangleref Pitch angle reference
+ * units = deg
+ * @param airspeedref Airspeed reference
+ * units = m/s
+ * @param yawangle Yaw angle
+ * units = deg
+ * @param yawangleref Yaw angle reference
+ * units = deg
+ * @param rollangle Roll angle
+ * units = deg
+ * @param rollangleref Roll angle reference
+ * units = deg
  */
 @GeneratedMavMessage(
   id = 8_004u,
@@ -31,6 +50,7 @@ import kotlin.Unit
 public data class AslctrlData(
   /**
    *  Timestamp
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
@@ -50,11 +70,13 @@ public data class AslctrlData(
   public val hrefT: Float = 0F,
   /**
    * Pitch angle
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val pitchangle: Float = 0F,
   /**
    * Pitch angle reference
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val pitchangleref: Float = 0F,
@@ -72,6 +94,7 @@ public data class AslctrlData(
   public val nz: Float = 0F,
   /**
    * Airspeed reference
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val airspeedref: Float = 0F,
@@ -79,21 +102,25 @@ public data class AslctrlData(
   public val spoilersengaged: UByte = 0u,
   /**
    * Yaw angle
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val yawangle: Float = 0F,
   /**
    * Yaw angle reference
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val yawangleref: Float = 0F,
   /**
    * Roll angle
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val rollangle: Float = 0F,
   /**
    * Roll angle reference
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val rollangleref: Float = 0F,
@@ -110,9 +137,9 @@ public data class AslctrlData(
   @GeneratedMavField(type = "float")
   public val urud: Float = 0F,
 ) : MavMessage<AslctrlData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AslctrlData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AslctrlData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(h)
@@ -142,7 +169,7 @@ public data class AslctrlData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(h)
@@ -177,11 +204,11 @@ public data class AslctrlData(
 
     private const val SIZE_V2: Int = 98
 
-    public override val id: UInt = 8_004u
+    override val id: UInt = 8_004u
 
-    public override val crcExtra: Byte = -84
+    override val crcExtra: Byte = -84
 
-    public override fun deserialize(bytes: ByteArray): AslctrlData {
+    override fun deserialize(bytes: ByteArray): AslctrlData {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

@@ -23,6 +23,22 @@ import kotlin.Unit
 
 /**
  * Status of the Iridium SBD link.
+ *
+ * @param timestamp Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param lastHeartbeat Timestamp of the last successful sbd session. The receiving end can infer
+ * timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * units = us
+ * @param failedSessions Number of failed SBD sessions.
+ * @param successfulSessions Number of successful SBD sessions.
+ * @param signalQuality Signal quality equal to the number of bars displayed on the ISU signal
+ * strength indicator. Range is 0 to 5, where 0 indicates no signal and 5 indicates maximum signal
+ * strength.
+ * @param ringPending 1: Ring call pending, 0: No call pending.
+ * @param txSessionPending 1: Transmission session pending, 0: No transmission session pending.
+ * @param rxSessionPending 1: Receiving session pending, 0: No receiving session pending.
  */
 @GeneratedMavMessage(
   id = 335u,
@@ -32,12 +48,14 @@ public data class IsbdLinkStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
   /**
    * Timestamp of the last successful sbd session. The receiving end can infer timestamp format
    * (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val lastHeartbeat: ULong = 0uL,
@@ -73,9 +91,9 @@ public data class IsbdLinkStatus(
   @GeneratedMavField(type = "uint8_t")
   public val rxSessionPending: UByte = 0u,
 ) : MavMessage<IsbdLinkStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<IsbdLinkStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<IsbdLinkStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(lastHeartbeat)
@@ -88,7 +106,7 @@ public data class IsbdLinkStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(lastHeartbeat)
@@ -106,11 +124,11 @@ public data class IsbdLinkStatus(
 
     private const val SIZE_V2: Int = 24
 
-    public override val id: UInt = 335u
+    override val id: UInt = 335u
 
-    public override val crcExtra: Byte = -31
+    override val crcExtra: Byte = -31
 
-    public override fun deserialize(bytes: ByteArray): IsbdLinkStatus {
+    override fun deserialize(bytes: ByteArray): IsbdLinkStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavStorm32CameraPrearmFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * The camera has been found and is connected.
@@ -21,12 +21,12 @@ public enum class MavStorm32CameraPrearmFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavStorm32CameraPrearmFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavStorm32CameraPrearmFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavStorm32CameraPrearmFlags? = when (v) {
       1u -> CONNECTED
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavStorm32CameraPrearmFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavStorm32CameraPrearmFlags> = buildList {
       if (v and 1u == 1u) add(CONNECTED)
     }
   }

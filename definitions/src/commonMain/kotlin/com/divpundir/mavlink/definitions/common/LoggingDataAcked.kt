@@ -23,6 +23,16 @@ import kotlin.collections.List
 
 /**
  * A message containing logged data which requires a LOGGING_ACK to be sent back
+ *
+ * @param targetSystem system ID of the target
+ * @param targetComponent component ID of the target
+ * @param sequence sequence number (can wrap)
+ * @param length data length
+ * units = bytes
+ * @param firstMessageOffset offset into data where first message starts. This can be used for
+ * recovery, when a previous message got lost (set to UINT8_MAX if no start exists).
+ * units = bytes
+ * @param data logged data
  */
 @GeneratedMavMessage(
   id = 267u,
@@ -46,12 +56,14 @@ public data class LoggingDataAcked(
   public val sequence: UShort = 0u,
   /**
    * data length
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val length: UByte = 0u,
   /**
    * offset into data where first message starts. This can be used for recovery, when a previous
    * message got lost (set to UINT8_MAX if no start exists).
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val firstMessageOffset: UByte = 0u,
@@ -61,9 +73,9 @@ public data class LoggingDataAcked(
   @GeneratedMavField(type = "uint8_t[249]")
   public val `data`: List<UByte> = emptyList(),
 ) : MavMessage<LoggingDataAcked> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LoggingDataAcked> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LoggingDataAcked> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -74,7 +86,7 @@ public data class LoggingDataAcked(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt8(targetSystem)
@@ -90,11 +102,11 @@ public data class LoggingDataAcked(
 
     private const val SIZE_V2: Int = 255
 
-    public override val id: UInt = 267u
+    override val id: UInt = 267u
 
-    public override val crcExtra: Byte = 35
+    override val crcExtra: Byte = 35
 
-    public override fun deserialize(bytes: ByteArray): LoggingDataAcked {
+    override fun deserialize(bytes: ByteArray): LoggingDataAcked {
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()

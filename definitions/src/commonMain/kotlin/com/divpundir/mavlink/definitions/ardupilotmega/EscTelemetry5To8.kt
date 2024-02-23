@@ -21,6 +21,18 @@ import kotlin.collections.List
 
 /**
  * ESC Telemetry Data for ESCs 5 to 8, matching data sent by BLHeli ESCs.
+ *
+ * @param temperature Temperature.
+ * units = degC
+ * @param voltage Voltage.
+ * units = cV
+ * @param current Current.
+ * units = cA
+ * @param totalcurrent Total current.
+ * units = mAh
+ * @param rpm RPM (eRPM).
+ * units = rpm
+ * @param count count of telemetry packets received (wraps at 65535).
  */
 @GeneratedMavMessage(
   id = 11_031u,
@@ -29,26 +41,31 @@ import kotlin.collections.List
 public data class EscTelemetry5To8(
   /**
    * Temperature.
+   * units = degC
    */
   @GeneratedMavField(type = "uint8_t[4]")
   public val temperature: List<UByte> = emptyList(),
   /**
    * Voltage.
+   * units = cV
    */
   @GeneratedMavField(type = "uint16_t[4]")
   public val voltage: List<UShort> = emptyList(),
   /**
    * Current.
+   * units = cA
    */
   @GeneratedMavField(type = "uint16_t[4]")
   public val current: List<UShort> = emptyList(),
   /**
    * Total current.
+   * units = mAh
    */
   @GeneratedMavField(type = "uint16_t[4]")
   public val totalcurrent: List<UShort> = emptyList(),
   /**
    * RPM (eRPM).
+   * units = rpm
    */
   @GeneratedMavField(type = "uint16_t[4]")
   public val rpm: List<UShort> = emptyList(),
@@ -58,9 +75,9 @@ public data class EscTelemetry5To8(
   @GeneratedMavField(type = "uint16_t[4]")
   public val count: List<UShort> = emptyList(),
 ) : MavMessage<EscTelemetry5To8> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry5To8> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EscTelemetry5To8> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16Array(voltage, 8)
     encoder.encodeUInt16Array(current, 8)
@@ -71,7 +88,7 @@ public data class EscTelemetry5To8(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16Array(voltage, 8)
     encoder.encodeUInt16Array(current, 8)
@@ -87,11 +104,11 @@ public data class EscTelemetry5To8(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 11_031u
+    override val id: UInt = 11_031u
 
-    public override val crcExtra: Byte = -123
+    override val crcExtra: Byte = -123
 
-    public override fun deserialize(bytes: ByteArray): EscTelemetry5To8 {
+    override fun deserialize(bytes: ByteArray): EscTelemetry5To8 {
       val decoder = MavDataDecoder(bytes)
 
       val voltage = decoder.safeDecodeUInt16Array(8)

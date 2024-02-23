@@ -33,6 +33,35 @@ import kotlin.Unit
 
 /**
  * Dynamic data used to generate ADS-B out transponder data (send at 5Hz)
+ *
+ * @param utctime UTC time in seconds since GPS epoch (Jan 6, 1980). If unknown set to UINT32_MAX
+ * units = s
+ * @param gpslat Latitude WGS84 (deg * 1E7). If unknown set to INT32_MAX
+ * units = degE7
+ * @param gpslon Longitude WGS84 (deg * 1E7). If unknown set to INT32_MAX
+ * units = degE7
+ * @param gpsalt Altitude (WGS84). UP +ve. If unknown set to INT32_MAX
+ * units = mm
+ * @param gpsfix 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
+ * @param numsats Number of satellites visible. If unknown set to UINT8_MAX
+ * @param baroaltmsl Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2
+ * mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
+ * units = mbar
+ * @param accuracyhor Horizontal accuracy in mm (m * 1E-3). If unknown set to UINT32_MAX
+ * units = mm
+ * @param accuracyvert Vertical accuracy in cm. If unknown set to UINT16_MAX
+ * units = cm
+ * @param accuracyvel Velocity accuracy in mm/s (m * 1E-3). If unknown set to UINT16_MAX
+ * units = mm/s
+ * @param velvert GPS vertical speed in cm/s. If unknown set to INT16_MAX
+ * units = cm/s
+ * @param velns North-South velocity over ground in cm/s North +ve. If unknown set to INT16_MAX
+ * units = cm/s
+ * @param velew East-West velocity over ground in cm/s East +ve. If unknown set to INT16_MAX
+ * units = cm/s
+ * @param emergencystatus Emergency status
+ * @param state ADS-B transponder dynamic input state flags
+ * @param squawk Mode A code (typically 1200 [0x04B0] for VFR)
  */
 @GeneratedMavMessage(
   id = 10_002u,
@@ -41,21 +70,25 @@ import kotlin.Unit
 public data class UavionixAdsbOutDynamic(
   /**
    * UTC time in seconds since GPS epoch (Jan 6, 1980). If unknown set to UINT32_MAX
+   * units = s
    */
   @GeneratedMavField(type = "uint32_t")
   public val utctime: UInt = 0u,
   /**
    * Latitude WGS84 (deg * 1E7). If unknown set to INT32_MAX
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val gpslat: Int = 0,
   /**
    * Longitude WGS84 (deg * 1E7). If unknown set to INT32_MAX
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val gpslon: Int = 0,
   /**
    * Altitude (WGS84). UP +ve. If unknown set to INT32_MAX
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val gpsalt: Int = 0,
@@ -72,36 +105,43 @@ public data class UavionixAdsbOutDynamic(
   /**
    * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar
    * corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
+   * units = mbar
    */
   @GeneratedMavField(type = "int32_t")
   public val baroaltmsl: Int = 0,
   /**
    * Horizontal accuracy in mm (m * 1E-3). If unknown set to UINT32_MAX
+   * units = mm
    */
   @GeneratedMavField(type = "uint32_t")
   public val accuracyhor: UInt = 0u,
   /**
    * Vertical accuracy in cm. If unknown set to UINT16_MAX
+   * units = cm
    */
   @GeneratedMavField(type = "uint16_t")
   public val accuracyvert: UShort = 0u,
   /**
    * Velocity accuracy in mm/s (m * 1E-3). If unknown set to UINT16_MAX
+   * units = mm/s
    */
   @GeneratedMavField(type = "uint16_t")
   public val accuracyvel: UShort = 0u,
   /**
    * GPS vertical speed in cm/s. If unknown set to INT16_MAX
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val velvert: Short = 0,
   /**
    * North-South velocity over ground in cm/s North +ve. If unknown set to INT16_MAX
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val velns: Short = 0,
   /**
    * East-West velocity over ground in cm/s East +ve. If unknown set to INT16_MAX
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val velew: Short = 0,
@@ -122,9 +162,9 @@ public data class UavionixAdsbOutDynamic(
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
 ) : MavMessage<UavionixAdsbOutDynamic> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutDynamic> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutDynamic> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(utctime)
     encoder.encodeInt32(gpslat)
@@ -145,7 +185,7 @@ public data class UavionixAdsbOutDynamic(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(utctime)
     encoder.encodeInt32(gpslat)
@@ -171,11 +211,11 @@ public data class UavionixAdsbOutDynamic(
 
     private const val SIZE_V2: Int = 41
 
-    public override val id: UInt = 10_002u
+    override val id: UInt = 10_002u
 
-    public override val crcExtra: Byte = -70
+    override val crcExtra: Byte = -70
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutDynamic {
+    override fun deserialize(bytes: ByteArray): UavionixAdsbOutDynamic {
       val decoder = MavDataDecoder(bytes)
 
       val utctime = decoder.safeDecodeUInt32()

@@ -20,6 +20,10 @@ import kotlin.Unit
 
 /**
  * Request the overall list of mission items from the system/component.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param missionType Mission type.
  */
 @GeneratedMavMessage(
   id = 43u,
@@ -45,16 +49,16 @@ public data class MissionRequestList(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionRequestList> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionRequestList> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionRequestList> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -67,11 +71,11 @@ public data class MissionRequestList(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 43u
+    override val id: UInt = 43u
 
-    public override val crcExtra: Byte = -124
+    override val crcExtra: Byte = -124
 
-    public override fun deserialize(bytes: ByteArray): MissionRequestList {
+    override fun deserialize(bytes: ByteArray): MissionRequestList {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

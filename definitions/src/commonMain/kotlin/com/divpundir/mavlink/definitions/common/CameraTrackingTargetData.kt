@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class CameraTrackingTargetData(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * No target data
@@ -36,7 +36,7 @@ public enum class CameraTrackingTargetData(
   ;
 
   public companion object : MavBitmask.MavCompanion<CameraTrackingTargetData> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingTargetData? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraTrackingTargetData? = when (v) {
       0u -> NONE
       1u -> EMBEDDED
       2u -> RENDERED
@@ -44,7 +44,7 @@ public enum class CameraTrackingTargetData(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<CameraTrackingTargetData> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<CameraTrackingTargetData> = buildList {
       if (v and 0u == 0u) add(NONE)
       if (v and 1u == 1u) add(EMBEDDED)
       if (v and 2u == 2u) add(RENDERED)

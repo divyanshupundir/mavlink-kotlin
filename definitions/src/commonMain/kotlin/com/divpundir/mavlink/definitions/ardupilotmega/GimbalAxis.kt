@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GimbalAxis(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gimbal yaw axis.
@@ -27,7 +27,7 @@ public enum class GimbalAxis(
   ;
 
   public companion object : MavEnum.MavCompanion<GimbalAxis> {
-    public override fun getEntryFromValueOrNull(v: UInt): GimbalAxis? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GimbalAxis? = when (v) {
       0u -> YAW
       1u -> PITCH
       2u -> ROLL

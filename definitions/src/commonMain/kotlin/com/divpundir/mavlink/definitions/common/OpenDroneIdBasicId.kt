@@ -27,6 +27,15 @@ import kotlin.collections.List
  * https://github.com/opendroneid/opendroneid-core-c. These messages are compatible with the ASTM F3411
  * Remote ID standard and the ASD-STAN prEN 4709-002 Direct Remote ID standard. Additional information
  * and usage of these messages is documented at https://mavlink.io/en/services/opendroneid.html.
+ *
+ * @param targetSystem System ID (0 for broadcast).
+ * @param targetComponent Component ID (0 for broadcast).
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
+ * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idType Indicates the format for the uas_id field of this message.
+ * @param uaType Indicates the type of UA (Unmanned Aircraft).
+ * @param uasId UAS (Unmanned Aircraft System) ID following the format specified by id_type. Shall
+ * be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_900u,
@@ -66,9 +75,9 @@ public data class OpenDroneIdBasicId(
   @GeneratedMavField(type = "uint8_t[20]")
   public val uasId: List<UByte> = emptyList(),
 ) : MavMessage<OpenDroneIdBasicId> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdBasicId> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdBasicId> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -79,7 +88,7 @@ public data class OpenDroneIdBasicId(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -95,11 +104,11 @@ public data class OpenDroneIdBasicId(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 12_900u
+    override val id: UInt = 12_900u
 
-    public override val crcExtra: Byte = 114
+    override val crcExtra: Byte = 114
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdBasicId {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdBasicId {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

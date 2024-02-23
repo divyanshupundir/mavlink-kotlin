@@ -12,7 +12,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavSysStatusSensorExtended(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 0x01 Recovery system (parachute, balloon, retracts etc)
@@ -22,12 +22,12 @@ public enum class MavSysStatusSensorExtended(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavSysStatusSensorExtended> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensorExtended? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavSysStatusSensorExtended? = when (v) {
       1u -> MAV_SYS_STATUS_RECOVERY_SYSTEM
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavSysStatusSensorExtended> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavSysStatusSensorExtended> = buildList {
       if (v and 1u == 1u) add(MAV_SYS_STATUS_RECOVERY_SYSTEM)
     }
   }

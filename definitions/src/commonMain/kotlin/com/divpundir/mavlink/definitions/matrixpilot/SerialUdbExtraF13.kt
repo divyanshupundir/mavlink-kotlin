@@ -19,6 +19,11 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F13: format
+ *
+ * @param sueWeekNo Serial UDB Extra GPS Week Number
+ * @param sueLatOrigin Serial UDB Extra MP Origin Latitude
+ * @param sueLonOrigin Serial UDB Extra MP Origin Longitude
+ * @param sueAltOrigin Serial UDB Extra MP Origin Altitude Above Sea Level
  */
 @GeneratedMavMessage(
   id = 177u,
@@ -46,9 +51,9 @@ public data class SerialUdbExtraF13(
   @GeneratedMavField(type = "int32_t")
   public val sueAltOrigin: Int = 0,
 ) : MavMessage<SerialUdbExtraF13> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF13> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF13> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(sueLatOrigin)
     encoder.encodeInt32(sueLonOrigin)
@@ -57,7 +62,7 @@ public data class SerialUdbExtraF13(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(sueLatOrigin)
     encoder.encodeInt32(sueLonOrigin)
@@ -71,11 +76,11 @@ public data class SerialUdbExtraF13(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 177u
+    override val id: UInt = 177u
 
-    public override val crcExtra: Byte = -7
+    override val crcExtra: Byte = -7
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF13 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF13 {
       val decoder = MavDataDecoder(bytes)
 
       val sueLatOrigin = decoder.safeDecodeInt32()

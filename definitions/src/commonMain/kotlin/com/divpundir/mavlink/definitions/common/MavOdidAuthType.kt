@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidAuthType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No authentication type is specified.
@@ -43,7 +43,7 @@ public enum class MavOdidAuthType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidAuthType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidAuthType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidAuthType? = when (v) {
       0u -> NONE
       1u -> UAS_ID_SIGNATURE
       2u -> OPERATOR_ID_SIGNATURE

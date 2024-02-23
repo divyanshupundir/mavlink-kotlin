@@ -13,7 +13,7 @@ import kotlin.UInt
 @Deprecated(message = "")
 @GeneratedMavEnum
 public enum class MavMountMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Gimbal tracks home position
@@ -53,7 +53,7 @@ public enum class MavMountMode(
   ;
 
   public companion object : MavEnum.MavCompanion<MavMountMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavMountMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavMountMode? = when (v) {
       6u -> HOME_LOCATION
       5u -> SYSID_TARGET
       4u -> GPS_POINT

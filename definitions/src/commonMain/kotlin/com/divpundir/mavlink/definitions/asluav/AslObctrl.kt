@@ -23,6 +23,16 @@ import kotlin.Unit
 
 /**
  * Off-board controls/commands for ASLUAVs
+ *
+ * @param timestamp  Time since system start
+ * units = us
+ * @param uelev  Elevator command [~]
+ * @param uthrot  Throttle command [~]
+ * @param uthrot2  Throttle 2 command [~]
+ * @param uaill  Left aileron command [~]
+ * @param uailr  Right aileron command [~]
+ * @param urud  Rudder command [~]
+ * @param obctrlStatus  Off-board computer status
  */
 @GeneratedMavMessage(
   id = 8_008u,
@@ -31,6 +41,7 @@ import kotlin.Unit
 public data class AslObctrl(
   /**
    *  Time since system start
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
@@ -70,9 +81,9 @@ public data class AslObctrl(
   @GeneratedMavField(type = "uint8_t")
   public val obctrlStatus: UByte = 0u,
 ) : MavMessage<AslObctrl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AslObctrl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AslObctrl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(uelev)
@@ -85,7 +96,7 @@ public data class AslObctrl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeFloat(uelev)
@@ -103,11 +114,11 @@ public data class AslObctrl(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 8_008u
+    override val id: UInt = 8_008u
 
-    public override val crcExtra: Byte = -22
+    override val crcExtra: Byte = -22
 
-    public override fun deserialize(bytes: ByteArray): AslObctrl {
+    override fun deserialize(bytes: ByteArray): AslObctrl {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

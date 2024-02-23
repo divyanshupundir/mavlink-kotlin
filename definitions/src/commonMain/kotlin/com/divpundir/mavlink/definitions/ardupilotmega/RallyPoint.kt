@@ -29,6 +29,22 @@ import kotlin.Unit
 /**
  * A rally point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
  * GCS.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param idx Point index (first point is 0).
+ * @param count Total number of points (for sanity checking).
+ * @param lat Latitude of point.
+ * units = degE7
+ * @param lng Longitude of point.
+ * units = degE7
+ * @param alt Transit / loiter altitude relative to home.
+ * units = m
+ * @param breakAlt Break altitude relative to home.
+ * units = m
+ * @param landDir Heading to aim for when landing.
+ * units = cdeg
+ * @param flags Configuration flags.
  */
 @GeneratedMavMessage(
   id = 175u,
@@ -57,26 +73,31 @@ public data class RallyPoint(
   public val count: UByte = 0u,
   /**
    * Latitude of point.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude of point.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
   /**
    * Transit / loiter altitude relative to home.
+   * units = m
    */
   @GeneratedMavField(type = "int16_t")
   public val alt: Short = 0,
   /**
    * Break altitude relative to home.
+   * units = m
    */
   @GeneratedMavField(type = "int16_t")
   public val breakAlt: Short = 0,
   /**
    * Heading to aim for when landing.
+   * units = cdeg
    */
   @GeneratedMavField(type = "uint16_t")
   public val landDir: UShort = 0u,
@@ -86,9 +107,9 @@ public data class RallyPoint(
   @GeneratedMavField(type = "uint8_t")
   public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<RallyPoint> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lng)
@@ -103,7 +124,7 @@ public data class RallyPoint(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lng)
@@ -123,11 +144,11 @@ public data class RallyPoint(
 
     private const val SIZE_V2: Int = 19
 
-    public override val id: UInt = 175u
+    override val id: UInt = 175u
 
-    public override val crcExtra: Byte = -118
+    override val crcExtra: Byte = -118
 
-    public override fun deserialize(bytes: ByteArray): RallyPoint {
+    override fun deserialize(bytes: ByteArray): RallyPoint {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

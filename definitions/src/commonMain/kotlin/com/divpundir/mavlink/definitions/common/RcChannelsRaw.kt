@@ -24,6 +24,29 @@ import kotlin.Unit
  * The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000
  * microseconds: 0%, 2000 microseconds: 100%. A value of UINT16_MAX implies the channel is unused.
  * Individual receivers/transmitters might violate this specification.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param port Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk
+ * should use: 0 = MAIN, 1 = AUX.
+ * @param chan1Raw RC channel 1 value.
+ * units = us
+ * @param chan2Raw RC channel 2 value.
+ * units = us
+ * @param chan3Raw RC channel 3 value.
+ * units = us
+ * @param chan4Raw RC channel 4 value.
+ * units = us
+ * @param chan5Raw RC channel 5 value.
+ * units = us
+ * @param chan6Raw RC channel 6 value.
+ * units = us
+ * @param chan7Raw RC channel 7 value.
+ * units = us
+ * @param chan8Raw RC channel 8 value.
+ * units = us
+ * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254],
+ * UINT8_MAX: invalid/unknown.
  */
 @GeneratedMavMessage(
   id = 35u,
@@ -32,6 +55,7 @@ import kotlin.Unit
 public data class RcChannelsRaw(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -43,41 +67,49 @@ public data class RcChannelsRaw(
   public val port: UByte = 0u,
   /**
    * RC channel 1 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value.
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan8Raw: UShort = 0u,
@@ -88,9 +120,9 @@ public data class RcChannelsRaw(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannelsRaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt16(chan1Raw)
@@ -106,7 +138,7 @@ public data class RcChannelsRaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeUInt16(chan1Raw)
@@ -127,11 +159,11 @@ public data class RcChannelsRaw(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 35u
+    override val id: UInt = 35u
 
-    public override val crcExtra: Byte = -12
+    override val crcExtra: Byte = -12
 
-    public override fun deserialize(bytes: ByteArray): RcChannelsRaw {
+    override fun deserialize(bytes: ByteArray): RcChannelsRaw {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class FenceAction(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Disable fenced mode. If used in a plan this would mean the next fence is disabled.
@@ -58,7 +58,7 @@ public enum class FenceAction(
   ;
 
   public companion object : MavEnum.MavCompanion<FenceAction> {
-    public override fun getEntryFromValueOrNull(v: UInt): FenceAction? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): FenceAction? = when (v) {
       0u -> NONE
       1u -> GUIDED
       2u -> REPORT

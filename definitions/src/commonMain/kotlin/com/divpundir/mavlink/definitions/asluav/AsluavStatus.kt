@@ -23,6 +23,11 @@ import kotlin.collections.List
 
 /**
  * Extended state information for ASLUAVs
+ *
+ * @param ledStatus  Status of the position-indicator LEDs
+ * @param satcomStatus  Status of the IRIDIUM satellite communication system
+ * @param servoStatus  Status vector for up to 8 servos
+ * @param motorRpm  Motor RPM 
  */
 @GeneratedMavMessage(
   id = 8_006u,
@@ -50,9 +55,9 @@ public data class AsluavStatus(
   @GeneratedMavField(type = "float")
   public val motorRpm: Float = 0F,
 ) : MavMessage<AsluavStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AsluavStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AsluavStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(motorRpm)
     encoder.encodeUInt8(ledStatus)
@@ -61,7 +66,7 @@ public data class AsluavStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(motorRpm)
     encoder.encodeUInt8(ledStatus)
@@ -75,11 +80,11 @@ public data class AsluavStatus(
 
     private const val SIZE_V2: Int = 14
 
-    public override val id: UInt = 8_006u
+    override val id: UInt = 8_006u
 
-    public override val crcExtra: Byte = 97
+    override val crcExtra: Byte = 97
 
-    public override fun deserialize(bytes: ByteArray): AsluavStatus {
+    override fun deserialize(bytes: ByteArray): AsluavStatus {
       val decoder = MavDataDecoder(bytes)
 
       val motorRpm = decoder.safeDecodeFloat()

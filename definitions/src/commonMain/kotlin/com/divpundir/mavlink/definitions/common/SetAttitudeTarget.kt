@@ -29,6 +29,23 @@ import kotlin.collections.List
 /**
  * Sets a desired vehicle attitude. Used by an external controller to command the vehicle (manual
  * controller or other system).
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param typeMask Bitmap to indicate which dimensions should be ignored by the vehicle.
+ * @param q Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from
+ * MAV_FRAME_LOCAL_NED to MAV_FRAME_BODY_FRD
+ * @param bodyRollRate Body roll rate
+ * units = rad/s
+ * @param bodyPitchRate Body pitch rate
+ * units = rad/s
+ * @param bodyYawRate Body yaw rate
+ * units = rad/s
+ * @param thrust Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse
+ * trust)
+ * @param thrustBody 3D thrust setpoint in the body NED frame, normalized to -1 .. 1
  */
 @GeneratedMavMessage(
   id = 82u,
@@ -37,6 +54,7 @@ import kotlin.collections.List
 public data class SetAttitudeTarget(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -63,16 +81,19 @@ public data class SetAttitudeTarget(
   public val q: List<Float> = emptyList(),
   /**
    * Body roll rate
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val bodyRollRate: Float = 0F,
   /**
    * Body pitch rate
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val bodyPitchRate: Float = 0F,
   /**
    * Body yaw rate
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val bodyYawRate: Float = 0F,
@@ -90,9 +111,9 @@ public data class SetAttitudeTarget(
   )
   public val thrustBody: List<Float> = emptyList(),
 ) : MavMessage<SetAttitudeTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetAttitudeTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetAttitudeTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -106,7 +127,7 @@ public data class SetAttitudeTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloatArray(q, 16)
@@ -126,11 +147,11 @@ public data class SetAttitudeTarget(
 
     private const val SIZE_V2: Int = 51
 
-    public override val id: UInt = 82u
+    override val id: UInt = 82u
 
-    public override val crcExtra: Byte = 49
+    override val crcExtra: Byte = 49
 
-    public override fun deserialize(bytes: ByteArray): SetAttitudeTarget {
+    override fun deserialize(bytes: ByteArray): SetAttitudeTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

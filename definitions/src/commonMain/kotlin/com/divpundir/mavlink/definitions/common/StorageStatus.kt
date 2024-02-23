@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class StorageStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Storage is missing (no microSD card loaded for example.)
@@ -36,7 +36,7 @@ public enum class StorageStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<StorageStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): StorageStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): StorageStatus? = when (v) {
       0u -> EMPTY
       1u -> UNFORMATTED
       2u -> READY

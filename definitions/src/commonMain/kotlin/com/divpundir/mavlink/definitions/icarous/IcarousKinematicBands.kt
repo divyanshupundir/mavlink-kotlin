@@ -22,6 +22,33 @@ import kotlin.Unit
 
 /**
  * Kinematic multi bands (track) output from Daidalus
+ *
+ * @param numbands Number of track bands
+ * @param type1 See the TRACK_BAND_TYPES enum.
+ * @param min1 min angle (degrees)
+ * units = deg
+ * @param max1 max angle (degrees)
+ * units = deg
+ * @param type2 See the TRACK_BAND_TYPES enum.
+ * @param min2 min angle (degrees)
+ * units = deg
+ * @param max2 max angle (degrees)
+ * units = deg
+ * @param type3 See the TRACK_BAND_TYPES enum.
+ * @param min3 min angle (degrees)
+ * units = deg
+ * @param max3 max angle (degrees)
+ * units = deg
+ * @param type4 See the TRACK_BAND_TYPES enum.
+ * @param min4 min angle (degrees)
+ * units = deg
+ * @param max4 max angle (degrees)
+ * units = deg
+ * @param type5 See the TRACK_BAND_TYPES enum.
+ * @param min5 min angle (degrees)
+ * units = deg
+ * @param max5 max angle (degrees)
+ * units = deg
  */
 @GeneratedMavMessage(
   id = 42_001u,
@@ -40,11 +67,13 @@ public data class IcarousKinematicBands(
   public val type1: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val min1: Float = 0F,
   /**
    * max angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val max1: Float = 0F,
@@ -55,11 +84,13 @@ public data class IcarousKinematicBands(
   public val type2: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val min2: Float = 0F,
   /**
    * max angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val max2: Float = 0F,
@@ -70,11 +101,13 @@ public data class IcarousKinematicBands(
   public val type3: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val min3: Float = 0F,
   /**
    * max angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val max3: Float = 0F,
@@ -85,11 +118,13 @@ public data class IcarousKinematicBands(
   public val type4: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val min4: Float = 0F,
   /**
    * max angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val max4: Float = 0F,
@@ -100,18 +135,20 @@ public data class IcarousKinematicBands(
   public val type5: MavEnumValue<IcarousTrackBandTypes> = MavEnumValue.fromValue(0u),
   /**
    * min angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val min5: Float = 0F,
   /**
    * max angle (degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val max5: Float = 0F,
 ) : MavMessage<IcarousKinematicBands> {
-  public override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(min1)
     encoder.encodeFloat(max1)
@@ -132,7 +169,7 @@ public data class IcarousKinematicBands(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(min1)
     encoder.encodeFloat(max1)
@@ -158,11 +195,11 @@ public data class IcarousKinematicBands(
 
     private const val SIZE_V2: Int = 46
 
-    public override val id: UInt = 42_001u
+    override val id: UInt = 42_001u
 
-    public override val crcExtra: Byte = -17
+    override val crcExtra: Byte = -17
 
-    public override fun deserialize(bytes: ByteArray): IcarousKinematicBands {
+    override fun deserialize(bytes: ByteArray): IcarousKinematicBands {
       val decoder = MavDataDecoder(bytes)
 
       val min1 = decoder.safeDecodeFloat()

@@ -17,6 +17,9 @@ import kotlin.Unit
 
 /**
  * RPM sensor output.
+ *
+ * @param rpm1 RPM Sensor1.
+ * @param rpm2 RPM Sensor2.
  */
 @GeneratedMavMessage(
   id = 226u,
@@ -34,16 +37,16 @@ public data class Rpm(
   @GeneratedMavField(type = "float")
   public val rpm2: Float = 0F,
 ) : MavMessage<Rpm> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Rpm> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Rpm> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(rpm1)
     encoder.encodeFloat(rpm2)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(rpm1)
     encoder.encodeFloat(rpm2)
@@ -55,11 +58,11 @@ public data class Rpm(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 226u
+    override val id: UInt = 226u
 
-    public override val crcExtra: Byte = -49
+    override val crcExtra: Byte = -49
 
-    public override fun deserialize(bytes: ByteArray): Rpm {
+    override fun deserialize(bytes: ByteArray): Rpm {
       val decoder = MavDataDecoder(bytes)
 
       val rpm1 = decoder.safeDecodeFloat()

@@ -42,6 +42,21 @@ import kotlin.collections.List
  * 	  These rules are to ensure backwards compatibility.
  * 	  New implementations should always set either GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME or
  * GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param flags Low level gimbal flags.
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). The frame is described
+ * in the message description. Set fields to NaN to be ignored.
+ * @param angularVelocityX X component of angular velocity (positive: rolling to the right). The
+ * frame is described in the message description. NaN to be ignored.
+ * units = rad/s
+ * @param angularVelocityY Y component of angular velocity (positive: pitching up). The frame is
+ * described in the message description. NaN to be ignored.
+ * units = rad/s
+ * @param angularVelocityZ Z component of angular velocity (positive: yawing to the right). The
+ * frame is described in the message description. NaN to be ignored.
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 284u,
@@ -72,26 +87,28 @@ public data class GimbalDeviceSetAttitude(
   /**
    * X component of angular velocity (positive: rolling to the right). The frame is described in the
    * message description. NaN to be ignored.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityX: Float = 0F,
   /**
    * Y component of angular velocity (positive: pitching up). The frame is described in the message
    * description. NaN to be ignored.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityY: Float = 0F,
   /**
    * Z component of angular velocity (positive: yawing to the right). The frame is described in the
    * message description. NaN to be ignored.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<GimbalDeviceSetAttitude> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceSetAttitude> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceSetAttitude> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(angularVelocityX)
@@ -103,7 +120,7 @@ public data class GimbalDeviceSetAttitude(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(angularVelocityX)
@@ -120,11 +137,11 @@ public data class GimbalDeviceSetAttitude(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 284u
+    override val id: UInt = 284u
 
-    public override val crcExtra: Byte = 99
+    override val crcExtra: Byte = 99
 
-    public override fun deserialize(bytes: ByteArray): GimbalDeviceSetAttitude {
+    override fun deserialize(bytes: ByteArray): GimbalDeviceSetAttitude {
       val decoder = MavDataDecoder(bytes)
 
       val q = decoder.safeDecodeFloatArray(16)

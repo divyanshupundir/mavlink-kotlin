@@ -25,6 +25,12 @@ import kotlin.Unit
  * Request a partial list of mission items from the system/component.
  * https://mavlink.io/en/services/mission.html. If start and end index are the same, just send one
  * waypoint.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param startIndex Start index
+ * @param endIndex End index, -1 by default (-1: send list to end). Else a valid index of the list
+ * @param missionType Mission type.
  */
 @GeneratedMavMessage(
   id = 37u,
@@ -60,10 +66,9 @@ public data class MissionRequestPartialList(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionRequestPartialList> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionRequestPartialList> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionRequestPartialList> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(startIndex)
     encoder.encodeInt16(endIndex)
@@ -72,7 +77,7 @@ public data class MissionRequestPartialList(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(startIndex)
     encoder.encodeInt16(endIndex)
@@ -87,11 +92,11 @@ public data class MissionRequestPartialList(
 
     private const val SIZE_V2: Int = 7
 
-    public override val id: UInt = 37u
+    override val id: UInt = 37u
 
-    public override val crcExtra: Byte = -44
+    override val crcExtra: Byte = -44
 
-    public override fun deserialize(bytes: ByteArray): MissionRequestPartialList {
+    override fun deserialize(bytes: ByteArray): MissionRequestPartialList {
       val decoder = MavDataDecoder(bytes)
 
       val startIndex = decoder.safeDecodeInt16()

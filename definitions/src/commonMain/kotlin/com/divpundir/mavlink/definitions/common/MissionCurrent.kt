@@ -29,6 +29,15 @@ import kotlin.Unit
  *         This message should be emitted following a call to MAV_CMD_DO_SET_MISSION_CURRENT or
  * SET_MISSION_CURRENT.
  *       
+ *
+ * @param seq Sequence
+ * @param total Total number of mission items on vehicle (on last item, sequence == total). If the
+ * autopilot stores its home location as part of the mission this will be excluded from the total. 0:
+ * Not supported, UINT16_MAX if no mission is present on the vehicle.
+ * @param missionState Mission state machine state. MISSION_STATE_UNKNOWN if state reporting not
+ * supported.
+ * @param missionMode Vehicle is in a mode that can execute mission items or suspended. 0: Unknown,
+ * 1: In mission mode, 2: Suspended (not in mission mode).
  */
 @GeneratedMavMessage(
   id = 42u,
@@ -68,15 +77,15 @@ public data class MissionCurrent(
   )
   public val missionMode: UByte = 0u,
 ) : MavMessage<MissionCurrent> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionCurrent> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionCurrent> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(seq)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(seq)
     encoder.encodeUInt16(total)
@@ -90,11 +99,11 @@ public data class MissionCurrent(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 42u
+    override val id: UInt = 42u
 
-    public override val crcExtra: Byte = 28
+    override val crcExtra: Byte = 28
 
-    public override fun deserialize(bytes: ByteArray): MissionCurrent {
+    override fun deserialize(bytes: ByteArray): MissionCurrent {
       val decoder = MavDataDecoder(bytes)
 
       val seq = decoder.safeDecodeUInt16()

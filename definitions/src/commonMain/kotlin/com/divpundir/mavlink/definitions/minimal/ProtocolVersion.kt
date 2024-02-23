@@ -26,6 +26,12 @@ import kotlin.collections.List
  * should be used on the network. Every node should respond to a request for PROTOCOL_VERSION to enable
  * the handshaking. Library implementers should consider adding this into the default decoding state
  * machine to allow the protocol core to respond directly.
+ *
+ * @param version Currently active MAVLink version number * 100: v1.0 is 100, v2.0 is 200, etc.
+ * @param minVersion Minimum MAVLink version supported
+ * @param maxVersion Maximum MAVLink version supported (set to the same value as version by default)
+ * @param specVersionHash The first 8 bytes (not characters printed in hex!) of the git hash.
+ * @param libraryVersionHash The first 8 bytes (not characters printed in hex!) of the git hash.
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -59,9 +65,9 @@ public data class ProtocolVersion(
   @GeneratedMavField(type = "uint8_t[8]")
   public val libraryVersionHash: List<UByte> = emptyList(),
 ) : MavMessage<ProtocolVersion> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ProtocolVersion> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ProtocolVersion> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(version)
     encoder.encodeUInt16(minVersion)
@@ -71,7 +77,7 @@ public data class ProtocolVersion(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(version)
     encoder.encodeUInt16(minVersion)
@@ -86,11 +92,11 @@ public data class ProtocolVersion(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 300u
+    override val id: UInt = 300u
 
-    public override val crcExtra: Byte = -39
+    override val crcExtra: Byte = -39
 
-    public override fun deserialize(bytes: ByteArray): ProtocolVersion {
+    override fun deserialize(bytes: ByteArray): ProtocolVersion {
       val decoder = MavDataDecoder(bytes)
 
       val version = decoder.safeDecodeUInt16()

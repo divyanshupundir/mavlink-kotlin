@@ -12,7 +12,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AisFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 1 = Position accuracy less than 10m, 0 = position accuracy greater than 10m.
@@ -65,7 +65,7 @@ public enum class AisFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<AisFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): AisFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AisFlags? = when (v) {
       1u -> POSITION_ACCURACY
       2u -> VALID_COG
       4u -> VALID_VELOCITY
@@ -82,7 +82,7 @@ public enum class AisFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<AisFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<AisFlags> = buildList {
       if (v and 1u == 1u) add(POSITION_ACCURACY)
       if (v and 2u == 2u) add(VALID_COG)
       if (v and 4u == 4u) add(VALID_VELOCITY)

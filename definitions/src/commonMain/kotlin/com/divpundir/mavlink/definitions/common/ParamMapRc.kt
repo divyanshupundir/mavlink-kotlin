@@ -26,6 +26,22 @@ import kotlin.Unit
 
 /**
  * Bind a RC channel to a parameter. The parameter should change according to the RC channel value.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
+ * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
+ * applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramIndex Parameter index. Send -1 to use the param ID field as identifier (else the
+ * param id will be ignored), send -2 to disable any existing map for this rc_channel_index.
+ * @param parameterRcChannelIndex Index of parameter RC channel. Not equal to the RC channel id.
+ * Typically corresponds to a potentiometer-knob on the RC.
+ * @param paramValue0 Initial parameter value
+ * @param scale Scale, maps the RC range [-1, 1] to a parameter value
+ * @param paramValueMin Minimum param value. The protocol does not define if this overwrites an
+ * onboard minimum value. (Depends on implementation)
+ * @param paramValueMax Maximum param value. The protocol does not define if this overwrites an
+ * onboard maximum value. (Depends on implementation)
  */
 @GeneratedMavMessage(
   id = 50u,
@@ -84,9 +100,9 @@ public data class ParamMapRc(
   @GeneratedMavField(type = "float")
   public val paramValueMax: Float = 0F,
 ) : MavMessage<ParamMapRc> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamMapRc> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamMapRc> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(paramValue0)
     encoder.encodeFloat(scale)
@@ -100,7 +116,7 @@ public data class ParamMapRc(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(paramValue0)
     encoder.encodeFloat(scale)
@@ -119,11 +135,11 @@ public data class ParamMapRc(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 50u
+    override val id: UInt = 50u
 
-    public override val crcExtra: Byte = 78
+    override val crcExtra: Byte = 78
 
-    public override fun deserialize(bytes: ByteArray): ParamMapRc {
+    override fun deserialize(bytes: ByteArray): ParamMapRc {
       val decoder = MavDataDecoder(bytes)
 
       val paramValue0 = decoder.safeDecodeFloat()

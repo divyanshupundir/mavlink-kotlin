@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class CellularNetworkFailedReason(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No error
@@ -35,7 +35,7 @@ public enum class CellularNetworkFailedReason(
   ;
 
   public companion object : MavEnum.MavCompanion<CellularNetworkFailedReason> {
-    public override fun getEntryFromValueOrNull(v: UInt): CellularNetworkFailedReason? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CellularNetworkFailedReason? = when (v) {
       0u -> NONE
       1u -> UNKNOWN
       2u -> SIM_MISSING

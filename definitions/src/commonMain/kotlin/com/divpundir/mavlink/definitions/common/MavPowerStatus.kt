@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavPowerStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * main brick power supply valid
@@ -46,7 +46,7 @@ public enum class MavPowerStatus(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavPowerStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavPowerStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavPowerStatus? = when (v) {
       1u -> BRICK_VALID
       2u -> SERVO_VALID
       4u -> USB_CONNECTED
@@ -56,7 +56,7 @@ public enum class MavPowerStatus(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavPowerStatus> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavPowerStatus> = buildList {
       if (v and 1u == 1u) add(BRICK_VALID)
       if (v and 2u == 2u) add(SERVO_VALID)
       if (v and 4u == 4u) add(USB_CONNECTED)

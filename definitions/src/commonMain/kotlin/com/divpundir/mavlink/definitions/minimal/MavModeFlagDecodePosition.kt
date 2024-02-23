@@ -13,7 +13,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlagDecodePosition(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * First bit:  10000000
@@ -58,7 +58,7 @@ public enum class MavModeFlagDecodePosition(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavModeFlagDecodePosition> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavModeFlagDecodePosition? = when (v) {
       128u -> SAFETY
       64u -> MANUAL
       32u -> HIL
@@ -70,7 +70,7 @@ public enum class MavModeFlagDecodePosition(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavModeFlagDecodePosition> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavModeFlagDecodePosition> = buildList {
       if (v and 128u == 128u) add(SAFETY)
       if (v and 64u == 64u) add(MANUAL)
       if (v and 32u == 32u) add(HIL)

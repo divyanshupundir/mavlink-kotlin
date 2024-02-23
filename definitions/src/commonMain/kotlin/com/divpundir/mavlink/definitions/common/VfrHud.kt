@@ -23,6 +23,21 @@ import kotlin.Unit
 
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
+ *
+ * @param airspeed Vehicle speed in form appropriate for vehicle type. For standard aircraft this is
+ * typically calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a
+ * pilot to estimate stall speed.
+ * units = m/s
+ * @param groundspeed Current ground speed.
+ * units = m/s
+ * @param heading Current heading in compass units (0-360, 0=north).
+ * units = deg
+ * @param throttle Current throttle setting (0 to 100).
+ * units = %
+ * @param alt Current altitude (MSL).
+ * units = m
+ * @param climb Current climb rate.
+ * units = m/s
  */
 @GeneratedMavMessage(
   id = 74u,
@@ -33,38 +48,44 @@ public data class VfrHud(
    * Vehicle speed in form appropriate for vehicle type. For standard aircraft this is typically
    * calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a pilot to
    * estimate stall speed.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val airspeed: Float = 0F,
   /**
    * Current ground speed.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val groundspeed: Float = 0F,
   /**
    * Current heading in compass units (0-360, 0=north).
+   * units = deg
    */
   @GeneratedMavField(type = "int16_t")
   public val heading: Short = 0,
   /**
    * Current throttle setting (0 to 100).
+   * units = %
    */
   @GeneratedMavField(type = "uint16_t")
   public val throttle: UShort = 0u,
   /**
    * Current altitude (MSL).
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * Current climb rate.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val climb: Float = 0F,
 ) : MavMessage<VfrHud> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(airspeed)
     encoder.encodeFloat(groundspeed)
@@ -75,7 +96,7 @@ public data class VfrHud(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(airspeed)
     encoder.encodeFloat(groundspeed)
@@ -91,11 +112,11 @@ public data class VfrHud(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 74u
+    override val id: UInt = 74u
 
-    public override val crcExtra: Byte = 20
+    override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): VfrHud {
+    override fun deserialize(bytes: ByteArray): VfrHud {
       val decoder = MavDataDecoder(bytes)
 
       val airspeed = decoder.safeDecodeFloat()

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Request storage of different parameter values and logs. This command will be only accepted if
@@ -39,7 +39,7 @@ public enum class MavCmd(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCmd> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       0u -> PREFLIGHT_STORAGE_ADVANCED
       else -> null
     }

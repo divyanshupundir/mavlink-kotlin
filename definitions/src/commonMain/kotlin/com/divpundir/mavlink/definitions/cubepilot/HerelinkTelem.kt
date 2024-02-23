@@ -43,9 +43,9 @@ public data class HerelinkTelem(
   @GeneratedMavField(type = "int16_t")
   public val boardTemp: Short = 0,
 ) : MavMessage<HerelinkTelem> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HerelinkTelem> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HerelinkTelem> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(rfFreq)
     encoder.encodeUInt32(linkBw)
@@ -57,7 +57,7 @@ public data class HerelinkTelem(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(rfFreq)
     encoder.encodeUInt32(linkBw)
@@ -74,11 +74,11 @@ public data class HerelinkTelem(
 
     private const val SIZE_V2: Int = 19
 
-    public override val id: UInt = 50_003u
+    override val id: UInt = 50_003u
 
-    public override val crcExtra: Byte = 62
+    override val crcExtra: Byte = 62
 
-    public override fun deserialize(bytes: ByteArray): HerelinkTelem {
+    override fun deserialize(bytes: ByteArray): HerelinkTelem {
       val decoder = MavDataDecoder(bytes)
 
       val rfFreq = decoder.safeDecodeUInt32()

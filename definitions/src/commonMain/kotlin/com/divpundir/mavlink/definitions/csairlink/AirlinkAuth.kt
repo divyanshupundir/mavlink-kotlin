@@ -17,6 +17,9 @@ import kotlin.Unit
 
 /**
  * Authorization package
+ *
+ * @param login Login
+ * @param password Password
  */
 @GeneratedMavMessage(
   id = 52_000u,
@@ -34,16 +37,16 @@ public data class AirlinkAuth(
   @GeneratedMavField(type = "char[50]")
   public val password: String = "",
 ) : MavMessage<AirlinkAuth> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AirlinkAuth> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AirlinkAuth> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeString(login, 50)
     encoder.encodeString(password, 50)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeString(login, 50)
     encoder.encodeString(password, 50)
@@ -55,11 +58,11 @@ public data class AirlinkAuth(
 
     private const val SIZE_V2: Int = 100
 
-    public override val id: UInt = 52_000u
+    override val id: UInt = 52_000u
 
-    public override val crcExtra: Byte = 13
+    override val crcExtra: Byte = 13
 
-    public override fun deserialize(bytes: ByteArray): AirlinkAuth {
+    override fun deserialize(bytes: ByteArray): AirlinkAuth {
       val decoder = MavDataDecoder(bytes)
 
       val login = decoder.safeDecodeString(50)

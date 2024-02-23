@@ -20,6 +20,20 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F20 format
+ *
+ * @param sueNumberOfInputs SUE Number of Input Channels
+ * @param sueTrimValueInput1 SUE UDB PWM Trim Value on Input 1
+ * @param sueTrimValueInput2 SUE UDB PWM Trim Value on Input 2
+ * @param sueTrimValueInput3 SUE UDB PWM Trim Value on Input 3
+ * @param sueTrimValueInput4 SUE UDB PWM Trim Value on Input 4
+ * @param sueTrimValueInput5 SUE UDB PWM Trim Value on Input 5
+ * @param sueTrimValueInput6 SUE UDB PWM Trim Value on Input 6
+ * @param sueTrimValueInput7 SUE UDB PWM Trim Value on Input 7
+ * @param sueTrimValueInput8 SUE UDB PWM Trim Value on Input 8
+ * @param sueTrimValueInput9 SUE UDB PWM Trim Value on Input 9
+ * @param sueTrimValueInput10 SUE UDB PWM Trim Value on Input 10
+ * @param sueTrimValueInput11 SUE UDB PWM Trim Value on Input 11
+ * @param sueTrimValueInput12 SUE UDB PWM Trim Value on Input 12
  */
 @GeneratedMavMessage(
   id = 186u,
@@ -92,9 +106,9 @@ public data class SerialUdbExtraF20(
   @GeneratedMavField(type = "int16_t")
   public val sueTrimValueInput12: Short = 0,
 ) : MavMessage<SerialUdbExtraF20> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF20> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF20> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(sueTrimValueInput1)
     encoder.encodeInt16(sueTrimValueInput2)
@@ -112,7 +126,7 @@ public data class SerialUdbExtraF20(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(sueTrimValueInput1)
     encoder.encodeInt16(sueTrimValueInput2)
@@ -135,11 +149,11 @@ public data class SerialUdbExtraF20(
 
     private const val SIZE_V2: Int = 25
 
-    public override val id: UInt = 186u
+    override val id: UInt = 186u
 
-    public override val crcExtra: Byte = -112
+    override val crcExtra: Byte = -112
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF20 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF20 {
       val decoder = MavDataDecoder(bytes)
 
       val sueTrimValueInput1 = decoder.safeDecodeInt16()

@@ -37,6 +37,50 @@ import kotlin.Unit
 
 /**
  * Message appropriate for high latency connections like Iridium
+ *
+ * @param baseMode Bitmap of enabled system modes.
+ * @param customMode A bitfield for use for autopilot-specific flags.
+ * @param landedState The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is
+ * unknown.
+ * @param roll roll
+ * units = cdeg
+ * @param pitch pitch
+ * units = cdeg
+ * @param heading heading
+ * units = cdeg
+ * @param throttle throttle (percentage)
+ * units = %
+ * @param headingSp heading setpoint
+ * units = cdeg
+ * @param latitude Latitude
+ * units = degE7
+ * @param longitude Longitude
+ * units = degE7
+ * @param altitudeAmsl Altitude above mean sea level
+ * units = m
+ * @param altitudeSp Altitude setpoint relative to the home position
+ * units = m
+ * @param airspeed airspeed
+ * units = m/s
+ * @param airspeedSp airspeed setpoint
+ * units = m/s
+ * @param groundspeed groundspeed
+ * units = m/s
+ * @param climbRate climb rate
+ * units = m/s
+ * @param gpsNsat Number of satellites visible. If unknown, set to UINT8_MAX
+ * @param gpsFixType GPS Fix type.
+ * @param batteryRemaining Remaining battery (percentage)
+ * units = %
+ * @param temperature Autopilot temperature (degrees C)
+ * units = degC
+ * @param temperatureAir Air temperature (degrees C) from airspeed sensor
+ * units = degC
+ * @param failsafe failsafe (each bit represents a failsafe where 0=ok, 1=failsafe active (bit0:RC,
+ * bit1:batt, bit2:GPS, bit3:GCS, bit4:fence)
+ * @param wpNum current waypoint number
+ * @param wpDistance distance to target
+ * units = m
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -61,66 +105,79 @@ public data class HighLatency(
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u),
   /**
    * roll
+   * units = cdeg
    */
   @GeneratedMavField(type = "int16_t")
   public val roll: Short = 0,
   /**
    * pitch
+   * units = cdeg
    */
   @GeneratedMavField(type = "int16_t")
   public val pitch: Short = 0,
   /**
    * heading
+   * units = cdeg
    */
   @GeneratedMavField(type = "uint16_t")
   public val heading: UShort = 0u,
   /**
    * throttle (percentage)
+   * units = %
    */
   @GeneratedMavField(type = "int8_t")
   public val throttle: Byte = 0,
   /**
    * heading setpoint
+   * units = cdeg
    */
   @GeneratedMavField(type = "int16_t")
   public val headingSp: Short = 0,
   /**
    * Latitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val latitude: Int = 0,
   /**
    * Longitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val longitude: Int = 0,
   /**
    * Altitude above mean sea level
+   * units = m
    */
   @GeneratedMavField(type = "int16_t")
   public val altitudeAmsl: Short = 0,
   /**
    * Altitude setpoint relative to the home position
+   * units = m
    */
   @GeneratedMavField(type = "int16_t")
   public val altitudeSp: Short = 0,
   /**
    * airspeed
+   * units = m/s
    */
   @GeneratedMavField(type = "uint8_t")
   public val airspeed: UByte = 0u,
   /**
    * airspeed setpoint
+   * units = m/s
    */
   @GeneratedMavField(type = "uint8_t")
   public val airspeedSp: UByte = 0u,
   /**
    * groundspeed
+   * units = m/s
    */
   @GeneratedMavField(type = "uint8_t")
   public val groundspeed: UByte = 0u,
   /**
    * climb rate
+   * units = m/s
    */
   @GeneratedMavField(type = "int8_t")
   public val climbRate: Byte = 0,
@@ -136,16 +193,19 @@ public data class HighLatency(
   public val gpsFixType: MavEnumValue<GpsFixType> = MavEnumValue.fromValue(0u),
   /**
    * Remaining battery (percentage)
+   * units = %
    */
   @GeneratedMavField(type = "uint8_t")
   public val batteryRemaining: UByte = 0u,
   /**
    * Autopilot temperature (degrees C)
+   * units = degC
    */
   @GeneratedMavField(type = "int8_t")
   public val temperature: Byte = 0,
   /**
    * Air temperature (degrees C) from airspeed sensor
+   * units = degC
    */
   @GeneratedMavField(type = "int8_t")
   public val temperatureAir: Byte = 0,
@@ -162,13 +222,14 @@ public data class HighLatency(
   public val wpNum: UByte = 0u,
   /**
    * distance to target
+   * units = m
    */
   @GeneratedMavField(type = "uint16_t")
   public val wpDistance: UShort = 0u,
 ) : MavMessage<HighLatency> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HighLatency> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HighLatency> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(customMode)
     encoder.encodeInt32(latitude)
@@ -197,7 +258,7 @@ public data class HighLatency(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(customMode)
     encoder.encodeInt32(latitude)
@@ -231,11 +292,11 @@ public data class HighLatency(
 
     private const val SIZE_V2: Int = 40
 
-    public override val id: UInt = 234u
+    override val id: UInt = 234u
 
-    public override val crcExtra: Byte = -106
+    override val crcExtra: Byte = -106
 
-    public override fun deserialize(bytes: ByteArray): HighLatency {
+    override fun deserialize(bytes: ByteArray): HighLatency {
       val decoder = MavDataDecoder(bytes)
 
       val customMode = decoder.safeDecodeUInt32()

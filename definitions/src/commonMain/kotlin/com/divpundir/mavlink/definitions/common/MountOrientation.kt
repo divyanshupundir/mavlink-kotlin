@@ -20,6 +20,18 @@ import kotlin.Unit
 
 /**
  * Orientation of a mount
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param roll Roll in global frame (set to NaN for invalid).
+ * units = deg
+ * @param pitch Pitch in global frame (set to NaN for invalid).
+ * units = deg
+ * @param yaw Yaw relative to vehicle (set to NaN for invalid).
+ * units = deg
+ * @param yawAbsolute Yaw in absolute frame relative to Earth's North, north is 0 (set to NaN for
+ * invalid).
+ * units = deg
  */
 @Deprecated(message =
     "This message is being superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW. The message can still be used to communicate with legacy gimbals implementing it.")
@@ -30,26 +42,31 @@ import kotlin.Unit
 public data class MountOrientation(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
    * Roll in global frame (set to NaN for invalid).
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch in global frame (set to NaN for invalid).
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw relative to vehicle (set to NaN for invalid).
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Yaw in absolute frame relative to Earth's North, north is 0 (set to NaN for invalid).
+   * units = deg
    */
   @GeneratedMavField(
     type = "float",
@@ -57,9 +74,9 @@ public data class MountOrientation(
   )
   public val yawAbsolute: Float = 0F,
 ) : MavMessage<MountOrientation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MountOrientation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MountOrientation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(roll)
@@ -68,7 +85,7 @@ public data class MountOrientation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(roll)
@@ -83,11 +100,11 @@ public data class MountOrientation(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 265u
+    override val id: UInt = 265u
 
-    public override val crcExtra: Byte = 26
+    override val crcExtra: Byte = 26
 
-    public override fun deserialize(bytes: ByteArray): MountOrientation {
+    override fun deserialize(bytes: ByteArray): MountOrientation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

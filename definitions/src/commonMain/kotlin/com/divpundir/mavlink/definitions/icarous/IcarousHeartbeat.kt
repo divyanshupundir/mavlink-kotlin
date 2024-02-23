@@ -17,6 +17,8 @@ import kotlin.Unit
 
 /**
  * ICAROUS heartbeat
+ *
+ * @param status See the FMS_STATE enum.
  */
 @GeneratedMavMessage(
   id = 42_000u,
@@ -29,15 +31,15 @@ public data class IcarousHeartbeat(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<IcarousFmsState> = MavEnumValue.fromValue(0u),
 ) : MavMessage<IcarousHeartbeat> {
-  public override val instanceCompanion: MavMessage.MavCompanion<IcarousHeartbeat> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<IcarousHeartbeat> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(status.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(status.value, 1)
     return encoder.bytes.truncateZeros()
@@ -48,11 +50,11 @@ public data class IcarousHeartbeat(
 
     private const val SIZE_V2: Int = 1
 
-    public override val id: UInt = 42_000u
+    override val id: UInt = 42_000u
 
-    public override val crcExtra: Byte = -29
+    override val crcExtra: Byte = -29
 
-    public override fun deserialize(bytes: ByteArray): IcarousHeartbeat {
+    override fun deserialize(bytes: ByteArray): IcarousHeartbeat {
       val decoder = MavDataDecoder(bytes)
 
       val status = decoder.safeDecodeEnumValue(1).let { value ->

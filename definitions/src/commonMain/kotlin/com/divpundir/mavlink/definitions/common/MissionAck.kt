@@ -21,6 +21,11 @@ import kotlin.Unit
 /**
  * Acknowledgment message during waypoint handling. The type field states if this message is a
  * positive ack (type=0) or if an error happened (type=non-zero).
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param type Mission result.
+ * @param missionType Mission type.
  */
 @GeneratedMavMessage(
   id = 47u,
@@ -51,9 +56,9 @@ public data class MissionAck(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionAck> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionAck> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionAck> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -61,7 +66,7 @@ public data class MissionAck(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -75,11 +80,11 @@ public data class MissionAck(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 47u
+    override val id: UInt = 47u
 
-    public override val crcExtra: Byte = -103
+    override val crcExtra: Byte = -103
 
-    public override fun deserialize(bytes: ByteArray): MissionAck {
+    override fun deserialize(bytes: ByteArray): MissionAck {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

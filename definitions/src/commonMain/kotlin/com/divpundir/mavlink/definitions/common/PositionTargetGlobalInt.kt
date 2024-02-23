@@ -29,6 +29,39 @@ import kotlin.Unit
  * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
  * autopilot. This should match the commands sent in SET_POSITION_TARGET_GLOBAL_INT if the vehicle is
  * being controlled this way.
+ *
+ * @param timeBootMs Timestamp (time since system boot). The rationale for the timestamp in the
+ * setpoint is to allow the system to compensate for the transport delay of the setpoint. This allows
+ * the system to compensate processing latency.
+ * units = ms
+ * @param coordinateFrame Valid options are: MAV_FRAME_GLOBAL_INT = 5,
+ * MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6, MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
+ * @param typeMask Bitmap to indicate which dimensions should be ignored by the vehicle.
+ * @param latInt X Position in WGS84 frame
+ * units = degE7
+ * @param lonInt Y Position in WGS84 frame
+ * units = degE7
+ * @param alt Altitude (MSL, AGL or relative to home altitude, depending on frame)
+ * units = m
+ * @param vx X velocity in NED frame
+ * units = m/s
+ * @param vy Y velocity in NED frame
+ * units = m/s
+ * @param vz Z velocity in NED frame
+ * units = m/s
+ * @param afx X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
+ * N
+ * units = m/s/s
+ * @param afy Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
+ * N
+ * units = m/s/s
+ * @param afz Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
+ * N
+ * units = m/s/s
+ * @param yaw yaw setpoint
+ * units = rad
+ * @param yawRate yaw rate setpoint
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 87u,
@@ -39,6 +72,7 @@ public data class PositionTargetGlobalInt(
    * Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow
    * the system to compensate for the transport delay of the setpoint. This allows the system to
    * compensate processing latency.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -55,64 +89,74 @@ public data class PositionTargetGlobalInt(
   public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
    * X Position in WGS84 frame
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val latInt: Int = 0,
   /**
    * Y Position in WGS84 frame
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lonInt: Int = 0,
   /**
    * Altitude (MSL, AGL or relative to home altitude, depending on frame)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * X velocity in NED frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y velocity in NED frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z velocity in NED frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val afx: Float = 0F,
   /**
    * Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val afy: Float = 0F,
   /**
    * Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val afz: Float = 0F,
   /**
    * yaw setpoint
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * yaw rate setpoint
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<PositionTargetGlobalInt> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PositionTargetGlobalInt> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PositionTargetGlobalInt> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latInt)
@@ -131,7 +175,7 @@ public data class PositionTargetGlobalInt(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt32(latInt)
@@ -155,11 +199,11 @@ public data class PositionTargetGlobalInt(
 
     private const val SIZE_V2: Int = 51
 
-    public override val id: UInt = 87u
+    override val id: UInt = 87u
 
-    public override val crcExtra: Byte = -106
+    override val crcExtra: Byte = -106
 
-    public override fun deserialize(bytes: ByteArray): PositionTargetGlobalInt {
+    override fun deserialize(bytes: ByteArray): PositionTargetGlobalInt {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

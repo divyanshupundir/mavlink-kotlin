@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavFtpErr(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * None: No error
@@ -71,7 +71,7 @@ public enum class MavFtpErr(
   ;
 
   public companion object : MavEnum.MavCompanion<MavFtpErr> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavFtpErr? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavFtpErr? = when (v) {
       0u -> NONE
       1u -> FAIL
       2u -> FAILERRNO

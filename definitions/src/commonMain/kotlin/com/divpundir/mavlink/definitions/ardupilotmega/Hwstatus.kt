@@ -20,6 +20,10 @@ import kotlin.Unit
 
 /**
  * Status of key hardware.
+ *
+ * @param vcc Board voltage.
+ * units = mV
+ * @param i2cerr I2C error count.
  */
 @GeneratedMavMessage(
   id = 165u,
@@ -28,6 +32,7 @@ import kotlin.Unit
 public data class Hwstatus(
   /**
    * Board voltage.
+   * units = mV
    */
   @GeneratedMavField(type = "uint16_t")
   public val vcc: UShort = 0u,
@@ -37,16 +42,16 @@ public data class Hwstatus(
   @GeneratedMavField(type = "uint8_t")
   public val i2cerr: UByte = 0u,
 ) : MavMessage<Hwstatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Hwstatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Hwstatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(vcc)
     encoder.encodeUInt8(i2cerr)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(vcc)
     encoder.encodeUInt8(i2cerr)
@@ -58,11 +63,11 @@ public data class Hwstatus(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 165u
+    override val id: UInt = 165u
 
-    public override val crcExtra: Byte = 21
+    override val crcExtra: Byte = 21
 
-    public override fun deserialize(bytes: ByteArray): Hwstatus {
+    override fun deserialize(bytes: ByteArray): Hwstatus {
       val decoder = MavDataDecoder(bytes)
 
       val vcc = decoder.safeDecodeUInt16()

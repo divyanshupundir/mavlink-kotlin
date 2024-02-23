@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavResult(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Command is valid (is supported and has valid parameters), and was executed.
@@ -77,7 +77,7 @@ public enum class MavResult(
   ;
 
   public companion object : MavEnum.MavCompanion<MavResult> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavResult? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavResult? = when (v) {
       0u -> ACCEPTED
       1u -> TEMPORARILY_REJECTED
       2u -> DENIED

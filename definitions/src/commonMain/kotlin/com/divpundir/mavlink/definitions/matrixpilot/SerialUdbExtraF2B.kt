@@ -21,6 +21,57 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA - F2: Part B
+ *
+ * @param sueTime Serial UDB Extra Time
+ * @param suePwmInput1 Serial UDB Extra PWM Input Channel 1
+ * @param suePwmInput2 Serial UDB Extra PWM Input Channel 2
+ * @param suePwmInput3 Serial UDB Extra PWM Input Channel 3
+ * @param suePwmInput4 Serial UDB Extra PWM Input Channel 4
+ * @param suePwmInput5 Serial UDB Extra PWM Input Channel 5
+ * @param suePwmInput6 Serial UDB Extra PWM Input Channel 6
+ * @param suePwmInput7 Serial UDB Extra PWM Input Channel 7
+ * @param suePwmInput8 Serial UDB Extra PWM Input Channel 8
+ * @param suePwmInput9 Serial UDB Extra PWM Input Channel 9
+ * @param suePwmInput10 Serial UDB Extra PWM Input Channel 10
+ * @param suePwmInput11 Serial UDB Extra PWM Input Channel 11
+ * @param suePwmInput12 Serial UDB Extra PWM Input Channel 12
+ * @param suePwmOutput1 Serial UDB Extra PWM Output Channel 1
+ * @param suePwmOutput2 Serial UDB Extra PWM Output Channel 2
+ * @param suePwmOutput3 Serial UDB Extra PWM Output Channel 3
+ * @param suePwmOutput4 Serial UDB Extra PWM Output Channel 4
+ * @param suePwmOutput5 Serial UDB Extra PWM Output Channel 5
+ * @param suePwmOutput6 Serial UDB Extra PWM Output Channel 6
+ * @param suePwmOutput7 Serial UDB Extra PWM Output Channel 7
+ * @param suePwmOutput8 Serial UDB Extra PWM Output Channel 8
+ * @param suePwmOutput9 Serial UDB Extra PWM Output Channel 9
+ * @param suePwmOutput10 Serial UDB Extra PWM Output Channel 10
+ * @param suePwmOutput11 Serial UDB Extra PWM Output Channel 11
+ * @param suePwmOutput12 Serial UDB Extra PWM Output Channel 12
+ * @param sueImuLocationX Serial UDB Extra IMU Location X
+ * @param sueImuLocationY Serial UDB Extra IMU Location Y
+ * @param sueImuLocationZ Serial UDB Extra IMU Location Z
+ * @param sueLocationErrorEarthX Serial UDB Location Error Earth X
+ * @param sueLocationErrorEarthY Serial UDB Location Error Earth Y
+ * @param sueLocationErrorEarthZ Serial UDB Location Error Earth Z
+ * @param sueFlags Serial UDB Extra Status Flags
+ * @param sueOscFails Serial UDB Extra Oscillator Failure Count
+ * @param sueImuVelocityX Serial UDB Extra IMU Velocity X
+ * @param sueImuVelocityY Serial UDB Extra IMU Velocity Y
+ * @param sueImuVelocityZ Serial UDB Extra IMU Velocity Z
+ * @param sueWaypointGoalX Serial UDB Extra Current Waypoint Goal X
+ * @param sueWaypointGoalY Serial UDB Extra Current Waypoint Goal Y
+ * @param sueWaypointGoalZ Serial UDB Extra Current Waypoint Goal Z
+ * @param sueAeroX Aeroforce in UDB X Axis
+ * @param sueAeroY Aeroforce in UDB Y Axis
+ * @param sueAeroZ Aeroforce in UDB Z axis
+ * @param sueBaromTemp SUE barometer temperature
+ * @param sueBaromPress SUE barometer pressure
+ * @param sueBaromAlt SUE barometer altitude
+ * @param sueBatVolt SUE battery voltage
+ * @param sueBatAmp SUE battery current
+ * @param sueBatAmpHours SUE battery milli amp hours used
+ * @param sueDesiredHeight Sue autopilot desired height
+ * @param sueMemoryStackFree Serial UDB Extra Stack Memory Free
  */
 @GeneratedMavMessage(
   id = 171u,
@@ -278,9 +329,9 @@ public data class SerialUdbExtraF2B(
   @GeneratedMavField(type = "int16_t")
   public val sueMemoryStackFree: Short = 0,
 ) : MavMessage<SerialUdbExtraF2B> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF2B> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF2B> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(sueTime)
     encoder.encodeUInt32(sueFlags)
@@ -335,7 +386,7 @@ public data class SerialUdbExtraF2B(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(sueTime)
     encoder.encodeUInt32(sueFlags)
@@ -395,11 +446,11 @@ public data class SerialUdbExtraF2B(
 
     private const val SIZE_V2: Int = 108
 
-    public override val id: UInt = 171u
+    override val id: UInt = 171u
 
-    public override val crcExtra: Byte = -11
+    override val crcExtra: Byte = -11
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF2B {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF2B {
       val decoder = MavDataDecoder(bytes)
 
       val sueTime = decoder.safeDecodeUInt32()

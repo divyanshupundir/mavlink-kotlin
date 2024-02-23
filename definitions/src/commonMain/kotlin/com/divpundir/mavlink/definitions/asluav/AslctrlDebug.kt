@@ -22,6 +22,18 @@ import kotlin.Unit
 
 /**
  * ASL-fixed-wing controller debug data
+ *
+ * @param i321  Debug data
+ * @param i81  Debug data
+ * @param i82  Debug data
+ * @param f1  Debug data 
+ * @param f2  Debug data
+ * @param f3  Debug data
+ * @param f4  Debug data
+ * @param f5  Debug data
+ * @param f6  Debug data
+ * @param f7  Debug data
+ * @param f8  Debug data
  */
 @GeneratedMavMessage(
   id = 8_005u,
@@ -84,9 +96,9 @@ public data class AslctrlDebug(
   @GeneratedMavField(type = "float")
   public val f8: Float = 0F,
 ) : MavMessage<AslctrlDebug> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AslctrlDebug> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AslctrlDebug> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(i321)
     encoder.encodeFloat(f1)
@@ -102,7 +114,7 @@ public data class AslctrlDebug(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(i321)
     encoder.encodeFloat(f1)
@@ -123,11 +135,11 @@ public data class AslctrlDebug(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 8_005u
+    override val id: UInt = 8_005u
 
-    public override val crcExtra: Byte = -5
+    override val crcExtra: Byte = -5
 
-    public override fun deserialize(bytes: ByteArray): AslctrlDebug {
+    override fun deserialize(bytes: ByteArray): AslctrlDebug {
       val decoder = MavDataDecoder(bytes)
 
       val i321 = decoder.safeDecodeUInt32()

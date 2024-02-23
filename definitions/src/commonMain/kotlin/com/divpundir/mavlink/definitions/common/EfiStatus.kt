@@ -20,6 +20,43 @@ import kotlin.Unit
 
 /**
  * EFI status output
+ *
+ * @param health EFI health status
+ * @param ecuIndex ECU index
+ * @param rpm RPM
+ * @param fuelConsumed Fuel consumed
+ * units = cm^3
+ * @param fuelFlow Fuel flow rate
+ * units = cm^3/min
+ * @param engineLoad Engine load
+ * units = %
+ * @param throttlePosition Throttle position
+ * units = %
+ * @param sparkDwellTime Spark dwell time
+ * units = ms
+ * @param barometricPressure Barometric pressure
+ * units = kPa
+ * @param intakeManifoldPressure Intake manifold pressure(
+ * units = kPa
+ * @param intakeManifoldTemperature Intake manifold temperature
+ * units = degC
+ * @param cylinderHeadTemperature Cylinder head temperature
+ * units = degC
+ * @param ignitionTiming Ignition timing (Crank angle degrees)
+ * units = deg
+ * @param injectionTime Injection time
+ * units = ms
+ * @param exhaustGasTemperature Exhaust gas temperature
+ * units = degC
+ * @param throttleOut Output throttle
+ * units = %
+ * @param ptCompensation Pressure/temperature compensation
+ * @param ignitionVoltage Supply voltage to EFI sparking system.  Zero in this value means
+ * "unknown", so if the supply voltage really is zero volts use 0.0001 instead.
+ * units = V
+ * @param fuelPressure Fuel pressure. Zero in this value means "unknown", so if the fuel pressure
+ * really is zero kPa use 0.0001 instead.
+ * units = kPa
  */
 @GeneratedMavMessage(
   id = 225u,
@@ -43,66 +80,79 @@ public data class EfiStatus(
   public val rpm: Float = 0F,
   /**
    * Fuel consumed
+   * units = cm^3
    */
   @GeneratedMavField(type = "float")
   public val fuelConsumed: Float = 0F,
   /**
    * Fuel flow rate
+   * units = cm^3/min
    */
   @GeneratedMavField(type = "float")
   public val fuelFlow: Float = 0F,
   /**
    * Engine load
+   * units = %
    */
   @GeneratedMavField(type = "float")
   public val engineLoad: Float = 0F,
   /**
    * Throttle position
+   * units = %
    */
   @GeneratedMavField(type = "float")
   public val throttlePosition: Float = 0F,
   /**
    * Spark dwell time
+   * units = ms
    */
   @GeneratedMavField(type = "float")
   public val sparkDwellTime: Float = 0F,
   /**
    * Barometric pressure
+   * units = kPa
    */
   @GeneratedMavField(type = "float")
   public val barometricPressure: Float = 0F,
   /**
    * Intake manifold pressure(
+   * units = kPa
    */
   @GeneratedMavField(type = "float")
   public val intakeManifoldPressure: Float = 0F,
   /**
    * Intake manifold temperature
+   * units = degC
    */
   @GeneratedMavField(type = "float")
   public val intakeManifoldTemperature: Float = 0F,
   /**
    * Cylinder head temperature
+   * units = degC
    */
   @GeneratedMavField(type = "float")
   public val cylinderHeadTemperature: Float = 0F,
   /**
    * Ignition timing (Crank angle degrees)
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val ignitionTiming: Float = 0F,
   /**
    * Injection time
+   * units = ms
    */
   @GeneratedMavField(type = "float")
   public val injectionTime: Float = 0F,
   /**
    * Exhaust gas temperature
+   * units = degC
    */
   @GeneratedMavField(type = "float")
   public val exhaustGasTemperature: Float = 0F,
   /**
    * Output throttle
+   * units = %
    */
   @GeneratedMavField(type = "float")
   public val throttleOut: Float = 0F,
@@ -114,6 +164,7 @@ public data class EfiStatus(
   /**
    * Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply
    * voltage really is zero volts use 0.0001 instead.
+   * units = V
    */
   @GeneratedMavField(
     type = "float",
@@ -123,6 +174,7 @@ public data class EfiStatus(
   /**
    * Fuel pressure. Zero in this value means "unknown", so if the fuel pressure really is zero kPa
    * use 0.0001 instead.
+   * units = kPa
    */
   @GeneratedMavField(
     type = "float",
@@ -130,9 +182,9 @@ public data class EfiStatus(
   )
   public val fuelPressure: Float = 0F,
 ) : MavMessage<EfiStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<EfiStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<EfiStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(ecuIndex)
     encoder.encodeFloat(rpm)
@@ -154,7 +206,7 @@ public data class EfiStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(ecuIndex)
     encoder.encodeFloat(rpm)
@@ -183,11 +235,11 @@ public data class EfiStatus(
 
     private const val SIZE_V2: Int = 73
 
-    public override val id: UInt = 225u
+    override val id: UInt = 225u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): EfiStatus {
+    override fun deserialize(bytes: ByteArray): EfiStatus {
       val decoder = MavDataDecoder(bytes)
 
       val ecuIndex = decoder.safeDecodeFloat()

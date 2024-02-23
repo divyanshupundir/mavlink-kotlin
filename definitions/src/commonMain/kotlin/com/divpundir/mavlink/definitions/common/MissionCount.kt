@@ -25,6 +25,11 @@ import kotlin.Unit
  * This message is emitted as response to MISSION_REQUEST_LIST by the MAV and to initiate a write
  * transaction. The GCS can then request the individual mission item based on the knowledge of the
  * total number of waypoints.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param count Number of mission items in the sequence
+ * @param missionType Mission type.
  */
 @GeneratedMavMessage(
   id = 44u,
@@ -55,9 +60,9 @@ public data class MissionCount(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionCount> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionCount> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionCount> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(count)
     encoder.encodeUInt8(targetSystem)
@@ -65,7 +70,7 @@ public data class MissionCount(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(count)
     encoder.encodeUInt8(targetSystem)
@@ -79,11 +84,11 @@ public data class MissionCount(
 
     private const val SIZE_V2: Int = 5
 
-    public override val id: UInt = 44u
+    override val id: UInt = 44u
 
-    public override val crcExtra: Byte = -35
+    override val crcExtra: Byte = -35
 
-    public override fun deserialize(bytes: ByteArray): MissionCount {
+    override fun deserialize(bytes: ByteArray): MissionCount {
       val decoder = MavDataDecoder(bytes)
 
       val count = decoder.safeDecodeUInt16()

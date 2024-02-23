@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproProtuneSharpness(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Low Sharpness.
@@ -27,7 +27,7 @@ public enum class GoproProtuneSharpness(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproProtuneSharpness> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneSharpness? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproProtuneSharpness? = when (v) {
       0u -> LOW
       1u -> MEDIUM
       2u -> HIGH

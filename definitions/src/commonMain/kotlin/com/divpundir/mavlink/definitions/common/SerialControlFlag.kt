@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class SerialControlFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Set if this is a reply
@@ -43,7 +43,7 @@ public enum class SerialControlFlag(
   ;
 
   public companion object : MavBitmask.MavCompanion<SerialControlFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): SerialControlFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): SerialControlFlag? = when (v) {
       1u -> REPLY
       2u -> RESPOND
       4u -> EXCLUSIVE
@@ -52,7 +52,7 @@ public enum class SerialControlFlag(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<SerialControlFlag> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<SerialControlFlag> = buildList {
       if (v and 1u == 1u) add(REPLY)
       if (v and 2u == 2u) add(RESPOND)
       if (v and 4u == 4u) add(EXCLUSIVE)

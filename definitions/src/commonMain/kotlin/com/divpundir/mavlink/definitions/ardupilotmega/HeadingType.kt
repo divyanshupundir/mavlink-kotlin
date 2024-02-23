@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class HeadingType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   COURSE_OVER_GROUND(0u),
@@ -16,7 +16,7 @@ public enum class HeadingType(
   ;
 
   public companion object : MavEnum.MavCompanion<HeadingType> {
-    public override fun getEntryFromValueOrNull(v: UInt): HeadingType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): HeadingType? = when (v) {
       0u -> COURSE_OVER_GROUND
       1u -> HEADING
       else -> null

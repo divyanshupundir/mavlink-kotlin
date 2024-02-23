@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavEstimatorType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Unknown type of the estimator.
@@ -60,7 +60,7 @@ public enum class MavEstimatorType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavEstimatorType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavEstimatorType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavEstimatorType? = when (v) {
       0u -> UNKNOWN
       1u -> NAIVE
       2u -> VISION

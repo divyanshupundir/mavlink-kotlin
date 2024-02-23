@@ -29,6 +29,25 @@ import kotlin.collections.List
  * System). The Authentication message can have two different formats. For data page 0, the fields
  * PageCount, Length and TimeStamp are present and AuthData is only 17 bytes. For data page 1 through
  * 15, PageCount, Length and TimeStamp are not present and the size of AuthData is 23 bytes.
+ *
+ * @param targetSystem System ID (0 for broadcast).
+ * @param targetComponent Component ID (0 for broadcast).
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
+ * https://mavlink.io/en/services/opendroneid.html. 
+ * @param authenticationType Indicates the type of authentication.
+ * @param dataPage Allowed range is 0 - 15.
+ * @param lastPageIndex This field is only present for page 0. Allowed range is 0 - 15. See the
+ * description of struct ODID_Auth_data at
+ * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+ * @param length This field is only present for page 0. Total bytes of authentication_data from all
+ * data pages. See the description of struct ODID_Auth_data at
+ * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+ * units = bytes
+ * @param timestamp This field is only present for page 0. 32 bit Unix Timestamp in seconds since
+ * 00:00:00 01/01/2019.
+ * units = s
+ * @param authenticationData Opaque authentication data. For page 0, the size is only 17 bytes. For
+ * other pages, the size is 23 bytes. Shall be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_902u,
@@ -72,12 +91,14 @@ public data class OpenDroneIdAuthentication(
    * This field is only present for page 0. Total bytes of authentication_data from all data pages.
    * See the description of struct ODID_Auth_data at
    * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+   * units = bytes
    */
   @GeneratedMavField(type = "uint8_t")
   public val length: UByte = 0u,
   /**
    * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00
    * 01/01/2019.
+   * units = s
    */
   @GeneratedMavField(type = "uint32_t")
   public val timestamp: UInt = 0u,
@@ -88,10 +109,9 @@ public data class OpenDroneIdAuthentication(
   @GeneratedMavField(type = "uint8_t[23]")
   public val authenticationData: List<UByte> = emptyList(),
 ) : MavMessage<OpenDroneIdAuthentication> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdAuthentication> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdAuthentication> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timestamp)
     encoder.encodeUInt8(targetSystem)
@@ -105,7 +125,7 @@ public data class OpenDroneIdAuthentication(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timestamp)
     encoder.encodeUInt8(targetSystem)
@@ -124,11 +144,11 @@ public data class OpenDroneIdAuthentication(
 
     private const val SIZE_V2: Int = 53
 
-    public override val id: UInt = 12_902u
+    override val id: UInt = 12_902u
 
-    public override val crcExtra: Byte = -116
+    override val crcExtra: Byte = -116
 
-    public override fun deserialize(bytes: ByteArray): OpenDroneIdAuthentication {
+    override fun deserialize(bytes: ByteArray): OpenDroneIdAuthentication {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt32()

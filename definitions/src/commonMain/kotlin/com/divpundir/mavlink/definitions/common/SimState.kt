@@ -19,6 +19,49 @@ import kotlin.Unit
 
 /**
  * Status of simulation environment, if used
+ *
+ * @param q1 True attitude quaternion component 1, w (1 in null-rotation)
+ * @param q2 True attitude quaternion component 2, x (0 in null-rotation)
+ * @param q3 True attitude quaternion component 3, y (0 in null-rotation)
+ * @param q4 True attitude quaternion component 4, z (0 in null-rotation)
+ * @param roll Attitude roll expressed as Euler angles, not recommended except for human-readable
+ * outputs
+ * @param pitch Attitude pitch expressed as Euler angles, not recommended except for human-readable
+ * outputs
+ * @param yaw Attitude yaw expressed as Euler angles, not recommended except for human-readable
+ * outputs
+ * @param xacc X acceleration
+ * units = m/s/s
+ * @param yacc Y acceleration
+ * units = m/s/s
+ * @param zacc Z acceleration
+ * units = m/s/s
+ * @param xgyro Angular speed around X axis
+ * units = rad/s
+ * @param ygyro Angular speed around Y axis
+ * units = rad/s
+ * @param zgyro Angular speed around Z axis
+ * units = rad/s
+ * @param lat Latitude (lower precision). Both this and the lat_int field should be set.
+ * units = deg
+ * @param lon Longitude (lower precision). Both this and the lon_int field should be set.
+ * units = deg
+ * @param alt Altitude
+ * units = m
+ * @param stdDevHorz Horizontal position standard deviation
+ * @param stdDevVert Vertical position standard deviation
+ * @param vn True velocity in north direction in earth-fixed NED frame
+ * units = m/s
+ * @param ve True velocity in east direction in earth-fixed NED frame
+ * units = m/s
+ * @param vd True velocity in down direction in earth-fixed NED frame
+ * units = m/s
+ * @param latInt Latitude (higher precision). If 0, recipients should use the lat field value
+ * (otherwise this field is preferred).
+ * units = degE7
+ * @param lonInt Longitude (higher precision). If 0, recipients should use the lon field value
+ * (otherwise this field is preferred).
+ * units = degE7
  */
 @GeneratedMavMessage(
   id = 108u,
@@ -62,46 +105,55 @@ public data class SimState(
   public val yaw: Float = 0F,
   /**
    * X acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * Latitude (lower precision). Both this and the lat_int field should be set.
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val lat: Float = 0F,
   /**
    * Longitude (lower precision). Both this and the lon_int field should be set.
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val lon: Float = 0F,
   /**
    * Altitude
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
@@ -117,22 +169,26 @@ public data class SimState(
   public val stdDevVert: Float = 0F,
   /**
    * True velocity in north direction in earth-fixed NED frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vn: Float = 0F,
   /**
    * True velocity in east direction in earth-fixed NED frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val ve: Float = 0F,
   /**
    * True velocity in down direction in earth-fixed NED frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vd: Float = 0F,
   /**
    * Latitude (higher precision). If 0, recipients should use the lat field value (otherwise this
    * field is preferred).
+   * units = degE7
    */
   @GeneratedMavField(
     type = "int32_t",
@@ -142,6 +198,7 @@ public data class SimState(
   /**
    * Longitude (higher precision). If 0, recipients should use the lon field value (otherwise this
    * field is preferred).
+   * units = degE7
    */
   @GeneratedMavField(
     type = "int32_t",
@@ -149,9 +206,9 @@ public data class SimState(
   )
   public val lonInt: Int = 0,
 ) : MavMessage<SimState> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SimState> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SimState> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(q1)
     encoder.encodeFloat(q2)
@@ -177,7 +234,7 @@ public data class SimState(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(q1)
     encoder.encodeFloat(q2)
@@ -210,11 +267,11 @@ public data class SimState(
 
     private const val SIZE_V2: Int = 92
 
-    public override val id: UInt = 108u
+    override val id: UInt = 108u
 
-    public override val crcExtra: Byte = 32
+    override val crcExtra: Byte = 32
 
-    public override fun deserialize(bytes: ByteArray): SimState {
+    override fun deserialize(bytes: ByteArray): SimState {
       val decoder = MavDataDecoder(bytes)
 
       val q1 = decoder.safeDecodeFloat()

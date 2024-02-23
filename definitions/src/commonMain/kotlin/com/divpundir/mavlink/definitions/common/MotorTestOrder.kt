@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MotorTestOrder(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Default autopilot motor test method.
@@ -30,7 +30,7 @@ public enum class MotorTestOrder(
   ;
 
   public companion object : MavEnum.MavCompanion<MotorTestOrder> {
-    public override fun getEntryFromValueOrNull(v: UInt): MotorTestOrder? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MotorTestOrder? = when (v) {
       0u -> DEFAULT
       1u -> SEQUENCE
       2u -> BOARD

@@ -23,6 +23,11 @@ import kotlin.Unit
 
 /**
  * Play vehicle tone/tune (buzzer). Supersedes message PLAY_TUNE.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param format Tune format
+ * @param tune Tune definition as a NULL-terminated string.
  */
 @GeneratedMavMessage(
   id = 400u,
@@ -50,9 +55,9 @@ public data class PlayTuneV2(
   @GeneratedMavField(type = "char[248]")
   public val tune: String = "",
 ) : MavMessage<PlayTuneV2> {
-  public override val instanceCompanion: MavMessage.MavCompanion<PlayTuneV2> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<PlayTuneV2> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(format.value, 4)
     encoder.encodeUInt8(targetSystem)
@@ -61,7 +66,7 @@ public data class PlayTuneV2(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(format.value, 4)
     encoder.encodeUInt8(targetSystem)
@@ -75,11 +80,11 @@ public data class PlayTuneV2(
 
     private const val SIZE_V2: Int = 254
 
-    public override val id: UInt = 400u
+    override val id: UInt = 400u
 
-    public override val crcExtra: Byte = 110
+    override val crcExtra: Byte = 110
 
-    public override fun deserialize(bytes: ByteArray): PlayTuneV2 {
+    override fun deserialize(bytes: ByteArray): PlayTuneV2 {
       val decoder = MavDataDecoder(bytes)
 
       val format = decoder.safeDecodeEnumValue(4).let { value ->

@@ -19,6 +19,23 @@ import kotlin.Unit
 
 /**
  * Status of third AHRS filter if available. This is for ANU research group (Ali and Sean).
+ *
+ * @param roll Roll angle.
+ * units = rad
+ * @param pitch Pitch angle.
+ * units = rad
+ * @param yaw Yaw angle.
+ * units = rad
+ * @param altitude Altitude (MSL).
+ * units = m
+ * @param lat Latitude.
+ * units = degE7
+ * @param lng Longitude.
+ * units = degE7
+ * @param v1 Test variable1.
+ * @param v2 Test variable2.
+ * @param v3 Test variable3.
+ * @param v4 Test variable4.
  */
 @GeneratedMavMessage(
   id = 182u,
@@ -27,31 +44,37 @@ import kotlin.Unit
 public data class Ahrs3(
   /**
    * Roll angle.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Altitude (MSL).
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitude: Float = 0F,
   /**
    * Latitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
@@ -76,9 +99,9 @@ public data class Ahrs3(
   @GeneratedMavField(type = "float")
   public val v4: Float = 0F,
 ) : MavMessage<Ahrs3> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Ahrs3> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Ahrs3> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -93,7 +116,7 @@ public data class Ahrs3(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -113,11 +136,11 @@ public data class Ahrs3(
 
     private const val SIZE_V2: Int = 40
 
-    public override val id: UInt = 182u
+    override val id: UInt = 182u
 
-    public override val crcExtra: Byte = -27
+    override val crcExtra: Byte = -27
 
-    public override fun deserialize(bytes: ByteArray): Ahrs3 {
+    override fun deserialize(bytes: ByteArray): Ahrs3 {
       val decoder = MavDataDecoder(bytes)
 
       val roll = decoder.safeDecodeFloat()

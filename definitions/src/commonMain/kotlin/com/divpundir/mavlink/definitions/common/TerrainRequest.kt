@@ -23,6 +23,14 @@ import kotlin.Unit
 /**
  * Request for terrain data and terrain status. See terrain protocol docs:
  * https://mavlink.io/en/services/terrain.html
+ *
+ * @param lat Latitude of SW corner of first grid
+ * units = degE7
+ * @param lon Longitude of SW corner of first grid
+ * units = degE7
+ * @param gridSpacing Grid spacing
+ * units = m
+ * @param mask Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
  */
 @GeneratedMavMessage(
   id = 133u,
@@ -31,16 +39,19 @@ import kotlin.Unit
 public data class TerrainRequest(
   /**
    * Latitude of SW corner of first grid
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude of SW corner of first grid
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Grid spacing
+   * units = m
    */
   @GeneratedMavField(type = "uint16_t")
   public val gridSpacing: UShort = 0u,
@@ -50,9 +61,9 @@ public data class TerrainRequest(
   @GeneratedMavField(type = "uint64_t")
   public val mask: ULong = 0uL,
 ) : MavMessage<TerrainRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TerrainRequest> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TerrainRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(mask)
     encoder.encodeInt32(lat)
@@ -61,7 +72,7 @@ public data class TerrainRequest(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(mask)
     encoder.encodeInt32(lat)
@@ -75,11 +86,11 @@ public data class TerrainRequest(
 
     private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 133u
+    override val id: UInt = 133u
 
-    public override val crcExtra: Byte = 6
+    override val crcExtra: Byte = 6
 
-    public override fun deserialize(bytes: ByteArray): TerrainRequest {
+    override fun deserialize(bytes: ByteArray): TerrainRequest {
       val decoder = MavDataDecoder(bytes)
 
       val mask = decoder.safeDecodeUInt64()

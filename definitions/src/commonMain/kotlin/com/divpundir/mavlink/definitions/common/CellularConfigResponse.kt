@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class CellularConfigResponse(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Changes accepted.
@@ -40,7 +40,7 @@ public enum class CellularConfigResponse(
   ;
 
   public companion object : MavEnum.MavCompanion<CellularConfigResponse> {
-    public override fun getEntryFromValueOrNull(v: UInt): CellularConfigResponse? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CellularConfigResponse? = when (v) {
       0u -> ACCEPTED
       1u -> APN_ERROR
       2u -> PIN_ERROR

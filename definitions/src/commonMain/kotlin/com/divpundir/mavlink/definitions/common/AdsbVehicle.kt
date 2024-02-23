@@ -36,6 +36,27 @@ import kotlin.Unit
 
 /**
  * The location and information of an ADSB vehicle
+ *
+ * @param icaoAddress ICAO address
+ * @param lat Latitude
+ * units = degE7
+ * @param lon Longitude
+ * units = degE7
+ * @param altitudeType ADSB altitude type.
+ * @param altitude Altitude(ASL)
+ * units = mm
+ * @param heading Course over ground
+ * units = cdeg
+ * @param horVelocity The horizontal velocity
+ * units = cm/s
+ * @param verVelocity The vertical velocity. Positive is up
+ * units = cm/s
+ * @param callsign The callsign, 8+null
+ * @param emitterType ADSB emitter type.
+ * @param tslc Time since last communication in seconds
+ * units = s
+ * @param flags Bitmap to indicate various statuses including valid data fields
+ * @param squawk Squawk code
  */
 @GeneratedMavMessage(
   id = 246u,
@@ -49,11 +70,13 @@ public data class AdsbVehicle(
   public val icaoAddress: UInt = 0u,
   /**
    * Latitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
@@ -64,21 +87,25 @@ public data class AdsbVehicle(
   public val altitudeType: MavEnumValue<AdsbAltitudeType> = MavEnumValue.fromValue(0u),
   /**
    * Altitude(ASL)
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val altitude: Int = 0,
   /**
    * Course over ground
+   * units = cdeg
    */
   @GeneratedMavField(type = "uint16_t")
   public val heading: UShort = 0u,
   /**
    * The horizontal velocity
+   * units = cm/s
    */
   @GeneratedMavField(type = "uint16_t")
   public val horVelocity: UShort = 0u,
   /**
    * The vertical velocity. Positive is up
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val verVelocity: Short = 0,
@@ -94,6 +121,7 @@ public data class AdsbVehicle(
   public val emitterType: MavEnumValue<AdsbEmitterType> = MavEnumValue.fromValue(0u),
   /**
    * Time since last communication in seconds
+   * units = s
    */
   @GeneratedMavField(type = "uint8_t")
   public val tslc: UByte = 0u,
@@ -108,9 +136,9 @@ public data class AdsbVehicle(
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
 ) : MavMessage<AdsbVehicle> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AdsbVehicle> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AdsbVehicle> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(icaoAddress)
     encoder.encodeInt32(lat)
@@ -128,7 +156,7 @@ public data class AdsbVehicle(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(icaoAddress)
     encoder.encodeInt32(lat)
@@ -151,11 +179,11 @@ public data class AdsbVehicle(
 
     private const val SIZE_V2: Int = 38
 
-    public override val id: UInt = 246u
+    override val id: UInt = 246u
 
-    public override val crcExtra: Byte = -72
+    override val crcExtra: Byte = -72
 
-    public override fun deserialize(bytes: ByteArray): AdsbVehicle {
+    override fun deserialize(bytes: ByteArray): AdsbVehicle {
       val decoder = MavDataDecoder(bytes)
 
       val icaoAddress = decoder.safeDecodeUInt32()

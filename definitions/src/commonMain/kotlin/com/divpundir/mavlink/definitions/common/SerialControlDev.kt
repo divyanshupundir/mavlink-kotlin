@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class SerialControlDev(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * First telemetry port
@@ -90,7 +90,7 @@ public enum class SerialControlDev(
   ;
 
   public companion object : MavEnum.MavCompanion<SerialControlDev> {
-    public override fun getEntryFromValueOrNull(v: UInt): SerialControlDev? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): SerialControlDev? = when (v) {
       0u -> TELEM1
       1u -> TELEM2
       2u -> GPS1

@@ -37,6 +37,15 @@ import kotlin.Unit
  *         The message sequence is repeated numerous times with results being filtered/averaged to
  * estimate the offset.
  *       
+ *
+ * @param tc1 Time sync timestamp 1. Syncing: 0. Responding: Timestamp of responding component.
+ * units = ns
+ * @param ts1 Time sync timestamp 2. Timestamp of syncing component (mirrored in response).
+ * units = ns
+ * @param targetSystem Target system id. Request: 0 (broadcast) or id of specific system. Response
+ * must contain system id of the requesting component.
+ * @param targetComponent Target component id. Request: 0 (broadcast) or id of specific component.
+ * Response must contain component id of the requesting component.
  */
 @GeneratedMavMessage(
   id = 111u,
@@ -45,11 +54,13 @@ import kotlin.Unit
 public data class Timesync(
   /**
    * Time sync timestamp 1. Syncing: 0. Responding: Timestamp of responding component.
+   * units = ns
    */
   @GeneratedMavField(type = "int64_t")
   public val tc1: Long = 0L,
   /**
    * Time sync timestamp 2. Timestamp of syncing component (mirrored in response).
+   * units = ns
    */
   @GeneratedMavField(type = "int64_t")
   public val ts1: Long = 0L,
@@ -72,16 +83,16 @@ public data class Timesync(
   )
   public val targetComponent: UByte = 0u,
 ) : MavMessage<Timesync> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Timesync> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt64(tc1)
     encoder.encodeInt64(ts1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt64(tc1)
     encoder.encodeInt64(ts1)
@@ -95,11 +106,11 @@ public data class Timesync(
 
     private const val SIZE_V2: Int = 18
 
-    public override val id: UInt = 111u
+    override val id: UInt = 111u
 
-    public override val crcExtra: Byte = 34
+    override val crcExtra: Byte = 34
 
-    public override fun deserialize(bytes: ByteArray): Timesync {
+    override fun deserialize(bytes: ByteArray): Timesync {
       val decoder = MavDataDecoder(bytes)
 
       val tc1 = decoder.safeDecodeInt64()

@@ -20,6 +20,35 @@ import kotlin.Unit
 
 /**
  * The current system altitude.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param altitudeMonotonic This altitude measure is initialized on system boot and monotonic (it is
+ * never reset, but represents the local altitude change). The only guarantee on this field is that it
+ * will never be reset and is consistent within a flight. The recommended value for this field is the
+ * uncorrected barometric altitude at boot time. This altitude will also drift and vary between
+ * flights.
+ * units = m
+ * @param altitudeAmsl This altitude measure is strictly above mean sea level and might be
+ * non-monotonic (it might reset on events like GPS lock or when a new QNH value is set). It should be
+ * the altitude to which global altitude waypoints are compared to. Note that it is *not* the GPS
+ * altitude, however, most GPS modules already output MSL by default and not the WGS84 altitude.
+ * units = m
+ * @param altitudeLocal This is the local altitude in the local coordinate frame. It is not the
+ * altitude above home, but in reference to the coordinate origin (0, 0, 0). It is up-positive.
+ * units = m
+ * @param altitudeRelative This is the altitude above the home position. It resets on each change of
+ * the current home position.
+ * units = m
+ * @param altitudeTerrain This is the altitude above terrain. It might be fed by a terrain database
+ * or an altimeter. Values smaller than -1000 should be interpreted as unknown.
+ * units = m
+ * @param bottomClearance This is not the altitude, but the clear space below the system according
+ * to the fused clearance estimate. It generally should max out at the maximum range of e.g. the laser
+ * altimeter. It is generally a moving target. A negative value indicates no measurement available.
+ * units = m
  */
 @GeneratedMavMessage(
   id = 141u,
@@ -29,6 +58,7 @@ public data class Altitude(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -37,6 +67,7 @@ public data class Altitude(
    * represents the local altitude change). The only guarantee on this field is that it will never be
    * reset and is consistent within a flight. The recommended value for this field is the uncorrected
    * barometric altitude at boot time. This altitude will also drift and vary between flights.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeMonotonic: Float = 0F,
@@ -45,24 +76,28 @@ public data class Altitude(
    * reset on events like GPS lock or when a new QNH value is set). It should be the altitude to which
    * global altitude waypoints are compared to. Note that it is *not* the GPS altitude, however, most
    * GPS modules already output MSL by default and not the WGS84 altitude.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeAmsl: Float = 0F,
   /**
    * This is the local altitude in the local coordinate frame. It is not the altitude above home,
    * but in reference to the coordinate origin (0, 0, 0). It is up-positive.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeLocal: Float = 0F,
   /**
    * This is the altitude above the home position. It resets on each change of the current home
    * position.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeRelative: Float = 0F,
   /**
    * This is the altitude above terrain. It might be fed by a terrain database or an altimeter.
    * Values smaller than -1000 should be interpreted as unknown.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altitudeTerrain: Float = 0F,
@@ -70,13 +105,14 @@ public data class Altitude(
    * This is not the altitude, but the clear space below the system according to the fused clearance
    * estimate. It generally should max out at the maximum range of e.g. the laser altimeter. It is
    * generally a moving target. A negative value indicates no measurement available.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val bottomClearance: Float = 0F,
 ) : MavMessage<Altitude> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Altitude> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Altitude> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(altitudeMonotonic)
@@ -88,7 +124,7 @@ public data class Altitude(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(altitudeMonotonic)
@@ -105,11 +141,11 @@ public data class Altitude(
 
     private const val SIZE_V2: Int = 32
 
-    public override val id: UInt = 141u
+    override val id: UInt = 141u
 
-    public override val crcExtra: Byte = 47
+    override val crcExtra: Byte = 47
 
-    public override fun deserialize(bytes: ByteArray): Altitude {
+    override fun deserialize(bytes: ByteArray): Altitude {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

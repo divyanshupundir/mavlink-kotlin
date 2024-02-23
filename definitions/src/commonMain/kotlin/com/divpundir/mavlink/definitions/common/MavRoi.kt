@@ -14,7 +14,7 @@ import kotlin.UInt
 @Deprecated(message = "")
 @GeneratedMavEnum
 public enum class MavRoi(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Point toward of given id.
@@ -44,7 +44,7 @@ public enum class MavRoi(
   ;
 
   public companion object : MavEnum.MavCompanion<MavRoi> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavRoi? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavRoi? = when (v) {
       4u -> TARGET
       3u -> LOCATION
       2u -> WPINDEX

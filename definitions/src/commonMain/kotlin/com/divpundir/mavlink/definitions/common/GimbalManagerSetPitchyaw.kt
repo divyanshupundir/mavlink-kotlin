@@ -26,6 +26,22 @@ import kotlin.Unit
  * gimbal manager (e.g. from a ground station) and will be ignored by gimbal devices. Angles and rates
  * can be set to NaN according to use case. Use MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW for low-rate
  * adjustments that require confirmation.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param flags High level gimbal manager flags to use.
+ * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0
+ * for all gimbal device components. Send command multiple times for more than one gimbal (but not all
+ * gimbals).
+ * @param pitch Pitch angle (positive: up, negative: down, NaN to be ignored).
+ * units = rad
+ * @param yaw Yaw angle (positive: to the right, negative: to the left, NaN to be ignored).
+ * units = rad
+ * @param pitchRate Pitch angular rate (positive: up, negative: down, NaN to be ignored).
+ * units = rad/s
+ * @param yawRate Yaw angular rate (positive: to the right, negative: to the left, NaN to be
+ * ignored).
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 287u,
@@ -55,29 +71,32 @@ public data class GimbalManagerSetPitchyaw(
   public val gimbalDeviceId: UByte = 0u,
   /**
    * Pitch angle (positive: up, negative: down, NaN to be ignored).
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle (positive: to the right, negative: to the left, NaN to be ignored).
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Pitch angular rate (positive: up, negative: down, NaN to be ignored).
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val pitchRate: Float = 0F,
   /**
    * Yaw angular rate (positive: to the right, negative: to the left, NaN to be ignored).
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<GimbalManagerSetPitchyaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloat(pitch)
@@ -90,7 +109,7 @@ public data class GimbalManagerSetPitchyaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(flags.value, 4)
     encoder.encodeFloat(pitch)
@@ -108,11 +127,11 @@ public data class GimbalManagerSetPitchyaw(
 
     private const val SIZE_V2: Int = 23
 
-    public override val id: UInt = 287u
+    override val id: UInt = 287u
 
-    public override val crcExtra: Byte = 1
+    override val crcExtra: Byte = 1
 
-    public override fun deserialize(bytes: ByteArray): GimbalManagerSetPitchyaw {
+    override fun deserialize(bytes: ByteArray): GimbalManagerSetPitchyaw {
       val decoder = MavDataDecoder(bytes)
 
       val flags = decoder.safeDecodeBitmaskValue(4).let { value ->

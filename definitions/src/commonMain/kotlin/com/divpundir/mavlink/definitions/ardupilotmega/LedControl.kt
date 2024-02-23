@@ -20,6 +20,13 @@ import kotlin.collections.List
 
 /**
  * Control vehicle LEDs.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param instance Instance (LED instance to control or 255 for all LEDs).
+ * @param pattern Pattern (see LED_PATTERN_ENUM).
+ * @param customLen Custom Byte Length.
+ * @param customBytes Custom Bytes.
  */
 @GeneratedMavMessage(
   id = 186u,
@@ -57,9 +64,9 @@ public data class LedControl(
   @GeneratedMavField(type = "uint8_t[24]")
   public val customBytes: List<UByte> = emptyList(),
 ) : MavMessage<LedControl> {
-  public override val instanceCompanion: MavMessage.MavCompanion<LedControl> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<LedControl> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -70,7 +77,7 @@ public data class LedControl(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -86,11 +93,11 @@ public data class LedControl(
 
     private const val SIZE_V2: Int = 29
 
-    public override val id: UInt = 186u
+    override val id: UInt = 186u
 
-    public override val crcExtra: Byte = 72
+    override val crcExtra: Byte = 72
 
-    public override fun deserialize(bytes: ByteArray): LedControl {
+    override fun deserialize(bytes: ByteArray): LedControl {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

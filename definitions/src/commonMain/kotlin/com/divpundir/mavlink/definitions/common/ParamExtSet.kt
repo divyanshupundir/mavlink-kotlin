@@ -26,6 +26,14 @@ import kotlin.Unit
  * when setting a parameter value and the new value is the same as the current value, you will
  * immediately get a PARAM_ACK_ACCEPTED response. If the current state is PARAM_ACK_IN_PROGRESS, you
  * will accordingly receive a PARAM_ACK_IN_PROGRESS in response.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
+ * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
+ * to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramValue Parameter value
+ * @param paramType Parameter type.
  */
 @GeneratedMavMessage(
   id = 323u,
@@ -60,9 +68,9 @@ public data class ParamExtSet(
   @GeneratedMavField(type = "uint8_t")
   public val paramType: MavEnumValue<MavParamExtType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ParamExtSet> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ParamExtSet> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ParamExtSet> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -72,7 +80,7 @@ public data class ParamExtSet(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -87,11 +95,11 @@ public data class ParamExtSet(
 
     private const val SIZE_V2: Int = 147
 
-    public override val id: UInt = 323u
+    override val id: UInt = 323u
 
-    public override val crcExtra: Byte = 78
+    override val crcExtra: Byte = 78
 
-    public override fun deserialize(bytes: ByteArray): ParamExtSet {
+    override fun deserialize(bytes: ByteArray): ParamExtSet {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

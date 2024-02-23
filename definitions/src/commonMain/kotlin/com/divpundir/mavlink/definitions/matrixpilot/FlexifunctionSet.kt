@@ -17,6 +17,9 @@ import kotlin.Unit
 
 /**
  * Depreciated but used as a compiler flag.  Do not remove
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
  */
 @GeneratedMavMessage(
   id = 150u,
@@ -34,16 +37,16 @@ public data class FlexifunctionSet(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<FlexifunctionSet> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionSet> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionSet> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -55,11 +58,11 @@ public data class FlexifunctionSet(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 150u
+    override val id: UInt = 150u
 
-    public override val crcExtra: Byte = -75
+    override val crcExtra: Byte = -75
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionSet {
+    override fun deserialize(bytes: ByteArray): FlexifunctionSet {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

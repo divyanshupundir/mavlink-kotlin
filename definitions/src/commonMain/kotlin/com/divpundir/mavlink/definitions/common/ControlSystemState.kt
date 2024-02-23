@@ -23,6 +23,40 @@ import kotlin.collections.List
 
 /**
  * The smoothed, monotonic system state used to feed the control loops of the system.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param xAcc X acceleration in body frame
+ * units = m/s/s
+ * @param yAcc Y acceleration in body frame
+ * units = m/s/s
+ * @param zAcc Z acceleration in body frame
+ * units = m/s/s
+ * @param xVel X velocity in body frame
+ * units = m/s
+ * @param yVel Y velocity in body frame
+ * units = m/s
+ * @param zVel Z velocity in body frame
+ * units = m/s
+ * @param xPos X position in local frame
+ * units = m
+ * @param yPos Y position in local frame
+ * units = m
+ * @param zPos Z position in local frame
+ * units = m
+ * @param airspeed Airspeed, set to -1 if unknown
+ * units = m/s
+ * @param velVariance Variance of body velocity estimate
+ * @param posVariance Variance in local position
+ * @param q The attitude, represented as Quaternion
+ * @param rollRate Angular rate in roll axis
+ * units = rad/s
+ * @param pitchRate Angular rate in pitch axis
+ * units = rad/s
+ * @param yawRate Angular rate in yaw axis
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 146u,
@@ -32,56 +66,67 @@ public data class ControlSystemState(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * X acceleration in body frame
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val xAcc: Float = 0F,
   /**
    * Y acceleration in body frame
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val yAcc: Float = 0F,
   /**
    * Z acceleration in body frame
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val zAcc: Float = 0F,
   /**
    * X velocity in body frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val xVel: Float = 0F,
   /**
    * Y velocity in body frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val yVel: Float = 0F,
   /**
    * Z velocity in body frame
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val zVel: Float = 0F,
   /**
    * X position in local frame
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val xPos: Float = 0F,
   /**
    * Y position in local frame
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val yPos: Float = 0F,
   /**
    * Z position in local frame
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val zPos: Float = 0F,
   /**
    * Airspeed, set to -1 if unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val airspeed: Float = 0F,
@@ -102,23 +147,26 @@ public data class ControlSystemState(
   public val q: List<Float> = emptyList(),
   /**
    * Angular rate in roll axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val rollRate: Float = 0F,
   /**
    * Angular rate in pitch axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val pitchRate: Float = 0F,
   /**
    * Angular rate in yaw axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawRate: Float = 0F,
 ) : MavMessage<ControlSystemState> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xAcc)
@@ -140,7 +188,7 @@ public data class ControlSystemState(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xAcc)
@@ -167,11 +215,11 @@ public data class ControlSystemState(
 
     private const val SIZE_V2: Int = 100
 
-    public override val id: UInt = 146u
+    override val id: UInt = 146u
 
-    public override val crcExtra: Byte = 103
+    override val crcExtra: Byte = 103
 
-    public override fun deserialize(bytes: ByteArray): ControlSystemState {
+    override fun deserialize(bytes: ByteArray): ControlSystemState {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

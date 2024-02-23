@@ -24,6 +24,10 @@ import kotlin.Unit
 /**
  * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is
  * by definition for the overall aircraft, not only for one component.
+ *
+ * @param targetSystem The system setting the mode
+ * @param baseMode The new base mode.
+ * @param customMode The new autopilot-specific mode. This field can be ignored by an autopilot.
  */
 @Deprecated(message = "Use COMMAND_LONG with MAV_CMD_DO_SET_MODE instead")
 @GeneratedMavMessage(
@@ -47,9 +51,9 @@ public data class SetMode(
   @GeneratedMavField(type = "uint32_t")
   public val customMode: UInt = 0u,
 ) : MavMessage<SetMode> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SetMode> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SetMode> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(customMode)
     encoder.encodeUInt8(targetSystem)
@@ -57,7 +61,7 @@ public data class SetMode(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(customMode)
     encoder.encodeUInt8(targetSystem)
@@ -70,11 +74,11 @@ public data class SetMode(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 11u
+    override val id: UInt = 11u
 
-    public override val crcExtra: Byte = 89
+    override val crcExtra: Byte = 89
 
-    public override fun deserialize(bytes: ByteArray): SetMode {
+    override fun deserialize(bytes: ByteArray): SetMode {
       val decoder = MavDataDecoder(bytes)
 
       val customMode = decoder.safeDecodeUInt32()

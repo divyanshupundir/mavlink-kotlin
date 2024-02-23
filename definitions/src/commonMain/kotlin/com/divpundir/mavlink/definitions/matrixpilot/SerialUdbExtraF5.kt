@@ -17,6 +17,11 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F5: format
+ *
+ * @param sueYawkpAileron Serial UDB YAWKP_AILERON Gain for Proporional control of navigation
+ * @param sueYawkdAileron Serial UDB YAWKD_AILERON Gain for Rate control of navigation
+ * @param sueRollkp Serial UDB Extra ROLLKP Gain for Proportional control of roll stabilization
+ * @param sueRollkd Serial UDB Extra ROLLKD Gain for Rate control of roll stabilization
  */
 @GeneratedMavMessage(
   id = 173u,
@@ -44,9 +49,9 @@ public data class SerialUdbExtraF5(
   @GeneratedMavField(type = "float")
   public val sueRollkd: Float = 0F,
 ) : MavMessage<SerialUdbExtraF5> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF5> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF5> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(sueYawkpAileron)
     encoder.encodeFloat(sueYawkdAileron)
@@ -55,7 +60,7 @@ public data class SerialUdbExtraF5(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(sueYawkpAileron)
     encoder.encodeFloat(sueYawkdAileron)
@@ -69,11 +74,11 @@ public data class SerialUdbExtraF5(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 173u
+    override val id: UInt = 173u
 
-    public override val crcExtra: Byte = 54
+    override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF5 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF5 {
       val decoder = MavDataDecoder(bytes)
 
       val sueYawkpAileron = decoder.safeDecodeFloat()

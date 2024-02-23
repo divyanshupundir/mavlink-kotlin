@@ -17,6 +17,13 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F22 format
+ *
+ * @param sueAccelXAtCalibration SUE X accelerometer at calibration time
+ * @param sueAccelYAtCalibration SUE Y accelerometer at calibration time
+ * @param sueAccelZAtCalibration SUE Z accelerometer at calibration time
+ * @param sueGyroXAtCalibration SUE X gyro at calibration time
+ * @param sueGyroYAtCalibration SUE Y gyro at calibration time
+ * @param sueGyroZAtCalibration SUE Z gyro at calibration time
  */
 @GeneratedMavMessage(
   id = 188u,
@@ -54,9 +61,9 @@ public data class SerialUdbExtraF22(
   @GeneratedMavField(type = "int16_t")
   public val sueGyroZAtCalibration: Short = 0,
 ) : MavMessage<SerialUdbExtraF22> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF22> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF22> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(sueAccelXAtCalibration)
     encoder.encodeInt16(sueAccelYAtCalibration)
@@ -67,7 +74,7 @@ public data class SerialUdbExtraF22(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(sueAccelXAtCalibration)
     encoder.encodeInt16(sueAccelYAtCalibration)
@@ -83,11 +90,11 @@ public data class SerialUdbExtraF22(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 188u
+    override val id: UInt = 188u
 
-    public override val crcExtra: Byte = 91
+    override val crcExtra: Byte = 91
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF22 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF22 {
       val decoder = MavDataDecoder(bytes)
 
       val sueAccelXAtCalibration = decoder.safeDecodeInt16()

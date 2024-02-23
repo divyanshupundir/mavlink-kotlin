@@ -25,6 +25,37 @@ import kotlin.Unit
  * Sent from simulation to autopilot. The RAW values of the RC channels received. The standard PPM
  * modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
  * receivers/transmitters might violate this specification.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param chan1Raw RC channel 1 value
+ * units = us
+ * @param chan2Raw RC channel 2 value
+ * units = us
+ * @param chan3Raw RC channel 3 value
+ * units = us
+ * @param chan4Raw RC channel 4 value
+ * units = us
+ * @param chan5Raw RC channel 5 value
+ * units = us
+ * @param chan6Raw RC channel 6 value
+ * units = us
+ * @param chan7Raw RC channel 7 value
+ * units = us
+ * @param chan8Raw RC channel 8 value
+ * units = us
+ * @param chan9Raw RC channel 9 value
+ * units = us
+ * @param chan10Raw RC channel 10 value
+ * units = us
+ * @param chan11Raw RC channel 11 value
+ * units = us
+ * @param chan12Raw RC channel 12 value
+ * units = us
+ * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254],
+ * UINT8_MAX: invalid/unknown.
  */
 @GeneratedMavMessage(
   id = 92u,
@@ -34,66 +65,79 @@ public data class HilRcInputsRaw(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * RC channel 1 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan8Raw: UShort = 0u,
   /**
    * RC channel 9 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan9Raw: UShort = 0u,
   /**
    * RC channel 10 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan10Raw: UShort = 0u,
   /**
    * RC channel 11 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan11Raw: UShort = 0u,
   /**
    * RC channel 12 value
+   * units = us
    */
   @GeneratedMavField(type = "uint16_t")
   public val chan12Raw: UShort = 0u,
@@ -104,9 +148,9 @@ public data class HilRcInputsRaw(
   @GeneratedMavField(type = "uint8_t")
   public val rssi: UByte = 0u,
 ) : MavMessage<HilRcInputsRaw> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilRcInputsRaw> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilRcInputsRaw> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(chan1Raw)
@@ -125,7 +169,7 @@ public data class HilRcInputsRaw(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt16(chan1Raw)
@@ -149,11 +193,11 @@ public data class HilRcInputsRaw(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 92u
+    override val id: UInt = 92u
 
-    public override val crcExtra: Byte = 54
+    override val crcExtra: Byte = 54
 
-    public override fun deserialize(bytes: ByteArray): HilRcInputsRaw {
+    override fun deserialize(bytes: ByteArray): HilRcInputsRaw {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

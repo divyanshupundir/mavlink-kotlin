@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GimbalAxisCalibrationStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Axis calibration is in progress.
@@ -27,7 +27,7 @@ public enum class GimbalAxisCalibrationStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<GimbalAxisCalibrationStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): GimbalAxisCalibrationStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GimbalAxisCalibrationStatus? = when (v) {
       0u -> IN_PROGRESS
       1u -> SUCCEEDED
       2u -> FAILED

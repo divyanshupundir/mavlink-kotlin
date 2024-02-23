@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class EstimatorStatusFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * True if the attitude estimate is good
@@ -79,7 +79,7 @@ public enum class EstimatorStatusFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<EstimatorStatusFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): EstimatorStatusFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): EstimatorStatusFlags? = when (v) {
       1u -> ESTIMATOR_ATTITUDE
       2u -> ESTIMATOR_VELOCITY_HORIZ
       4u -> ESTIMATOR_VELOCITY_VERT
@@ -95,7 +95,7 @@ public enum class EstimatorStatusFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<EstimatorStatusFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<EstimatorStatusFlags> = buildList {
       if (v and 1u == 1u) add(ESTIMATOR_ATTITUDE)
       if (v and 2u == 2u) add(ESTIMATOR_VELOCITY_HORIZ)
       if (v and 4u == 4u) add(ESTIMATOR_VELOCITY_VERT)

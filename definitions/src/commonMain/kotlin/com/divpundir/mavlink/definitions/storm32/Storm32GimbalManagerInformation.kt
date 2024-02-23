@@ -26,6 +26,27 @@ import kotlin.Unit
  * Information about a gimbal manager. This message should be requested by a ground station using
  * MAV_CMD_REQUEST_MESSAGE. It mirrors some fields of the GIMBAL_DEVICE_INFORMATION message, but not
  * all. If the additional information is desired, also GIMBAL_DEVICE_INFORMATION should be requested.
+ *
+ * @param gimbalId Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager
+ * is responsible for.
+ * @param deviceCapFlags Gimbal device capability flags. Same flags as reported by
+ * GIMBAL_DEVICE_INFORMATION. The flag is only 16 bit wide, but stored in 32 bit, for backwards
+ * compatibility (high word is zero).
+ * @param managerCapFlags Gimbal manager capability flags.
+ * @param rollMin Hardware minimum roll angle (positive: roll to the right). NaN if unknown.
+ * units = rad
+ * @param rollMax Hardware maximum roll angle (positive: roll to the right). NaN if unknown.
+ * units = rad
+ * @param pitchMin Hardware minimum pitch/tilt angle (positive: tilt up). NaN if unknown.
+ * units = rad
+ * @param pitchMax Hardware maximum pitch/tilt angle (positive: tilt up). NaN if unknown.
+ * units = rad
+ * @param yawMin Hardware minimum yaw/pan angle (positive: pan to the right, relative to the
+ * vehicle/gimbal base). NaN if unknown.
+ * units = rad
+ * @param yawMax Hardware maximum yaw/pan angle (positive: pan to the right, relative to the
+ * vehicle/gimbal base). NaN if unknown.
+ * units = rad
  */
 @GeneratedMavMessage(
   id = 60_010u,
@@ -52,41 +73,47 @@ public data class Storm32GimbalManagerInformation(
       MavBitmaskValue.fromValue(0u),
   /**
    * Hardware minimum roll angle (positive: roll to the right). NaN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val rollMin: Float = 0F,
   /**
    * Hardware maximum roll angle (positive: roll to the right). NaN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val rollMax: Float = 0F,
   /**
    * Hardware minimum pitch/tilt angle (positive: tilt up). NaN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitchMin: Float = 0F,
   /**
    * Hardware maximum pitch/tilt angle (positive: tilt up). NaN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitchMax: Float = 0F,
   /**
    * Hardware minimum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal
    * base). NaN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yawMin: Float = 0F,
   /**
    * Hardware maximum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal
    * base). NaN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerInformation> =
+  override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerInformation> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeBitmaskValue(deviceCapFlags.value, 4)
     encoder.encodeBitmaskValue(managerCapFlags.value, 4)
@@ -100,7 +127,7 @@ public data class Storm32GimbalManagerInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeBitmaskValue(deviceCapFlags.value, 4)
     encoder.encodeBitmaskValue(managerCapFlags.value, 4)
@@ -119,11 +146,11 @@ public data class Storm32GimbalManagerInformation(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 60_010u
+    override val id: UInt = 60_010u
 
-    public override val crcExtra: Byte = -48
+    override val crcExtra: Byte = -48
 
-    public override fun deserialize(bytes: ByteArray): Storm32GimbalManagerInformation {
+    override fun deserialize(bytes: ByteArray): Storm32GimbalManagerInformation {
       val decoder = MavDataDecoder(bytes)
 
       val deviceCapFlags = decoder.safeDecodeBitmaskValue(4).let { value ->

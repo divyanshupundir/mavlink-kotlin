@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class UtmDataAvailFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * The field time contains valid data.
@@ -56,7 +56,7 @@ public enum class UtmDataAvailFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<UtmDataAvailFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): UtmDataAvailFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UtmDataAvailFlags? = when (v) {
       1u -> TIME_VALID
       2u -> UAS_ID_AVAILABLE
       4u -> POSITION_AVAILABLE
@@ -68,7 +68,7 @@ public enum class UtmDataAvailFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<UtmDataAvailFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<UtmDataAvailFlags> = buildList {
       if (v and 1u == 1u) add(TIME_VALID)
       if (v and 2u == 2u) add(UAS_ID_AVAILABLE)
       if (v and 4u == 4u) add(POSITION_AVAILABLE)

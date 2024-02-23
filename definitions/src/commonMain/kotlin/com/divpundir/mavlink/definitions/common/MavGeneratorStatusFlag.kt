@@ -13,7 +13,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavGeneratorStatusFlag(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Generator is off.
@@ -136,7 +136,7 @@ public enum class MavGeneratorStatusFlag(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavGeneratorStatusFlag> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavGeneratorStatusFlag? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavGeneratorStatusFlag? = when (v) {
       1u -> OFF
       2u -> READY
       4u -> GENERATING
@@ -163,7 +163,7 @@ public enum class MavGeneratorStatusFlag(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavGeneratorStatusFlag> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavGeneratorStatusFlag> = buildList {
       if (v and 1u == 1u) add(OFF)
       if (v and 2u == 2u) add(READY)
       if (v and 4u == 4u) add(GENERATING)

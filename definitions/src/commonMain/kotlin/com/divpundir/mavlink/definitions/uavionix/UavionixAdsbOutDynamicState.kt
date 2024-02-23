@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class UavionixAdsbOutDynamicState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   @GeneratedMavEnumEntry
   INTENT_CHANGE(1u),
@@ -26,7 +26,7 @@ public enum class UavionixAdsbOutDynamicState(
   ;
 
   public companion object : MavBitmask.MavCompanion<UavionixAdsbOutDynamicState> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbOutDynamicState? = when (v) {
       1u -> INTENT_CHANGE
       2u -> AUTOPILOT_ENABLED
       4u -> NICBARO_CROSSCHECKED
@@ -35,7 +35,7 @@ public enum class UavionixAdsbOutDynamicState(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<UavionixAdsbOutDynamicState> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<UavionixAdsbOutDynamicState> = buildList {
       if (v and 1u == 1u) add(INTENT_CHANGE)
       if (v and 2u == 2u) add(AUTOPILOT_ENABLED)
       if (v and 4u == 4u) add(NICBARO_CROSSCHECKED)

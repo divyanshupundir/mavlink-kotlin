@@ -12,7 +12,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Generic micro air vehicle
@@ -244,7 +244,7 @@ public enum class MavType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavType? = when (v) {
       0u -> GENERIC
       1u -> FIXED_WING
       2u -> QUADROTOR

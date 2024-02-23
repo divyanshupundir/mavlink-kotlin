@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class UavcanNodeHealth(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The node is functioning properly.
@@ -35,7 +35,7 @@ public enum class UavcanNodeHealth(
   ;
 
   public companion object : MavEnum.MavCompanion<UavcanNodeHealth> {
-    public override fun getEntryFromValueOrNull(v: UInt): UavcanNodeHealth? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UavcanNodeHealth? = when (v) {
       0u -> OK
       1u -> WARNING
       2u -> ERROR

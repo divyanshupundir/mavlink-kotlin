@@ -23,6 +23,26 @@ import kotlin.Unit
 
 /**
  * Reports results of completed compass calibration. Sent until MAG_CAL_ACK received.
+ *
+ * @param compassId Compass being calibrated.
+ * @param calMask Bitmask of compasses being calibrated.
+ * @param calStatus Calibration Status.
+ * @param autosaved 0=requires a MAV_CMD_DO_ACCEPT_MAG_CAL, 1=saved to parameters.
+ * @param fitness RMS milligauss residuals.
+ * units = mgauss
+ * @param ofsX X offset.
+ * @param ofsY Y offset.
+ * @param ofsZ Z offset.
+ * @param diagX X diagonal (matrix 11).
+ * @param diagY Y diagonal (matrix 22).
+ * @param diagZ Z diagonal (matrix 33).
+ * @param offdiagX X off-diagonal (matrix 12 and 21).
+ * @param offdiagY Y off-diagonal (matrix 13 and 31).
+ * @param offdiagZ Z off-diagonal (matrix 32 and 23).
+ * @param orientationConfidence Confidence in orientation (higher is better).
+ * @param oldOrientation orientation before calibration.
+ * @param newOrientation orientation after calibration.
+ * @param scaleFactor field radius correction factor
  */
 @GeneratedMavMessage(
   id = 192u,
@@ -51,6 +71,7 @@ public data class MagCalReport(
   public val autosaved: UByte = 0u,
   /**
    * RMS milligauss residuals.
+   * units = mgauss
    */
   @GeneratedMavField(type = "float")
   public val fitness: Float = 0F,
@@ -132,9 +153,9 @@ public data class MagCalReport(
   )
   public val scaleFactor: Float = 0F,
 ) : MavMessage<MagCalReport> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MagCalReport> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MagCalReport> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(fitness)
     encoder.encodeFloat(ofsX)
@@ -153,7 +174,7 @@ public data class MagCalReport(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(fitness)
     encoder.encodeFloat(ofsX)
@@ -181,11 +202,11 @@ public data class MagCalReport(
 
     private const val SIZE_V2: Int = 54
 
-    public override val id: UInt = 192u
+    override val id: UInt = 192u
 
-    public override val crcExtra: Byte = 36
+    override val crcExtra: Byte = 36
 
-    public override fun deserialize(bytes: ByteArray): MagCalReport {
+    override fun deserialize(bytes: ByteArray): MagCalReport {
       val decoder = MavDataDecoder(bytes)
 
       val fitness = decoder.safeDecodeFloat()

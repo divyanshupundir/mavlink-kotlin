@@ -21,6 +21,12 @@ import kotlin.Unit
 /**
  * Configure WiFi AP SSID, password, and mode. This message is re-emitted as an acknowledgement by
  * the AP. The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE
+ *
+ * @param ssid Name of Wi-Fi network (SSID). Blank to leave it unchanged when setting. Current SSID
+ * when sent back as a response.
+ * @param password Password. Blank for an open AP. MD5 hash when message is sent back as a response.
+ * @param mode WiFi Mode.
+ * @param response Message acceptance response (sent back to GS).
  */
 @GeneratedMavMessage(
   id = 299u,
@@ -55,16 +61,16 @@ public data class WifiConfigAp(
   )
   public val response: MavEnumValue<WifiConfigApResponse> = MavEnumValue.fromValue(0u),
 ) : MavMessage<WifiConfigAp> {
-  public override val instanceCompanion: MavMessage.MavCompanion<WifiConfigAp> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<WifiConfigAp> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeString(ssid, 32)
     encoder.encodeString(password, 64)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeString(ssid, 32)
     encoder.encodeString(password, 64)
@@ -78,11 +84,11 @@ public data class WifiConfigAp(
 
     private const val SIZE_V2: Int = 98
 
-    public override val id: UInt = 299u
+    override val id: UInt = 299u
 
-    public override val crcExtra: Byte = 19
+    override val crcExtra: Byte = 19
 
-    public override fun deserialize(bytes: ByteArray): WifiConfigAp {
+    override fun deserialize(bytes: ByteArray): WifiConfigAp {
       val decoder = MavDataDecoder(bytes)
 
       val ssid = decoder.safeDecodeString(32)

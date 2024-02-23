@@ -19,6 +19,21 @@ import kotlin.Unit
 
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, Y-right, X-front, ZYX, intrinsic).
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param roll Roll angle (-pi..+pi)
+ * units = rad
+ * @param pitch Pitch angle (-pi..+pi)
+ * units = rad
+ * @param yaw Yaw angle (-pi..+pi)
+ * units = rad
+ * @param rollspeed Roll angular speed
+ * units = rad/s
+ * @param pitchspeed Pitch angular speed
+ * units = rad/s
+ * @param yawspeed Yaw angular speed
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 30u,
@@ -27,43 +42,50 @@ import kotlin.Unit
 public data class Attitude(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
    * Roll angle (-pi..+pi)
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle (-pi..+pi)
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle (-pi..+pi)
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * Roll angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
 ) : MavMessage<Attitude> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Attitude> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Attitude> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(roll)
@@ -75,7 +97,7 @@ public data class Attitude(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(roll)
@@ -92,11 +114,11 @@ public data class Attitude(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 30u
+    override val id: UInt = 30u
 
-    public override val crcExtra: Byte = 39
+    override val crcExtra: Byte = 39
 
-    public override fun deserialize(bytes: ByteArray): Attitude {
+    override fun deserialize(bytes: ByteArray): Attitude {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

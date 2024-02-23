@@ -24,6 +24,21 @@ import kotlin.collections.List
 /**
  * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
  * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
+ * @param rollspeed Roll angular speed
+ * units = rad/s
+ * @param pitchspeed Pitch angular speed
+ * units = rad/s
+ * @param yawspeed Yaw angular speed
+ * units = rad/s
+ * @param covariance Row-major representation of a 3x3 attitude covariance matrix (states: roll,
+ * pitch, yaw; first three entries are the first ROW, next three entries are the second row, etc.). If
+ * unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 61u,
@@ -33,6 +48,7 @@ public data class AttitudeQuaternionCov(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -43,16 +59,19 @@ public data class AttitudeQuaternionCov(
   public val q: List<Float> = emptyList(),
   /**
    * Roll angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val yawspeed: Float = 0F,
@@ -64,9 +83,9 @@ public data class AttitudeQuaternionCov(
   @GeneratedMavField(type = "float[9]")
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternionCov> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternionCov> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternionCov> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(q, 16)
@@ -77,7 +96,7 @@ public data class AttitudeQuaternionCov(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloatArray(q, 16)
@@ -93,11 +112,11 @@ public data class AttitudeQuaternionCov(
 
     private const val SIZE_V2: Int = 72
 
-    public override val id: UInt = 61u
+    override val id: UInt = 61u
 
-    public override val crcExtra: Byte = -89
+    override val crcExtra: Byte = -89
 
-    public override fun deserialize(bytes: ByteArray): AttitudeQuaternionCov {
+    override fun deserialize(bytes: ByteArray): AttitudeQuaternionCov {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

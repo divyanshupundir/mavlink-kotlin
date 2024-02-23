@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavParamExtType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * 8-bit unsigned integer
@@ -70,7 +70,7 @@ public enum class MavParamExtType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavParamExtType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavParamExtType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavParamExtType? = when (v) {
       1u -> UINT8
       2u -> INT8
       3u -> UINT16

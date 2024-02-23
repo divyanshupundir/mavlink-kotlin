@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GsmLinkType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * no service
@@ -37,7 +37,7 @@ public enum class GsmLinkType(
   ;
 
   public companion object : MavEnum.MavCompanion<GsmLinkType> {
-    public override fun getEntryFromValueOrNull(v: UInt): GsmLinkType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GsmLinkType? = when (v) {
       0u -> NONE
       1u -> UNKNOWN
       2u -> _2G

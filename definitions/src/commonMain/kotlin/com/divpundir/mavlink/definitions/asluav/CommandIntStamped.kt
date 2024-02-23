@@ -33,6 +33,23 @@ import kotlin.Unit
 /**
  * Message encoding a command with parameters as scaled integers and additional metadata. Scaling
  * depends on the actual command value.
+ *
+ * @param utcTime UTC time, seconds elapsed since 01.01.1970
+ * @param vehicleTimestamp Microseconds elapsed since vehicle boot
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param frame The coordinate system of the COMMAND, as defined by MAV_FRAME enum
+ * @param command The scheduled action for the mission item, as defined by MAV_CMD enum
+ * @param current false:0, true:1
+ * @param autocontinue autocontinue to next wp
+ * @param param1 PARAM1, see MAV_CMD enum
+ * @param param2 PARAM2, see MAV_CMD enum
+ * @param param3 PARAM3, see MAV_CMD enum
+ * @param param4 PARAM4, see MAV_CMD enum
+ * @param x PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
+ * @param y PARAM6 / local: y position in meters * 1e4, global: longitude in degrees * 10^7
+ * @param z PARAM7 / z position: global: altitude in meters (MSL, WGS84, AGL or relative to home -
+ * depending on frame).
  */
 @GeneratedMavMessage(
   id = 223u,
@@ -116,9 +133,9 @@ public data class CommandIntStamped(
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
 ) : MavMessage<CommandIntStamped> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandIntStamped> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandIntStamped> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(vehicleTimestamp)
     encoder.encodeUInt32(utcTime)
@@ -138,7 +155,7 @@ public data class CommandIntStamped(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(vehicleTimestamp)
     encoder.encodeUInt32(utcTime)
@@ -163,11 +180,11 @@ public data class CommandIntStamped(
 
     private const val SIZE_V2: Int = 47
 
-    public override val id: UInt = 223u
+    override val id: UInt = 223u
 
-    public override val crcExtra: Byte = 119
+    override val crcExtra: Byte = 119
 
-    public override fun deserialize(bytes: ByteArray): CommandIntStamped {
+    override fun deserialize(bytes: ByteArray): CommandIntStamped {
       val decoder = MavDataDecoder(bytes)
 
       val vehicleTimestamp = decoder.safeDecodeUInt64()

@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavStorm32GimbalPrearmFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * STorM32 gimbal is in normal state.
@@ -81,7 +81,7 @@ public enum class MavStorm32GimbalPrearmFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavStorm32GimbalPrearmFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalPrearmFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalPrearmFlags? = when (v) {
       1u -> IS_NORMAL
       2u -> IMUS_WORKING
       4u -> MOTORS_WORKING
@@ -98,7 +98,7 @@ public enum class MavStorm32GimbalPrearmFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavStorm32GimbalPrearmFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavStorm32GimbalPrearmFlags> = buildList {
       if (v and 1u == 1u) add(IS_NORMAL)
       if (v and 2u == 2u) add(IMUS_WORKING)
       if (v and 4u == 4u) add(MOTORS_WORKING)

@@ -28,6 +28,23 @@ import kotlin.Unit
 
 /**
  * Obstacle located as a 3D vector.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param sensorType Class id of the distance sensor type.
+ * @param frame Coordinate frame of reference.
+ * @param obstacleId  Unique ID given to each obstacle so that its movement can be tracked. Use
+ * UINT16_MAX if object ID is unknown or cannot be determined.
+ * @param x  X position of the obstacle.
+ * units = m
+ * @param y  Y position of the obstacle.
+ * units = m
+ * @param z  Z position of the obstacle.
+ * units = m
+ * @param minDistance Minimum distance the sensor can measure.
+ * units = m
+ * @param maxDistance Maximum distance the sensor can measure.
+ * units = m
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -37,6 +54,7 @@ import kotlin.Unit
 public data class ObstacleDistance3d(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -58,33 +76,38 @@ public data class ObstacleDistance3d(
   public val obstacleId: UShort = 0u,
   /**
    *  X position of the obstacle.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val x: Float = 0F,
   /**
    *  Y position of the obstacle.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val y: Float = 0F,
   /**
    *  Z position of the obstacle.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
   /**
    * Minimum distance the sensor can measure.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val minDistance: Float = 0F,
   /**
    * Maximum distance the sensor can measure.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val maxDistance: Float = 0F,
 ) : MavMessage<ObstacleDistance3d> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance3d> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance3d> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -98,7 +121,7 @@ public data class ObstacleDistance3d(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(x)
@@ -117,11 +140,11 @@ public data class ObstacleDistance3d(
 
     private const val SIZE_V2: Int = 28
 
-    public override val id: UInt = 11_037u
+    override val id: UInt = 11_037u
 
-    public override val crcExtra: Byte = -126
+    override val crcExtra: Byte = -126
 
-    public override fun deserialize(bytes: ByteArray): ObstacleDistance3d {
+    override fun deserialize(bytes: ByteArray): ObstacleDistance3d {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

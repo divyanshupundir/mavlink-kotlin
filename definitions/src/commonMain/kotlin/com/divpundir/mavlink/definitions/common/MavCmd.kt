@@ -19,7 +19,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavCmd(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Navigate to waypoint. This is intended for use in missions (for guided commands outside of
@@ -3891,7 +3891,7 @@ public enum class MavCmd(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCmd> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCmd? = when (v) {
       16u -> NAV_WAYPOINT
       17u -> NAV_LOITER_UNLIM
       18u -> NAV_LOITER_TURNS

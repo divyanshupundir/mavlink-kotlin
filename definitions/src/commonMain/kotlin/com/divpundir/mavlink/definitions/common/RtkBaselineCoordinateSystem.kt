@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class RtkBaselineCoordinateSystem(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Earth-centered, Earth-fixed
@@ -25,7 +25,7 @@ public enum class RtkBaselineCoordinateSystem(
   ;
 
   public companion object : MavEnum.MavCompanion<RtkBaselineCoordinateSystem> {
-    public override fun getEntryFromValueOrNull(v: UInt): RtkBaselineCoordinateSystem? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): RtkBaselineCoordinateSystem? = when (v) {
       0u -> ECEF
       1u -> NED
       else -> null

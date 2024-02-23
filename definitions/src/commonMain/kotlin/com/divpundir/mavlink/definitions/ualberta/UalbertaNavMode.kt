@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class UalbertaNavMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   NAV_AHRS_INIT(1u),
@@ -32,7 +32,7 @@ public enum class UalbertaNavMode(
   ;
 
   public companion object : MavEnum.MavCompanion<UalbertaNavMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): UalbertaNavMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): UalbertaNavMode? = when (v) {
       1u -> NAV_AHRS_INIT
       2u -> NAV_AHRS
       3u -> NAV_INS_GPS_INIT

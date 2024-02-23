@@ -11,7 +11,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavBatteryMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Battery mode not supported/unknown battery mode/normal operation.
@@ -32,7 +32,7 @@ public enum class MavBatteryMode(
   ;
 
   public companion object : MavEnum.MavCompanion<MavBatteryMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavBatteryMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavBatteryMode? = when (v) {
       0u -> UNKNOWN
       1u -> AUTO_DISCHARGING
       2u -> HOT_SWAP

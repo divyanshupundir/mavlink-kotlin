@@ -26,6 +26,12 @@ import kotlin.collections.List
  * Radio channels. Supports up to 24 channels. Channel values are in centerd 13 bit format. Range is
  * [-4096,4096], center is 0. Conversion to PWM is x * 5/32 + 1500. Should be emitted only by
  * components with component id MAV_COMP_ID_TELEMETRY_RADIO.
+ *
+ * @param count Total number of RC channels being received. This can be larger than 24, indicating
+ * that more channels are available but not given in this message.
+ * @param flags Radio channels status flags.
+ * @param channels RC channels. Channels above count should be set to 0, to benefit from MAVLink's
+ * zero padding.
  */
 @GeneratedMavMessage(
   id = 60_045u,
@@ -52,16 +58,16 @@ public data class RadioRcChannels(
   )
   public val channels: List<Short> = emptyList(),
 ) : MavMessage<RadioRcChannels> {
-  public override val instanceCompanion: MavMessage.MavCompanion<RadioRcChannels> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<RadioRcChannels> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(count)
     encoder.encodeBitmaskValue(flags.value, 1)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(count)
     encoder.encodeBitmaskValue(flags.value, 1)
@@ -74,11 +80,11 @@ public data class RadioRcChannels(
 
     private const val SIZE_V2: Int = 50
 
-    public override val id: UInt = 60_045u
+    override val id: UInt = 60_045u
 
-    public override val crcExtra: Byte = 89
+    override val crcExtra: Byte = 89
 
-    public override fun deserialize(bytes: ByteArray): RadioRcChannels {
+    override fun deserialize(bytes: ByteArray): RadioRcChannels {
       val decoder = MavDataDecoder(bytes)
 
       val count = decoder.safeDecodeUInt8()

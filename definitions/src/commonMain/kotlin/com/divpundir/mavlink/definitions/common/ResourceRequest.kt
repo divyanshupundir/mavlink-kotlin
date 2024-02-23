@@ -20,6 +20,15 @@ import kotlin.collections.List
 
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
+ *
+ * @param requestId Request ID. This ID should be re-used when sending back URI contents
+ * @param uriType The type of requested URI. 0 = a file via URL. 1 = a UAVCAN binary
+ * @param uri The requested unique resource identifier (URI). It is not necessarily a straight
+ * domain name (depends on the URI type enum)
+ * @param transferType The way the autopilot wants to receive the URI. 0 = MAVLink FTP. 1 = binary
+ * stream.
+ * @param storage The storage path the autopilot wants the URI to be stored in. Will only be valid
+ * if the transfer_type has a storage associated (e.g. MAVLink FTP).
  */
 @GeneratedMavMessage(
   id = 142u,
@@ -54,9 +63,9 @@ public data class ResourceRequest(
   @GeneratedMavField(type = "uint8_t[120]")
   public val storage: List<UByte> = emptyList(),
 ) : MavMessage<ResourceRequest> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ResourceRequest> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(requestId)
     encoder.encodeUInt8(uriType)
@@ -66,7 +75,7 @@ public data class ResourceRequest(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(requestId)
     encoder.encodeUInt8(uriType)
@@ -81,11 +90,11 @@ public data class ResourceRequest(
 
     private const val SIZE_V2: Int = 243
 
-    public override val id: UInt = 142u
+    override val id: UInt = 142u
 
-    public override val crcExtra: Byte = 72
+    override val crcExtra: Byte = 72
 
-    public override fun deserialize(bytes: ByteArray): ResourceRequest {
+    override fun deserialize(bytes: ByteArray): ResourceRequest {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt8()

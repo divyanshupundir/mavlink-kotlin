@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class ParamAck(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Parameter value ACCEPTED and SET
@@ -38,7 +38,7 @@ public enum class ParamAck(
   ;
 
   public companion object : MavEnum.MavCompanion<ParamAck> {
-    public override fun getEntryFromValueOrNull(v: UInt): ParamAck? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): ParamAck? = when (v) {
       0u -> ACCEPTED
       1u -> VALUE_UNSUPPORTED
       2u -> FAILED

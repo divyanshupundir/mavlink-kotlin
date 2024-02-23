@@ -31,6 +31,36 @@ import kotlin.Unit
  * MAV_CMD_REQUEST_MESSAGE and whenever the status of the storage changes (STORAGE_STATUS). Use
  * MAV_CMD_REQUEST_MESSAGE.param2 to indicate the index/id of requested storage: 0 for all, 1 for
  * first, 2 for second, etc.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param storageId Storage ID (1 for first, 2 for second, etc.)
+ * @param storageCount Number of storage devices
+ * @param status Status of storage
+ * @param totalCapacity Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be
+ * ignored.
+ * units = MiB
+ * @param usedCapacity Used capacity. If storage is not ready (STORAGE_STATUS_READY) value will be
+ * ignored.
+ * units = MiB
+ * @param availableCapacity Available storage capacity. If storage is not ready
+ * (STORAGE_STATUS_READY) value will be ignored.
+ * units = MiB
+ * @param readSpeed Read speed.
+ * units = MiB/s
+ * @param writeSpeed Write speed.
+ * units = MiB/s
+ * @param type Type of storage
+ * @param name Textual storage name to be used in UI (microSD 1, Internal Memory, etc.) This is a
+ * NULL terminated string. If it is exactly 32 characters long, add a terminating NULL. If this string
+ * is empty, the generic type is shown to the user.
+ * @param storageUsage Flags indicating whether this instance is preferred storage for photos,
+ * videos, etc.
+ *         Note: Implementations should initially set the flags on the system-default storage id
+ * used for saving media (if possible/supported).
+ *         This setting can then be overridden using MAV_CMD_SET_STORAGE_USAGE.
+ *         If the media usage flags are not set, a GCS may assume storage ID 1 is the default
+ * storage for all media types.
  */
 @GeneratedMavMessage(
   id = 261u,
@@ -39,6 +69,7 @@ import kotlin.Unit
 public data class StorageInformation(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -59,27 +90,32 @@ public data class StorageInformation(
   public val status: MavEnumValue<StorageStatus> = MavEnumValue.fromValue(0u),
   /**
    * Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
+   * units = MiB
    */
   @GeneratedMavField(type = "float")
   public val totalCapacity: Float = 0F,
   /**
    * Used capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
+   * units = MiB
    */
   @GeneratedMavField(type = "float")
   public val usedCapacity: Float = 0F,
   /**
    * Available storage capacity. If storage is not ready (STORAGE_STATUS_READY) value will be
    * ignored.
+   * units = MiB
    */
   @GeneratedMavField(type = "float")
   public val availableCapacity: Float = 0F,
   /**
    * Read speed.
+   * units = MiB/s
    */
   @GeneratedMavField(type = "float")
   public val readSpeed: Float = 0F,
   /**
    * Write speed.
+   * units = MiB/s
    */
   @GeneratedMavField(type = "float")
   public val writeSpeed: Float = 0F,
@@ -115,9 +151,9 @@ public data class StorageInformation(
   )
   public val storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u),
 ) : MavMessage<StorageInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(totalCapacity)
@@ -131,7 +167,7 @@ public data class StorageInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(totalCapacity)
@@ -153,11 +189,11 @@ public data class StorageInformation(
 
     private const val SIZE_V2: Int = 61
 
-    public override val id: UInt = 261u
+    override val id: UInt = 261u
 
-    public override val crcExtra: Byte = -77
+    override val crcExtra: Byte = -77
 
-    public override fun deserialize(bytes: ByteArray): StorageInformation {
+    override fun deserialize(bytes: ByteArray): StorageInformation {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

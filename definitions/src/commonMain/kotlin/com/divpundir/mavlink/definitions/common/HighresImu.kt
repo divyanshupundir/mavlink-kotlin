@@ -26,6 +26,39 @@ import kotlin.Unit
 
 /**
  * The IMU readings in SI units in NED body frame
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param xacc X acceleration
+ * units = m/s/s
+ * @param yacc Y acceleration
+ * units = m/s/s
+ * @param zacc Z acceleration
+ * units = m/s/s
+ * @param xgyro Angular speed around X axis
+ * units = rad/s
+ * @param ygyro Angular speed around Y axis
+ * units = rad/s
+ * @param zgyro Angular speed around Z axis
+ * units = rad/s
+ * @param xmag X Magnetic field
+ * units = gauss
+ * @param ymag Y Magnetic field
+ * units = gauss
+ * @param zmag Z Magnetic field
+ * units = gauss
+ * @param absPressure Absolute pressure
+ * units = hPa
+ * @param diffPressure Differential pressure
+ * units = hPa
+ * @param pressureAlt Altitude calculated from pressure
+ * @param temperature Temperature
+ * units = degC
+ * @param fieldsUpdated Bitmap for fields that have updated since last message
+ * @param id Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a
+ * message with id=0)
  */
 @GeneratedMavMessage(
   id = 105u,
@@ -35,61 +68,73 @@ public data class HighresImu(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * X acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * X Magnetic field
+   * units = gauss
    */
   @GeneratedMavField(type = "float")
   public val xmag: Float = 0F,
   /**
    * Y Magnetic field
+   * units = gauss
    */
   @GeneratedMavField(type = "float")
   public val ymag: Float = 0F,
   /**
    * Z Magnetic field
+   * units = gauss
    */
   @GeneratedMavField(type = "float")
   public val zmag: Float = 0F,
   /**
    * Absolute pressure
+   * units = hPa
    */
   @GeneratedMavField(type = "float")
   public val absPressure: Float = 0F,
   /**
    * Differential pressure
+   * units = hPa
    */
   @GeneratedMavField(type = "float")
   public val diffPressure: Float = 0F,
@@ -100,6 +145,7 @@ public data class HighresImu(
   public val pressureAlt: Float = 0F,
   /**
    * Temperature
+   * units = degC
    */
   @GeneratedMavField(type = "float")
   public val temperature: Float = 0F,
@@ -118,9 +164,9 @@ public data class HighresImu(
   )
   public val id: UByte = 0u,
 ) : MavMessage<HighresImu> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HighresImu> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -140,7 +186,7 @@ public data class HighresImu(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeFloat(xacc)
@@ -166,11 +212,11 @@ public data class HighresImu(
 
     private const val SIZE_V2: Int = 63
 
-    public override val id: UInt = 105u
+    override val id: UInt = 105u
 
-    public override val crcExtra: Byte = 93
+    override val crcExtra: Byte = 93
 
-    public override fun deserialize(bytes: ByteArray): HighresImu {
+    override fun deserialize(bytes: ByteArray): HighresImu {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

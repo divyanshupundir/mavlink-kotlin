@@ -25,6 +25,21 @@ import kotlin.Unit
 /**
  * Information about the status of a capture. Can be requested with a MAV_CMD_REQUEST_MESSAGE
  * command.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param imageStatus Current status of image capturing (0: idle, 1: capture in progress, 2:
+ * interval set but idle, 3: interval set and capture in progress)
+ * @param videoStatus Current status of video capturing (0: idle, 1: capture in progress)
+ * @param imageInterval Image capture interval
+ * units = s
+ * @param recordingTimeMs Elapsed time since recording started (0: Not supported/available). A GCS
+ * should compute recording time and use non-zero values of this field to correct any discrepancy.
+ * units = ms
+ * @param availableCapacity Available storage capacity.
+ * units = MiB
+ * @param imageCount Total number of images captured ('forever', or until reset using
+ * MAV_CMD_STORAGE_FORMAT).
  */
 @GeneratedMavMessage(
   id = 262u,
@@ -33,6 +48,7 @@ import kotlin.Unit
 public data class CameraCaptureStatus(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -49,17 +65,20 @@ public data class CameraCaptureStatus(
   public val videoStatus: UByte = 0u,
   /**
    * Image capture interval
+   * units = s
    */
   @GeneratedMavField(type = "float")
   public val imageInterval: Float = 0F,
   /**
    * Elapsed time since recording started (0: Not supported/available). A GCS should compute
    * recording time and use non-zero values of this field to correct any discrepancy.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val recordingTimeMs: UInt = 0u,
   /**
    * Available storage capacity.
+   * units = MiB
    */
   @GeneratedMavField(type = "float")
   public val availableCapacity: Float = 0F,
@@ -72,9 +91,9 @@ public data class CameraCaptureStatus(
   )
   public val imageCount: Int = 0,
 ) : MavMessage<CameraCaptureStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(imageInterval)
@@ -85,7 +104,7 @@ public data class CameraCaptureStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(imageInterval)
@@ -102,11 +121,11 @@ public data class CameraCaptureStatus(
 
     private const val SIZE_V2: Int = 22
 
-    public override val id: UInt = 262u
+    override val id: UInt = 262u
 
-    public override val crcExtra: Byte = 12
+    override val crcExtra: Byte = 12
 
-    public override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
+    override fun deserialize(bytes: ByteArray): CameraCaptureStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

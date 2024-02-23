@@ -21,6 +21,13 @@ import kotlin.Unit
 
 /**
  * Message to configure a camera mount, directional antenna, etc.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param mountMode Mount operating mode.
+ * @param stabRoll (1 = yes, 0 = no).
+ * @param stabPitch (1 = yes, 0 = no).
+ * @param stabYaw (1 = yes, 0 = no).
  */
 @GeneratedMavMessage(
   id = 156u,
@@ -58,9 +65,9 @@ public data class MountConfigure(
   @GeneratedMavField(type = "uint8_t")
   public val stabYaw: UByte = 0u,
 ) : MavMessage<MountConfigure> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MountConfigure> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MountConfigure> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -71,7 +78,7 @@ public data class MountConfigure(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -87,11 +94,11 @@ public data class MountConfigure(
 
     private const val SIZE_V2: Int = 6
 
-    public override val id: UInt = 156u
+    override val id: UInt = 156u
 
-    public override val crcExtra: Byte = 19
+    override val crcExtra: Byte = 19
 
-    public override fun deserialize(bytes: ByteArray): MountConfigure {
+    override fun deserialize(bytes: ByteArray): MountConfigure {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

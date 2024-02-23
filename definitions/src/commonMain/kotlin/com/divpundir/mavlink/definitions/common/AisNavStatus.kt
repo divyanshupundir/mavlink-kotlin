@@ -11,7 +11,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class AisNavStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Under way using engine.
@@ -57,7 +57,7 @@ public enum class AisNavStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<AisNavStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): AisNavStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AisNavStatus? = when (v) {
       0u -> UNDER_WAY
       1u -> AIS_NAV_ANCHORED
       2u -> AIS_NAV_UN_COMMANDED

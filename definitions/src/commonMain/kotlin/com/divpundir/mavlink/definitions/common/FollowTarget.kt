@@ -28,6 +28,25 @@ import kotlin.collections.List
 
 /**
  * Current motion information from a designated system
+ *
+ * @param timestamp Timestamp (time since system boot).
+ * units = ms
+ * @param estCapabilities bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL
+ * = 2, ATT + RATES = 3)
+ * @param lat Latitude (WGS84)
+ * units = degE7
+ * @param lon Longitude (WGS84)
+ * units = degE7
+ * @param alt Altitude (MSL)
+ * units = m
+ * @param vel target velocity (0,0,0) for unknown
+ * units = m/s
+ * @param acc linear target acceleration (0,0,0) for unknown
+ * units = m/s/s
+ * @param attitudeQ (0 0 0 0 for unknown)
+ * @param rates (0 0 0 for unknown)
+ * @param positionCov eph epv
+ * @param customState button states or switches of a tracker device
  */
 @GeneratedMavMessage(
   id = 144u,
@@ -36,6 +55,7 @@ import kotlin.collections.List
 public data class FollowTarget(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
@@ -46,26 +66,31 @@ public data class FollowTarget(
   public val estCapabilities: UByte = 0u,
   /**
    * Latitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL)
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val alt: Float = 0F,
   /**
    * target velocity (0,0,0) for unknown
+   * units = m/s
    */
   @GeneratedMavField(type = "float[3]")
   public val vel: List<Float> = emptyList(),
   /**
    * linear target acceleration (0,0,0) for unknown
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float[3]")
   public val acc: List<Float> = emptyList(),
@@ -90,9 +115,9 @@ public data class FollowTarget(
   @GeneratedMavField(type = "uint64_t")
   public val customState: ULong = 0uL,
 ) : MavMessage<FollowTarget> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FollowTarget> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FollowTarget> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(customState)
@@ -108,7 +133,7 @@ public data class FollowTarget(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(customState)
@@ -129,11 +154,11 @@ public data class FollowTarget(
 
     private const val SIZE_V2: Int = 93
 
-    public override val id: UInt = 144u
+    override val id: UInt = 144u
 
-    public override val crcExtra: Byte = 127
+    override val crcExtra: Byte = 127
 
-    public override fun deserialize(bytes: ByteArray): FollowTarget {
+    override fun deserialize(bytes: ByteArray): FollowTarget {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

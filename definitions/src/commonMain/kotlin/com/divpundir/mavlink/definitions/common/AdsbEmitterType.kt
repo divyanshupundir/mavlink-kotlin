@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class AdsbEmitterType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   NO_INFO(0u),
@@ -55,7 +55,7 @@ public enum class AdsbEmitterType(
   ;
 
   public companion object : MavEnum.MavCompanion<AdsbEmitterType> {
-    public override fun getEntryFromValueOrNull(v: UInt): AdsbEmitterType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): AdsbEmitterType? = when (v) {
       0u -> NO_INFO
       1u -> LIGHT
       2u -> SMALL

@@ -23,6 +23,19 @@ import kotlin.collections.List
 
 /**
  * Camera vision based attitude and position deltas.
+ *
+ * @param timeUsec Timestamp (synced to UNIX time or since system boot).
+ * units = us
+ * @param timeDeltaUsec Time since the last reported camera frame.
+ * units = us
+ * @param angleDelta Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD
+ * from the previous MAV_FRAME_BODY_FRD.
+ * units = rad
+ * @param positionDelta Change in position to the current MAV_FRAME_BODY_FRD from the previous
+ * FRAME_BODY_FRD rotated to the current MAV_FRAME_BODY_FRD.
+ * units = m
+ * @param confidence Normalised confidence value from 0 to 100.
+ * units = %
  */
 @GeneratedMavMessage(
   id = 11_011u,
@@ -31,35 +44,40 @@ import kotlin.collections.List
 public data class VisionPositionDelta(
   /**
    * Timestamp (synced to UNIX time or since system boot).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
    * Time since the last reported camera frame.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeDeltaUsec: ULong = 0uL,
   /**
    * Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD from the
    * previous MAV_FRAME_BODY_FRD.
+   * units = rad
    */
   @GeneratedMavField(type = "float[3]")
   public val angleDelta: List<Float> = emptyList(),
   /**
    * Change in position to the current MAV_FRAME_BODY_FRD from the previous FRAME_BODY_FRD rotated
    * to the current MAV_FRAME_BODY_FRD.
+   * units = m
    */
   @GeneratedMavField(type = "float[3]")
   public val positionDelta: List<Float> = emptyList(),
   /**
    * Normalised confidence value from 0 to 100.
+   * units = %
    */
   @GeneratedMavField(type = "float")
   public val confidence: Float = 0F,
 ) : MavMessage<VisionPositionDelta> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt64(timeDeltaUsec)
@@ -69,7 +87,7 @@ public data class VisionPositionDelta(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeUInt64(timeDeltaUsec)
@@ -84,11 +102,11 @@ public data class VisionPositionDelta(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 11_011u
+    override val id: UInt = 11_011u
 
-    public override val crcExtra: Byte = 106
+    override val crcExtra: Byte = 106
 
-    public override fun deserialize(bytes: ByteArray): VisionPositionDelta {
+    override fun deserialize(bytes: ByteArray): VisionPositionDelta {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

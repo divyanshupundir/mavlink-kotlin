@@ -37,6 +37,38 @@ import kotlin.Unit
  * ground station using MAV_CMD_REQUEST_MESSAGE. The maximum angles and rates are the limits by
  * hardware. However, the limits by software used are likely different/smaller and dependent on
  * mode/settings/etc..
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param vendorName Name of the gimbal vendor.
+ * @param modelName Name of the gimbal model.
+ * @param customName Custom name of the gimbal given to it by the user.
+ * @param firmwareVersion Version of the gimbal firmware, encoded as: (Dev & 0xff) << 24 | (Patch &
+ * 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff).
+ * @param hardwareVersion Version of the gimbal hardware, encoded as: (Dev & 0xff) << 24 | (Patch &
+ * 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff).
+ * @param uid UID of gimbal hardware (0 if unknown).
+ * @param capFlags Bitmap of gimbal capability flags.
+ * @param customCapFlags Bitmap for use for gimbal-specific capability flags.
+ * @param rollMin Minimum hardware roll angle (positive: rolling to the right, negative: rolling to
+ * the left). NAN if unknown.
+ * units = rad
+ * @param rollMax Maximum hardware roll angle (positive: rolling to the right, negative: rolling to
+ * the left). NAN if unknown.
+ * units = rad
+ * @param pitchMin Minimum hardware pitch angle (positive: up, negative: down). NAN if unknown.
+ * units = rad
+ * @param pitchMax Maximum hardware pitch angle (positive: up, negative: down). NAN if unknown.
+ * units = rad
+ * @param yawMin Minimum hardware yaw angle (positive: to the right, negative: to the left). NAN if
+ * unknown.
+ * units = rad
+ * @param yawMax Maximum hardware yaw angle (positive: to the right, negative: to the left). NAN if
+ * unknown.
+ * units = rad
+ * @param gimbalDeviceId This field is to be used if the gimbal manager and the gimbal device are
+ * the same component and hence have the same component ID. This field is then set to a number between
+ * 1-6. If the component ID is separate, this field is not required and must be set to 0.
  */
 @GeneratedMavMessage(
   id = 283u,
@@ -45,6 +77,7 @@ import kotlin.Unit
 public data class GimbalDeviceInformation(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -93,32 +126,38 @@ public data class GimbalDeviceInformation(
   /**
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left).
    * NAN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val rollMin: Float = 0F,
   /**
    * Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left).
    * NAN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val rollMax: Float = 0F,
   /**
    * Minimum hardware pitch angle (positive: up, negative: down). NAN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitchMin: Float = 0F,
   /**
    * Maximum hardware pitch angle (positive: up, negative: down). NAN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitchMax: Float = 0F,
   /**
    * Minimum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yawMin: Float = 0F,
   /**
    * Maximum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yawMax: Float = 0F,
@@ -133,10 +172,9 @@ public data class GimbalDeviceInformation(
   )
   public val gimbalDeviceId: UByte = 0u,
 ) : MavMessage<GimbalDeviceInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceInformation> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<GimbalDeviceInformation> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(uid)
     encoder.encodeUInt32(timeBootMs)
@@ -156,7 +194,7 @@ public data class GimbalDeviceInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(uid)
     encoder.encodeUInt32(timeBootMs)
@@ -182,11 +220,11 @@ public data class GimbalDeviceInformation(
 
     private const val SIZE_V2: Int = 145
 
-    public override val id: UInt = 283u
+    override val id: UInt = 283u
 
-    public override val crcExtra: Byte = 74
+    override val crcExtra: Byte = 74
 
-    public override fun deserialize(bytes: ByteArray): GimbalDeviceInformation {
+    override fun deserialize(bytes: ByteArray): GimbalDeviceInformation {
       val decoder = MavDataDecoder(bytes)
 
       val uid = decoder.safeDecodeUInt64()

@@ -27,6 +27,16 @@ import kotlin.collections.List
 /**
  * Terrain data sent from GCS. The lat/lon and grid_spacing must be the same as a lat/lon from a
  * TERRAIN_REQUEST. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
+ *
+ * @param lat Latitude of SW corner of first grid
+ * units = degE7
+ * @param lon Longitude of SW corner of first grid
+ * units = degE7
+ * @param gridSpacing Grid spacing
+ * units = m
+ * @param gridbit bit within the terrain request mask
+ * @param data Terrain data MSL
+ * units = m
  */
 @GeneratedMavMessage(
   id = 134u,
@@ -35,16 +45,19 @@ import kotlin.collections.List
 public data class TerrainData(
   /**
    * Latitude of SW corner of first grid
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude of SW corner of first grid
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Grid spacing
+   * units = m
    */
   @GeneratedMavField(type = "uint16_t")
   public val gridSpacing: UShort = 0u,
@@ -55,13 +68,14 @@ public data class TerrainData(
   public val gridbit: UByte = 0u,
   /**
    * Terrain data MSL
+   * units = m
    */
   @GeneratedMavField(type = "int16_t[16]")
   public val `data`: List<Short> = emptyList(),
 ) : MavMessage<TerrainData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<TerrainData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<TerrainData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -71,7 +85,7 @@ public data class TerrainData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(lat)
     encoder.encodeInt32(lon)
@@ -86,11 +100,11 @@ public data class TerrainData(
 
     private const val SIZE_V2: Int = 43
 
-    public override val id: UInt = 134u
+    override val id: UInt = 134u
 
-    public override val crcExtra: Byte = -27
+    override val crcExtra: Byte = -27
 
-    public override fun deserialize(bytes: ByteArray): TerrainData {
+    override fun deserialize(bytes: ByteArray): TerrainData {
       val decoder = MavDataDecoder(bytes)
 
       val lat = decoder.safeDecodeInt32()

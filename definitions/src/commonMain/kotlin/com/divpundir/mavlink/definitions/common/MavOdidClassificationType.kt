@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavOdidClassificationType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The classification type for the UA is undeclared.
@@ -22,7 +22,7 @@ public enum class MavOdidClassificationType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavOdidClassificationType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavOdidClassificationType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavOdidClassificationType? = when (v) {
       0u -> UNDECLARED
       1u -> EU
       else -> null

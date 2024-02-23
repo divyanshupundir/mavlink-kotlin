@@ -23,6 +23,15 @@ import kotlin.collections.List
 
 /**
  * Flexifunction type and parameters for component at function index from buffer
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param funcIndex Function index
+ * @param funcCount Total count of functions
+ * @param dataAddress Address in the flexifunction data, Set to 0xFFFF to use address in target
+ * memory
+ * @param dataSize Size of the 
+ * @param data Settings data
  */
 @GeneratedMavMessage(
   id = 152u,
@@ -65,10 +74,9 @@ public data class FlexifunctionBufferFunction(
   @GeneratedMavField(type = "int8_t[48]")
   public val `data`: List<Byte> = emptyList(),
 ) : MavMessage<FlexifunctionBufferFunction> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunction> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionBufferFunction> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(funcIndex)
     encoder.encodeUInt16(funcCount)
@@ -80,7 +88,7 @@ public data class FlexifunctionBufferFunction(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(funcIndex)
     encoder.encodeUInt16(funcCount)
@@ -97,11 +105,11 @@ public data class FlexifunctionBufferFunction(
 
     private const val SIZE_V2: Int = 58
 
-    public override val id: UInt = 152u
+    override val id: UInt = 152u
 
-    public override val crcExtra: Byte = 101
+    override val crcExtra: Byte = 101
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunction {
+    override fun deserialize(bytes: ByteArray): FlexifunctionBufferFunction {
       val decoder = MavDataDecoder(bytes)
 
       val funcIndex = decoder.safeDecodeUInt16()

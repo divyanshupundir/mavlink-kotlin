@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproHeartbeatStatus(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * No GoPro connected.
@@ -32,7 +32,7 @@ public enum class GoproHeartbeatStatus(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproHeartbeatStatus> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproHeartbeatStatus? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproHeartbeatStatus? = when (v) {
       0u -> DISCONNECTED
       1u -> INCOMPATIBLE
       2u -> CONNECTED

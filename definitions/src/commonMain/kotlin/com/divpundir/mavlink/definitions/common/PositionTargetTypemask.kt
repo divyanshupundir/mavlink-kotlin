@@ -14,7 +14,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class PositionTargetTypemask(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * Ignore position x
@@ -79,7 +79,7 @@ public enum class PositionTargetTypemask(
   ;
 
   public companion object : MavBitmask.MavCompanion<PositionTargetTypemask> {
-    public override fun getEntryFromValueOrNull(v: UInt): PositionTargetTypemask? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): PositionTargetTypemask? = when (v) {
       1u -> X_IGNORE
       2u -> Y_IGNORE
       4u -> Z_IGNORE
@@ -95,7 +95,7 @@ public enum class PositionTargetTypemask(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<PositionTargetTypemask> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<PositionTargetTypemask> = buildList {
       if (v and 1u == 1u) add(X_IGNORE)
       if (v and 2u == 2u) add(Y_IGNORE)
       if (v and 4u == 4u) add(Z_IGNORE)

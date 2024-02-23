@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class TuneFormat(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Format is QBasic 1.1 Play: https://www.qbasic.net/en/reference/qb11/Statement/PLAY-006.htm.
@@ -26,7 +26,7 @@ public enum class TuneFormat(
   ;
 
   public companion object : MavEnum.MavCompanion<TuneFormat> {
-    public override fun getEntryFromValueOrNull(v: UInt): TuneFormat? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): TuneFormat? = when (v) {
       1u -> QBASIC1_1
       2u -> MML_MODERN
       else -> null

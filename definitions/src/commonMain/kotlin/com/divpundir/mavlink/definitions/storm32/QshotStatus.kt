@@ -21,6 +21,9 @@ import kotlin.Unit
 
 /**
  * Information about the shot operation.
+ *
+ * @param mode Current shot mode.
+ * @param shotState Current state in the shot. States are specific to the selected shot mode.
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -39,16 +42,16 @@ public data class QshotStatus(
   @GeneratedMavField(type = "uint16_t")
   public val shotState: UShort = 0u,
 ) : MavMessage<QshotStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<QshotStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<QshotStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeEnumValue(mode.value, 2)
     encoder.encodeUInt16(shotState)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeEnumValue(mode.value, 2)
     encoder.encodeUInt16(shotState)
@@ -60,11 +63,11 @@ public data class QshotStatus(
 
     private const val SIZE_V2: Int = 4
 
-    public override val id: UInt = 60_020u
+    override val id: UInt = 60_020u
 
-    public override val crcExtra: Byte = -54
+    override val crcExtra: Byte = -54
 
-    public override fun deserialize(bytes: ByteArray): QshotStatus {
+    override fun deserialize(bytes: ByteArray): QshotStatus {
       val decoder = MavDataDecoder(bytes)
 
       val mode = decoder.safeDecodeEnumValue(2).let { value ->

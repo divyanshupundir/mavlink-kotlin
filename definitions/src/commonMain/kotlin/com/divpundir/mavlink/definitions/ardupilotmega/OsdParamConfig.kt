@@ -28,6 +28,19 @@ import kotlin.Unit
 
 /**
  * Configure an OSD parameter slot.
+ *
+ * @param targetSystem System ID.
+ * @param targetComponent Component ID.
+ * @param requestId Request ID - copied to reply.
+ * @param osdScreen OSD parameter screen index.
+ * @param osdIndex OSD parameter display index.
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
+ * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
+ * applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param configType Config type.
+ * @param minValue OSD parameter minimum value.
+ * @param maxValue OSD parameter maximum value.
+ * @param increment OSD parameter increment.
  */
 @GeneratedMavMessage(
   id = 11_033u,
@@ -87,9 +100,9 @@ public data class OsdParamConfig(
   @GeneratedMavField(type = "float")
   public val increment: Float = 0F,
 ) : MavMessage<OsdParamConfig> {
-  public override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfig> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<OsdParamConfig> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(requestId)
     encoder.encodeFloat(minValue)
@@ -104,7 +117,7 @@ public data class OsdParamConfig(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(requestId)
     encoder.encodeFloat(minValue)
@@ -124,11 +137,11 @@ public data class OsdParamConfig(
 
     private const val SIZE_V2: Int = 37
 
-    public override val id: UInt = 11_033u
+    override val id: UInt = 11_033u
 
-    public override val crcExtra: Byte = -61
+    override val crcExtra: Byte = -61
 
-    public override fun deserialize(bytes: ByteArray): OsdParamConfig {
+    override fun deserialize(bytes: ByteArray): OsdParamConfig {
       val decoder = MavDataDecoder(bytes)
 
       val requestId = decoder.safeDecodeUInt32()

@@ -11,7 +11,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavStorm32GimbalManagerProfile(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Default profile. Implementation specific.
@@ -46,8 +46,7 @@ public enum class MavStorm32GimbalManagerProfile(
   ;
 
   public companion object : MavEnum.MavCompanion<MavStorm32GimbalManagerProfile> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerProfile? = when (v)
-        {
+    override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerProfile? = when (v) {
       0u -> DEFAULT
       1u -> CUSTOM
       2u -> COOPERATIVE

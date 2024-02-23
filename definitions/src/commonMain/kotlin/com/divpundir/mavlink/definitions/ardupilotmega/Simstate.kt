@@ -19,6 +19,29 @@ import kotlin.Unit
 
 /**
  * Status of simulation environment, if used.
+ *
+ * @param roll Roll angle.
+ * units = rad
+ * @param pitch Pitch angle.
+ * units = rad
+ * @param yaw Yaw angle.
+ * units = rad
+ * @param xacc X acceleration.
+ * units = m/s/s
+ * @param yacc Y acceleration.
+ * units = m/s/s
+ * @param zacc Z acceleration.
+ * units = m/s/s
+ * @param xgyro Angular speed around X axis.
+ * units = rad/s
+ * @param ygyro Angular speed around Y axis.
+ * units = rad/s
+ * @param zgyro Angular speed around Z axis.
+ * units = rad/s
+ * @param lat Latitude.
+ * units = degE7
+ * @param lng Longitude.
+ * units = degE7
  */
 @GeneratedMavMessage(
   id = 164u,
@@ -27,63 +50,74 @@ import kotlin.Unit
 public data class Simstate(
   /**
    * Roll angle.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Pitch angle.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Yaw angle.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
   /**
    * X acceleration.
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val xacc: Float = 0F,
   /**
    * Y acceleration.
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val yacc: Float = 0F,
   /**
    * Z acceleration.
+   * units = m/s/s
    */
   @GeneratedMavField(type = "float")
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val zgyro: Float = 0F,
   /**
    * Latitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude.
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lng: Int = 0,
 ) : MavMessage<Simstate> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -99,7 +133,7 @@ public data class Simstate(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(roll)
     encoder.encodeFloat(pitch)
@@ -120,11 +154,11 @@ public data class Simstate(
 
     private const val SIZE_V2: Int = 44
 
-    public override val id: UInt = 164u
+    override val id: UInt = 164u
 
-    public override val crcExtra: Byte = -102
+    override val crcExtra: Byte = -102
 
-    public override fun deserialize(bytes: ByteArray): Simstate {
+    override fun deserialize(bytes: ByteArray): Simstate {
       val decoder = MavDataDecoder(bytes)
 
       val roll = decoder.safeDecodeFloat()

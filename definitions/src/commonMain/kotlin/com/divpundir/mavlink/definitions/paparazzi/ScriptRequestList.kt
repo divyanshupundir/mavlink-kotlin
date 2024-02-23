@@ -17,6 +17,9 @@ import kotlin.Unit
 
 /**
  * Request the overall list of mission items from the system/component.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
  */
 @GeneratedMavMessage(
   id = 182u,
@@ -34,16 +37,16 @@ public data class ScriptRequestList(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
 ) : MavMessage<ScriptRequestList> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ScriptRequestList> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ScriptRequestList> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -55,11 +58,11 @@ public data class ScriptRequestList(
 
     private const val SIZE_V2: Int = 2
 
-    public override val id: UInt = 182u
+    override val id: UInt = 182u
 
-    public override val crcExtra: Byte = 115
+    override val crcExtra: Byte = 115
 
-    public override fun deserialize(bytes: ByteArray): ScriptRequestList {
+    override fun deserialize(bytes: ByteArray): ScriptRequestList {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

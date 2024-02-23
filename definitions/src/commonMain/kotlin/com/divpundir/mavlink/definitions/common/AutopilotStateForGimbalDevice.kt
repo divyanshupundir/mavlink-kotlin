@@ -37,6 +37,32 @@ import kotlin.collections.List
  * sent from the autopilot to the gimbal device component. The data of this message are for the gimbal
  * device's estimator corrections, in particular horizon compensation, as well as indicates autopilot
  * control intentions, e.g. feed forward angular control in the z-axis.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param timeBootUs Timestamp (time since system boot).
+ * units = us
+ * @param q Quaternion components of autopilot attitude: w, x, y, z (1 0 0 0 is the null-rotation,
+ * Hamilton convention).
+ * @param qEstimatedDelayUs Estimated delay of the attitude data. 0 if unknown.
+ * units = us
+ * @param vx X Speed in NED (North, East, Down). NAN if unknown.
+ * units = m/s
+ * @param vy Y Speed in NED (North, East, Down). NAN if unknown.
+ * units = m/s
+ * @param vz Z Speed in NED (North, East, Down). NAN if unknown.
+ * units = m/s
+ * @param vEstimatedDelayUs Estimated delay of the speed data. 0 if unknown.
+ * units = us
+ * @param feedForwardAngularVelocityZ Feed forward Z component of angular velocity (positive: yawing
+ * to the right). NaN to be ignored. This is to indicate if the autopilot is actively yawing.
+ * units = rad/s
+ * @param estimatorStatus Bitmap indicating which estimator outputs are valid.
+ * @param landedState The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is
+ * unknown.
+ * @param angularVelocityZ Z component of angular velocity in NED (North, East, Down). NaN if
+ * unknown.
+ * units = rad/s
  */
 @GeneratedMavMessage(
   id = 286u,
@@ -55,6 +81,7 @@ public data class AutopilotStateForGimbalDevice(
   public val targetComponent: UByte = 0u,
   /**
    * Timestamp (time since system boot).
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeBootUs: ULong = 0uL,
@@ -66,32 +93,38 @@ public data class AutopilotStateForGimbalDevice(
   public val q: List<Float> = emptyList(),
   /**
    * Estimated delay of the attitude data. 0 if unknown.
+   * units = us
    */
   @GeneratedMavField(type = "uint32_t")
   public val qEstimatedDelayUs: UInt = 0u,
   /**
    * X Speed in NED (North, East, Down). NAN if unknown.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vx: Float = 0F,
   /**
    * Y Speed in NED (North, East, Down). NAN if unknown.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vy: Float = 0F,
   /**
    * Z Speed in NED (North, East, Down). NAN if unknown.
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vz: Float = 0F,
   /**
    * Estimated delay of the speed data. 0 if unknown.
+   * units = us
    */
   @GeneratedMavField(type = "uint32_t")
   public val vEstimatedDelayUs: UInt = 0u,
   /**
    * Feed forward Z component of angular velocity (positive: yawing to the right). NaN to be
    * ignored. This is to indicate if the autopilot is actively yawing.
+   * units = rad/s
    */
   @GeneratedMavField(type = "float")
   public val feedForwardAngularVelocityZ: Float = 0F,
@@ -107,6 +140,7 @@ public data class AutopilotStateForGimbalDevice(
   public val landedState: MavEnumValue<MavLandedState> = MavEnumValue.fromValue(0u),
   /**
    * Z component of angular velocity in NED (North, East, Down). NaN if unknown.
+   * units = rad/s
    */
   @GeneratedMavField(
     type = "float",
@@ -114,10 +148,9 @@ public data class AutopilotStateForGimbalDevice(
   )
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<AutopilotStateForGimbalDevice> {
-  public override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> =
-      Companion
+  override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDevice> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeBootUs)
     encoder.encodeFloatArray(q, 16)
@@ -134,7 +167,7 @@ public data class AutopilotStateForGimbalDevice(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeBootUs)
     encoder.encodeFloatArray(q, 16)
@@ -157,11 +190,11 @@ public data class AutopilotStateForGimbalDevice(
 
     private const val SIZE_V2: Int = 57
 
-    public override val id: UInt = 286u
+    override val id: UInt = 286u
 
-    public override val crcExtra: Byte = -46
+    override val crcExtra: Byte = -46
 
-    public override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
+    override fun deserialize(bytes: ByteArray): AutopilotStateForGimbalDevice {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootUs = decoder.safeDecodeUInt64()

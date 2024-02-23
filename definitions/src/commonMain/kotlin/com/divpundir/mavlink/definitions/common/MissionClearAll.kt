@@ -20,6 +20,10 @@ import kotlin.Unit
 
 /**
  * Delete all mission items at once.
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param missionType Mission type.
  */
 @GeneratedMavMessage(
   id = 45u,
@@ -45,16 +49,16 @@ public data class MissionClearAll(
   )
   public val missionType: MavEnumValue<MavMissionType> = MavEnumValue.fromValue(0u),
 ) : MavMessage<MissionClearAll> {
-  public override val instanceCompanion: MavMessage.MavCompanion<MissionClearAll> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<MissionClearAll> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -67,11 +71,11 @@ public data class MissionClearAll(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 45u
+    override val id: UInt = 45u
 
-    public override val crcExtra: Byte = -24
+    override val crcExtra: Byte = -24
 
-    public override fun deserialize(bytes: ByteArray): MissionClearAll {
+    override fun deserialize(bytes: ByteArray): MissionClearAll {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

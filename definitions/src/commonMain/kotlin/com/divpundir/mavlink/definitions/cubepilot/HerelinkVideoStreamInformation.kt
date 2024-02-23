@@ -28,6 +28,21 @@ import kotlin.Unit
 
 /**
  * Information about video stream
+ *
+ * @param cameraId Video Stream ID (1 for first, 2 for second, etc.)
+ * @param status Number of streams available.
+ * @param framerate Frame rate.
+ * units = Hz
+ * @param resolutionH Horizontal resolution.
+ * units = pix
+ * @param resolutionV Vertical resolution.
+ * units = pix
+ * @param bitrate Bit rate.
+ * units = bits/s
+ * @param rotation Video image rotation clockwise.
+ * units = deg
+ * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number
+ * (UDP port ground station should listen to).
  */
 @GeneratedMavMessage(
   id = 50_002u,
@@ -46,26 +61,31 @@ public data class HerelinkVideoStreamInformation(
   public val status: UByte = 0u,
   /**
    * Frame rate.
+   * units = Hz
    */
   @GeneratedMavField(type = "float")
   public val framerate: Float = 0F,
   /**
    * Horizontal resolution.
+   * units = pix
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionH: UShort = 0u,
   /**
    * Vertical resolution.
+   * units = pix
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionV: UShort = 0u,
   /**
    * Bit rate.
+   * units = bits/s
    */
   @GeneratedMavField(type = "uint32_t")
   public val bitrate: UInt = 0u,
   /**
    * Video image rotation clockwise.
+   * units = deg
    */
   @GeneratedMavField(type = "uint16_t")
   public val rotation: UShort = 0u,
@@ -76,10 +96,10 @@ public data class HerelinkVideoStreamInformation(
   @GeneratedMavField(type = "char[230]")
   public val uri: String = "",
 ) : MavMessage<HerelinkVideoStreamInformation> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HerelinkVideoStreamInformation> =
+  override val instanceCompanion: MavMessage.MavCompanion<HerelinkVideoStreamInformation> =
       Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -92,7 +112,7 @@ public data class HerelinkVideoStreamInformation(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -110,11 +130,11 @@ public data class HerelinkVideoStreamInformation(
 
     private const val SIZE_V2: Int = 246
 
-    public override val id: UInt = 50_002u
+    override val id: UInt = 50_002u
 
-    public override val crcExtra: Byte = -75
+    override val crcExtra: Byte = -75
 
-    public override fun deserialize(bytes: ByteArray): HerelinkVideoStreamInformation {
+    override fun deserialize(bytes: ByteArray): HerelinkVideoStreamInformation {
       val decoder = MavDataDecoder(bytes)
 
       val framerate = decoder.safeDecodeFloat()

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavCollisionSrc(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * ID field references ADSB_VEHICLE packets
@@ -25,7 +25,7 @@ public enum class MavCollisionSrc(
   ;
 
   public companion object : MavEnum.MavCompanion<MavCollisionSrc> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavCollisionSrc? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavCollisionSrc? = when (v) {
       0u -> ADSB
       1u -> MAVLINK_GPS_GLOBAL_INT
       else -> null

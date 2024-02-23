@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproResolution(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * 848 x 480 (480p).
@@ -82,7 +82,7 @@ public enum class GoproResolution(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproResolution> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproResolution? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproResolution? = when (v) {
       0u -> _480p
       1u -> _720p
       2u -> _960p

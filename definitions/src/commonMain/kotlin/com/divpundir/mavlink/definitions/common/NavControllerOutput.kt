@@ -23,6 +23,23 @@ import kotlin.Unit
 
 /**
  * The state of the navigation and position controller.
+ *
+ * @param navRoll Current desired roll
+ * units = deg
+ * @param navPitch Current desired pitch
+ * units = deg
+ * @param navBearing Current desired heading
+ * units = deg
+ * @param targetBearing Bearing to current waypoint/target
+ * units = deg
+ * @param wpDist Distance to active waypoint
+ * units = m
+ * @param altError Current altitude error
+ * units = m
+ * @param aspdError Current airspeed error
+ * units = m/s
+ * @param xtrackError Current crosstrack error on x-y plane
+ * units = m
  */
 @GeneratedMavMessage(
   id = 62u,
@@ -31,48 +48,56 @@ import kotlin.Unit
 public data class NavControllerOutput(
   /**
    * Current desired roll
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val navRoll: Float = 0F,
   /**
    * Current desired pitch
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val navPitch: Float = 0F,
   /**
    * Current desired heading
+   * units = deg
    */
   @GeneratedMavField(type = "int16_t")
   public val navBearing: Short = 0,
   /**
    * Bearing to current waypoint/target
+   * units = deg
    */
   @GeneratedMavField(type = "int16_t")
   public val targetBearing: Short = 0,
   /**
    * Distance to active waypoint
+   * units = m
    */
   @GeneratedMavField(type = "uint16_t")
   public val wpDist: UShort = 0u,
   /**
    * Current altitude error
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val altError: Float = 0F,
   /**
    * Current airspeed error
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val aspdError: Float = 0F,
   /**
    * Current crosstrack error on x-y plane
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val xtrackError: Float = 0F,
 ) : MavMessage<NavControllerOutput> {
-  public override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(navRoll)
     encoder.encodeFloat(navPitch)
@@ -85,7 +110,7 @@ public data class NavControllerOutput(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(navRoll)
     encoder.encodeFloat(navPitch)
@@ -103,11 +128,11 @@ public data class NavControllerOutput(
 
     private const val SIZE_V2: Int = 26
 
-    public override val id: UInt = 62u
+    override val id: UInt = 62u
 
-    public override val crcExtra: Byte = -73
+    override val crcExtra: Byte = -73
 
-    public override fun deserialize(bytes: ByteArray): NavControllerOutput {
+    override fun deserialize(bytes: ByteArray): NavControllerOutput {
       val decoder = MavDataDecoder(bytes)
 
       val navRoll = decoder.safeDecodeFloat()

@@ -17,6 +17,13 @@ import kotlin.Unit
 
 /**
  * Raw ADC output.
+ *
+ * @param adc1 ADC output 1.
+ * @param adc2 ADC output 2.
+ * @param adc3 ADC output 3.
+ * @param adc4 ADC output 4.
+ * @param adc5 ADC output 5.
+ * @param adc6 ADC output 6.
  */
 @GeneratedMavMessage(
   id = 153u,
@@ -54,9 +61,9 @@ public data class ApAdc(
   @GeneratedMavField(type = "uint16_t")
   public val adc6: UShort = 0u,
 ) : MavMessage<ApAdc> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ApAdc> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ApAdc> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(adc1)
     encoder.encodeUInt16(adc2)
@@ -67,7 +74,7 @@ public data class ApAdc(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(adc1)
     encoder.encodeUInt16(adc2)
@@ -83,11 +90,11 @@ public data class ApAdc(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 153u
+    override val id: UInt = 153u
 
-    public override val crcExtra: Byte = -68
+    override val crcExtra: Byte = -68
 
-    public override fun deserialize(bytes: ByteArray): ApAdc {
+    override fun deserialize(bytes: ByteArray): ApAdc {
       val decoder = MavDataDecoder(bytes)
 
       val adc1 = decoder.safeDecodeUInt16()

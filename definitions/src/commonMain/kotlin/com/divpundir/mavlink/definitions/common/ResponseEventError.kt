@@ -24,6 +24,13 @@ import kotlin.Unit
 
 /**
  * Response to a REQUEST_EVENT in case of an error (e.g. the event is not available anymore).
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param sequence Sequence number.
+ * @param sequenceOldestAvailable Oldest Sequence number that is still available after the sequence
+ * set in REQUEST_EVENT.
+ * @param reason Error reason.
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -57,9 +64,9 @@ public data class ResponseEventError(
   @GeneratedMavField(type = "uint8_t")
   public val reason: MavEnumValue<MavEventErrorReason> = MavEnumValue.fromValue(0u),
 ) : MavMessage<ResponseEventError> {
-  public override val instanceCompanion: MavMessage.MavCompanion<ResponseEventError> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<ResponseEventError> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt16(sequenceOldestAvailable)
@@ -69,7 +76,7 @@ public data class ResponseEventError(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
     encoder.encodeUInt16(sequenceOldestAvailable)
@@ -84,11 +91,11 @@ public data class ResponseEventError(
 
     private const val SIZE_V2: Int = 7
 
-    public override val id: UInt = 413u
+    override val id: UInt = 413u
 
-    public override val crcExtra: Byte = 77
+    override val crcExtra: Byte = 77
 
-    public override fun deserialize(bytes: ByteArray): ResponseEventError {
+    override fun deserialize(bytes: ByteArray): ResponseEventError {
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()

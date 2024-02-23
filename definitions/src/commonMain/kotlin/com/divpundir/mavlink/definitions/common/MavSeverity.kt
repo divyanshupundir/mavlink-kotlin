@@ -12,7 +12,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavSeverity(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * System is unusable. This is a "panic" condition.
@@ -60,7 +60,7 @@ public enum class MavSeverity(
   ;
 
   public companion object : MavEnum.MavCompanion<MavSeverity> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavSeverity? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavSeverity? = when (v) {
       0u -> EMERGENCY
       1u -> ALERT
       2u -> CRITICAL

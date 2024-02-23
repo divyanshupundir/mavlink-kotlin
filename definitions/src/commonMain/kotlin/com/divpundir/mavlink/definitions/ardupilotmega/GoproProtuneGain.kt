@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class GoproProtuneGain(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * ISO 400.
@@ -37,7 +37,7 @@ public enum class GoproProtuneGain(
   ;
 
   public companion object : MavEnum.MavCompanion<GoproProtuneGain> {
-    public override fun getEntryFromValueOrNull(v: UInt): GoproProtuneGain? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): GoproProtuneGain? = when (v) {
       0u -> _400
       1u -> _800
       2u -> _1600

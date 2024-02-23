@@ -26,6 +26,19 @@ import kotlin.Unit
  * sending MAV_CMD commands that include positional information; it offers higher precision and allows
  * the MAV_FRAME to be specified (which may otherwise be ambiguous, particularly for altitude). The
  * command microservice is documented at https://mavlink.io/en/services/command.html
+ *
+ * @param targetSystem System which should execute the command
+ * @param targetComponent Component which should execute the command, 0 for all components
+ * @param command Command ID (of command to send).
+ * @param confirmation 0: First transmission of this command. 1-255: Confirmation transmissions
+ * (e.g. for kill command)
+ * @param param1 Parameter 1 (for the specific command).
+ * @param param2 Parameter 2 (for the specific command).
+ * @param param3 Parameter 3 (for the specific command).
+ * @param param4 Parameter 4 (for the specific command).
+ * @param param5 Parameter 5 (for the specific command).
+ * @param param6 Parameter 6 (for the specific command).
+ * @param param7 Parameter 7 (for the specific command).
  */
 @GeneratedMavMessage(
   id = 76u,
@@ -89,9 +102,9 @@ public data class CommandLong(
   @GeneratedMavField(type = "float")
   public val param7: Float = 0F,
 ) : MavMessage<CommandLong> {
-  public override val instanceCompanion: MavMessage.MavCompanion<CommandLong> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<CommandLong> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -107,7 +120,7 @@ public data class CommandLong(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(param1)
     encoder.encodeFloat(param2)
@@ -128,11 +141,11 @@ public data class CommandLong(
 
     private const val SIZE_V2: Int = 33
 
-    public override val id: UInt = 76u
+    override val id: UInt = 76u
 
-    public override val crcExtra: Byte = -104
+    override val crcExtra: Byte = -104
 
-    public override fun deserialize(bytes: ByteArray): CommandLong {
+    override fun deserialize(bytes: ByteArray): CommandLong {
       val decoder = MavDataDecoder(bytes)
 
       val param1 = decoder.safeDecodeFloat()

@@ -27,6 +27,26 @@ import kotlin.Unit
 
 /**
  * RTK GPS data. Gives information on the relative baseline calculation the GPS is reporting
+ *
+ * @param timeLastBaselineMs Time since boot of last baseline message received.
+ * units = ms
+ * @param rtkReceiverId Identification of connected RTK receiver.
+ * @param wn GPS Week Number of last baseline
+ * @param tow GPS Time of Week of last baseline
+ * units = ms
+ * @param rtkHealth GPS-specific health report for RTK data.
+ * @param rtkRate Rate of baseline messages being received by GPS
+ * units = Hz
+ * @param nsats Current number of sats used for RTK calculation.
+ * @param baselineCoordsType Coordinate system of baseline
+ * @param baselineAMm Current baseline in ECEF x or NED north component.
+ * units = mm
+ * @param baselineBMm Current baseline in ECEF y or NED east component.
+ * units = mm
+ * @param baselineCMm Current baseline in ECEF z or NED down component.
+ * units = mm
+ * @param accuracy Current estimate of baseline accuracy.
+ * @param iarNumHypotheses Current number of integer ambiguity hypotheses.
  */
 @GeneratedMavMessage(
   id = 128u,
@@ -35,6 +55,7 @@ import kotlin.Unit
 public data class Gps2Rtk(
   /**
    * Time since boot of last baseline message received.
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeLastBaselineMs: UInt = 0u,
@@ -50,6 +71,7 @@ public data class Gps2Rtk(
   public val wn: UShort = 0u,
   /**
    * GPS Time of Week of last baseline
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val tow: UInt = 0u,
@@ -60,6 +82,7 @@ public data class Gps2Rtk(
   public val rtkHealth: UByte = 0u,
   /**
    * Rate of baseline messages being received by GPS
+   * units = Hz
    */
   @GeneratedMavField(type = "uint8_t")
   public val rtkRate: UByte = 0u,
@@ -76,16 +99,19 @@ public data class Gps2Rtk(
       MavEnumValue.fromValue(0u),
   /**
    * Current baseline in ECEF x or NED north component.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val baselineAMm: Int = 0,
   /**
    * Current baseline in ECEF y or NED east component.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val baselineBMm: Int = 0,
   /**
    * Current baseline in ECEF z or NED down component.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val baselineCMm: Int = 0,
@@ -100,9 +126,9 @@ public data class Gps2Rtk(
   @GeneratedMavField(type = "int32_t")
   public val iarNumHypotheses: Int = 0,
 ) : MavMessage<Gps2Rtk> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Gps2Rtk> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Gps2Rtk> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeLastBaselineMs)
     encoder.encodeUInt32(tow)
@@ -120,7 +146,7 @@ public data class Gps2Rtk(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeLastBaselineMs)
     encoder.encodeUInt32(tow)
@@ -143,11 +169,11 @@ public data class Gps2Rtk(
 
     private const val SIZE_V2: Int = 35
 
-    public override val id: UInt = 128u
+    override val id: UInt = 128u
 
-    public override val crcExtra: Byte = -30
+    override val crcExtra: Byte = -30
 
-    public override fun deserialize(bytes: ByteArray): Gps2Rtk {
+    override fun deserialize(bytes: ByteArray): Gps2Rtk {
       val decoder = MavDataDecoder(bytes)
 
       val timeLastBaselineMs = decoder.safeDecodeUInt32()

@@ -13,7 +13,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavStorm32GimbalManagerFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * 0 = ignore.
@@ -79,7 +79,7 @@ public enum class MavStorm32GimbalManagerFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<MavStorm32GimbalManagerFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerFlags? = when (v) {
       0u -> NONE
       1u -> RC_ACTIVE
       2u -> CLIENT_ONBOARD_ACTIVE
@@ -95,7 +95,7 @@ public enum class MavStorm32GimbalManagerFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<MavStorm32GimbalManagerFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<MavStorm32GimbalManagerFlags> = buildList {
       if (v and 0u == 0u) add(NONE)
       if (v and 1u == 1u) add(RC_ACTIVE)
       if (v and 2u == 2u) add(CLIENT_ONBOARD_ACTIVE)

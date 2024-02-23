@@ -19,6 +19,14 @@ import kotlin.Unit
 
 /**
  * The airspeed measured by sensors and IMU
+ *
+ * @param timeBootMs Timestamp (milliseconds since system boot)
+ * @param airspeedImu Airspeed estimate from IMU, cm/s
+ * @param airspeedPitot Pitot measured forward airpseed, cm/s
+ * @param airspeedHotWire Hot wire anenometer measured airspeed, cm/s
+ * @param airspeedUltrasonic Ultrasonic measured airspeed, cm/s
+ * @param aoa Angle of attack sensor, degrees * 10
+ * @param aoy Yaw angle sensor, degrees * 10
  */
 @GeneratedMavMessage(
   id = 182u,
@@ -61,9 +69,9 @@ public data class Airspeeds(
   @GeneratedMavField(type = "int16_t")
   public val aoy: Short = 0,
 ) : MavMessage<Airspeeds> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Airspeeds> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Airspeeds> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(airspeedImu)
@@ -75,7 +83,7 @@ public data class Airspeeds(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeInt16(airspeedImu)
@@ -92,11 +100,11 @@ public data class Airspeeds(
 
     private const val SIZE_V2: Int = 16
 
-    public override val id: UInt = 182u
+    override val id: UInt = 182u
 
-    public override val crcExtra: Byte = -102
+    override val crcExtra: Byte = -102
 
-    public override fun deserialize(bytes: ByteArray): Airspeeds {
+    override fun deserialize(bytes: ByteArray): Airspeeds {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

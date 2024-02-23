@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class CameraTrackingMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Not tracking
@@ -30,7 +30,7 @@ public enum class CameraTrackingMode(
   ;
 
   public companion object : MavEnum.MavCompanion<CameraTrackingMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): CameraTrackingMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CameraTrackingMode? = when (v) {
       0u -> NONE
       1u -> POINT
       2u -> RECTANGLE

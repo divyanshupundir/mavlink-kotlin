@@ -11,7 +11,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class FirmwareVersionType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * development release
@@ -41,7 +41,7 @@ public enum class FirmwareVersionType(
   ;
 
   public companion object : MavEnum.MavCompanion<FirmwareVersionType> {
-    public override fun getEntryFromValueOrNull(v: UInt): FirmwareVersionType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): FirmwareVersionType? = when (v) {
       0u -> DEV
       64u -> ALPHA
       128u -> BETA

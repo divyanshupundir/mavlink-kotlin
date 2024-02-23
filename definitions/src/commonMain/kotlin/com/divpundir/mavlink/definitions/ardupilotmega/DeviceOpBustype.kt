@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class DeviceOpBustype(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * I2C Device operation.
@@ -25,7 +25,7 @@ public enum class DeviceOpBustype(
   ;
 
   public companion object : MavEnum.MavCompanion<DeviceOpBustype> {
-    public override fun getEntryFromValueOrNull(v: UInt): DeviceOpBustype? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): DeviceOpBustype? = when (v) {
       0u -> I2C
       1u -> SPI
       else -> null

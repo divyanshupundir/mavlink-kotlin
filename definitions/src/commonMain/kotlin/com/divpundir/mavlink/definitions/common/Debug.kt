@@ -23,6 +23,11 @@ import kotlin.Unit
 /**
  * Send a debug value. The index is used to discriminate between values. These values show up in the
  * plot of QGroundControl as DEBUG N.
+ *
+ * @param timeBootMs Timestamp (time since system boot).
+ * units = ms
+ * @param ind index of debug variable
+ * @param value DEBUG value
  */
 @GeneratedMavMessage(
   id = 254u,
@@ -31,6 +36,7 @@ import kotlin.Unit
 public data class Debug(
   /**
    * Timestamp (time since system boot).
+   * units = ms
    */
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
@@ -45,9 +51,9 @@ public data class Debug(
   @GeneratedMavField(type = "float")
   public val `value`: Float = 0F,
 ) : MavMessage<Debug> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Debug> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Debug> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(value)
@@ -55,7 +61,7 @@ public data class Debug(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(timeBootMs)
     encoder.encodeFloat(value)
@@ -68,11 +74,11 @@ public data class Debug(
 
     private const val SIZE_V2: Int = 9
 
-    public override val id: UInt = 254u
+    override val id: UInt = 254u
 
-    public override val crcExtra: Byte = 46
+    override val crcExtra: Byte = 46
 
-    public override fun deserialize(bytes: ByteArray): Debug {
+    override fun deserialize(bytes: ByteArray): Debug {
       val decoder = MavDataDecoder(bytes)
 
       val timeBootMs = decoder.safeDecodeUInt32()

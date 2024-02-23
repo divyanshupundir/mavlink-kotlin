@@ -30,6 +30,39 @@ import kotlin.Unit
  * The global position, as returned by the Global Positioning System (GPS). This is
  *                  NOT the global position estimate of the system, but rather a RAW sensor value.
  * See message GLOBAL_POSITION_INT for the global position estimate.
+ *
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
+ * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
+ * number.
+ * units = us
+ * @param fixType 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of
+ * this field unless it is at least two, so always correctly fill in the fix.
+ * @param lat Latitude (WGS84)
+ * units = degE7
+ * @param lon Longitude (WGS84)
+ * units = degE7
+ * @param alt Altitude (MSL). Positive for up.
+ * units = mm
+ * @param eph GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to:
+ * UINT16_MAX
+ * @param epv GPS VDOP vertical dilution of position (unitless * 100). If unknown, set to:
+ * UINT16_MAX
+ * @param vel GPS ground speed. If unknown, set to: UINT16_MAX
+ * units = cm/s
+ * @param vn GPS velocity in north direction in earth-fixed NED frame
+ * units = cm/s
+ * @param ve GPS velocity in east direction in earth-fixed NED frame
+ * units = cm/s
+ * @param vd GPS velocity in down direction in earth-fixed NED frame
+ * units = cm/s
+ * @param cog Course over ground (NOT heading, but direction of movement), 0.0..359.99 degrees. If
+ * unknown, set to: UINT16_MAX
+ * units = cdeg
+ * @param satellitesVisible Number of satellites visible. If unknown, set to UINT8_MAX
+ * @param id GPS ID (zero indexed). Used for multiple GPS inputs
+ * @param yaw Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for
+ * north
+ * units = cdeg
  */
 @GeneratedMavMessage(
   id = 113u,
@@ -39,6 +72,7 @@ public data class HilGps(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * units = us
    */
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
@@ -50,16 +84,19 @@ public data class HilGps(
   public val fixType: UByte = 0u,
   /**
    * Latitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
+   * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
+   * units = mm
    */
   @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
@@ -75,27 +112,32 @@ public data class HilGps(
   public val epv: UShort = 0u,
   /**
    * GPS ground speed. If unknown, set to: UINT16_MAX
+   * units = cm/s
    */
   @GeneratedMavField(type = "uint16_t")
   public val vel: UShort = 0u,
   /**
    * GPS velocity in north direction in earth-fixed NED frame
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val vn: Short = 0,
   /**
    * GPS velocity in east direction in earth-fixed NED frame
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val ve: Short = 0,
   /**
    * GPS velocity in down direction in earth-fixed NED frame
+   * units = cm/s
    */
   @GeneratedMavField(type = "int16_t")
   public val vd: Short = 0,
   /**
    * Course over ground (NOT heading, but direction of movement), 0.0..359.99 degrees. If unknown,
    * set to: UINT16_MAX
+   * units = cdeg
    */
   @GeneratedMavField(type = "uint16_t")
   public val cog: UShort = 0u,
@@ -114,6 +156,7 @@ public data class HilGps(
   public val id: UByte = 0u,
   /**
    * Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for north
+   * units = cdeg
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -121,9 +164,9 @@ public data class HilGps(
   )
   public val yaw: UShort = 0u,
 ) : MavMessage<HilGps> {
-  public override val instanceCompanion: MavMessage.MavCompanion<HilGps> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<HilGps> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -141,7 +184,7 @@ public data class HilGps(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
     encoder.encodeInt32(lat)
@@ -166,11 +209,11 @@ public data class HilGps(
 
     private const val SIZE_V2: Int = 39
 
-    public override val id: UInt = 113u
+    override val id: UInt = 113u
 
-    public override val crcExtra: Byte = 124
+    override val crcExtra: Byte = 124
 
-    public override fun deserialize(bytes: ByteArray): HilGps {
+    override fun deserialize(bytes: ByteArray): HilGps {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()

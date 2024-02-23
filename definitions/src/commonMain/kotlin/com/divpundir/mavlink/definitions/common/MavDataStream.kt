@@ -14,7 +14,7 @@ import kotlin.UInt
 @Deprecated(message = "")
 @GeneratedMavEnum
 public enum class MavDataStream(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * Dependent on the autopilot
@@ -64,7 +64,7 @@ public enum class MavDataStream(
   ;
 
   public companion object : MavEnum.MavCompanion<MavDataStream> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavDataStream? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavDataStream? = when (v) {
       12u -> EXTRA3
       11u -> EXTRA2
       10u -> EXTRA1

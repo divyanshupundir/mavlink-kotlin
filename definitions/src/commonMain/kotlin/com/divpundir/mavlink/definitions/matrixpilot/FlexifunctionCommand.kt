@@ -17,6 +17,10 @@ import kotlin.Unit
 
 /**
  * Acknowldge success or failure of a flexifunction command
+ *
+ * @param targetSystem System ID
+ * @param targetComponent Component ID
+ * @param commandType Flexifunction command type
  */
 @GeneratedMavMessage(
   id = 157u,
@@ -39,9 +43,9 @@ public data class FlexifunctionCommand(
   @GeneratedMavField(type = "uint8_t")
   public val commandType: UByte = 0u,
 ) : MavMessage<FlexifunctionCommand> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommand> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FlexifunctionCommand> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -49,7 +53,7 @@ public data class FlexifunctionCommand(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
@@ -62,11 +66,11 @@ public data class FlexifunctionCommand(
 
     private const val SIZE_V2: Int = 3
 
-    public override val id: UInt = 157u
+    override val id: UInt = 157u
 
-    public override val crcExtra: Byte = -123
+    override val crcExtra: Byte = -123
 
-    public override fun deserialize(bytes: ByteArray): FlexifunctionCommand {
+    override fun deserialize(bytes: ByteArray): FlexifunctionCommand {
       val decoder = MavDataDecoder(bytes)
 
       val targetSystem = decoder.safeDecodeUInt8()

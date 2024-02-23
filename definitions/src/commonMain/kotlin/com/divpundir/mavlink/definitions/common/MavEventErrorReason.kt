@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavEventErrorReason(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * The requested event is not available (anymore).
@@ -20,7 +20,7 @@ public enum class MavEventErrorReason(
   ;
 
   public companion object : MavEnum.MavCompanion<MavEventErrorReason> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavEventErrorReason? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavEventErrorReason? = when (v) {
       0u -> UNAVAILABLE
       else -> null
     }

@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class MavVtolState(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   /**
    * MAV is not configured as VTOL
@@ -40,7 +40,7 @@ public enum class MavVtolState(
   ;
 
   public companion object : MavEnum.MavCompanion<MavVtolState> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavVtolState? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavVtolState? = when (v) {
       0u -> UNDEFINED
       1u -> TRANSITION_TO_FW
       2u -> TRANSITION_TO_MC

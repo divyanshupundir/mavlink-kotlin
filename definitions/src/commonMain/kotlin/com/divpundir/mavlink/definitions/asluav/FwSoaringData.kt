@@ -23,6 +23,46 @@ import kotlin.Unit
 
 /**
  * Fixed-wing soaring (i.e. thermal seeking) data
+ *
+ * @param timestamp Timestamp
+ * units = ms
+ * @param timestampmodechanged Timestamp since last mode change
+ * units = ms
+ * @param xw Thermal core updraft strength
+ * units = m/s
+ * @param xr Thermal radius
+ * units = m
+ * @param xlat Thermal center latitude
+ * units = deg
+ * @param xlon Thermal center longitude
+ * units = deg
+ * @param varw Variance W
+ * @param varr Variance R
+ * @param varlat Variance Lat
+ * @param varlon Variance Lon 
+ * @param loiterradius Suggested loiter radius
+ * units = m
+ * @param loiterdirection Suggested loiter direction
+ * @param disttosoarpoint Distance to soar point
+ * units = m
+ * @param vsinkexp Expected sink rate at current airspeed, roll and throttle
+ * units = m/s
+ * @param z1Localupdraftspeed Measurement / updraft speed at current/local airplane position
+ * units = m/s
+ * @param z2Deltaroll Measurement / roll angle tracking error
+ * units = deg
+ * @param z1Exp Expected measurement 1
+ * @param z2Exp Expected measurement 2
+ * @param thermalgsnorth Thermal drift (from estimator prediction step only)
+ * units = m/s
+ * @param thermalgseast Thermal drift (from estimator prediction step only)
+ * units = m/s
+ * @param tseDot  Total specific energy change (filtered)
+ * units = m/s
+ * @param debugvar1  Debug variable 1
+ * @param debugvar2  Debug variable 2
+ * @param controlmode Control Mode [-]
+ * @param valid Data valid [-]
  */
 @GeneratedMavMessage(
   id = 8_011u,
@@ -31,31 +71,37 @@ import kotlin.Unit
 public data class FwSoaringData(
   /**
    * Timestamp
+   * units = ms
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestamp: ULong = 0uL,
   /**
    * Timestamp since last mode change
+   * units = ms
    */
   @GeneratedMavField(type = "uint64_t")
   public val timestampmodechanged: ULong = 0uL,
   /**
    * Thermal core updraft strength
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val xw: Float = 0F,
   /**
    * Thermal radius
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val xr: Float = 0F,
   /**
    * Thermal center latitude
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val xlat: Float = 0F,
   /**
    * Thermal center longitude
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val xlon: Float = 0F,
@@ -81,6 +127,7 @@ public data class FwSoaringData(
   public val varlon: Float = 0F,
   /**
    * Suggested loiter radius
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val loiterradius: Float = 0F,
@@ -91,21 +138,25 @@ public data class FwSoaringData(
   public val loiterdirection: Float = 0F,
   /**
    * Distance to soar point
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val disttosoarpoint: Float = 0F,
   /**
    * Expected sink rate at current airspeed, roll and throttle
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val vsinkexp: Float = 0F,
   /**
    * Measurement / updraft speed at current/local airplane position
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val z1Localupdraftspeed: Float = 0F,
   /**
    * Measurement / roll angle tracking error
+   * units = deg
    */
   @GeneratedMavField(type = "float")
   public val z2Deltaroll: Float = 0F,
@@ -121,16 +172,19 @@ public data class FwSoaringData(
   public val z2Exp: Float = 0F,
   /**
    * Thermal drift (from estimator prediction step only)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val thermalgsnorth: Float = 0F,
   /**
    * Thermal drift (from estimator prediction step only)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val thermalgseast: Float = 0F,
   /**
    *  Total specific energy change (filtered)
+   * units = m/s
    */
   @GeneratedMavField(type = "float")
   public val tseDot: Float = 0F,
@@ -155,9 +209,9 @@ public data class FwSoaringData(
   @GeneratedMavField(type = "uint8_t")
   public val valid: UByte = 0u,
 ) : MavMessage<FwSoaringData> {
-  public override val instanceCompanion: MavMessage.MavCompanion<FwSoaringData> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<FwSoaringData> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(timestampmodechanged)
@@ -187,7 +241,7 @@ public data class FwSoaringData(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timestamp)
     encoder.encodeUInt64(timestampmodechanged)
@@ -222,11 +276,11 @@ public data class FwSoaringData(
 
     private const val SIZE_V2: Int = 102
 
-    public override val id: UInt = 8_011u
+    override val id: UInt = 8_011u
 
-    public override val crcExtra: Byte = 20
+    override val crcExtra: Byte = 20
 
-    public override fun deserialize(bytes: ByteArray): FwSoaringData {
+    override fun deserialize(bytes: ByteArray): FwSoaringData {
       val decoder = MavDataDecoder(bytes)
 
       val timestamp = decoder.safeDecodeUInt64()

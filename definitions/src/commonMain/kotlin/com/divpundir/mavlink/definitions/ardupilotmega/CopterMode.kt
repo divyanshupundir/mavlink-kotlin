@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class CopterMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   STABILIZE(0u),
@@ -65,7 +65,7 @@ public enum class CopterMode(
   ;
 
   public companion object : MavEnum.MavCompanion<CopterMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): CopterMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): CopterMode? = when (v) {
       0u -> STABILIZE
       1u -> ACRO
       2u -> ALT_HOLD

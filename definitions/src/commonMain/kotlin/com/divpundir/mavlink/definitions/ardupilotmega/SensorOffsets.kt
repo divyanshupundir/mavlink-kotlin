@@ -23,6 +23,20 @@ import kotlin.Unit
 /**
  * Offsets and calibrations values for hardware sensors. This makes it easier to debug the
  * calibration process.
+ *
+ * @param magOfsX Magnetometer X offset.
+ * @param magOfsY Magnetometer Y offset.
+ * @param magOfsZ Magnetometer Z offset.
+ * @param magDeclination Magnetic declination.
+ * units = rad
+ * @param rawPress Raw pressure from barometer.
+ * @param rawTemp Raw temperature from barometer.
+ * @param gyroCalX Gyro X calibration.
+ * @param gyroCalY Gyro Y calibration.
+ * @param gyroCalZ Gyro Z calibration.
+ * @param accelCalX Accel X calibration.
+ * @param accelCalY Accel Y calibration.
+ * @param accelCalZ Accel Z calibration.
  */
 @GeneratedMavMessage(
   id = 150u,
@@ -46,6 +60,7 @@ public data class SensorOffsets(
   public val magOfsZ: Short = 0,
   /**
    * Magnetic declination.
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val magDeclination: Float = 0F,
@@ -90,9 +105,9 @@ public data class SensorOffsets(
   @GeneratedMavField(type = "float")
   public val accelCalZ: Float = 0F,
 ) : MavMessage<SensorOffsets> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SensorOffsets> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SensorOffsets> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(magDeclination)
     encoder.encodeInt32(rawPress)
@@ -109,7 +124,7 @@ public data class SensorOffsets(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(magDeclination)
     encoder.encodeInt32(rawPress)
@@ -131,11 +146,11 @@ public data class SensorOffsets(
 
     private const val SIZE_V2: Int = 42
 
-    public override val id: UInt = 150u
+    override val id: UInt = 150u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): SensorOffsets {
+    override fun deserialize(bytes: ByteArray): SensorOffsets {
       val decoder = MavDataDecoder(bytes)
 
       val magDeclination = decoder.safeDecodeFloat()

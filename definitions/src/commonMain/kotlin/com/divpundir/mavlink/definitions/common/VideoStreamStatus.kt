@@ -29,6 +29,21 @@ import kotlin.Unit
 /**
  * Information about the status of a video stream. It may be requested using
  * MAV_CMD_REQUEST_MESSAGE.
+ *
+ * @param streamId Video Stream ID (1 for first, 2 for second, etc.)
+ * @param flags Bitmap of stream status flags
+ * @param framerate Frame rate
+ * units = Hz
+ * @param resolutionH Horizontal resolution
+ * units = pix
+ * @param resolutionV Vertical resolution
+ * units = pix
+ * @param bitrate Bit rate
+ * units = bits/s
+ * @param rotation Video image rotation clockwise
+ * units = deg
+ * @param hfov Horizontal Field of view
+ * units = deg
  */
 @GeneratedMavMessage(
   id = 270u,
@@ -47,38 +62,44 @@ public data class VideoStreamStatus(
   public val flags: MavBitmaskValue<VideoStreamStatusFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Frame rate
+   * units = Hz
    */
   @GeneratedMavField(type = "float")
   public val framerate: Float = 0F,
   /**
    * Horizontal resolution
+   * units = pix
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionH: UShort = 0u,
   /**
    * Vertical resolution
+   * units = pix
    */
   @GeneratedMavField(type = "uint16_t")
   public val resolutionV: UShort = 0u,
   /**
    * Bit rate
+   * units = bits/s
    */
   @GeneratedMavField(type = "uint32_t")
   public val bitrate: UInt = 0u,
   /**
    * Video image rotation clockwise
+   * units = deg
    */
   @GeneratedMavField(type = "uint16_t")
   public val rotation: UShort = 0u,
   /**
    * Horizontal Field of view
+   * units = deg
    */
   @GeneratedMavField(type = "uint16_t")
   public val hfov: UShort = 0u,
 ) : MavMessage<VideoStreamStatus> {
-  public override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -91,7 +112,7 @@ public data class VideoStreamStatus(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(framerate)
     encoder.encodeUInt32(bitrate)
@@ -109,11 +130,11 @@ public data class VideoStreamStatus(
 
     private const val SIZE_V2: Int = 19
 
-    public override val id: UInt = 270u
+    override val id: UInt = 270u
 
-    public override val crcExtra: Byte = 59
+    override val crcExtra: Byte = 59
 
-    public override fun deserialize(bytes: ByteArray): VideoStreamStatus {
+    override fun deserialize(bytes: ByteArray): VideoStreamStatus {
       val decoder = MavDataDecoder(bytes)
 
       val framerate = decoder.safeDecodeFloat()

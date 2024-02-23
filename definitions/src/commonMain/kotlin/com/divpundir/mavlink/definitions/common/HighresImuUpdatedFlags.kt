@@ -11,7 +11,7 @@ import kotlin.collections.List
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class HighresImuUpdatedFlags(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavBitmask {
   /**
    * None of the fields in HIGHRES_IMU have been updated
@@ -91,7 +91,7 @@ public enum class HighresImuUpdatedFlags(
   ;
 
   public companion object : MavBitmask.MavCompanion<HighresImuUpdatedFlags> {
-    public override fun getEntryFromValueOrNull(v: UInt): HighresImuUpdatedFlags? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): HighresImuUpdatedFlags? = when (v) {
       0u -> HIGHRES_IMU_UPDATED_NONE
       1u -> HIGHRES_IMU_UPDATED_XACC
       2u -> HIGHRES_IMU_UPDATED_YACC
@@ -110,7 +110,7 @@ public enum class HighresImuUpdatedFlags(
       else -> null
     }
 
-    public override fun getFlagsFromValue(v: UInt): List<HighresImuUpdatedFlags> = buildList {
+    override fun getFlagsFromValue(v: UInt): List<HighresImuUpdatedFlags> = buildList {
       if (v and 0u == 0u) add(HIGHRES_IMU_UPDATED_NONE)
       if (v and 1u == 1u) add(HIGHRES_IMU_UPDATED_XACC)
       if (v and 2u == 2u) add(HIGHRES_IMU_UPDATED_YACC)

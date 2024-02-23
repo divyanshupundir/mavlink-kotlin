@@ -17,6 +17,11 @@ import kotlin.Unit
 
 /**
  * Rangefinder reporting.
+ *
+ * @param distance Distance.
+ * units = m
+ * @param voltage Raw voltage if available, zero otherwise.
+ * units = V
  */
 @GeneratedMavMessage(
   id = 173u,
@@ -25,25 +30,27 @@ import kotlin.Unit
 public data class Rangefinder(
   /**
    * Distance.
+   * units = m
    */
   @GeneratedMavField(type = "float")
   public val distance: Float = 0F,
   /**
    * Raw voltage if available, zero otherwise.
+   * units = V
    */
   @GeneratedMavField(type = "float")
   public val voltage: Float = 0F,
 ) : MavMessage<Rangefinder> {
-  public override val instanceCompanion: MavMessage.MavCompanion<Rangefinder> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<Rangefinder> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeFloat(distance)
     encoder.encodeFloat(voltage)
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeFloat(distance)
     encoder.encodeFloat(voltage)
@@ -55,11 +62,11 @@ public data class Rangefinder(
 
     private const val SIZE_V2: Int = 8
 
-    public override val id: UInt = 173u
+    override val id: UInt = 173u
 
-    public override val crcExtra: Byte = 83
+    override val crcExtra: Byte = 83
 
-    public override fun deserialize(bytes: ByteArray): Rangefinder {
+    override fun deserialize(bytes: ByteArray): Rangefinder {
       val decoder = MavDataDecoder(bytes)
 
       val distance = decoder.safeDecodeFloat()

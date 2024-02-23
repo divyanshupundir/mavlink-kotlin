@@ -17,6 +17,13 @@ import kotlin.Unit
 
 /**
  * Backwards compatible version of SERIAL_UDB_EXTRA F21 format
+ *
+ * @param sueAccelXOffset SUE X accelerometer offset
+ * @param sueAccelYOffset SUE Y accelerometer offset
+ * @param sueAccelZOffset SUE Z accelerometer offset
+ * @param sueGyroXOffset SUE X gyro offset
+ * @param sueGyroYOffset SUE Y gyro offset
+ * @param sueGyroZOffset SUE Z gyro offset
  */
 @GeneratedMavMessage(
   id = 187u,
@@ -54,9 +61,9 @@ public data class SerialUdbExtraF21(
   @GeneratedMavField(type = "int16_t")
   public val sueGyroZOffset: Short = 0,
 ) : MavMessage<SerialUdbExtraF21> {
-  public override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF21> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<SerialUdbExtraF21> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt16(sueAccelXOffset)
     encoder.encodeInt16(sueAccelYOffset)
@@ -67,7 +74,7 @@ public data class SerialUdbExtraF21(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt16(sueAccelXOffset)
     encoder.encodeInt16(sueAccelYOffset)
@@ -83,11 +90,11 @@ public data class SerialUdbExtraF21(
 
     private const val SIZE_V2: Int = 12
 
-    public override val id: UInt = 187u
+    override val id: UInt = 187u
 
-    public override val crcExtra: Byte = -122
+    override val crcExtra: Byte = -122
 
-    public override fun deserialize(bytes: ByteArray): SerialUdbExtraF21 {
+    override fun deserialize(bytes: ByteArray): SerialUdbExtraF21 {
       val decoder = MavDataDecoder(bytes)
 
       val sueAccelXOffset = decoder.safeDecodeInt16()

@@ -7,7 +7,7 @@ import kotlin.UInt
 
 @GeneratedMavEnum
 public enum class MavlinkDataStreamType(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   MAVLINK_DATA_STREAM_IMG_JPEG(0u),
@@ -24,7 +24,7 @@ public enum class MavlinkDataStreamType(
   ;
 
   public companion object : MavEnum.MavCompanion<MavlinkDataStreamType> {
-    public override fun getEntryFromValueOrNull(v: UInt): MavlinkDataStreamType? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): MavlinkDataStreamType? = when (v) {
       0u -> MAVLINK_DATA_STREAM_IMG_JPEG
       1u -> MAVLINK_DATA_STREAM_IMG_BMP
       2u -> MAVLINK_DATA_STREAM_IMG_RAW8U

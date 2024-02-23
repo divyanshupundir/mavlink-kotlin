@@ -10,7 +10,7 @@ import kotlin.UInt
  */
 @GeneratedMavEnum
 public enum class TrackerMode(
-  public override val `value`: UInt,
+  override val `value`: UInt,
 ) : MavEnum {
   @GeneratedMavEnumEntry
   MANUAL(0u),
@@ -27,7 +27,7 @@ public enum class TrackerMode(
   ;
 
   public companion object : MavEnum.MavCompanion<TrackerMode> {
-    public override fun getEntryFromValueOrNull(v: UInt): TrackerMode? = when (v) {
+    override fun getEntryFromValueOrNull(v: UInt): TrackerMode? = when (v) {
       0u -> MANUAL
       1u -> STOP
       2u -> SCAN

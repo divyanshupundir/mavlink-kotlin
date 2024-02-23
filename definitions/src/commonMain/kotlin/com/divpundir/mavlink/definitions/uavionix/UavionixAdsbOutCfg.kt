@@ -30,6 +30,18 @@ import kotlin.Unit
 /**
  * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec
  * thereafter)
+ *
+ * @param icao Vehicle address (24 bit)
+ * @param callsign Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9,
+ * " " only)
+ * @param emittertype Transmitting vehicle type. See ADSB_EMITTER_TYPE enum
+ * @param aircraftsize Aircraft length and width encoding (table 2-35 of DO-282B)
+ * @param gpsoffsetlat GPS antenna lateral offset (table 2-36 of DO-282B)
+ * @param gpsoffsetlon GPS antenna longitudinal offset from nose [if non-zero, take position (in
+ * meters) divide by 2 and add one] (table 2-37 DO-282B)
+ * @param stallspeed Aircraft stall speed in cm/s
+ * units = cm/s
+ * @param rfselect ADS-B transponder receiver and transmit enable flags
  */
 @GeneratedMavMessage(
   id = 10_001u,
@@ -72,6 +84,7 @@ public data class UavionixAdsbOutCfg(
       MavEnumValue.fromValue(0u),
   /**
    * Aircraft stall speed in cm/s
+   * units = cm/s
    */
   @GeneratedMavField(type = "uint16_t")
   public val stallspeed: UShort = 0u,
@@ -81,9 +94,9 @@ public data class UavionixAdsbOutCfg(
   @GeneratedMavField(type = "uint8_t")
   public val rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UavionixAdsbOutCfg> {
-  public override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutCfg> = Companion
+  override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutCfg> = Companion
 
-  public override fun serializeV1(): ByteArray {
+  override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt32(icao)
     encoder.encodeUInt16(stallspeed)
@@ -96,7 +109,7 @@ public data class UavionixAdsbOutCfg(
     return encoder.bytes
   }
 
-  public override fun serializeV2(): ByteArray {
+  override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt32(icao)
     encoder.encodeUInt16(stallspeed)
@@ -114,11 +127,11 @@ public data class UavionixAdsbOutCfg(
 
     private const val SIZE_V2: Int = 20
 
-    public override val id: UInt = 10_001u
+    override val id: UInt = 10_001u
 
-    public override val crcExtra: Byte = -47
+    override val crcExtra: Byte = -47
 
-    public override fun deserialize(bytes: ByteArray): UavionixAdsbOutCfg {
+    override fun deserialize(bytes: ByteArray): UavionixAdsbOutCfg {
       val decoder = MavDataDecoder(bytes)
 
       val icao = decoder.safeDecodeUInt32()
