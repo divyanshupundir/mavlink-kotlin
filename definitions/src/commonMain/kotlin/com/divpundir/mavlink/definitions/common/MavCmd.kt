@@ -799,13 +799,14 @@ public enum class MavCmd(
    * Reach a certain target angle.
    *
    * index = 1; label = Angle; units = deg; 
-   * target angle, 0 is north
+   * target angle [0-360]. Absolute angles: 0 is north. Relative angle: 0 is initial yaw. Direction
+   * set by param3.
    *
    * index = 2; label = Angular Speed; units = deg/s; 
    * angular speed
    *
    * index = 3; label = Direction; 
-   * direction: -1: counter clockwise, 1: clockwise
+   * direction: -1: counter clockwise, 0: shortest direction, 1: clockwise
    *
    * index = 4; label = Relative; 
    * 0: absolute angle, 1: relative offset
@@ -933,14 +934,16 @@ public enum class MavCmd(
    * index = 1; label = Use Current; 
    * Use current (1=use current location, 0=use specified location)
    *
-   * index = 2; 
-   * Empty
+   * index = 2; label = Roll; units = deg; 
+   * Roll angle (of surface). Range: -180..180 degrees. NAN or 0 means value not set. 0.01 indicates
+   * zero roll.
    *
-   * index = 3; 
-   * Empty
+   * index = 3; label = Pitch; units = deg; 
+   * Pitch angle (of surface). Range: -90..90 degrees. NAN or 0 means value not set. 0.01 means zero
+   * pitch.
    *
    * index = 4; label = Yaw; units = deg; 
-   * Yaw angle. NaN to use default heading
+   * Yaw angle. NaN to use default heading. Range: -180..180 degrees.
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -1652,8 +1655,9 @@ public enum class MavCmd(
    * index = 1; label = Enable; 
    * enable? (0=disable, 1=enable, 2=disable_floor_only)
    *
-   * index = 2; 
-   * Empty
+   * index = 2; label = Types; 
+   * Fence types to enable or disable as a bitmask. A value of 0 indicates that all fences should be
+   * enabled or disabled. This parameter is ignored if param 1 has the value 2
    *
    * index = 3; 
    * Empty
@@ -2636,6 +2640,20 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   SET_STORAGE_USAGE(533u),
   /**
+   * Set camera source. Changes the camera's active sources on cameras with multiple image sensors.
+   *
+   * index = 1; label = device id; 
+   * Component Id of camera to address or 1-6 for non-MAVLink cameras, 0 for all cameras.
+   *
+   * index = 2; label = primary source; 
+   * Primary Source
+   *
+   * index = 3; label = secondary source; 
+   * Secondary Source. If non-zero the second source will be displayed as picture-in-picture.
+   */
+  @GeneratedMavEnumEntry
+  SET_CAMERA_SOURCE(534u),
+  /**
    * Tagged jump target. Can be jumped to with MAV_CMD_DO_JUMP_TAG.
    *
    * index = 1; label = Tag; 
@@ -3318,6 +3336,32 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   UAVCAN_GET_NODE_INFO(5_200u),
   /**
+   * Change state of safety switch.
+   *
+   * index = 1; label = Desired State; 
+   * New safety switch state.
+   *
+   * index = 2; 
+   * Empty.
+   *
+   * index = 3; 
+   * Empty.
+   *
+   * index = 4; 
+   * Empty
+   *
+   * index = 5; 
+   * Empty.
+   *
+   * index = 6; 
+   * Empty.
+   *
+   * index = 7; 
+   * Empty.
+   */
+  @GeneratedMavEnumEntry
+  DO_SET_SAFETY_SWITCH_STATE(5_300u),
+  /**
    * Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an
    * Air Traffic Controller in controlled airspace. This starts the IDENT which is then typically held
    * for 18 seconds by the hardware per the Mode A, C, and S transponder spec.
@@ -3461,6 +3505,41 @@ public enum class MavCmd(
    */
   @GeneratedMavEnumEntry
   DO_WINCH(42_600u),
+  /**
+   * Provide an external position estimate for use when dead-reckoning. This is meant to be used for
+   * occasional position resets that may be provided by a external system such as a remote pilot using
+   * landmarks over a video link.
+   *
+   * index = 1; label = transmission_time; units = s; 
+   * Timestamp that this message was sent as a time in the transmitters time domain. The sender
+   * should wrap this time back to zero based on required timing accuracy for the application and the
+   * limitations of a 32 bit float. For example, wrapping at 10 hours would give approximately 1ms
+   * accuracy. Recipient must handle time wrap in any timing jitter correction applied to this field.
+   * Wrap rollover time should not be at not more than 250 seconds, which would give approximately 10
+   * microsecond accuracy.
+   *
+   * index = 2; label = processing_time; units = s; 
+   * The time spent in processing the sensor data that is the basis for this position. The recipient
+   * can use this to improve time alignment of the data. Set to zero if not known.
+   *
+   * index = 3; label = accuracy; 
+   * estimated one standard deviation accuracy of the measurement. Set to NaN if not known.
+   *
+   * index = 4; 
+   * Empty
+   *
+   * index = 5; label = Latitude; 
+   * Latitude
+   *
+   * index = 6; label = Longitude; 
+   * Longitude
+   *
+   * index = 7; label = Altitude; units = m; 
+   * Altitude, not used. Should be sent as NaN. May be supported in a future version of this
+   * message.
+   */
+  @GeneratedMavEnumEntry
+  EXTERNAL_POSITION_ESTIMATE(43_003u),
   /**
    * User defined waypoint item. Ground Station will show the Vehicle as flying through this item.
    *
@@ -3996,6 +4075,7 @@ public enum class MavCmd(
       531u -> SET_CAMERA_ZOOM
       532u -> SET_CAMERA_FOCUS
       533u -> SET_STORAGE_USAGE
+      534u -> SET_CAMERA_SOURCE
       600u -> JUMP_TAG
       601u -> DO_JUMP_TAG
       1000u -> DO_GIMBAL_MANAGER_PITCHYAW
@@ -4030,11 +4110,13 @@ public enum class MavCmd(
       5004u -> NAV_FENCE_CIRCLE_EXCLUSION
       5100u -> NAV_RALLY_POINT
       5200u -> UAVCAN_GET_NODE_INFO
+      5300u -> DO_SET_SAFETY_SWITCH_STATE
       10001u -> DO_ADSB_OUT_IDENT
       30001u -> PAYLOAD_PREPARE_DEPLOY
       30002u -> PAYLOAD_CONTROL_DEPLOY
       42006u -> FIXED_MAG_CAL_YAW
       42600u -> DO_WINCH
+      43003u -> EXTERNAL_POSITION_ESTIMATE
       31000u -> WAYPOINT_USER_1
       31001u -> WAYPOINT_USER_2
       31002u -> WAYPOINT_USER_3

@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /**
  * Battery information. Updates GCS with flight controller battery status. Smart batteries also use
- * this message, but may additionally send SMART_BATTERY_INFO.
+ * this message, but may additionally send BATTERY_INFO.
  *
  * @param id Battery ID
  * @param batteryFunction Function of the battery

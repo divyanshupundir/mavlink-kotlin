@@ -135,8 +135,8 @@ public enum class MavType(
   VTOL_FIXEDROTOR(22u),
   /**
    * Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for
-   * hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or
-   * MAV_TYPE_VTOL_QUADROTOR if appropriate.
+   * hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_TAILSITTER_DUOROTOR or
+   * MAV_TYPE_VTOL_TAILSITTER_QUADROTOR if appropriate.
    */
   @GeneratedMavEnumEntry
   VTOL_TAILSITTER(23u),
