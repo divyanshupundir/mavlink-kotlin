@@ -61,7 +61,13 @@ public abstract class AbstractMavConnection : MavConnection {
         when (state) {
             State.Closed -> {
                 state = State.Opening
-                state = State.Open(open())
+
+                try {
+                    state = State.Open(open())
+                } catch (e: IOException) {
+                    state = State.Closed
+                    throw e
+                }
             }
 
             State.Opening -> {
