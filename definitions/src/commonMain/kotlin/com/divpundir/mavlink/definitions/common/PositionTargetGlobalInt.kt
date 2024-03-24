@@ -34,12 +34,13 @@ import kotlin.Unit
  * setpoint is to allow the system to compensate for the transport delay of the setpoint. This allows
  * the system to compensate processing latency.
  * units = ms
- * @param coordinateFrame Valid options are: MAV_FRAME_GLOBAL_INT = 5,
- * MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6, MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
+ * @param coordinateFrame Valid options are: MAV_FRAME_GLOBAL = 0, MAV_FRAME_GLOBAL_RELATIVE_ALT =
+ * 3, MAV_FRAME_GLOBAL_TERRAIN_ALT = 10 (MAV_FRAME_GLOBAL_INT, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
+ * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT are allowed synonyms, but have been deprecated)
  * @param typeMask Bitmap to indicate which dimensions should be ignored by the vehicle.
- * @param latInt X Position in WGS84 frame
+ * @param latInt Latitude in WGS84 frame
  * units = degE7
- * @param lonInt Y Position in WGS84 frame
+ * @param lonInt Longitude in WGS84 frame
  * units = degE7
  * @param alt Altitude (MSL, AGL or relative to home altitude, depending on frame)
  * units = m
@@ -77,8 +78,9 @@ public data class PositionTargetGlobalInt(
   @GeneratedMavField(type = "uint32_t")
   public val timeBootMs: UInt = 0u,
   /**
-   * Valid options are: MAV_FRAME_GLOBAL_INT = 5, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6,
-   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11
+   * Valid options are: MAV_FRAME_GLOBAL = 0, MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,
+   * MAV_FRAME_GLOBAL_TERRAIN_ALT = 10 (MAV_FRAME_GLOBAL_INT, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
+   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT are allowed synonyms, but have been deprecated)
    */
   @GeneratedMavField(type = "uint8_t")
   public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
@@ -88,13 +90,13 @@ public data class PositionTargetGlobalInt(
   @GeneratedMavField(type = "uint16_t")
   public val typeMask: MavBitmaskValue<PositionTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
-   * X Position in WGS84 frame
+   * Latitude in WGS84 frame
    * units = degE7
    */
   @GeneratedMavField(type = "int32_t")
   public val latInt: Int = 0,
   /**
-   * Y Position in WGS84 frame
+   * Longitude in WGS84 frame
    * units = degE7
    */
   @GeneratedMavField(type = "int32_t")

@@ -35,8 +35,7 @@ public enum class MavFrame(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y:
-   * longitude, third value / z: positive altitude over mean sea level (MSL).
+   * Global (WGS84) coordinate frame + altitude relative to mean sea level (MSL).
    */
   @GeneratedMavEnumEntry
   GLOBAL(0u),
@@ -53,8 +52,6 @@ public enum class MavFrame(
   /**
    *
    *           Global (WGS84) coordinate frame + altitude relative to the home position.
-   *           First value / x: latitude, second value / y: longitude, third value / z: positive
-   * altitude with 0 being at the altitude of the home position.
    *         
    */
   @GeneratedMavEnumEntry
@@ -65,19 +62,17 @@ public enum class MavFrame(
   @GeneratedMavEnumEntry
   LOCAL_ENU(4u),
   /**
-   * Global (WGS84) coordinate frame (scaled) + MSL altitude. First value / x: latitude in
-   * degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude over
-   * mean sea level (MSL).
+   * Global (WGS84) coordinate frame (scaled) + altitude relative to mean sea level (MSL).
    */
+  @Deprecated(message =
+      "Use MAV_FRAME_GLOBAL in COMMAND_INT (and elsewhere) as a synonymous replacement.")
   @GeneratedMavEnumEntry
   GLOBAL_INT(5u),
   /**
-   *
-   *           Global (WGS84) coordinate frame (scaled) + altitude relative to the home position.
-   *           First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7,
-   * third value / z: positive altitude with 0 being at the altitude of the home position.
-   *         
+   * Global (WGS84) coordinate frame (scaled) + altitude relative to the home position. 
    */
+  @Deprecated(message =
+      "Use MAV_FRAME_GLOBAL_RELATIVE_ALT in COMMAND_INT (and elsewhere) as a synonymous replacement.")
   @GeneratedMavEnumEntry
   GLOBAL_RELATIVE_ALT_INT(6u),
   /**
@@ -99,17 +94,15 @@ public enum class MavFrame(
   @GeneratedMavEnumEntry
   BODY_OFFSET_NED(9u),
   /**
-   * Global (WGS84) coordinate frame with AGL altitude (at the waypoint coordinate). First value /
-   * x: latitude in degrees, second value / y: longitude in degrees, third value / z: positive altitude
-   * in meters with 0 being at ground level in terrain model.
+   * Global (WGS84) coordinate frame with AGL altitude (altitude at ground level).
    */
   @GeneratedMavEnumEntry
   GLOBAL_TERRAIN_ALT(10u),
   /**
-   * Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate). First
-   * value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z:
-   * positive altitude in meters with 0 being at ground level in terrain model.
+   * Global (WGS84) coordinate frame (scaled) with AGL altitude (altitude at ground level).
    */
+  @Deprecated(message =
+      "Use MAV_FRAME_GLOBAL_TERRAIN_ALT in COMMAND_INT (and elsewhere) as a synonymous replacement.")
   @GeneratedMavEnumEntry
   GLOBAL_TERRAIN_ALT_INT(11u),
   /**
