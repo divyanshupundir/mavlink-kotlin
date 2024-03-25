@@ -16,8 +16,6 @@ public data object Storm32Dialect : AbstractMavDialect(
     Storm32GimbalManagerControlPitchyaw.id to Storm32GimbalManagerControlPitchyaw,
     Storm32GimbalManagerCorrectRoll.id to Storm32GimbalManagerCorrectRoll,
     QshotStatus.id to QshotStatus,
-    RadioRcChannels.id to RadioRcChannels,
-    RadioLinkStats.id to RadioLinkStats,
     FrskyPassthroughArray.id to FrskyPassthroughArray,
     ParamValueArray.id to ParamValueArray,
   )

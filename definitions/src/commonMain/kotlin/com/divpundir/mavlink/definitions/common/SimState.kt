@@ -26,10 +26,13 @@ import kotlin.Unit
  * @param q4 True attitude quaternion component 4, z (0 in null-rotation)
  * @param roll Attitude roll expressed as Euler angles, not recommended except for human-readable
  * outputs
+ * units = rad
  * @param pitch Attitude pitch expressed as Euler angles, not recommended except for human-readable
  * outputs
+ * units = rad
  * @param yaw Attitude yaw expressed as Euler angles, not recommended except for human-readable
  * outputs
+ * units = rad
  * @param xacc X acceleration
  * units = m/s/s
  * @param yacc Y acceleration
@@ -90,16 +93,19 @@ public data class SimState(
   public val q4: Float = 0F,
   /**
    * Attitude roll expressed as Euler angles, not recommended except for human-readable outputs
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val roll: Float = 0F,
   /**
    * Attitude pitch expressed as Euler angles, not recommended except for human-readable outputs
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val pitch: Float = 0F,
   /**
    * Attitude yaw expressed as Euler angles, not recommended except for human-readable outputs
+   * units = rad
    */
   @GeneratedMavField(type = "float")
   public val yaw: Float = 0F,
