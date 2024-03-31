@@ -1650,7 +1650,14 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_CAM_TRIGG_DIST(206u),
   /**
-   * Mission command to enable the geofence
+   *
+   *           Enable the geofence.
+   *           This can be used in a mission or via the command protocol.
+   *           The persistence/lifetime of the setting is undefined.
+   *           Depending on flight stack implementation it may persist until superseded, or it may
+   * revert to a system default at the end of a mission.
+   *           Flight stacks typically reset the setting to system defaults on reboot.
+   * 	
    *
    * index = 1; label = Enable; 
    * enable? (0=disable, 1=enable, 2=disable_floor_only)
