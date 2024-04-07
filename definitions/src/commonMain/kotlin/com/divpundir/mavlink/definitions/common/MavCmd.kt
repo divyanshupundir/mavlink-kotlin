@@ -1181,6 +1181,52 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_ACTUATOR(187u),
   /**
+   * Mission item to specify the start of a failsafe/landing return-path segment (the end of the
+   * segment is the next MAV_CMD_DO_LAND_START item).
+   *           A vehicle that is using missions for landing (e.g. in a return mode) will join the
+   * mission on the closest path of the return-path segment (instead of MAV_CMD_DO_LAND_START or the
+   * nearest waypoint).
+   *           The main use case is to minimize the failsafe flight path in corridor missions, where
+   * the inbound/outbound paths are constrained (by geofences) to the same particular path.
+   *           The MAV_CMD_NAV_RETURN_PATH_START would be placed at the start of the return path.
+   *           If a failsafe occurs on the outbound path the vehicle will move to the nearest point
+   * on the return path (which is parallel for this kind of mission), effectively turning round and
+   * following the shortest path to landing.
+   *           If a failsafe occurs on the inbound path the vehicle is already on the return segment
+   * and will continue to landing.
+   *           The Latitude/Longitude/Altitude are optional, and may be set to 0 if not needed.
+   *           If specified, the item defines the waypoint at which the return segment starts.
+   *           If sent using as a command, the vehicle will perform a mission landing (using the
+   * land segment if defined) or reject the command if mission landings are not supported, or no
+   * mission landing is defined. When used as a command any position information in the command is
+   * ignored.
+   *         
+   *
+   * index = 1; 
+   * Empty
+   *
+   * index = 2; 
+   * Empty
+   *
+   * index = 3; 
+   * Empty
+   *
+   * index = 4; 
+   * Empty
+   *
+   * index = 5; label = Latitude; 
+   * Latitudee. 0: not used.
+   *
+   * index = 6; label = Longitude; 
+   * Longitudee. 0: not used.
+   *
+   * index = 7; label = Altitude; units = m; 
+   * Altitudee. 0: not used.
+   */
+  @WorkInProgress
+  @GeneratedMavEnumEntry
+  DO_RETURN_PATH_START(188u),
+  /**
    * Mission command to perform a landing. This is used as a marker in a mission to tell the
    * autopilot where a sequence of mission items that represents a landing starts.
    * 	  It may also be sent via a COMMAND_LONG to trigger a landing, in which case the nearest
@@ -4019,6 +4065,7 @@ public enum class MavCmd(
       185u -> DO_FLIGHTTERMINATION
       186u -> DO_CHANGE_ALTITUDE
       187u -> DO_SET_ACTUATOR
+      188u -> DO_RETURN_PATH_START
       189u -> DO_LAND_START
       190u -> DO_RALLY_LAND
       191u -> DO_GO_AROUND
