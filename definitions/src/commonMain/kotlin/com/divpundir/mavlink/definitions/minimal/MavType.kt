@@ -241,6 +241,13 @@ public enum class MavType(
    */
   @GeneratedMavEnumEntry
   GENERIC_MULTIROTOR(43u),
+  /**
+   * Illuminator. An illuminator is a light source that is used for lighting up dark areas external
+   * to the sytstem: e.g. a torch or searchlight (as opposed to a light source for illuminating the
+   * system itself, e.g. an indicator light).
+   */
+  @GeneratedMavEnumEntry
+  ILLUMINATOR(44u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavType> {
@@ -289,6 +296,7 @@ public enum class MavType(
       41u -> GPS
       42u -> WINCH
       43u -> GENERIC_MULTIROTOR
+      44u -> ILLUMINATOR
       else -> null
     }
   }
