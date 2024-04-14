@@ -779,6 +779,11 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_TUNNEL_NODE(242u),
   /**
+   * Illuminator
+   */
+  @GeneratedMavEnumEntry
+  MAV_COMP_ID_ILLUMINATOR(243u),
+  /**
    * Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.).
    */
   @Deprecated(message =
@@ -923,6 +928,7 @@ public enum class MavComponent(
       240u -> MAV_COMP_ID_UDP_BRIDGE
       241u -> MAV_COMP_ID_UART_BRIDGE
       242u -> MAV_COMP_ID_TUNNEL_NODE
+      243u -> MAV_COMP_ID_ILLUMINATOR
       250u -> MAV_COMP_ID_SYSTEM_CONTROL
       else -> null
     }

@@ -2392,9 +2392,27 @@ public enum class MavCmd(
    * index = 1; label = Enable; 
    * 0: Illuminators OFF, 1: Illuminators ON
    */
-  @WorkInProgress
   @GeneratedMavEnumEntry
   ILLUMINATOR_ON_OFF(405u),
+  /**
+   * Configures illuminator settings. An illuminator is a light source that is used for lighting up
+   * dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for
+   * illuminating the system itself, e.g. an indicator light).
+   *
+   * index = 1; label = Mode; 
+   * Mode
+   *
+   * index = 2; label = Brightness; units = %; 
+   * 0%: Off, 100%: Max Brightness
+   *
+   * index = 3; label = Strobe Period; units = s; 
+   * Strobe period in seconds where 0 means strobing is not used
+   *
+   * index = 4; label = Strobe Duty; units = %; 
+   * Strobe duty cycle where 100% means it is on constantly and 0 means strobing is not used
+   */
+  @GeneratedMavEnumEntry
+  DO_ILLUMINATOR_CONFIGURE(406u),
   /**
    * Request the home position from the vehicle.
    * 	  The vehicle will ACK the command and then emit the HOME_POSITION message.
@@ -4110,6 +4128,7 @@ public enum class MavCmd(
       400u -> COMPONENT_ARM_DISARM
       401u -> RUN_PREARM_CHECKS
       405u -> ILLUMINATOR_ON_OFF
+      406u -> DO_ILLUMINATOR_CONFIGURE
       410u -> GET_HOME_POSITION
       420u -> INJECT_FAILURE
       500u -> START_RX_PAIR
