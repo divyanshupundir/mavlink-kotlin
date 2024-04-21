@@ -27,21 +27,21 @@ public enum class IlluminatorErrorFlags(
    * Illuminator thermistor failure.
    */
   @GeneratedMavEnumEntry
-  THERMISTOR_FAILURE(3u),
+  THERMISTOR_FAILURE(4u),
   ;
 
   public companion object : MavBitmask.MavCompanion<IlluminatorErrorFlags> {
     override fun getEntryFromValueOrNull(v: UInt): IlluminatorErrorFlags? = when (v) {
       1u -> THERMAL_THROTTLING
       2u -> OVER_TEMPERATURE_SHUTDOWN
-      3u -> THERMISTOR_FAILURE
+      4u -> THERMISTOR_FAILURE
       else -> null
     }
 
     override fun getFlagsFromValue(v: UInt): List<IlluminatorErrorFlags> = buildList {
       if (v and 1u == 1u) add(THERMAL_THROTTLING)
       if (v and 2u == 2u) add(OVER_TEMPERATURE_SHUTDOWN)
-      if (v and 3u == 3u) add(THERMISTOR_FAILURE)
+      if (v and 4u == 4u) add(THERMISTOR_FAILURE)
     }
   }
 }
