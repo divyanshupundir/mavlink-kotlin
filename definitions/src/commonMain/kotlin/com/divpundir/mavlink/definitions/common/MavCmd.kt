@@ -981,6 +981,7 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
+  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   DO_SET_PARAMETER(180u),
   /**
