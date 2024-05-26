@@ -2656,8 +2656,11 @@ public enum class MavCmd(
    * MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video
    * streaming.
    *
-   * index = 1; 
-   * Reserved (Set to 0)
+   * index = 1; label = id; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a
+   * distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to
+   * specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink
+   * camera. It is also used to target specific cameras when the MAV_CMD is used in a mission
    *
    * index = 2; label = Camera Mode; 
    * Camera mode
