@@ -7,14 +7,14 @@ object Config {
     val javaVersion = JavaVersion.VERSION_1_8
 
     object Plugin {
-        const val releaseVersion = "1.2.3"
-        const val developmentVersion = "1.2.5"
+        const val releaseVersion = "1.2.5"
+        const val developmentVersion = "1.2.6-alpha"
 
         const val releaseApi = "$group:api:$releaseVersion"
         const val releaseSerialization = "$group:serialization:$releaseVersion"
     }
 
     object Lib {
-        const val developmentVersion = "1.2.3"
+        const val developmentVersion = "1.2.5"
     }
 }
