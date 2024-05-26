@@ -2,7 +2,7 @@ import com.vanniktech.maven.publish.KotlinJvm
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.mavenpublish)
+    alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
 }
 
@@ -24,7 +24,6 @@ dependencies {
     testRuntimeOnly(testlibs.jupiter.engine)
 }
 
-@Suppress("UnstableApiUsage")
 mavenPublishing {
     configure(KotlinJvm())
 }

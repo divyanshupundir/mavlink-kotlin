@@ -7,14 +7,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(libs.kotlinx.atomicfu)
+        // Hack to get the plugin to work
+        classpath("${libs.plugins.kotlinx.atomicfu.get().pluginId}:${libs.plugins.kotlinx.atomicfu.get().version}")
     }
 }
 
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.mavenpublish) apply false
+    alias(libs.plugins.maven.publish) apply false
     alias(libs.plugins.dokka)
 }
 
@@ -35,7 +36,6 @@ allprojects {
         useJUnitPlatform()
     }
 
-    @Suppress("UnstableApiUsage")
     plugins.withId("com.vanniktech.maven.publish.base") {
         configure<MavenPublishBaseExtension> {
             publishToMavenCentral(SonatypeHost.S01)
