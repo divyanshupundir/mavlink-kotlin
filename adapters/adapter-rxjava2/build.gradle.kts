@@ -24,7 +24,6 @@ dependencies {
     testRuntimeOnly(testlibs.jupiter.engine)
 }
 
-@Suppress("UnstableApiUsage")
 mavenPublishing {
     configure(KotlinJvm())
 }

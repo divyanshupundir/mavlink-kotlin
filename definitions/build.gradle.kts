@@ -60,7 +60,6 @@ tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
     generatedSourcesDir = file("src/commonMain/kotlin")
 }
 
-@Suppress("UnstableApiUsage")
 mavenPublishing {
     configure(KotlinMultiplatform())
 }

@@ -31,7 +31,6 @@ kotlin {
     }
 }
 
-@Suppress("UnstableApiUsage")
 mavenPublishing {
     configure(KotlinMultiplatform())
 }

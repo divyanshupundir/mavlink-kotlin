@@ -36,7 +36,6 @@ allprojects {
         useJUnitPlatform()
     }
 
-    @Suppress("UnstableApiUsage")
     plugins.withId("com.vanniktech.maven.publish.base") {
         configure<MavenPublishBaseExtension> {
             publishToMavenCentral(SonatypeHost.S01)
