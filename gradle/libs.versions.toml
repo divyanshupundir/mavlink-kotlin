@@ -1,25 +1,26 @@
 [versions]
-kotlin = "1.9.22"
+kotlin = "1.9.24"
+jackson = "2.17.1"
 
 [libraries]
-jackson-dataformatxml = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0"
-jackson-modulekotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2"
+jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 
 reactivex-rxjava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
 reactivex-rxjava3 = "io.reactivex.rxjava3:rxjava:3.1.8"
 
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
-kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.23.2"
-kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0"
-kotlinx-immutablecollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
+kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
+kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
 
-kotlinpoet = "com.squareup:kotlinpoet:1.16.0"
-okio = "com.squareup.okio:okio:3.8.0"
+kotlinpoet = "com.squareup:kotlinpoet:1.17.0"
+okio = "com.squareup.okio:okio:3.9.0"
 
 [plugins]
-dokka = { id = "org.jetbrains.dokka", version = "1.9.10" }
-gradlepublish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
+dokka = { id = "org.jetbrains.dokka", version = "1.9.20" }
+gradle-publish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-mavenpublish = { id = "com.vanniktech.maven.publish.base", version = "0.27.0" }
+kotlinx-atomicfu = { id = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version = "0.24.0" }
+maven-publish = { id = "com.vanniktech.maven.publish.base", version = "0.28.0" }

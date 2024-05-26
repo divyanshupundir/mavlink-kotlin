@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.gradlepublish)
+    alias(libs.plugins.gradle.publish)
     alias(libs.plugins.dokka)
     idea
     `java-gradle-plugin`
@@ -43,8 +43,8 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":serialization"))
 
-    implementation(libs.jackson.dataformatxml)
-    implementation(libs.jackson.modulekotlin)
+    implementation(libs.jackson.dataformat.xml)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlinpoet)
 
     testImplementation(testlibs.jupiter.api)

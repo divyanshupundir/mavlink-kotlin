@@ -3,7 +3,7 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.mavenpublish)
+    alias(libs.plugins.maven.publish)
     id("com.divpundir.mavlink.generator") version Config.Plugin.releaseVersion
 }
 
