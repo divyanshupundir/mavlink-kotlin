@@ -39,6 +39,3 @@ jobs:
 
       - name: Publish library
         run: ./gradlew publishLibrary
-
-      - name: Close and release library
-        run: ./gradlew closeAndReleaseLibrary
