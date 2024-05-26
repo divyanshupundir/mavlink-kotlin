@@ -38,7 +38,7 @@ allprojects {
 
     plugins.withId("com.vanniktech.maven.publish.base") {
         configure<MavenPublishBaseExtension> {
-            publishToMavenCentral(SonatypeHost.S01)
+            publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
             signAllPublications()
 
             pom {
@@ -90,25 +90,6 @@ task("publishLibrary") {
         ":adapters:adapter-rxjava2:publish",
         ":adapters:adapter-rxjava3:publish",
         ":adapters:adapter-coroutines:publish"
-    )
-}
-
-task("closeAndReleasePlugin") {
-    dependsOn(
-        ":api:closeAndReleaseRepository",
-        ":serialization:closeAndReleaseRepository"
-    )
-}
-
-task("closeAndReleaseLibrary") {
-    dependsOn(
-        ":definitions:closeAndReleaseRepository",
-        ":connections:connection-core:closeAndReleaseRepository",
-        ":connections:connection-tcp:closeAndReleaseRepository",
-        ":connections:connection-udp:closeAndReleaseRepository",
-        ":adapters:adapter-rxjava2:closeAndReleaseRepository",
-        ":adapters:adapter-rxjava3:closeAndReleaseRepository",
-        ":adapters:adapter-coroutines:closeAndReleaseRepository"
     )
 }
 
