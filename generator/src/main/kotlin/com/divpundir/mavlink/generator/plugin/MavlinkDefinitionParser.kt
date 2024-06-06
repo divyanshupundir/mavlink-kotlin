@@ -3,7 +3,7 @@ package com.divpundir.mavlink.generator.plugin
 import com.divpundir.mavlink.generator.models.DialectModel
 import com.divpundir.mavlink.generator.models.DialectXml
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.fasterxml.jackson.module.kotlin.kotlinModule
 import java.io.File
 import java.io.IOException
 
@@ -13,7 +13,7 @@ internal object MavlinkDefinitionParser {
         .builder()
         .defaultUseWrapper(false)
         .build()
-        .registerKotlinModule()
+        .registerModule(kotlinModule())
 
     @Throws(IOException::class)
     fun parse(definition: File): DialectModel {
