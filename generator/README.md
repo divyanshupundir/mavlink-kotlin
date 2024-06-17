@@ -26,12 +26,17 @@ dependencies {
 }
 ```
 
-Define the `generateMavlink` task by providing the dialect XML files using the `include` method and provide the path to
-the generated sources directory using `generatedSourcesDir`. If your dialect depends on other dialect files, i.e. 
+Configure the `generateMavlink` task by providing the dialect XML files using the `include` method and provide the path
+to the generated sources directory using `generatedSourcesDir`. If your dialect depends on other dialect files, i.e. 
 includes other dialects, then add them to the generation task as well and the standard dialects, messages and enums.
 
+One thing to note is that the order in which the dialects are included is important. If a dialect depends on another,
+add the dependent later. For example, if `customDialect.xml` depends on `common.xml`, then include `common.xml` first.
+Similarly, since `common.xml` depends on `standard.xml`, include `standard.xml` before it, which in turn depends on
+`minimal.xml`.
+
 ```kotlin
-tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("generateMavlink") {
+tasks.generateMavlink {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
     include(file("mavlink/message_definitions/v1.0/standard.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
@@ -40,6 +45,9 @@ tasks.getByName<com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask>("ge
     generatedSourcesDir = file("src/main/kotlin")
 }
 ```
+
+The reason for this is that the generator will generate the classes in the order they are included. If a dialect depends
+on another, the dependent dialect is included later so that the generator can resolve the classes it depends on.
 
 You can now publish these definition files to your private maven repository and use them as a replacement for the
 `definitions` module in your project.
