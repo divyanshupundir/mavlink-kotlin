@@ -1,4 +1,3 @@
-import com.divpundir.mavlink.generator.plugin.MavlinkGeneratorTask
 import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
@@ -41,7 +40,7 @@ kotlin {
     }
 }
 
-tasks.getByName<MavlinkGeneratorTask>("generateMavlink") {
+tasks.generateMavlink {
     include(file("mavlink/message_definitions/v1.0/minimal.xml"))
     include(file("mavlink/message_definitions/v1.0/standard.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
