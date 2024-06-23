@@ -56,7 +56,8 @@ import kotlin.Unit
  * @param tslc Time since last communication in seconds
  * units = s
  * @param flags Bitmap to indicate various statuses including valid data fields
- * @param squawk Squawk code
+ * @param squawk Squawk code. Note that the code is in decimal: e.g. 7700 (general emergency) is
+ * encoded as binary 0b0001_1110_0001_0100, not(!) as 0b0000_111_111_000_000
  */
 @GeneratedMavMessage(
   id = 246u,
@@ -131,7 +132,8 @@ public data class AdsbVehicle(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<AdsbFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Squawk code
+   * Squawk code. Note that the code is in decimal: e.g. 7700 (general emergency) is encoded as
+   * binary 0b0001_1110_0001_0100, not(!) as 0b0000_111_111_000_000
    */
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
