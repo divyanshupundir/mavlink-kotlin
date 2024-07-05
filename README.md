@@ -132,10 +132,18 @@ dependencies {
 
 Refer the different adapter modules for details on how to use them.
 
-### API Docs
+### API docs
 
 For the API docs, please refer the [KDoc](https://divyanshupundir.github.io/mavlink-kotlin/).
 
+### Advanced usage
+
+For advanced usage, please refer the following blog series:
+
+- [Advanced mavlink-kotlin - Part 1: Core interfaces](https://www.divpundir.com/blog/advanced-mavlink-kotlin-part-1)
+- [Advanced mavlink-kotlin - Part 2: Utilities and extensions](https://www.divpundir.com/blog/advanced-mavlink-kotlin-part-2)
+- [Advanced mavlink-kotlin - Part 3: Error handling](https://www.divpundir.com/blog/advanced-mavlink-kotlin-part-3)
+- [Advanced mavlink-kotlin - Part 4: Example micorservices](https://www.divpundir.com/blog/advanced-mavlink-kotlin-part-4)
 ---
 
 ## Supported By
