@@ -35,3 +35,8 @@ include(":connections:connection-udp")
 include(":adapters:adapter-rxjava2")
 include(":adapters:adapter-rxjava3")
 include(":adapters:adapter-coroutines")
+
+include(":examples:connection-tcp-client")
+include(":examples:connection-tcp-server")
+include(":examples:connection-udp-client")
+include(":examples:connection-udp-server")
