@@ -6,7 +6,7 @@ import com.divpundir.mavlink.adapters.coroutines.trySendUnsignedV2
 import com.divpundir.mavlink.api.contains
 import com.divpundir.mavlink.api.wrap
 import com.divpundir.mavlink.connection.StreamState
-import com.divpundir.mavlink.connection.udp.UdpServerMavConnection
+import com.divpundir.mavlink.connection.tcp.TcpServerMavConnection
 import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.minimal.*
 import kotlinx.coroutines.delay
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun main(): Unit = runBlocking {
-    val connection = UdpServerMavConnection(14550, CommonDialect).asCoroutine()
+    val connection = TcpServerMavConnection(5760, CommonDialect).asCoroutine()
 
     // Send a heartbeat every second in a new coroutine
     launch {
