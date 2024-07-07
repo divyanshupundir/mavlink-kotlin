@@ -36,7 +36,7 @@ import kotlin.Unit
  * units = degE7
  * @param alt Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
  * units = mm
- * @param relativeAlt Altitude above ground
+ * @param relativeAlt Altitude above home
  * units = mm
  * @param vx Ground X Speed (Latitude, positive north)
  * units = cm/s
@@ -77,7 +77,7 @@ public data class GlobalPositionInt(
   @GeneratedMavField(type = "int32_t")
   public val alt: Int = 0,
   /**
-   * Altitude above ground
+   * Altitude above home
    * units = mm
    */
   @GeneratedMavField(type = "int32_t")
