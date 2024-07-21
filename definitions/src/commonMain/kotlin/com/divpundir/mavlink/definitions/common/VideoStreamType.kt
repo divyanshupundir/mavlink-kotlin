@@ -28,10 +28,10 @@ public enum class VideoStreamType(
   @GeneratedMavEnumEntry
   TCP_MPEG(2u),
   /**
-   * Stream is h.264 on MPEG TS (URI gives the port number)
+   * Stream is MPEG TS (URI gives the port number)
    */
   @GeneratedMavEnumEntry
-  MPEG_TS_H264(3u),
+  MPEG_TS(3u),
   ;
 
   public companion object : MavEnum.MavCompanion<VideoStreamType> {
@@ -39,7 +39,7 @@ public enum class VideoStreamType(
       0u -> RTSP
       1u -> RTPUDP
       2u -> TCP_MPEG
-      3u -> MPEG_TS_H264
+      3u -> MPEG_TS
       else -> null
     }
   }

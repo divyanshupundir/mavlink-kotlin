@@ -63,6 +63,9 @@ import kotlin.collections.List
  * @param gimbalDeviceId Gimbal id of a gimbal associated with this camera. This is the component id
  * of the gimbal device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the
  * camera.
+ * @param cameraDeviceId Camera id of a camera associated with this component. This is the component
+ * id of a proxied MAVLink camera, or 1-6 for a non-MAVLink camera attached to the component. Use 0 if
+ * the component is a camera (not something else providing access to a camera).
  */
 @GeneratedMavMessage(
   id = 259u,
@@ -155,6 +158,16 @@ public data class CameraInformation(
     extension = true,
   )
   public val gimbalDeviceId: UByte = 0u,
+  /**
+   * Camera id of a camera associated with this component. This is the component id of a proxied
+   * MAVLink camera, or 1-6 for a non-MAVLink camera attached to the component. Use 0 if the component
+   * is a camera (not something else providing access to a camera).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<CameraInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraInformation> = Companion
 
@@ -192,13 +205,14 @@ public data class CameraInformation(
     encoder.encodeUInt8(lensId)
     encoder.encodeString(camDefinitionUri, 140)
     encoder.encodeUInt8(gimbalDeviceId)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraInformation> {
     private const val SIZE_V1: Int = 235
 
-    private const val SIZE_V2: Int = 236
+    private const val SIZE_V2: Int = 237
 
     override val id: UInt = 259u
 
@@ -224,6 +238,7 @@ public data class CameraInformation(
       val lensId = decoder.safeDecodeUInt8()
       val camDefinitionUri = decoder.safeDecodeString(140)
       val gimbalDeviceId = decoder.safeDecodeUInt8()
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return CameraInformation(
         timeBootMs = timeBootMs,
@@ -240,6 +255,7 @@ public data class CameraInformation(
         camDefinitionVersion = camDefinitionVersion,
         camDefinitionUri = camDefinitionUri,
         gimbalDeviceId = gimbalDeviceId,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -276,6 +292,8 @@ public data class CameraInformation(
 
     public var gimbalDeviceId: UByte = 0u
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): CameraInformation = CameraInformation(
       timeBootMs = timeBootMs,
       vendorName = vendorName,
@@ -291,6 +309,7 @@ public data class CameraInformation(
       camDefinitionVersion = camDefinitionVersion,
       camDefinitionUri = camDefinitionUri,
       gimbalDeviceId = gimbalDeviceId,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }

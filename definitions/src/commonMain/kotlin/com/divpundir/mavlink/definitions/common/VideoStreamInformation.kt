@@ -55,6 +55,7 @@ import kotlin.Unit
  * @param name Stream name.
  * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number
  * (UDP port ground station should listen to).
+ * @param encoding Encoding of stream.
  */
 @GeneratedMavMessage(
   id = 269u,
@@ -128,6 +129,14 @@ public data class VideoStreamInformation(
    */
   @GeneratedMavField(type = "char[160]")
   public val uri: String = "",
+  /**
+   * Encoding of stream.
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val encoding: MavEnumValue<VideoStreamEncoding> = MavEnumValue.fromValue(0u),
 ) : MavMessage<VideoStreamInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<VideoStreamInformation> = Companion
 
@@ -162,13 +171,14 @@ public data class VideoStreamInformation(
     encoder.encodeEnumValue(type.value, 1)
     encoder.encodeString(name, 32)
     encoder.encodeString(uri, 160)
+    encoder.encodeEnumValue(encoding.value, 1)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<VideoStreamInformation> {
     private const val SIZE_V1: Int = 213
 
-    private const val SIZE_V2: Int = 213
+    private const val SIZE_V2: Int = 214
 
     override val id: UInt = 269u
 
@@ -195,6 +205,10 @@ public data class VideoStreamInformation(
       }
       val name = decoder.safeDecodeString(32)
       val uri = decoder.safeDecodeString(160)
+      val encoding = decoder.safeDecodeEnumValue(1).let { value ->
+        val entry = VideoStreamEncoding.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
 
       return VideoStreamInformation(
         streamId = streamId,
@@ -209,6 +223,7 @@ public data class VideoStreamInformation(
         hfov = hfov,
         name = name,
         uri = uri,
+        encoding = encoding,
       )
     }
 
@@ -241,6 +256,8 @@ public data class VideoStreamInformation(
 
     public var uri: String = ""
 
+    public var encoding: MavEnumValue<VideoStreamEncoding> = MavEnumValue.fromValue(0u)
+
     public fun build(): VideoStreamInformation = VideoStreamInformation(
       streamId = streamId,
       count = count,
@@ -254,6 +271,7 @@ public data class VideoStreamInformation(
       hfov = hfov,
       name = name,
       uri = uri,
+      encoding = encoding,
     )
   }
 }
