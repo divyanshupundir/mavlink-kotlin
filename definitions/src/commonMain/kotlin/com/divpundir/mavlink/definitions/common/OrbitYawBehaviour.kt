@@ -37,6 +37,12 @@ public enum class OrbitYawBehaviour(
    */
   @GeneratedMavEnumEntry
   RC_CONTROLLED(4u),
+  /**
+   * Vehicle uses current yaw behaviour (unchanged). The vehicle-default yaw behaviour is used if
+   * this value is specified when orbit is first commanded.
+   */
+  @GeneratedMavEnumEntry
+  UNCHANGED(5u),
   ;
 
   public companion object : MavEnum.MavCompanion<OrbitYawBehaviour> {
@@ -46,6 +52,7 @@ public enum class OrbitYawBehaviour(
       2u -> UNCONTROLLED
       3u -> HOLD_FRONT_TANGENT_TO_CIRCLE
       4u -> RC_CONTROLLED
+      5u -> UNCHANGED
       else -> null
     }
   }
