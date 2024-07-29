@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -41,6 +42,7 @@ fun main(): Unit = runBlocking {
         connection
             .mavFrame
             .filter { it.systemId == 1.toUByte() && it.componentId == 1.toUByte() }
+            .map { it.message }
             .filterIsInstance<Heartbeat>()
             .collect {
                 val armed = MavModeFlag.SAFETY_ARMED in it.baseMode
