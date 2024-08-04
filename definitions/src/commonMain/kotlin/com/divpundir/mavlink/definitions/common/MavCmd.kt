@@ -1665,7 +1665,7 @@ public enum class MavCmd(
    * Mount mode.
    */
   @Deprecated(message =
-      "This message is ambiguous and inconsistent. It has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW and MAV_CMD_DO_SET_ROI_*. The message can still be used to communicate with legacy gimbals implementing it.")
+      "This message is ambiguous and inconsistent. It has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW and `MAV_CMD_DO_SET_ROI_*` variants. The message can still be used to communicate with legacy gimbals implementing it.")
   @GeneratedMavEnumEntry
   DO_MOUNT_CONTROL(205u),
   /**
