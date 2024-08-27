@@ -184,7 +184,8 @@ public fun MavDataDecoder.safeDecodeEnumValue(dataSize: Int): UInt = when (dataS
     UByte.SIZE_BYTES -> safeDecodeUInt8().toUInt()
     UShort.SIZE_BYTES -> safeDecodeUInt16().toUInt()
     UInt.SIZE_BYTES -> safeDecodeUInt32()
-    else -> 0u
+    ULong.SIZE_BYTES -> safeDecodeUInt64().toUInt()
+    else -> safeDecodeUnsignedInteger(dataSize).toUInt()
 }
 
 /**
@@ -196,7 +197,8 @@ public fun MavDataDecoder.safeDecodeBitmaskValue(dataSize: Int): UInt = when (da
     UByte.SIZE_BYTES -> safeDecodeUInt8().toUInt()
     UShort.SIZE_BYTES -> safeDecodeUInt16().toUInt()
     UInt.SIZE_BYTES -> safeDecodeUInt32()
-    else -> 0u
+    ULong.SIZE_BYTES -> safeDecodeUInt64().toUInt()
+    else -> safeDecodeUnsignedInteger(dataSize).toUInt()
 }
 
 /**
