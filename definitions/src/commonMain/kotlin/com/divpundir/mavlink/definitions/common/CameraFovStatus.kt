@@ -9,15 +9,18 @@ import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeFloatArray
 import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 import kotlin.collections.List
@@ -48,6 +51,8 @@ import kotlin.collections.List
  * units = deg
  * @param vfov Vertical field of view (NaN if unknown).
  * units = deg
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 271u,
@@ -116,6 +121,15 @@ public data class CameraFovStatus(
    */
   @GeneratedMavField(type = "float")
   public val vfov: Float = 0F,
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<CameraFovStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraFovStatus> = Companion
 
@@ -146,13 +160,14 @@ public data class CameraFovStatus(
     encoder.encodeFloatArray(q, 16)
     encoder.encodeFloat(hfov)
     encoder.encodeFloat(vfov)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraFovStatus> {
     private const val SIZE_V1: Int = 52
 
-    private const val SIZE_V2: Int = 52
+    private const val SIZE_V2: Int = 53
 
     override val id: UInt = 271u
 
@@ -171,6 +186,7 @@ public data class CameraFovStatus(
       val q = decoder.safeDecodeFloatArray(16)
       val hfov = decoder.safeDecodeFloat()
       val vfov = decoder.safeDecodeFloat()
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return CameraFovStatus(
         timeBootMs = timeBootMs,
@@ -183,6 +199,7 @@ public data class CameraFovStatus(
         q = q,
         hfov = hfov,
         vfov = vfov,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -211,6 +228,8 @@ public data class CameraFovStatus(
 
     public var vfov: Float = 0F
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): CameraFovStatus = CameraFovStatus(
       timeBootMs = timeBootMs,
       latCamera = latCamera,
@@ -222,6 +241,7 @@ public data class CameraFovStatus(
       q = q,
       hfov = hfov,
       vfov = vfov,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }

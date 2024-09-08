@@ -9,14 +9,17 @@ import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
+import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 
@@ -49,6 +52,8 @@ import kotlin.Unit
  * units = rad
  * @param hdgAcc Accuracy of heading, in NED. NAN if unknown
  * units = rad
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 276u,
@@ -132,6 +137,15 @@ public data class CameraTrackingGeoStatus(
    */
   @GeneratedMavField(type = "float")
   public val hdgAcc: Float = 0F,
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<CameraTrackingGeoStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingGeoStatus> = Companion
 
@@ -168,13 +182,14 @@ public data class CameraTrackingGeoStatus(
     encoder.encodeFloat(hdg)
     encoder.encodeFloat(hdgAcc)
     encoder.encodeEnumValue(trackingStatus.value, 1)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrackingGeoStatus> {
     private const val SIZE_V1: Int = 49
 
-    private const val SIZE_V2: Int = 49
+    private const val SIZE_V2: Int = 50
 
     override val id: UInt = 276u
 
@@ -199,6 +214,7 @@ public data class CameraTrackingGeoStatus(
         val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return CameraTrackingGeoStatus(
         trackingStatus = trackingStatus,
@@ -214,6 +230,7 @@ public data class CameraTrackingGeoStatus(
         dist = dist,
         hdg = hdg,
         hdgAcc = hdgAcc,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -248,6 +265,8 @@ public data class CameraTrackingGeoStatus(
 
     public var hdgAcc: Float = 0F
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): CameraTrackingGeoStatus = CameraTrackingGeoStatus(
       trackingStatus = trackingStatus,
       lat = lat,
@@ -262,6 +281,7 @@ public data class CameraTrackingGeoStatus(
       dist = dist,
       hdg = hdg,
       hdgAcc = hdgAcc,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }

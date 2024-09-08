@@ -1682,8 +1682,11 @@ public enum class MavCmd(
    * index = 3; label = Trigger; 
    * Trigger camera once immediately. (0 = no trigger, 1 = trigger)
    *
-   * index = 4; 
-   * Empty
+   * index = 4; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    *
    * index = 5; 
    * Empty
@@ -1898,8 +1901,11 @@ public enum class MavCmd(
    * index = 2; label = Shutter Integration; units = ms; 
    * Camera shutter integration time. Should be less than trigger cycle time. -1 or 0 to ignore.
    *
-   * index = 3; 
-   * Empty
+   * index = 3; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    *
    * index = 4; 
    * Empty
@@ -2491,6 +2497,22 @@ public enum class MavCmd(
    * index = 2; label = Interval; units = us; 
    * The interval between two messages. -1: disable. 0: request default rate (which may be zero).
    *
+   * index = 3; label = Req Param 3; 
+   * Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in
+   * the requested message. By default assumed not used (0).
+   *
+   * index = 4; label = Req Param 4; 
+   * The use of this parameter (if any), must be defined in the requested message. By default
+   * assumed not used (0).
+   *
+   * index = 5; label = Req Param 5; 
+   * The use of this parameter (if any), must be defined in the requested message. By default
+   * assumed not used (0).
+   *
+   * index = 6; label = Req Param 6; 
+   * The use of this parameter (if any), must be defined in the requested message. By default
+   * assumed not used (0).
+   *
    * index = 7; label = Response Target; 
    * Target address of message stream (if message has target address fields). 0: Flight-stack
    * default (recommended), 1: address of requestor, 2: broadcast.
@@ -2646,8 +2668,11 @@ public enum class MavCmd(
    * index = 1; label = Reset; 
    * 0: No Action 1: Reset all settings
    *
-   * index = 2; 
-   * Reserved (all remaining params)
+   * index = 2; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   RESET_CAMERA_SETTINGS(529u),
@@ -2657,10 +2682,10 @@ public enum class MavCmd(
    * streaming.
    *
    * index = 1; label = id; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a
-   * distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to
-   * specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink
-   * camera. It is also used to target specific cameras when the MAV_CMD is used in a mission
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    *
    * index = 2; label = Camera Mode; 
    * Camera mode
@@ -2678,7 +2703,13 @@ public enum class MavCmd(
    * index = 2; label = Zoom Value; 
    * Zoom value. The range of valid values depend on the zoom type.
    *
-   * index = 3; index = 4; index = 7; 
+   * index = 3; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
+   *
+   * index = 4; 
    */
   @GeneratedMavEnumEntry
   SET_CAMERA_ZOOM(531u),
@@ -2691,7 +2722,13 @@ public enum class MavCmd(
    * index = 2; label = Focus Value; 
    * Focus value
    *
-   * index = 3; index = 4; index = 7; 
+   * index = 3; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
+   *
+   * index = 4; 
    */
   @GeneratedMavEnumEntry
   SET_CAMERA_FOCUS(532u),
@@ -2836,11 +2873,11 @@ public enum class MavCmd(
    * cameras and forward the command to all channels.
    *         
    *
-   * index = 1; label = id; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a
-   * distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to
-   * specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink
-   * camera. It is also used to target specific cameras when the MAV_CMD is used in a mission
+   * index = 1; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    *
    * index = 2; label = Interval; units = s; 
    * Desired elapsed time between two consecutive pictures (in seconds). Minimum values depend on
@@ -2885,11 +2922,11 @@ public enum class MavCmd(
    * cameras and forward the command to all channels.
    *         
    *
-   * index = 1; label = id; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras that don't have a
-   * distinct component id (such as autopilot-attached cameras). 0: all cameras. This is used to
-   * specifically target autopilot-connected cameras or individual sensors in a multi-sensor MAVLink
-   * camera. It is also used to target specific cameras when the MAV_CMD is used in a mission
+   * index = 1; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    *
    * index = 2; index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
@@ -2917,6 +2954,12 @@ public enum class MavCmd(
    *
    * index = 3; label = Pause; 
    * 1 to pause triggering, but without switching the camera off or retracting it. -1 to ignore
+   *
+   * index = 4; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   DO_TRIGGER_CONTROL(2_003u),
@@ -2932,6 +2975,12 @@ public enum class MavCmd(
    *
    * index = 3; label = Radius; 
    * Point radius (normalized 0..1, 0 is one pixel, 1 is full image width).
+   *
+   * index = 4; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   CAMERA_TRACK_POINT(2_004u),
@@ -2950,11 +2999,23 @@ public enum class MavCmd(
    *
    * index = 4; label = Bottom right corner y; 
    * Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
+   *
+   * index = 5; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   CAMERA_TRACK_RECTANGLE(2_005u),
   /**
    * Stops ongoing tracking.
+   *
+   * index = 1; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   CAMERA_STOP_TRACKING(2_010u),
@@ -2968,7 +3029,13 @@ public enum class MavCmd(
    * Frequency CAMERA_CAPTURE_STATUS messages should be sent while recording (0 for no messages,
    * otherwise frequency)
    *
-   * index = 3; index = 4; index = 5; index = 6; index = 7; 
+   * index = 3; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
+   *
+   * index = 4; index = 5; index = 6; index = 7; 
    */
   @GeneratedMavEnumEntry
   VIDEO_START_CAPTURE(2_500u),
@@ -2978,7 +3045,13 @@ public enum class MavCmd(
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams)
    *
-   * index = 2; index = 3; index = 4; index = 5; index = 6; index = 7; 
+   * index = 2; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
+   *
+   * index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
   @GeneratedMavEnumEntry
   VIDEO_STOP_CAPTURE(2_501u),
@@ -2987,6 +3060,12 @@ public enum class MavCmd(
    *
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
+   *
+   * index = 2; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   VIDEO_START_STREAMING(2_502u),
@@ -2995,6 +3074,12 @@ public enum class MavCmd(
    *
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
+   *
+   * index = 2; label = Target Camera ID; 
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
+   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
+   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
+   * is used in a mission.
    */
   @GeneratedMavEnumEntry
   VIDEO_STOP_STREAMING(2_503u),

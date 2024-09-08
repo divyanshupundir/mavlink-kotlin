@@ -9,14 +9,17 @@ import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeUInt32
+import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeUInt32
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 
@@ -30,6 +33,8 @@ import kotlin.Unit
  * known)
  * @param focuslevel Current focus level as a percentage of the full range (0.0 to 100.0, NaN if not
  * known)
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 260u,
@@ -63,6 +68,15 @@ public data class CameraSettings(
     extension = true,
   )
   public val focuslevel: Float = 0F,
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<CameraSettings> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraSettings> = Companion
 
@@ -79,13 +93,14 @@ public data class CameraSettings(
     encoder.encodeEnumValue(modeId.value, 1)
     encoder.encodeFloat(zoomlevel)
     encoder.encodeFloat(focuslevel)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraSettings> {
     private const val SIZE_V1: Int = 5
 
-    private const val SIZE_V2: Int = 13
+    private const val SIZE_V2: Int = 14
 
     override val id: UInt = 260u
 
@@ -101,12 +116,14 @@ public data class CameraSettings(
       }
       val zoomlevel = decoder.safeDecodeFloat()
       val focuslevel = decoder.safeDecodeFloat()
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return CameraSettings(
         timeBootMs = timeBootMs,
         modeId = modeId,
         zoomlevel = zoomlevel,
         focuslevel = focuslevel,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -123,11 +140,14 @@ public data class CameraSettings(
 
     public var focuslevel: Float = 0F
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): CameraSettings = CameraSettings(
       timeBootMs = timeBootMs,
       modeId = modeId,
       zoomlevel = zoomlevel,
       focuslevel = focuslevel,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }
