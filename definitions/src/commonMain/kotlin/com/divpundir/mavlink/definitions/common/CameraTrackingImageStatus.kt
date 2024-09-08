@@ -10,14 +10,17 @@ import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
+import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
+import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.Float
 import kotlin.Int
+import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 
@@ -42,6 +45,8 @@ import kotlin.Unit
  * (normalized 0..1, 0 is left, 1 is right), NAN if unknown
  * @param recBottomY Current tracked rectangle bottom y value if CAMERA_TRACKING_MODE_RECTANGLE
  * (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 275u,
@@ -105,6 +110,15 @@ public data class CameraTrackingImageStatus(
    */
   @GeneratedMavField(type = "float")
   public val recBottomY: Float = 0F,
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<CameraTrackingImageStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraTrackingImageStatus> = Companion
 
@@ -135,13 +149,14 @@ public data class CameraTrackingImageStatus(
     encoder.encodeEnumValue(trackingStatus.value, 1)
     encoder.encodeEnumValue(trackingMode.value, 1)
     encoder.encodeBitmaskValue(targetData.value, 1)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraTrackingImageStatus> {
     private const val SIZE_V1: Int = 31
 
-    private const val SIZE_V2: Int = 31
+    private const val SIZE_V2: Int = 32
 
     override val id: UInt = 275u
 
@@ -169,6 +184,7 @@ public data class CameraTrackingImageStatus(
         val flags = CameraTrackingTargetData.getFlagsFromValue(value)
         if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return CameraTrackingImageStatus(
         trackingStatus = trackingStatus,
@@ -181,6 +197,7 @@ public data class CameraTrackingImageStatus(
         recTopY = recTopY,
         recBottomX = recBottomX,
         recBottomY = recBottomY,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -209,6 +226,8 @@ public data class CameraTrackingImageStatus(
 
     public var recBottomY: Float = 0F
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): CameraTrackingImageStatus = CameraTrackingImageStatus(
       trackingStatus = trackingStatus,
       trackingMode = trackingMode,
@@ -220,6 +239,7 @@ public data class CameraTrackingImageStatus(
       recTopY = recTopY,
       recBottomX = recBottomX,
       recBottomY = recBottomY,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }

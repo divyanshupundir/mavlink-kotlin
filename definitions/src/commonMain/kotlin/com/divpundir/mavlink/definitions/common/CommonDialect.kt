@@ -169,6 +169,7 @@ public data object CommonDialect : AbstractMavDialect(
     CameraFovStatus.id to CameraFovStatus,
     CameraTrackingImageStatus.id to CameraTrackingImageStatus,
     CameraTrackingGeoStatus.id to CameraTrackingGeoStatus,
+    CameraThermalRange.id to CameraThermalRange,
     GimbalManagerInformation.id to GimbalManagerInformation,
     GimbalManagerStatus.id to GimbalManagerStatus,
     GimbalManagerSetAttitude.id to GimbalManagerSetAttitude,

@@ -63,9 +63,8 @@ import kotlin.collections.List
  * @param gimbalDeviceId Gimbal id of a gimbal associated with this camera. This is the component id
  * of the gimbal device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the
  * camera.
- * @param cameraDeviceId Camera id of a camera associated with this component. This is the component
- * id of a proxied MAVLink camera, or 1-6 for a non-MAVLink camera attached to the component. Use 0 if
- * the component is a camera (not something else providing access to a camera).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 259u,
@@ -159,9 +158,8 @@ public data class CameraInformation(
   )
   public val gimbalDeviceId: UByte = 0u,
   /**
-   * Camera id of a camera associated with this component. This is the component id of a proxied
-   * MAVLink camera, or 1-6 for a non-MAVLink camera attached to the component. Use 0 if the component
-   * is a camera (not something else providing access to a camera).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",

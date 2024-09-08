@@ -56,6 +56,8 @@ import kotlin.Unit
  * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number
  * (UDP port ground station should listen to).
  * @param encoding Encoding of stream.
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 269u,
@@ -137,6 +139,15 @@ public data class VideoStreamInformation(
     extension = true,
   )
   public val encoding: MavEnumValue<VideoStreamEncoding> = MavEnumValue.fromValue(0u),
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<VideoStreamInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<VideoStreamInformation> = Companion
 
@@ -172,13 +183,14 @@ public data class VideoStreamInformation(
     encoder.encodeString(name, 32)
     encoder.encodeString(uri, 160)
     encoder.encodeEnumValue(encoding.value, 1)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<VideoStreamInformation> {
     private const val SIZE_V1: Int = 213
 
-    private const val SIZE_V2: Int = 214
+    private const val SIZE_V2: Int = 215
 
     override val id: UInt = 269u
 
@@ -209,6 +221,7 @@ public data class VideoStreamInformation(
         val entry = VideoStreamEncoding.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return VideoStreamInformation(
         streamId = streamId,
@@ -224,6 +237,7 @@ public data class VideoStreamInformation(
         name = name,
         uri = uri,
         encoding = encoding,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -258,6 +272,8 @@ public data class VideoStreamInformation(
 
     public var encoding: MavEnumValue<VideoStreamEncoding> = MavEnumValue.fromValue(0u)
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): VideoStreamInformation = VideoStreamInformation(
       streamId = streamId,
       count = count,
@@ -272,6 +288,7 @@ public data class VideoStreamInformation(
       name = name,
       uri = uri,
       encoding = encoding,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }

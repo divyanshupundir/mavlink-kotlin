@@ -40,6 +40,8 @@ import kotlin.Unit
  * units = MiB
  * @param imageCount Total number of images captured ('forever', or until reset using
  * MAV_CMD_STORAGE_FORMAT).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 262u,
@@ -90,6 +92,15 @@ public data class CameraCaptureStatus(
     extension = true,
   )
   public val imageCount: Int = 0,
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<CameraCaptureStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraCaptureStatus> = Companion
 
@@ -113,13 +124,14 @@ public data class CameraCaptureStatus(
     encoder.encodeUInt8(imageStatus)
     encoder.encodeUInt8(videoStatus)
     encoder.encodeInt32(imageCount)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<CameraCaptureStatus> {
     private const val SIZE_V1: Int = 18
 
-    private const val SIZE_V2: Int = 22
+    private const val SIZE_V2: Int = 23
 
     override val id: UInt = 262u
 
@@ -135,6 +147,7 @@ public data class CameraCaptureStatus(
       val imageStatus = decoder.safeDecodeUInt8()
       val videoStatus = decoder.safeDecodeUInt8()
       val imageCount = decoder.safeDecodeInt32()
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return CameraCaptureStatus(
         timeBootMs = timeBootMs,
@@ -144,6 +157,7 @@ public data class CameraCaptureStatus(
         recordingTimeMs = recordingTimeMs,
         availableCapacity = availableCapacity,
         imageCount = imageCount,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -166,6 +180,8 @@ public data class CameraCaptureStatus(
 
     public var imageCount: Int = 0
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): CameraCaptureStatus = CameraCaptureStatus(
       timeBootMs = timeBootMs,
       imageStatus = imageStatus,
@@ -174,6 +190,7 @@ public data class CameraCaptureStatus(
       recordingTimeMs = recordingTimeMs,
       availableCapacity = availableCapacity,
       imageCount = imageCount,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }

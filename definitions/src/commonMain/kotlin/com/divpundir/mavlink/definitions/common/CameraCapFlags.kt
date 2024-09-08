@@ -74,6 +74,12 @@ public enum class CameraCapFlags(
    */
   @GeneratedMavEnumEntry
   HAS_TRACKING_GEO_STATUS(2_048u),
+  /**
+   * Camera supports absolute thermal range (request CAMERA_THERMAL_RANGE with
+   * MAV_CMD_REQUEST_MESSAGE) (WIP).
+   */
+  @GeneratedMavEnumEntry
+  HAS_THERMAL_RANGE(4_096u),
   ;
 
   public companion object : MavBitmask.MavCompanion<CameraCapFlags> {
@@ -90,6 +96,7 @@ public enum class CameraCapFlags(
       512u -> HAS_TRACKING_POINT
       1024u -> HAS_TRACKING_RECTANGLE
       2048u -> HAS_TRACKING_GEO_STATUS
+      4096u -> HAS_THERMAL_RANGE
       else -> null
     }
 
@@ -106,6 +113,7 @@ public enum class CameraCapFlags(
       if (v and 512u == 512u) add(HAS_TRACKING_POINT)
       if (v and 1024u == 1024u) add(HAS_TRACKING_RECTANGLE)
       if (v and 2048u == 2048u) add(HAS_TRACKING_GEO_STATUS)
+      if (v and 4096u == 4096u) add(HAS_THERMAL_RANGE)
     }
   }
 }

@@ -44,6 +44,8 @@ import kotlin.Unit
  * units = deg
  * @param hfov Horizontal Field of view
  * units = deg
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 270u,
@@ -96,6 +98,15 @@ public data class VideoStreamStatus(
    */
   @GeneratedMavField(type = "uint16_t")
   public val hfov: UShort = 0u,
+  /**
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id).
+   */
+  @GeneratedMavField(
+    type = "uint8_t",
+    extension = true,
+  )
+  public val cameraDeviceId: UByte = 0u,
 ) : MavMessage<VideoStreamStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<VideoStreamStatus> = Companion
 
@@ -122,13 +133,14 @@ public data class VideoStreamStatus(
     encoder.encodeUInt16(rotation)
     encoder.encodeUInt16(hfov)
     encoder.encodeUInt8(streamId)
+    encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<VideoStreamStatus> {
     private const val SIZE_V1: Int = 19
 
-    private const val SIZE_V2: Int = 19
+    private const val SIZE_V2: Int = 20
 
     override val id: UInt = 270u
 
@@ -148,6 +160,7 @@ public data class VideoStreamStatus(
       val rotation = decoder.safeDecodeUInt16()
       val hfov = decoder.safeDecodeUInt16()
       val streamId = decoder.safeDecodeUInt8()
+      val cameraDeviceId = decoder.safeDecodeUInt8()
 
       return VideoStreamStatus(
         streamId = streamId,
@@ -158,6 +171,7 @@ public data class VideoStreamStatus(
         bitrate = bitrate,
         rotation = rotation,
         hfov = hfov,
+        cameraDeviceId = cameraDeviceId,
       )
     }
 
@@ -182,6 +196,8 @@ public data class VideoStreamStatus(
 
     public var hfov: UShort = 0u
 
+    public var cameraDeviceId: UByte = 0u
+
     public fun build(): VideoStreamStatus = VideoStreamStatus(
       streamId = streamId,
       flags = flags,
@@ -191,6 +207,7 @@ public data class VideoStreamStatus(
       bitrate = bitrate,
       rotation = rotation,
       hfov = hfov,
+      cameraDeviceId = cameraDeviceId,
     )
   }
 }
