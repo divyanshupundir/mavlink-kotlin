@@ -22,5 +22,5 @@ dokka = { id = "org.jetbrains.dokka", version = "1.9.20" }
 gradle-publish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinx-atomicfu = { id = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version = "0.24.0" }
+kotlinx-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version = "0.25.0" }
 maven-publish = { id = "com.vanniktech.maven.publish.base", version = "0.29.0" }

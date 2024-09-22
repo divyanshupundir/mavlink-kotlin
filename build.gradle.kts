@@ -2,19 +2,10 @@ import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        // Hack to get the plugin to work
-        classpath("${libs.plugins.kotlinx.atomicfu.get().pluginId}:${libs.plugins.kotlinx.atomicfu.get().version}")
-    }
-}
-
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlinx.atomicfu) apply false
     alias(libs.plugins.maven.publish) apply false
     alias(libs.plugins.dokka)
 }
