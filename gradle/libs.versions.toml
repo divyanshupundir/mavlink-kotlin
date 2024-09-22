@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.9.24"
-jackson = "2.17.1"
+kotlin = "2.0.20"
+jackson = "2.17.2"
 
 [libraries]
 jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson" }
