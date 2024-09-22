@@ -119,6 +119,13 @@ public enum class MavProtocolCapability(
    */
   @GeneratedMavEnumEntry
   PARAM_ENCODE_C_CAST(131_072u),
+  /**
+   * This component implements/is a gimbal manager. This means the GIMBAL_MANAGER_INFORMATION, and
+   * other messages can be requested.
+   *         
+   */
+  @GeneratedMavEnumEntry
+  COMPONENT_IMPLEMENTS_GIMBAL_MANAGER(262_144u),
   ;
 
   public companion object : MavBitmask.MavCompanion<MavProtocolCapability> {
@@ -141,6 +148,7 @@ public enum class MavProtocolCapability(
       32768u -> MISSION_RALLY
       65536u -> RESERVED2
       131072u -> PARAM_ENCODE_C_CAST
+      262144u -> COMPONENT_IMPLEMENTS_GIMBAL_MANAGER
       else -> null
     }
 
@@ -163,6 +171,7 @@ public enum class MavProtocolCapability(
       if (v and 32768u == 32768u) add(MISSION_RALLY)
       if (v and 65536u == 65536u) add(RESERVED2)
       if (v and 131072u == 131072u) add(PARAM_ENCODE_C_CAST)
+      if (v and 262144u == 262144u) add(COMPONENT_IMPLEMENTS_GIMBAL_MANAGER)
     }
   }
 }
