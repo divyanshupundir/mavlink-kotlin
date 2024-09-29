@@ -2,9 +2,9 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlinx.atomicfu)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
-    id("kotlinx-atomicfu")
 }
 
 group = Config.group
