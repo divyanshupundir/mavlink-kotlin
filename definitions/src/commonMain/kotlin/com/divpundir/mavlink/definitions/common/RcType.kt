@@ -6,28 +6,28 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * RC type
+ * RC type. Used in MAV_CMD_START_RX_PAIR.
  */
 @GeneratedMavEnum
 public enum class RcType(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Spektrum DSM2
+   * Spektrum
    */
   @GeneratedMavEnumEntry
-  SPEKTRUM_DSM2(0u),
+  SPEKTRUM(0u),
   /**
-   * Spektrum DSMX
+   * CRSF
    */
   @GeneratedMavEnumEntry
-  SPEKTRUM_DSMX(1u),
+  CRSF(1u),
   ;
 
   public companion object : MavEnum.MavCompanion<RcType> {
     override fun getEntryFromValueOrNull(v: UInt): RcType? = when (v) {
-      0u -> SPEKTRUM_DSM2
-      1u -> SPEKTRUM_DSMX
+      0u -> SPEKTRUM
+      1u -> CRSF
       else -> null
     }
   }

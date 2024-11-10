@@ -3,6 +3,7 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
+import com.divpundir.mavlink.api.WorkInProgress
 import kotlin.Deprecated
 import kotlin.UInt
 import kotlin.collections.List
@@ -126,6 +127,13 @@ public enum class MavProtocolCapability(
    */
   @GeneratedMavEnumEntry
   COMPONENT_IMPLEMENTS_GIMBAL_MANAGER(262_144u),
+  /**
+   * Component supports locking control to a particular GCS independent of its system (via
+   * MAV_CMD_REQUEST_OPERATOR_CONTROL).
+   */
+  @WorkInProgress
+  @GeneratedMavEnumEntry
+  COMPONENT_ACCEPTS_GCS_CONTROL(524_288u),
   ;
 
   public companion object : MavBitmask.MavCompanion<MavProtocolCapability> {
@@ -149,6 +157,7 @@ public enum class MavProtocolCapability(
       65536u -> RESERVED2
       131072u -> PARAM_ENCODE_C_CAST
       262144u -> COMPONENT_IMPLEMENTS_GIMBAL_MANAGER
+      524288u -> COMPONENT_ACCEPTS_GCS_CONTROL
       else -> null
     }
 
@@ -172,6 +181,7 @@ public enum class MavProtocolCapability(
       if (v and 65536u == 65536u) add(RESERVED2)
       if (v and 131072u == 131072u) add(PARAM_ENCODE_C_CAST)
       if (v and 262144u == 262144u) add(COMPONENT_IMPLEMENTS_GIMBAL_MANAGER)
+      if (v and 524288u == 524288u) add(COMPONENT_ACCEPTS_GCS_CONTROL)
     }
   }
 }
