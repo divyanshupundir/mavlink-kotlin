@@ -2466,11 +2466,11 @@ public enum class MavCmd(
   /**
    * Starts receiver pairing.
    *
-   * index = 1; label = Spektrum; 
-   * 0:Spektrum.
-   *
-   * index = 2; label = RC Type; 
+   * index = 1; label = RC Type; 
    * RC type.
+   *
+   * index = 2; label = RC Sub Type; 
+   * RC sub type.
    */
   @GeneratedMavEnumEntry
   START_RX_PAIR(500u),
