@@ -201,6 +201,7 @@ public data object CommonDialect : AbstractMavDialect(
     UtmGlobalPosition.id to UtmGlobalPosition,
     DebugFloatArray.id to DebugFloatArray,
     OrbitExecutionStatus.id to OrbitExecutionStatus,
+    SmartBatteryInfo.id to SmartBatteryInfo,
     BatteryInfo.id to BatteryInfo,
     GeneratorStatus.id to GeneratorStatus,
     ActuatorOutputStatus.id to ActuatorOutputStatus,
