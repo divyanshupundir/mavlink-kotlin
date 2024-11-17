@@ -77,7 +77,7 @@ import kotlin.Unit
  */
 @WorkInProgress
 @GeneratedMavMessage(
-  id = 370u,
+  id = 372u,
   crcExtra = 26,
 )
 public data class BatteryInfo(
@@ -255,7 +255,7 @@ public data class BatteryInfo(
 
     private const val SIZE_V2: Int = 140
 
-    override val id: UInt = 370u
+    override val id: UInt = 372u
 
     override val crcExtra: Byte = 26
 
