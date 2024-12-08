@@ -24,7 +24,7 @@ public enum class VideoStreamStatusFlags(
   @GeneratedMavEnumEntry
   THERMAL(2u),
   /**
-   * Stream can report absolute thermal range (see CAMERA_THERMAL_RANGE). (WIP).
+   * Stream can report absolute thermal range (see CAMERA_THERMAL_RANGE).
    */
   @GeneratedMavEnumEntry
   THERMAL_RANGE_ENABLED(4u),

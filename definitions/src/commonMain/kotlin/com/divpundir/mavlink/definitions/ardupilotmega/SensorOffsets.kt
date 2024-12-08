@@ -14,6 +14,7 @@ import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -38,6 +39,7 @@ import kotlin.Unit
  * @param accelCalY Accel Y calibration.
  * @param accelCalZ Accel Z calibration.
  */
+@Deprecated(message = "")
 @GeneratedMavMessage(
   id = 150u,
   crcExtra = -122,

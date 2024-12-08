@@ -76,7 +76,7 @@ public enum class CameraCapFlags(
   HAS_TRACKING_GEO_STATUS(2_048u),
   /**
    * Camera supports absolute thermal range (request CAMERA_THERMAL_RANGE with
-   * MAV_CMD_REQUEST_MESSAGE) (WIP).
+   * MAV_CMD_REQUEST_MESSAGE).
    */
   @GeneratedMavEnumEntry
   HAS_THERMAL_RANGE(4_096u),

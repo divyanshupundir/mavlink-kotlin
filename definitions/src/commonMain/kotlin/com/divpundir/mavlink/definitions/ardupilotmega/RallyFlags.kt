@@ -24,18 +24,33 @@ public enum class RallyFlags(
    */
   @GeneratedMavEnumEntry
   LAND_IMMEDIATELY(2u),
+  /**
+   * True if the following altitude frame value is valid.
+   */
+  @GeneratedMavEnumEntry
+  ALT_FRAME_VALID(4u),
+  /**
+   * 2 bit value representing altitude frame. 0: absolute, 1: relative home, 2: relative origin, 3:
+   * relative terrain
+   */
+  @GeneratedMavEnumEntry
+  ALT_FRAME(24u),
   ;
 
   public companion object : MavBitmask.MavCompanion<RallyFlags> {
     override fun getEntryFromValueOrNull(v: UInt): RallyFlags? = when (v) {
       1u -> FAVORABLE_WIND
       2u -> LAND_IMMEDIATELY
+      4u -> ALT_FRAME_VALID
+      24u -> ALT_FRAME
       else -> null
     }
 
     override fun getFlagsFromValue(v: UInt): List<RallyFlags> = buildList {
       if (v and 1u == 1u) add(FAVORABLE_WIND)
       if (v and 2u == 2u) add(LAND_IMMEDIATELY)
+      if (v and 4u == 4u) add(ALT_FRAME_VALID)
+      if (v and 24u == 24u) add(ALT_FRAME)
     }
   }
 }

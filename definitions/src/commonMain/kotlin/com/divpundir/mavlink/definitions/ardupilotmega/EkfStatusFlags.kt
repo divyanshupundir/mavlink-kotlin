@@ -64,6 +64,11 @@ public enum class EkfStatusFlags(
   @GeneratedMavEnumEntry
   EKF_PRED_POS_HORIZ_ABS(512u),
   /**
+   * Set if EKF believes the GPS input data is faulty.
+   */
+  @GeneratedMavEnumEntry
+  EKF_GPS_GLITCHING(32_768u),
+  /**
    * Set if EKF has never been healthy.
    */
   @GeneratedMavEnumEntry
@@ -82,6 +87,7 @@ public enum class EkfStatusFlags(
       128u -> EKF_CONST_POS_MODE
       256u -> EKF_PRED_POS_HORIZ_REL
       512u -> EKF_PRED_POS_HORIZ_ABS
+      32768u -> EKF_GPS_GLITCHING
       1024u -> EKF_UNINITIALIZED
       else -> null
     }
@@ -97,6 +103,7 @@ public enum class EkfStatusFlags(
       if (v and 128u == 128u) add(EKF_CONST_POS_MODE)
       if (v and 256u == 256u) add(EKF_PRED_POS_HORIZ_REL)
       if (v and 512u == 512u) add(EKF_PRED_POS_HORIZ_ABS)
+      if (v and 32768u == 32768u) add(EKF_GPS_GLITCHING)
       if (v and 1024u == 1024u) add(EKF_UNINITIALIZED)
     }
   }

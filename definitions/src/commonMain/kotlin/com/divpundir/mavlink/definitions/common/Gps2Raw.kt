@@ -65,7 +65,7 @@ import kotlin.Unit
  * @param vAcc Altitude uncertainty.
  * units = mm
  * @param velAcc Speed uncertainty.
- * units = mm
+ * units = mm/s
  * @param hdgAcc Heading / track uncertainty
  * units = degE5
  */
@@ -182,7 +182,7 @@ public data class Gps2Raw(
   public val vAcc: UInt = 0u,
   /**
    * Speed uncertainty.
-   * units = mm
+   * units = mm/s
    */
   @GeneratedMavField(
     type = "uint32_t",
