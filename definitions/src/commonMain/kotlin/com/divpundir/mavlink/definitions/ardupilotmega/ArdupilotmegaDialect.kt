@@ -6,6 +6,7 @@ import com.divpundir.mavlink.definitions.common.CommonDialect
 import com.divpundir.mavlink.definitions.csairlink.CsairlinkDialect
 import com.divpundir.mavlink.definitions.cubepilot.CubepilotDialect
 import com.divpundir.mavlink.definitions.icarous.IcarousDialect
+import com.divpundir.mavlink.definitions.loweheiser.LoweheiserDialect
 import com.divpundir.mavlink.definitions.uavionix.UavionixDialect
 
 @GeneratedMavDialect
@@ -13,6 +14,7 @@ public data object ArdupilotmegaDialect : AbstractMavDialect(
   setOf(
     CsairlinkDialect,
     CubepilotDialect,
+    LoweheiserDialect,
     IcarousDialect,
     UavionixDialect,
     CommonDialect,
@@ -70,6 +72,8 @@ public data object ArdupilotmegaDialect : AbstractMavDialect(
     DeviceOpReadReply.id to DeviceOpReadReply,
     DeviceOpWrite.id to DeviceOpWrite,
     DeviceOpWriteReply.id to DeviceOpWriteReply,
+    SecureCommand.id to SecureCommand,
+    SecureCommandReply.id to SecureCommandReply,
     AdapTuning.id to AdapTuning,
     VisionPositionDelta.id to VisionPositionDelta,
     AoaSsa.id to AoaSsa,
@@ -83,5 +87,10 @@ public data object ArdupilotmegaDialect : AbstractMavDialect(
     ObstacleDistance3d.id to ObstacleDistance3d,
     WaterDepth.id to WaterDepth,
     McuStatus.id to McuStatus,
+    EscTelemetry13To16.id to EscTelemetry13To16,
+    EscTelemetry17To20.id to EscTelemetry17To20,
+    EscTelemetry21To24.id to EscTelemetry21To24,
+    EscTelemetry25To28.id to EscTelemetry25To28,
+    EscTelemetry29To32.id to EscTelemetry29To32,
   )
 )

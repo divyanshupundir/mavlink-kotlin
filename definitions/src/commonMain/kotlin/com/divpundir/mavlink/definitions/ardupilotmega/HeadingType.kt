@@ -13,12 +13,15 @@ public enum class HeadingType(
   COURSE_OVER_GROUND(0u),
   @GeneratedMavEnumEntry
   HEADING(1u),
+  @GeneratedMavEnumEntry
+  DEFAULT(2u),
   ;
 
   public companion object : MavEnum.MavCompanion<HeadingType> {
     override fun getEntryFromValueOrNull(v: UInt): HeadingType? = when (v) {
       0u -> COURSE_OVER_GROUND
       1u -> HEADING
+      2u -> DEFAULT
       else -> null
     }
   }

@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavEnum
-import com.divpundir.mavlink.api.WorkInProgress
 import kotlin.UInt
 
 /**
@@ -73,13 +72,6 @@ public enum class MavResult(
    */
   @GeneratedMavEnumEntry
   COMMAND_UNSUPPORTED_MAV_FRAME(9u),
-  /**
-   * Sender is not authorized to control this MAV component. Control may be requested using
-   * MAV_CMD_REQUEST_OPERATOR_CONTROL.
-   */
-  @WorkInProgress
-  @GeneratedMavEnumEntry
-  PERMISSION_DENIED(10u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavResult> {
@@ -94,7 +86,6 @@ public enum class MavResult(
       7u -> COMMAND_LONG_ONLY
       8u -> COMMAND_INT_ONLY
       9u -> COMMAND_UNSUPPORTED_MAV_FRAME
-      10u -> PERMISSION_DENIED
       else -> null
     }
   }

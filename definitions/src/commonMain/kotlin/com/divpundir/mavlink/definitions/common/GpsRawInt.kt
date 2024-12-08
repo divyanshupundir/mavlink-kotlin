@@ -62,7 +62,7 @@ import kotlin.Unit
  * @param vAcc Altitude uncertainty.
  * units = mm
  * @param velAcc Speed uncertainty.
- * units = mm
+ * units = mm/s
  * @param hdgAcc Heading / track uncertainty
  * units = degE5
  * @param yaw Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX
@@ -162,7 +162,7 @@ public data class GpsRawInt(
   public val vAcc: UInt = 0u,
   /**
    * Speed uncertainty.
-   * units = mm
+   * units = mm/s
    */
   @GeneratedMavField(
     type = "uint32_t",

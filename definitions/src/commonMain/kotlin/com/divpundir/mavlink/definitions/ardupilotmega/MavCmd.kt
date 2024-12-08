@@ -674,11 +674,11 @@ public enum class MavCmd(
    * index = 4; label = arg2; 
    * argument2.
    *
-   * index = 5; 
-   * Empty
+   * index = 5; label = arg3; 
+   * argument3.
    *
-   * index = 6; 
-   * Empty
+   * index = 6; label = arg4; 
+   * argument4.
    *
    * index = 7; 
    * Empty
@@ -752,7 +752,7 @@ public enum class MavCmd(
    * index = 2; 
    * Empty
    *
-   * index = 3; label = alt rate-of-change; units = m/s/s; 
+   * index = 3; label = alt rate-of-change; units = m/s; 
    * Rate of change, toward new altitude. 0 for maximum rate change. Positive numbers only, as
    * negative numbers will not converge on the new target alt.
    *
@@ -799,6 +799,34 @@ public enum class MavCmd(
    */
   @GeneratedMavEnumEntry
   GUIDED_CHANGE_HEADING(43_002u),
+  /**
+   * Provide a value for height above ground level. This can be used for things like fixed wing and
+   * VTOL landing.
+   *
+   * index = 1; label = hagl; units = m; 
+   * Height above ground level.
+   *
+   * index = 2; label = accuracy; units = m; 
+   * estimated one standard deviation accuracy of the measurement. Set to NaN if not known.
+   *
+   * index = 3; label = timeout; units = s; 
+   * Timeout for this data. The flight controller should only consider this data valid within the
+   * timeout window.
+   *
+   * index = 4; 
+   * Empty
+   *
+   * index = 5; 
+   * Empty
+   *
+   * index = 6; 
+   * Empty
+   *
+   * index = 7; 
+   * Empty
+   */
+  @GeneratedMavEnumEntry
+  SET_HAGL(43_005u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavCmd> {
@@ -834,6 +862,7 @@ public enum class MavCmd(
       43000u -> GUIDED_CHANGE_SPEED
       43001u -> GUIDED_CHANGE_ALTITUDE
       43002u -> GUIDED_CHANGE_HEADING
+      43005u -> SET_HAGL
       else -> null
     }
   }

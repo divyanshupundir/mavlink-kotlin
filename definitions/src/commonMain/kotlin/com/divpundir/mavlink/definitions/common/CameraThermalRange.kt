@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeFloat
@@ -46,7 +45,6 @@ import kotlin.Unit
  * @param minPointY Temperature min point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if
  * unknown.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 277u,
   crcExtra = 62,

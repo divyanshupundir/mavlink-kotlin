@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.definitions.common.MavDistanceSensor
 import com.divpundir.mavlink.definitions.common.MavFrame
 import com.divpundir.mavlink.serialization.MavDataDecoder
@@ -46,7 +45,6 @@ import kotlin.Unit
  * @param maxDistance Maximum distance the sensor can measure.
  * units = m
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 11_037u,
   crcExtra = -126,
