@@ -6,7 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Result from PARAM_EXT_SET message (or a PARAM_SET within a transaction).
+ * Result from PARAM_EXT_SET message.
  */
 @GeneratedMavEnum
 public enum class ParamAck(
@@ -28,10 +28,9 @@ public enum class ParamAck(
   @GeneratedMavEnumEntry
   FAILED(2u),
   /**
-   * Parameter value received but not yet set/accepted. A subsequent PARAM_ACK_TRANSACTION or
-   * PARAM_EXT_ACK with the final result will follow once operation is completed. This is returned
-   * immediately for parameters that take longer to set, indicating that the the parameter was received
-   * and does not need to be resent.
+   * Parameter value received but not yet set/accepted. A subsequent PARAM_EXT_ACK with the final
+   * result will follow once operation is completed. This is returned immediately for parameters that
+   * take longer to set, indicating that the the parameter was received and does not need to be resent.
    */
   @GeneratedMavEnumEntry
   IN_PROGRESS(3u),
