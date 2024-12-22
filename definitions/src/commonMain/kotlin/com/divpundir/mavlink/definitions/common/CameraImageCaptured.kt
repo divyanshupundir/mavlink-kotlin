@@ -47,7 +47,8 @@ import kotlin.collections.List
  * units = ms
  * @param timeUtc Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
  * units = us
- * @param cameraId Deprecated/unused. Component IDs are used to differentiate multiple cameras.
+ * @param cameraId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
+ * component is a MAVLink camera (with its own component id). Field name is usually camera_device_id.
  * @param lat Latitude where image was taken
  * units = degE7
  * @param lon Longitude where capture was taken
@@ -81,7 +82,8 @@ public data class CameraImageCaptured(
   @GeneratedMavField(type = "uint64_t")
   public val timeUtc: ULong = 0uL,
   /**
-   * Deprecated/unused. Component IDs are used to differentiate multiple cameras.
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
+   * MAVLink camera (with its own component id). Field name is usually camera_device_id.
    */
   @GeneratedMavField(type = "uint8_t")
   public val cameraId: UByte = 0u,
