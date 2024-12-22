@@ -36,6 +36,7 @@ import kotlin.Unit
  * only the offset is used).
  *         The message sequence is repeated numerous times with results being filtered/averaged to
  * estimate the offset.
+ *         See also: https://mavlink.io/en/services/timesync.html.
  *       
  *
  * @param tc1 Time sync timestamp 1. Syncing: 0. Responding: Timestamp of responding component.

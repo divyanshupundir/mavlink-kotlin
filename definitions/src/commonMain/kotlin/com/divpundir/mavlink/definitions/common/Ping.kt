@@ -36,7 +36,7 @@ import kotlin.Unit
  * @param targetComponent 0: request ping from all receiving components. If greater than 0: message
  * is a ping response and number is the component id of the requesting component.
  */
-@Deprecated(message = "to be removed / merged with SYSTEM_TIME")
+@Deprecated(message = "To be removed / merged with TIMESYNC")
 @GeneratedMavMessage(
   id = 4u,
   crcExtra = -19,
