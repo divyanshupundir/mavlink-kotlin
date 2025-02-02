@@ -2320,6 +2320,20 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   OBLIQUE_SURVEY(260u),
   /**
+   * Enable the specified standard MAVLink mode.
+   *           If the specified mode is not supported, the vehicle should ACK with
+   * MAV_RESULT_FAILED.
+   *           See https://mavlink.io/en/services/standard_modes.html
+   *         
+   *
+   * index = 1; label = Standard Mode; 
+   * The mode to set.
+   *
+   * index = 2; index = 3; index = 4; index = 5; index = 6; index = 7; 
+   */
+  @GeneratedMavEnumEntry
+  DO_SET_STANDARD_MODE(262u),
+  /**
    * start running a mission
    *
    * index = 1; label = First Item; 
@@ -4211,6 +4225,7 @@ public enum class MavCmd(
       246u -> PREFLIGHT_REBOOT_SHUTDOWN
       252u -> OVERRIDE_GOTO
       260u -> OBLIQUE_SURVEY
+      262u -> DO_SET_STANDARD_MODE
       300u -> MISSION_START
       310u -> ACTUATOR_TEST
       311u -> CONFIGURE_ACTUATOR
