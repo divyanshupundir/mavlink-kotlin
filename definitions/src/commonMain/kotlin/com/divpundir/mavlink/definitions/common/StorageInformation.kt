@@ -2,15 +2,18 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeString
@@ -149,7 +152,7 @@ public data class StorageInformation(
     type = "uint8_t",
     extension = true,
   )
-  public val storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u),
+  public val storageUsage: MavBitmaskValue<StorageUsageFlag> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<StorageInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<StorageInformation> = Companion
 
@@ -180,7 +183,7 @@ public data class StorageInformation(
     encoder.encodeEnumValue(status.value, 1)
     encoder.encodeEnumValue(type.value, 1)
     encoder.encodeString(name, 32)
-    encoder.encodeEnumValue(storageUsage.value, 1)
+    encoder.encodeBitmaskValue(storageUsage.value, 1)
     return encoder.bytes.truncateZeros()
   }
 
@@ -213,9 +216,9 @@ public data class StorageInformation(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val name = decoder.safeDecodeString(32)
-      val storageUsage = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = StorageUsageFlag.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val storageUsage = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = StorageUsageFlag.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       return StorageInformation(
@@ -261,7 +264,7 @@ public data class StorageInformation(
 
     public var name: String = ""
 
-    public var storageUsage: MavEnumValue<StorageUsageFlag> = MavEnumValue.fromValue(0u)
+    public var storageUsage: MavBitmaskValue<StorageUsageFlag> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): StorageInformation = StorageInformation(
       timeBootMs = timeBootMs,

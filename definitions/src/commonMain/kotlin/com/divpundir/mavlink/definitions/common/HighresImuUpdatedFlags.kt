@@ -83,11 +83,6 @@ public enum class HighresImuUpdatedFlags(
    */
   @GeneratedMavEnumEntry
   HIGHRES_IMU_UPDATED_TEMPERATURE(4_096u),
-  /**
-   * All fields in HIGHRES_IMU have been updated.
-   */
-  @GeneratedMavEnumEntry
-  HIGHRES_IMU_UPDATED_ALL(65_535u),
   ;
 
   public companion object : MavBitmask.MavCompanion<HighresImuUpdatedFlags> {
@@ -106,7 +101,6 @@ public enum class HighresImuUpdatedFlags(
       1024u -> HIGHRES_IMU_UPDATED_DIFF_PRESSURE
       2048u -> HIGHRES_IMU_UPDATED_PRESSURE_ALT
       4096u -> HIGHRES_IMU_UPDATED_TEMPERATURE
-      65535u -> HIGHRES_IMU_UPDATED_ALL
       else -> null
     }
 
@@ -125,7 +119,6 @@ public enum class HighresImuUpdatedFlags(
       if (v and 1024u == 1024u) add(HIGHRES_IMU_UPDATED_DIFF_PRESSURE)
       if (v and 2048u == 2048u) add(HIGHRES_IMU_UPDATED_PRESSURE_ALT)
       if (v and 4096u == 4096u) add(HIGHRES_IMU_UPDATED_TEMPERATURE)
-      if (v and 65535u == 65535u) add(HIGHRES_IMU_UPDATED_ALL)
     }
   }
 }
