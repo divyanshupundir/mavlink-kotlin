@@ -14,11 +14,6 @@ public enum class EscFailureFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * No ESC failure.
-   */
-  @GeneratedMavEnumEntry
-  ESC_FAILURE_NONE(0u),
-  /**
    * Over current failure.
    */
   @GeneratedMavEnumEntry
@@ -57,7 +52,6 @@ public enum class EscFailureFlags(
 
   public companion object : MavBitmask.MavCompanion<EscFailureFlags> {
     override fun getEntryFromValueOrNull(v: UInt): EscFailureFlags? = when (v) {
-      0u -> ESC_FAILURE_NONE
       1u -> ESC_FAILURE_OVER_CURRENT
       2u -> ESC_FAILURE_OVER_VOLTAGE
       4u -> ESC_FAILURE_OVER_TEMPERATURE
@@ -69,7 +63,6 @@ public enum class EscFailureFlags(
     }
 
     override fun getFlagsFromValue(v: UInt): List<EscFailureFlags> = buildList {
-      if (v and 0u == 0u) add(ESC_FAILURE_NONE)
       if (v and 1u == 1u) add(ESC_FAILURE_OVER_CURRENT)
       if (v and 2u == 2u) add(ESC_FAILURE_OVER_VOLTAGE)
       if (v and 4u == 4u) add(ESC_FAILURE_OVER_TEMPERATURE)

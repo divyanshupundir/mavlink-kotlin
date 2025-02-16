@@ -2513,7 +2513,9 @@ public enum class MavCmd(
    *
    * index = 3; label = Req Param 3; 
    * Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in
-   * the requested message. By default assumed not used (0).
+   * the requested message. By default assumed not used (0).  When used as an index ID, 0 means "all
+   * instances", "1" means the first instance in the sequence (the emitted message will have an id of 0
+   * if message ids are 0-indexed, or 1 if index numbers start from one).
    *
    * index = 4; label = Req Param 4; 
    * The use of this parameter (if any), must be defined in the requested message. By default
@@ -2521,11 +2523,11 @@ public enum class MavCmd(
    *
    * index = 5; label = Req Param 5; 
    * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * assumed not used (0/NaN).
    *
    * index = 6; label = Req Param 6; 
    * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * assumed not used (0/NaN).
    *
    * index = 7; label = Response Target; 
    * Target address of message stream (if message has target address fields). 0: Flight-stack
