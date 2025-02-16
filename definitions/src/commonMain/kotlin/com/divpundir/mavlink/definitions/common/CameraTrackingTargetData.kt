@@ -14,11 +14,6 @@ public enum class CameraTrackingTargetData(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * No target data
-   */
-  @GeneratedMavEnumEntry
-  NONE(0u),
-  /**
    * Target data embedded in image data (proprietary)
    */
   @GeneratedMavEnumEntry
@@ -37,7 +32,6 @@ public enum class CameraTrackingTargetData(
 
   public companion object : MavBitmask.MavCompanion<CameraTrackingTargetData> {
     override fun getEntryFromValueOrNull(v: UInt): CameraTrackingTargetData? = when (v) {
-      0u -> NONE
       1u -> EMBEDDED
       2u -> RENDERED
       4u -> IN_STATUS
@@ -45,7 +39,6 @@ public enum class CameraTrackingTargetData(
     }
 
     override fun getFlagsFromValue(v: UInt): List<CameraTrackingTargetData> = buildList {
-      if (v and 0u == 0u) add(NONE)
       if (v and 1u == 1u) add(EMBEDDED)
       if (v and 2u == 2u) add(RENDERED)
       if (v and 4u == 4u) add(IN_STATUS)

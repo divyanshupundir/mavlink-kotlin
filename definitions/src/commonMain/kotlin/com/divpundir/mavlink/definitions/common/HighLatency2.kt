@@ -74,7 +74,7 @@ import kotlin.Unit
  * units = dm
  * @param epv Maximum error vertical position since last message
  * units = dm
- * @param temperatureAir Air temperature from airspeed sensor
+ * @param temperatureAir Air temperature
  * units = degC
  * @param climbRate Maximum climb rate magnitude since last message
  * units = dm/s
@@ -204,7 +204,7 @@ public data class HighLatency2(
   @GeneratedMavField(type = "uint8_t")
   public val epv: UByte = 0u,
   /**
-   * Air temperature from airspeed sensor
+   * Air temperature
    * units = degC
    */
   @GeneratedMavField(type = "int8_t")

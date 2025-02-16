@@ -14,11 +14,6 @@ public enum class HilSensorUpdatedFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * None of the fields in HIL_SENSOR have been updated
-   */
-  @GeneratedMavEnumEntry
-  HIL_SENSOR_UPDATED_NONE(0u),
-  /**
    * The value in the xacc field has been updated
    */
   @GeneratedMavEnumEntry
@@ -92,7 +87,6 @@ public enum class HilSensorUpdatedFlags(
 
   public companion object : MavBitmask.MavCompanion<HilSensorUpdatedFlags> {
     override fun getEntryFromValueOrNull(v: UInt): HilSensorUpdatedFlags? = when (v) {
-      0u -> HIL_SENSOR_UPDATED_NONE
       1u -> HIL_SENSOR_UPDATED_XACC
       2u -> HIL_SENSOR_UPDATED_YACC
       4u -> HIL_SENSOR_UPDATED_ZACC
@@ -111,7 +105,6 @@ public enum class HilSensorUpdatedFlags(
     }
 
     override fun getFlagsFromValue(v: UInt): List<HilSensorUpdatedFlags> = buildList {
-      if (v and 0u == 0u) add(HIL_SENSOR_UPDATED_NONE)
       if (v and 1u == 1u) add(HIL_SENSOR_UPDATED_XACC)
       if (v and 2u == 2u) add(HIL_SENSOR_UPDATED_YACC)
       if (v and 4u == 4u) add(HIL_SENSOR_UPDATED_ZACC)

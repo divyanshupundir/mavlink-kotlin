@@ -14,11 +14,6 @@ public enum class HighresImuUpdatedFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * None of the fields in HIGHRES_IMU have been updated
-   */
-  @GeneratedMavEnumEntry
-  HIGHRES_IMU_UPDATED_NONE(0u),
-  /**
    * The value in the xacc field has been updated
    */
   @GeneratedMavEnumEntry
@@ -87,7 +82,6 @@ public enum class HighresImuUpdatedFlags(
 
   public companion object : MavBitmask.MavCompanion<HighresImuUpdatedFlags> {
     override fun getEntryFromValueOrNull(v: UInt): HighresImuUpdatedFlags? = when (v) {
-      0u -> HIGHRES_IMU_UPDATED_NONE
       1u -> HIGHRES_IMU_UPDATED_XACC
       2u -> HIGHRES_IMU_UPDATED_YACC
       4u -> HIGHRES_IMU_UPDATED_ZACC
@@ -105,7 +99,6 @@ public enum class HighresImuUpdatedFlags(
     }
 
     override fun getFlagsFromValue(v: UInt): List<HighresImuUpdatedFlags> = buildList {
-      if (v and 0u == 0u) add(HIGHRES_IMU_UPDATED_NONE)
       if (v and 1u == 1u) add(HIGHRES_IMU_UPDATED_XACC)
       if (v and 2u == 2u) add(HIGHRES_IMU_UPDATED_YACC)
       if (v and 4u == 4u) add(HIGHRES_IMU_UPDATED_ZACC)
