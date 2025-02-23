@@ -64,6 +64,21 @@ public enum class MavTunnelPayloadType(
    */
   @GeneratedMavEnumEntry
   STORM32_RESERVED9(209u),
+  /**
+   * Registered for ModalAI remote OSD protocol.
+   */
+  @GeneratedMavEnumEntry
+  MODALAI_REMOTE_OSD(210u),
+  /**
+   * Registered for ModalAI ESC UART passthru protocol.
+   */
+  @GeneratedMavEnumEntry
+  MODALAI_ESC_UART_PASSTHRU(211u),
+  /**
+   * Registered for ModalAI vendor use.
+   */
+  @GeneratedMavEnumEntry
+  MODALAI_IO_UART_PASSTHRU(212u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavTunnelPayloadType> {
@@ -79,6 +94,9 @@ public enum class MavTunnelPayloadType(
       207u -> STORM32_RESERVED7
       208u -> STORM32_RESERVED8
       209u -> STORM32_RESERVED9
+      210u -> MODALAI_REMOTE_OSD
+      211u -> MODALAI_ESC_UART_PASSTHRU
+      212u -> MODALAI_IO_UART_PASSTHRU
       else -> null
     }
   }
