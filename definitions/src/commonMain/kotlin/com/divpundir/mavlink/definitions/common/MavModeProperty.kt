@@ -31,18 +31,28 @@ public enum class MavModeProperty(
    */
   @GeneratedMavEnumEntry
   NOT_USER_SELECTABLE(2u),
+  /**
+   * If set, this mode is automatically controlled (it may use but does not require a manual
+   * controller).
+   *           If unset the mode is a assumed to require user input (be a manual mode).
+   *         
+   */
+  @GeneratedMavEnumEntry
+  AUTO_MODE(4u),
   ;
 
   public companion object : MavBitmask.MavCompanion<MavModeProperty> {
     override fun getEntryFromValueOrNull(v: UInt): MavModeProperty? = when (v) {
       1u -> ADVANCED
       2u -> NOT_USER_SELECTABLE
+      4u -> AUTO_MODE
       else -> null
     }
 
     override fun getFlagsFromValue(v: UInt): List<MavModeProperty> = buildList {
       if (v and 1u == 1u) add(ADVANCED)
       if (v and 2u == 2u) add(NOT_USER_SELECTABLE)
+      if (v and 4u == 4u) add(AUTO_MODE)
     }
   }
 }
