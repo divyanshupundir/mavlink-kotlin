@@ -3345,10 +3345,13 @@ public enum class MavCmd(
   /**
    * Fence vertex for an inclusion polygon (the polygon must not be self-intersecting). The vehicle
    * must stay within this area. Minimum of 3 vertices required.
+   *           The vertices for a polygon must be sent sequentially, each with param1 set to the
+   * total number of vertices in the polygon.
    *         
    *
    * index = 1; label = Vertex Count; 
-   * Polygon vertex count
+   * Polygon vertex count. This is the number of vertices in the current polygon (all vertices will
+   * have the same number).
    *
    * index = 2; label = Inclusion Group; 
    * Vehicle must be inside ALL inclusion zones in a single group, vehicle must be inside at least
@@ -3374,10 +3377,13 @@ public enum class MavCmd(
   /**
    * Fence vertex for an exclusion polygon (the polygon must not be self-intersecting). The vehicle
    * must stay outside this area. Minimum of 3 vertices required.
+   *           The vertices for a polygon must be sent sequentially, each with param1 set to the
+   * total number of vertices in the polygon.                
    *         
    *
    * index = 1; label = Vertex Count; 
-   * Polygon vertex count
+   * Polygon vertex count. This is the number of vertices in the current polygon (all vertices will
+   * have the same number).
    *
    * index = 2; 
    * Reserved
