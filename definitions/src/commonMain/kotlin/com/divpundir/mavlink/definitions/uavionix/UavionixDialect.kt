@@ -13,5 +13,10 @@ public data object UavionixDialect : AbstractMavDialect(
     UavionixAdsbOutCfg.id to UavionixAdsbOutCfg,
     UavionixAdsbOutDynamic.id to UavionixAdsbOutDynamic,
     UavionixAdsbTransceiverHealthReport.id to UavionixAdsbTransceiverHealthReport,
+    UavionixAdsbOutCfgRegistration.id to UavionixAdsbOutCfgRegistration,
+    UavionixAdsbOutCfgFlightid.id to UavionixAdsbOutCfgFlightid,
+    UavionixAdsbGet.id to UavionixAdsbGet,
+    UavionixAdsbOutControl.id to UavionixAdsbOutControl,
+    UavionixAdsbOutStatus.id to UavionixAdsbOutStatus,
   )
 )

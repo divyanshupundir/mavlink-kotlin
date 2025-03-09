@@ -23,8 +23,8 @@ import kotlin.Unit
 
 /**
  * Fuel status.
- *         This message provides "generic" fuel level information for display in a GCS and for
- * triggering failsafes in an autopilot.
+ *         This message provides "generic" fuel level information for  in a GCS and for triggering
+ * failsafes in an autopilot.
  *         The fuel type and associated units for fields in this message are defined in the enum
  * MAV_FUEL_TYPE.
  *
