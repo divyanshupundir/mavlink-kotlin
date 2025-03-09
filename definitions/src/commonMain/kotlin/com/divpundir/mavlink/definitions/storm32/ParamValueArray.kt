@@ -29,7 +29,7 @@ import kotlin.collections.List
  * @param paramArrayLen Number of onboard parameters in this array.
  * @param flags Flags.
  * @param packetBuf Parameters buffer. Contains a series of variable length parameter blocks, one
- * per parameter, with format as specifed elsewhere.
+ * per parameter, with format as specified elsewhere.
  */
 @GeneratedMavMessage(
   id = 60_041u,
@@ -58,7 +58,7 @@ public data class ParamValueArray(
   public val flags: UShort = 0u,
   /**
    * Parameters buffer. Contains a series of variable length parameter blocks, one per parameter,
-   * with format as specifed elsewhere.
+   * with format as specified elsewhere.
    */
   @GeneratedMavField(type = "uint8_t[248]")
   public val packetBuf: List<UByte> = emptyList(),
