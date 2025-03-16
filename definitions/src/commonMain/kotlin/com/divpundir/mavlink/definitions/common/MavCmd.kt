@@ -2357,7 +2357,7 @@ public enum class MavCmd(
   /**
    * Actuator testing command. This is similar to MAV_CMD_DO_MOTOR_TEST but operates on the level of
    * output functions, i.e. it is possible to test Motor1 independent from which output it is
-   * configured on. Autopilots typically refuse this command while armed.
+   * configured on. Autopilots must NACK this command with MAV_RESULT_TEMPORARILY_REJECTED while armed.
    *
    * index = 1; label = Value; 
    * Output value: 1 means maximum positive output, 0 to center servos or minimum motor thrust
