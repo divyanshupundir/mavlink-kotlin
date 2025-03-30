@@ -1855,7 +1855,9 @@ public enum class MavCmd(
    * Enable (1: enable, 0:disable).
    *
    * index = 2; label = Axis; 
-   * Specify which axis are autotuned. 0 indicates autopilot default settings.
+   * Specify axes for which autotuning is enabled/disabled. 0 indicates the field is unused (for
+   * compatiblity reasons). If 0 the autopilot will follow its default behaviour, which is usually to
+   * tune all axes.
    *
    * index = 3; 
    * Empty.
