@@ -2,14 +2,17 @@ package com.divpundir.mavlink.definitions.uavionix
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeString
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
@@ -46,7 +49,7 @@ public data class UavionixAdsbOutStatus(
    * ADS-B transponder status state flags
    */
   @GeneratedMavField(type = "uint8_t")
-  public val state: MavEnumValue<UavionixAdsbOutStatusState> = MavEnumValue.fromValue(0u),
+  public val state: MavBitmaskValue<UavionixAdsbOutStatusState> = MavBitmaskValue.fromValue(0u),
   /**
    * Mode A code (typically 1200 [0x04B0] for VFR)
    */
@@ -67,7 +70,7 @@ public data class UavionixAdsbOutStatus(
    * ADS-B transponder fault flags
    */
   @GeneratedMavField(type = "uint8_t")
-  public val fault: MavEnumValue<UavionixAdsbOutStatusFault> = MavEnumValue.fromValue(0u),
+  public val fault: MavBitmaskValue<UavionixAdsbOutStatusFault> = MavBitmaskValue.fromValue(0u),
   /**
    * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces
    * (0x20) used as a trailing pad character, or when call sign is unavailable.
@@ -80,10 +83,10 @@ public data class UavionixAdsbOutStatus(
   override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(squawk)
-    encoder.encodeEnumValue(state.value, 1)
+    encoder.encodeBitmaskValue(state.value, 1)
     encoder.encodeEnumValue(nicNacp.value, 1)
     encoder.encodeUInt8(boardtemp)
-    encoder.encodeEnumValue(fault.value, 1)
+    encoder.encodeBitmaskValue(fault.value, 1)
     encoder.encodeString(flightId, 8)
     return encoder.bytes
   }
@@ -91,10 +94,10 @@ public data class UavionixAdsbOutStatus(
   override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(squawk)
-    encoder.encodeEnumValue(state.value, 1)
+    encoder.encodeBitmaskValue(state.value, 1)
     encoder.encodeEnumValue(nicNacp.value, 1)
     encoder.encodeUInt8(boardtemp)
-    encoder.encodeEnumValue(fault.value, 1)
+    encoder.encodeBitmaskValue(fault.value, 1)
     encoder.encodeString(flightId, 8)
     return encoder.bytes.truncateZeros()
   }
@@ -112,18 +115,18 @@ public data class UavionixAdsbOutStatus(
       val decoder = MavDataDecoder(bytes)
 
       val squawk = decoder.safeDecodeUInt16()
-      val state = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbOutStatusState.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val state = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = UavionixAdsbOutStatusState.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val nicNacp = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = UavionixAdsbOutStatusNicNacp.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val boardtemp = decoder.safeDecodeUInt8()
-      val fault = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbOutStatusFault.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val fault = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = UavionixAdsbOutStatusFault.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val flightId = decoder.safeDecodeString(8)
 
@@ -142,7 +145,7 @@ public data class UavionixAdsbOutStatus(
   }
 
   public class Builder {
-    public var state: MavEnumValue<UavionixAdsbOutStatusState> = MavEnumValue.fromValue(0u)
+    public var state: MavBitmaskValue<UavionixAdsbOutStatusState> = MavBitmaskValue.fromValue(0u)
 
     public var squawk: UShort = 0u
 
@@ -150,7 +153,7 @@ public data class UavionixAdsbOutStatus(
 
     public var boardtemp: UByte = 0u
 
-    public var fault: MavEnumValue<UavionixAdsbOutStatusFault> = MavEnumValue.fromValue(0u)
+    public var fault: MavBitmaskValue<UavionixAdsbOutStatusFault> = MavBitmaskValue.fromValue(0u)
 
     public var flightId: String = ""
 

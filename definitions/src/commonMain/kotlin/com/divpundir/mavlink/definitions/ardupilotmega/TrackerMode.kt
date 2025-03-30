@@ -12,16 +12,39 @@ import kotlin.UInt
 public enum class TrackerMode(
   override val `value`: UInt,
 ) : MavEnum {
+  /**
+   * MANUAL
+   */
   @GeneratedMavEnumEntry
   MANUAL(0u),
+  /**
+   * STOP
+   */
   @GeneratedMavEnumEntry
   STOP(1u),
+  /**
+   * SCAN
+   */
   @GeneratedMavEnumEntry
   SCAN(2u),
+  /**
+   * SERVO TEST
+   */
   @GeneratedMavEnumEntry
   SERVO_TEST(3u),
+  /**
+   * GUIDED
+   */
+  @GeneratedMavEnumEntry
+  GUIDED(4u),
+  /**
+   * AUTO
+   */
   @GeneratedMavEnumEntry
   AUTO(10u),
+  /**
+   * INITIALISING
+   */
   @GeneratedMavEnumEntry
   INITIALIZING(16u),
   ;
@@ -32,6 +55,7 @@ public enum class TrackerMode(
       1u -> STOP
       2u -> SCAN
       3u -> SERVO_TEST
+      4u -> GUIDED
       10u -> AUTO
       16u -> INITIALIZING
       else -> null

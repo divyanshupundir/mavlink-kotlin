@@ -12,56 +12,136 @@ import kotlin.UInt
 public enum class CopterMode(
   override val `value`: UInt,
 ) : MavEnum {
+  /**
+   * STABILIZE
+   */
   @GeneratedMavEnumEntry
   STABILIZE(0u),
+  /**
+   * ACRO
+   */
   @GeneratedMavEnumEntry
   ACRO(1u),
+  /**
+   * ALT HOLD
+   */
   @GeneratedMavEnumEntry
   ALT_HOLD(2u),
+  /**
+   * AUTO
+   */
   @GeneratedMavEnumEntry
   AUTO(3u),
+  /**
+   * GUIDED
+   */
   @GeneratedMavEnumEntry
   GUIDED(4u),
+  /**
+   * LOITER
+   */
   @GeneratedMavEnumEntry
   LOITER(5u),
+  /**
+   * RTL
+   */
   @GeneratedMavEnumEntry
   RTL(6u),
+  /**
+   * CIRCLE
+   */
   @GeneratedMavEnumEntry
   CIRCLE(7u),
+  /**
+   * LAND
+   */
   @GeneratedMavEnumEntry
   LAND(9u),
+  /**
+   * DRIFT
+   */
   @GeneratedMavEnumEntry
   DRIFT(11u),
+  /**
+   * SPORT
+   */
   @GeneratedMavEnumEntry
   SPORT(13u),
+  /**
+   * FLIP
+   */
   @GeneratedMavEnumEntry
   FLIP(14u),
+  /**
+   * AUTOTUNE
+   */
   @GeneratedMavEnumEntry
   AUTOTUNE(15u),
+  /**
+   * POSHOLD
+   */
   @GeneratedMavEnumEntry
   POSHOLD(16u),
+  /**
+   * BRAKE
+   */
   @GeneratedMavEnumEntry
   BRAKE(17u),
+  /**
+   * THROW
+   */
   @GeneratedMavEnumEntry
   THROW(18u),
+  /**
+   * AVOID ADSB
+   */
   @GeneratedMavEnumEntry
   AVOID_ADSB(19u),
+  /**
+   * GUIDED NOGPS
+   */
   @GeneratedMavEnumEntry
   GUIDED_NOGPS(20u),
+  /**
+   * SMARTRTL
+   */
   @GeneratedMavEnumEntry
   SMART_RTL(21u),
+  /**
+   * FLOWHOLD
+   */
   @GeneratedMavEnumEntry
   FLOWHOLD(22u),
+  /**
+   * FOLLOW
+   */
   @GeneratedMavEnumEntry
   FOLLOW(23u),
+  /**
+   * ZIGZAG
+   */
   @GeneratedMavEnumEntry
   ZIGZAG(24u),
+  /**
+   * SYSTEMID
+   */
   @GeneratedMavEnumEntry
   SYSTEMID(25u),
+  /**
+   * AUTOROTATE
+   */
   @GeneratedMavEnumEntry
   AUTOROTATE(26u),
+  /**
+   * AUTO RTL
+   */
   @GeneratedMavEnumEntry
   AUTO_RTL(27u),
+  /**
+   * TURTLE
+   */
+  @GeneratedMavEnumEntry
+  TURTLE(28u),
   ;
 
   public companion object : MavEnum.MavCompanion<CopterMode> {
@@ -91,6 +171,7 @@ public enum class CopterMode(
       25u -> SYSTEMID
       26u -> AUTOROTATE
       27u -> AUTO_RTL
+      28u -> TURTLE
       else -> null
     }
   }

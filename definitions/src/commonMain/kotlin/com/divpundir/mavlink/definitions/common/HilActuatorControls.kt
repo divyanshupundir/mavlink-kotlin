@@ -33,7 +33,7 @@ import kotlin.collections.List
  * units = us
  * @param controls Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
  * @param mode System mode. Includes arming state.
- * @param flags Flags as bitfield, 1: indicate simulation using lockstep.
+ * @param flags Flags bitmask.
  */
 @GeneratedMavMessage(
   id = 93u,
@@ -58,17 +58,17 @@ public data class HilActuatorControls(
   @GeneratedMavField(type = "uint8_t")
   public val mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0u),
   /**
-   * Flags as bitfield, 1: indicate simulation using lockstep.
+   * Flags bitmask.
    */
   @GeneratedMavField(type = "uint64_t")
-  public val flags: ULong = 0uL,
+  public val flags: MavBitmaskValue<HilActuatorControlsFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<HilActuatorControls> {
   override val instanceCompanion: MavMessage.MavCompanion<HilActuatorControls> = Companion
 
   override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
-    encoder.encodeUInt64(flags)
+    encoder.encodeBitmaskValue(flags.value, 8)
     encoder.encodeFloatArray(controls, 64)
     encoder.encodeBitmaskValue(mode.value, 1)
     return encoder.bytes
@@ -77,7 +77,7 @@ public data class HilActuatorControls(
   override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
-    encoder.encodeUInt64(flags)
+    encoder.encodeBitmaskValue(flags.value, 8)
     encoder.encodeFloatArray(controls, 64)
     encoder.encodeBitmaskValue(mode.value, 1)
     return encoder.bytes.truncateZeros()
@@ -96,7 +96,10 @@ public data class HilActuatorControls(
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()
-      val flags = decoder.safeDecodeUInt64()
+      val flags = decoder.safeDecodeBitmaskValue(8).let { value ->
+        val flags = HilActuatorControlsFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
+      }
       val controls = decoder.safeDecodeFloatArray(64)
       val mode = decoder.safeDecodeBitmaskValue(1).let { value ->
         val flags = MavModeFlag.getFlagsFromValue(value)
@@ -122,7 +125,7 @@ public data class HilActuatorControls(
 
     public var mode: MavBitmaskValue<MavModeFlag> = MavBitmaskValue.fromValue(0u)
 
-    public var flags: ULong = 0uL
+    public var flags: MavBitmaskValue<HilActuatorControlsFlags> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): HilActuatorControls = HilActuatorControls(
       timeUsec = timeUsec,

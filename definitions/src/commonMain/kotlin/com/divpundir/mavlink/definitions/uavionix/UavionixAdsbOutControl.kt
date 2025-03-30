@@ -2,14 +2,17 @@ package com.divpundir.mavlink.definitions.uavionix
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt16
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.safeDecodeString
@@ -45,7 +48,7 @@ public data class UavionixAdsbOutControl(
    * ADS-B transponder control state flags
    */
   @GeneratedMavField(type = "uint8_t")
-  public val state: MavEnumValue<UavionixAdsbOutControlState> = MavEnumValue.fromValue(0u),
+  public val state: MavBitmaskValue<UavionixAdsbOutControlState> = MavBitmaskValue.fromValue(0u),
   /**
    * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar
    * corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
@@ -74,7 +77,7 @@ public data class UavionixAdsbOutControl(
    * X-Bit enable (military transponders only)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val xBit: MavEnumValue<UavionixAdsbXbit> = MavEnumValue.fromValue(0u),
+  public val xBit: MavBitmaskValue<UavionixAdsbXbit> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<UavionixAdsbOutControl> {
   override val instanceCompanion: MavMessage.MavCompanion<UavionixAdsbOutControl> = Companion
 
@@ -82,10 +85,10 @@ public data class UavionixAdsbOutControl(
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeInt32(baroaltmsl)
     encoder.encodeUInt16(squawk)
-    encoder.encodeEnumValue(state.value, 1)
+    encoder.encodeBitmaskValue(state.value, 1)
     encoder.encodeEnumValue(emergencystatus.value, 1)
     encoder.encodeString(flightId, 8)
-    encoder.encodeEnumValue(xBit.value, 1)
+    encoder.encodeBitmaskValue(xBit.value, 1)
     return encoder.bytes
   }
 
@@ -93,10 +96,10 @@ public data class UavionixAdsbOutControl(
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeInt32(baroaltmsl)
     encoder.encodeUInt16(squawk)
-    encoder.encodeEnumValue(state.value, 1)
+    encoder.encodeBitmaskValue(state.value, 1)
     encoder.encodeEnumValue(emergencystatus.value, 1)
     encoder.encodeString(flightId, 8)
-    encoder.encodeEnumValue(xBit.value, 1)
+    encoder.encodeBitmaskValue(xBit.value, 1)
     return encoder.bytes.truncateZeros()
   }
 
@@ -114,18 +117,18 @@ public data class UavionixAdsbOutControl(
 
       val baroaltmsl = decoder.safeDecodeInt32()
       val squawk = decoder.safeDecodeUInt16()
-      val state = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbOutControlState.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val state = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = UavionixAdsbOutControlState.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val emergencystatus = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = UavionixAdsbEmergencyStatus.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
       val flightId = decoder.safeDecodeString(8)
-      val xBit = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = UavionixAdsbXbit.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val xBit = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = UavionixAdsbXbit.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       return UavionixAdsbOutControl(
@@ -143,7 +146,7 @@ public data class UavionixAdsbOutControl(
   }
 
   public class Builder {
-    public var state: MavEnumValue<UavionixAdsbOutControlState> = MavEnumValue.fromValue(0u)
+    public var state: MavBitmaskValue<UavionixAdsbOutControlState> = MavBitmaskValue.fromValue(0u)
 
     public var baroaltmsl: Int = 0
 
@@ -154,7 +157,7 @@ public data class UavionixAdsbOutControl(
 
     public var flightId: String = ""
 
-    public var xBit: MavEnumValue<UavionixAdsbXbit> = MavEnumValue.fromValue(0u)
+    public var xBit: MavBitmaskValue<UavionixAdsbXbit> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): UavionixAdsbOutControl = UavionixAdsbOutControl(
       state = state,

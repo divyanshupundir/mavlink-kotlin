@@ -12,24 +12,61 @@ import kotlin.UInt
 public enum class SubMode(
   override val `value`: UInt,
 ) : MavEnum {
+  /**
+   * STABILIZE
+   */
   @GeneratedMavEnumEntry
   STABILIZE(0u),
+  /**
+   * ACRO
+   */
   @GeneratedMavEnumEntry
   ACRO(1u),
+  /**
+   * ALT HOLD
+   */
   @GeneratedMavEnumEntry
   ALT_HOLD(2u),
+  /**
+   * AUTO
+   */
   @GeneratedMavEnumEntry
   AUTO(3u),
+  /**
+   * GUIDED
+   */
   @GeneratedMavEnumEntry
   GUIDED(4u),
+  /**
+   * CIRCLE
+   */
   @GeneratedMavEnumEntry
   CIRCLE(7u),
+  /**
+   * SURFACE
+   */
   @GeneratedMavEnumEntry
   SURFACE(9u),
+  /**
+   * POSHOLD
+   */
   @GeneratedMavEnumEntry
   POSHOLD(16u),
+  /**
+   * MANUAL
+   */
   @GeneratedMavEnumEntry
   MANUAL(19u),
+  /**
+   * MOTORDETECT
+   */
+  @GeneratedMavEnumEntry
+  MOTORDETECT(20u),
+  /**
+   * SURFTRAK
+   */
+  @GeneratedMavEnumEntry
+  SURFTRAK(21u),
   ;
 
   public companion object : MavEnum.MavCompanion<SubMode> {
@@ -43,6 +80,8 @@ public enum class SubMode(
       9u -> SURFACE
       16u -> POSHOLD
       19u -> MANUAL
+      20u -> MOTORDETECT
+      21u -> SURFTRAK
       else -> null
     }
   }
