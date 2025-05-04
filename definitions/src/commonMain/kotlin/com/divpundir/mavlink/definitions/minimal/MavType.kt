@@ -248,6 +248,12 @@ public enum class MavType(
    */
   @GeneratedMavEnumEntry
   ILLUMINATOR(44u),
+  /**
+   * Satellite. Used for satellite-like systems (orbiting satellites, space stations). For rockets
+   * (or landers) use MAV_TYPE_ROCKET.
+   */
+  @GeneratedMavEnumEntry
+  SATELLITE(45u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavType> {
@@ -297,6 +303,7 @@ public enum class MavType(
       42u -> WINCH
       43u -> GENERIC_MULTIROTOR
       44u -> ILLUMINATOR
+      45u -> SATELLITE
       else -> null
     }
   }

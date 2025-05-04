@@ -1723,8 +1723,8 @@ public enum class MavCmd(
    * enable? (0=disable, 1=enable, 2=disable_floor_only)
    *
    * index = 2; label = Types; 
-   * Fence types to enable or disable as a bitmask. 0: all fences should be enabled or disabled
-   * (parameter is ignored, for compatibility reasons).Parameter is ignored if param1=2
+   * Fence types to enable or disable as a bitmask. 0: field is unused/all fences should be enabled
+   * or disabled (for compatiblity reasons). Parameter is ignored if param1=2.
    *
    * index = 3; 
    * Empty

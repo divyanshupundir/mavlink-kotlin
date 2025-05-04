@@ -2,17 +2,16 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
-import com.divpundir.mavlink.api.MavBitmask
+import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
-import kotlin.collections.List
 
 /**
  * Flags in RALLY_POINT message.
  */
-@GeneratedMavEnum(bitmask = true)
+@GeneratedMavEnum
 public enum class RallyFlags(
   override val `value`: UInt,
-) : MavBitmask {
+) : MavEnum {
   /**
    * Flag set when requiring favorable winds for landing.
    */
@@ -37,20 +36,13 @@ public enum class RallyFlags(
   ALT_FRAME(24u),
   ;
 
-  public companion object : MavBitmask.MavCompanion<RallyFlags> {
+  public companion object : MavEnum.MavCompanion<RallyFlags> {
     override fun getEntryFromValueOrNull(v: UInt): RallyFlags? = when (v) {
       1u -> FAVORABLE_WIND
       2u -> LAND_IMMEDIATELY
       4u -> ALT_FRAME_VALID
       24u -> ALT_FRAME
       else -> null
-    }
-
-    override fun getFlagsFromValue(v: UInt): List<RallyFlags> = buildList {
-      if (v and 1u == 1u) add(FAVORABLE_WIND)
-      if (v and 2u == 2u) add(LAND_IMMEDIATELY)
-      if (v and 4u == 4u) add(ALT_FRAME_VALID)
-      if (v and 24u == 24u) add(ALT_FRAME)
     }
   }
 }

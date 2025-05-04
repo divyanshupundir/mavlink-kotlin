@@ -14,6 +14,7 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -38,6 +39,7 @@ import kotlin.Unit
  * number.
  * units = us
  */
+@Deprecated(message = "")
 @GeneratedMavMessage(
   id = 48u,
   crcExtra = 41,
