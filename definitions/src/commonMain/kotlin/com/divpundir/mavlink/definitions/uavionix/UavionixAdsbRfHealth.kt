@@ -14,8 +14,6 @@ public enum class UavionixAdsbRfHealth(
   override val `value`: UInt,
 ) : MavBitmask {
   @GeneratedMavEnumEntry
-  INITIALIZING(0u),
-  @GeneratedMavEnumEntry
   OK(1u),
   @GeneratedMavEnumEntry
   FAIL_TX(2u),
@@ -25,7 +23,6 @@ public enum class UavionixAdsbRfHealth(
 
   public companion object : MavBitmask.MavCompanion<UavionixAdsbRfHealth> {
     override fun getEntryFromValueOrNull(v: UInt): UavionixAdsbRfHealth? = when (v) {
-      0u -> INITIALIZING
       1u -> OK
       2u -> FAIL_TX
       16u -> FAIL_RX
@@ -33,7 +30,6 @@ public enum class UavionixAdsbRfHealth(
     }
 
     override fun getFlagsFromValue(v: UInt): List<UavionixAdsbRfHealth> = buildList {
-      if (v and 0u == 0u) add(INITIALIZING)
       if (v and 1u == 1u) add(OK)
       if (v and 2u == 2u) add(FAIL_TX)
       if (v and 16u == 16u) add(FAIL_RX)

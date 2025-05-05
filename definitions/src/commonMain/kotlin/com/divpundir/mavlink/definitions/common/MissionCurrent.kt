@@ -29,7 +29,7 @@ import kotlin.Unit
  * system will fly towards/execute when the mission is running).
  *         This message should be streamed all the time (nominally at 1Hz).
  *         This message should be emitted following a call to MAV_CMD_DO_SET_MISSION_CURRENT or
- * SET_MISSION_CURRENT.
+ * MISSION_SET_CURRENT.
  *       
  *
  * @param seq Sequence

@@ -2,16 +2,16 @@ package com.divpundir.mavlink.definitions.ardupilotmega
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavBitmaskValue
+import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
-import com.divpundir.mavlink.serialization.encodeBitmaskValue
+import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeInt16
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
-import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeInt16
 import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
@@ -105,7 +105,7 @@ public data class RallyPoint(
    * Configuration flags.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u),
+  public val flags: MavEnumValue<RallyFlags> = MavEnumValue.fromValue(0u),
 ) : MavMessage<RallyPoint> {
   override val instanceCompanion: MavMessage.MavCompanion<RallyPoint> = Companion
 
@@ -120,7 +120,7 @@ public data class RallyPoint(
     encoder.encodeUInt8(targetComponent)
     encoder.encodeUInt8(idx)
     encoder.encodeUInt8(count)
-    encoder.encodeBitmaskValue(flags.value, 1)
+    encoder.encodeEnumValue(flags.value, 1)
     return encoder.bytes
   }
 
@@ -135,7 +135,7 @@ public data class RallyPoint(
     encoder.encodeUInt8(targetComponent)
     encoder.encodeUInt8(idx)
     encoder.encodeUInt8(count)
-    encoder.encodeBitmaskValue(flags.value, 1)
+    encoder.encodeEnumValue(flags.value, 1)
     return encoder.bytes.truncateZeros()
   }
 
@@ -160,9 +160,9 @@ public data class RallyPoint(
       val targetComponent = decoder.safeDecodeUInt8()
       val idx = decoder.safeDecodeUInt8()
       val count = decoder.safeDecodeUInt8()
-      val flags = decoder.safeDecodeBitmaskValue(1).let { value ->
-        val flags = RallyFlags.getFlagsFromValue(value)
-        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
+      val flags = decoder.safeDecodeEnumValue(1).let { value ->
+        val entry = RallyFlags.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
       return RallyPoint(
@@ -202,7 +202,7 @@ public data class RallyPoint(
 
     public var landDir: UShort = 0u
 
-    public var flags: MavBitmaskValue<RallyFlags> = MavBitmaskValue.fromValue(0u)
+    public var flags: MavEnumValue<RallyFlags> = MavEnumValue.fromValue(0u)
 
     public fun build(): RallyPoint = RallyPoint(
       targetSystem = targetSystem,

@@ -32,7 +32,10 @@ import kotlin.collections.List
  * with MAV_CMD_REQUEST_MESSAGE.
  *
  * @param capabilities Bitmap of capabilities
- * @param flightSwVersion Firmware version number
+ * @param flightSwVersion Firmware version number.
+ *         The field must be encoded as 4 bytes, where each byte (shown from MSB to LSB) is part of
+ * a semantic version: (major) (minor) (patch) (FIRMWARE_VERSION_TYPE).
+ *       
  * @param middlewareSwVersion Middleware version number
  * @param osSwVersion Operating system version number
  * @param boardVersion HW / board version (last 8 bits should be silicon ID, if any). The first 16
@@ -63,7 +66,10 @@ public data class AutopilotVersion(
   @GeneratedMavField(type = "uint64_t")
   public val capabilities: MavBitmaskValue<MavProtocolCapability> = MavBitmaskValue.fromValue(0u),
   /**
-   * Firmware version number
+   * Firmware version number.
+   *         The field must be encoded as 4 bytes, where each byte (shown from MSB to LSB) is part
+   * of a semantic version: (major) (minor) (patch) (FIRMWARE_VERSION_TYPE).
+   *       
    */
   @GeneratedMavField(type = "uint32_t")
   public val flightSwVersion: UInt = 0u,
