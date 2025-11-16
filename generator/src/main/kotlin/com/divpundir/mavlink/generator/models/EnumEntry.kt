@@ -53,9 +53,15 @@ internal data class EnumEntryXml(
     )
 }
 
-private fun String.parseValue(): Long = if (startsWith("2**")) {
-    val exponent = substringAfter("2**").toInt()
-    1L shl exponent
-} else {
-    toLong()
+private fun String.parseValue(): Long {
+    if (this.startsWith("2**")) {
+        val exponent = this.substringAfter("2**").toInt()
+        return 1L shl exponent
+    }
+
+    if (this.startsWith("0x")) {
+        return this.substringAfter("0x").toLong(16)
+    }
+
+    return this.toLong()
 }
