@@ -45,6 +45,7 @@ tasks.generateMavlink {
     include(file("mavlink/message_definitions/v1.0/standard.xml"))
     include(file("mavlink/message_definitions/v1.0/common.xml"))
     include(file("mavlink/message_definitions/v1.0/csAirLink.xml"))
+    include(file("mavlink/message_definitions/v1.0/loweheiser.xml"))
     include(file("mavlink/message_definitions/v1.0/cubepilot.xml"))
     include(file("mavlink/message_definitions/v1.0/ualberta.xml"))
     include(file("mavlink/message_definitions/v1.0/uAvionix.xml"))
