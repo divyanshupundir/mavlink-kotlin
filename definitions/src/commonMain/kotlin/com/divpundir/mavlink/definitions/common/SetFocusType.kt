@@ -18,8 +18,8 @@ public enum class SetFocusType(
   @GeneratedMavEnumEntry
   FOCUS_TYPE_STEP(0u),
   /**
-   * Continuous focus up/down until stopped (-1 for focusing in, 1 for focusing out towards
-   * infinity, 0 to stop focusing)
+   * Continuous normalized focus in/out rate until stopped. Range -1..1, negative: in, positive: out
+   * towards infinity, 0 to stop focusing. Other values should be clipped to the range.
    */
   @GeneratedMavEnumEntry
   FOCUS_TYPE_CONTINUOUS(1u),

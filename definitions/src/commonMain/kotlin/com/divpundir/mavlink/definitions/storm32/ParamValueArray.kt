@@ -3,6 +3,7 @@ package com.divpundir.mavlink.definitions.storm32
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -31,6 +32,7 @@ import kotlin.collections.List
  * @param packetBuf Parameters buffer. Contains a series of variable length parameter blocks, one
  * per parameter, with format as specified elsewhere.
  */
+@WorkInProgress
 @GeneratedMavMessage(
   id = 60_041u,
   crcExtra = -65,

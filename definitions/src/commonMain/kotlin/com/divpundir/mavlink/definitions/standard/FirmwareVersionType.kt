@@ -1,4 +1,4 @@
-package com.divpundir.mavlink.definitions.common
+package com.divpundir.mavlink.definitions.standard
 
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry

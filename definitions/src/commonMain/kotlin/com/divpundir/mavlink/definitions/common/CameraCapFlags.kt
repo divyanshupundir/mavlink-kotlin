@@ -3,6 +3,7 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavBitmask
+import com.divpundir.mavlink.api.WorkInProgress
 import kotlin.UInt
 import kotlin.collections.List
 
@@ -80,6 +81,13 @@ public enum class CameraCapFlags(
    */
   @GeneratedMavEnumEntry
   HAS_THERMAL_RANGE(4_096u),
+  /**
+   * Camera supports Moving Target Indicators (MTI) on the camera view (using
+   * MAV_CMD_CAMERA_START_MTI).
+   */
+  @WorkInProgress
+  @GeneratedMavEnumEntry
+  HAS_MTI(8_192u),
   ;
 
   public companion object : MavBitmask.MavCompanion<CameraCapFlags> {
@@ -97,6 +105,7 @@ public enum class CameraCapFlags(
       1024u -> HAS_TRACKING_RECTANGLE
       2048u -> HAS_TRACKING_GEO_STATUS
       4096u -> HAS_THERMAL_RANGE
+      8192u -> HAS_MTI
       else -> null
     }
 
@@ -114,6 +123,7 @@ public enum class CameraCapFlags(
       if (v and 1024u == 1024u) add(HAS_TRACKING_RECTANGLE)
       if (v and 2048u == 2048u) add(HAS_TRACKING_GEO_STATUS)
       if (v and 4096u == 4096u) add(HAS_THERMAL_RANGE)
+      if (v and 8192u == 8192u) add(HAS_MTI)
     }
   }
 }

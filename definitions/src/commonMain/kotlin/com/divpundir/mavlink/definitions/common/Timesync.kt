@@ -30,7 +30,7 @@ import kotlin.Unit
  *         Systems can determine if they are receiving a request or response based on the value of
  * `tc`.
  *         If the response has `target_system==target_component==0` the remote system has not been
- * updated to use the component IDs and cannot reliably timesync; the requestor may report an error.
+ * updated to use the component IDs and cannot reliably timesync; the requester may report an error.
  *         Timestamps are UNIX Epoch time or time since system boot in nanoseconds (the timestamp
  * format can be inferred by checking for the magnitude of the number; generally it doesn't matter as
  * only the offset is used).

@@ -43,10 +43,10 @@ import kotlin.Unit
  * @param vendorName Name of the gimbal vendor.
  * @param modelName Name of the gimbal model.
  * @param customName Custom name of the gimbal given to it by the user.
- * @param firmwareVersion Version of the gimbal firmware, encoded as: (Dev & 0xff) << 24 | (Patch &
- * 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff).
- * @param hardwareVersion Version of the gimbal hardware, encoded as: (Dev & 0xff) << 24 | (Patch &
- * 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff).
+ * @param firmwareVersion Version of the gimbal firmware, encoded as: `(Dev & 0xff) << 24 + (Patch &
+ * 0xff) << 16 + (Minor & 0xff) << 8 + (Major & 0xff)`.
+ * @param hardwareVersion Version of the gimbal hardware, encoded as: `(Dev & 0xff) << 24 + (Patch &
+ * 0xff) << 16 + (Minor & 0xff) << 8 + (Major & 0xff)`.
  * @param uid UID of gimbal hardware (0 if unknown).
  * @param capFlags Bitmap of gimbal capability flags.
  * @param customCapFlags Bitmap for use for gimbal-specific capability flags.
@@ -97,14 +97,14 @@ public data class GimbalDeviceInformation(
   @GeneratedMavField(type = "char[32]")
   public val customName: String = "",
   /**
-   * Version of the gimbal firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
-   * & 0xff) << 8 | (Major & 0xff).
+   * Version of the gimbal firmware, encoded as: `(Dev & 0xff) << 24 + (Patch & 0xff) << 16 + (Minor
+   * & 0xff) << 8 + (Major & 0xff)`.
    */
   @GeneratedMavField(type = "uint32_t")
   public val firmwareVersion: UInt = 0u,
   /**
-   * Version of the gimbal hardware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
-   * & 0xff) << 8 | (Major & 0xff).
+   * Version of the gimbal hardware, encoded as: `(Dev & 0xff) << 24 + (Patch & 0xff) << 16 + (Minor
+   * & 0xff) << 8 + (Major & 0xff)`.
    */
   @GeneratedMavField(type = "uint32_t")
   public val hardwareVersion: UInt = 0u,

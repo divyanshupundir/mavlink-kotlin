@@ -92,5 +92,6 @@ public data object ArdupilotmegaDialect : AbstractMavDialect(
     EscTelemetry21To24.id to EscTelemetry21To24,
     EscTelemetry25To28.id to EscTelemetry25To28,
     EscTelemetry29To32.id to EscTelemetry29To32,
+    NamedValueString.id to NamedValueString,
   )
 )

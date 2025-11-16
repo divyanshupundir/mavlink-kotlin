@@ -2,15 +2,19 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.definitions.standard.MavBool
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeFloatArray
@@ -54,8 +58,8 @@ import kotlin.collections.List
  * units = m
  * @param q Quaternion of landing target orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
  * @param type Type of landing target
- * @param positionValid Boolean indicating whether the position fields (x, y, z, q, type) contain
- * valid target position information (valid: 1, invalid: 0). Default is 0 (invalid).
+ * @param positionValid Position fields (x, y, z, q, type) contain valid target position information
+ * (MAV_BOOL_FALSE: invalid values). Values not equal to 0 or 1 are invalid.
  */
 @GeneratedMavMessage(
   id = 149u,
@@ -153,14 +157,14 @@ public data class LandingTarget(
   )
   public val type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0u),
   /**
-   * Boolean indicating whether the position fields (x, y, z, q, type) contain valid target position
-   * information (valid: 1, invalid: 0). Default is 0 (invalid).
+   * Position fields (x, y, z, q, type) contain valid target position information (MAV_BOOL_FALSE:
+   * invalid values). Values not equal to 0 or 1 are invalid.
    */
   @GeneratedMavField(
     type = "uint8_t",
     extension = true,
   )
-  public val positionValid: UByte = 0u,
+  public val positionValid: MavBitmaskValue<MavBool> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<LandingTarget> {
   override val instanceCompanion: MavMessage.MavCompanion<LandingTarget> = Companion
 
@@ -192,7 +196,7 @@ public data class LandingTarget(
     encoder.encodeFloat(z)
     encoder.encodeFloatArray(q, 16)
     encoder.encodeEnumValue(type.value, 1)
-    encoder.encodeUInt8(positionValid)
+    encoder.encodeBitmaskValue(positionValid.value, 1)
     return encoder.bytes.truncateZeros()
   }
 
@@ -227,7 +231,10 @@ public data class LandingTarget(
         val entry = LandingTargetType.getEntryFromValueOrNull(value)
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
-      val positionValid = decoder.safeDecodeUInt8()
+      val positionValid = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = MavBool.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
+      }
 
       return LandingTarget(
         timeUsec = timeUsec,
@@ -278,7 +285,7 @@ public data class LandingTarget(
 
     public var type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0u)
 
-    public var positionValid: UByte = 0u
+    public var positionValid: MavBitmaskValue<MavBool> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): LandingTarget = LandingTarget(
       timeUsec = timeUsec,

@@ -14,6 +14,7 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.UByte
@@ -42,6 +43,7 @@ import kotlin.collections.List
  * @param posYaw Yaw. Set to NaN for unchanged
  * units = rad
  */
+@Deprecated(message = "Implemented PX4 v1.11 to v1.14. Not used in current flight stacks.")
 @GeneratedMavMessage(
   id = 333u,
   crcExtra = -25,

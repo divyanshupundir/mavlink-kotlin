@@ -16,7 +16,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Acknowldge success or failure of a flexifunction command
+ * Acknowledge success or failure of a flexifunction command
  *
  * @param commandType Command acknowledged
  * @param result result of acknowledge

@@ -4,7 +4,6 @@ import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeEnumValue
@@ -43,7 +42,6 @@ import kotlin.Unit
  * @param z Altitude of center point. Coordinate system depends on frame field.
  * units = m
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 360u,
   crcExtra = 11,

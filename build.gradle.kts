@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -12,7 +11,6 @@ plugins {
 }
 
 allprojects {
-
     tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
@@ -30,12 +28,12 @@ allprojects {
 
     plugins.withId("com.vanniktech.maven.publish.base") {
         configure<MavenPublishBaseExtension> {
-            publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
+            publishToMavenCentral(automaticRelease = true)
             signAllPublications()
 
             pom {
-                description.set("A modern MAVLink library for the JVM written in Kotlin.")
                 name.set(project.name)
+                description.set("A modern MAVLink library for the JVM written in Kotlin.")
                 inceptionYear.set("2022")
                 url.set("https://github.com/divyanshupundir/mavlink-kotlin/")
 

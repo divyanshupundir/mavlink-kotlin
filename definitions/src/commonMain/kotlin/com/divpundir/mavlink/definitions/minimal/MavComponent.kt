@@ -7,14 +7,23 @@ import kotlin.Deprecated
 import kotlin.UInt
 
 /**
- * Component ids (values) for the different types and instances of onboard hardware/software that
- * might make up a MAVLink system (autopilot, cameras, servos, GPS systems, avoidance systems etc.).
- *       Components must use the appropriate ID in their source address when sending messages.
- * Components can also use IDs to determine if they are the intended recipient of an incoming message.
- * The MAV_COMP_ID_ALL value is used to indicate messages that must be processed by all components.
- *       When creating new entries, components that can have multiple instances (e.g. cameras,
- * servos etc.) should be allocated sequential values. An appropriate number of values should be left
- * free after these components to allow the number of instances to be expanded.
+ * Legacy component ID values for particular types of hardware/software that might make up a MAVLink
+ * system (autopilot, cameras, servos, avoidance systems etc.).
+ *       
+ *         Components are not required or expected to use IDs with names that correspond to their
+ * type or function, but may choose to do so.
+ *         Using an ID that matches the type may slightly reduce the chances of component id
+ * clashes, as, for historical reasons, it is less likely to be used by some other type of component.
+ *         System integration will still need to ensure that all components have unique IDs.
+ *
+ *         Component IDs are used for addressing messages to a particular component within a system.
+ *         A component can use any unique ID between 1 and 255 (MAV_COMP_ID_ALL value is the
+ * broadcast address, used to send to all components).
+ *         
+ *         Historically component ID were also used for identifying the type of component.
+ *         New code must not use component IDs to infer the component type, but instead check the
+ * MAV_TYPE in the HEARTBEAT message!
+ *       
  */
 @GeneratedMavEnum
 public enum class MavComponent(
@@ -513,6 +522,21 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_CAMERA6(105u),
   /**
+   * Radio #1.
+   */
+  @GeneratedMavEnumEntry
+  MAV_COMP_ID_RADIO(110u),
+  /**
+   * Radio #2.
+   */
+  @GeneratedMavEnumEntry
+  MAV_COMP_ID_RADIO2(111u),
+  /**
+   * Radio #3.
+   */
+  @GeneratedMavEnumEntry
+  MAV_COMP_ID_RADIO3(112u),
+  /**
    * Servo #1.
    */
   @GeneratedMavEnumEntry
@@ -877,6 +901,9 @@ public enum class MavComponent(
       103u -> MAV_COMP_ID_CAMERA4
       104u -> MAV_COMP_ID_CAMERA5
       105u -> MAV_COMP_ID_CAMERA6
+      110u -> MAV_COMP_ID_RADIO
+      111u -> MAV_COMP_ID_RADIO2
+      112u -> MAV_COMP_ID_RADIO3
       140u -> MAV_COMP_ID_SERVO1
       141u -> MAV_COMP_ID_SERVO2
       142u -> MAV_COMP_ID_SERVO3

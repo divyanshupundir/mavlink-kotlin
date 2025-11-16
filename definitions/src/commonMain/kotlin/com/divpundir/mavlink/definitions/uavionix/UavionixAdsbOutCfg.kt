@@ -41,7 +41,7 @@ import kotlin.Unit
  * meters) divide by 2 and add one] (table 2-37 DO-282B)
  * @param stallspeed Aircraft stall speed in cm/s
  * units = cm/s
- * @param rfselect ADS-B transponder reciever and transmit enable flags
+ * @param rfselect ADS-B transponder receiver and transmit enable flags
  */
 @GeneratedMavMessage(
   id = 10_001u,
@@ -89,7 +89,7 @@ public data class UavionixAdsbOutCfg(
   @GeneratedMavField(type = "uint16_t")
   public val stallspeed: UShort = 0u,
   /**
-   * ADS-B transponder reciever and transmit enable flags
+   * ADS-B transponder receiver and transmit enable flags
    */
   @GeneratedMavField(type = "uint8_t")
   public val rfselect: MavBitmaskValue<UavionixAdsbOutRfSelect> = MavBitmaskValue.fromValue(0u),

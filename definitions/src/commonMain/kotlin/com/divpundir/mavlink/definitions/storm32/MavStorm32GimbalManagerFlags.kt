@@ -16,11 +16,6 @@ public enum class MavStorm32GimbalManagerFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * 0 = ignore.
-   */
-  @GeneratedMavEnumEntry
-  NONE(0u),
-  /**
    * Request to set RC input to active, or report RC input is active. Implies RC mixed. RC exclusive
    * is achieved by setting all clients to inactive.
    */
@@ -80,7 +75,6 @@ public enum class MavStorm32GimbalManagerFlags(
 
   public companion object : MavBitmask.MavCompanion<MavStorm32GimbalManagerFlags> {
     override fun getEntryFromValueOrNull(v: UInt): MavStorm32GimbalManagerFlags? = when (v) {
-      0u -> NONE
       1u -> RC_ACTIVE
       2u -> CLIENT_ONBOARD_ACTIVE
       4u -> CLIENT_AUTOPILOT_ACTIVE
@@ -96,7 +90,6 @@ public enum class MavStorm32GimbalManagerFlags(
     }
 
     override fun getFlagsFromValue(v: UInt): List<MavStorm32GimbalManagerFlags> = buildList {
-      if (v and 0u == 0u) add(NONE)
       if (v and 1u == 1u) add(RC_ACTIVE)
       if (v and 2u == 2u) add(CLIENT_ONBOARD_ACTIVE)
       if (v and 4u == 4u) add(CLIENT_AUTOPILOT_ACTIVE)

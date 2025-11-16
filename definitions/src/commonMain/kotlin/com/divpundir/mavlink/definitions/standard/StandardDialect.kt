@@ -9,4 +9,8 @@ public data object StandardDialect : AbstractMavDialect(
   setOf(
     MinimalDialect,
   ), 
-  emptyMap())
+  mapOf(
+    GlobalPositionInt.id to GlobalPositionInt,
+    AutopilotVersion.id to AutopilotVersion,
+  )
+)

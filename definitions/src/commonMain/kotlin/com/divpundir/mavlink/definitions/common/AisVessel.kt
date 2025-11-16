@@ -47,8 +47,8 @@ import kotlin.Unit
  * units = cdeg
  * @param velocity Speed over ground
  * units = cm/s
- * @param turnRate Turn rate
- * units = cdeg/s
+ * @param turnRate Turn rate, 0.1 degrees per second
+ * units = ddeg/s
  * @param navigationalStatus Navigational status
  * @param type Type of vessels
  * @param dimensionBow Distance from lat/lon location to bow
@@ -106,8 +106,8 @@ public data class AisVessel(
   @GeneratedMavField(type = "uint16_t")
   public val velocity: UShort = 0u,
   /**
-   * Turn rate
-   * units = cdeg/s
+   * Turn rate, 0.1 degrees per second
+   * units = ddeg/s
    */
   @GeneratedMavField(type = "int8_t")
   public val turnRate: Byte = 0,

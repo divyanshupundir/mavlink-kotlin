@@ -1,4 +1,4 @@
-package com.divpundir.mavlink.definitions.common
+package com.divpundir.mavlink.definitions.standard
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
@@ -39,7 +39,9 @@ import kotlin.collections.List
  * @param middlewareSwVersion Middleware version number
  * @param osSwVersion Operating system version number
  * @param boardVersion HW / board version (last 8 bits should be silicon ID, if any). The first 16
- * bits of this field specify https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt
+ * bits of this field specify a board type from an enumeration stored at
+ * https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt and with extensive additions at
+ * https://github.com/ArduPilot/ardupilot/blob/master/Tools/AP_Bootloader/board_types.txt
  * @param flightCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This
  * is not an unique identifier, but should allow to identify the commit using the main version number
  * even for very large code bases.
@@ -85,7 +87,9 @@ public data class AutopilotVersion(
   public val osSwVersion: UInt = 0u,
   /**
    * HW / board version (last 8 bits should be silicon ID, if any). The first 16 bits of this field
-   * specify https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt
+   * specify a board type from an enumeration stored at
+   * https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt and with extensive additions at
+   * https://github.com/ArduPilot/ardupilot/blob/master/Tools/AP_Bootloader/board_types.txt
    */
   @GeneratedMavField(type = "uint32_t")
   public val boardVersion: UInt = 0u,
