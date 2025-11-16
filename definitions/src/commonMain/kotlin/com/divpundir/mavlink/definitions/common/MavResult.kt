@@ -3,6 +3,7 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavEnum
+import com.divpundir.mavlink.api.WorkInProgress
 import kotlin.UInt
 
 /**
@@ -25,8 +26,9 @@ public enum class MavResult(
   @GeneratedMavEnumEntry
   TEMPORARILY_REJECTED(1u),
   /**
-   * Command is invalid (is supported but has invalid parameters). Retrying same command and
-   * parameters will not work.
+   * Command is invalid; it is supported but one or more parameter values are invalid (i.e.
+   * parameter reserved, value allowed by spec but not supported by flight stack, and so on). Retrying
+   * the same command and parameters will not work.
    */
   @GeneratedMavEnumEntry
   DENIED(2u),
@@ -72,6 +74,13 @@ public enum class MavResult(
    */
   @GeneratedMavEnumEntry
   COMMAND_UNSUPPORTED_MAV_FRAME(9u),
+  /**
+   * Command has been rejected because source system is not in control of the target
+   * system/component.
+   */
+  @WorkInProgress
+  @GeneratedMavEnumEntry
+  NOT_IN_CONTROL(10u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavResult> {
@@ -86,6 +95,7 @@ public enum class MavResult(
       7u -> COMMAND_LONG_ONLY
       8u -> COMMAND_INT_ONLY
       9u -> COMMAND_UNSUPPORTED_MAV_FRAME
+      10u -> NOT_IN_CONTROL
       else -> null
     }
   }

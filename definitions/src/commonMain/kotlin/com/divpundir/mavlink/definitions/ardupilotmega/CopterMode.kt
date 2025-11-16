@@ -142,6 +142,11 @@ public enum class CopterMode(
    */
   @GeneratedMavEnumEntry
   TURTLE(28u),
+  /**
+   * RATE_ACRO
+   */
+  @GeneratedMavEnumEntry
+  RATE_ACRO(29u),
   ;
 
   public companion object : MavEnum.MavCompanion<CopterMode> {
@@ -172,6 +177,7 @@ public enum class CopterMode(
       26u -> AUTOROTATE
       27u -> AUTO_RTL
       28u -> TURTLE
+      29u -> RATE_ACRO
       else -> null
     }
   }

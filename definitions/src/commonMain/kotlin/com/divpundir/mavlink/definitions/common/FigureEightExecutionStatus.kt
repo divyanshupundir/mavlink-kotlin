@@ -24,29 +24,36 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Vehicle status report that is sent out while orbit execution is in progress (see
- * MAV_CMD_DO_ORBIT).
+ *
+ *         Vehicle status report that is sent out while figure eight execution is in progress (see
+ * MAV_CMD_DO_FIGURE_EIGHT).
+ *         This may typically send at low rates: of the order of 2Hz.
+ *       
  *
  * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
  * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
  * number.
  * units = us
- * @param radius Radius of the orbit circle. Positive values orbit clockwise, negative values orbit
- * counter-clockwise.
+ * @param majorRadius Major axis radius of the figure eight. Positive: orbit the north circle
+ * clockwise. Negative: orbit the north circle counter-clockwise.
  * units = m
+ * @param minorRadius Minor axis radius of the figure eight. Defines the radius of two circles that
+ * make up the figure.
+ * units = m
+ * @param orientation Orientation of the figure eight major axis with respect to true north in
+ * [-pi,pi).
+ * units = rad
  * @param frame The coordinate system of the fields: x, y, z.
- * @param x X coordinate of center point. Coordinate system depends on frame field: local = x
- * position in meters * 1e4, global = latitude in degrees * 1e7.
- * @param y Y coordinate of center point.  Coordinate system depends on frame field: local = x
- * position in meters * 1e4, global = latitude in degrees * 1e7.
+ * @param x X coordinate of center point. Coordinate system depends on frame field.
+ * @param y Y coordinate of center point. Coordinate system depends on frame field.
  * @param z Altitude of center point. Coordinate system depends on frame field.
  * units = m
  */
 @GeneratedMavMessage(
-  id = 360u,
-  crcExtra = 11,
+  id = 361u,
+  crcExtra = 93,
 )
-public data class OrbitExecutionStatus(
+public data class FigureEightExecutionStatus(
   /**
    * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
    * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
@@ -55,26 +62,37 @@ public data class OrbitExecutionStatus(
   @GeneratedMavField(type = "uint64_t")
   public val timeUsec: ULong = 0uL,
   /**
-   * Radius of the orbit circle. Positive values orbit clockwise, negative values orbit
-   * counter-clockwise.
+   * Major axis radius of the figure eight. Positive: orbit the north circle clockwise. Negative:
+   * orbit the north circle counter-clockwise.
    * units = m
    */
   @GeneratedMavField(type = "float")
-  public val radius: Float = 0F,
+  public val majorRadius: Float = 0F,
+  /**
+   * Minor axis radius of the figure eight. Defines the radius of two circles that make up the
+   * figure.
+   * units = m
+   */
+  @GeneratedMavField(type = "float")
+  public val minorRadius: Float = 0F,
+  /**
+   * Orientation of the figure eight major axis with respect to true north in [-pi,pi).
+   * units = rad
+   */
+  @GeneratedMavField(type = "float")
+  public val orientation: Float = 0F,
   /**
    * The coordinate system of the fields: x, y, z.
    */
   @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
-   * X coordinate of center point. Coordinate system depends on frame field: local = x position in
-   * meters * 1e4, global = latitude in degrees * 1e7.
+   * X coordinate of center point. Coordinate system depends on frame field.
    */
   @GeneratedMavField(type = "int32_t")
   public val x: Int = 0,
   /**
-   * Y coordinate of center point.  Coordinate system depends on frame field: local = x position in
-   * meters * 1e4, global = latitude in degrees * 1e7.
+   * Y coordinate of center point. Coordinate system depends on frame field.
    */
   @GeneratedMavField(type = "int32_t")
   public val y: Int = 0,
@@ -84,13 +102,15 @@ public data class OrbitExecutionStatus(
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
-) : MavMessage<OrbitExecutionStatus> {
-  override val instanceCompanion: MavMessage.MavCompanion<OrbitExecutionStatus> = Companion
+) : MavMessage<FigureEightExecutionStatus> {
+  override val instanceCompanion: MavMessage.MavCompanion<FigureEightExecutionStatus> = Companion
 
   override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt64(timeUsec)
-    encoder.encodeFloat(radius)
+    encoder.encodeFloat(majorRadius)
+    encoder.encodeFloat(minorRadius)
+    encoder.encodeFloat(orientation)
     encoder.encodeInt32(x)
     encoder.encodeInt32(y)
     encoder.encodeFloat(z)
@@ -101,7 +121,9 @@ public data class OrbitExecutionStatus(
   override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt64(timeUsec)
-    encoder.encodeFloat(radius)
+    encoder.encodeFloat(majorRadius)
+    encoder.encodeFloat(minorRadius)
+    encoder.encodeFloat(orientation)
     encoder.encodeInt32(x)
     encoder.encodeInt32(y)
     encoder.encodeFloat(z)
@@ -109,20 +131,22 @@ public data class OrbitExecutionStatus(
     return encoder.bytes.truncateZeros()
   }
 
-  public companion object : MavMessage.MavCompanion<OrbitExecutionStatus> {
-    private const val SIZE_V1: Int = 25
+  public companion object : MavMessage.MavCompanion<FigureEightExecutionStatus> {
+    private const val SIZE_V1: Int = 33
 
-    private const val SIZE_V2: Int = 25
+    private const val SIZE_V2: Int = 33
 
-    override val id: UInt = 360u
+    override val id: UInt = 361u
 
-    override val crcExtra: Byte = 11
+    override val crcExtra: Byte = 93
 
-    override fun deserialize(bytes: ByteArray): OrbitExecutionStatus {
+    override fun deserialize(bytes: ByteArray): FigureEightExecutionStatus {
       val decoder = MavDataDecoder(bytes)
 
       val timeUsec = decoder.safeDecodeUInt64()
-      val radius = decoder.safeDecodeFloat()
+      val majorRadius = decoder.safeDecodeFloat()
+      val minorRadius = decoder.safeDecodeFloat()
+      val orientation = decoder.safeDecodeFloat()
       val x = decoder.safeDecodeInt32()
       val y = decoder.safeDecodeInt32()
       val z = decoder.safeDecodeFloat()
@@ -131,9 +155,11 @@ public data class OrbitExecutionStatus(
         if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
       }
 
-      return OrbitExecutionStatus(
+      return FigureEightExecutionStatus(
         timeUsec = timeUsec,
-        radius = radius,
+        majorRadius = majorRadius,
+        minorRadius = minorRadius,
+        orientation = orientation,
         frame = frame,
         x = x,
         y = y,
@@ -141,14 +167,18 @@ public data class OrbitExecutionStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OrbitExecutionStatus =
+    public operator fun invoke(builderAction: Builder.() -> Unit): FigureEightExecutionStatus =
         Builder().apply(builderAction).build()
   }
 
   public class Builder {
     public var timeUsec: ULong = 0uL
 
-    public var radius: Float = 0F
+    public var majorRadius: Float = 0F
+
+    public var minorRadius: Float = 0F
+
+    public var orientation: Float = 0F
 
     public var frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u)
 
@@ -158,9 +188,11 @@ public data class OrbitExecutionStatus(
 
     public var z: Float = 0F
 
-    public fun build(): OrbitExecutionStatus = OrbitExecutionStatus(
+    public fun build(): FigureEightExecutionStatus = FigureEightExecutionStatus(
       timeUsec = timeUsec,
-      radius = radius,
+      majorRadius = majorRadius,
+      minorRadius = minorRadius,
+      orientation = orientation,
       frame = frame,
       x = x,
       y = y,

@@ -7,7 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * These flags encode the MAV mode.
+ * These flags encode the MAV mode, see MAV_MODE enum for useful combinations.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavModeFlag(
@@ -56,7 +56,8 @@ public enum class MavModeFlag(
   @GeneratedMavEnumEntry
   TEST_ENABLED(2u),
   /**
-   * 0b00000001 Reserved for future use.
+   * 0b00000001 system-specific custom mode is enabled. When using this flag to enable a custom mode
+   * all other flags should be ignored.
    */
   @GeneratedMavEnumEntry
   CUSTOM_MODE_ENABLED(1u),

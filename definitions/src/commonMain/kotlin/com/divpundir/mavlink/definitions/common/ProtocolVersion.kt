@@ -1,9 +1,8 @@
-package com.divpundir.mavlink.definitions.minimal
+package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeUInt16
@@ -33,7 +32,6 @@ import kotlin.collections.List
  * @param specVersionHash The first 8 bytes (not characters printed in hex!) of the git hash.
  * @param libraryVersionHash The first 8 bytes (not characters printed in hex!) of the git hash.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 300u,
   crcExtra = -39,

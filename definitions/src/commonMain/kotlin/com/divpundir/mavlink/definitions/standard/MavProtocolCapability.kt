@@ -1,4 +1,4 @@
-package com.divpundir.mavlink.definitions.common
+package com.divpundir.mavlink.definitions.standard
 
 import com.divpundir.mavlink.api.GeneratedMavEnum
 import com.divpundir.mavlink.api.GeneratedMavEnumEntry
@@ -18,7 +18,8 @@ public enum class MavProtocolCapability(
 ) : MavBitmask {
   /**
    * Autopilot supports the MISSION_ITEM float message type.
-   *           Note that MISSION_ITEM is deprecated, and autopilots should use MISSION_INT instead.
+   *           Note that MISSION_ITEM is deprecated, and autopilots should use MISSION_ITEM_INT
+   * instead.
    *         
    */
   @GeneratedMavEnumEntry
@@ -134,6 +135,12 @@ public enum class MavProtocolCapability(
   @WorkInProgress
   @GeneratedMavEnumEntry
   COMPONENT_ACCEPTS_GCS_CONTROL(524_288u),
+  /**
+   * Autopilot has a connected gripper. MAVLink Grippers would set MAV_TYPE_GRIPPER instead.
+   */
+  @WorkInProgress
+  @GeneratedMavEnumEntry
+  GRIPPER(1_048_576u),
   ;
 
   public companion object : MavBitmask.MavCompanion<MavProtocolCapability> {
@@ -158,6 +165,7 @@ public enum class MavProtocolCapability(
       131072u -> PARAM_ENCODE_C_CAST
       262144u -> COMPONENT_IMPLEMENTS_GIMBAL_MANAGER
       524288u -> COMPONENT_ACCEPTS_GCS_CONTROL
+      1048576u -> GRIPPER
       else -> null
     }
 
@@ -182,6 +190,7 @@ public enum class MavProtocolCapability(
       if (v and 131072u == 131072u) add(PARAM_ENCODE_C_CAST)
       if (v and 262144u == 262144u) add(COMPONENT_IMPLEMENTS_GIMBAL_MANAGER)
       if (v and 524288u == 524288u) add(COMPONENT_ACCEPTS_GCS_CONTROL)
+      if (v and 1048576u == 1048576u) add(GRIPPER)
     }
   }
 }

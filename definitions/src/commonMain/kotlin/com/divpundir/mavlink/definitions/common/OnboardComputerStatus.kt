@@ -2,10 +2,11 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeInt16Array
 import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeInt8Array
@@ -14,6 +15,7 @@ import com.divpundir.mavlink.serialization.encodeUInt32Array
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
 import com.divpundir.mavlink.serialization.encodeUInt8Array
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeInt16Array
 import com.divpundir.mavlink.serialization.safeDecodeInt8
 import com.divpundir.mavlink.serialization.safeDecodeInt8Array
@@ -90,8 +92,8 @@ import kotlin.collections.List
  * @param linkRxMax Network capacity to the component system. A value of UINT32_MAX implies the
  * field is unused.
  * units = KiB/s
+ * @param statusFlags Bitmap of status flags.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 390u,
   crcExtra = -100,
@@ -222,6 +224,14 @@ public data class OnboardComputerStatus(
    */
   @GeneratedMavField(type = "uint32_t[6]")
   public val linkRxMax: List<UInt> = emptyList(),
+  /**
+   * Bitmap of status flags.
+   */
+  @GeneratedMavField(
+    type = "uint16_t",
+    extension = true,
+  )
+  public val statusFlags: MavBitmaskValue<ComputerStatusFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<OnboardComputerStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<OnboardComputerStatus> = Companion
 
@@ -272,13 +282,14 @@ public data class OnboardComputerStatus(
     encoder.encodeUInt8Array(gpuCombined, 10)
     encoder.encodeInt8(temperatureBoard)
     encoder.encodeInt8Array(temperatureCore, 8)
+    encoder.encodeBitmaskValue(statusFlags.value, 2)
     return encoder.bytes.truncateZeros()
   }
 
   public companion object : MavMessage.MavCompanion<OnboardComputerStatus> {
     private const val SIZE_V1: Int = 238
 
-    private const val SIZE_V2: Int = 238
+    private const val SIZE_V2: Int = 240
 
     override val id: UInt = 390u
 
@@ -307,6 +318,10 @@ public data class OnboardComputerStatus(
       val gpuCombined = decoder.safeDecodeUInt8Array(10)
       val temperatureBoard = decoder.safeDecodeInt8()
       val temperatureCore = decoder.safeDecodeInt8Array(8)
+      val statusFlags = decoder.safeDecodeBitmaskValue(2).let { value ->
+        val flags = ComputerStatusFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
+      }
 
       return OnboardComputerStatus(
         timeUsec = timeUsec,
@@ -329,6 +344,7 @@ public data class OnboardComputerStatus(
         linkRxRate = linkRxRate,
         linkTxMax = linkTxMax,
         linkRxMax = linkRxMax,
+        statusFlags = statusFlags,
       )
     }
 
@@ -377,6 +393,8 @@ public data class OnboardComputerStatus(
 
     public var linkRxMax: List<UInt> = emptyList()
 
+    public var statusFlags: MavBitmaskValue<ComputerStatusFlags> = MavBitmaskValue.fromValue(0u)
+
     public fun build(): OnboardComputerStatus = OnboardComputerStatus(
       timeUsec = timeUsec,
       uptime = uptime,
@@ -398,6 +416,7 @@ public data class OnboardComputerStatus(
       linkRxRate = linkRxRate,
       linkTxMax = linkTxMax,
       linkRxMax = linkRxMax,
+      statusFlags = statusFlags,
     )
   }
 }

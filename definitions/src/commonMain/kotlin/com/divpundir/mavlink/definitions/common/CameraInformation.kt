@@ -39,8 +39,8 @@ import kotlin.collections.List
  * units = ms
  * @param vendorName Name of the camera vendor
  * @param modelName Name of the camera model
- * @param firmwareVersion Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch &
- * 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff). Use 0 if not known.
+ * @param firmwareVersion Version of the camera firmware, encoded as: `(Dev & 0xff) << 24 + (Patch &
+ * 0xff) << 16 + (Minor & 0xff) << 8 + (Major & 0xff)`. Use 0 if not known.
  * @param focalLength Focal length. Use NaN if not known.
  * units = mm
  * @param sensorSizeH Image sensor size horizontal. Use NaN if not known.
@@ -88,8 +88,8 @@ public data class CameraInformation(
   @GeneratedMavField(type = "uint8_t[32]")
   public val modelName: List<UByte> = emptyList(),
   /**
-   * Version of the camera firmware, encoded as: (Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor
-   * & 0xff) << 8 | (Major & 0xff). Use 0 if not known.
+   * Version of the camera firmware, encoded as: `(Dev & 0xff) << 24 + (Patch & 0xff) << 16 + (Minor
+   * & 0xff) << 8 + (Major & 0xff)`. Use 0 if not known.
    */
   @GeneratedMavField(type = "uint32_t")
   public val firmwareVersion: UInt = 0u,

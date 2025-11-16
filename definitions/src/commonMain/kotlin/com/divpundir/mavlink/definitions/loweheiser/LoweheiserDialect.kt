@@ -1,16 +1,15 @@
-package com.divpundir.mavlink.definitions.standard
+package com.divpundir.mavlink.definitions.loweheiser
 
 import com.divpundir.mavlink.api.AbstractMavDialect
 import com.divpundir.mavlink.api.GeneratedMavDialect
 import com.divpundir.mavlink.definitions.minimal.MinimalDialect
 
 @GeneratedMavDialect
-public data object StandardDialect : AbstractMavDialect(
+public data object LoweheiserDialect : AbstractMavDialect(
   setOf(
     MinimalDialect,
   ), 
   mapOf(
-    GlobalPositionInt.id to GlobalPositionInt,
-    AutopilotVersion.id to AutopilotVersion,
+    LoweheiserGovEfi.id to LoweheiserGovEfi,
   )
 )

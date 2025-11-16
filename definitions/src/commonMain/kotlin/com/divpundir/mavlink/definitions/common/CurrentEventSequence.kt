@@ -2,14 +2,14 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavEnumValue
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
-import com.divpundir.mavlink.serialization.encodeEnumValue
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeUInt16
-import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
@@ -41,21 +41,21 @@ public data class CurrentEventSequence(
    * Flag bitset.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val flags: MavEnumValue<MavEventCurrentSequenceFlags> = MavEnumValue.fromValue(0u),
+  public val flags: MavBitmaskValue<MavEventCurrentSequenceFlags> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<CurrentEventSequence> {
   override val instanceCompanion: MavMessage.MavCompanion<CurrentEventSequence> = Companion
 
   override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(sequence)
-    encoder.encodeEnumValue(flags.value, 1)
+    encoder.encodeBitmaskValue(flags.value, 1)
     return encoder.bytes
   }
 
   override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(sequence)
-    encoder.encodeEnumValue(flags.value, 1)
+    encoder.encodeBitmaskValue(flags.value, 1)
     return encoder.bytes.truncateZeros()
   }
 
@@ -72,9 +72,9 @@ public data class CurrentEventSequence(
       val decoder = MavDataDecoder(bytes)
 
       val sequence = decoder.safeDecodeUInt16()
-      val flags = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = MavEventCurrentSequenceFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val flags = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = MavEventCurrentSequenceFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
 
       return CurrentEventSequence(
@@ -90,7 +90,7 @@ public data class CurrentEventSequence(
   public class Builder {
     public var sequence: UShort = 0u
 
-    public var flags: MavEnumValue<MavEventCurrentSequenceFlags> = MavEnumValue.fromValue(0u)
+    public var flags: MavBitmaskValue<MavEventCurrentSequenceFlags> = MavBitmaskValue.fromValue(0u)
 
     public fun build(): CurrentEventSequence = CurrentEventSequence(
       sequence = sequence,

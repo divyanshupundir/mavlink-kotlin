@@ -19,16 +19,23 @@ public enum class MavDoRepositionFlags(
    */
   @GeneratedMavEnumEntry
   CHANGE_MODE(1u),
+  /**
+   * Yaw relative to the vehicle current heading (if not set, relative to North).
+   */
+  @GeneratedMavEnumEntry
+  RELATIVE_YAW(2u),
   ;
 
   public companion object : MavBitmask.MavCompanion<MavDoRepositionFlags> {
     override fun getEntryFromValueOrNull(v: UInt): MavDoRepositionFlags? = when (v) {
       1u -> CHANGE_MODE
+      2u -> RELATIVE_YAW
       else -> null
     }
 
     override fun getFlagsFromValue(v: UInt): List<MavDoRepositionFlags> = buildList {
       if (v and 1u == 1u) add(CHANGE_MODE)
+      if (v and 2u == 2u) add(RELATIVE_YAW)
     }
   }
 }

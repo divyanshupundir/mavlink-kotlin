@@ -243,17 +243,39 @@ public enum class MavType(
   GENERIC_MULTIROTOR(43u),
   /**
    * Illuminator. An illuminator is a light source that is used for lighting up dark areas external
-   * to the sytstem: e.g. a torch or searchlight (as opposed to a light source for illuminating the
+   * to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the
    * system itself, e.g. an indicator light).
    */
   @GeneratedMavEnumEntry
   ILLUMINATOR(44u),
   /**
-   * Satellite. Used for satellite-like systems (orbiting satellites, space stations). For rockets
-   * (or landers) use MAV_TYPE_ROCKET.
+   * Orbiter spacecraft. Includes satellites orbiting terrestrial and extra-terrestrial bodies.
+   * Follows NASA Spacecraft Classification.
    */
   @GeneratedMavEnumEntry
-  SATELLITE(45u),
+  SPACECRAFT_ORBITER(45u),
+  /**
+   * A generic four-legged ground vehicle (e.g., a robot dog).
+   */
+  @GeneratedMavEnumEntry
+  GROUND_QUADRUPED(46u),
+  /**
+   * VTOL hybrid of helicopter and autogyro. It has a main rotor for lift and separate propellers
+   * for forward flight. The rotor must be powered for hover but can autorotate in cruise flight. See:
+   * https://en.wikipedia.org/wiki/Gyrodyne
+   */
+  @GeneratedMavEnumEntry
+  VTOL_GYRODYNE(47u),
+  /**
+   * Gripper
+   */
+  @GeneratedMavEnumEntry
+  GRIPPER(48u),
+  /**
+   * Radio
+   */
+  @GeneratedMavEnumEntry
+  RADIO(49u),
   ;
 
   public companion object : MavEnum.MavCompanion<MavType> {
@@ -303,7 +325,11 @@ public enum class MavType(
       42u -> WINCH
       43u -> GENERIC_MULTIROTOR
       44u -> ILLUMINATOR
-      45u -> SATELLITE
+      45u -> SPACECRAFT_ORBITER
+      46u -> GROUND_QUADRUPED
+      47u -> VTOL_GYRODYNE
+      48u -> GRIPPER
+      49u -> RADIO
       else -> null
     }
   }

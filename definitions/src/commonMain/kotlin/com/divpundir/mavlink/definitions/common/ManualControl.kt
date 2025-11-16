@@ -22,9 +22,10 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * This message provides an API for manually controlling the vehicle using standard joystick axes
- * nomenclature, along with a joystick-like input device. Unused axes can be disabled and buttons
- * states are transmitted as individual on/off bits of a bitmask
+ * Manual (joystick) control message.
+ *         This message represents movement axes and button using standard joystick axes
+ * nomenclature. Unused axes can be disabled and buttons states are transmitted as individual on/off
+ * bits of a bitmask. For more information see https://mavlink.io/en/manual_control.html
  *
  * @param target The system to be controlled.
  * @param x X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this

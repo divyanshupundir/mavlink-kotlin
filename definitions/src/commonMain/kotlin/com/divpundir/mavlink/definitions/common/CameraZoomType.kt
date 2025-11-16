@@ -18,7 +18,8 @@ public enum class CameraZoomType(
   @GeneratedMavEnumEntry
   ZOOM_TYPE_STEP(0u),
   /**
-   * Continuous zoom up/down until stopped (-1 for wide, 1 for tele, 0 to stop zooming)
+   * Continuous normalized zoom in/out rate until stopped. Range -1..1, negative: wide, positive:
+   * narrow/tele, 0 to stop zooming. Other values should be clipped to the range.
    */
   @GeneratedMavEnumEntry
   ZOOM_TYPE_CONTINUOUS(1u),

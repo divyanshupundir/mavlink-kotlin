@@ -21,7 +21,7 @@ import kotlin.collections.List
 /**
  * The autopilot is requesting a resource (file, binary, other type of data)
  *
- * @param requestId Request ID. This ID should be re-used when sending back URI contents
+ * @param requestId Request ID. This ID should be reused when sending back URI contents
  * @param uriType The type of requested URI. 0 = a file via URL. 1 = a UAVCAN binary
  * @param uri The requested unique resource identifier (URI). It is not necessarily a straight
  * domain name (depends on the URI type enum)
@@ -36,7 +36,7 @@ import kotlin.collections.List
 )
 public data class ResourceRequest(
   /**
-   * Request ID. This ID should be re-used when sending back URI contents
+   * Request ID. This ID should be reused when sending back URI contents
    */
   @GeneratedMavField(type = "uint8_t")
   public val requestId: UByte = 0u,

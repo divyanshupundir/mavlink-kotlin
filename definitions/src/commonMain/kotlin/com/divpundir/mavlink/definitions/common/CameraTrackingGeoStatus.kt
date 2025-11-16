@@ -2,15 +2,15 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
-import com.divpundir.mavlink.api.MavEnumValue
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
-import com.divpundir.mavlink.serialization.encodeEnumValue
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloat
 import com.divpundir.mavlink.serialization.encodeInt32
 import com.divpundir.mavlink.serialization.encodeUInt8
-import com.divpundir.mavlink.serialization.safeDecodeEnumValue
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeFloat
 import com.divpundir.mavlink.serialization.safeDecodeInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
@@ -64,7 +64,8 @@ public data class CameraTrackingGeoStatus(
    * Current tracking status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u),
+  public val trackingStatus: MavBitmaskValue<CameraTrackingStatusFlags> =
+      MavBitmaskValue.fromValue(0u),
   /**
    * Latitude of tracked object
    * units = degE7
@@ -163,7 +164,7 @@ public data class CameraTrackingGeoStatus(
     encoder.encodeFloat(dist)
     encoder.encodeFloat(hdg)
     encoder.encodeFloat(hdgAcc)
-    encoder.encodeEnumValue(trackingStatus.value, 1)
+    encoder.encodeBitmaskValue(trackingStatus.value, 1)
     return encoder.bytes
   }
 
@@ -181,7 +182,7 @@ public data class CameraTrackingGeoStatus(
     encoder.encodeFloat(dist)
     encoder.encodeFloat(hdg)
     encoder.encodeFloat(hdgAcc)
-    encoder.encodeEnumValue(trackingStatus.value, 1)
+    encoder.encodeBitmaskValue(trackingStatus.value, 1)
     encoder.encodeUInt8(cameraDeviceId)
     return encoder.bytes.truncateZeros()
   }
@@ -210,9 +211,9 @@ public data class CameraTrackingGeoStatus(
       val dist = decoder.safeDecodeFloat()
       val hdg = decoder.safeDecodeFloat()
       val hdgAcc = decoder.safeDecodeFloat()
-      val trackingStatus = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val trackingStatus = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = CameraTrackingStatusFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val cameraDeviceId = decoder.safeDecodeUInt8()
 
@@ -239,7 +240,8 @@ public data class CameraTrackingGeoStatus(
   }
 
   public class Builder {
-    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u)
+    public var trackingStatus: MavBitmaskValue<CameraTrackingStatusFlags> =
+        MavBitmaskValue.fromValue(0u)
 
     public var lat: Int = 0
 

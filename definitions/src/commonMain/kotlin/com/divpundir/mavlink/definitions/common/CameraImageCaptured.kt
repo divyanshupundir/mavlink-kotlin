@@ -2,19 +2,21 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavBitmaskValue
 import com.divpundir.mavlink.api.MavMessage
+import com.divpundir.mavlink.definitions.standard.MavBool
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeBitmaskValue
 import com.divpundir.mavlink.serialization.encodeFloatArray
 import com.divpundir.mavlink.serialization.encodeInt32
-import com.divpundir.mavlink.serialization.encodeInt8
 import com.divpundir.mavlink.serialization.encodeString
 import com.divpundir.mavlink.serialization.encodeUInt32
 import com.divpundir.mavlink.serialization.encodeUInt64
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeBitmaskValue
 import com.divpundir.mavlink.serialization.safeDecodeFloatArray
 import com.divpundir.mavlink.serialization.safeDecodeInt32
-import com.divpundir.mavlink.serialization.safeDecodeInt8
 import com.divpundir.mavlink.serialization.safeDecodeString
 import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.safeDecodeUInt64
@@ -60,7 +62,8 @@ import kotlin.collections.List
  * @param q Quaternion of camera orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
  * @param imageIndex Zero based index of this image (i.e. a new image will have index
  * CAMERA_CAPTURE_STATUS.image count -1)
- * @param captureResult Boolean indicating success (1) or failure (0) while capturing this image.
+ * @param captureResult Image was captured successfully (MAV_BOOL_TRUE). Values not equal to 0 or 1
+ * are invalid.
  * @param fileUrl URL of image taken. Either local storage or http://foo.jpg if camera provides an
  * HTTP interface.
  */
@@ -123,10 +126,10 @@ public data class CameraImageCaptured(
   @GeneratedMavField(type = "int32_t")
   public val imageIndex: Int = 0,
   /**
-   * Boolean indicating success (1) or failure (0) while capturing this image.
+   * Image was captured successfully (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid.
    */
   @GeneratedMavField(type = "int8_t")
-  public val captureResult: Byte = 0,
+  public val captureResult: MavBitmaskValue<MavBool> = MavBitmaskValue.fromValue(0u),
   /**
    * URL of image taken. Either local storage or http://foo.jpg if camera provides an HTTP
    * interface.
@@ -147,7 +150,7 @@ public data class CameraImageCaptured(
     encoder.encodeFloatArray(q, 16)
     encoder.encodeInt32(imageIndex)
     encoder.encodeUInt8(cameraId)
-    encoder.encodeInt8(captureResult)
+    encoder.encodeBitmaskValue(captureResult.value, 1)
     encoder.encodeString(fileUrl, 205)
     return encoder.bytes
   }
@@ -163,7 +166,7 @@ public data class CameraImageCaptured(
     encoder.encodeFloatArray(q, 16)
     encoder.encodeInt32(imageIndex)
     encoder.encodeUInt8(cameraId)
-    encoder.encodeInt8(captureResult)
+    encoder.encodeBitmaskValue(captureResult.value, 1)
     encoder.encodeString(fileUrl, 205)
     return encoder.bytes.truncateZeros()
   }
@@ -189,7 +192,10 @@ public data class CameraImageCaptured(
       val q = decoder.safeDecodeFloatArray(16)
       val imageIndex = decoder.safeDecodeInt32()
       val cameraId = decoder.safeDecodeUInt8()
-      val captureResult = decoder.safeDecodeInt8()
+      val captureResult = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = MavBool.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
+      }
       val fileUrl = decoder.safeDecodeString(205)
 
       return CameraImageCaptured(
@@ -230,7 +236,7 @@ public data class CameraImageCaptured(
 
     public var imageIndex: Int = 0
 
-    public var captureResult: Byte = 0
+    public var captureResult: MavBitmaskValue<MavBool> = MavBitmaskValue.fromValue(0u)
 
     public var fileUrl: String = ""
 

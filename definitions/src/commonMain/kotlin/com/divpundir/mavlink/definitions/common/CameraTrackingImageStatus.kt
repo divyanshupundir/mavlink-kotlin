@@ -57,7 +57,8 @@ public data class CameraTrackingImageStatus(
    * Current tracking status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u),
+  public val trackingStatus: MavBitmaskValue<CameraTrackingStatusFlags> =
+      MavBitmaskValue.fromValue(0u),
   /**
    * Current tracking mode
    */
@@ -131,7 +132,7 @@ public data class CameraTrackingImageStatus(
     encoder.encodeFloat(recTopY)
     encoder.encodeFloat(recBottomX)
     encoder.encodeFloat(recBottomY)
-    encoder.encodeEnumValue(trackingStatus.value, 1)
+    encoder.encodeBitmaskValue(trackingStatus.value, 1)
     encoder.encodeEnumValue(trackingMode.value, 1)
     encoder.encodeBitmaskValue(targetData.value, 1)
     return encoder.bytes
@@ -146,7 +147,7 @@ public data class CameraTrackingImageStatus(
     encoder.encodeFloat(recTopY)
     encoder.encodeFloat(recBottomX)
     encoder.encodeFloat(recBottomY)
-    encoder.encodeEnumValue(trackingStatus.value, 1)
+    encoder.encodeBitmaskValue(trackingStatus.value, 1)
     encoder.encodeEnumValue(trackingMode.value, 1)
     encoder.encodeBitmaskValue(targetData.value, 1)
     encoder.encodeUInt8(cameraDeviceId)
@@ -172,9 +173,9 @@ public data class CameraTrackingImageStatus(
       val recTopY = decoder.safeDecodeFloat()
       val recBottomX = decoder.safeDecodeFloat()
       val recBottomY = decoder.safeDecodeFloat()
-      val trackingStatus = decoder.safeDecodeEnumValue(1).let { value ->
-        val entry = CameraTrackingStatusFlags.getEntryFromValueOrNull(value)
-        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      val trackingStatus = decoder.safeDecodeBitmaskValue(1).let { value ->
+        val flags = CameraTrackingStatusFlags.getFlagsFromValue(value)
+        if (flags.isNotEmpty()) MavBitmaskValue.of(flags) else MavBitmaskValue.fromValue(value)
       }
       val trackingMode = decoder.safeDecodeEnumValue(1).let { value ->
         val entry = CameraTrackingMode.getEntryFromValueOrNull(value)
@@ -206,7 +207,8 @@ public data class CameraTrackingImageStatus(
   }
 
   public class Builder {
-    public var trackingStatus: MavEnumValue<CameraTrackingStatusFlags> = MavEnumValue.fromValue(0u)
+    public var trackingStatus: MavBitmaskValue<CameraTrackingStatusFlags> =
+        MavBitmaskValue.fromValue(0u)
 
     public var trackingMode: MavEnumValue<CameraTrackingMode> = MavEnumValue.fromValue(0u)
 

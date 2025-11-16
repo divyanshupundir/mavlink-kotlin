@@ -54,7 +54,7 @@ import kotlin.collections.List
  * units = degE7
  * @param longitude Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
  * units = degE7
- * @param altitudeBarometric The altitude calculated from the barometric pressue. Reference is
+ * @param altitudeBarometric The altitude calculated from the barometric pressure. Reference is
  * against 29.92inHg or 1013.2mb. If unknown: -1000 m.
  * units = m
  * @param altitudeGeodetic The geodetic altitude as defined by WGS84. If unknown: -1000 m.
@@ -133,7 +133,7 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "int32_t")
   public val longitude: Int = 0,
   /**
-   * The altitude calculated from the barometric pressue. Reference is against 29.92inHg or
+   * The altitude calculated from the barometric pressure. Reference is against 29.92inHg or
    * 1013.2mb. If unknown: -1000 m.
    * units = m
    */

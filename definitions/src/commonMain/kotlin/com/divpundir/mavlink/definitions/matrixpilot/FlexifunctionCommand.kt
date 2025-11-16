@@ -16,7 +16,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Acknowldge success or failure of a flexifunction command
+ * Acknowledge success or failure of a flexifunction command
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID

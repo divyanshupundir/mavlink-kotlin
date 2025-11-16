@@ -8,6 +8,5 @@ public data object MinimalDialect : AbstractMavDialect(
   emptySet(), 
   mapOf(
     Heartbeat.id to Heartbeat,
-    ProtocolVersion.id to ProtocolVersion,
   )
 )
