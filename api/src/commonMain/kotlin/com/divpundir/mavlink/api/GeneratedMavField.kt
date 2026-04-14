@@ -9,6 +9,7 @@ package com.divpundir.mavlink.api
  *              Empty string if the field is dimensionless.
  * @param display Display hint from the MAVLink XML (e.g. "bitmask"). Empty if none.
  * @param invalid Sentinel value indicating "no data" (e.g. "UINT16_MAX", "NaN"). Empty if none.
+ * @param printFormat C printf format string for displaying the field value (e.g. "0x%04x"). Empty if none.
  */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @MustBeDocumented
@@ -18,4 +19,5 @@ public annotation class GeneratedMavField(
     val units: String = "",
     val display: String = "",
     val invalid: String = "",
+    val printFormat: String = "",
 )

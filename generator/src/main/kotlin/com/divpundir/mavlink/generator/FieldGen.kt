@@ -35,6 +35,7 @@ private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
     .apply { if (!units.isNullOrEmpty()) addMember("units = %S", units!!) }
     .apply { if (!display.isNullOrEmpty()) addMember("display = %S", display!!) }
     .apply { if (!invalid.isNullOrEmpty()) addMember("invalid = %S", invalid!!) }
+    .apply { if (!printFormat.isNullOrEmpty()) addMember("printFormat = %S", printFormat!!) }
     .build()
 
 private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = when (this) {
