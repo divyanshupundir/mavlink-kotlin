@@ -32,6 +32,9 @@ private fun FieldModel.generateGeneratedAnnotation() = AnnotationSpec
     .builder(GeneratedMavField::class)
     .addMember("type = %S", type)
     .apply { if (extension) addMember("extension = %L", true) }
+    .apply { if (!units.isNullOrEmpty()) addMember("units = %S", units!!) }
+    .apply { if (!display.isNullOrEmpty()) addMember("display = %S", display!!) }
+    .apply { if (!invalid.isNullOrEmpty()) addMember("invalid = %S", invalid!!) }
     .build()
 
 private fun FieldModel.resolveKotlinType(enumHelper: EnumHelper): TypeName = when (this) {
