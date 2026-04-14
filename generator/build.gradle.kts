@@ -16,12 +16,11 @@ kotlin {
 
 idea {
     module {
-        testSourceDirs.plusAssign(file("build/generated/sources"))
+        testSources.from(file("build/generated/sources"))
         generatedSourceDirs.plusAssign(file("build/generated/sources"))
     }
 }
 
-@Suppress("UnstableApiUsage")
 gradlePlugin {
     website.set("https://github.com/divyanshupundir/mavlink-kotlin")
     vcsUrl.set("https://github.com/divyanshupundir/mavlink-kotlin")
@@ -49,4 +48,5 @@ dependencies {
 
     testImplementation(testlibs.jupiter.api)
     testRuntimeOnly(testlibs.jupiter.engine)
+    testRuntimeOnly(testlibs.jupiter.launcher)
 }

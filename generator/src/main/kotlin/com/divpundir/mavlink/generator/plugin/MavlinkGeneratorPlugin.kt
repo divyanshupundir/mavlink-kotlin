@@ -6,7 +6,7 @@ import org.gradle.api.Project
 public class MavlinkGeneratorPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-        target.tasks.create(
+        target.tasks.register(
             "generateMavlink",
             MavlinkGeneratorTask::class.java
         )
