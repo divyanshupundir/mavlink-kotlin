@@ -1,8 +1,9 @@
 [versions]
-jupiter = "5.9.3"
+junit = "6.0.3"
 
 [libraries]
 dronefleet-mavlink = "io.dronefleet.mavlink:mavlink:1.1.9"
 
-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
+jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+jupiter-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
