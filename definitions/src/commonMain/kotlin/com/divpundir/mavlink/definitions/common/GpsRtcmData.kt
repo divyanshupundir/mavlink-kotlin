@@ -21,14 +21,7 @@ import kotlin.collections.List
 /**
  * RTCM message for injecting into the onboard GPS (used for DGPS)
  *
- * @param flags LSB: 1 means message is fragmented, next 2 bits are the fragment ID, the remaining 5
- * bits are used for the sequence ID. Messages are only to be flushed to the GPS when the entire
- * message has been reconstructed on the autopilot. The fragment ID specifies which order the fragments
- * should be assembled into a buffer, while the sequence ID is used to detect a mismatch between
- * different buffers. The buffer is considered fully reconstructed when either all 4 fragments are
- * present, or all the fragments before the first fragment with a non full payload is received. This
- * management is used to ensure that normal GPS operation doesn't corrupt RTCM data, and to recover
- * from a unreliable transport delivery order.
+ * @param flags LSB: 1 means message is fragmented, next 2 bits are the fragment ID, the remaining 5 bits are used for the sequence ID. Messages are only to be flushed to the GPS when the entire message has been reconstructed on the autopilot. The fragment ID specifies which order the fragments should be assembled into a buffer, while the sequence ID is used to detect a mismatch between different buffers. The buffer is considered fully reconstructed when either all 4 fragments are present, or all the fragments before the first fragment with a non full payload is received. This management is used to ensure that normal GPS operation doesn't corrupt RTCM data, and to recover from a unreliable transport delivery order.
  * @param len data length
  * units = bytes
  * @param data RTCM message (may be fragmented)
@@ -39,14 +32,7 @@ import kotlin.collections.List
 )
 public data class GpsRtcmData(
   /**
-   * LSB: 1 means message is fragmented, next 2 bits are the fragment ID, the remaining 5 bits are
-   * used for the sequence ID. Messages are only to be flushed to the GPS when the entire message has
-   * been reconstructed on the autopilot. The fragment ID specifies which order the fragments should be
-   * assembled into a buffer, while the sequence ID is used to detect a mismatch between different
-   * buffers. The buffer is considered fully reconstructed when either all 4 fragments are present, or
-   * all the fragments before the first fragment with a non full payload is received. This management
-   * is used to ensure that normal GPS operation doesn't corrupt RTCM data, and to recover from a
-   * unreliable transport delivery order.
+   * LSB: 1 means message is fragmented, next 2 bits are the fragment ID, the remaining 5 bits are used for the sequence ID. Messages are only to be flushed to the GPS when the entire message has been reconstructed on the autopilot. The fragment ID specifies which order the fragments should be assembled into a buffer, while the sequence ID is used to detect a mismatch between different buffers. The buffer is considered fully reconstructed when either all 4 fragments are present, or all the fragments before the first fragment with a non full payload is received. This management is used to ensure that normal GPS operation doesn't corrupt RTCM data, and to recover from a unreliable transport delivery order.
    */
   @GeneratedMavField(type = "uint8_t")
   public val flags: UByte = 0u,
@@ -54,7 +40,10 @@ public data class GpsRtcmData(
    * data length
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val len: UByte = 0u,
   /**
    * RTCM message (may be fragmented)
@@ -103,8 +92,7 @@ public data class GpsRtcmData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRtcmData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRtcmData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

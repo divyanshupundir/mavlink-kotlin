@@ -19,22 +19,15 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * An OpenDroneID message pack is a container for multiple encoded OpenDroneID messages (i.e. not in
- * the format given for the above message descriptions but after encoding into the compressed
- * OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended
- * Advertising or on WiFi Neighbor Aware Networking or on WiFi Beacon.
+ * An OpenDroneID message pack is a container for multiple encoded OpenDroneID messages (i.e. not in the format given for the above message descriptions but after encoding into the compressed OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended Advertising or on WiFi Neighbor Aware Networking or on WiFi Beacon.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
- * @param singleMessageSize This field must currently always be equal to 25 (bytes), since all
- * encoded OpenDroneID messages are specified to have this length.
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
+ * @param singleMessageSize This field must currently always be equal to 25 (bytes), since all encoded OpenDroneID messages are specified to have this length.
  * units = bytes
- * @param msgPackSize Number of encoded messages in the pack (not the number of bytes). Allowed
- * range is 1 - 9.
- * @param messages Concatenation of encoded OpenDroneID messages. Shall be filled with nulls in the
- * unused portion of the field.
+ * @param msgPackSize Number of encoded messages in the pack (not the number of bytes). Allowed range is 1 - 9.
+ * @param messages Concatenation of encoded OpenDroneID messages. Shall be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_915u,
@@ -52,17 +45,18 @@ public data class OpenDroneIdMessagePack(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
   /**
-   * This field must currently always be equal to 25 (bytes), since all encoded OpenDroneID messages
-   * are specified to have this length.
+   * This field must currently always be equal to 25 (bytes), since all encoded OpenDroneID messages are specified to have this length.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val singleMessageSize: UByte = 0u,
   /**
    * Number of encoded messages in the pack (not the number of bytes). Allowed range is 1 - 9.
@@ -70,8 +64,7 @@ public data class OpenDroneIdMessagePack(
   @GeneratedMavField(type = "uint8_t")
   public val msgPackSize: UByte = 0u,
   /**
-   * Concatenation of encoded OpenDroneID messages. Shall be filled with nulls in the unused portion
-   * of the field.
+   * Concatenation of encoded OpenDroneID messages. Shall be filled with nulls in the unused portion of the field.
    */
   @GeneratedMavField(type = "uint8_t[225]")
   public val messages: List<UByte> = emptyList(),
@@ -129,8 +122,7 @@ public data class OpenDroneIdMessagePack(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdMessagePack =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdMessagePack = Builder().apply(builderAction).build()
   }
 
   public class Builder {

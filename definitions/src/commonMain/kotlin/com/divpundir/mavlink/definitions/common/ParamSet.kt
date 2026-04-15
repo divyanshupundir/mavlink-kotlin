@@ -26,18 +26,12 @@ import kotlin.Unit
 
 /**
  * Set a parameter value (write new value to permanent storage).
- *         The receiving component should acknowledge the new parameter value by broadcasting a
- * PARAM_VALUE message (broadcasting ensures that multiple GCS all have an up-to-date list of all
- * parameters). If the sending GCS did not receive a PARAM_VALUE within its timeout time, it should
- * re-send the PARAM_SET message. The parameter microservice is documented at
- * https://mavlink.io/en/services/parameter.html.
+ *         The receiving component should acknowledge the new parameter value by broadcasting a PARAM_VALUE message (broadcasting ensures that multiple GCS all have an up-to-date list of all parameters). If the sending GCS did not receive a PARAM_VALUE within its timeout time, it should re-send the PARAM_SET message. The parameter microservice is documented at https://mavlink.io/en/services/parameter.html.
  *       
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
- * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
- * applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
  * @param paramValue Onboard parameter value
  * @param paramType Onboard parameter type.
  */
@@ -57,9 +51,7 @@ public data class ParamSet(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
-   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
-   * provide 16+1 bytes storage if the ID is stored as string
+   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
@@ -126,8 +118,7 @@ public data class ParamSet(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamSet =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamSet = Builder().apply(builderAction).build()
   }
 
   public class Builder {

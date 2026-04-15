@@ -27,8 +27,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * A rally point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
- * GCS.
+ * A rally point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV -> GCS.
  *
  * @param targetSystem System ID.
  * @param targetComponent Component ID.
@@ -75,31 +74,46 @@ public data class RallyPoint(
    * Latitude of point.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude of point.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lng: Int = 0,
   /**
    * Transit / loiter altitude relative to home.
    * units = m
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "m",
+  )
   public val alt: Short = 0,
   /**
    * Break altitude relative to home.
    * units = m
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "m",
+  )
   public val breakAlt: Short = 0,
   /**
    * Heading to aim for when landing.
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+  )
   public val landDir: UShort = 0u,
   /**
    * Configuration flags.
@@ -179,8 +193,7 @@ public data class RallyPoint(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RallyPoint =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RallyPoint = Builder().apply(builderAction).build()
   }
 
   public class Builder {

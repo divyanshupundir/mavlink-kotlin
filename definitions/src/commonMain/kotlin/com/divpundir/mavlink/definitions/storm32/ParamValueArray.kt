@@ -29,8 +29,7 @@ import kotlin.collections.List
  * @param paramIndexFirst Index of the first onboard parameter in this array.
  * @param paramArrayLen Number of onboard parameters in this array.
  * @param flags Flags.
- * @param packetBuf Parameters buffer. Contains a series of variable length parameter blocks, one
- * per parameter, with format as specified elsewhere.
+ * @param packetBuf Parameters buffer. Contains a series of variable length parameter blocks, one per parameter, with format as specified elsewhere.
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -59,8 +58,7 @@ public data class ParamValueArray(
   @GeneratedMavField(type = "uint16_t")
   public val flags: UShort = 0u,
   /**
-   * Parameters buffer. Contains a series of variable length parameter blocks, one per parameter,
-   * with format as specified elsewhere.
+   * Parameters buffer. Contains a series of variable length parameter blocks, one per parameter, with format as specified elsewhere.
    */
   @GeneratedMavField(type = "uint8_t[248]")
   public val packetBuf: List<UByte> = emptyList(),
@@ -114,8 +112,7 @@ public data class ParamValueArray(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamValueArray =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamValueArray = Builder().apply(builderAction).build()
   }
 
   public class Builder {

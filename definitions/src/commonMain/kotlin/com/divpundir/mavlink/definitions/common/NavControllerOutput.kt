@@ -50,49 +50,73 @@ public data class NavControllerOutput(
    * Current desired roll
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val navRoll: Float = 0F,
   /**
    * Current desired pitch
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val navPitch: Float = 0F,
   /**
    * Current desired heading
    * units = deg
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "deg",
+  )
   public val navBearing: Short = 0,
   /**
    * Bearing to current waypoint/target
    * units = deg
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "deg",
+  )
   public val targetBearing: Short = 0,
   /**
    * Distance to active waypoint
    * units = m
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "m",
+  )
   public val wpDist: UShort = 0u,
   /**
    * Current altitude error
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val altError: Float = 0F,
   /**
    * Current airspeed error
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val aspdError: Float = 0F,
   /**
    * Current crosstrack error on x-y plane
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val xtrackError: Float = 0F,
 ) : MavMessage<NavControllerOutput> {
   override val instanceCompanion: MavMessage.MavCompanion<NavControllerOutput> = Companion
@@ -156,8 +180,7 @@ public data class NavControllerOutput(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): NavControllerOutput =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): NavControllerOutput = Builder().apply(builderAction).build()
   }
 
   public class Builder {

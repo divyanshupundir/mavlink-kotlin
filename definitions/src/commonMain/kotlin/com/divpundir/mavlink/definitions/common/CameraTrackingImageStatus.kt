@@ -25,28 +25,19 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
- * message interval.
+ * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define message interval.
  *
  * @param trackingStatus Current tracking status
  * @param trackingMode Current tracking mode
  * @param targetData Defines location of target data
- * @param pointX Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is
- * left, 1 is right), NAN if unknown
- * @param pointY Current tracked point y value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is
- * top, 1 is bottom), NAN if unknown
- * @param radius Current tracked radius if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is image
- * left, 1 is image right), NAN if unknown
- * @param recTopX Current tracked rectangle top x value if CAMERA_TRACKING_MODE_RECTANGLE
- * (normalized 0..1, 0 is left, 1 is right), NAN if unknown
- * @param recTopY Current tracked rectangle top y value if CAMERA_TRACKING_MODE_RECTANGLE
- * (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
- * @param recBottomX Current tracked rectangle bottom x value if CAMERA_TRACKING_MODE_RECTANGLE
- * (normalized 0..1, 0 is left, 1 is right), NAN if unknown
- * @param recBottomY Current tracked rectangle bottom y value if CAMERA_TRACKING_MODE_RECTANGLE
- * (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param pointX Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is right), NAN if unknown
+ * @param pointY Current tracked point y value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
+ * @param radius Current tracked radius if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is image left, 1 is image right), NAN if unknown
+ * @param recTopX Current tracked rectangle top x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is left, 1 is right), NAN if unknown
+ * @param recTopY Current tracked rectangle top y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
+ * @param recBottomX Current tracked rectangle bottom x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is left, 1 is right), NAN if unknown
+ * @param recBottomY Current tracked rectangle bottom y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 275u,
@@ -57,8 +48,8 @@ public data class CameraTrackingImageStatus(
    * Current tracking status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingStatus: MavBitmaskValue<CameraTrackingStatusFlags> =
-      MavBitmaskValue.fromValue(0u),
+  public val trackingStatus:
+      MavBitmaskValue<CameraTrackingStatusFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Current tracking mode
    */
@@ -70,50 +61,63 @@ public data class CameraTrackingImageStatus(
   @GeneratedMavField(type = "uint8_t")
   public val targetData: MavBitmaskValue<CameraTrackingTargetData> = MavBitmaskValue.fromValue(0u),
   /**
-   * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is
-   * right), NAN if unknown
+   * Current tracked point x value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is left, 1 is right), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val pointX: Float = 0F,
   /**
-   * Current tracked point y value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is top, 1 is
-   * bottom), NAN if unknown
+   * Current tracked point y value if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val pointY: Float = 0F,
   /**
-   * Current tracked radius if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is image left, 1 is
-   * image right), NAN if unknown
+   * Current tracked radius if CAMERA_TRACKING_MODE_POINT (normalized 0..1, 0 is image left, 1 is image right), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val radius: Float = 0F,
   /**
-   * Current tracked rectangle top x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is
-   * left, 1 is right), NAN if unknown
+   * Current tracked rectangle top x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is left, 1 is right), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val recTopX: Float = 0F,
   /**
-   * Current tracked rectangle top y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is
-   * top, 1 is bottom), NAN if unknown
+   * Current tracked rectangle top y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val recTopY: Float = 0F,
   /**
-   * Current tracked rectangle bottom x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0
-   * is left, 1 is right), NAN if unknown
+   * Current tracked rectangle bottom x value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is left, 1 is right), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val recBottomX: Float = 0F,
   /**
-   * Current tracked rectangle bottom y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0
-   * is top, 1 is bottom), NAN if unknown
+   * Current tracked rectangle bottom y value if CAMERA_TRACKING_MODE_RECTANGLE (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val recBottomY: Float = 0F,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -202,8 +206,7 @@ public data class CameraTrackingImageStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrackingImageStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrackingImageStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

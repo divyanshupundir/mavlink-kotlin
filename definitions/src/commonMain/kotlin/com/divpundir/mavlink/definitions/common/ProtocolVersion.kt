@@ -12,6 +12,7 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
+import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -20,11 +21,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Version and capability of protocol version. This message can be requested with
- * MAV_CMD_REQUEST_MESSAGE and is used as part of the handshaking to establish which MAVLink version
- * should be used on the network. Every node should respond to a request for PROTOCOL_VERSION to enable
- * the handshaking. Library implementers should consider adding this into the default decoding state
- * machine to allow the protocol core to respond directly.
+ * Version and capability of protocol version. This message can be requested with MAV_CMD_REQUEST_MESSAGE and is used as part of the handshaking to establish which MAVLink version should be used on the network. Every node should respond to a request for PROTOCOL_VERSION to enable the handshaking. Library implementers should consider adding this into the default decoding state machine to allow the protocol core to respond directly.
  *
  * @param version Currently active MAVLink version number * 100: v1.0 is 100, v2.0 is 200, etc.
  * @param minVersion Minimum MAVLink version supported
@@ -32,6 +29,7 @@ import kotlin.collections.List
  * @param specVersionHash The first 8 bytes (not characters printed in hex!) of the git hash.
  * @param libraryVersionHash The first 8 bytes (not characters printed in hex!) of the git hash.
  */
+@Deprecated(message = "No longer needed. Support is being removed from flight stacks.")
 @GeneratedMavMessage(
   id = 300u,
   crcExtra = -39,
@@ -112,8 +110,7 @@ public data class ProtocolVersion(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ProtocolVersion =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ProtocolVersion = Builder().apply(builderAction).build()
   }
 
   public class Builder {

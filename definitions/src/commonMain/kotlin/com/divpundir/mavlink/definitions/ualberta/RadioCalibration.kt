@@ -115,8 +115,7 @@ public data class RadioCalibration(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RadioCalibration =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RadioCalibration = Builder().apply(builderAction).build()
   }
 
   public class Builder {

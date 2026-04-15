@@ -80,8 +80,7 @@ public data class GoproSetResponse(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GoproSetResponse =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GoproSetResponse = Builder().apply(builderAction).build()
   }
 
   public class Builder {

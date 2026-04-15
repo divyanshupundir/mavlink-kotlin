@@ -21,29 +21,20 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Camera absolute thermal range. This can be streamed when the associated VIDEO_STREAM_STATUS
- * `flag` field bit VIDEO_STREAM_STATUS_FLAGS_THERMAL_RANGE_ENABLED is set, but a GCS may choose to
- * only request it for the current active stream. Use MAV_CMD_SET_MESSAGE_INTERVAL to define message
- * interval (param3 indicates the stream id of the current camera, or 0 for all streams, param4
- * indicates the target camera_device_id for autopilot-attached cameras or 0 for MAVLink cameras).
+ * Camera absolute thermal range. This can be streamed when the associated VIDEO_STREAM_STATUS `flag` field bit VIDEO_STREAM_STATUS_FLAGS_THERMAL_RANGE_ENABLED is set, but a GCS may choose to only request it for the current active stream. Use MAV_CMD_SET_MESSAGE_INTERVAL to define message interval (param3 indicates the stream id of the current camera, or 0 for all streams, param4 indicates the target camera_device_id for autopilot-attached cameras or 0 for MAVLink cameras).
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param streamId Video Stream ID (1 for first, 2 for second, etc.)
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  * @param max Temperature max.
  * units = degC
- * @param maxPointX Temperature max point x value (normalized 0..1, 0 is left, 1 is right), NAN if
- * unknown.
- * @param maxPointY Temperature max point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if
- * unknown.
+ * @param maxPointX Temperature max point x value (normalized 0..1, 0 is left, 1 is right), NAN if unknown.
+ * @param maxPointY Temperature max point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown.
  * @param min Temperature min.
  * units = degC
- * @param minPointX Temperature min point x value (normalized 0..1, 0 is left, 1 is right), NAN if
- * unknown.
- * @param minPointY Temperature min point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if
- * unknown.
+ * @param minPointX Temperature min point x value (normalized 0..1, 0 is left, 1 is right), NAN if unknown.
+ * @param minPointY Temperature min point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown.
  */
 @GeneratedMavMessage(
   id = 277u,
@@ -54,7 +45,10 @@ public data class CameraThermalRange(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Video Stream ID (1 for first, 2 for second, etc.)
@@ -62,8 +56,7 @@ public data class CameraThermalRange(
   @GeneratedMavField(type = "uint8_t")
   public val streamId: UByte = 0u,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(type = "uint8_t")
   public val cameraDeviceId: UByte = 0u,
@@ -71,33 +64,51 @@ public data class CameraThermalRange(
    * Temperature max.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val max: Float = 0F,
   /**
    * Temperature max point x value (normalized 0..1, 0 is left, 1 is right), NAN if unknown.
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val maxPointX: Float = 0F,
   /**
    * Temperature max point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown.
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val maxPointY: Float = 0F,
   /**
    * Temperature min.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val min: Float = 0F,
   /**
    * Temperature min point x value (normalized 0..1, 0 is left, 1 is right), NAN if unknown.
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val minPointX: Float = 0F,
   /**
    * Temperature min point y value (normalized 0..1, 0 is top, 1 is bottom), NAN if unknown.
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val minPointY: Float = 0F,
 ) : MavMessage<CameraThermalRange> {
   override val instanceCompanion: MavMessage.MavCompanion<CameraThermalRange> = Companion
@@ -165,8 +176,7 @@ public data class CameraThermalRange(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraThermalRange =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraThermalRange = Builder().apply(builderAction).build()
   }
 
   public class Builder {

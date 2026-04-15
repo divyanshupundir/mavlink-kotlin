@@ -21,8 +21,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Send a debug value. The index is used to discriminate between values. These values show up in the
- * plot of QGroundControl as DEBUG N.
+ * Send a debug value. The index is used to discriminate between values. These values show up in the plot of QGroundControl as DEBUG N.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -38,7 +37,10 @@ public data class Debug(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * index of debug variable
@@ -92,8 +94,7 @@ public data class Debug(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Debug =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Debug = Builder().apply(builderAction).build()
   }
 
   public class Builder {

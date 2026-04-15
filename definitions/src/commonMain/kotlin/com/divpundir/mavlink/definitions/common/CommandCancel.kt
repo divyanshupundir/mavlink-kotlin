@@ -20,11 +20,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Cancel a long running command. The target system should respond with a COMMAND_ACK to the
- * original command with result=MAV_RESULT_CANCELLED if the long running process was cancelled. If it
- * has already completed, the cancel action can be ignored. The cancel action can be retried until some
- * sort of acknowledgement to the original command has been received. The command microservice is
- * documented at https://mavlink.io/en/services/command.html
+ * Cancel a long running command. The target system should respond with a COMMAND_ACK to the original command with result=MAV_RESULT_CANCELLED if the long running process was cancelled. If it has already completed, the cancel action can be ignored. The cancel action can be retried until some sort of acknowledgement to the original command has been received. The command microservice is documented at https://mavlink.io/en/services/command.html
  *
  * @param targetSystem System executing long running command. Should not be broadcast (0).
  * @param targetComponent Component executing long running command.
@@ -96,8 +92,7 @@ public data class CommandCancel(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CommandCancel =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandCancel = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -84,8 +84,7 @@ public data class FenceFetchPoint(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FenceFetchPoint =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FenceFetchPoint = Builder().apply(builderAction).build()
   }
 
   public class Builder {

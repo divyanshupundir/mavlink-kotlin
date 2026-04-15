@@ -16,8 +16,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * A certain mission item has been reached. The system will either hold this position (or circle on
- * the orbit) or (if the autocontinue on the WP was set) continue to the next waypoint.
+ * A certain mission item has been reached. The system will either hold this position (or circle on the orbit) or (if the autocontinue on the WP was set) continue to the next waypoint.
  *
  * @param seq Sequence
  */
@@ -65,8 +64,7 @@ public data class MissionItemReached(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItemReached =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItemReached = Builder().apply(builderAction).build()
   }
 
   public class Builder {

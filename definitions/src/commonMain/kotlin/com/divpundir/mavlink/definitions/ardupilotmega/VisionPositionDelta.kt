@@ -28,11 +28,9 @@ import kotlin.collections.List
  * units = us
  * @param timeDeltaUsec Time since the last reported camera frame.
  * units = us
- * @param angleDelta Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD
- * from the previous MAV_FRAME_BODY_FRD.
+ * @param angleDelta Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD from the previous MAV_FRAME_BODY_FRD.
  * units = rad
- * @param positionDelta Change in position to the current MAV_FRAME_BODY_FRD from the previous
- * FRAME_BODY_FRD rotated to the current MAV_FRAME_BODY_FRD.
+ * @param positionDelta Change in position to the current MAV_FRAME_BODY_FRD from the previous FRAME_BODY_FRD rotated to the current MAV_FRAME_BODY_FRD.
  * units = m
  * @param confidence Normalised confidence value from 0 to 100.
  * units = %
@@ -46,33 +44,46 @@ public data class VisionPositionDelta(
    * Timestamp (synced to UNIX time or since system boot).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Time since the last reported camera frame.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeDeltaUsec: ULong = 0uL,
   /**
-   * Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD from the
-   * previous MAV_FRAME_BODY_FRD.
+   * Defines a rotation vector [roll, pitch, yaw] to the current MAV_FRAME_BODY_FRD from the previous MAV_FRAME_BODY_FRD.
    * units = rad
    */
-  @GeneratedMavField(type = "float[3]")
+  @GeneratedMavField(
+    type = "float[3]",
+    units = "rad",
+  )
   public val angleDelta: List<Float> = emptyList(),
   /**
-   * Change in position to the current MAV_FRAME_BODY_FRD from the previous FRAME_BODY_FRD rotated
-   * to the current MAV_FRAME_BODY_FRD.
+   * Change in position to the current MAV_FRAME_BODY_FRD from the previous FRAME_BODY_FRD rotated to the current MAV_FRAME_BODY_FRD.
    * units = m
    */
-  @GeneratedMavField(type = "float[3]")
+  @GeneratedMavField(
+    type = "float[3]",
+    units = "m",
+  )
   public val positionDelta: List<Float> = emptyList(),
   /**
    * Normalised confidence value from 0 to 100.
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val confidence: Float = 0F,
 ) : MavMessage<VisionPositionDelta> {
   override val instanceCompanion: MavMessage.MavCompanion<VisionPositionDelta> = Companion
@@ -124,8 +135,7 @@ public data class VisionPositionDelta(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): VisionPositionDelta =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): VisionPositionDelta = Builder().apply(builderAction).build()
   }
 
   public class Builder {

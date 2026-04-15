@@ -31,8 +31,7 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Message encoding a command with parameters as scaled integers and additional metadata. Scaling
- * depends on the actual command value.
+ * Message encoding a command with parameters as scaled integers and additional metadata. Scaling depends on the actual command value.
  *
  * @param utcTime UTC time, seconds elapsed since 01.01.1970
  * @param vehicleTimestamp Microseconds elapsed since vehicle boot
@@ -48,8 +47,7 @@ import kotlin.Unit
  * @param param4 PARAM4, see MAV_CMD enum
  * @param x PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
  * @param y PARAM6 / local: y position in meters * 1e4, global: longitude in degrees * 10^7
- * @param z PARAM7 / z position: global: altitude in meters (MSL, WGS84, AGL or relative to home -
- * depending on frame).
+ * @param z PARAM7 / z position: global: altitude in meters (MSL, WGS84, AGL or relative to home - depending on frame).
  */
 @GeneratedMavMessage(
   id = 223u,
@@ -127,8 +125,7 @@ public data class CommandIntStamped(
   @GeneratedMavField(type = "int32_t")
   public val y: Int = 0,
   /**
-   * PARAM7 / z position: global: altitude in meters (MSL, WGS84, AGL or relative to home -
-   * depending on frame).
+   * PARAM7 / z position: global: altitude in meters (MSL, WGS84, AGL or relative to home - depending on frame).
    */
   @GeneratedMavField(type = "float")
   public val z: Float = 0F,
@@ -228,8 +225,7 @@ public data class CommandIntStamped(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CommandIntStamped =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandIntStamped = Builder().apply(builderAction).build()
   }
 
   public class Builder {

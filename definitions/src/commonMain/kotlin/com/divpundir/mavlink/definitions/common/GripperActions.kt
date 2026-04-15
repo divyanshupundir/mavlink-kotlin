@@ -13,27 +13,27 @@ public enum class GripperActions(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Gripper commence open. Often used to release cargo.
+   * Gripper release cargo.
    */
   @GeneratedMavEnumEntry
-  GRIPPER_ACTION_OPEN(0u),
+  GRIPPER_ACTION_RELEASE(0u),
   /**
-   * Gripper commence close. Often used to grab onto cargo.
+   * Gripper grab onto cargo.
    */
   @GeneratedMavEnumEntry
-  GRIPPER_ACTION_CLOSE(1u),
+  GRIPPER_ACTION_GRAB(1u),
   /**
-   * Gripper stop (maintain current grip position).
+   * Gripper hold current grip state/position.
    */
   @GeneratedMavEnumEntry
-  GRIPPER_ACTION_STOP(2u),
+  GRIPPER_ACTION_HOLD(2u),
   ;
 
   public companion object : MavEnum.MavCompanion<GripperActions> {
     override fun getEntryFromValueOrNull(v: UInt): GripperActions? = when (v) {
-      0u -> GRIPPER_ACTION_OPEN
-      1u -> GRIPPER_ACTION_CLOSE
-      2u -> GRIPPER_ACTION_STOP
+      0u -> GRIPPER_ACTION_RELEASE
+      1u -> GRIPPER_ACTION_GRAB
+      2u -> GRIPPER_ACTION_HOLD
       else -> null
     }
   }

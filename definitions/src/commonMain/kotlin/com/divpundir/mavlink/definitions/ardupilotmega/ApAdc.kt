@@ -114,8 +114,7 @@ public data class ApAdc(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ApAdc =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ApAdc = Builder().apply(builderAction).build()
   }
 
   public class Builder {

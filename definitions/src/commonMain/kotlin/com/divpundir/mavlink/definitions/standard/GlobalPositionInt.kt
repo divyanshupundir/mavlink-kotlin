@@ -23,9 +23,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame
- * (right-handed, Z-up). It is designed as scaled integer message since the resolution of float is not
- * sufficient.
+ * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up). It is designed as scaled integer message since the resolution of float is not sufficient.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -55,55 +53,83 @@ public data class GlobalPositionInt(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Latitude, expressed
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude, expressed
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * Altitude above home
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val relativeAlt: Int = 0,
   /**
    * Ground X Speed (Latitude, positive north)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vx: Short = 0,
   /**
    * Ground Y Speed (Longitude, positive east)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vy: Short = 0,
   /**
    * Ground Z Speed (Altitude, positive down)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vz: Short = 0,
   /**
    * Vehicle heading (yaw angle), 0.0..359.99 degrees. If unknown, set to: UINT16_MAX
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+    invalid = "UINT16_MAX",
+  )
   public val hdg: UShort = 0u,
 ) : MavMessage<GlobalPositionInt> {
   override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionInt> = Companion
@@ -171,8 +197,7 @@ public data class GlobalPositionInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalPositionInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalPositionInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

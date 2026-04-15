@@ -32,34 +32,25 @@ import kotlin.Unit
  * Telemetry of power generation system. Alternator or mechanical generator.
  *
  * @param status Status flags.
- * @param generatorSpeed Speed of electrical generator or alternator. UINT16_MAX: field not
- * provided.
+ * @param generatorSpeed Speed of electrical generator or alternator. UINT16_MAX: field not provided.
  * units = rpm
- * @param batteryCurrent Current into/out of battery. Positive for out. Negative for in. NaN: field
- * not provided.
+ * @param batteryCurrent Current into/out of battery. Positive for out. Negative for in. NaN: field not provided.
  * units = A
- * @param loadCurrent Current going to the UAV. If battery current not available this is the DC
- * current from the generator. Positive for out. Negative for in. NaN: field not provided
+ * @param loadCurrent Current going to the UAV. If battery current not available this is the DC current from the generator. Positive for out. Negative for in. NaN: field not provided
  * units = A
  * @param powerGenerated The power being generated. NaN: field not provided
  * units = W
- * @param busVoltage Voltage of the bus seen at the generator, or battery bus if battery bus is
- * controlled by generator and at a different voltage to main bus.
+ * @param busVoltage Voltage of the bus seen at the generator, or battery bus if battery bus is controlled by generator and at a different voltage to main bus.
  * units = V
- * @param rectifierTemperature The temperature of the rectifier or power converter. INT16_MAX: field
- * not provided.
+ * @param rectifierTemperature The temperature of the rectifier or power converter. INT16_MAX: field not provided.
  * units = degC
- * @param batCurrentSetpoint The target battery current. Positive for out. Negative for in. NaN:
- * field not provided
+ * @param batCurrentSetpoint The target battery current. Positive for out. Negative for in. NaN: field not provided
  * units = A
- * @param generatorTemperature The temperature of the mechanical motor, fuel cell core or generator.
- * INT16_MAX: field not provided.
+ * @param generatorTemperature The temperature of the mechanical motor, fuel cell core or generator. INT16_MAX: field not provided.
  * units = degC
- * @param runtime Seconds this generator has run since it was rebooted. UINT32_MAX: field not
- * provided.
+ * @param runtime Seconds this generator has run since it was rebooted. UINT32_MAX: field not provided.
  * units = s
- * @param timeUntilMaintenance Seconds until this generator requires maintenance.  A negative value
- * indicates maintenance is past-due. INT32_MAX: field not provided.
+ * @param timeUntilMaintenance Seconds until this generator requires maintenance.  A negative value indicates maintenance is past-due. INT32_MAX: field not provided.
  * units = s
  */
 @GeneratedMavMessage(
@@ -76,65 +67,100 @@ public data class GeneratorStatus(
    * Speed of electrical generator or alternator. UINT16_MAX: field not provided.
    * units = rpm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "rpm",
+    invalid = "UINT16_MAX",
+  )
   public val generatorSpeed: UShort = 0u,
   /**
    * Current into/out of battery. Positive for out. Negative for in. NaN: field not provided.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "NaN",
+  )
   public val batteryCurrent: Float = 0F,
   /**
-   * Current going to the UAV. If battery current not available this is the DC current from the
-   * generator. Positive for out. Negative for in. NaN: field not provided
+   * Current going to the UAV. If battery current not available this is the DC current from the generator. Positive for out. Negative for in. NaN: field not provided
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "NaN",
+  )
   public val loadCurrent: Float = 0F,
   /**
    * The power being generated. NaN: field not provided
    * units = W
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "W",
+    invalid = "NaN",
+  )
   public val powerGenerated: Float = 0F,
   /**
-   * Voltage of the bus seen at the generator, or battery bus if battery bus is controlled by
-   * generator and at a different voltage to main bus.
+   * Voltage of the bus seen at the generator, or battery bus if battery bus is controlled by generator and at a different voltage to main bus.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val busVoltage: Float = 0F,
   /**
    * The temperature of the rectifier or power converter. INT16_MAX: field not provided.
    * units = degC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "degC",
+    invalid = "INT16_MAX",
+  )
   public val rectifierTemperature: Short = 0,
   /**
    * The target battery current. Positive for out. Negative for in. NaN: field not provided
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "NaN",
+  )
   public val batCurrentSetpoint: Float = 0F,
   /**
-   * The temperature of the mechanical motor, fuel cell core or generator. INT16_MAX: field not
-   * provided.
+   * The temperature of the mechanical motor, fuel cell core or generator. INT16_MAX: field not provided.
    * units = degC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "degC",
+    invalid = "INT16_MAX",
+  )
   public val generatorTemperature: Short = 0,
   /**
    * Seconds this generator has run since it was rebooted. UINT32_MAX: field not provided.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+    invalid = "UINT32_MAX",
+  )
   public val runtime: UInt = 0u,
   /**
-   * Seconds until this generator requires maintenance.  A negative value indicates maintenance is
-   * past-due. INT32_MAX: field not provided.
+   * Seconds until this generator requires maintenance.  A negative value indicates maintenance is past-due. INT32_MAX: field not provided.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+    invalid = "INT32_MAX",
+  )
   public val timeUntilMaintenance: Int = 0,
 ) : MavMessage<GeneratorStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<GeneratorStatus> = Companion
@@ -213,8 +239,7 @@ public data class GeneratorStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GeneratorStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GeneratorStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

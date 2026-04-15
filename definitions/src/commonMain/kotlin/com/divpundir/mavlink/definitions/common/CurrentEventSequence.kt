@@ -20,8 +20,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Regular broadcast for the current latest event sequence number for a component. This is used to
- * check for dropped events.
+ * Regular broadcast for the current latest event sequence number for a component. This is used to check for dropped events.
  *
  * @param sequence Sequence number.
  * @param flags Flag bitset.
@@ -83,8 +82,7 @@ public data class CurrentEventSequence(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CurrentEventSequence =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CurrentEventSequence = Builder().apply(builderAction).build()
   }
 
   public class Builder {

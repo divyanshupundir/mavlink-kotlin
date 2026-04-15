@@ -16,8 +16,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Request a current rally point from MAV. MAV should respond with a RALLY_POINT message. MAV should
- * not respond if the request is invalid.
+ * Request a current rally point from MAV. MAV should respond with a RALLY_POINT message. MAV should not respond if the request is invalid.
  *
  * @param targetSystem System ID.
  * @param targetComponent Component ID.
@@ -85,8 +84,7 @@ public data class RallyFetchPoint(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RallyFetchPoint =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RallyFetchPoint = Builder().apply(builderAction).build()
   }
 
   public class Builder {

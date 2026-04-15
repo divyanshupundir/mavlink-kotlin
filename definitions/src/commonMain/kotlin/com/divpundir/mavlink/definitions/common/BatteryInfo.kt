@@ -31,20 +31,17 @@ import kotlin.Unit
 /**
  *
  *         Battery information that is static, or requires infrequent update.
- *         This message should requested using MAV_CMD_REQUEST_MESSAGE and/or streamed at very low
- * rate.
+ *         This message should requested using MAV_CMD_REQUEST_MESSAGE and/or streamed at very low rate.
  *         BATTERY_STATUS_V2 is used for higher-rate battery status information.
  *       
  *
  * @param id Battery ID
  * @param batteryFunction Function of the battery.
  * @param type Type (chemistry) of the battery.
- * @param stateOfHealth State of Health (SOH) estimate. Typically 100% at the time of manufacture
- * and will decrease over time and use. -1: field not provided.
+ * @param stateOfHealth State of Health (SOH) estimate. Typically 100% at the time of manufacture and will decrease over time and use. -1: field not provided.
  * units = %
  * @param cellsInSeries Number of battery cells in series. 0: field not provided.
- * @param cycleCount Lifetime count of the number of charge/discharge cycles
- * (https://en.wikipedia.org/wiki/Charge_cycle). UINT16_MAX: field not provided.
+ * @param cycleCount Lifetime count of the number of charge/discharge cycles (https://en.wikipedia.org/wiki/Charge_cycle). UINT16_MAX: field not provided.
  * @param weight Battery weight. 0: field not provided.
  * units = g
  * @param dischargeMinimumVoltage Minimum per-cell voltage when discharging. 0: field not provided.
@@ -57,8 +54,7 @@ import kotlin.Unit
  * units = V
  * @param chargingMaximumCurrent Maximum pack continuous charge current. 0: field not provided.
  * units = A
- * @param nominalVoltage Battery nominal voltage. Used for conversion between Wh and Ah. 0: field
- * not provided.
+ * @param nominalVoltage Battery nominal voltage. Used for conversion between Wh and Ah. 0: field not provided.
  * units = V
  * @param dischargeMaximumCurrent Maximum pack discharge current. 0: field not provided.
  * units = A
@@ -66,14 +62,11 @@ import kotlin.Unit
  * units = A
  * @param designCapacity Fully charged design capacity. 0: field not provided.
  * units = Ah
- * @param fullChargeCapacity Predicted battery capacity when fully charged (accounting for battery
- * degradation). NAN: field not provided.
+ * @param fullChargeCapacity Predicted battery capacity when fully charged (accounting for battery degradation). NAN: field not provided.
  * units = Ah
- * @param manufactureDate Manufacture date (DDMMYYYY) in ASCII characters, 0 terminated. All 0:
- * field not provided.
+ * @param manufactureDate Manufacture date (DDMMYYYY) in ASCII characters, 0 terminated. All 0: field not provided.
  * @param serialNumber Serial number in ASCII characters, 0 terminated. All 0: field not provided.
- * @param name Battery device name. Formatted as manufacturer name then product name, separated with
- * an underscore (in ASCII characters), 0 terminated. All 0: field not provided.
+ * @param name Battery device name. Formatted as manufacturer name then product name, separated with an underscore (in ASCII characters), 0 terminated. All 0: field not provided.
  */
 @WorkInProgress
 @GeneratedMavMessage(
@@ -97,105 +90,164 @@ public data class BatteryInfo(
   @GeneratedMavField(type = "uint8_t")
   public val type: MavEnumValue<MavBatteryType> = MavEnumValue.fromValue(0u),
   /**
-   * State of Health (SOH) estimate. Typically 100% at the time of manufacture and will decrease
-   * over time and use. -1: field not provided.
+   * State of Health (SOH) estimate. Typically 100% at the time of manufacture and will decrease over time and use. -1: field not provided.
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+    invalid = "UINT8_MAX",
+  )
   public val stateOfHealth: UByte = 0u,
   /**
    * Number of battery cells in series. 0: field not provided.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "0",
+  )
   public val cellsInSeries: UByte = 0u,
   /**
-   * Lifetime count of the number of charge/discharge cycles
-   * (https://en.wikipedia.org/wiki/Charge_cycle). UINT16_MAX: field not provided.
+   * Lifetime count of the number of charge/discharge cycles (https://en.wikipedia.org/wiki/Charge_cycle). UINT16_MAX: field not provided.
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val cycleCount: UShort = 0u,
   /**
    * Battery weight. 0: field not provided.
    * units = g
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "g",
+    invalid = "0",
+  )
   public val weight: UShort = 0u,
   /**
    * Minimum per-cell voltage when discharging. 0: field not provided.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+    invalid = "0",
+  )
   public val dischargeMinimumVoltage: Float = 0F,
   /**
    * Minimum per-cell voltage when charging. 0: field not provided.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+    invalid = "0",
+  )
   public val chargingMinimumVoltage: Float = 0F,
   /**
    * Minimum per-cell voltage when resting. 0: field not provided.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+    invalid = "0",
+  )
   public val restingMinimumVoltage: Float = 0F,
   /**
    * Maximum per-cell voltage when charged. 0: field not provided.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+    invalid = "0",
+  )
   public val chargingMaximumVoltage: Float = 0F,
   /**
    * Maximum pack continuous charge current. 0: field not provided.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "0",
+  )
   public val chargingMaximumCurrent: Float = 0F,
   /**
    * Battery nominal voltage. Used for conversion between Wh and Ah. 0: field not provided.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+    invalid = "0",
+  )
   public val nominalVoltage: Float = 0F,
   /**
    * Maximum pack discharge current. 0: field not provided.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "0",
+  )
   public val dischargeMaximumCurrent: Float = 0F,
   /**
    * Maximum pack discharge burst current. 0: field not provided.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "0",
+  )
   public val dischargeMaximumBurstCurrent: Float = 0F,
   /**
    * Fully charged design capacity. 0: field not provided.
    * units = Ah
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "Ah",
+    invalid = "0",
+  )
   public val designCapacity: Float = 0F,
   /**
-   * Predicted battery capacity when fully charged (accounting for battery degradation). NAN: field
-   * not provided.
+   * Predicted battery capacity when fully charged (accounting for battery degradation). NAN: field not provided.
    * units = Ah
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "Ah",
+    invalid = "NaN",
+  )
   public val fullChargeCapacity: Float = 0F,
   /**
    * Manufacture date (DDMMYYYY) in ASCII characters, 0 terminated. All 0: field not provided.
    */
-  @GeneratedMavField(type = "char[9]")
+  @GeneratedMavField(
+    type = "char[9]",
+    invalid = "[0]",
+  )
   public val manufactureDate: String = "",
   /**
    * Serial number in ASCII characters, 0 terminated. All 0: field not provided.
    */
-  @GeneratedMavField(type = "char[32]")
+  @GeneratedMavField(
+    type = "char[32]",
+    invalid = "[0]",
+  )
   public val serialNumber: String = "",
   /**
-   * Battery device name. Formatted as manufacturer name then product name, separated with an
-   * underscore (in ASCII characters), 0 terminated. All 0: field not provided.
+   * Battery device name. Formatted as manufacturer name then product name, separated with an underscore (in ASCII characters), 0 terminated. All 0: field not provided.
    */
-  @GeneratedMavField(type = "char[50]")
+  @GeneratedMavField(
+    type = "char[50]",
+    invalid = "[0]",
+  )
   public val name: String = "",
 ) : MavMessage<BatteryInfo> {
   override val instanceCompanion: MavMessage.MavCompanion<BatteryInfo> = Companion
@@ -313,8 +365,7 @@ public data class BatteryInfo(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): BatteryInfo =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): BatteryInfo = Builder().apply(builderAction).build()
   }
 
   public class Builder {

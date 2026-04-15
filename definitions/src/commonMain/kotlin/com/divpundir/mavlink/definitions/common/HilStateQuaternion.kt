@@ -30,15 +30,11 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Sent from simulation to autopilot, avoids in contrast to HIL_STATE singularities. This packet is
- * useful for high throughput applications such as hardware in the loop simulations.
+ * Sent from simulation to autopilot, avoids in contrast to HIL_STATE singularities. This packet is useful for high throughput applications such as hardware in the loop simulations.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
- * @param attitudeQuaternion Vehicle attitude expressed as normalized quaternion in w, x, y, z order
- * (with 1 0 0 0 being the null-rotation)
+ * @param attitudeQuaternion Vehicle attitude expressed as normalized quaternion in w, x, y, z order (with 1 0 0 0 being the null-rotation)
  * @param rollspeed Body frame roll / phi angular speed
  * units = rad/s
  * @param pitchspeed Body frame pitch / theta angular speed
@@ -74,15 +70,16 @@ import kotlin.collections.List
 )
 public data class HilStateQuaternion(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
-   * Vehicle attitude expressed as normalized quaternion in w, x, y, z order (with 1 0 0 0 being the
-   * null-rotation)
+   * Vehicle attitude expressed as normalized quaternion in w, x, y, z order (with 1 0 0 0 being the null-rotation)
    */
   @GeneratedMavField(type = "float[4]")
   public val attitudeQuaternion: List<Float> = emptyList(),
@@ -90,85 +87,127 @@ public data class HilStateQuaternion(
    * Body frame roll / phi angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollspeed: Float = 0F,
   /**
    * Body frame pitch / theta angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchspeed: Float = 0F,
   /**
    * Body frame yaw / psi angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawspeed: Float = 0F,
   /**
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * Ground X Speed (Latitude)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vx: Short = 0,
   /**
    * Ground Y Speed (Longitude)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vy: Short = 0,
   /**
    * Ground Z Speed (Altitude)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vz: Short = 0,
   /**
    * Indicated airspeed
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+  )
   public val indAirspeed: UShort = 0u,
   /**
    * True airspeed
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+  )
   public val trueAirspeed: UShort = 0u,
   /**
    * X acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val xacc: Short = 0,
   /**
    * Y acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val yacc: Short = 0,
   /**
    * Z acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val zacc: Short = 0,
 ) : MavMessage<HilStateQuaternion> {
   override val instanceCompanion: MavMessage.MavCompanion<HilStateQuaternion> = Companion
@@ -264,8 +303,7 @@ public data class HilStateQuaternion(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HilStateQuaternion =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilStateQuaternion = Builder().apply(builderAction).build()
   }
 
   public class Builder {

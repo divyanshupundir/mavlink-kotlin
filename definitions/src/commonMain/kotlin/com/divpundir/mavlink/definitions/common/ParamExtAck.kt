@@ -21,9 +21,7 @@ import kotlin.Unit
 /**
  * Response from a PARAM_EXT_SET message.
  *
- * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
- * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
- * to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
  * @param paramValue Parameter value (new value if PARAM_ACK_ACCEPTED, current value otherwise)
  * @param paramType Parameter type.
  * @param paramResult Result code.
@@ -34,9 +32,7 @@ import kotlin.Unit
 )
 public data class ParamExtAck(
   /**
-   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
-   * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
-   * bytes storage if the ID is stored as string
+   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
@@ -107,8 +103,7 @@ public data class ParamExtAck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtAck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtAck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

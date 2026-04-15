@@ -35,8 +35,7 @@ public enum class MavOdidAuthType(
   @GeneratedMavEnumEntry
   NETWORK_REMOTE_ID(4u),
   /**
-   * The exact authentication type is indicated by the first byte of authentication_data and these
-   * type values are managed by ICAO.
+   * The exact authentication type is indicated by the first byte of authentication_data and these type values are managed by ICAO.
    */
   @GeneratedMavEnumEntry
   SPECIFIC_AUTHENTICATION(5u),

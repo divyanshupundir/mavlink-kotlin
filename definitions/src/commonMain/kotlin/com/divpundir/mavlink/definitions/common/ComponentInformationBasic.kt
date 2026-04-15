@@ -22,26 +22,18 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Basic component information data. Should be requested using MAV_CMD_REQUEST_MESSAGE on startup,
- * or when required.
+ * Basic component information data. Should be requested using MAV_CMD_REQUEST_MESSAGE on startup, or when required.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param capabilities Component capability flags
  * @param timeManufactureS Date of manufacture as a UNIX Epoch time (since 1.1.1970) in seconds.
  * units = s
- * @param vendorName Name of the component vendor. Needs to be zero terminated. The field is
- * optional and can be empty/all zeros.
- * @param modelName Name of the component model. Needs to be zero terminated. The field is optional
- * and can be empty/all zeros.
- * @param softwareVersion Software version. The recommended format is SEMVER: 'major.minor.patch' 
- * (any format may be used). The field must be zero terminated if it has a value. The field is optional
- * and can be empty/all zeros.
- * @param hardwareVersion Hardware version. The recommended format is SEMVER: 'major.minor.patch' 
- * (any format may be used). The field must be zero terminated if it has a value. The field is optional
- * and can be empty/all zeros.
- * @param serialNumber Hardware serial number. The field must be zero terminated if it has a value.
- * The field is optional and can be empty/all zeros.
+ * @param vendorName Name of the component vendor. Needs to be zero terminated. The field is optional and can be empty/all zeros.
+ * @param modelName Name of the component model. Needs to be zero terminated. The field is optional and can be empty/all zeros.
+ * @param softwareVersion Software version. The recommended format is SEMVER: 'major.minor.patch'  (any format may be used). The field must be zero terminated if it has a value. The field is optional and can be empty/all zeros.
+ * @param hardwareVersion Hardware version. The recommended format is SEMVER: 'major.minor.patch'  (any format may be used). The field must be zero terminated if it has a value. The field is optional and can be empty/all zeros.
+ * @param serialNumber Hardware serial number. The field must be zero terminated if it has a value. The field is optional and can be empty/all zeros.
  */
 @GeneratedMavMessage(
   id = 396u,
@@ -52,7 +44,10 @@ public data class ComponentInformationBasic(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Component capability flags
@@ -63,37 +58,34 @@ public data class ComponentInformationBasic(
    * Date of manufacture as a UNIX Epoch time (since 1.1.1970) in seconds.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+    invalid = "0",
+  )
   public val timeManufactureS: UInt = 0u,
   /**
-   * Name of the component vendor. Needs to be zero terminated. The field is optional and can be
-   * empty/all zeros.
+   * Name of the component vendor. Needs to be zero terminated. The field is optional and can be empty/all zeros.
    */
   @GeneratedMavField(type = "char[32]")
   public val vendorName: String = "",
   /**
-   * Name of the component model. Needs to be zero terminated. The field is optional and can be
-   * empty/all zeros.
+   * Name of the component model. Needs to be zero terminated. The field is optional and can be empty/all zeros.
    */
   @GeneratedMavField(type = "char[32]")
   public val modelName: String = "",
   /**
-   * Software version. The recommended format is SEMVER: 'major.minor.patch'  (any format may be
-   * used). The field must be zero terminated if it has a value. The field is optional and can be
-   * empty/all zeros.
+   * Software version. The recommended format is SEMVER: 'major.minor.patch'  (any format may be used). The field must be zero terminated if it has a value. The field is optional and can be empty/all zeros.
    */
   @GeneratedMavField(type = "char[24]")
   public val softwareVersion: String = "",
   /**
-   * Hardware version. The recommended format is SEMVER: 'major.minor.patch'  (any format may be
-   * used). The field must be zero terminated if it has a value. The field is optional and can be
-   * empty/all zeros.
+   * Hardware version. The recommended format is SEMVER: 'major.minor.patch'  (any format may be used). The field must be zero terminated if it has a value. The field is optional and can be empty/all zeros.
    */
   @GeneratedMavField(type = "char[24]")
   public val hardwareVersion: String = "",
   /**
-   * Hardware serial number. The field must be zero terminated if it has a value. The field is
-   * optional and can be empty/all zeros.
+   * Hardware serial number. The field must be zero terminated if it has a value. The field is optional and can be empty/all zeros.
    */
   @GeneratedMavField(type = "char[32]")
   public val serialNumber: String = "",
@@ -162,8 +154,7 @@ public data class ComponentInformationBasic(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentInformationBasic =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentInformationBasic = Builder().apply(builderAction).build()
   }
 
   public class Builder {

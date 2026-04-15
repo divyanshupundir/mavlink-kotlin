@@ -73,37 +73,55 @@ public data class FwSoaringData(
    * Timestamp
    * units = ms
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "ms",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * Timestamp since last mode change
    * units = ms
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "ms",
+  )
   public val timestampmodechanged: ULong = 0uL,
   /**
    * Thermal core updraft strength
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val xw: Float = 0F,
   /**
    * Thermal radius
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val xr: Float = 0F,
   /**
    * Thermal center latitude
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val xlat: Float = 0F,
   /**
    * Thermal center longitude
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val xlon: Float = 0F,
   /**
    * Variance W
@@ -129,7 +147,10 @@ public data class FwSoaringData(
    * Suggested loiter radius
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val loiterradius: Float = 0F,
   /**
    * Suggested loiter direction
@@ -140,25 +161,37 @@ public data class FwSoaringData(
    * Distance to soar point
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val disttosoarpoint: Float = 0F,
   /**
    * Expected sink rate at current airspeed, roll and throttle
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vsinkexp: Float = 0F,
   /**
    * Measurement / updraft speed at current/local airplane position
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val z1Localupdraftspeed: Float = 0F,
   /**
    * Measurement / roll angle tracking error
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val z2Deltaroll: Float = 0F,
   /**
    * Expected measurement 1
@@ -174,19 +207,28 @@ public data class FwSoaringData(
    * Thermal drift (from estimator prediction step only)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val thermalgsnorth: Float = 0F,
   /**
    * Thermal drift (from estimator prediction step only)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val thermalgseast: Float = 0F,
   /**
    *  Total specific energy change (filtered)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val tseDot: Float = 0F,
   /**
    *  Debug variable 1
@@ -338,8 +380,7 @@ public data class FwSoaringData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FwSoaringData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FwSoaringData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

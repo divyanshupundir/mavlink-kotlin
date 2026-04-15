@@ -25,14 +25,9 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Emit the value of a onboard parameter. The inclusion of param_count and param_index in the
- * message allows the recipient to keep track of received parameters and allows him to re-request
- * missing parameters after a loss or timeout. The parameter microservice is documented at
- * https://mavlink.io/en/services/parameter.html
+ * Emit the value of a onboard parameter. The inclusion of param_count and param_index in the message allows the recipient to keep track of received parameters and allows him to re-request missing parameters after a loss or timeout. The parameter microservice is documented at https://mavlink.io/en/services/parameter.html
  *
- * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
- * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
- * applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
  * @param paramValue Onboard parameter value
  * @param paramType Onboard parameter type.
  * @param paramCount Total number of onboard parameters
@@ -44,9 +39,7 @@ import kotlin.Unit
 )
 public data class ParamValue(
   /**
-   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
-   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
-   * provide 16+1 bytes storage if the ID is stored as string
+   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
@@ -123,8 +116,7 @@ public data class ParamValue(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamValue =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamValue = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -44,7 +44,10 @@ public data class SensorpodStatus(
    * Timestamp in linuxtime (since 1.1.1970)
    * units = ms
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "ms",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * Rate of ROS topic 1
@@ -75,7 +78,10 @@ public data class SensorpodStatus(
    * Temperature of sensorpod CPU in
    * units = degC
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "degC",
+  )
   public val cpuTemp: UByte = 0u,
   /**
    * Free space available in recordings directory in [Gb] * 1e2
@@ -144,8 +150,7 @@ public data class SensorpodStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensorpodStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensorpodStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -67,25 +67,37 @@ public data class SensBatmon(
    * Time since system start
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val batmonTimestamp: ULong = 0uL,
   /**
    * Battery pack temperature
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val temperature: Float = 0F,
   /**
    * Battery pack voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val voltage: UShort = 0u,
   /**
    * Battery pack current
    * units = mA
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mA",
+  )
   public val current: Short = 0,
   /**
    * Battery pack state-of-charge
@@ -116,37 +128,55 @@ public data class SensBatmon(
    * Battery pack cell 1 voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val cellvoltage1: UShort = 0u,
   /**
    * Battery pack cell 2 voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val cellvoltage2: UShort = 0u,
   /**
    * Battery pack cell 3 voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val cellvoltage3: UShort = 0u,
   /**
    * Battery pack cell 4 voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val cellvoltage4: UShort = 0u,
   /**
    * Battery pack cell 5 voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val cellvoltage5: UShort = 0u,
   /**
    * Battery pack cell 6 voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val cellvoltage6: UShort = 0u,
 ) : MavMessage<SensBatmon> {
   override val instanceCompanion: MavMessage.MavCompanion<SensBatmon> = Companion
@@ -238,8 +268,7 @@ public data class SensBatmon(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensBatmon =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensBatmon = Builder().apply(builderAction).build()
   }
 
   public class Builder {

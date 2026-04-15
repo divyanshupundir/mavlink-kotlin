@@ -24,9 +24,7 @@ import kotlin.collections.List
 /**
  * The smoothed, monotonic system state used to feed the control loops of the system.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param xAcc X acceleration in body frame
  * units = m/s/s
@@ -64,71 +62,104 @@ import kotlin.collections.List
 )
 public data class ControlSystemState(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * X acceleration in body frame
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val xAcc: Float = 0F,
   /**
    * Y acceleration in body frame
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val yAcc: Float = 0F,
   /**
    * Z acceleration in body frame
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val zAcc: Float = 0F,
   /**
    * X velocity in body frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val xVel: Float = 0F,
   /**
    * Y velocity in body frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val yVel: Float = 0F,
   /**
    * Z velocity in body frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val zVel: Float = 0F,
   /**
    * X position in local frame
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val xPos: Float = 0F,
   /**
    * Y position in local frame
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val yPos: Float = 0F,
   /**
    * Z position in local frame
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val zPos: Float = 0F,
   /**
    * Airspeed, set to -1 if unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "-1",
+  )
   public val airspeed: Float = 0F,
   /**
    * Variance of body velocity estimate
@@ -149,19 +180,28 @@ public data class ControlSystemState(
    * Angular rate in roll axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollRate: Float = 0F,
   /**
    * Angular rate in pitch axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchRate: Float = 0F,
   /**
    * Angular rate in yaw axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawRate: Float = 0F,
 ) : MavMessage<ControlSystemState> {
   override val instanceCompanion: MavMessage.MavCompanion<ControlSystemState> = Companion
@@ -261,8 +301,7 @@ public data class ControlSystemState(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ControlSystemState =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ControlSystemState = Builder().apply(builderAction).build()
   }
 
   public class Builder {

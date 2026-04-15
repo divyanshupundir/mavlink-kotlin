@@ -21,8 +21,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * A forwarded CANFD frame as requested by MAV_CMD_CAN_FORWARD. These are separated from CAN_FRAME
- * as they need different handling (eg. TAO handling)
+ * A forwarded CANFD frame as requested by MAV_CMD_CAN_FORWARD. These are separated from CAN_FRAME as they need different handling (eg. TAO handling)
  *
  * @param targetSystem System ID.
  * @param targetComponent Component ID.
@@ -120,8 +119,7 @@ public data class CanfdFrame(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CanfdFrame =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CanfdFrame = Builder().apply(builderAction).build()
   }
 
   public class Builder {

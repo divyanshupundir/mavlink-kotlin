@@ -6,8 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Specifies the conditions under which the MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN command should be
- * accepted.
+ * Specifies the conditions under which the MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN command should be accepted.
  */
 @GeneratedMavEnum
 public enum class RebootShutdownConditions(

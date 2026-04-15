@@ -16,15 +16,15 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * A change to the sequence number indicates that the set of AVAILABLE_MODES has changed.
- *         A receiver must re-request all available modes whenever the sequence number changes.
- *         This is only emitted after the first change and should then be broadcast at low rate
- * (nominally 0.3 Hz) and on change.
+ * A change to the sequence number indicates that the set of AVAILABLE_MODES has changed, and that the receiver should re-request all available modes.
+ *
+ *         The message is optional, and is only needed when the set of modes can change dynamically after boot.
+ *         It should be emitted whenever the set of modes change.
+ *         It should be streamed at low rate (nominally 0.3 Hz).
  *         See https://mavlink.io/en/services/standard_modes.html
  *       
  *
- * @param seq Sequence number. The value iterates sequentially whenever AVAILABLE_MODES changes
- * (e.g. support for a new mode is added/removed dynamically).
+ * @param seq Sequence number. The value iterates sequentially whenever AVAILABLE_MODES changes (e.g. support for a new mode is added/removed dynamically).
  */
 @GeneratedMavMessage(
   id = 437u,
@@ -32,8 +32,7 @@ import kotlin.Unit
 )
 public data class AvailableModesMonitor(
   /**
-   * Sequence number. The value iterates sequentially whenever AVAILABLE_MODES changes (e.g. support
-   * for a new mode is added/removed dynamically).
+   * Sequence number. The value iterates sequentially whenever AVAILABLE_MODES changes (e.g. support for a new mode is added/removed dynamically).
    */
   @GeneratedMavField(type = "uint8_t")
   public val seq: UByte = 0u,
@@ -71,8 +70,7 @@ public data class AvailableModesMonitor(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AvailableModesMonitor =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvailableModesMonitor = Builder().apply(builderAction).build()
   }
 
   public class Builder {

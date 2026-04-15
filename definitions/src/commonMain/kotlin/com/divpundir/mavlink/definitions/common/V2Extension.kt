@@ -27,20 +27,8 @@ import kotlin.collections.List
  * @param targetNetwork Network ID (0 for broadcast)
  * @param targetSystem System ID (0 for broadcast)
  * @param targetComponent Component ID (0 for broadcast)
- * @param messageType A code that identifies the software component that understands this message
- * (analogous to USB device classes or mime type strings). If this code is less than 32768, it is
- * considered a 'registered' protocol extension and the corresponding entry should be added to
- * https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can
- * register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types
- * greater than 32767 are considered local experiments and should not be checked in to any widely
- * distributed codebase.
- * @param payload Variable length payload. The length must be encoded in the payload as part of the
- * message_type protocol, e.g. by including the length as payload data, or by terminating the payload
- * data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that
- * are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the
- * payload block is opaque unless you understand the encoding message_type. The particular encoding
- * used can be extension specific and might not always be documented as part of the MAVLink
- * specification.
+ * @param messageType A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.
+ * @param payload Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.
  */
 @GeneratedMavMessage(
   id = 248u,
@@ -63,23 +51,12 @@ public data class V2Extension(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * A code that identifies the software component that understands this message (analogous to USB
-   * device classes or mime type strings). If this code is less than 32768, it is considered a
-   * 'registered' protocol extension and the corresponding entry should be added to
-   * https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators
-   * can register blocks of message IDs as needed (useful for GCS specific metadata, etc...).
-   * Message_types greater than 32767 are considered local experiments and should not be checked in to
-   * any widely distributed codebase.
+   * A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.
    */
   @GeneratedMavField(type = "uint16_t")
   public val messageType: UShort = 0u,
   /**
-   * Variable length payload. The length must be encoded in the payload as part of the message_type
-   * protocol, e.g. by including the length as payload data, or by terminating the payload data with a
-   * non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or
-   * otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload
-   * block is opaque unless you understand the encoding message_type. The particular encoding used can
-   * be extension specific and might not always be documented as part of the MAVLink specification.
+   * Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.
    */
   @GeneratedMavField(type = "uint8_t[249]")
   public val payload: List<UByte> = emptyList(),
@@ -133,8 +110,7 @@ public data class V2Extension(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): V2Extension =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): V2Extension = Builder().apply(builderAction).build()
   }
 
   public class Builder {

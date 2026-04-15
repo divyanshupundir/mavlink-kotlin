@@ -74,8 +74,7 @@ public data class AirlinkAuth(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AirlinkAuth =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AirlinkAuth = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -21,8 +21,7 @@ import kotlin.Unit
 /**
  * Read out the safety zone the MAV currently assumes.
  *
- * @param frame Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local,
- * right handed, Z axis down.
+ * @param frame Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
  * @param p1x x position 1 / Latitude 1
  * units = m
  * @param p1y y position 1 / Longitude 1
@@ -42,8 +41,7 @@ import kotlin.Unit
 )
 public data class SafetyAllowedArea(
   /**
-   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right
-   * handed, Z axis down.
+   * Coordinate frame. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
    */
   @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
@@ -51,37 +49,55 @@ public data class SafetyAllowedArea(
    * x position 1 / Latitude 1
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val p1x: Float = 0F,
   /**
    * y position 1 / Longitude 1
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val p1y: Float = 0F,
   /**
    * z position 1 / Altitude 1
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val p1z: Float = 0F,
   /**
    * x position 2 / Latitude 2
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val p2x: Float = 0F,
   /**
    * y position 2 / Longitude 2
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val p2y: Float = 0F,
   /**
    * z position 2 / Altitude 2
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val p2z: Float = 0F,
 ) : MavMessage<SafetyAllowedArea> {
   override val instanceCompanion: MavMessage.MavCompanion<SafetyAllowedArea> = Companion
@@ -144,8 +160,7 @@ public data class SafetyAllowedArea(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SafetyAllowedArea =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SafetyAllowedArea = Builder().apply(builderAction).build()
   }
 
   public class Builder {

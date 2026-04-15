@@ -22,16 +22,11 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Set a parameter value. In order to deal with message loss (and retransmission of PARAM_EXT_SET),
- * when setting a parameter value and the new value is the same as the current value, you will
- * immediately get a PARAM_ACK_ACCEPTED response. If the current state is PARAM_ACK_IN_PROGRESS, you
- * will accordingly receive a PARAM_ACK_IN_PROGRESS in response.
+ * Set a parameter value. In order to deal with message loss (and retransmission of PARAM_EXT_SET), when setting a parameter value and the new value is the same as the current value, you will immediately get a PARAM_ACK_ACCEPTED response. If the current state is PARAM_ACK_IN_PROGRESS, you will accordingly receive a PARAM_ACK_IN_PROGRESS in response.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
- * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
- * to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
  * @param paramValue Parameter value
  * @param paramType Parameter type.
  */
@@ -51,9 +46,7 @@ public data class ParamExtSet(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
-   * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
-   * bytes storage if the ID is stored as string
+   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
@@ -120,8 +113,7 @@ public data class ParamExtSet(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtSet =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtSet = Builder().apply(builderAction).build()
   }
 
   public class Builder {

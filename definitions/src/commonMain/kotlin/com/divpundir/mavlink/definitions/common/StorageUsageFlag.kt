@@ -7,8 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Flags to indicate usage for a particular storage (see STORAGE_INFORMATION.storage_usage and
- * MAV_CMD_SET_STORAGE_USAGE).
+ * Flags to indicate usage for a particular storage (see STORAGE_INFORMATION.storage_usage and MAV_CMD_SET_STORAGE_USAGE).
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class StorageUsageFlag(

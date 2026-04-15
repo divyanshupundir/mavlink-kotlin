@@ -121,8 +121,7 @@ public data class MountConfigure(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MountConfigure =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountConfigure = Builder().apply(builderAction).build()
   }
 
   public class Builder {

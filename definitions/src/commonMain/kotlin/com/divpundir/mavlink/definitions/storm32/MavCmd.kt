@@ -11,24 +11,19 @@ public enum class MavCmd(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Command to a gimbal manager to control the gimbal tilt and pan angles. It is possible to set
-   * combinations of the values below. E.g. an angle as well as a desired angular rate can be used to
-   * get to this angle at a certain angular rate, or an angular rate only will result in continuous
-   * turning. NaN is to be used to signal unset. A gimbal device is never to react to this command.
+   * Command to a gimbal manager to control the gimbal tilt and pan angles. It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. A gimbal device is never to react to this command.
    *
    * index = 1; label = Pitch angle; units = deg; 
    * Pitch/tilt angle (positive: tilt up). NaN to be ignored.
    *
    * index = 2; label = Yaw angle; units = deg; 
-   * Yaw/pan angle (positive: pan to the right). NaN to be ignored. The frame is determined by the
-   * GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * Yaw/pan angle (positive: pan to the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
    *
    * index = 3; label = Pitch rate; units = deg/s; 
    * Pitch/tilt rate (positive: tilt up). NaN to be ignored.
    *
    * index = 4; label = Yaw rate; units = deg/s; 
-   * Yaw/pan rate (positive: pan to the right). NaN to be ignored. The frame is determined by the
-   * GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * Yaw/pan rate (positive: pan to the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
    *
    * index = 5; label = Gimbal device flags; 
    * Gimbal device flags to be applied.
@@ -37,22 +32,18 @@ public enum class MavCmd(
    * Gimbal manager flags to be applied.
    *
    * index = 7; label = Gimbal ID and client; 
-   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for
-   * all gimbals). Send command multiple times for more than one but not all gimbals. The client is
-   * copied into bits 8-15.
+   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals. The client is copied into bits 8-15.
    */
   @GeneratedMavEnumEntry
   STORM32_DO_GIMBAL_MANAGER_CONTROL_PITCHYAW(60_002u),
   /**
-   * Command to configure a gimbal manager. A gimbal device is never to react to this command. The
-   * selected profile is reported in the STORM32_GIMBAL_MANAGER_STATUS message.
+   * Command to configure a gimbal manager. A gimbal device is never to react to this command. The selected profile is reported in the STORM32_GIMBAL_MANAGER_STATUS message.
    *
    * index = 1; label = Profile; 
    * Gimbal manager profile (0 = default).
    *
    * index = 7; label = Gimbal ID; 
-   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for
-   * all gimbals). Send command multiple times for more than one but not all gimbals.
+   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
    */
   @WorkInProgress
   @GeneratedMavEnumEntry

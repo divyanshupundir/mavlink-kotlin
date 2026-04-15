@@ -18,9 +18,7 @@ import kotlin.Unit
 /**
  * Flight Identification for ADSB-Out vehicles.
  *
- * @param flightId Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or
- * space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable. Reflects
- * Control message setting. This is null-terminated.
+ * @param flightId Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable. Reflects Control message setting. This is null-terminated.
  */
 @GeneratedMavMessage(
   id = 10_005u,
@@ -28,9 +26,7 @@ import kotlin.Unit
 )
 public data class UavionixAdsbOutCfgFlightid(
   /**
-   * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces
-   * (0x20) used as a trailing pad character, or when call sign is unavailable. Reflects Control
-   * message setting. This is null-terminated.
+   * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable. Reflects Control message setting. This is null-terminated.
    */
   @GeneratedMavField(type = "char[9]")
   public val flightId: String = "",
@@ -68,8 +64,7 @@ public data class UavionixAdsbOutCfgFlightid(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfgFlightid =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfgFlightid = Builder().apply(builderAction).build()
   }
 
   public class Builder {

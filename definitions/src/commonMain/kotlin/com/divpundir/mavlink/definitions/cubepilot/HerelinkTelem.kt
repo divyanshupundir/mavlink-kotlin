@@ -100,8 +100,7 @@ public data class HerelinkTelem(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HerelinkTelem =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HerelinkTelem = Builder().apply(builderAction).build()
   }
 
   public class Builder {

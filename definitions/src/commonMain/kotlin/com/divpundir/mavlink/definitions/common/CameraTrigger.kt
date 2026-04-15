@@ -20,9 +20,7 @@ import kotlin.Unit
 /**
  * Camera-IMU triggering and synchronisation message.
  *
- * @param timeUsec Timestamp for image frame (UNIX Epoch time or time since system boot). The
- * receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the
- * magnitude of the number.
+ * @param timeUsec Timestamp for image frame (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param seq Image frame sequence
  */
@@ -32,12 +30,13 @@ import kotlin.Unit
 )
 public data class CameraTrigger(
   /**
-   * Timestamp for image frame (UNIX Epoch time or time since system boot). The receiving end can
-   * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
-   * number.
+   * Timestamp for image frame (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Image frame sequence
@@ -82,8 +81,7 @@ public data class CameraTrigger(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrigger =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrigger = Builder().apply(builderAction).build()
   }
 
   public class Builder {

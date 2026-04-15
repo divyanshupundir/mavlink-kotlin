@@ -28,8 +28,7 @@ import kotlin.Unit
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param sequence Sequence number.
- * @param sequenceOldestAvailable Oldest Sequence number that is still available after the sequence
- * set in REQUEST_EVENT.
+ * @param sequenceOldestAvailable Oldest Sequence number that is still available after the sequence set in REQUEST_EVENT.
  * @param reason Error reason.
  */
 @WorkInProgress
@@ -116,8 +115,7 @@ public data class ResponseEventError(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ResponseEventError =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ResponseEventError = Builder().apply(builderAction).build()
   }
 
   public class Builder {

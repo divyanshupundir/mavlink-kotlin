@@ -109,8 +109,7 @@ public data class SetMagOffsets(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SetMagOffsets =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetMagOffsets = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -63,61 +63,91 @@ public data class GimbalReport(
    * Time since last update.
    * units = s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "s",
+  )
   public val deltaTime: Float = 0F,
   /**
    * Delta angle X.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val deltaAngleX: Float = 0F,
   /**
    * Delta angle Y.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val deltaAngleY: Float = 0F,
   /**
    * Delta angle X.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val deltaAngleZ: Float = 0F,
   /**
    * Delta velocity X.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val deltaVelocityX: Float = 0F,
   /**
    * Delta velocity Y.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val deltaVelocityY: Float = 0F,
   /**
    * Delta velocity Z.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val deltaVelocityZ: Float = 0F,
   /**
    * Joint ROLL.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val jointRoll: Float = 0F,
   /**
    * Joint EL.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val jointEl: Float = 0F,
   /**
    * Joint AZ.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val jointAz: Float = 0F,
 ) : MavMessage<GimbalReport> {
   override val instanceCompanion: MavMessage.MavCompanion<GimbalReport> = Companion
@@ -197,8 +227,7 @@ public data class GimbalReport(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalReport =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalReport = Builder().apply(builderAction).build()
   }
 
   public class Builder {

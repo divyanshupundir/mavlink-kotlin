@@ -29,26 +29,20 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Message to a gimbal manager to control the gimbal attitude. Angles and rates can be set to NaN
- * according to use case. A gimbal device is never to react to this message.
+ * Message to a gimbal manager to control the gimbal attitude. Angles and rates can be set to NaN according to use case. A gimbal device is never to react to this message.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink
- * gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
+ * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
  * @param client Client which is contacting the gimbal manager (must be set).
- * @param deviceFlags Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as
- * used in GIMBAL_DEVICE_SET_ATTITUDE.
+ * @param deviceFlags Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as used in GIMBAL_DEVICE_SET_ATTITUDE.
  * @param managerFlags Gimbal manager flags to be applied (0 to be ignored).
- * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). Set first element to
- * NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
- * @param angularVelocityX X component of angular velocity (positive: roll to the right). NaN to be
- * ignored.
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). Set first element to NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+ * @param angularVelocityX X component of angular velocity (positive: roll to the right). NaN to be ignored.
  * units = rad/s
  * @param angularVelocityY Y component of angular velocity (positive: tilt up). NaN to be ignored.
  * units = rad/s
- * @param angularVelocityZ Z component of angular velocity (positive: pan to the right). NaN to be
- * ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+ * @param angularVelocityZ Z component of angular velocity (positive: pan to the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
  * units = rad/s
  */
 @GeneratedMavMessage(
@@ -67,8 +61,7 @@ public data class Storm32GimbalManagerControl(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for
-   * all gimbals). Send command multiple times for more than one but not all gimbals.
+   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalId: UByte = 0u,
@@ -78,41 +71,59 @@ public data class Storm32GimbalManagerControl(
   @GeneratedMavField(type = "uint8_t")
   public val client: MavEnumValue<MavStorm32GimbalManagerClient> = MavEnumValue.fromValue(0u),
   /**
-   * Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as used in
-   * GIMBAL_DEVICE_SET_ATTITUDE.
+   * Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as used in GIMBAL_DEVICE_SET_ATTITUDE.
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val deviceFlags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Gimbal manager flags to be applied (0 to be ignored).
    */
-  @GeneratedMavField(type = "uint16_t")
-  public val managerFlags: MavBitmaskValue<MavStorm32GimbalManagerFlags> =
-      MavBitmaskValue.fromValue(0u),
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "0",
+  )
+  public val managerFlags:
+      MavBitmaskValue<MavStorm32GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). Set first element to NaN to
-   * be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). Set first element to NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
    */
-  @GeneratedMavField(type = "float[4]")
+  @GeneratedMavField(
+    type = "float[4]",
+    invalid = "[NaN:]",
+  )
   public val q: List<Float> = emptyList(),
   /**
    * X component of angular velocity (positive: roll to the right). NaN to be ignored.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val angularVelocityX: Float = 0F,
   /**
    * Y component of angular velocity (positive: tilt up). NaN to be ignored.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val angularVelocityY: Float = 0F,
   /**
-   * Z component of angular velocity (positive: pan to the right). NaN to be ignored. The frame is
-   * determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * Z component of angular velocity (positive: pan to the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerControl> {
   override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControl> = Companion
@@ -193,8 +204,7 @@ public data class Storm32GimbalManagerControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

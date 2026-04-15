@@ -16,7 +16,6 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt64
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.Short
@@ -25,12 +24,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Sent from simulation to autopilot. This packet is useful for high throughput applications such as
- * hardware in the loop simulations.
+ * Sent from simulation to autopilot. This packet is useful for high throughput applications such as hardware in the loop simulations.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param roll Roll angle
  * units = rad
@@ -63,108 +59,154 @@ import kotlin.Unit
  * @param zacc Z acceleration
  * units = mG
  */
-@Deprecated(message = "Suffers from missing airspeed fields and singularities due to Euler angles")
 @GeneratedMavMessage(
   id = 90u,
   crcExtra = -73,
 )
 public data class HilState(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Roll angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * Body frame roll / phi angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollspeed: Float = 0F,
   /**
    * Body frame pitch / theta angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchspeed: Float = 0F,
   /**
    * Body frame yaw / psi angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawspeed: Float = 0F,
   /**
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * Ground X Speed (Latitude)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vx: Short = 0,
   /**
    * Ground Y Speed (Longitude)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vy: Short = 0,
   /**
    * Ground Z Speed (Altitude)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vz: Short = 0,
   /**
    * X acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val xacc: Short = 0,
   /**
    * Y acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val yacc: Short = 0,
   /**
    * Z acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val zacc: Short = 0,
 ) : MavMessage<HilState> {
   override val instanceCompanion: MavMessage.MavCompanion<HilState> = Companion
@@ -260,8 +302,7 @@ public data class HilState(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HilState =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilState = Builder().apply(builderAction).build()
   }
 
   public class Builder {

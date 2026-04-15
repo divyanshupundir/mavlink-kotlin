@@ -26,17 +26,13 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Parameter set/get error. Returned from a MAVLink node in response to an error in the parameter
- * protocol, for example failing to set a parameter because it does not exist.
+ * Parameter set/get error. Returned from a MAVLink node in response to an error in the parameter protocol, for example failing to set a parameter because it does not exist.
  *       
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param paramId Parameter id. Terminated by NULL if the length is less than 16 human-readable
- * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
- * to provide 16+1 bytes storage if the ID is stored as string
- * @param paramIndex Parameter index. Will be -1 if the param ID field should be used as an
- * identifier (else the param id will be ignored)
+ * @param paramId Parameter id. Terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramIndex Parameter index. Will be -1 if the param ID field should be used as an identifier (else the param id will be ignored)
  * @param error Error being returned to client.
  */
 @WorkInProgress
@@ -56,15 +52,12 @@ public data class ParamError(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Parameter id. Terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
-   * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
-   * bytes storage if the ID is stored as string
+   * Parameter id. Terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
   /**
-   * Parameter index. Will be -1 if the param ID field should be used as an identifier (else the
-   * param id will be ignored)
+   * Parameter index. Will be -1 if the param ID field should be used as an identifier (else the param id will be ignored)
    */
   @GeneratedMavField(type = "int16_t")
   public val paramIndex: Short = 0,
@@ -126,8 +119,7 @@ public data class ParamError(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamError =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamError = Builder().apply(builderAction).build()
   }
 
   public class Builder {

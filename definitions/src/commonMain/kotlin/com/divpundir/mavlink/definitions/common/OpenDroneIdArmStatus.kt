@@ -19,12 +19,10 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Transmitter (remote ID system) is enabled and ready to start sending location and other required
- * information. This is streamed by transmitter. A flight controller uses it as a condition to arm.
+ * Transmitter (remote ID system) is enabled and ready to start sending location and other required information. This is streamed by transmitter. A flight controller uses it as a condition to arm.
  *
  * @param status Status level indicating if arming is allowed.
- * @param error Text error message, should be empty if status is good to arm. Fill with nulls in
- * unused portion.
+ * @param error Text error message, should be empty if status is good to arm. Fill with nulls in unused portion.
  */
 @GeneratedMavMessage(
   id = 12_918u,
@@ -37,8 +35,7 @@ public data class OpenDroneIdArmStatus(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<MavOdidArmStatus> = MavEnumValue.fromValue(0u),
   /**
-   * Text error message, should be empty if status is good to arm. Fill with nulls in unused
-   * portion.
+   * Text error message, should be empty if status is good to arm. Fill with nulls in unused portion.
    */
   @GeneratedMavField(type = "char[50]")
   public val error: String = "",
@@ -83,8 +80,7 @@ public data class OpenDroneIdArmStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdArmStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdArmStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

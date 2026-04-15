@@ -28,31 +28,22 @@ import kotlin.Unit
 
 /**
  * Message encoding a mission item. This message is emitted to announce
- *                 the presence of a mission item and to set a mission item on the system. The
- * mission item can be either in x, y, z meters (type: LOCAL) or x:lat, y:lon, z:altitude. Local frame
- * is Z-down, right handed (NED), global frame is Z-up, right handed (ENU). NaN or INT32_MAX may be
- * used in float/integer params (respectively) to indicate optional/default values (e.g. to use the
- * component's current latitude, yaw rather than a specific value). See also
- * https://mavlink.io/en/services/mission.html.
+ *                 the presence of a mission item and to set a mission item on the system. The mission item can be either in x, y, z meters (type: LOCAL) or x:lat, y:lon, z:altitude. Local frame is Z-down, right handed (NED), global frame is Z-up, right handed (ENU). NaN or INT32_MAX may be used in float/integer params (respectively) to indicate optional/default values (e.g. to use the component's current latitude, yaw rather than a specific value). See also https://mavlink.io/en/services/mission.html.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param seq Waypoint ID (sequence number). Starts at zero. Increases monotonically for each
- * waypoint, no gaps in the sequence (0,1,2,3,4).
+ * @param seq Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no gaps in the sequence (0,1,2,3,4).
  * @param frame The coordinate system of the waypoint.
  * @param command The scheduled action for the waypoint.
  * @param current false:0, true:1
- * @param autocontinue Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission
- * after the item completes.
+ * @param autocontinue Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item completes.
  * @param param1 PARAM1, see MAV_CMD enum
  * @param param2 PARAM2, see MAV_CMD enum
  * @param param3 PARAM3, see MAV_CMD enum
  * @param param4 PARAM4, see MAV_CMD enum
  * @param x PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
- * @param y PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees
- * *10^7
- * @param z PARAM7 / z position: global: altitude in meters (relative or absolute, depending on
- * frame.
+ * @param y PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees *10^7
+ * @param z PARAM7 / z position: global: altitude in meters (relative or absolute, depending on frame.
  * @param missionType Mission type.
  */
 @GeneratedMavMessage(
@@ -71,8 +62,7 @@ public data class MissionItemInt(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no
-   * gaps in the sequence (0,1,2,3,4).
+   * Waypoint ID (sequence number). Starts at zero. Increases monotonically for each waypoint, no gaps in the sequence (0,1,2,3,4).
    */
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
@@ -92,8 +82,7 @@ public data class MissionItemInt(
   @GeneratedMavField(type = "uint8_t")
   public val current: UByte = 0u,
   /**
-   * Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item
-   * completes.
+   * Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item completes.
    */
   @GeneratedMavField(type = "uint8_t")
   public val autocontinue: UByte = 0u,
@@ -238,8 +227,7 @@ public data class MissionItemInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItemInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItemInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

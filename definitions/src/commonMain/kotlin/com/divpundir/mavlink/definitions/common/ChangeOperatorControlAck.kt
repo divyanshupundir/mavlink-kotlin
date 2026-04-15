@@ -20,8 +20,7 @@ import kotlin.Unit
  *
  * @param gcsSystemId ID of the GCS this message 
  * @param controlRequest 0: request control of this MAV, 1: Release control of this MAV
- * @param ack 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3:
- * NACK: Already under control
+ * @param ack 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
  */
 @GeneratedMavMessage(
   id = 6u,
@@ -39,8 +38,7 @@ public data class ChangeOperatorControlAck(
   @GeneratedMavField(type = "uint8_t")
   public val controlRequest: UByte = 0u,
   /**
-   * 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK:
-   * Already under control
+   * 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
    */
   @GeneratedMavField(type = "uint8_t")
   public val ack: UByte = 0u,
@@ -86,8 +84,7 @@ public data class ChangeOperatorControlAck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ChangeOperatorControlAck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ChangeOperatorControlAck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

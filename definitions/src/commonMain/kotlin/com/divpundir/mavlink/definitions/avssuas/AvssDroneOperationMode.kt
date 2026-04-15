@@ -34,7 +34,10 @@ public data class AvssDroneOperationMode(
    * Timestamp (time since FC boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * DJI M300 operation mode
@@ -88,8 +91,7 @@ public data class AvssDroneOperationMode(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDroneOperationMode =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDroneOperationMode = Builder().apply(builderAction).build()
   }
 
   public class Builder {

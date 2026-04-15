@@ -34,9 +34,7 @@ import kotlin.collections.List
 /**
  * The location of a landing target. See: https://mavlink.io/en/services/landing_target.html
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param targetNum The ID of the target if multiple targets are present
  * @param frame Coordinate frame used for following fields.
@@ -58,8 +56,7 @@ import kotlin.collections.List
  * units = m
  * @param q Quaternion of landing target orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
  * @param type Type of landing target
- * @param positionValid Position fields (x, y, z, q, type) contain valid target position information
- * (MAV_BOOL_FALSE: invalid values). Values not equal to 0 or 1 are invalid.
+ * @param positionValid Position fields (x, y, z, q, type) contain valid target position information (MAV_BOOL_FALSE: invalid values). Values not equal to 0 or 1 are invalid.
  */
 @GeneratedMavMessage(
   id = 149u,
@@ -67,11 +64,13 @@ import kotlin.collections.List
 )
 public data class LandingTarget(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * The ID of the target if multiple targets are present
@@ -87,31 +86,46 @@ public data class LandingTarget(
    * X-axis angular offset of the target from the center of the image
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val angleX: Float = 0F,
   /**
    * Y-axis angular offset of the target from the center of the image
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val angleY: Float = 0F,
   /**
    * Distance to the target from the vehicle
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val distance: Float = 0F,
   /**
    * Size of target along x-axis
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val sizeX: Float = 0F,
   /**
    * Size of target along y-axis
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val sizeY: Float = 0F,
   /**
    * X Position of the landing target in MAV_FRAME
@@ -120,6 +134,7 @@ public data class LandingTarget(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "m",
   )
   public val x: Float = 0F,
   /**
@@ -129,6 +144,7 @@ public data class LandingTarget(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "m",
   )
   public val y: Float = 0F,
   /**
@@ -138,6 +154,7 @@ public data class LandingTarget(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "m",
   )
   public val z: Float = 0F,
   /**
@@ -157,8 +174,7 @@ public data class LandingTarget(
   )
   public val type: MavEnumValue<LandingTargetType> = MavEnumValue.fromValue(0u),
   /**
-   * Position fields (x, y, z, q, type) contain valid target position information (MAV_BOOL_FALSE:
-   * invalid values). Values not equal to 0 or 1 are invalid.
+   * Position fields (x, y, z, q, type) contain valid target position information (MAV_BOOL_FALSE: invalid values). Values not equal to 0 or 1 are invalid.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -254,8 +270,7 @@ public data class LandingTarget(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LandingTarget =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LandingTarget = Builder().apply(builderAction).build()
   }
 
   public class Builder {

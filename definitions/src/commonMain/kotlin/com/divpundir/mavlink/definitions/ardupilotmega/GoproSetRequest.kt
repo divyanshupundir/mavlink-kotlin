@@ -103,8 +103,7 @@ public data class GoproSetRequest(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GoproSetRequest =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GoproSetRequest = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -30,13 +30,11 @@ import kotlin.Unit
  * Control message with all data sent in UCP control message.
  *
  * @param state ADS-B transponder control state flags
- * @param baroaltmsl Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2
- * mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
+ * @param baroaltmsl Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
  * units = mbar
  * @param squawk Mode A code (typically 1200 [0x04B0] for VFR)
  * @param emergencystatus Emergency status
- * @param flightId Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or
- * space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable.
+ * @param flightId Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable.
  * @param xBit X-Bit enable (military transponders only)
  */
 @GeneratedMavMessage(
@@ -50,11 +48,13 @@ public data class UavionixAdsbOutControl(
   @GeneratedMavField(type = "uint8_t")
   public val state: MavBitmaskValue<UavionixAdsbOutControlState> = MavBitmaskValue.fromValue(0u),
   /**
-   * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar
-   * corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
+   * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
    * units = mbar
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mbar",
+  )
   public val baroaltmsl: Int = 0,
   /**
    * Mode A code (typically 1200 [0x04B0] for VFR)
@@ -65,11 +65,10 @@ public data class UavionixAdsbOutControl(
    * Emergency status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> =
-      MavEnumValue.fromValue(0u),
+  public val emergencystatus:
+      MavEnumValue<UavionixAdsbEmergencyStatus> = MavEnumValue.fromValue(0u),
   /**
-   * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces
-   * (0x20) used as a trailing pad character, or when call sign is unavailable.
+   * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable.
    */
   @GeneratedMavField(type = "char[8]")
   public val flightId: String = "",
@@ -141,8 +140,7 @@ public data class UavionixAdsbOutControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

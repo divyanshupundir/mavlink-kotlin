@@ -107,8 +107,7 @@ public data class GimbalTorqueCmdReport(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalTorqueCmdReport =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalTorqueCmdReport = Builder().apply(builderAction).build()
   }
 
   public class Builder {

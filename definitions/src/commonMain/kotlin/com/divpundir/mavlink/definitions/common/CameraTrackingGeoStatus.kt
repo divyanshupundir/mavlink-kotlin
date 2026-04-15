@@ -24,8 +24,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define
- * message interval.
+ * Camera tracking status, sent while in active tracking. Use MAV_CMD_SET_MESSAGE_INTERVAL to define message interval.
  *
  * @param trackingStatus Current tracking status
  * @param lat Latitude of tracked object
@@ -52,8 +51,7 @@ import kotlin.Unit
  * units = rad
  * @param hdgAcc Accuracy of heading, in NED. NAN if unknown
  * units = rad
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 276u,
@@ -64,83 +62,127 @@ public data class CameraTrackingGeoStatus(
    * Current tracking status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val trackingStatus: MavBitmaskValue<CameraTrackingStatusFlags> =
-      MavBitmaskValue.fromValue(0u),
+  public val trackingStatus:
+      MavBitmaskValue<CameraTrackingStatusFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Latitude of tracked object
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude of tracked object
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude of tracked object(AMSL, WGS84)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val alt: Float = 0F,
   /**
    * Horizontal accuracy. NAN if unknown
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "NaN",
+  )
   public val hAcc: Float = 0F,
   /**
    * Vertical accuracy. NAN if unknown
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "NaN",
+  )
   public val vAcc: Float = 0F,
   /**
    * North velocity of tracked object. NAN if unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val velN: Float = 0F,
   /**
    * East velocity of tracked object. NAN if unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val velE: Float = 0F,
   /**
    * Down velocity of tracked object. NAN if unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val velD: Float = 0F,
   /**
    * Velocity accuracy. NAN if unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val velAcc: Float = 0F,
   /**
    * Distance between camera and tracked object. NAN if unknown
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "NaN",
+  )
   public val dist: Float = 0F,
   /**
    * Heading in radians, in NED. NAN if unknown
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val hdg: Float = 0F,
   /**
    * Accuracy of heading, in NED. NAN if unknown
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val hdgAcc: Float = 0F,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -235,8 +277,7 @@ public data class CameraTrackingGeoStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrackingGeoStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraTrackingGeoStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

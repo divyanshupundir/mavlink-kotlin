@@ -53,19 +53,28 @@ public data class MountStatus(
    * Pitch.
    * units = cdeg
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "cdeg",
+  )
   public val pointingA: Int = 0,
   /**
    * Roll.
    * units = cdeg
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "cdeg",
+  )
   public val pointingB: Int = 0,
   /**
    * Yaw.
    * units = cdeg
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "cdeg",
+  )
   public val pointingC: Int = 0,
   /**
    * Mount operating mode.
@@ -131,8 +140,7 @@ public data class MountStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MountStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

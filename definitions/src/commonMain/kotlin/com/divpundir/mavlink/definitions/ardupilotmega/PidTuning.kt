@@ -154,8 +154,7 @@ public data class PidTuning(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): PidTuning =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): PidTuning = Builder().apply(builderAction).build()
   }
 
   public class Builder {

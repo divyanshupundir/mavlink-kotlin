@@ -22,8 +22,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp
- * will disable signing
+ * Setup a MAVLink2 signing key. If called with secret_key of all zero and zero initial_timestamp will disable signing
  *
  * @param targetSystem system id of the target
  * @param targetComponent component ID of the target
@@ -101,8 +100,7 @@ public data class SetupSigning(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SetupSigning =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetupSigning = Builder().apply(builderAction).build()
   }
 
   public class Builder {

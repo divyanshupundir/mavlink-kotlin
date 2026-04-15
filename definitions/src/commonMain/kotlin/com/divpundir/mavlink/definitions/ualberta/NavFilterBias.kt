@@ -127,8 +127,7 @@ public data class NavFilterBias(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): NavFilterBias =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): NavFilterBias = Builder().apply(builderAction).build()
   }
 
   public class Builder {

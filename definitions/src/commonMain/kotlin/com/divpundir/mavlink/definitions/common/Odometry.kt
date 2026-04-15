@@ -30,12 +30,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147
- * standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
+ * Odometry message to communicate odometry information with an external interface. Fits ROS REP 147 standard for aerial vehicles (http://www.ros.org/reps/rep-0147.html).
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param frameId Coordinate frame of reference for the pose data.
  * @param childFrameId Coordinate frame of reference for the velocity in free space (twist) data.
@@ -58,19 +55,11 @@ import kotlin.collections.List
  * units = rad/s
  * @param yawspeed Yaw angular speed
  * units = rad/s
- * @param poseCovariance Row-major representation of a 6x6 pose cross-covariance matrix upper right
- * triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries
- * are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
- * @param velocityCovariance Row-major representation of a 6x6 velocity cross-covariance matrix
- * upper right triangle (states: vx, vy, vz, rollspeed, pitchspeed, yawspeed; first six entries are the
- * first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first
- * element in the array.
- * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets
- * in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used
- * when e.g an external SLAM system detects a loop-closure and the estimate jumps.
+ * @param poseCovariance Row-major representation of a 6x6 pose cross-covariance matrix upper right triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+ * @param velocityCovariance Row-major representation of a 6x6 velocity cross-covariance matrix upper right triangle (states: vx, vy, vz, rollspeed, pitchspeed, yawspeed; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+ * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
  * @param estimatorType Type of estimator that is providing the odometry.
- * @param quality Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 =
- * unknown/unset quality, 1 = worst quality, 100 = best quality
+ * @param quality Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 = unknown/unset quality, 1 = worst quality, 100 = best quality
  * units = %
  */
 @GeneratedMavMessage(
@@ -79,11 +68,13 @@ import kotlin.collections.List
 )
 public data class Odometry(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Coordinate frame of reference for the pose data.
@@ -99,19 +90,28 @@ public data class Odometry(
    * X Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Y Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Z Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
@@ -122,57 +122,74 @@ public data class Odometry(
    * X linear speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * Y linear speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * Z linear speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
   /**
    * Roll angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawspeed: Float = 0F,
   /**
-   * Row-major representation of a 6x6 pose cross-covariance matrix upper right triangle (states: x,
-   * y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW,
-   * etc.). If unknown, assign NaN value to first element in the array.
+   * Row-major representation of a 6x6 pose cross-covariance matrix upper right triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
    */
-  @GeneratedMavField(type = "float[21]")
+  @GeneratedMavField(
+    type = "float[21]",
+    invalid = "[NaN:]",
+  )
   public val poseCovariance: List<Float> = emptyList(),
   /**
-   * Row-major representation of a 6x6 velocity cross-covariance matrix upper right triangle
-   * (states: vx, vy, vz, rollspeed, pitchspeed, yawspeed; first six entries are the first ROW, next
-   * five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the
-   * array.
+   * Row-major representation of a 6x6 velocity cross-covariance matrix upper right triangle (states: vx, vy, vz, rollspeed, pitchspeed, yawspeed; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
    */
-  @GeneratedMavField(type = "float[21]")
+  @GeneratedMavField(
+    type = "float[21]",
+    invalid = "[NaN:]",
+  )
   public val velocityCovariance: List<Float> = emptyList(),
   /**
-   * Estimate reset counter. This should be incremented when the estimate resets in any of the
-   * dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an
-   * external SLAM system detects a loop-closure and the estimate jumps.
+   * Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -188,13 +205,14 @@ public data class Odometry(
   )
   public val estimatorType: MavEnumValue<MavEstimatorType> = MavEnumValue.fromValue(0u),
   /**
-   * Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 = unknown/unset
-   * quality, 1 = worst quality, 100 = best quality
+   * Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 = unknown/unset quality, 1 = worst quality, 100 = best quality
    * units = %
    */
   @GeneratedMavField(
     type = "int8_t",
     extension = true,
+    units = "%",
+    invalid = "0",
   )
   public val quality: Byte = 0,
 ) : MavMessage<Odometry> {
@@ -305,8 +323,7 @@ public data class Odometry(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Odometry =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Odometry = Builder().apply(builderAction).build()
   }
 
   public class Builder {

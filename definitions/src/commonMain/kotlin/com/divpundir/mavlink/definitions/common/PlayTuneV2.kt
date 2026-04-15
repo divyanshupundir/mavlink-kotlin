@@ -103,8 +103,7 @@ public data class PlayTuneV2(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): PlayTuneV2 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): PlayTuneV2 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

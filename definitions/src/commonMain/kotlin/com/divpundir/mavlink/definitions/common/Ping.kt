@@ -14,7 +14,6 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -22,32 +21,27 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * A ping message either requesting or responding to a ping. This allows to measure the system
- * latencies, including serial port, radio modem and UDP connections. The ping microservice is
- * documented at https://mavlink.io/en/services/ping.html
+ * A ping message either requesting or responding to a ping. This allows to measure the system latencies, including serial port, radio modem and UDP connections. The ping microservice is documented at https://mavlink.io/en/services/ping.html
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param seq PING sequence
- * @param targetSystem 0: request ping from all receiving systems. If greater than 0: message is a
- * ping response and number is the system id of the requesting system
- * @param targetComponent 0: request ping from all receiving components. If greater than 0: message
- * is a ping response and number is the component id of the requesting component.
+ * @param targetSystem 0: request ping from all receiving systems. If greater than 0: message is a ping response and number is the system id of the requesting system
+ * @param targetComponent 0: request ping from all receiving components. If greater than 0: message is a ping response and number is the component id of the requesting component.
  */
-@Deprecated(message = "To be removed / merged with TIMESYNC")
 @GeneratedMavMessage(
   id = 4u,
   crcExtra = -19,
 )
 public data class Ping(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * PING sequence
@@ -55,14 +49,12 @@ public data class Ping(
   @GeneratedMavField(type = "uint32_t")
   public val seq: UInt = 0u,
   /**
-   * 0: request ping from all receiving systems. If greater than 0: message is a ping response and
-   * number is the system id of the requesting system
+   * 0: request ping from all receiving systems. If greater than 0: message is a ping response and number is the system id of the requesting system
    */
   @GeneratedMavField(type = "uint8_t")
   public val targetSystem: UByte = 0u,
   /**
-   * 0: request ping from all receiving components. If greater than 0: message is a ping response
-   * and number is the component id of the requesting component.
+   * 0: request ping from all receiving components. If greater than 0: message is a ping response and number is the component id of the requesting component.
    */
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
@@ -112,8 +104,7 @@ public data class Ping(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Ping =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Ping = Builder().apply(builderAction).build()
   }
 
   public class Builder {

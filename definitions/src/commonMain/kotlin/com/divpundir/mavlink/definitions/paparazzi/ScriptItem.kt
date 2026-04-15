@@ -22,8 +22,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Message encoding a mission script item. This message is emitted upon a request for the next
- * script item.
+ * Message encoding a mission script item. This message is emitted upon a request for the next script item.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -101,8 +100,7 @@ public data class ScriptItem(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptItem =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptItem = Builder().apply(builderAction).build()
   }
 
   public class Builder {

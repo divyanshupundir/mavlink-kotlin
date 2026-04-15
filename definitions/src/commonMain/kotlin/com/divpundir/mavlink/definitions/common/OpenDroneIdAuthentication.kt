@@ -24,30 +24,19 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data for filling the OpenDroneID Authentication message. The Authentication Message defines a
- * field that can provide a means of authenticity for the identity of the UAS (Unmanned Aircraft
- * System). The Authentication message can have two different formats. For data page 0, the fields
- * PageCount, Length and TimeStamp are present and AuthData is only 17 bytes. For data page 1 through
- * 15, PageCount, Length and TimeStamp are not present and the size of AuthData is 23 bytes.
+ * Data for filling the OpenDroneID Authentication message. The Authentication Message defines a field that can provide a means of authenticity for the identity of the UAS (Unmanned Aircraft System). The Authentication message can have two different formats. For data page 0, the fields PageCount, Length and TimeStamp are present and AuthData is only 17 bytes. For data page 1 through 15, PageCount, Length and TimeStamp are not present and the size of AuthData is 23 bytes.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
  * @param authenticationType Indicates the type of authentication.
  * @param dataPage Allowed range is 0 - 15.
- * @param lastPageIndex This field is only present for page 0. Allowed range is 0 - 15. See the
- * description of struct ODID_Auth_data at
- * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
- * @param length This field is only present for page 0. Total bytes of authentication_data from all
- * data pages. See the description of struct ODID_Auth_data at
- * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+ * @param lastPageIndex This field is only present for page 0. Allowed range is 0 - 15. See the description of struct ODID_Auth_data at https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+ * @param length This field is only present for page 0. Total bytes of authentication_data from all data pages. See the description of struct ODID_Auth_data at https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
  * units = bytes
- * @param timestamp This field is only present for page 0. 32 bit Unix Timestamp in seconds since
- * 00:00:00 01/01/2019.
+ * @param timestamp This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
  * units = s
- * @param authenticationData Opaque authentication data. For page 0, the size is only 17 bytes. For
- * other pages, the size is 23 bytes. Shall be filled with nulls in the unused portion of the field.
+ * @param authenticationData Opaque authentication data. For page 0, the size is only 17 bytes. For other pages, the size is 23 bytes. Shall be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_902u,
@@ -65,8 +54,7 @@ public data class OpenDroneIdAuthentication(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
@@ -81,30 +69,30 @@ public data class OpenDroneIdAuthentication(
   @GeneratedMavField(type = "uint8_t")
   public val dataPage: UByte = 0u,
   /**
-   * This field is only present for page 0. Allowed range is 0 - 15. See the description of struct
-   * ODID_Auth_data at
-   * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+   * This field is only present for page 0. Allowed range is 0 - 15. See the description of struct ODID_Auth_data at https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
    */
   @GeneratedMavField(type = "uint8_t")
   public val lastPageIndex: UByte = 0u,
   /**
-   * This field is only present for page 0. Total bytes of authentication_data from all data pages.
-   * See the description of struct ODID_Auth_data at
-   * https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
+   * This field is only present for page 0. Total bytes of authentication_data from all data pages. See the description of struct ODID_Auth_data at https://github.com/opendroneid/opendroneid-core-c/blob/master/libopendroneid/opendroneid.h.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val length: UByte = 0u,
   /**
-   * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00
-   * 01/01/2019.
+   * This field is only present for page 0. 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val timestamp: UInt = 0u,
   /**
-   * Opaque authentication data. For page 0, the size is only 17 bytes. For other pages, the size is
-   * 23 bytes. Shall be filled with nulls in the unused portion of the field.
+   * Opaque authentication data. For page 0, the size is only 17 bytes. For other pages, the size is 23 bytes. Shall be filled with nulls in the unused portion of the field.
    */
   @GeneratedMavField(type = "uint8_t[23]")
   public val authenticationData: List<UByte> = emptyList(),
@@ -177,8 +165,7 @@ public data class OpenDroneIdAuthentication(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdAuthentication =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdAuthentication = Builder().apply(builderAction).build()
   }
 
   public class Builder {

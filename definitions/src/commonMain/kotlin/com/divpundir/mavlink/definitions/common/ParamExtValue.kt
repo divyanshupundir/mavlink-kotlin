@@ -22,13 +22,9 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Emit the value of a parameter. The inclusion of param_count and param_index in the message allows
- * the recipient to keep track of received parameters and allows them to re-request missing parameters
- * after a loss or timeout.
+ * Emit the value of a parameter. The inclusion of param_count and param_index in the message allows the recipient to keep track of received parameters and allows them to re-request missing parameters after a loss or timeout.
  *
- * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
- * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
- * to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
  * @param paramValue Parameter value
  * @param paramType Parameter type.
  * @param paramCount Total number of parameters
@@ -40,9 +36,7 @@ import kotlin.Unit
 )
 public data class ParamExtValue(
   /**
-   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
-   * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
-   * bytes storage if the ID is stored as string
+   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
@@ -119,8 +113,7 @@ public data class ParamExtValue(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtValue =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtValue = Builder().apply(builderAction).build()
   }
 
   public class Builder {

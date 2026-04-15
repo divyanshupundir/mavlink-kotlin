@@ -20,8 +20,7 @@ public enum class SafetySwitchState(
   @GeneratedMavEnumEntry
   SAFE(0u),
   /**
-   * Safety switch is NOT engaged and motors, propellers and other actuators should be considered
-   * active.
+   * Safety switch is NOT engaged and motors, propellers and other actuators should be considered active.
    */
   @GeneratedMavEnumEntry
   DANGEROUS(1u),

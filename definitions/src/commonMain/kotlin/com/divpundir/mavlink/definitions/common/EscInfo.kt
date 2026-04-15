@@ -34,17 +34,13 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * ESC information for lower rate streaming. Recommended streaming rate 1Hz. See ESC_STATUS for
- * higher-rate ESC data.
+ * ESC information for lower rate streaming. Recommended streaming rate 1Hz. See ESC_STATUS for higher-rate ESC data.
  *
- * @param index Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the
- * number.
+ * @param index Index of the first ESC in this message (ESC are indexed in motor order). minValue = 0, maxValue = 60, increment = 4.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * units = us
  * @param counter Counter of data packets received.
- * @param count Total number of ESCs in all messages of this type. Message fields with an index
- * higher than this should be ignored because they contain invalid data.
+ * @param count Total number of ESCs in all messages of this type. Message fields with an index higher than this should be ignored because they contain invalid data.
  * @param connectionType Connection type protocol for all ESC.
  * @param info Information regarding online/offline status of each ESC.
  * @param failureFlags Bitmap of ESC failure flags.
@@ -59,16 +55,18 @@ import kotlin.collections.List
 )
 public data class EscInfo(
   /**
-   * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
+   * Index of the first ESC in this message (ESC are indexed in motor order). minValue = 0, maxValue = 60, increment = 4.
    */
   @GeneratedMavField(type = "uint8_t")
   public val index: UByte = 0u,
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Counter of data packets received.
@@ -76,8 +74,7 @@ public data class EscInfo(
   @GeneratedMavField(type = "uint16_t")
   public val counter: UShort = 0u,
   /**
-   * Total number of ESCs in all messages of this type. Message fields with an index higher than
-   * this should be ignored because they contain invalid data.
+   * Total number of ESCs in all messages of this type. Message fields with an index higher than this should be ignored because they contain invalid data.
    */
   @GeneratedMavField(type = "uint8_t")
   public val count: UByte = 0u,
@@ -105,7 +102,11 @@ public data class EscInfo(
    * Temperature of each ESC. INT16_MAX: if data not supplied by ESC.
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t[4]")
+  @GeneratedMavField(
+    type = "int16_t[4]",
+    units = "cdegC",
+    invalid = "[INT16_MAX]",
+  )
   public val temperature: List<Short> = emptyList(),
 ) : MavMessage<EscInfo> {
   override val instanceCompanion: MavMessage.MavCompanion<EscInfo> = Companion
@@ -176,8 +177,7 @@ public data class EscInfo(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EscInfo =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EscInfo = Builder().apply(builderAction).build()
   }
 
   public class Builder {

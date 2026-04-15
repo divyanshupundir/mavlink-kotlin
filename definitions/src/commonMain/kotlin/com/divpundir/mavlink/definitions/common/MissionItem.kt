@@ -26,12 +26,9 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Message encoding a mission item. This message is emitted to announce
- *                 the presence of a mission item and to set a mission item on the system. The
- * mission item can be either in x, y, z meters (type: LOCAL) or x:lat, y:lon, z:altitude. Local frame
- * is Z-down, right handed (NED), global frame is Z-up, right handed (ENU). NaN may be used to indicate
- * an optional/default value (e.g. to use the system's current latitude or yaw rather than a specific
- * value). See also https://mavlink.io/en/services/mission.html.
+ * Message encoding a mission item.
+ *         This message is emitted to announce the presence of a mission item and to set a mission item on the system.
+ *         The mission item can be either in x, y, z meters (type: LOCAL) or x:lat, y:lon, z:altitude. Local frame is Z-down, right handed (NED), global frame is Z-up, right handed (ENU). NaN may be used to indicate an optional/default value (e.g. to use the system's current latitude or yaw rather than a specific value). See also https://mavlink.io/en/services/mission.html.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -39,16 +36,14 @@ import kotlin.Unit
  * @param frame The coordinate system of the waypoint.
  * @param command The scheduled action for the waypoint.
  * @param current false:0, true:1
- * @param autocontinue Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission
- * after the item completes.
+ * @param autocontinue Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item completes.
  * @param param1 PARAM1, see MAV_CMD enum
  * @param param2 PARAM2, see MAV_CMD enum
  * @param param3 PARAM3, see MAV_CMD enum
  * @param param4 PARAM4, see MAV_CMD enum
  * @param x PARAM5 / local: X coordinate, global: latitude
  * @param y PARAM6 / local: Y coordinate, global: longitude
- * @param z PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on
- * frame).
+ * @param z PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame).
  * @param missionType Mission type.
  */
 @Deprecated(message = "")
@@ -88,8 +83,7 @@ public data class MissionItem(
   @GeneratedMavField(type = "uint8_t")
   public val current: UByte = 0u,
   /**
-   * Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item
-   * completes.
+   * Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item completes.
    */
   @GeneratedMavField(type = "uint8_t")
   public val autocontinue: UByte = 0u,
@@ -234,8 +228,7 @@ public data class MissionItem(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItem =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionItem = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -22,9 +22,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Request the information of the mission item with the sequence number seq. The response of the
- * system to this message should be a MISSION_ITEM_INT message.
- * https://mavlink.io/en/services/mission.html
+ * Request the information of the mission item with the sequence number seq. The response of the system to this message should be a MISSION_ITEM_INT message. https://mavlink.io/en/services/mission.html
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -107,8 +105,7 @@ public data class MissionRequestInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionRequestInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionRequestInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

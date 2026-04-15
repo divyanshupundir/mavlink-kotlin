@@ -20,8 +20,7 @@ import kotlin.Unit
  *
  * @param sueYawkpRudder Serial UDB YAWKP_RUDDER Gain for Proporional control of navigation
  * @param sueYawkdRudder Serial UDB YAWKD_RUDDER Gain for Rate control of navigation
- * @param sueRollkpRudder Serial UDB Extra ROLLKP_RUDDER Gain for Proportional control of roll
- * stabilization
+ * @param sueRollkpRudder Serial UDB Extra ROLLKP_RUDDER Gain for Proportional control of roll stabilization
  * @param sueRollkdRudder Serial UDB Extra ROLLKD_RUDDER Gain for Rate control of roll stabilization
  * @param sueRudderBoost SERIAL UDB EXTRA Rudder Boost Gain to Manual Control when stabilized
  * @param sueRtlPitchDown Serial UDB Extra Return To Landing - Angle to Pitch Plane Down
@@ -115,8 +114,7 @@ public data class SerialUdbExtraF7(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF7 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF7 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

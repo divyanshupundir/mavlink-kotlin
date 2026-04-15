@@ -92,8 +92,7 @@ public data class MissionRequestList(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionRequestList =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionRequestList = Builder().apply(builderAction).build()
   }
 
   public class Builder {

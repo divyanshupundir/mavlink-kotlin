@@ -25,25 +25,18 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * High level message to control a gimbal's attitude. This message is to be sent to the gimbal
- * manager (e.g. from a ground station). Angles and rates can be set to NaN according to use case.
+ * High level message to control a gimbal's attitude. This message is to be sent to the gimbal manager (e.g. from a ground station). Angles and rates can be set to NaN according to use case.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param flags High level gimbal manager flags to use.
- * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0
- * for all gimbal device components. Send command multiple times for more than one gimbal (but not all
- * gimbals).
- * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
- * whether the flag GIMBAL_MANAGER_FLAGS_YAW_LOCK is set)
- * @param angularVelocityX X component of angular velocity, positive is rolling to the right, NaN to
- * be ignored.
+ * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
+ * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on whether the flag GIMBAL_MANAGER_FLAGS_YAW_LOCK is set)
+ * @param angularVelocityX X component of angular velocity, positive is rolling to the right, NaN to be ignored.
  * units = rad/s
- * @param angularVelocityY Y component of angular velocity, positive is pitching up, NaN to be
- * ignored.
+ * @param angularVelocityY Y component of angular velocity, positive is pitching up, NaN to be ignored.
  * units = rad/s
- * @param angularVelocityZ Z component of angular velocity, positive is yawing to the right, NaN to
- * be ignored.
+ * @param angularVelocityZ Z component of angular velocity, positive is yawing to the right, NaN to be ignored.
  * units = rad/s
  */
 @GeneratedMavMessage(
@@ -67,14 +60,12 @@ public data class GimbalManagerSetAttitude(
   @GeneratedMavField(type = "uint32_t")
   public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: UByte = 0u,
   /**
-   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on
-   * whether the flag GIMBAL_MANAGER_FLAGS_YAW_LOCK is set)
+   * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation, the frame is depends on whether the flag GIMBAL_MANAGER_FLAGS_YAW_LOCK is set)
    */
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
@@ -82,19 +73,31 @@ public data class GimbalManagerSetAttitude(
    * X component of angular velocity, positive is rolling to the right, NaN to be ignored.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val angularVelocityX: Float = 0F,
   /**
    * Y component of angular velocity, positive is pitching up, NaN to be ignored.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val angularVelocityY: Float = 0F,
   /**
    * Z component of angular velocity, positive is yawing to the right, NaN to be ignored.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val angularVelocityZ: Float = 0F,
 ) : MavMessage<GimbalManagerSetAttitude> {
   override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetAttitude> = Companion
@@ -161,8 +164,7 @@ public data class GimbalManagerSetAttitude(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetAttitude =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetAttitude = Builder().apply(builderAction).build()
   }
 
   public class Builder {

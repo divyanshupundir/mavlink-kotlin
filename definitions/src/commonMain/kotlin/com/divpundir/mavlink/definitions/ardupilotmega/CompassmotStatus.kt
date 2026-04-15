@@ -40,19 +40,28 @@ public data class CompassmotStatus(
    * Throttle.
    * units = d%
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "d%",
+  )
   public val throttle: UShort = 0u,
   /**
    * Current.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val current: Float = 0F,
   /**
    * Interference.
    * units = %
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "%",
+  )
   public val interference: UShort = 0u,
   /**
    * Motor Compensation X.
@@ -123,8 +132,7 @@ public data class CompassmotStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CompassmotStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CompassmotStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

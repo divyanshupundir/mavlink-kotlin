@@ -28,9 +28,7 @@ import kotlin.Unit
  *
  * @param requestId Request ID - copied from request.
  * @param result Config error type.
- * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
- * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
- * applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
  * @param configType Config type.
  * @param minValue OSD parameter minimum value.
  * @param maxValue OSD parameter maximum value.
@@ -52,9 +50,7 @@ public data class OsdParamShowConfigReply(
   @GeneratedMavField(type = "uint8_t")
   public val result: MavEnumValue<OsdParamConfigError> = MavEnumValue.fromValue(0u),
   /**
-   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
-   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
-   * provide 16+1 bytes storage if the ID is stored as string
+   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
@@ -142,8 +138,7 @@ public data class OsdParamShowConfigReply(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamShowConfigReply =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamShowConfigReply = Builder().apply(builderAction).build()
   }
 
   public class Builder {

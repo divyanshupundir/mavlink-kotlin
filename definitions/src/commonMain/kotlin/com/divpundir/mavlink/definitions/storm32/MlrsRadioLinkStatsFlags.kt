@@ -8,13 +8,10 @@ import kotlin.collections.List
 
 /**
  * RADIO_LINK_STATS flags (bitmask).
- *         The RX_RECEIVE and TX_RECEIVE flags indicate from which antenna the received data are
- * taken for processing.
- *         If a flag is set then the data received on antenna2 is processed, else the data received
- * on antenna1 is used.
+ *         The RX_RECEIVE and TX_RECEIVE flags indicate from which antenna the received data are taken for processing.
+ *         If a flag is set then the data received on antenna2 is processed, else the data received on antenna1 is used.
  *         The RX_TRANSMIT and TX_TRANSMIT flags specify which antenna are transmitting data.
- *         Both antenna 1 and antenna 2 transmit flags can be set simultaneously, e.g., in case of
- * dual-band or dual-frequency systems.
+ *         Both antenna 1 and antenna 2 transmit flags can be set simultaneously, e.g., in case of dual-band or dual-frequency systems.
  *         If neither flag is set then antenna 1 should be assumed.
  *       
  */
@@ -23,14 +20,12 @@ public enum class MlrsRadioLinkStatsFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * Rssi values are in negative dBm. Values 1..254 corresponds to -1..-254 dBm. 0: no reception,
-   * UINT8_MAX: unknown.
+   * Rssi values are in negative dBm. Values 1..254 corresponds to -1..-254 dBm. 0: no reception, UINT8_MAX: unknown.
    */
   @GeneratedMavEnumEntry
   RSSI_DBM(1u),
   /**
-   * Rx receive antenna. When set the data received on antenna 2 are taken, else the data stems from
-   * antenna 1.
+   * Rx receive antenna. When set the data received on antenna 2 are taken, else the data stems from antenna 1.
    */
   @GeneratedMavEnumEntry
   RX_RECEIVE_ANTENNA2(2u),
@@ -45,8 +40,7 @@ public enum class MlrsRadioLinkStatsFlags(
   @GeneratedMavEnumEntry
   RX_TRANSMIT_ANTENNA2(8u),
   /**
-   * Tx receive antenna. When set the data received on antenna 2 are taken, else the data stems from
-   * antenna 1.
+   * Tx receive antenna. When set the data received on antenna 2 are taken, else the data stems from antenna 1.
    */
   @GeneratedMavEnumEntry
   TX_RECEIVE_ANTENNA2(16u),

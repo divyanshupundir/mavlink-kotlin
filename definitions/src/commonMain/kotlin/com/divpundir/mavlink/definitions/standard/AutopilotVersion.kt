@@ -28,34 +28,22 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Version and capability of autopilot software. This should be emitted in response to a request
- * with MAV_CMD_REQUEST_MESSAGE.
+ * Version and capability of autopilot software. This should be emitted in response to a request with MAV_CMD_REQUEST_MESSAGE.
  *
  * @param capabilities Bitmap of capabilities
  * @param flightSwVersion Firmware version number.
- *         The field must be encoded as 4 bytes, where each byte (shown from MSB to LSB) is part of
- * a semantic version: (major) (minor) (patch) (FIRMWARE_VERSION_TYPE).
+ *         The field must be encoded as 4 bytes, where each byte (shown from MSB to LSB) is part of a semantic version: (major) (minor) (patch) (FIRMWARE_VERSION_TYPE).
  *       
  * @param middlewareSwVersion Middleware version number
  * @param osSwVersion Operating system version number
- * @param boardVersion HW / board version (last 8 bits should be silicon ID, if any). The first 16
- * bits of this field specify a board type from an enumeration stored at
- * https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt and with extensive additions at
- * https://github.com/ArduPilot/ardupilot/blob/master/Tools/AP_Bootloader/board_types.txt
- * @param flightCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This
- * is not an unique identifier, but should allow to identify the commit using the main version number
- * even for very large code bases.
- * @param middlewareCustomVersion Custom version field, commonly the first 8 bytes of the git hash.
- * This is not an unique identifier, but should allow to identify the commit using the main version
- * number even for very large code bases.
- * @param osCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This is
- * not an unique identifier, but should allow to identify the commit using the main version number even
- * for very large code bases.
+ * @param boardVersion HW / board version (last 8 bits should be silicon ID, if any). The first 16 bits of this field specify a board type from an enumeration stored at https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt and with extensive additions at https://github.com/ArduPilot/ardupilot/blob/master/Tools/AP_Bootloader/board_types.txt
+ * @param flightCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This is not an unique identifier, but should allow to identify the commit using the main version number even for very large code bases.
+ * @param middlewareCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This is not an unique identifier, but should allow to identify the commit using the main version number even for very large code bases.
+ * @param osCustomVersion Custom version field, commonly the first 8 bytes of the git hash. This is not an unique identifier, but should allow to identify the commit using the main version number even for very large code bases.
  * @param vendorId ID of the board vendor
  * @param productId ID of the product
  * @param uid UID if provided by hardware (see uid2)
- * @param uid2 UID if provided by hardware (supersedes the uid field. If this is non-zero, use this
- * field, otherwise use uid)
+ * @param uid2 UID if provided by hardware (supersedes the uid field. If this is non-zero, use this field, otherwise use uid)
  */
 @GeneratedMavMessage(
   id = 148u,
@@ -69,8 +57,7 @@ public data class AutopilotVersion(
   public val capabilities: MavBitmaskValue<MavProtocolCapability> = MavBitmaskValue.fromValue(0u),
   /**
    * Firmware version number.
-   *         The field must be encoded as 4 bytes, where each byte (shown from MSB to LSB) is part
-   * of a semantic version: (major) (minor) (patch) (FIRMWARE_VERSION_TYPE).
+   *         The field must be encoded as 4 bytes, where each byte (shown from MSB to LSB) is part of a semantic version: (major) (minor) (patch) (FIRMWARE_VERSION_TYPE).
    *       
    */
   @GeneratedMavField(type = "uint32_t")
@@ -86,31 +73,22 @@ public data class AutopilotVersion(
   @GeneratedMavField(type = "uint32_t")
   public val osSwVersion: UInt = 0u,
   /**
-   * HW / board version (last 8 bits should be silicon ID, if any). The first 16 bits of this field
-   * specify a board type from an enumeration stored at
-   * https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt and with extensive additions at
-   * https://github.com/ArduPilot/ardupilot/blob/master/Tools/AP_Bootloader/board_types.txt
+   * HW / board version (last 8 bits should be silicon ID, if any). The first 16 bits of this field specify a board type from an enumeration stored at https://github.com/PX4/PX4-Bootloader/blob/master/board_types.txt and with extensive additions at https://github.com/ArduPilot/ardupilot/blob/master/Tools/AP_Bootloader/board_types.txt
    */
   @GeneratedMavField(type = "uint32_t")
   public val boardVersion: UInt = 0u,
   /**
-   * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique
-   * identifier, but should allow to identify the commit using the main version number even for very
-   * large code bases.
+   * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique identifier, but should allow to identify the commit using the main version number even for very large code bases.
    */
   @GeneratedMavField(type = "uint8_t[8]")
   public val flightCustomVersion: List<UByte> = emptyList(),
   /**
-   * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique
-   * identifier, but should allow to identify the commit using the main version number even for very
-   * large code bases.
+   * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique identifier, but should allow to identify the commit using the main version number even for very large code bases.
    */
   @GeneratedMavField(type = "uint8_t[8]")
   public val middlewareCustomVersion: List<UByte> = emptyList(),
   /**
-   * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique
-   * identifier, but should allow to identify the commit using the main version number even for very
-   * large code bases.
+   * Custom version field, commonly the first 8 bytes of the git hash. This is not an unique identifier, but should allow to identify the commit using the main version number even for very large code bases.
    */
   @GeneratedMavField(type = "uint8_t[8]")
   public val osCustomVersion: List<UByte> = emptyList(),
@@ -130,8 +108,7 @@ public data class AutopilotVersion(
   @GeneratedMavField(type = "uint64_t")
   public val uid: ULong = 0uL,
   /**
-   * UID if provided by hardware (supersedes the uid field. If this is non-zero, use this field,
-   * otherwise use uid)
+   * UID if provided by hardware (supersedes the uid field. If this is non-zero, use this field, otherwise use uid)
    */
   @GeneratedMavField(
     type = "uint8_t[18]",
@@ -218,8 +195,7 @@ public data class AutopilotVersion(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotVersion =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotVersion = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -32,37 +32,27 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data for filling the OpenDroneID System message. The System Message contains general system
- * information including the operator location/altitude and possible aircraft group and/or
- * category/class information.
+ * Data for filling the OpenDroneID System message. The System Message contains general system information including the operator location/altitude and possible aircraft group and/or category/class information.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
  * @param operatorLocationType Specifies the operator location type.
  * @param classificationType Specifies the classification type of the UA.
  * @param operatorLatitude Latitude of the operator. If unknown: 0 (both Lat/Lon).
  * units = degE7
  * @param operatorLongitude Longitude of the operator. If unknown: 0 (both Lat/Lon).
  * units = degE7
- * @param areaCount Number of aircraft in the area, group or formation (default 1). Used only for
- * swarms/multiple UA.
- * @param areaRadius Radius of the cylindrical area of the group or formation (default 0). Used only
- * for swarms/multiple UA.
+ * @param areaCount Number of aircraft in the area, group or formation (default 1). Used only for swarms/multiple UA.
+ * @param areaRadius Radius of the cylindrical area of the group or formation (default 0). Used only for swarms/multiple UA.
  * units = m
- * @param areaCeiling Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for
- * swarms/multiple UA.
+ * @param areaCeiling Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA.
  * units = m
- * @param areaFloor Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for
- * swarms/multiple UA.
+ * @param areaFloor Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA.
  * units = m
- * @param categoryEu When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the
- * category of the UA.
- * @param classEu When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class
- * of the UA.
- * @param operatorAltitudeGeo Geodetic altitude of the operator relative to WGS84. If unknown: -1000
- * m.
+ * @param categoryEu When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the category of the UA.
+ * @param classEu When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class of the UA.
+ * @param operatorAltitudeGeo Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
  * units = m
  * @param timestamp 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
  * units = s
@@ -83,8 +73,7 @@ public data class OpenDroneIdSystem(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
@@ -92,51 +81,67 @@ public data class OpenDroneIdSystem(
    * Specifies the operator location type.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val operatorLocationType: MavEnumValue<MavOdidOperatorLocationType> =
-      MavEnumValue.fromValue(0u),
+  public val operatorLocationType:
+      MavEnumValue<MavOdidOperatorLocationType> = MavEnumValue.fromValue(0u),
   /**
    * Specifies the classification type of the UA.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val classificationType: MavEnumValue<MavOdidClassificationType> =
-      MavEnumValue.fromValue(0u),
+  public val classificationType:
+      MavEnumValue<MavOdidClassificationType> = MavEnumValue.fromValue(0u),
   /**
    * Latitude of the operator. If unknown: 0 (both Lat/Lon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "0",
+  )
   public val operatorLatitude: Int = 0,
   /**
    * Longitude of the operator. If unknown: 0 (both Lat/Lon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "0",
+  )
   public val operatorLongitude: Int = 0,
   /**
-   * Number of aircraft in the area, group or formation (default 1). Used only for swarms/multiple
-   * UA.
+   * Number of aircraft in the area, group or formation (default 1). Used only for swarms/multiple UA.
    */
   @GeneratedMavField(type = "uint16_t")
   public val areaCount: UShort = 0u,
   /**
-   * Radius of the cylindrical area of the group or formation (default 0). Used only for
-   * swarms/multiple UA.
+   * Radius of the cylindrical area of the group or formation (default 0). Used only for swarms/multiple UA.
    * units = m
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "m",
+  )
   public val areaRadius: UShort = 0u,
   /**
-   * Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple
-   * UA.
+   * Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val areaCeiling: Float = 0F,
   /**
    * Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val areaFloor: Float = 0F,
   /**
    * When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the category of the UA.
@@ -152,13 +157,20 @@ public data class OpenDroneIdSystem(
    * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val operatorAltitudeGeo: Float = 0F,
   /**
    * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val timestamp: UInt = 0u,
 ) : MavMessage<OpenDroneIdSystem> {
   override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystem> = Companion
@@ -262,8 +274,7 @@ public data class OpenDroneIdSystem(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSystem =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSystem = Builder().apply(builderAction).build()
   }
 
   public class Builder {

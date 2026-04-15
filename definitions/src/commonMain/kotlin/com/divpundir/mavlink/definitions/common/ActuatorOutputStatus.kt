@@ -22,8 +22,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * The raw values of the actuator outputs (e.g. on Pixhawk, from MAIN, AUX ports). This message
- * supersedes SERVO_OUTPUT_RAW.
+ * The raw values of the actuator outputs (e.g. on Pixhawk, from MAIN, AUX ports). This message supersedes SERVO_OUTPUT_RAW.
  *
  * @param timeUsec Timestamp (since system boot).
  * units = us
@@ -39,12 +38,18 @@ public data class ActuatorOutputStatus(
    * Timestamp (since system boot).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Active outputs
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    display = "bitmask",
+  )
   public val active: UInt = 0u,
   /**
    * Servo / motor output array values. Zero values indicate unused channels.
@@ -93,8 +98,7 @@ public data class ActuatorOutputStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ActuatorOutputStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ActuatorOutputStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

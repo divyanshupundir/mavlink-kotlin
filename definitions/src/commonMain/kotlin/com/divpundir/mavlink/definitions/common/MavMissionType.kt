@@ -23,8 +23,7 @@ public enum class MavMissionType(
   @GeneratedMavEnumEntry
   FENCE(1u),
   /**
-   * Specifies the rally points for the vehicle. Rally points are alternative RTL points. Items are
-   * MAV_CMD_NAV_RALLY_POINT rally point items.
+   * Specifies the rally points for the vehicle. Rally points are alternative RTL points. Items are MAV_CMD_NAV_RALLY_POINT rally point items.
    */
   @GeneratedMavEnumEntry
   RALLY(2u),

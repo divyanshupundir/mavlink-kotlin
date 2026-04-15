@@ -6,18 +6,14 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Supported component metadata types. These are used in the "general" metadata file returned by
- * COMPONENT_METADATA to provide information about supported metadata types. The types are not used
- * directly in MAVLink messages.
+ * Supported component metadata types. These are used in the "general" metadata file returned by COMPONENT_METADATA to provide information about supported metadata types. The types are not used directly in MAVLink messages.
  */
 @GeneratedMavEnum
 public enum class CompMetadataType(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * General information about the component. General metadata includes information about other
-   * metadata types supported by the component. Files of this type must be supported, and must be
-   * downloadable from vehicle using a MAVLink FTP URI.
+   * General information about the component. General metadata includes information about other metadata types supported by the component. Files of this type must be supported, and must be downloadable from vehicle using a MAVLink FTP URI.
    */
   @GeneratedMavEnumEntry
   GENERAL(0u),

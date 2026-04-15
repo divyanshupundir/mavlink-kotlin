@@ -16,24 +16,17 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Time/duration estimates for various events and actions given the current vehicle state and
- * position.
+ * Time/duration estimates for various events and actions given the current vehicle state and position.
  *
- * @param safeReturn Estimated time to complete the vehicle's configured "safe return" action from
- * its current position (e.g. RTL, Smart RTL, etc.). -1 indicates that the vehicle is landed, or that
- * no time estimate available.
+ * @param safeReturn Estimated time to complete the vehicle's configured "safe return" action from its current position (e.g. RTL, Smart RTL, etc.). -1 indicates that the vehicle is landed, or that no time estimate available.
  * units = s
- * @param land Estimated time for vehicle to complete the LAND action from its current position. -1
- * indicates that the vehicle is landed, or that no time estimate available.
+ * @param land Estimated time for vehicle to complete the LAND action from its current position. -1 indicates that the vehicle is landed, or that no time estimate available.
  * units = s
- * @param missionNextItem Estimated time for reaching/completing the currently active mission
- * item. -1 means no time estimate available.
+ * @param missionNextItem Estimated time for reaching/completing the currently active mission item. -1 means no time estimate available.
  * units = s
- * @param missionEnd Estimated time for completing the current mission. -1 means no mission active
- * and/or no estimate available.
+ * @param missionEnd Estimated time for completing the current mission. -1 means no mission active and/or no estimate available.
  * units = s
- * @param commandedAction Estimated time for completing the current commanded action (i.e. Go To,
- * Takeoff, Land, etc.). -1 means no action active and/or no estimate available.
+ * @param commandedAction Estimated time for completing the current commanded action (i.e. Go To, Takeoff, Land, etc.). -1 means no action active and/or no estimate available.
  * units = s
  */
 @WorkInProgress
@@ -43,40 +36,52 @@ import kotlin.Unit
 )
 public data class TimeEstimateToTarget(
   /**
-   * Estimated time to complete the vehicle's configured "safe return" action from its current
-   * position (e.g. RTL, Smart RTL, etc.). -1 indicates that the vehicle is landed, or that no time
-   * estimate available.
+   * Estimated time to complete the vehicle's configured "safe return" action from its current position (e.g. RTL, Smart RTL, etc.). -1 indicates that the vehicle is landed, or that no time estimate available.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+  )
   public val safeReturn: Int = 0,
   /**
-   * Estimated time for vehicle to complete the LAND action from its current position. -1 indicates
-   * that the vehicle is landed, or that no time estimate available.
+   * Estimated time for vehicle to complete the LAND action from its current position. -1 indicates that the vehicle is landed, or that no time estimate available.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+  )
   public val land: Int = 0,
   /**
-   * Estimated time for reaching/completing the currently active mission item. -1 means no time
-   * estimate available.
+   * Estimated time for reaching/completing the currently active mission item. -1 means no time estimate available.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+    invalid = "-1",
+  )
   public val missionNextItem: Int = 0,
   /**
-   * Estimated time for completing the current mission. -1 means no mission active and/or no
-   * estimate available.
+   * Estimated time for completing the current mission. -1 means no mission active and/or no estimate available.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+    invalid = "-1",
+  )
   public val missionEnd: Int = 0,
   /**
-   * Estimated time for completing the current commanded action (i.e. Go To, Takeoff, Land,
-   * etc.). -1 means no action active and/or no estimate available.
+   * Estimated time for completing the current commanded action (i.e. Go To, Takeoff, Land, etc.). -1 means no action active and/or no estimate available.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+    invalid = "-1",
+  )
   public val commandedAction: Int = 0,
 ) : MavMessage<TimeEstimateToTarget> {
   override val instanceCompanion: MavMessage.MavCompanion<TimeEstimateToTarget> = Companion
@@ -128,8 +133,7 @@ public data class TimeEstimateToTarget(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TimeEstimateToTarget =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TimeEstimateToTarget = Builder().apply(builderAction).build()
   }
 
   public class Builder {

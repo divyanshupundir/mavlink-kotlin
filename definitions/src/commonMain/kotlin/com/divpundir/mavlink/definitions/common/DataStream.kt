@@ -2,17 +2,19 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -22,27 +24,29 @@ import kotlin.Unit
 /**
  * Data stream status information.
  *
- * @param streamId The ID of the requested data stream
+ * @param streamId The ID of the requested data stream.
  * @param messageRate The message rate
  * units = Hz
  * @param onOff 1 stream is enabled, 0 stream is stopped.
  */
-@Deprecated(message = "")
 @GeneratedMavMessage(
   id = 67u,
   crcExtra = 21,
 )
 public data class DataStream(
   /**
-   * The ID of the requested data stream
+   * The ID of the requested data stream.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val streamId: UByte = 0u,
+  public val streamId: MavEnumValue<MavDataStream> = MavEnumValue.fromValue(0u),
   /**
    * The message rate
    * units = Hz
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "Hz",
+  )
   public val messageRate: UShort = 0u,
   /**
    * 1 stream is enabled, 0 stream is stopped.
@@ -55,7 +59,7 @@ public data class DataStream(
   override fun serializeV1(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V1)
     encoder.encodeUInt16(messageRate)
-    encoder.encodeUInt8(streamId)
+    encoder.encodeEnumValue(streamId.value, 1)
     encoder.encodeUInt8(onOff)
     return encoder.bytes
   }
@@ -63,7 +67,7 @@ public data class DataStream(
   override fun serializeV2(): ByteArray {
     val encoder = MavDataEncoder(SIZE_V2)
     encoder.encodeUInt16(messageRate)
-    encoder.encodeUInt8(streamId)
+    encoder.encodeEnumValue(streamId.value, 1)
     encoder.encodeUInt8(onOff)
     return encoder.bytes.truncateZeros()
   }
@@ -81,7 +85,10 @@ public data class DataStream(
       val decoder = MavDataDecoder(bytes)
 
       val messageRate = decoder.safeDecodeUInt16()
-      val streamId = decoder.safeDecodeUInt8()
+      val streamId = decoder.safeDecodeEnumValue(1).let { value ->
+        val entry = MavDataStream.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val onOff = decoder.safeDecodeUInt8()
 
       return DataStream(
@@ -91,12 +98,11 @@ public data class DataStream(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DataStream =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DataStream = Builder().apply(builderAction).build()
   }
 
   public class Builder {
-    public var streamId: UByte = 0u
+    public var streamId: MavEnumValue<MavDataStream> = MavEnumValue.fromValue(0u)
 
     public var messageRate: UShort = 0u
 

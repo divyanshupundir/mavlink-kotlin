@@ -57,49 +57,73 @@ public data class LinkNodeStatus(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "ms",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * Remaining free transmit buffer space
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+  )
   public val txBuf: UByte = 0u,
   /**
    * Remaining free receive buffer space
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+  )
   public val rxBuf: UByte = 0u,
   /**
    * Transmit rate
    * units = bytes/s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes/s",
+  )
   public val txRate: UInt = 0u,
   /**
    * Receive rate
    * units = bytes/s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes/s",
+  )
   public val rxRate: UInt = 0u,
   /**
    * Number of bytes that could not be parsed correctly.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "bytes",
+  )
   public val rxParseErr: UShort = 0u,
   /**
    * Transmit buffer overflows. This number wraps around as it reaches UINT16_MAX
    * units = bytes
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "bytes",
+  )
   public val txOverflows: UShort = 0u,
   /**
    * Receive buffer overflows. This number wraps around as it reaches UINT16_MAX
    * units = bytes
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "bytes",
+  )
   public val rxOverflows: UShort = 0u,
   /**
    * Messages sent
@@ -190,8 +214,7 @@ public data class LinkNodeStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LinkNodeStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LinkNodeStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

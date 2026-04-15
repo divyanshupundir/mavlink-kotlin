@@ -23,49 +23,24 @@ import kotlin.Unit
 
 /**
  * Manual (joystick) control message.
- *         This message represents movement axes and button using standard joystick axes
- * nomenclature. Unused axes can be disabled and buttons states are transmitted as individual on/off
- * bits of a bitmask. For more information see https://mavlink.io/en/manual_control.html
+ *         This message represents movement axes and button using standard joystick axes nomenclature. Unused axes can be disabled and buttons states are transmitted as individual on/off bits of a bitmask. For more information see https://mavlink.io/en/services/manual_control.html
  *
  * @param target The system to be controlled.
- * @param x X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
- * axis is invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and
- * the pitch of a vehicle.
- * @param y Y-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
- * axis is invalid. Generally corresponds to left(-1000)-right(1000) movement on a joystick and the
- * roll of a vehicle.
- * @param z Z-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
- * axis is invalid. Generally corresponds to a separate slider movement with maximum being 1000 and
- * minimum being -1000 on a joystick and the thrust of a vehicle. Positive values are positive thrust,
- * negative values are negative thrust.
- * @param r R-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this
- * axis is invalid. Generally corresponds to a twisting of the joystick, with counter-clockwise being
- * 1000 and clockwise being -1000, and the yaw of a vehicle.
- * @param buttons A bitfield corresponding to the joystick buttons' 0-15 current state, 1 for
- * pressed, 0 for released. The lowest bit corresponds to Button 1.
- * @param buttons2 A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for
- * pressed, 0 for released. The lowest bit corresponds to Button 16.
- * @param enabledExtensions Set bits to 1 to indicate which of the following extension fields
- * contain valid data: bit 0: pitch, bit 1: roll, bit 2: aux1, bit 3: aux2, bit 4: aux3, bit 5: aux4,
- * bit 6: aux5, bit 7: aux6
- * @param s Pitch-only-axis, normalized to the range [-1000,1000]. Generally corresponds to pitch on
- * vehicles with additional degrees of freedom. Valid if bit 0 of enabled_extensions field is set. Set
- * to 0 if invalid.
- * @param t Roll-only-axis, normalized to the range [-1000,1000]. Generally corresponds to roll on
- * vehicles with additional degrees of freedom. Valid if bit 1 of enabled_extensions field is set. Set
- * to 0 if invalid.
- * @param aux1 Aux continuous input field 1. Normalized in the range [-1000,1000]. Purpose defined
- * by recipient. Valid data if bit 2 of enabled_extensions field is set. 0 if bit 2 is unset.
- * @param aux2 Aux continuous input field 2. Normalized in the range [-1000,1000]. Purpose defined
- * by recipient. Valid data if bit 3 of enabled_extensions field is set. 0 if bit 3 is unset.
- * @param aux3 Aux continuous input field 3. Normalized in the range [-1000,1000]. Purpose defined
- * by recipient. Valid data if bit 4 of enabled_extensions field is set. 0 if bit 4 is unset.
- * @param aux4 Aux continuous input field 4. Normalized in the range [-1000,1000]. Purpose defined
- * by recipient. Valid data if bit 5 of enabled_extensions field is set. 0 if bit 5 is unset.
- * @param aux5 Aux continuous input field 5. Normalized in the range [-1000,1000]. Purpose defined
- * by recipient. Valid data if bit 6 of enabled_extensions field is set. 0 if bit 6 is unset.
- * @param aux6 Aux continuous input field 6. Normalized in the range [-1000,1000]. Purpose defined
- * by recipient. Valid data if bit 7 of enabled_extensions field is set. 0 if bit 7 is unset.
+ * @param x X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and the pitch of a vehicle.
+ * @param y Y-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to left(-1000)-right(1000) movement on a joystick and the roll of a vehicle.
+ * @param z Z-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to a separate slider movement with maximum being 1000 and minimum being -1000 on a joystick and the thrust of a vehicle. Positive values are positive thrust, negative values are negative thrust.
+ * @param r R-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to a twisting of the joystick, with clockwise being 1000 and counter-clockwise being -1000, and the yaw of a vehicle.
+ * @param buttons A bitfield corresponding to the joystick buttons' 0-15 current state, 1 for pressed, 0 for released. The lowest bit corresponds to Button 1.
+ * @param buttons2 A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for pressed, 0 for released. The lowest bit corresponds to Button 16.
+ * @param enabledExtensions Set bits to 1 to indicate which of the following extension fields contain valid data: bit 0: pitch, bit 1: roll, bit 2: aux1, bit 3: aux2, bit 4: aux3, bit 5: aux4, bit 6: aux5, bit 7: aux6
+ * @param s Pitch-only-axis, normalized to the range [-1000,1000]. Generally corresponds to pitch on vehicles with additional degrees of freedom. Valid if bit 0 of enabled_extensions field is set. Set to 0 if invalid.
+ * @param t Roll-only-axis, normalized to the range [-1000,1000]. Generally corresponds to roll on vehicles with additional degrees of freedom. Valid if bit 1 of enabled_extensions field is set. Set to 0 if invalid.
+ * @param aux1 Aux continuous input field 1. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 2 of enabled_extensions field is set. 0 if bit 2 is unset.
+ * @param aux2 Aux continuous input field 2. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 3 of enabled_extensions field is set. 0 if bit 3 is unset.
+ * @param aux3 Aux continuous input field 3. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 4 of enabled_extensions field is set. 0 if bit 4 is unset.
+ * @param aux4 Aux continuous input field 4. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 5 of enabled_extensions field is set. 0 if bit 5 is unset.
+ * @param aux5 Aux continuous input field 5. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 6 of enabled_extensions field is set. 0 if bit 6 is unset.
+ * @param aux6 Aux continuous input field 6. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 7 of enabled_extensions field is set. 0 if bit 7 is unset.
  */
 @GeneratedMavMessage(
   id = 69u,
@@ -78,43 +53,44 @@ public data class ManualControl(
   @GeneratedMavField(type = "uint8_t")
   public val target: UByte = 0u,
   /**
-   * X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
-   * invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and the
-   * pitch of a vehicle.
+   * X-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to forward(1000)-backward(-1000) movement on a joystick and the pitch of a vehicle.
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "INT16_MAX",
+  )
   public val x: Short = 0,
   /**
-   * Y-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
-   * invalid. Generally corresponds to left(-1000)-right(1000) movement on a joystick and the roll of a
-   * vehicle.
+   * Y-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to left(-1000)-right(1000) movement on a joystick and the roll of a vehicle.
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "INT16_MAX",
+  )
   public val y: Short = 0,
   /**
-   * Z-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
-   * invalid. Generally corresponds to a separate slider movement with maximum being 1000 and minimum
-   * being -1000 on a joystick and the thrust of a vehicle. Positive values are positive thrust,
-   * negative values are negative thrust.
+   * Z-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to a separate slider movement with maximum being 1000 and minimum being -1000 on a joystick and the thrust of a vehicle. Positive values are positive thrust, negative values are negative thrust.
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "INT16_MAX",
+  )
   public val z: Short = 0,
   /**
-   * R-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is
-   * invalid. Generally corresponds to a twisting of the joystick, with counter-clockwise being 1000
-   * and clockwise being -1000, and the yaw of a vehicle.
+   * R-axis, normalized to the range [-1000,1000]. A value of INT16_MAX indicates that this axis is invalid. Generally corresponds to a twisting of the joystick, with clockwise being 1000 and counter-clockwise being -1000, and the yaw of a vehicle.
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "INT16_MAX",
+  )
   public val r: Short = 0,
   /**
-   * A bitfield corresponding to the joystick buttons' 0-15 current state, 1 for pressed, 0 for
-   * released. The lowest bit corresponds to Button 1.
+   * A bitfield corresponding to the joystick buttons' 0-15 current state, 1 for pressed, 0 for released. The lowest bit corresponds to Button 1.
    */
   @GeneratedMavField(type = "uint16_t")
   public val buttons: UShort = 0u,
   /**
-   * A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for pressed, 0 for
-   * released. The lowest bit corresponds to Button 16.
+   * A bitfield corresponding to the joystick buttons' 16-31 current state, 1 for pressed, 0 for released. The lowest bit corresponds to Button 16.
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -122,8 +98,7 @@ public data class ManualControl(
   )
   public val buttons2: UShort = 0u,
   /**
-   * Set bits to 1 to indicate which of the following extension fields contain valid data: bit 0:
-   * pitch, bit 1: roll, bit 2: aux1, bit 3: aux2, bit 4: aux3, bit 5: aux4, bit 6: aux5, bit 7: aux6
+   * Set bits to 1 to indicate which of the following extension fields contain valid data: bit 0: pitch, bit 1: roll, bit 2: aux1, bit 3: aux2, bit 4: aux3, bit 5: aux4, bit 6: aux5, bit 7: aux6
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -131,9 +106,7 @@ public data class ManualControl(
   )
   public val enabledExtensions: UByte = 0u,
   /**
-   * Pitch-only-axis, normalized to the range [-1000,1000]. Generally corresponds to pitch on
-   * vehicles with additional degrees of freedom. Valid if bit 0 of enabled_extensions field is set.
-   * Set to 0 if invalid.
+   * Pitch-only-axis, normalized to the range [-1000,1000]. Generally corresponds to pitch on vehicles with additional degrees of freedom. Valid if bit 0 of enabled_extensions field is set. Set to 0 if invalid.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -141,9 +114,7 @@ public data class ManualControl(
   )
   public val s: Short = 0,
   /**
-   * Roll-only-axis, normalized to the range [-1000,1000]. Generally corresponds to roll on vehicles
-   * with additional degrees of freedom. Valid if bit 1 of enabled_extensions field is set. Set to 0 if
-   * invalid.
+   * Roll-only-axis, normalized to the range [-1000,1000]. Generally corresponds to roll on vehicles with additional degrees of freedom. Valid if bit 1 of enabled_extensions field is set. Set to 0 if invalid.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -151,8 +122,7 @@ public data class ManualControl(
   )
   public val t: Short = 0,
   /**
-   * Aux continuous input field 1. Normalized in the range [-1000,1000]. Purpose defined by
-   * recipient. Valid data if bit 2 of enabled_extensions field is set. 0 if bit 2 is unset.
+   * Aux continuous input field 1. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 2 of enabled_extensions field is set. 0 if bit 2 is unset.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -160,8 +130,7 @@ public data class ManualControl(
   )
   public val aux1: Short = 0,
   /**
-   * Aux continuous input field 2. Normalized in the range [-1000,1000]. Purpose defined by
-   * recipient. Valid data if bit 3 of enabled_extensions field is set. 0 if bit 3 is unset.
+   * Aux continuous input field 2. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 3 of enabled_extensions field is set. 0 if bit 3 is unset.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -169,8 +138,7 @@ public data class ManualControl(
   )
   public val aux2: Short = 0,
   /**
-   * Aux continuous input field 3. Normalized in the range [-1000,1000]. Purpose defined by
-   * recipient. Valid data if bit 4 of enabled_extensions field is set. 0 if bit 4 is unset.
+   * Aux continuous input field 3. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 4 of enabled_extensions field is set. 0 if bit 4 is unset.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -178,8 +146,7 @@ public data class ManualControl(
   )
   public val aux3: Short = 0,
   /**
-   * Aux continuous input field 4. Normalized in the range [-1000,1000]. Purpose defined by
-   * recipient. Valid data if bit 5 of enabled_extensions field is set. 0 if bit 5 is unset.
+   * Aux continuous input field 4. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 5 of enabled_extensions field is set. 0 if bit 5 is unset.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -187,8 +154,7 @@ public data class ManualControl(
   )
   public val aux4: Short = 0,
   /**
-   * Aux continuous input field 5. Normalized in the range [-1000,1000]. Purpose defined by
-   * recipient. Valid data if bit 6 of enabled_extensions field is set. 0 if bit 6 is unset.
+   * Aux continuous input field 5. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 6 of enabled_extensions field is set. 0 if bit 6 is unset.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -196,8 +162,7 @@ public data class ManualControl(
   )
   public val aux5: Short = 0,
   /**
-   * Aux continuous input field 6. Normalized in the range [-1000,1000]. Purpose defined by
-   * recipient. Valid data if bit 7 of enabled_extensions field is set. 0 if bit 7 is unset.
+   * Aux continuous input field 6. Normalized in the range [-1000,1000]. Purpose defined by recipient. Valid data if bit 7 of enabled_extensions field is set. 0 if bit 7 is unset.
    */
   @GeneratedMavField(
     type = "int16_t",
@@ -288,8 +253,7 @@ public data class ManualControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ManualControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ManualControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

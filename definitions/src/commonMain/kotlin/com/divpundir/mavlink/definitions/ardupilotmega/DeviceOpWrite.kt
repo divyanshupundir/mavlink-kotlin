@@ -180,8 +180,7 @@ public data class DeviceOpWrite(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpWrite =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpWrite = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -21,9 +21,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Streamed from drone to report progress of terrain map download (initiated by TERRAIN_REQUEST), or
- * sent as a response to a TERRAIN_CHECK request. See terrain protocol docs:
- * https://mavlink.io/en/services/terrain.html
+ * Streamed from drone to report progress of terrain map download (initiated by TERRAIN_REQUEST), or sent as a response to a TERRAIN_CHECK request. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
  *
  * @param lat Latitude
  * units = degE7
@@ -46,13 +44,19 @@ public data class TerrainReport(
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * grid spacing (zero if terrain at this location unavailable)
@@ -63,13 +67,19 @@ public data class TerrainReport(
    * Terrain height MSL
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val terrainHeight: Float = 0F,
   /**
    * Current vehicle height above lat/lon terrain height
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val currentHeight: Float = 0F,
   /**
    * Number of 4x4 terrain blocks waiting to be received or read from disk
@@ -139,8 +149,7 @@ public data class TerrainReport(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainReport =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainReport = Builder().apply(builderAction).build()
   }
 
   public class Builder {

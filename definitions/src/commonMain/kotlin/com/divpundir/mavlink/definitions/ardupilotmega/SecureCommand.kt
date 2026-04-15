@@ -24,12 +24,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Send a secure command. Data should be signed with a private key corresponding with a public key
- * known to the recipient. Signature should be over the concatenation of the sequence number
- * (little-endian format), the operation (little-endian format) the data and the session key. For
- * SECURE_COMMAND_GET_SESSION_KEY the session key should be zero length. The data array consists of the
- * data followed by the signature. The sum of the data_length and the sig_length cannot be more than
- * 220. The format of the data is command specific.
+ * Send a secure command. Data should be signed with a private key corresponding with a public key known to the recipient. Signature should be over the concatenation of the sequence number (little-endian format), the operation (little-endian format) the data and the session key. For SECURE_COMMAND_GET_SESSION_KEY the session key should be zero length. The data array consists of the data followed by the signature. The sum of the data_length and the sig_length cannot be more than 220. The format of the data is command specific.
  *
  * @param targetSystem System ID.
  * @param targetComponent Component ID.
@@ -140,8 +135,7 @@ public data class SecureCommand(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SecureCommand =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SecureCommand = Builder().apply(builderAction).build()
   }
 
   public class Builder {

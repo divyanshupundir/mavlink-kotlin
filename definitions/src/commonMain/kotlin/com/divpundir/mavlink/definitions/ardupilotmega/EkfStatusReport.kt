@@ -132,8 +132,7 @@ public data class EkfStatusReport(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EkfStatusReport =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EkfStatusReport = Builder().apply(builderAction).build()
   }
 
   public class Builder {

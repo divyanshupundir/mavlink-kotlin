@@ -68,8 +68,7 @@ public data class UavionixAdsbTransceiverHealthReport(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit):
-        UavionixAdsbTransceiverHealthReport = Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbTransceiverHealthReport = Builder().apply(builderAction).build()
   }
 
   public class Builder {

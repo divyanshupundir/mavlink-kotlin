@@ -18,8 +18,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0
- * 0).
+ *  Drone IMU data. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
  *
  * @param timeBootMs Timestamp (time since FC boot).
  * units = ms
@@ -49,7 +48,10 @@ public data class AvssDroneImu(
    * Timestamp (time since FC boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Quaternion component 1, w (1 in null-rotation)
@@ -75,37 +77,55 @@ public data class AvssDroneImu(
    * X acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val xacc: Float = 0F,
   /**
    * Y acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val yacc: Float = 0F,
   /**
    * Z acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val zgyro: Float = 0F,
 ) : MavMessage<AvssDroneImu> {
   override val instanceCompanion: MavMessage.MavCompanion<AvssDroneImu> = Companion
@@ -181,8 +201,7 @@ public data class AvssDroneImu(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDroneImu =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDroneImu = Builder().apply(builderAction).build()
   }
 
   public class Builder {

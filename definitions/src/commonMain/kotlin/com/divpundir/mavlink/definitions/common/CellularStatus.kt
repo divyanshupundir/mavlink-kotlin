@@ -55,22 +55,34 @@ public data class CellularStatus(
   /**
    * Signal quality in percent. If unknown, set to UINT8_MAX
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val quality: UByte = 0u,
   /**
    * Mobile country code. If unknown, set to UINT16_MAX
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val mcc: UShort = 0u,
   /**
    * Mobile network code. If unknown, set to UINT16_MAX
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val mnc: UShort = 0u,
   /**
    * Location area code. If unknown, set to 0
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "0",
+  )
   public val lac: UShort = 0u,
 ) : MavMessage<CellularStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<CellularStatus> = Companion
@@ -139,8 +151,7 @@ public data class CellularStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CellularStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CellularStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

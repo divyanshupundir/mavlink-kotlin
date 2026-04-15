@@ -20,14 +20,12 @@ import kotlin.Unit
 /**
  *
  *         The interval between messages for a particular MAVLink message ID.
- *         This message is sent in response to the MAV_CMD_REQUEST_MESSAGE command with param1=244
- * (this message) and param2=message_id (the id of the message for which the interval is required).
+ *         This message is sent in response to the MAV_CMD_REQUEST_MESSAGE command with param1=244 (this message) and param2=message_id (the id of the message for which the interval is required).
  * 	It may also be sent in response to MAV_CMD_GET_MESSAGE_INTERVAL.
  * 	This interface replaces DATA_STREAM.
  *
  * @param messageId The ID of the requested MAVLink message. v1.0 is limited to 254 messages.
- * @param intervalUs The interval between two messages. A value of -1 indicates this stream is
- * disabled, 0 indicates it is not available, > 0 indicates the interval at which it is sent.
+ * @param intervalUs The interval between two messages. A value of -1 indicates this stream is disabled, 0 indicates it is not available, > 0 indicates the interval at which it is sent.
  * units = us
  */
 @GeneratedMavMessage(
@@ -41,11 +39,13 @@ public data class MessageInterval(
   @GeneratedMavField(type = "uint16_t")
   public val messageId: UShort = 0u,
   /**
-   * The interval between two messages. A value of -1 indicates this stream is disabled, 0 indicates
-   * it is not available, > 0 indicates the interval at which it is sent.
+   * The interval between two messages. A value of -1 indicates this stream is disabled, 0 indicates it is not available, > 0 indicates the interval at which it is sent.
    * units = us
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "us",
+  )
   public val intervalUs: Int = 0,
 ) : MavMessage<MessageInterval> {
   override val instanceCompanion: MavMessage.MavCompanion<MessageInterval> = Companion
@@ -85,8 +85,7 @@ public data class MessageInterval(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MessageInterval =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MessageInterval = Builder().apply(builderAction).build()
   }
 
   public class Builder {

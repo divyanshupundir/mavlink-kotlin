@@ -26,16 +26,9 @@ import kotlin.Unit
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param generalMetadataFileCrc CRC32 of the general metadata file (general_metadata_uri).
- * @param generalMetadataUri MAVLink FTP URI for the general metadata file
- * (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component
- * metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The
- * information is static from boot, and may be generated at compile time. The string needs to be zero
- * terminated.
+ * @param generalMetadataUri MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be generated at compile time. The string needs to be zero terminated.
  * @param peripheralsMetadataFileCrc CRC32 of peripherals metadata file (peripherals_metadata_uri).
- * @param peripheralsMetadataUri (Optional) MAVLink FTP URI for the peripherals metadata file
- * (COMP_METADATA_TYPE_PERIPHERALS), which may be compressed with xz. This contains data about
- * "attached components" such as UAVCAN nodes. The peripherals are in a separate file because the
- * information must be generated dynamically at runtime. The string needs to be zero terminated.
+ * @param peripheralsMetadataUri (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS), which may be compressed with xz. This contains data about "attached components" such as UAVCAN nodes. The peripherals are in a separate file because the information must be generated dynamically at runtime. The string needs to be zero terminated.
  */
 @Deprecated(message = "")
 @GeneratedMavMessage(
@@ -47,7 +40,10 @@ public data class ComponentInformation(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * CRC32 of the general metadata file (general_metadata_uri).
@@ -55,10 +51,7 @@ public data class ComponentInformation(
   @GeneratedMavField(type = "uint32_t")
   public val generalMetadataFileCrc: UInt = 0u,
   /**
-   * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be
-   * compressed with xz. The file contains general component metadata, and may contain URI links for
-   * additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be
-   * generated at compile time. The string needs to be zero terminated.
+   * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be generated at compile time. The string needs to be zero terminated.
    */
   @GeneratedMavField(type = "char[100]")
   public val generalMetadataUri: String = "",
@@ -68,10 +61,7 @@ public data class ComponentInformation(
   @GeneratedMavField(type = "uint32_t")
   public val peripheralsMetadataFileCrc: UInt = 0u,
   /**
-   * (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS),
-   * which may be compressed with xz. This contains data about "attached components" such as UAVCAN
-   * nodes. The peripherals are in a separate file because the information must be generated
-   * dynamically at runtime. The string needs to be zero terminated.
+   * (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS), which may be compressed with xz. This contains data about "attached components" such as UAVCAN nodes. The peripherals are in a separate file because the information must be generated dynamically at runtime. The string needs to be zero terminated.
    */
   @GeneratedMavField(type = "char[100]")
   public val peripheralsMetadataUri: String = "",
@@ -125,8 +115,7 @@ public data class ComponentInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -51,11 +51,9 @@ import kotlin.Unit
  * @param throttleOut Output throttle
  * units = %
  * @param ptCompensation Pressure/temperature compensation
- * @param ignitionVoltage Supply voltage to EFI sparking system.  Zero in this value means
- * "unknown", so if the supply voltage really is zero volts use 0.0001 instead.
+ * @param ignitionVoltage Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply voltage really is zero volts use 0.0001 instead.
  * units = V
- * @param fuelPressure Fuel pressure. Zero in this value means "unknown", so if the fuel pressure
- * really is zero kPa use 0.0001 instead.
+ * @param fuelPressure Fuel pressure. Zero in this value means "unknown", so if the fuel pressure really is zero kPa use 0.0001 instead.
  * units = kPa
  */
 @GeneratedMavMessage(
@@ -82,79 +80,118 @@ public data class EfiStatus(
    * Fuel consumed
    * units = cm^3
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "cm^3",
+  )
   public val fuelConsumed: Float = 0F,
   /**
    * Fuel flow rate
    * units = cm^3/min
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "cm^3/min",
+  )
   public val fuelFlow: Float = 0F,
   /**
    * Engine load
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val engineLoad: Float = 0F,
   /**
    * Throttle position
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val throttlePosition: Float = 0F,
   /**
    * Spark dwell time
    * units = ms
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "ms",
+  )
   public val sparkDwellTime: Float = 0F,
   /**
    * Barometric pressure
    * units = kPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "kPa",
+  )
   public val barometricPressure: Float = 0F,
   /**
    * Intake manifold pressure(
    * units = kPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "kPa",
+  )
   public val intakeManifoldPressure: Float = 0F,
   /**
    * Intake manifold temperature
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val intakeManifoldTemperature: Float = 0F,
   /**
    * Cylinder head temperature
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val cylinderHeadTemperature: Float = 0F,
   /**
    * Ignition timing (Crank angle degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val ignitionTiming: Float = 0F,
   /**
    * Injection time
    * units = ms
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "ms",
+  )
   public val injectionTime: Float = 0F,
   /**
    * Exhaust gas temperature
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val exhaustGasTemperature: Float = 0F,
   /**
    * Output throttle
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val throttleOut: Float = 0F,
   /**
    * Pressure/temperature compensation
@@ -162,23 +199,23 @@ public data class EfiStatus(
   @GeneratedMavField(type = "float")
   public val ptCompensation: Float = 0F,
   /**
-   * Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply
-   * voltage really is zero volts use 0.0001 instead.
+   * Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply voltage really is zero volts use 0.0001 instead.
    * units = V
    */
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "V",
   )
   public val ignitionVoltage: Float = 0F,
   /**
-   * Fuel pressure. Zero in this value means "unknown", so if the fuel pressure really is zero kPa
-   * use 0.0001 instead.
+   * Fuel pressure. Zero in this value means "unknown", so if the fuel pressure really is zero kPa use 0.0001 instead.
    * units = kPa
    */
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "kPa",
   )
   public val fuelPressure: Float = 0F,
 ) : MavMessage<EfiStatus> {
@@ -285,8 +322,7 @@ public data class EfiStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EfiStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EfiStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

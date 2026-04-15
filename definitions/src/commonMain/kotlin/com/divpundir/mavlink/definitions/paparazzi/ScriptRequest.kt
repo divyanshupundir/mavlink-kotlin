@@ -19,8 +19,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Request script item with the sequence number seq. The response of the system to this message
- * should be a SCRIPT_ITEM message.
+ * Request script item with the sequence number seq. The response of the system to this message should be a SCRIPT_ITEM message.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -88,8 +87,7 @@ public data class ScriptRequest(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptRequest =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptRequest = Builder().apply(builderAction).build()
   }
 
   public class Builder {

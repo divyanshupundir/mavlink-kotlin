@@ -2,17 +2,19 @@ package com.divpundir.mavlink.definitions.common
 
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
+import com.divpundir.mavlink.api.MavEnumValue
 import com.divpundir.mavlink.api.MavMessage
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
+import com.divpundir.mavlink.serialization.encodeEnumValue
 import com.divpundir.mavlink.serialization.encodeUInt16
 import com.divpundir.mavlink.serialization.encodeUInt8
+import com.divpundir.mavlink.serialization.safeDecodeEnumValue
 import com.divpundir.mavlink.serialization.safeDecodeUInt16
 import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -24,12 +26,11 @@ import kotlin.Unit
  *
  * @param targetSystem The target requested to send the message stream.
  * @param targetComponent The target requested to send the message stream.
- * @param reqStreamId The ID of the requested data stream
+ * @param reqStreamId The ID of the requested data stream.
  * @param reqMessageRate The requested message rate
  * units = Hz
  * @param startStop 1 to start sending, 0 to stop sending.
  */
-@Deprecated(message = "")
 @GeneratedMavMessage(
   id = 66u,
   crcExtra = -108,
@@ -46,15 +47,18 @@ public data class RequestDataStream(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * The ID of the requested data stream
+   * The ID of the requested data stream.
    */
   @GeneratedMavField(type = "uint8_t")
-  public val reqStreamId: UByte = 0u,
+  public val reqStreamId: MavEnumValue<MavDataStream> = MavEnumValue.fromValue(0u),
   /**
    * The requested message rate
    * units = Hz
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "Hz",
+  )
   public val reqMessageRate: UShort = 0u,
   /**
    * 1 to start sending, 0 to stop sending.
@@ -69,7 +73,7 @@ public data class RequestDataStream(
     encoder.encodeUInt16(reqMessageRate)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
-    encoder.encodeUInt8(reqStreamId)
+    encoder.encodeEnumValue(reqStreamId.value, 1)
     encoder.encodeUInt8(startStop)
     return encoder.bytes
   }
@@ -79,7 +83,7 @@ public data class RequestDataStream(
     encoder.encodeUInt16(reqMessageRate)
     encoder.encodeUInt8(targetSystem)
     encoder.encodeUInt8(targetComponent)
-    encoder.encodeUInt8(reqStreamId)
+    encoder.encodeEnumValue(reqStreamId.value, 1)
     encoder.encodeUInt8(startStop)
     return encoder.bytes.truncateZeros()
   }
@@ -99,7 +103,10 @@ public data class RequestDataStream(
       val reqMessageRate = decoder.safeDecodeUInt16()
       val targetSystem = decoder.safeDecodeUInt8()
       val targetComponent = decoder.safeDecodeUInt8()
-      val reqStreamId = decoder.safeDecodeUInt8()
+      val reqStreamId = decoder.safeDecodeEnumValue(1).let { value ->
+        val entry = MavDataStream.getEntryFromValueOrNull(value)
+        if (entry != null) MavEnumValue.of(entry) else MavEnumValue.fromValue(value)
+      }
       val startStop = decoder.safeDecodeUInt8()
 
       return RequestDataStream(
@@ -111,8 +118,7 @@ public data class RequestDataStream(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RequestDataStream =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RequestDataStream = Builder().apply(builderAction).build()
   }
 
   public class Builder {
@@ -120,7 +126,7 @@ public data class RequestDataStream(
 
     public var targetComponent: UByte = 0u
 
-    public var reqStreamId: UByte = 0u
+    public var reqStreamId: MavEnumValue<MavDataStream> = MavEnumValue.fromValue(0u)
 
     public var reqMessageRate: UShort = 0u
 

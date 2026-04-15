@@ -19,15 +19,12 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * The positioning status, as reported by GPS. This message is intended to display status
- * information about each satellite visible to the receiver. See message GLOBAL_POSITION_INT for the
- * global position estimate. This message can contain information for up to 20 satellites.
+ * The positioning status, as reported by GPS. This message is intended to display status information about each satellite visible to the receiver. See message GLOBAL_POSITION_INT for the global position estimate. This message can contain information for up to 20 satellites.
  *
  * @param satellitesVisible Number of satellites visible
  * @param satellitePrn Global satellite ID
  * @param satelliteUsed 0: Satellite not used, 1: used for localization
- * @param satelliteElevation Elevation (0: right on top of receiver, 90: on the horizon) of
- * satellite
+ * @param satelliteElevation Elevation (0: right on top of receiver, 90: on the horizon) of satellite
  * units = deg
  * @param satelliteAzimuth Direction of satellite, 0: 0 deg, 255: 360 deg.
  * units = deg
@@ -58,19 +55,28 @@ public data class GpsStatus(
    * Elevation (0: right on top of receiver, 90: on the horizon) of satellite
    * units = deg
    */
-  @GeneratedMavField(type = "uint8_t[20]")
+  @GeneratedMavField(
+    type = "uint8_t[20]",
+    units = "deg",
+  )
   public val satelliteElevation: List<UByte> = emptyList(),
   /**
    * Direction of satellite, 0: 0 deg, 255: 360 deg.
    * units = deg
    */
-  @GeneratedMavField(type = "uint8_t[20]")
+  @GeneratedMavField(
+    type = "uint8_t[20]",
+    units = "deg",
+  )
   public val satelliteAzimuth: List<UByte> = emptyList(),
   /**
    * Signal to noise ratio of satellite
    * units = dB
    */
-  @GeneratedMavField(type = "uint8_t[20]")
+  @GeneratedMavField(
+    type = "uint8_t[20]",
+    units = "dB",
+  )
   public val satelliteSnr: List<UByte> = emptyList(),
 ) : MavMessage<GpsStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<GpsStatus> = Companion
@@ -126,8 +132,7 @@ public data class GpsStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

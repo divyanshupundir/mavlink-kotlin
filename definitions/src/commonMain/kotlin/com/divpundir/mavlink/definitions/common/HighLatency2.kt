@@ -41,8 +41,7 @@ import kotlin.Unit
  * @param timestamp Timestamp (milliseconds since boot or Unix epoch)
  * units = ms
  * @param type Type of the MAV (quadrotor, helicopter, etc.)
- * @param autopilot Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not
- * flight controllers.
+ * @param autopilot Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight controllers.
  * @param customMode A bitfield for use for autopilot-specific flags (2 byte version).
  * @param latitude Latitude
  * units = degE7
@@ -95,7 +94,10 @@ public data class HighLatency2(
    * Timestamp (milliseconds since boot or Unix epoch)
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timestamp: UInt = 0u,
   /**
    * Type of the MAV (quadrotor, helicopter, etc.)
@@ -103,123 +105,180 @@ public data class HighLatency2(
   @GeneratedMavField(type = "uint8_t")
   public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0u),
   /**
-   * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight
-   * controllers.
+   * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight controllers.
    */
   @GeneratedMavField(type = "uint8_t")
   public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0u),
   /**
    * A bitfield for use for autopilot-specific flags (2 byte version).
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    display = "bitmask",
+  )
   public val customMode: UShort = 0u,
   /**
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val latitude: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val longitude: Int = 0,
   /**
    * Altitude above mean sea level
    * units = m
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "m",
+  )
   public val altitude: Short = 0,
   /**
    * Altitude setpoint
    * units = m
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "m",
+  )
   public val targetAltitude: Short = 0,
   /**
    * Heading
    * units = deg/2
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "deg/2",
+  )
   public val heading: UByte = 0u,
   /**
    * Heading setpoint
    * units = deg/2
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "deg/2",
+  )
   public val targetHeading: UByte = 0u,
   /**
    * Distance to target waypoint or position
    * units = dam
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "dam",
+  )
   public val targetDistance: UShort = 0u,
   /**
    * Throttle
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+  )
   public val throttle: UByte = 0u,
   /**
    * Airspeed
    * units = m/s*5
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "m/s*5",
+  )
   public val airspeed: UByte = 0u,
   /**
    * Airspeed setpoint
    * units = m/s*5
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "m/s*5",
+  )
   public val airspeedSp: UByte = 0u,
   /**
    * Groundspeed
    * units = m/s*5
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "m/s*5",
+  )
   public val groundspeed: UByte = 0u,
   /**
    * Windspeed
    * units = m/s*5
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "m/s*5",
+  )
   public val windspeed: UByte = 0u,
   /**
    * Wind heading
    * units = deg/2
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "deg/2",
+  )
   public val windHeading: UByte = 0u,
   /**
    * Maximum error horizontal position since last message
    * units = dm
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "dm",
+  )
   public val eph: UByte = 0u,
   /**
    * Maximum error vertical position since last message
    * units = dm
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "dm",
+  )
   public val epv: UByte = 0u,
   /**
    * Air temperature
    * units = degC
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "degC",
+  )
   public val temperatureAir: Byte = 0,
   /**
    * Maximum climb rate magnitude since last message
    * units = dm/s
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "dm/s",
+  )
   public val climbRate: Byte = 0,
   /**
    * Battery level (-1 if field not provided).
    * units = %
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "%",
+    invalid = "-1",
+  )
   public val battery: Byte = 0,
   /**
    * Current waypoint number
@@ -393,8 +452,7 @@ public data class HighLatency2(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HighLatency2 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HighLatency2 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -25,30 +25,18 @@ import kotlin.Unit
 
 /**
  *
- *         Message that announces the sequence number of the current target mission item (that the
- * system will fly towards/execute when the mission is running).
+ *         Message that announces the sequence number of the current target mission item (that the system will fly towards/execute when the mission is running).
  *         This message should be streamed all the time (nominally at 1Hz).
- *         This message should be emitted following a call to MAV_CMD_DO_SET_MISSION_CURRENT or
- * MISSION_SET_CURRENT.
+ *         This message should be emitted following a call to MAV_CMD_DO_SET_MISSION_CURRENT or MISSION_SET_CURRENT.
  *       
  *
  * @param seq Sequence
- * @param total Total number of mission items on vehicle (on last item, sequence == total). If the
- * autopilot stores its home location as part of the mission this will be excluded from the total. 0:
- * Not supported, UINT16_MAX if no mission is present on the vehicle.
- * @param missionState Mission state machine state. MISSION_STATE_UNKNOWN if state reporting not
- * supported.
- * @param missionMode Vehicle is in a mode that can execute mission items or suspended. 0: Unknown,
- * 1: In mission mode, 2: Suspended (not in mission mode).
- * @param missionId Id of current on-vehicle mission plan, or 0 if IDs are not supported or there is
- * no mission loaded. GCS can use this to track changes to the mission plan type. The same value is
- * returned on mission upload (in the MISSION_ACK).
- * @param fenceId Id of current on-vehicle fence plan, or 0 if IDs are not supported or there is no
- * fence loaded. GCS can use this to track changes to the fence plan type. The same value is returned
- * on fence upload (in the MISSION_ACK).
- * @param rallyPointsId Id of current on-vehicle rally point plan, or 0 if IDs are not supported or
- * there are no rally points loaded. GCS can use this to track changes to the rally point plan type.
- * The same value is returned on rally point upload (in the MISSION_ACK).
+ * @param total Total number of mission items on vehicle (on last item, sequence == total). If the autopilot stores its home location as part of the mission this will be excluded from the total. 0: Not supported, UINT16_MAX if no mission is present on the vehicle.
+ * @param missionState Mission state machine state. MISSION_STATE_UNKNOWN if state reporting not supported.
+ * @param missionMode Vehicle is in a mode that can execute mission items or suspended. 0: Unknown, 1: In mission mode, 2: Suspended (not in mission mode).
+ * @param missionId Id of current on-vehicle mission plan, or 0 if IDs are not supported or there is no mission loaded. GCS can use this to track changes to the mission plan type. The same value is returned on mission upload (in the MISSION_ACK).
+ * @param fenceId Id of current on-vehicle fence plan, or 0 if IDs are not supported or there is no fence loaded. GCS can use this to track changes to the fence plan type. The same value is returned on fence upload (in the MISSION_ACK).
+ * @param rallyPointsId Id of current on-vehicle rally point plan, or 0 if IDs are not supported or there are no rally points loaded. GCS can use this to track changes to the rally point plan type. The same value is returned on rally point upload (in the MISSION_ACK).
  */
 @GeneratedMavMessage(
   id = 42u,
@@ -61,13 +49,12 @@ public data class MissionCurrent(
   @GeneratedMavField(type = "uint16_t")
   public val seq: UShort = 0u,
   /**
-   * Total number of mission items on vehicle (on last item, sequence == total). If the autopilot
-   * stores its home location as part of the mission this will be excluded from the total. 0: Not
-   * supported, UINT16_MAX if no mission is present on the vehicle.
+   * Total number of mission items on vehicle (on last item, sequence == total). If the autopilot stores its home location as part of the mission this will be excluded from the total. 0: Not supported, UINT16_MAX if no mission is present on the vehicle.
    */
   @GeneratedMavField(
     type = "uint16_t",
     extension = true,
+    invalid = "UINT16_MAX",
   )
   public val total: UShort = 0u,
   /**
@@ -76,45 +63,43 @@ public data class MissionCurrent(
   @GeneratedMavField(
     type = "uint8_t",
     extension = true,
+    invalid = "0",
   )
   public val missionState: MavEnumValue<MissionState> = MavEnumValue.fromValue(0u),
   /**
-   * Vehicle is in a mode that can execute mission items or suspended. 0: Unknown, 1: In mission
-   * mode, 2: Suspended (not in mission mode).
+   * Vehicle is in a mode that can execute mission items or suspended. 0: Unknown, 1: In mission mode, 2: Suspended (not in mission mode).
    */
   @GeneratedMavField(
     type = "uint8_t",
     extension = true,
+    invalid = "0",
   )
   public val missionMode: UByte = 0u,
   /**
-   * Id of current on-vehicle mission plan, or 0 if IDs are not supported or there is no mission
-   * loaded. GCS can use this to track changes to the mission plan type. The same value is returned on
-   * mission upload (in the MISSION_ACK).
+   * Id of current on-vehicle mission plan, or 0 if IDs are not supported or there is no mission loaded. GCS can use this to track changes to the mission plan type. The same value is returned on mission upload (in the MISSION_ACK).
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    invalid = "0",
   )
   public val missionId: UInt = 0u,
   /**
-   * Id of current on-vehicle fence plan, or 0 if IDs are not supported or there is no fence loaded.
-   * GCS can use this to track changes to the fence plan type. The same value is returned on fence
-   * upload (in the MISSION_ACK).
+   * Id of current on-vehicle fence plan, or 0 if IDs are not supported or there is no fence loaded. GCS can use this to track changes to the fence plan type. The same value is returned on fence upload (in the MISSION_ACK).
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    invalid = "0",
   )
   public val fenceId: UInt = 0u,
   /**
-   * Id of current on-vehicle rally point plan, or 0 if IDs are not supported or there are no rally
-   * points loaded. GCS can use this to track changes to the rally point plan type. The same value is
-   * returned on rally point upload (in the MISSION_ACK).
+   * Id of current on-vehicle rally point plan, or 0 if IDs are not supported or there are no rally points loaded. GCS can use this to track changes to the rally point plan type. The same value is returned on rally point upload (in the MISSION_ACK).
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    invalid = "0",
   )
   public val rallyPointsId: UInt = 0u,
 ) : MavMessage<MissionCurrent> {
@@ -172,8 +157,7 @@ public data class MissionCurrent(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionCurrent =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionCurrent = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -44,43 +44,64 @@ public data class Attitude(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Roll angle (-pi..+pi)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch angle (-pi..+pi)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle (-pi..+pi)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * Roll angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawspeed: Float = 0F,
 ) : MavMessage<Attitude> {
   override val instanceCompanion: MavMessage.MavCompanion<Attitude> = Companion
@@ -140,8 +161,7 @@ public data class Attitude(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Attitude =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Attitude = Builder().apply(builderAction).build()
   }
 
   public class Builder {

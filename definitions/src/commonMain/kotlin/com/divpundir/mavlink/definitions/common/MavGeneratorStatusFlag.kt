@@ -7,9 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Flags to report status/failure cases for a power generator (used in GENERATOR_STATUS). Note that
- * FAULTS are conditions that cause the generator to fail. Warnings are conditions that require
- * attention before the next use (they indicate the system is not operating properly).
+ * Flags to report status/failure cases for a power generator (used in GENERATOR_STATUS). Note that FAULTS are conditions that cause the generator to fail. Warnings are conditions that require attention before the next use (they indicate the system is not operating properly).
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavGeneratorStatusFlag(
@@ -71,8 +69,7 @@ public enum class MavGeneratorStatusFlag(
   @GeneratedMavEnumEntry
   ELECTRONICS_FAULT(1_024u),
   /**
-   * The power source supplying the generator failed e.g. mechanical generator stopped, tether is no
-   * longer providing power, solar cell is in shade, hydrogen reaction no longer happening.
+   * The power source supplying the generator failed e.g. mechanical generator stopped, tether is no longer providing power, solar cell is in shade, hydrogen reaction no longer happening.
    */
   @GeneratedMavEnumEntry
   POWERSOURCE_FAULT(2_048u),
@@ -97,14 +94,12 @@ public enum class MavGeneratorStatusFlag(
   @GeneratedMavEnumEntry
   OVERCURRENT_FAULT(32_768u),
   /**
-   * Generator controller detected a high current going into the batteries and shutdown to prevent
-   * battery damage.
+   * Generator controller detected a high current going into the batteries and shutdown to prevent battery damage.
    */
   @GeneratedMavEnumEntry
   BATTERY_OVERCHARGE_CURRENT_FAULT(65_536u),
   /**
-   * Generator controller exceeded it's overvoltage threshold and shutdown to prevent it exceeding
-   * the voltage rating.
+   * Generator controller exceeded it's overvoltage threshold and shutdown to prevent it exceeding the voltage rating.
    */
   @GeneratedMavEnumEntry
   OVERVOLTAGE_FAULT(131_072u),

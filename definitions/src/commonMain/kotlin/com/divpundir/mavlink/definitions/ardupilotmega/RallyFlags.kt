@@ -18,8 +18,7 @@ public enum class RallyFlags(
   @GeneratedMavEnumEntry
   FAVORABLE_WIND(1u),
   /**
-   * Flag set when plane is to immediately descend to break altitude and land without GCS
-   * intervention. Flag not set when plane is to loiter at Rally point until commanded to land.
+   * Flag set when plane is to immediately descend to break altitude and land without GCS intervention. Flag not set when plane is to loiter at Rally point until commanded to land.
    */
   @GeneratedMavEnumEntry
   LAND_IMMEDIATELY(2u),
@@ -29,8 +28,7 @@ public enum class RallyFlags(
   @GeneratedMavEnumEntry
   ALT_FRAME_VALID(4u),
   /**
-   * 2 bit value representing altitude frame. 0: absolute, 1: relative home, 2: relative origin, 3:
-   * relative terrain
+   * 2 bit value representing altitude frame. 0: absolute, 1: relative home, 2: relative origin, 3: relative terrain
    */
   @GeneratedMavEnumEntry
   ALT_FRAME(24u),

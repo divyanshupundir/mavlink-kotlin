@@ -126,8 +126,7 @@ public data class Airspeeds(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Airspeeds =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Airspeeds = Builder().apply(builderAction).build()
   }
 
   public class Builder {

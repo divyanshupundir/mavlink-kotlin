@@ -35,8 +35,7 @@ import kotlin.Unit
  * @param targetSystem System which should execute the command
  * @param targetComponent Component which should execute the command, 0 for all components
  * @param command Command ID, as defined by MAV_CMD enum.
- * @param confirmation 0: First transmission of this command. 1-255: Confirmation transmissions
- * (e.g. for kill command)
+ * @param confirmation 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
  * @param param1 Parameter 1, as defined by MAV_CMD enum.
  * @param param2 Parameter 2, as defined by MAV_CMD enum.
  * @param param3 Parameter 3, as defined by MAV_CMD enum.
@@ -76,8 +75,7 @@ public data class CommandLongStamped(
   @GeneratedMavField(type = "uint16_t")
   public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
   /**
-   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
-   * command)
+   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
    */
   @GeneratedMavField(type = "uint8_t")
   public val confirmation: UByte = 0u,
@@ -201,8 +199,7 @@ public data class CommandLongStamped(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CommandLongStamped =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandLongStamped = Builder().apply(builderAction).build()
   }
 
   public class Builder {

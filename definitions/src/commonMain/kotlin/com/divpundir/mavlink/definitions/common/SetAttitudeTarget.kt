@@ -27,24 +27,21 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Sets a desired vehicle attitude. Used by an external controller to command the vehicle (manual
- * controller or other system).
+ * Sets a desired vehicle attitude. Used by an external controller to command the vehicle (manual controller or other system).
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param typeMask Bitmap to indicate which dimensions should be ignored by the vehicle.
- * @param q Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from
- * MAV_FRAME_LOCAL_NED to MAV_FRAME_BODY_FRD
+ * @param q Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from MAV_FRAME_LOCAL_NED to MAV_FRAME_BODY_FRD
  * @param bodyRollRate Body roll rate
  * units = rad/s
  * @param bodyPitchRate Body pitch rate
  * units = rad/s
  * @param bodyYawRate Body yaw rate
  * units = rad/s
- * @param thrust Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse
- * trust)
+ * @param thrust Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse thrust)
  * @param thrustBody 3D thrust setpoint in the body NED frame, normalized to -1 .. 1
  */
 @GeneratedMavMessage(
@@ -56,7 +53,10 @@ public data class SetAttitudeTarget(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * System ID
@@ -74,8 +74,7 @@ public data class SetAttitudeTarget(
   @GeneratedMavField(type = "uint8_t")
   public val typeMask: MavBitmaskValue<AttitudeTargetTypemask> = MavBitmaskValue.fromValue(0u),
   /**
-   * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from MAV_FRAME_LOCAL_NED to
-   * MAV_FRAME_BODY_FRD
+   * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from MAV_FRAME_LOCAL_NED to MAV_FRAME_BODY_FRD
    */
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
@@ -83,22 +82,31 @@ public data class SetAttitudeTarget(
    * Body roll rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val bodyRollRate: Float = 0F,
   /**
    * Body pitch rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val bodyPitchRate: Float = 0F,
   /**
    * Body yaw rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val bodyYawRate: Float = 0F,
   /**
-   * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)
+   * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse thrust)
    */
   @GeneratedMavField(type = "float")
   public val thrust: Float = 0F,
@@ -182,8 +190,7 @@ public data class SetAttitudeTarget(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SetAttitudeTarget =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetAttitudeTarget = Builder().apply(builderAction).build()
   }
 
   public class Builder {

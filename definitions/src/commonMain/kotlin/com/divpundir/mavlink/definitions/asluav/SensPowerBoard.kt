@@ -56,7 +56,10 @@ public data class SensPowerBoard(
    * Timestamp
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * Power board status register
@@ -72,55 +75,82 @@ public data class SensPowerBoard(
    * Power board system voltage
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val pwrBrdSystemVolt: Float = 0F,
   /**
    * Power board servo voltage
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val pwrBrdServoVolt: Float = 0F,
   /**
    * Power board digital voltage
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val pwrBrdDigitalVolt: Float = 0F,
   /**
    * Power board left motor current sensor
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val pwrBrdMotLAmp: Float = 0F,
   /**
    * Power board right motor current sensor
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val pwrBrdMotRAmp: Float = 0F,
   /**
    * Power board analog current sensor
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val pwrBrdAnalogAmp: Float = 0F,
   /**
    * Power board digital current sensor
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val pwrBrdDigitalAmp: Float = 0F,
   /**
    * Power board extension current sensor
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val pwrBrdExtAmp: Float = 0F,
   /**
    * Power board aux current sensor
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val pwrBrdAuxAmp: Float = 0F,
 ) : MavMessage<SensPowerBoard> {
   override val instanceCompanion: MavMessage.MavCompanion<SensPowerBoard> = Companion
@@ -200,8 +230,7 @@ public data class SensPowerBoard(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensPowerBoard =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensPowerBoard = Builder().apply(builderAction).build()
   }
 
   public class Builder {

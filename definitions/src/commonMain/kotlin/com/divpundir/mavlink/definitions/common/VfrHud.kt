@@ -24,9 +24,7 @@ import kotlin.Unit
 /**
  * Metrics typically displayed on a HUD for fixed wing aircraft.
  *
- * @param airspeed Vehicle speed in form appropriate for vehicle type. For standard aircraft this is
- * typically calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a
- * pilot to estimate stall speed.
+ * @param airspeed Vehicle speed in form appropriate for vehicle type. For standard aircraft this is typically calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a pilot to estimate stall speed.
  * units = m/s
  * @param groundspeed Current ground speed.
  * units = m/s
@@ -45,42 +43,58 @@ import kotlin.Unit
 )
 public data class VfrHud(
   /**
-   * Vehicle speed in form appropriate for vehicle type. For standard aircraft this is typically
-   * calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a pilot to
-   * estimate stall speed.
+   * Vehicle speed in form appropriate for vehicle type. For standard aircraft this is typically calibrated airspeed (CAS) or indicated airspeed (IAS) - either of which can be used by a pilot to estimate stall speed.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val airspeed: Float = 0F,
   /**
    * Current ground speed.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val groundspeed: Float = 0F,
   /**
    * Current heading in compass units (0-360, 0=north).
    * units = deg
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "deg",
+  )
   public val heading: Short = 0,
   /**
    * Current throttle setting (0 to 100).
    * units = %
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "%",
+  )
   public val throttle: UShort = 0u,
   /**
    * Current altitude (MSL).
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val alt: Float = 0F,
   /**
    * Current climb rate.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val climb: Float = 0F,
 ) : MavMessage<VfrHud> {
   override val instanceCompanion: MavMessage.MavCompanion<VfrHud> = Companion
@@ -136,8 +150,7 @@ public data class VfrHud(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): VfrHud =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): VfrHud = Builder().apply(builderAction).build()
   }
 
   public class Builder {

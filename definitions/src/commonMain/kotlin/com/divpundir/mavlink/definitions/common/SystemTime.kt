@@ -18,12 +18,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * The system time is the time of the master clock.
- *         This can be emitted by flight controllers, onboard computers, or other components in the
- * MAVLink network.
- *         Components that are using a less reliable time source, such as a battery-backed real time
- * clock, can choose to match their system clock to that of a SYSTEM_TYPE that indicates a more recent
- * time.
+ * The system time is the time of the sender's master clock.
+ *         This can be emitted by flight controllers, onboard computers, or other components in the MAVLink network.
+ *         Components that are using a less reliable time source, such as a battery-backed real time clock, can choose to match their system clock to that of a system that indicates a more recent time.
  *         This allows more broadly accurate date stamping of logs, and so on.
  *         If precise time synchronization is needed then use TIMESYNC instead.
  *
@@ -41,13 +38,19 @@ public data class SystemTime(
    * Timestamp (UNIX epoch time).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUnixUsec: ULong = 0uL,
   /**
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
 ) : MavMessage<SystemTime> {
   override val instanceCompanion: MavMessage.MavCompanion<SystemTime> = Companion
@@ -87,8 +90,7 @@ public data class SystemTime(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SystemTime =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SystemTime = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -22,16 +22,12 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Send a command with up to seven parameters to the MAV. COMMAND_INT is generally preferred when
- * sending MAV_CMD commands that include positional information; it offers higher precision and allows
- * the MAV_FRAME to be specified (which may otherwise be ambiguous, particularly for altitude). The
- * command microservice is documented at https://mavlink.io/en/services/command.html
+ * Send a command with up to seven parameters to the MAV. COMMAND_INT is generally preferred when sending MAV_CMD commands that include positional information; it offers higher precision and allows the MAV_FRAME to be specified (which may otherwise be ambiguous, particularly for altitude). The command microservice is documented at https://mavlink.io/en/services/command.html
  *
  * @param targetSystem System which should execute the command
  * @param targetComponent Component which should execute the command, 0 for all components
  * @param command Command ID (of command to send).
- * @param confirmation 0: First transmission of this command. 1-255: Confirmation transmissions
- * (e.g. for kill command)
+ * @param confirmation 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
  * @param param1 Parameter 1 (for the specific command).
  * @param param2 Parameter 2 (for the specific command).
  * @param param3 Parameter 3 (for the specific command).
@@ -61,45 +57,65 @@ public data class CommandLong(
   @GeneratedMavField(type = "uint16_t")
   public val command: MavEnumValue<MavCmd> = MavEnumValue.fromValue(0u),
   /**
-   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill
-   * command)
+   * 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
    */
   @GeneratedMavField(type = "uint8_t")
   public val confirmation: UByte = 0u,
   /**
    * Parameter 1 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param1: Float = 0F,
   /**
    * Parameter 2 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param2: Float = 0F,
   /**
    * Parameter 3 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param3: Float = 0F,
   /**
    * Parameter 4 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param4: Float = 0F,
   /**
    * Parameter 5 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param5: Float = 0F,
   /**
    * Parameter 6 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param6: Float = 0F,
   /**
    * Parameter 7 (for the specific command).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param7: Float = 0F,
 ) : MavMessage<CommandLong> {
   override val instanceCompanion: MavMessage.MavCompanion<CommandLong> = Companion
@@ -178,8 +194,7 @@ public data class CommandLong(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CommandLong =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandLong = Builder().apply(builderAction).build()
   }
 
   public class Builder {

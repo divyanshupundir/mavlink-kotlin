@@ -31,8 +31,7 @@ import kotlin.Unit
  * @param aperture F stop number x 10 //e.g. 28 means 2.8 (0 means ignore).
  * @param iso ISO enumeration from 1 to N //e.g. 80, 100, 200, Etc (0 means ignore).
  * @param exposureType Exposure type enumeration from 1 to N (0 means ignore).
- * @param commandId Command Identity (incremental loop: 0 to 255). //A command sent multiple times
- * will be executed or pooled just once.
+ * @param commandId Command Identity (incremental loop: 0 to 255). //A command sent multiple times will be executed or pooled just once.
  * @param engineCutOff Main engine cut-off time before camera trigger (0 means no cut-off).
  * units = ds
  * @param extraParam Extra parameters enumeration (0 means ignore).
@@ -79,8 +78,7 @@ public data class DigicamConfigure(
   @GeneratedMavField(type = "uint8_t")
   public val exposureType: UByte = 0u,
   /**
-   * Command Identity (incremental loop: 0 to 255). //A command sent multiple times will be executed
-   * or pooled just once.
+   * Command Identity (incremental loop: 0 to 255). //A command sent multiple times will be executed or pooled just once.
    */
   @GeneratedMavField(type = "uint8_t")
   public val commandId: UByte = 0u,
@@ -88,7 +86,10 @@ public data class DigicamConfigure(
    * Main engine cut-off time before camera trigger (0 means no cut-off).
    * units = ds
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "ds",
+  )
   public val engineCutOff: UByte = 0u,
   /**
    * Extra parameters enumeration (0 means ignore).
@@ -174,8 +175,7 @@ public data class DigicamConfigure(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DigicamConfigure =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DigicamConfigure = Builder().apply(builderAction).build()
   }
 
   public class Builder {

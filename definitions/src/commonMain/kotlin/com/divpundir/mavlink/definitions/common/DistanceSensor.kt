@@ -42,24 +42,15 @@ import kotlin.collections.List
  * units = cm
  * @param type Type of distance sensor.
  * @param id Onboard ID of the sensor
- * @param orientation Direction the sensor faces. downward-facing: ROTATION_PITCH_270,
- * upward-facing: ROTATION_PITCH_90, backward-facing: ROTATION_PITCH_180, forward-facing:
- * ROTATION_NONE, left-facing: ROTATION_YAW_90, right-facing: ROTATION_YAW_270
+ * @param orientation Direction the sensor faces. downward-facing: ROTATION_PITCH_270, upward-facing: ROTATION_PITCH_90, backward-facing: ROTATION_PITCH_180, forward-facing: ROTATION_NONE, left-facing: ROTATION_YAW_90, right-facing: ROTATION_YAW_270
  * @param covariance Measurement variance. Max standard deviation is 6cm. UINT8_MAX if unknown.
  * units = cm^2
- * @param horizontalFov Horizontal Field of View (angle) where the distance measurement is valid and
- * the field of view is known. Otherwise this is set to 0.
+ * @param horizontalFov Horizontal Field of View (angle) where the distance measurement is valid and the field of view is known. Otherwise this is set to 0.
  * units = rad
- * @param verticalFov Vertical Field of View (angle) where the distance measurement is valid and the
- * field of view is known. Otherwise this is set to 0.
+ * @param verticalFov Vertical Field of View (angle) where the distance measurement is valid and the field of view is known. Otherwise this is set to 0.
  * units = rad
- * @param quaternion Quaternion of the sensor orientation in vehicle body frame (w, x, y, z order,
- * zero-rotation is 1, 0, 0, 0). Zero-rotation is along the vehicle body x-axis. This field is required
- * if the orientation is set to MAV_SENSOR_ROTATION_CUSTOM. Set it to 0 if invalid."
- * @param signalQuality Signal quality of the sensor. Specific to each sensor type, representing the
- * relation of the signal strength with the target reflectivity, distance, size or aspect, but
- * normalised as a percentage. 0 = unknown/unset signal quality, 1 = invalid signal, 100 = perfect
- * signal.
+ * @param quaternion Quaternion of the sensor orientation in vehicle body frame (w, x, y, z order, zero-rotation is 1, 0, 0, 0). Zero-rotation is along the vehicle body x-axis. This field is required if the orientation is set to MAV_SENSOR_ROTATION_CUSTOM. Set it to 0 if invalid."
+ * @param signalQuality Signal quality of the sensor. Specific to each sensor type, representing the relation of the signal strength with the target reflectivity, distance, size or aspect, but normalised as a percentage. 0 = unknown/unset signal quality, 1 = invalid signal, 100 = perfect signal.
  * units = %
  */
 @GeneratedMavMessage(
@@ -71,25 +62,37 @@ public data class DistanceSensor(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Minimum distance the sensor can measure
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm",
+  )
   public val minDistance: UShort = 0u,
   /**
    * Maximum distance the sensor can measure
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm",
+  )
   public val maxDistance: UShort = 0u,
   /**
    * Current distance reading
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm",
+  )
   public val currentDistance: UShort = 0u,
   /**
    * Type of distance sensor.
@@ -102,9 +105,7 @@ public data class DistanceSensor(
   @GeneratedMavField(type = "uint8_t")
   public val id: UByte = 0u,
   /**
-   * Direction the sensor faces. downward-facing: ROTATION_PITCH_270, upward-facing:
-   * ROTATION_PITCH_90, backward-facing: ROTATION_PITCH_180, forward-facing: ROTATION_NONE,
-   * left-facing: ROTATION_YAW_90, right-facing: ROTATION_YAW_270
+   * Direction the sensor faces. downward-facing: ROTATION_PITCH_270, upward-facing: ROTATION_PITCH_90, backward-facing: ROTATION_PITCH_180, forward-facing: ROTATION_NONE, left-facing: ROTATION_YAW_90, right-facing: ROTATION_YAW_270
    */
   @GeneratedMavField(type = "uint8_t")
   public val orientation: MavEnumValue<MavSensorOrientation> = MavEnumValue.fromValue(0u),
@@ -112,47 +113,52 @@ public data class DistanceSensor(
    * Measurement variance. Max standard deviation is 6cm. UINT8_MAX if unknown.
    * units = cm^2
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "cm^2",
+    invalid = "UINT8_MAX",
+  )
   public val covariance: UByte = 0u,
   /**
-   * Horizontal Field of View (angle) where the distance measurement is valid and the field of view
-   * is known. Otherwise this is set to 0.
+   * Horizontal Field of View (angle) where the distance measurement is valid and the field of view is known. Otherwise this is set to 0.
    * units = rad
    */
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "rad",
+    invalid = "0",
   )
   public val horizontalFov: Float = 0F,
   /**
-   * Vertical Field of View (angle) where the distance measurement is valid and the field of view is
-   * known. Otherwise this is set to 0.
+   * Vertical Field of View (angle) where the distance measurement is valid and the field of view is known. Otherwise this is set to 0.
    * units = rad
    */
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "rad",
+    invalid = "0",
   )
   public val verticalFov: Float = 0F,
   /**
-   * Quaternion of the sensor orientation in vehicle body frame (w, x, y, z order, zero-rotation is
-   * 1, 0, 0, 0). Zero-rotation is along the vehicle body x-axis. This field is required if the
-   * orientation is set to MAV_SENSOR_ROTATION_CUSTOM. Set it to 0 if invalid."
+   * Quaternion of the sensor orientation in vehicle body frame (w, x, y, z order, zero-rotation is 1, 0, 0, 0). Zero-rotation is along the vehicle body x-axis. This field is required if the orientation is set to MAV_SENSOR_ROTATION_CUSTOM. Set it to 0 if invalid."
    */
   @GeneratedMavField(
     type = "float[4]",
     extension = true,
+    invalid = "[0]",
   )
   public val quaternion: List<Float> = emptyList(),
   /**
-   * Signal quality of the sensor. Specific to each sensor type, representing the relation of the
-   * signal strength with the target reflectivity, distance, size or aspect, but normalised as a
-   * percentage. 0 = unknown/unset signal quality, 1 = invalid signal, 100 = perfect signal.
+   * Signal quality of the sensor. Specific to each sensor type, representing the relation of the signal strength with the target reflectivity, distance, size or aspect, but normalised as a percentage. 0 = unknown/unset signal quality, 1 = invalid signal, 100 = perfect signal.
    * units = %
    */
   @GeneratedMavField(
     type = "uint8_t",
     extension = true,
+    units = "%",
+    invalid = "0",
   )
   public val signalQuality: UByte = 0u,
 ) : MavMessage<DistanceSensor> {
@@ -235,8 +241,7 @@ public data class DistanceSensor(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DistanceSensor =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DistanceSensor = Builder().apply(builderAction).build()
   }
 
   public class Builder {

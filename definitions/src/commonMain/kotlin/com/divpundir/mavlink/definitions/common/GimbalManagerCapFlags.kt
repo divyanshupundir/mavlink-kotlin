@@ -7,9 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Gimbal manager high level capability flags (bitmap). The first 16 bits are identical to the
- * GIMBAL_DEVICE_CAP_FLAGS. However, the gimbal manager does not need to copy the flags from the gimbal
- * but can also enhance the capabilities and thus add flags.
+ * Gimbal manager high level capability flags (bitmap). The flags are identical to the GIMBAL_DEVICE_CAP_FLAGS. However, the gimbal manager does not need to copy the flags from the gimbal but can also enhance the capabilities and thus add flags.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class GimbalManagerCapFlags(
@@ -86,12 +84,12 @@ public enum class GimbalManagerCapFlags(
   @GeneratedMavEnumEntry
   HAS_RC_INPUTS(8_192u),
   /**
-   * Gimbal manager supports to point to a local position.
+   * Based on GIMBAL_DEVICE_CAP_FLAGS_CAN_POINT_LOCATION_LOCAL.
    */
   @GeneratedMavEnumEntry
   CAN_POINT_LOCATION_LOCAL(65_536u),
   /**
-   * Gimbal manager supports to point to a global latitude, longitude, altitude position.
+   * Based on GIMBAL_DEVICE_CAP_FLAGS_CAN_POINT_LOCATION_GLOBAL.
    */
   @GeneratedMavEnumEntry
   CAN_POINT_LOCATION_GLOBAL(131_072u),

@@ -8,8 +8,7 @@ import kotlin.collections.List
 
 /**
  * Axes that will be autotuned by MAV_CMD_DO_AUTOTUNE_ENABLE.
- *         Note that at least one flag must be set in MAV_CMD_DO_AUTOTUNE_ENABLE.param2: if none are
- * set, the flight stack will tune its default set of axes.
+ *         Note that at least one flag must be set in MAV_CMD_DO_AUTOTUNE_ENABLE.param2: if none are set, the flight stack will tune its default set of axes.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AutotuneAxis(

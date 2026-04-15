@@ -39,7 +39,10 @@ public data class RawRpm(
    * Indicated rate
    * units = rpm
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rpm",
+  )
   public val frequency: Float = 0F,
 ) : MavMessage<RawRpm> {
   override val instanceCompanion: MavMessage.MavCompanion<RawRpm> = Companion
@@ -79,8 +82,7 @@ public data class RawRpm(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RawRpm =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RawRpm = Builder().apply(builderAction).build()
   }
 
   public class Builder {

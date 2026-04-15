@@ -6,8 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Actuator configuration, used to change a setting on an actuator. Component information metadata
- * can be used to know which outputs support which commands.
+ * Actuator configuration, used to change a setting on an actuator. Component information metadata can be used to know which outputs support which commands.
  */
 @GeneratedMavEnum
 public enum class ActuatorConfiguration(
@@ -34,8 +33,7 @@ public enum class ActuatorConfiguration(
   @GeneratedMavEnumEntry
   _3D_MODE_OFF(3u),
   /**
-   * Permanently set the actuator (ESC) to spin direction 1 (which can be clockwise or
-   * counter-clockwise).
+   * Permanently set the actuator (ESC) to spin direction 1 (which can be clockwise or counter-clockwise).
    */
   @GeneratedMavEnumEntry
   SPIN_DIRECTION1(4u),

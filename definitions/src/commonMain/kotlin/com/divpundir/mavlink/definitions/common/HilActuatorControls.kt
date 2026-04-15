@@ -24,12 +24,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Sent from autopilot to simulation. Hardware in the loop control outputs. Alternative to
- * HIL_CONTROLS.
+ * Sent from autopilot to simulation. Hardware in the loop control outputs. Alternative to HIL_CONTROLS.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param controls Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
  * @param mode System mode. Includes arming state.
@@ -41,11 +38,13 @@ import kotlin.collections.List
 )
 public data class HilActuatorControls(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Control outputs -1 .. 1. Channel assignment depends on the simulated hardware.
@@ -114,8 +113,7 @@ public data class HilActuatorControls(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HilActuatorControls =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilActuatorControls = Builder().apply(builderAction).build()
   }
 
   public class Builder {

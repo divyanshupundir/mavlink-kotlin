@@ -7,20 +7,25 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * These flags are used in the AIS_VESSEL.fields bitmask to indicate validity of data in the other
- * message fields. When set, the data is valid.
+ * These flags are used in the AIS_VESSEL.fields bitmask to indicate validity of data in the other message fields. When set, the data is valid.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AisFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * 1 = Position accuracy less than 10m, 0 = position accuracy greater than 10m.
+   * 1 = High (Position accuracy less than or equal to 10m), 0 = Low (position accuracy greater than 10m).
    */
   @GeneratedMavEnumEntry
   POSITION_ACCURACY(1u),
+  /**
+   * The COG field contains valid data
+   */
   @GeneratedMavEnumEntry
   VALID_COG(2u),
+  /**
+   * The velocity field contains valid data
+   */
   @GeneratedMavEnumEntry
   VALID_VELOCITY(4u),
   /**
@@ -28,38 +33,46 @@ public enum class AisFlags(
    */
   @GeneratedMavEnumEntry
   HIGH_VELOCITY(8u),
+  /**
+   * The turn_rate field contains valid data
+   */
   @GeneratedMavEnumEntry
   VALID_TURN_RATE(16u),
   /**
-   * Only the sign of the returned turn rate value is valid, either greater than 5deg/30s or less
-   * than -5deg/30s
+   * Only the sign of the returned turn_rate value is valid. The actual turn rate is either greater than 5deg/30s or less than -5deg/30s.
    */
   @GeneratedMavEnumEntry
   TURN_RATE_SIGN_ONLY(32u),
   @GeneratedMavEnumEntry
   VALID_DIMENSIONS(64u),
   /**
-   * Distance to bow is larger than 511m
+   * Distance to bow is greater than or equal to 511m
    */
   @GeneratedMavEnumEntry
   LARGE_BOW_DIMENSION(128u),
   /**
-   * Distance to stern is larger than 511m
+   * Distance to stern is greater than or equal to 511m
    */
   @GeneratedMavEnumEntry
   LARGE_STERN_DIMENSION(256u),
   /**
-   * Distance to port side is larger than 63m
+   * Distance to port side is greater than or equal to 63m
    */
   @GeneratedMavEnumEntry
   LARGE_PORT_DIMENSION(512u),
   /**
-   * Distance to starboard side is larger than 63m
+   * Distance to starboard side is greater than or equal to 63m
    */
   @GeneratedMavEnumEntry
   LARGE_STARBOARD_DIMENSION(1_024u),
+  /**
+   * The callsign field contains valid data
+   */
   @GeneratedMavEnumEntry
   VALID_CALLSIGN(2_048u),
+  /**
+   * The name field contains valid data
+   */
   @GeneratedMavEnumEntry
   VALID_NAME(4_096u),
   ;

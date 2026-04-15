@@ -19,8 +19,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV ->
- * GCS.
+ * A fence point. Used to set a point when from GCS -> MAV. Also used to return a point from MAV -> GCS.
  *
  * @param targetSystem System ID.
  * @param targetComponent Component ID.
@@ -60,13 +59,19 @@ public data class FencePoint(
    * Latitude of point.
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val lat: Float = 0F,
   /**
    * Longitude of point.
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val lng: Float = 0F,
 ) : MavMessage<FencePoint> {
   override val instanceCompanion: MavMessage.MavCompanion<FencePoint> = Companion
@@ -122,8 +127,7 @@ public data class FencePoint(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FencePoint =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FencePoint = Builder().apply(builderAction).build()
   }
 
   public class Builder {

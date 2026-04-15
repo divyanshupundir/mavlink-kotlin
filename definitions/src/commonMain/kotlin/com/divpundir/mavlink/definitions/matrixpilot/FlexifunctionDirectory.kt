@@ -117,8 +117,7 @@ public data class FlexifunctionDirectory(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionDirectory =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionDirectory = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -6,8 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Battery mode. Note, the normal operation mode (i.e. when flying) should be reported as
- * MAV_BATTERY_MODE_UNKNOWN to allow message trimming in normal flight.
+ * Battery mode. Note, the normal operation mode (i.e. when flying) should be reported as MAV_BATTERY_MODE_UNKNOWN to allow message trimming in normal flight.
  */
 @GeneratedMavEnum
 public enum class MavBatteryMode(
@@ -24,8 +23,7 @@ public enum class MavBatteryMode(
   @GeneratedMavEnumEntry
   AUTO_DISCHARGING(1u),
   /**
-   * Battery in hot-swap mode (current limited to prevent spikes that might damage sensitive
-   * electrical circuits).
+   * Battery in hot-swap mode (current limited to prevent spikes that might damage sensitive electrical circuits).
    */
   @GeneratedMavEnumEntry
   HOT_SWAP(2u),

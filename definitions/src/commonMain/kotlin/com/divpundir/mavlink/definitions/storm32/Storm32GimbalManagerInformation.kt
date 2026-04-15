@@ -23,15 +23,10 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Information about a gimbal manager. This message should be requested by a ground station using
- * MAV_CMD_REQUEST_MESSAGE. It mirrors some fields of the GIMBAL_DEVICE_INFORMATION message, but not
- * all. If the additional information is desired, also GIMBAL_DEVICE_INFORMATION should be requested.
+ * Information about a gimbal manager. This message should be requested by a ground station using MAV_CMD_REQUEST_MESSAGE. It mirrors some fields of the GIMBAL_DEVICE_INFORMATION message, but not all. If the additional information is desired, also GIMBAL_DEVICE_INFORMATION should be requested.
  *
- * @param gimbalId Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager
- * is responsible for.
- * @param deviceCapFlags Gimbal device capability flags. Same flags as reported by
- * GIMBAL_DEVICE_INFORMATION. The flag is only 16 bit wide, but stored in 32 bit, for backwards
- * compatibility (high word is zero).
+ * @param gimbalId Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager is responsible for.
+ * @param deviceCapFlags Gimbal device capability flags. Same flags as reported by GIMBAL_DEVICE_INFORMATION. The flag is only 16 bit wide, but stored in 32 bit, for backwards compatibility (high word is zero).
  * @param managerCapFlags Gimbal manager capability flags.
  * @param rollMin Hardware minimum roll angle (positive: roll to the right). NaN if unknown.
  * units = rad
@@ -41,11 +36,9 @@ import kotlin.Unit
  * units = rad
  * @param pitchMax Hardware maximum pitch/tilt angle (positive: tilt up). NaN if unknown.
  * units = rad
- * @param yawMin Hardware minimum yaw/pan angle (positive: pan to the right, relative to the
- * vehicle/gimbal base). NaN if unknown.
+ * @param yawMin Hardware minimum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal base). NaN if unknown.
  * units = rad
- * @param yawMax Hardware maximum yaw/pan angle (positive: pan to the right, relative to the
- * vehicle/gimbal base). NaN if unknown.
+ * @param yawMax Hardware maximum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal base). NaN if unknown.
  * units = rad
  */
 @GeneratedMavMessage(
@@ -54,14 +47,12 @@ import kotlin.Unit
 )
 public data class Storm32GimbalManagerInformation(
   /**
-   * Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager is responsible
-   * for.
+   * Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager is responsible for.
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalId: UByte = 0u,
   /**
-   * Gimbal device capability flags. Same flags as reported by GIMBAL_DEVICE_INFORMATION. The flag
-   * is only 16 bit wide, but stored in 32 bit, for backwards compatibility (high word is zero).
+   * Gimbal device capability flags. Same flags as reported by GIMBAL_DEVICE_INFORMATION. The flag is only 16 bit wide, but stored in 32 bit, for backwards compatibility (high word is zero).
    */
   @GeneratedMavField(type = "uint32_t")
   public val deviceCapFlags: MavBitmaskValue<GimbalDeviceCapFlags> = MavBitmaskValue.fromValue(0u),
@@ -69,45 +60,67 @@ public data class Storm32GimbalManagerInformation(
    * Gimbal manager capability flags.
    */
   @GeneratedMavField(type = "uint32_t")
-  public val managerCapFlags: MavBitmaskValue<MavStorm32GimbalManagerCapFlags> =
-      MavBitmaskValue.fromValue(0u),
+  public val managerCapFlags:
+      MavBitmaskValue<MavStorm32GimbalManagerCapFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Hardware minimum roll angle (positive: roll to the right). NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val rollMin: Float = 0F,
   /**
    * Hardware maximum roll angle (positive: roll to the right). NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val rollMax: Float = 0F,
   /**
    * Hardware minimum pitch/tilt angle (positive: tilt up). NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val pitchMin: Float = 0F,
   /**
    * Hardware maximum pitch/tilt angle (positive: tilt up). NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val pitchMax: Float = 0F,
   /**
-   * Hardware minimum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal
-   * base). NaN if unknown.
+   * Hardware minimum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal base). NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val yawMin: Float = 0F,
   /**
-   * Hardware maximum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal
-   * base). NaN if unknown.
+   * Hardware maximum yaw/pan angle (positive: pan to the right, relative to the vehicle/gimbal base). NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val yawMax: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerInformation> =
@@ -182,8 +195,7 @@ public data class Storm32GimbalManagerInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

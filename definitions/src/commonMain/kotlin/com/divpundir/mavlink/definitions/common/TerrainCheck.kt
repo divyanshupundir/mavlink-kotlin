@@ -15,8 +15,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Request that the vehicle report terrain height at the given location (expected response is a
- * TERRAIN_REPORT). Used by GCS to check if vehicle has all terrain data needed for a mission.
+ * Request that the vehicle report terrain height at the given location (expected response is a TERRAIN_REPORT). Used by GCS to check if vehicle has all terrain data needed for a mission.
  *
  * @param lat Latitude
  * units = degE7
@@ -32,13 +31,19 @@ public data class TerrainCheck(
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
 ) : MavMessage<TerrainCheck> {
   override val instanceCompanion: MavMessage.MavCompanion<TerrainCheck> = Companion
@@ -78,8 +83,7 @@ public data class TerrainCheck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainCheck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainCheck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -34,19 +34,28 @@ public data class Wind(
    * Wind direction (that wind is coming from).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val direction: Float = 0F,
   /**
    * Wind speed in ground plane.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val speed: Float = 0F,
   /**
    * Vertical wind speed.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val speedZ: Float = 0F,
 ) : MavMessage<Wind> {
   override val instanceCompanion: MavMessage.MavCompanion<Wind> = Companion
@@ -90,8 +99,7 @@ public data class Wind(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Wind =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Wind = Builder().apply(builderAction).build()
   }
 
   public class Builder {

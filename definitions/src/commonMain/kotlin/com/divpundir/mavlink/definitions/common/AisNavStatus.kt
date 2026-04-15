@@ -6,8 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Navigational status of AIS vessel, enum duplicated from AIS standard,
- * https://gpsd.gitlab.io/gpsd/AIVDM.html
+ * Navigational status of AIS vessel, enum duplicated from AIS standard, https://gpsd.gitlab.io/gpsd/AIVDM.html
  */
 @GeneratedMavEnum
 public enum class AisNavStatus(

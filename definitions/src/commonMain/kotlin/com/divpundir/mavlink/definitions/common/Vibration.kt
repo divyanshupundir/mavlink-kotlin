@@ -23,9 +23,7 @@ import kotlin.Unit
 /**
  * Vibration levels and accelerometer clipping
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param vibrationX Vibration levels on X-axis
  * @param vibrationY Vibration levels on Y-axis
@@ -40,11 +38,13 @@ import kotlin.Unit
 )
 public data class Vibration(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Vibration levels on X-axis
@@ -134,8 +134,7 @@ public data class Vibration(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Vibration =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Vibration = Builder().apply(builderAction).build()
   }
 
   public class Builder {

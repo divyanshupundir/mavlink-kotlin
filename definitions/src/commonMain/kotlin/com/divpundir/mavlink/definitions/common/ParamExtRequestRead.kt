@@ -22,16 +22,12 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Request to read the value of a parameter with either the param_id string id or param_index.
- * PARAM_EXT_VALUE should be emitted in response.
+ * Request to read the value of a parameter with either the param_id string id or param_index. PARAM_EXT_VALUE should be emitted in response.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable
- * chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have
- * to provide 16+1 bytes storage if the ID is stored as string
- * @param paramIndex Parameter index. Set to -1 to use the Parameter ID field as identifier (else
- * param_id will be ignored)
+ * @param paramId Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramIndex Parameter index. Set to -1 to use the Parameter ID field as identifier (else param_id will be ignored)
  */
 @GeneratedMavMessage(
   id = 320u,
@@ -49,17 +45,17 @@ public data class ParamExtRequestRead(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT
-   * null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1
-   * bytes storage if the ID is stored as string
+   * Parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
   /**
-   * Parameter index. Set to -1 to use the Parameter ID field as identifier (else param_id will be
-   * ignored)
+   * Parameter index. Set to -1 to use the Parameter ID field as identifier (else param_id will be ignored)
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "-1",
+  )
   public val paramIndex: Short = 0,
 ) : MavMessage<ParamExtRequestRead> {
   override val instanceCompanion: MavMessage.MavCompanion<ParamExtRequestRead> = Companion
@@ -107,8 +103,7 @@ public data class ParamExtRequestRead(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtRequestRead =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtRequestRead = Builder().apply(builderAction).build()
   }
 
   public class Builder {

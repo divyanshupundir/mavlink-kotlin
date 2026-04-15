@@ -56,7 +56,10 @@ public data class IlluminatorStatus(
    * Time since the start-up of the illuminator in ms
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val uptimeMs: UInt = 0u,
   /**
    * 0: Illuminators OFF, 1: Illuminators ON
@@ -82,19 +85,28 @@ public data class IlluminatorStatus(
    * Illuminator brightness
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val brightness: Float = 0F,
   /**
    * Illuminator strobing period in seconds
    * units = s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "s",
+  )
   public val strobePeriod: Float = 0F,
   /**
    * Illuminator strobing duty cycle
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val strobeDutyCycle: Float = 0F,
   /**
    * Temperature in Celsius
@@ -105,13 +117,19 @@ public data class IlluminatorStatus(
    * Minimum strobing period in seconds
    * units = s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "s",
+  )
   public val minStrobePeriod: Float = 0F,
   /**
    * Maximum strobing period in seconds
    * units = s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "s",
+  )
   public val maxStrobePeriod: Float = 0F,
 ) : MavMessage<IlluminatorStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<IlluminatorStatus> = Companion
@@ -196,8 +214,7 @@ public data class IlluminatorStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): IlluminatorStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): IlluminatorStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

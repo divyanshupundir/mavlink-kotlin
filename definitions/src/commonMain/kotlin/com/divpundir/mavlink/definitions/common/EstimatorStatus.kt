@@ -22,19 +22,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Estimator status message including flags, innovation test ratios and estimated accuracies. The
- * flags message is an integer bitmask containing information on which EKF outputs are valid. See the
- * ESTIMATOR_STATUS_FLAGS enum definition for further information. The innovation test ratios show the
- * magnitude of the sensor innovation divided by the innovation check threshold. Under normal operation
- * the innovation test ratios should be below 0.5 with occasional values up to 1.0. Values greater than
- * 1.0 should be rare under normal operation and indicate that a measurement has been rejected by the
- * filter. The user should be notified if an innovation test ratio greater than 1.0 is recorded.
- * Notifications for values in the range between 0.5 and 1.0 should be optional and controllable by the
- * user.
+ * Estimator status message including flags, innovation test ratios and estimated accuracies. The flags message is an integer bitmask containing information on which EKF outputs are valid. See the ESTIMATOR_STATUS_FLAGS enum definition for further information. The innovation test ratios show the magnitude of the sensor innovation divided by the innovation check threshold. Under normal operation the innovation test ratios should be below 0.5 with occasional values up to 1.0. Values greater than 1.0 should be rare under normal operation and indicate that a measurement has been rejected by the filter. The user should be notified if an innovation test ratio greater than 1.0 is recorded. Notifications for values in the range between 0.5 and 1.0 should be optional and controllable by the user.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param flags Bitmap indicating which EKF outputs are valid.
  * @param velRatio Velocity innovation test ratio
@@ -54,11 +44,13 @@ import kotlin.Unit
 )
 public data class EstimatorStatus(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Bitmap indicating which EKF outputs are valid.
@@ -99,13 +91,19 @@ public data class EstimatorStatus(
    * Horizontal position 1-STD accuracy relative to the EKF local origin
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val posHorizAccuracy: Float = 0F,
   /**
    * Vertical position 1-STD accuracy relative to the EKF local origin
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val posVertAccuracy: Float = 0F,
 ) : MavMessage<EstimatorStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<EstimatorStatus> = Companion
@@ -180,8 +178,7 @@ public data class EstimatorStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EstimatorStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EstimatorStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

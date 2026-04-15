@@ -30,40 +30,29 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Information about a storage medium. This message is sent in response to a request with
- * MAV_CMD_REQUEST_MESSAGE and whenever the status of the storage changes (STORAGE_STATUS). Use
- * MAV_CMD_REQUEST_MESSAGE.param2 to indicate the index/id of requested storage: 0 for all, 1 for
- * first, 2 for second, etc.
+ * Information about a storage medium. This message is sent in response to a request with MAV_CMD_REQUEST_MESSAGE and whenever the status of the storage changes (STORAGE_STATUS). Use MAV_CMD_REQUEST_MESSAGE.param2 to indicate the index/id of requested storage: 0 for all, 1 for first, 2 for second, etc.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param storageId Storage ID (1 for first, 2 for second, etc.)
  * @param storageCount Number of storage devices
  * @param status Status of storage
- * @param totalCapacity Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be
- * ignored.
+ * @param totalCapacity Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
  * units = MiB
- * @param usedCapacity Used capacity. If storage is not ready (STORAGE_STATUS_READY) value will be
- * ignored.
+ * @param usedCapacity Used capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
  * units = MiB
- * @param availableCapacity Available storage capacity. If storage is not ready
- * (STORAGE_STATUS_READY) value will be ignored.
+ * @param availableCapacity Available storage capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
  * units = MiB
  * @param readSpeed Read speed.
  * units = MiB/s
  * @param writeSpeed Write speed.
  * units = MiB/s
  * @param type Type of storage
- * @param name Textual storage name to be used in UI (microSD 1, Internal Memory, etc.) This is a
- * NULL terminated string. If it is exactly 32 characters long, add a terminating NULL. If this string
- * is empty, the generic type is shown to the user.
- * @param storageUsage Flags indicating whether this instance is preferred storage for photos,
- * videos, etc.
- *         Note: Implementations should initially set the flags on the system-default storage id
- * used for saving media (if possible/supported).
+ * @param name Textual storage name to be used in UI (microSD 1, Internal Memory, etc.) This is a NULL terminated string. If it is exactly 32 characters long, add a terminating NULL. If this string is empty, the generic type is shown to the user.
+ * @param storageUsage Flags indicating whether this instance is preferred storage for photos, videos, etc.
+ *         Note: Implementations should initially set the flags on the system-default storage id used for saving media (if possible/supported).
  *         This setting can then be overridden using MAV_CMD_SET_STORAGE_USAGE.
- *         If the media usage flags are not set, a GCS may assume storage ID 1 is the default
- * storage for all media types.
+ *         If the media usage flags are not set, a GCS may assume storage ID 1 is the default storage for all media types.
  */
 @GeneratedMavMessage(
   id = 261u,
@@ -74,7 +63,10 @@ public data class StorageInformation(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Storage ID (1 for first, 2 for second, etc.)
@@ -95,32 +87,46 @@ public data class StorageInformation(
    * Total capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
    * units = MiB
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "MiB",
+  )
   public val totalCapacity: Float = 0F,
   /**
    * Used capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
    * units = MiB
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "MiB",
+  )
   public val usedCapacity: Float = 0F,
   /**
-   * Available storage capacity. If storage is not ready (STORAGE_STATUS_READY) value will be
-   * ignored.
+   * Available storage capacity. If storage is not ready (STORAGE_STATUS_READY) value will be ignored.
    * units = MiB
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "MiB",
+  )
   public val availableCapacity: Float = 0F,
   /**
    * Read speed.
    * units = MiB/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "MiB/s",
+  )
   public val readSpeed: Float = 0F,
   /**
    * Write speed.
    * units = MiB/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "MiB/s",
+  )
   public val writeSpeed: Float = 0F,
   /**
    * Type of storage
@@ -131,9 +137,7 @@ public data class StorageInformation(
   )
   public val type: MavEnumValue<StorageType> = MavEnumValue.fromValue(0u),
   /**
-   * Textual storage name to be used in UI (microSD 1, Internal Memory, etc.) This is a NULL
-   * terminated string. If it is exactly 32 characters long, add a terminating NULL. If this string is
-   * empty, the generic type is shown to the user.
+   * Textual storage name to be used in UI (microSD 1, Internal Memory, etc.) This is a NULL terminated string. If it is exactly 32 characters long, add a terminating NULL. If this string is empty, the generic type is shown to the user.
    */
   @GeneratedMavField(
     type = "char[32]",
@@ -142,11 +146,9 @@ public data class StorageInformation(
   public val name: String = "",
   /**
    * Flags indicating whether this instance is preferred storage for photos, videos, etc.
-   *         Note: Implementations should initially set the flags on the system-default storage id
-   * used for saving media (if possible/supported).
+   *         Note: Implementations should initially set the flags on the system-default storage id used for saving media (if possible/supported).
    *         This setting can then be overridden using MAV_CMD_SET_STORAGE_USAGE.
-   *         If the media usage flags are not set, a GCS may assume storage ID 1 is the default
-   * storage for all media types.
+   *         If the media usage flags are not set, a GCS may assume storage ID 1 is the default storage for all media types.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -237,8 +239,7 @@ public data class StorageInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): StorageInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): StorageInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

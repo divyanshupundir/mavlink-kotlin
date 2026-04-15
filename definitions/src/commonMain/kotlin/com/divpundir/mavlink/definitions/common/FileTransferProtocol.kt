@@ -24,9 +24,7 @@ import kotlin.collections.List
  * @param targetNetwork Network ID (0 for broadcast)
  * @param targetSystem System ID (0 for broadcast)
  * @param targetComponent Component ID (0 for broadcast)
- * @param payload Variable length payload. The length is defined by the remaining message length
- * when subtracting the header and other fields. The content/format of this block is defined in
- * https://mavlink.io/en/services/ftp.html.
+ * @param payload Variable length payload. The content/format of this block is defined in https://mavlink.io/en/services/ftp.html. The length is defined by the remaining message length when subtracting the header and other fields. See also MAV_FTP_OPCODE and MAV_FTP_ERR.
  */
 @GeneratedMavMessage(
   id = 110u,
@@ -49,9 +47,7 @@ public data class FileTransferProtocol(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Variable length payload. The length is defined by the remaining message length when subtracting
-   * the header and other fields. The content/format of this block is defined in
-   * https://mavlink.io/en/services/ftp.html.
+   * Variable length payload. The content/format of this block is defined in https://mavlink.io/en/services/ftp.html. The length is defined by the remaining message length when subtracting the header and other fields. See also MAV_FTP_OPCODE and MAV_FTP_ERR.
    */
   @GeneratedMavField(type = "uint8_t[251]")
   public val payload: List<UByte> = emptyList(),
@@ -101,8 +97,7 @@ public data class FileTransferProtocol(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FileTransferProtocol =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FileTransferProtocol = Builder().apply(builderAction).build()
   }
 
   public class Builder {

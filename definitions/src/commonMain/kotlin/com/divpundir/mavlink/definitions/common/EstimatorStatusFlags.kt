@@ -49,20 +49,17 @@ public enum class EstimatorStatusFlags(
   @GeneratedMavEnumEntry
   ESTIMATOR_POS_VERT_AGL(64u),
   /**
-   * True if the EKF is in a constant position mode and is not using external measurements (eg GPS
-   * or optical flow)
+   * True if the EKF is in a constant position mode and is not using external measurements (eg GPS or optical flow)
    */
   @GeneratedMavEnumEntry
   ESTIMATOR_CONST_POS_MODE(128u),
   /**
-   * True if the EKF has sufficient data to enter a mode that will provide a (relative) position
-   * estimate
+   * True if the EKF has sufficient data to enter a mode that will provide a (relative) position estimate
    */
   @GeneratedMavEnumEntry
   ESTIMATOR_PRED_POS_HORIZ_REL(256u),
   /**
-   * True if the EKF has sufficient data to enter a mode that will provide a (absolute) position
-   * estimate
+   * True if the EKF has sufficient data to enter a mode that will provide a (absolute) position estimate
    */
   @GeneratedMavEnumEntry
   ESTIMATOR_PRED_POS_HORIZ_ABS(512u),

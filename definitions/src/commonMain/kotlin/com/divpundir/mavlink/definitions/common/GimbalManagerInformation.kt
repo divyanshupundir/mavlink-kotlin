@@ -24,19 +24,15 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Information about a high level gimbal manager. This message should be requested by a ground
- * station using MAV_CMD_REQUEST_MESSAGE.
+ * Information about a high level gimbal manager. This message should be requested by a ground station using MAV_CMD_REQUEST_MESSAGE.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param capFlags Bitmap of gimbal capability flags.
- * @param gimbalDeviceId Gimbal device ID that this gimbal manager is responsible for. Component ID
- * of gimbal device (or 1-6 for non-MAVLink gimbal).
- * @param rollMin Minimum hardware roll angle (positive: rolling to the right, negative: rolling to
- * the left)
+ * @param gimbalDeviceId Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or 1-6 for non-MAVLink gimbal).
+ * @param rollMin Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
  * units = rad
- * @param rollMax Maximum hardware roll angle (positive: rolling to the right, negative: rolling to
- * the left)
+ * @param rollMax Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
  * units = rad
  * @param pitchMin Minimum pitch angle (positive: up, negative: down)
  * units = rad
@@ -56,7 +52,10 @@ public data class GimbalManagerInformation(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Bitmap of gimbal capability flags.
@@ -64,8 +63,7 @@ public data class GimbalManagerInformation(
   @GeneratedMavField(type = "uint32_t")
   public val capFlags: MavBitmaskValue<GimbalManagerCapFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or
-   * 1-6 for non-MAVLink gimbal).
+   * Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or 1-6 for non-MAVLink gimbal).
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: UByte = 0u,
@@ -73,37 +71,55 @@ public data class GimbalManagerInformation(
    * Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val rollMin: Float = 0F,
   /**
    * Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val rollMax: Float = 0F,
   /**
    * Minimum pitch angle (positive: up, negative: down)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitchMin: Float = 0F,
   /**
    * Maximum pitch angle (positive: up, negative: down)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitchMax: Float = 0F,
   /**
    * Minimum yaw angle (positive: to the right, negative: to the left)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yawMin: Float = 0F,
   /**
    * Maximum yaw angle (positive: to the right, negative: to the left)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yawMax: Float = 0F,
 ) : MavMessage<GimbalManagerInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerInformation> = Companion
@@ -174,8 +190,7 @@ public data class GimbalManagerInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

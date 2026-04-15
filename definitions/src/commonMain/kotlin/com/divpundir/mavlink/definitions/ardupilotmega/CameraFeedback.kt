@@ -32,8 +32,7 @@ import kotlin.Unit
 /**
  * Camera Capture Feedback.
  *
- * @param timeUsec Image timestamp (since UNIX epoch), as passed in by CAMERA_STATUS message (or
- * autopilot if no CCB).
+ * @param timeUsec Image timestamp (since UNIX epoch), as passed in by CAMERA_STATUS message (or autopilot if no CCB).
  * units = us
  * @param targetSystem System ID.
  * @param camIdx Camera ID.
@@ -63,11 +62,13 @@ import kotlin.Unit
 )
 public data class CameraFeedback(
   /**
-   * Image timestamp (since UNIX epoch), as passed in by CAMERA_STATUS message (or autopilot if no
-   * CCB).
+   * Image timestamp (since UNIX epoch), as passed in by CAMERA_STATUS message (or autopilot if no CCB).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * System ID.
@@ -88,49 +89,73 @@ public data class CameraFeedback(
    * Latitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lng: Int = 0,
   /**
    * Altitude (MSL).
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val altMsl: Float = 0F,
   /**
    * Altitude (Relative to HOME location).
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val altRel: Float = 0F,
   /**
    * Camera Roll angle (earth frame, +-180).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val roll: Float = 0F,
   /**
    * Camera Pitch angle (earth frame, +-180).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val pitch: Float = 0F,
   /**
    * Camera Yaw (earth frame, 0-360, true).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val yaw: Float = 0F,
   /**
    * Focal Length.
    * units = mm
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "mm",
+  )
   public val focLen: Float = 0F,
   /**
    * Feedback flags.
@@ -233,8 +258,7 @@ public data class CameraFeedback(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraFeedback =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraFeedback = Builder().apply(builderAction).build()
   }
 
   public class Builder {

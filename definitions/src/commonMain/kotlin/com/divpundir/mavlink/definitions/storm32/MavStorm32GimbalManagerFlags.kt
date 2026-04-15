@@ -7,17 +7,14 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Flags for gimbal manager operation. Used for setting and reporting, unless specified otherwise.
- * If a setting has been accepted by the gimbal manager is reported in the
- * STORM32_GIMBAL_MANAGER_STATUS message.
+ * Flags for gimbal manager operation. Used for setting and reporting, unless specified otherwise. If a setting has been accepted by the gimbal manager is reported in the STORM32_GIMBAL_MANAGER_STATUS message.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavStorm32GimbalManagerFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * Request to set RC input to active, or report RC input is active. Implies RC mixed. RC exclusive
-   * is achieved by setting all clients to inactive.
+   * Request to set RC input to active, or report RC input is active. Implies RC mixed. RC exclusive is achieved by setting all clients to inactive.
    */
   @GeneratedMavEnumEntry
   RC_ACTIVE(1u),

@@ -19,8 +19,7 @@ public enum class AirspeedSensorFlags(
   @GeneratedMavEnumEntry
   AIRSPEED_SENSOR_UNHEALTHY(1u),
   /**
-   * True if the data from this sensor is being actively used by the flight controller for guidance,
-   * navigation or control.
+   * True if the data from this sensor is being actively used by the flight controller for guidance, navigation or control.
    */
   @GeneratedMavEnumEntry
   AIRSPEED_SENSOR_USING(2u),

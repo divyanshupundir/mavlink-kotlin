@@ -22,25 +22,19 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Set gimbal manager pitch and yaw angles (high rate message). This message is to be sent to the
- * gimbal manager (e.g. from a ground station) and will be ignored by gimbal devices. Angles and rates
- * can be set to NaN according to use case. Use MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW for low-rate
- * adjustments that require confirmation.
+ * Set gimbal manager pitch and yaw angles (high rate message). This message is to be sent to the gimbal manager (e.g. from a ground station) and will be ignored by gimbal devices. Angles and rates can be set to NaN according to use case. Use MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW for low-rate adjustments that require confirmation.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param flags High level gimbal manager flags to use.
- * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0
- * for all gimbal device components. Send command multiple times for more than one gimbal (but not all
- * gimbals).
+ * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
  * @param pitch Pitch angle (positive: up, negative: down, NaN to be ignored).
  * units = rad
  * @param yaw Yaw angle (positive: to the right, negative: to the left, NaN to be ignored).
  * units = rad
  * @param pitchRate Pitch angular rate (positive: up, negative: down, NaN to be ignored).
  * units = rad/s
- * @param yawRate Yaw angular rate (positive: to the right, negative: to the left, NaN to be
- * ignored).
+ * @param yawRate Yaw angular rate (positive: to the right, negative: to the left, NaN to be ignored).
  * units = rad/s
  */
 @GeneratedMavMessage(
@@ -64,8 +58,7 @@ public data class GimbalManagerSetPitchyaw(
   @GeneratedMavField(type = "uint32_t")
   public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: UByte = 0u,
@@ -73,25 +66,41 @@ public data class GimbalManagerSetPitchyaw(
    * Pitch angle (positive: up, negative: down, NaN to be ignored).
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle (positive: to the right, negative: to the left, NaN to be ignored).
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val yaw: Float = 0F,
   /**
    * Pitch angular rate (positive: up, negative: down, NaN to be ignored).
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val pitchRate: Float = 0F,
   /**
    * Yaw angular rate (positive: to the right, negative: to the left, NaN to be ignored).
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val yawRate: Float = 0F,
 ) : MavMessage<GimbalManagerSetPitchyaw> {
   override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetPitchyaw> = Companion
@@ -158,8 +167,7 @@ public data class GimbalManagerSetPitchyaw(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetPitchyaw =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetPitchyaw = Builder().apply(builderAction).build()
   }
 
   public class Builder {

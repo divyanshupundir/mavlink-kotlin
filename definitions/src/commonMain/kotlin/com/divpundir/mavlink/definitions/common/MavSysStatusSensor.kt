@@ -169,8 +169,7 @@ public enum class MavSysStatusSensor(
   @GeneratedMavEnumEntry
   PROPULSION(1_073_741_824u),
   /**
-   * 0x80000000 Extended bit-field are used for further sensor status bits (needs to be set in
-   * onboard_control_sensors_present only)
+   * 0x80000000 Extended bit-field are used for further sensor status bits (needs to be set in onboard_control_sensors_present only)
    */
   @GeneratedMavEnumEntry
   MAV_SYS_STATUS_EXTENSION_USED(2_147_483_648u),

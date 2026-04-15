@@ -15,21 +15,18 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is
- * by definition for the overall aircraft, not only for one component.
+ * Set the system mode, as defined by enum MAV_MODE. There is no target component id as the mode is by definition for the overall aircraft, not only for one component.
  *
  * @param targetSystem The system setting the mode
  * @param baseMode The new base mode.
  * @param customMode The new autopilot-specific mode. This field can be ignored by an autopilot.
  */
-@Deprecated(message = "Use COMMAND_LONG with MAV_CMD_DO_SET_MODE instead")
 @GeneratedMavMessage(
   id = 11u,
   crcExtra = 89,
@@ -95,8 +92,7 @@ public data class SetMode(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SetMode =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetMode = Builder().apply(builderAction).build()
   }
 
   public class Builder {

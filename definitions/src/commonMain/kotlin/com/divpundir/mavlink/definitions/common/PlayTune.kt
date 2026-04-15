@@ -12,7 +12,6 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.String
 import kotlin.UByte
@@ -27,7 +26,6 @@ import kotlin.Unit
  * @param tune tune in board specific format
  * @param tune2 tune extension (appended to tune)
  */
-@Deprecated(message = "New version explicitly defines format. More interoperable.")
 @GeneratedMavMessage(
   id = 258u,
   crcExtra = -69,
@@ -101,8 +99,7 @@ public data class PlayTune(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): PlayTune =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): PlayTune = Builder().apply(builderAction).build()
   }
 
   public class Builder {

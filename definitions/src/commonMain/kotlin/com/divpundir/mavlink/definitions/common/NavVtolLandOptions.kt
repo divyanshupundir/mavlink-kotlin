@@ -15,27 +15,22 @@ public enum class NavVtolLandOptions(
   @GeneratedMavEnumEntry
   DEFAULT(0u),
   /**
-   * Descend in fixed wing mode, transitioning to multicopter mode for vertical landing when close
-   * to the ground.
-   *           The fixed wing descent pattern is at the discretion of the vehicle (e.g. transition
-   * altitude, loiter direction, radius, and speed, etc.).
-   *         
+   * Use a fixed wing spiral desent approach before landing.
    */
   @GeneratedMavEnumEntry
-  FW_DESCENT(1u),
+  FW_SPIRAL_APPROACH(1u),
   /**
-   * Land in multicopter mode on reaching the landing coordinates (the whole landing is by "hover
-   * descent").
+   * Use a fixed wing approach before detransitioning and landing vertically.
    */
   @GeneratedMavEnumEntry
-  HOVER_DESCENT(2u),
+  FW_APPROACH(2u),
   ;
 
   public companion object : MavEnum.MavCompanion<NavVtolLandOptions> {
     override fun getEntryFromValueOrNull(v: UInt): NavVtolLandOptions? = when (v) {
       0u -> DEFAULT
-      1u -> FW_DESCENT
-      2u -> HOVER_DESCENT
+      1u -> FW_SPIRAL_APPROACH
+      2u -> FW_APPROACH
       else -> null
     }
   }

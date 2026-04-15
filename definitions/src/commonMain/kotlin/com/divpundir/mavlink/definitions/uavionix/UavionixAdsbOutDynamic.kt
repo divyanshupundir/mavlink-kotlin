@@ -44,8 +44,7 @@ import kotlin.Unit
  * units = mm
  * @param gpsfix 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
  * @param numsats Number of satellites visible. If unknown set to UINT8_MAX
- * @param baroaltmsl Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2
- * mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
+ * @param baroaltmsl Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
  * units = mbar
  * @param accuracyhor Horizontal accuracy in mm (m * 1E-3). If unknown set to UINT32_MAX
  * units = mm
@@ -72,25 +71,37 @@ public data class UavionixAdsbOutDynamic(
    * UTC time in seconds since GPS epoch (Jan 6, 1980). If unknown set to UINT32_MAX
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val utctime: UInt = 0u,
   /**
    * Latitude WGS84 (deg * 1E7). If unknown set to INT32_MAX
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val gpslat: Int = 0,
   /**
    * Longitude WGS84 (deg * 1E7). If unknown set to INT32_MAX
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val gpslon: Int = 0,
   /**
    * Altitude (WGS84). UP +ve. If unknown set to INT32_MAX
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val gpsalt: Int = 0,
   /**
    * 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS, 5: RTK
@@ -103,54 +114,74 @@ public data class UavionixAdsbOutDynamic(
   @GeneratedMavField(type = "uint8_t")
   public val numsats: UByte = 0u,
   /**
-   * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar
-   * corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
+   * Barometric pressure altitude (MSL) relative to a standard atmosphere of 1013.2 mBar and NOT bar corrected altitude (m * 1E-3). (up +ve). If unknown set to INT32_MAX
    * units = mbar
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mbar",
+  )
   public val baroaltmsl: Int = 0,
   /**
    * Horizontal accuracy in mm (m * 1E-3). If unknown set to UINT32_MAX
    * units = mm
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "mm",
+  )
   public val accuracyhor: UInt = 0u,
   /**
    * Vertical accuracy in cm. If unknown set to UINT16_MAX
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm",
+  )
   public val accuracyvert: UShort = 0u,
   /**
    * Velocity accuracy in mm/s (m * 1E-3). If unknown set to UINT16_MAX
    * units = mm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mm/s",
+  )
   public val accuracyvel: UShort = 0u,
   /**
    * GPS vertical speed in cm/s. If unknown set to INT16_MAX
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val velvert: Short = 0,
   /**
    * North-South velocity over ground in cm/s North +ve. If unknown set to INT16_MAX
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val velns: Short = 0,
   /**
    * East-West velocity over ground in cm/s East +ve. If unknown set to INT16_MAX
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val velew: Short = 0,
   /**
    * Emergency status
    */
   @GeneratedMavField(type = "uint8_t")
-  public val emergencystatus: MavEnumValue<UavionixAdsbEmergencyStatus> =
-      MavEnumValue.fromValue(0u),
+  public val emergencystatus:
+      MavEnumValue<UavionixAdsbEmergencyStatus> = MavEnumValue.fromValue(0u),
   /**
    * ADS-B transponder dynamic input state flags
    */
@@ -264,8 +295,7 @@ public data class UavionixAdsbOutDynamic(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutDynamic =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutDynamic = Builder().apply(builderAction).build()
   }
 
   public class Builder {

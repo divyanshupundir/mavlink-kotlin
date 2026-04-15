@@ -52,55 +52,82 @@ public data class Deepstall(
    * Landing latitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val landingLat: Int = 0,
   /**
    * Landing longitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val landingLon: Int = 0,
   /**
    * Final heading start point, latitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val pathLat: Int = 0,
   /**
    * Final heading start point, longitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val pathLon: Int = 0,
   /**
    * Arc entry point, latitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val arcEntryLat: Int = 0,
   /**
    * Arc entry point, longitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val arcEntryLon: Int = 0,
   /**
    * Altitude.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val altitude: Float = 0F,
   /**
    * Distance the aircraft expects to travel during the deepstall.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val expectedTravelDistance: Float = 0F,
   /**
    * Deepstall cross track error (only valid when in DEEPSTALL_STAGE_LAND).
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val crossTrackError: Float = 0F,
   /**
    * Deepstall stage.
@@ -180,8 +207,7 @@ public data class Deepstall(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Deepstall =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Deepstall = Builder().apply(builderAction).build()
   }
 
   public class Builder {

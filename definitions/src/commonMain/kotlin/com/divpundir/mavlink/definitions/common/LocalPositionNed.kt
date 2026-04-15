@@ -18,8 +18,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
- * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
+ * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -45,43 +44,64 @@ public data class LocalPositionNed(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * X Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Y Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Z Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * X Speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * Y Speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * Z Speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
 ) : MavMessage<LocalPositionNed> {
   override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNed> = Companion
@@ -141,8 +161,7 @@ public data class LocalPositionNed(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LocalPositionNed =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LocalPositionNed = Builder().apply(builderAction).build()
   }
 
   public class Builder {

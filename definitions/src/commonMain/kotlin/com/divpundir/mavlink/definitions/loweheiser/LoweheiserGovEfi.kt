@@ -26,8 +26,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Composite EFI and Governor data from Loweheiser equipment.  This message is created by the EFI
- * unit based on its own data and data received from a governor attached to that EFI unit.
+ * Composite EFI and Governor data from Loweheiser equipment.  This message is created by the EFI unit based on its own data and data received from a governor attached to that EFI unit.
  *
  * @param voltBatt Generator Battery voltage.
  * units = V
@@ -43,8 +42,7 @@ import kotlin.Unit
  * units = %
  * @param runtime Seconds this generator has run since it was rebooted.
  * units = s
- * @param untilMaintenance Seconds until this generator requires maintenance.  A negative value
- * indicates maintenance is past due.
+ * @param untilMaintenance Seconds until this generator requires maintenance.  A negative value indicates maintenance is past due.
  * units = s
  * @param rectifierTemp The Temperature of the rectifier.
  * units = degC
@@ -82,80 +80,118 @@ public data class LoweheiserGovEfi(
    * Generator Battery voltage.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val voltBatt: Float = 0F,
   /**
    * Generator Battery current.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val currBatt: Float = 0F,
   /**
    * Current being produced by generator.
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val currGen: Float = 0F,
   /**
    * Load current being consumed by the UAV (sum of curr_gen and curr_batt)
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val currRot: Float = 0F,
   /**
    * Generator fuel remaining in litres.
    * units = l
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "l",
+  )
   public val fuelLevel: Float = 0F,
   /**
    * Throttle Output.
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val throttle: Float = 0F,
   /**
    * Seconds this generator has run since it was rebooted.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val runtime: UInt = 0u,
   /**
-   * Seconds until this generator requires maintenance.  A negative value indicates maintenance is
-   * past due.
+   * Seconds until this generator requires maintenance.  A negative value indicates maintenance is past due.
    * units = s
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "s",
+  )
   public val untilMaintenance: Int = 0,
   /**
    * The Temperature of the rectifier.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val rectifierTemp: Float = 0F,
   /**
    * The temperature of the mechanical motor, fuel cell core or generator.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val generatorTemp: Float = 0F,
   /**
    *  EFI Supply Voltage.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val efiBatt: Float = 0F,
   /**
    * Motor RPM.
    * units = rpm
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rpm",
+  )
   public val efiRpm: Float = 0F,
   /**
    * Injector pulse-width in milliseconds.
    * units = ms
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "ms",
+  )
   public val efiPw: Float = 0F,
   /**
    * Fuel flow rate in litres/hour.
@@ -166,37 +202,55 @@ public data class LoweheiserGovEfi(
    * Fuel consumed.
    * units = l
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "l",
+  )
   public val efiFuelConsumed: Float = 0F,
   /**
    * Atmospheric pressure.
    * units = kPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "kPa",
+  )
   public val efiBaro: Float = 0F,
   /**
    * Manifold Air Temperature.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val efiMat: Float = 0F,
   /**
    * Cylinder Head Temperature.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val efiClt: Float = 0F,
   /**
    * Throttle Position.
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val efiTps: Float = 0F,
   /**
    * Exhaust gas temperature.
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val efiExhaustGasTemperature: Float = 0F,
   /**
    * EFI index.
@@ -335,8 +389,7 @@ public data class LoweheiserGovEfi(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LoweheiserGovEfi =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LoweheiserGovEfi = Builder().apply(builderAction).build()
   }
 
   public class Builder {

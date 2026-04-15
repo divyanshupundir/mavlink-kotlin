@@ -35,12 +35,8 @@ import kotlin.collections.List
  * units = m/s
  * @param z Global Z speed
  * units = m/s
- * @param covariance Row-major representation of 3x3 linear velocity covariance matrix (states: vx,
- * vy, vz; 1st three entries - 1st row, etc.). If unknown, assign NaN value to first element in the
- * array.
- * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets
- * in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used
- * when e.g an external SLAM system detects a loop-closure and the estimate jumps.
+ * @param covariance Row-major representation of 3x3 linear velocity covariance matrix (states: vx, vy, vz; 1st three entries - 1st row, etc.). If unknown, assign NaN value to first element in the array.
+ * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
  */
 @GeneratedMavMessage(
   id = 103u,
@@ -51,39 +47,49 @@ public data class VisionSpeedEstimate(
    * Timestamp (UNIX time or time since system boot)
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val usec: ULong = 0uL,
   /**
    * Global X speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val x: Float = 0F,
   /**
    * Global Y speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val y: Float = 0F,
   /**
    * Global Z speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val z: Float = 0F,
   /**
-   * Row-major representation of 3x3 linear velocity covariance matrix (states: vx, vy, vz; 1st
-   * three entries - 1st row, etc.). If unknown, assign NaN value to first element in the array.
+   * Row-major representation of 3x3 linear velocity covariance matrix (states: vx, vy, vz; 1st three entries - 1st row, etc.). If unknown, assign NaN value to first element in the array.
    */
   @GeneratedMavField(
     type = "float[9]",
     extension = true,
+    invalid = "[NaN:]",
   )
   public val covariance: List<Float> = emptyList(),
   /**
-   * Estimate reset counter. This should be incremented when the estimate resets in any of the
-   * dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an
-   * external SLAM system detects a loop-closure and the estimate jumps.
+   * Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -142,8 +148,7 @@ public data class VisionSpeedEstimate(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): VisionSpeedEstimate =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): VisionSpeedEstimate = Builder().apply(builderAction).build()
   }
 
   public class Builder {

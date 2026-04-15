@@ -36,25 +36,37 @@ public data class SensPower(
    *  Power board voltage sensor reading
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val adc121VspbVolt: Float = 0F,
   /**
    *  Power board current sensor reading
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val adc121CspbAmp: Float = 0F,
   /**
    *  Board current sensor 1 reading
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val adc121Cs1Amp: Float = 0F,
   /**
    *  Board current sensor 2 reading
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val adc121Cs2Amp: Float = 0F,
 ) : MavMessage<SensPower> {
   override val instanceCompanion: MavMessage.MavCompanion<SensPower> = Companion
@@ -102,8 +114,7 @@ public data class SensPower(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensPower =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensPower = Builder().apply(builderAction).build()
   }
 
   public class Builder {

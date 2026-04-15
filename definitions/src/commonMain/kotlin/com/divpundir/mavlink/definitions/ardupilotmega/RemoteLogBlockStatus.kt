@@ -102,8 +102,7 @@ public data class RemoteLogBlockStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RemoteLogBlockStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RemoteLogBlockStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

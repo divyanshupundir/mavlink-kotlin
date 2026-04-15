@@ -28,17 +28,14 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec
- * thereafter)
+ * Static data to configure the ADS-B transponder (send within 10 sec of a POR and every 10 sec thereafter)
  *
  * @param icao Vehicle address (24 bit)
- * @param callsign Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9,
- * " " only)
+ * @param callsign Vehicle identifier (8 characters, null terminated, valid characters are A-Z, 0-9, " " only)
  * @param emittertype Transmitting vehicle type. See ADSB_EMITTER_TYPE enum
  * @param aircraftsize Aircraft length and width encoding (table 2-35 of DO-282B)
  * @param gpsoffsetlat GPS antenna lateral offset (table 2-36 of DO-282B)
- * @param gpsoffsetlon GPS antenna longitudinal offset from nose [if non-zero, take position (in
- * meters) divide by 2 and add one] (table 2-37 DO-282B)
+ * @param gpsoffsetlon GPS antenna longitudinal offset from nose [if non-zero, take position (in meters) divide by 2 and add one] (table 2-37 DO-282B)
  * @param stallspeed Aircraft stall speed in cm/s
  * units = cm/s
  * @param rfselect ADS-B transponder receiver and transmit enable flags
@@ -67,26 +64,28 @@ public data class UavionixAdsbOutCfg(
    * Aircraft length and width encoding (table 2-35 of DO-282B)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val aircraftsize: MavEnumValue<UavionixAdsbOutCfgAircraftSize> =
-      MavEnumValue.fromValue(0u),
+  public val aircraftsize:
+      MavEnumValue<UavionixAdsbOutCfgAircraftSize> = MavEnumValue.fromValue(0u),
   /**
    * GPS antenna lateral offset (table 2-36 of DO-282B)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gpsoffsetlat: MavEnumValue<UavionixAdsbOutCfgGpsOffsetLat> =
-      MavEnumValue.fromValue(0u),
+  public val gpsoffsetlat:
+      MavEnumValue<UavionixAdsbOutCfgGpsOffsetLat> = MavEnumValue.fromValue(0u),
   /**
-   * GPS antenna longitudinal offset from nose [if non-zero, take position (in meters) divide by 2
-   * and add one] (table 2-37 DO-282B)
+   * GPS antenna longitudinal offset from nose [if non-zero, take position (in meters) divide by 2 and add one] (table 2-37 DO-282B)
    */
   @GeneratedMavField(type = "uint8_t")
-  public val gpsoffsetlon: MavEnumValue<UavionixAdsbOutCfgGpsOffsetLon> =
-      MavEnumValue.fromValue(0u),
+  public val gpsoffsetlon:
+      MavEnumValue<UavionixAdsbOutCfgGpsOffsetLon> = MavEnumValue.fromValue(0u),
   /**
    * Aircraft stall speed in cm/s
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+  )
   public val stallspeed: UShort = 0u,
   /**
    * ADS-B transponder receiver and transmit enable flags
@@ -170,8 +169,7 @@ public data class UavionixAdsbOutCfg(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfg =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfg = Builder().apply(builderAction).build()
   }
 
   public class Builder {

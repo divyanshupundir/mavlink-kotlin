@@ -21,8 +21,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Request for terrain data and terrain status. See terrain protocol docs:
- * https://mavlink.io/en/services/terrain.html
+ * Request for terrain data and terrain status. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
  *
  * @param lat Latitude of SW corner of first grid
  * units = degE7
@@ -41,24 +40,37 @@ public data class TerrainRequest(
    * Latitude of SW corner of first grid
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude of SW corner of first grid
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Grid spacing
    * units = m
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "m",
+  )
   public val gridSpacing: UShort = 0u,
   /**
    * Bitmask of requested 4x4 grids (row major 8x7 array of grids, 56 bits)
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    display = "bitmask",
+    printFormat = "0x%07x",
+  )
   public val mask: ULong = 0uL,
 ) : MavMessage<TerrainRequest> {
   override val instanceCompanion: MavMessage.MavCompanion<TerrainRequest> = Companion
@@ -106,8 +118,7 @@ public data class TerrainRequest(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainRequest =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainRequest = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -24,12 +24,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Describe a trajectory using an array of up-to 5 bezier control points in the local frame
- * (MAV_FRAME_LOCAL_NED).
+ * Describe a trajectory using an array of up-to 5 bezier control points in the local frame (MAV_FRAME_LOCAL_NED).
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param validPoints Number of valid control points (up-to 5 points are possible)
  * @param posX X-coordinate of bezier control points. Set to NaN if not being used
@@ -50,11 +47,13 @@ import kotlin.collections.List
 )
 public data class TrajectoryRepresentationBezier(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Number of valid control points (up-to 5 points are possible)
@@ -65,31 +64,51 @@ public data class TrajectoryRepresentationBezier(
    * X-coordinate of bezier control points. Set to NaN if not being used
    * units = m
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m",
+    invalid = "[NaN]",
+  )
   public val posX: List<Float> = emptyList(),
   /**
    * Y-coordinate of bezier control points. Set to NaN if not being used
    * units = m
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m",
+    invalid = "[NaN]",
+  )
   public val posY: List<Float> = emptyList(),
   /**
    * Z-coordinate of bezier control points. Set to NaN if not being used
    * units = m
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m",
+    invalid = "[NaN]",
+  )
   public val posZ: List<Float> = emptyList(),
   /**
    * Bezier time horizon. Set to NaN if velocity/acceleration should not be incorporated
    * units = s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "s",
+    invalid = "[NaN]",
+  )
   public val delta: List<Float> = emptyList(),
   /**
    * Yaw. Set to NaN for unchanged
    * units = rad
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "rad",
+    invalid = "[NaN]",
+  )
   public val posYaw: List<Float> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationBezier> {
   override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationBezier> =
@@ -150,8 +169,7 @@ public data class TrajectoryRepresentationBezier(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TrajectoryRepresentationBezier =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TrajectoryRepresentationBezier = Builder().apply(builderAction).build()
   }
 
   public class Builder {

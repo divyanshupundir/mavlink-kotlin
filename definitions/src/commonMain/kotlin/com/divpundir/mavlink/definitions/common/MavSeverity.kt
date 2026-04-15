@@ -6,9 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Indicates the severity level, generally used for status messages to indicate their relative
- * urgency. Based on RFC-5424 using expanded definitions at:
- * http://www.kiwisyslog.com/kb/info:-syslog-message-levels/.
+ * Indicates the severity level, generally used for status messages to indicate their relative urgency. Based on RFC-5424 using expanded definitions at: http://www.kiwisyslog.com/kb/info:-syslog-message-levels/.
  */
 @GeneratedMavEnum
 public enum class MavSeverity(
@@ -35,14 +33,12 @@ public enum class MavSeverity(
   @GeneratedMavEnumEntry
   ERROR(3u),
   /**
-   * Indicates about a possible future error if this is not resolved within a given timeframe.
-   * Example would be a low battery warning.
+   * Indicates about a possible future error if this is not resolved within a given timeframe. Example would be a low battery warning.
    */
   @GeneratedMavEnumEntry
   WARNING(4u),
   /**
-   * An unusual event has occurred, though not an error condition. This should be investigated for
-   * the root cause.
+   * An unusual event has occurred, though not an error condition. This should be investigated for the root cause.
    */
   @GeneratedMavEnumEntry
   NOTICE(5u),
@@ -52,8 +48,7 @@ public enum class MavSeverity(
   @GeneratedMavEnumEntry
   INFO(6u),
   /**
-   * Useful non-operational messages that can assist in debugging. These should not occur during
-   * normal operation.
+   * Useful non-operational messages that can assist in debugging. These should not occur during normal operation.
    */
   @GeneratedMavEnumEntry
   DEBUG(7u),

@@ -87,8 +87,7 @@ public data class LoggingAck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LoggingAck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LoggingAck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

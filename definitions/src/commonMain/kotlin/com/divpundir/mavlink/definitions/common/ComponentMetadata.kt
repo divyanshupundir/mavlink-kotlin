@@ -3,7 +3,6 @@ package com.divpundir.mavlink.definitions.common
 import com.divpundir.mavlink.api.GeneratedMavField
 import com.divpundir.mavlink.api.GeneratedMavMessage
 import com.divpundir.mavlink.api.MavMessage
-import com.divpundir.mavlink.api.WorkInProgress
 import com.divpundir.mavlink.serialization.MavDataDecoder
 import com.divpundir.mavlink.serialization.MavDataEncoder
 import com.divpundir.mavlink.serialization.encodeString
@@ -26,23 +25,17 @@ import kotlin.Unit
  *         The file must be hosted on the component, and may be xz compressed.
  *         The file CRC can be used for file caching.
  *
- *         The general metadata file can be read to get the locations of other metadata files
- * (COMP_METADATA_TYPE) and translations, which may be hosted either on the vehicle or the internet.
+ *         The general metadata file can be read to get the locations of other metadata files (COMP_METADATA_TYPE) and translations, which may be hosted either on the vehicle or the internet.
  *         For more information see: https://mavlink.io/en/services/component_information.html.
  *
- *         Note: Camera components should use CAMERA_INFORMATION instead, and autopilots may use
- * both this message and AUTOPILOT_VERSION.
+ *         Note: Camera components should use CAMERA_INFORMATION instead, and autopilots may use both this message and AUTOPILOT_VERSION.
  *       
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param fileCrc CRC32 of the general metadata file.
- * @param uri MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may
- * be compressed with xz. The file contains general component metadata, and may contain URI links for
- * additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be
- * generated at compile time. The string needs to be zero terminated.
+ * @param uri MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be generated at compile time. The string needs to be zero terminated.
  */
-@WorkInProgress
 @GeneratedMavMessage(
   id = 397u,
   crcExtra = -74,
@@ -52,7 +45,10 @@ public data class ComponentMetadata(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * CRC32 of the general metadata file.
@@ -60,10 +56,7 @@ public data class ComponentMetadata(
   @GeneratedMavField(type = "uint32_t")
   public val fileCrc: UInt = 0u,
   /**
-   * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be
-   * compressed with xz. The file contains general component metadata, and may contain URI links for
-   * additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be
-   * generated at compile time. The string needs to be zero terminated.
+   * MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be generated at compile time. The string needs to be zero terminated.
    */
   @GeneratedMavField(type = "char[100]")
   public val uri: String = "",
@@ -109,8 +102,7 @@ public data class ComponentMetadata(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentMetadata =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ComponentMetadata = Builder().apply(builderAction).build()
   }
 
   public class Builder {

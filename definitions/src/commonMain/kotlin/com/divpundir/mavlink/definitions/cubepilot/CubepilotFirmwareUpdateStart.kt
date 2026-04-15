@@ -45,7 +45,10 @@ public data class CubepilotFirmwareUpdateStart(
    * FW Size.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes",
+  )
   public val size: UInt = 0u,
   /**
    * FW CRC.
@@ -98,8 +101,7 @@ public data class CubepilotFirmwareUpdateStart(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CubepilotFirmwareUpdateStart =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CubepilotFirmwareUpdateStart = Builder().apply(builderAction).build()
   }
 
   public class Builder {

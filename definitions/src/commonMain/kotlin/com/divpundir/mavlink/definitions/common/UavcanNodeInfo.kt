@@ -27,16 +27,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * General information describing a particular UAVCAN node. Please refer to the definition of the
- * UAVCAN service "uavcan.protocol.GetNodeInfo" for the background information. This message should be
- * emitted by the system whenever a new node appears online, or an existing node reboots. Additionally,
- * it can be emitted upon request from the other end of the MAVLink channel (see
- * MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a
- * low frequency. The UAVCAN specification is available at http://uavcan.org.
+ * General information describing a particular UAVCAN node. Please refer to the definition of the UAVCAN service "uavcan.protocol.GetNodeInfo" for the background information. This message should be emitted by the system whenever a new node appears online, or an existing node reboots. Additionally, it can be emitted upon request from the other end of the MAVLink channel (see MAV_CMD_UAVCAN_GET_NODE_INFO). It is also not prohibited to emit this message unconditionally at a low frequency. The UAVCAN specification is available at http://uavcan.org.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param uptimeSec Time since the start-up of the node.
  * units = s
@@ -46,8 +39,7 @@ import kotlin.collections.List
  * @param hwUniqueId Hardware unique 128-bit ID.
  * @param swVersionMajor Software major version number.
  * @param swVersionMinor Software minor version number.
- * @param swVcsCommit Version control system (VCS) revision identifier (e.g. git short commit hash).
- * 0 if unknown.
+ * @param swVcsCommit Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
  */
 @GeneratedMavMessage(
   id = 311u,
@@ -55,17 +47,22 @@ import kotlin.collections.List
 )
 public data class UavcanNodeInfo(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Time since the start-up of the node.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val uptimeSec: UInt = 0u,
   /**
    * Node name string. For example, "sapog.px4.io".
@@ -100,7 +97,10 @@ public data class UavcanNodeInfo(
   /**
    * Version control system (VCS) revision identifier (e.g. git short commit hash). 0 if unknown.
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    invalid = "0",
+  )
   public val swVcsCommit: UInt = 0u,
 ) : MavMessage<UavcanNodeInfo> {
   override val instanceCompanion: MavMessage.MavCompanion<UavcanNodeInfo> = Companion
@@ -168,8 +168,7 @@ public data class UavcanNodeInfo(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavcanNodeInfo =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavcanNodeInfo = Builder().apply(builderAction).build()
   }
 
   public class Builder {

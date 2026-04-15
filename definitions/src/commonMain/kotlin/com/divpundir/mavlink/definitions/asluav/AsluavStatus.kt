@@ -100,8 +100,7 @@ public data class AsluavStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AsluavStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AsluavStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

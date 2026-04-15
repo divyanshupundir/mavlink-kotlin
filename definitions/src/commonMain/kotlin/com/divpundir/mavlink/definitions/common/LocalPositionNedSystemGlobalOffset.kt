@@ -18,9 +18,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * The offset in X, Y, Z and yaw between the LOCAL_POSITION_NED messages of MAV X and the global
- * coordinate frame in NED coordinates. Coordinate frame is right-handed, Z-axis down (aeronautical
- * frame, NED / north-east-down convention)
+ * The offset in X, Y, Z and yaw between the LOCAL_POSITION_NED messages of MAV X and the global coordinate frame in NED coordinates. Coordinate frame is right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -46,43 +44,64 @@ public data class LocalPositionNedSystemGlobalOffset(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * X Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Y Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Z Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * Roll
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
 ) : MavMessage<LocalPositionNedSystemGlobalOffset> {
   override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedSystemGlobalOffset> =
@@ -143,8 +162,7 @@ public data class LocalPositionNedSystemGlobalOffset(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit):
-        LocalPositionNedSystemGlobalOffset = Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LocalPositionNedSystemGlobalOffset = Builder().apply(builderAction).build()
   }
 
   public class Builder {

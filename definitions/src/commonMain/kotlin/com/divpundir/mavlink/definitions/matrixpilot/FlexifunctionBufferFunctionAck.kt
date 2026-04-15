@@ -98,8 +98,7 @@ public data class FlexifunctionBufferFunctionAck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionBufferFunctionAck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionBufferFunctionAck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

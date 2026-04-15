@@ -26,26 +26,21 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Message to a gimbal manager to control the gimbal tilt and pan angles. Angles and rates can be
- * set to NaN according to use case. A gimbal device is never to react to this message.
+ * Message to a gimbal manager to control the gimbal tilt and pan angles. Angles and rates can be set to NaN according to use case. A gimbal device is never to react to this message.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink
- * gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
+ * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
  * @param client Client which is contacting the gimbal manager (must be set).
- * @param deviceFlags Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as
- * used in GIMBAL_DEVICE_SET_ATTITUDE.
+ * @param deviceFlags Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as used in GIMBAL_DEVICE_SET_ATTITUDE.
  * @param managerFlags Gimbal manager flags to be applied (0 to be ignored).
  * @param pitch Pitch/tilt angle (positive: tilt up). NaN to be ignored.
  * units = rad
- * @param yaw Yaw/pan angle (positive: pan the right). NaN to be ignored. The frame is determined by
- * the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+ * @param yaw Yaw/pan angle (positive: pan the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
  * units = rad
  * @param pitchRate Pitch/tilt angular rate (positive: tilt up). NaN to be ignored.
  * units = rad/s
- * @param yawRate Yaw/pan angular rate (positive: pan to the right). NaN to be ignored. The frame is
- * determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+ * @param yawRate Yaw/pan angular rate (positive: pan to the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
  * units = rad/s
  */
 @GeneratedMavMessage(
@@ -64,8 +59,7 @@ public data class Storm32GimbalManagerControlPitchyaw(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for
-   * all gimbals). Send command multiple times for more than one but not all gimbals.
+   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalId: UByte = 0u,
@@ -75,42 +69,61 @@ public data class Storm32GimbalManagerControlPitchyaw(
   @GeneratedMavField(type = "uint8_t")
   public val client: MavEnumValue<MavStorm32GimbalManagerClient> = MavEnumValue.fromValue(0u),
   /**
-   * Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as used in
-   * GIMBAL_DEVICE_SET_ATTITUDE.
+   * Gimbal device flags to be applied (UINT16_MAX to be ignored). Same flags as used in GIMBAL_DEVICE_SET_ATTITUDE.
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val deviceFlags: MavBitmaskValue<GimbalDeviceFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Gimbal manager flags to be applied (0 to be ignored).
    */
-  @GeneratedMavField(type = "uint16_t")
-  public val managerFlags: MavBitmaskValue<MavStorm32GimbalManagerFlags> =
-      MavBitmaskValue.fromValue(0u),
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "0",
+  )
+  public val managerFlags:
+      MavBitmaskValue<MavStorm32GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Pitch/tilt angle (positive: tilt up). NaN to be ignored.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val pitch: Float = 0F,
   /**
-   * Yaw/pan angle (positive: pan the right). NaN to be ignored. The frame is determined by the
-   * GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * Yaw/pan angle (positive: pan the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val yaw: Float = 0F,
   /**
    * Pitch/tilt angular rate (positive: tilt up). NaN to be ignored.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val pitchRate: Float = 0F,
   /**
-   * Yaw/pan angular rate (positive: pan to the right). NaN to be ignored. The frame is determined
-   * by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
+   * Yaw/pan angular rate (positive: pan to the right). NaN to be ignored. The frame is determined by the GIMBAL_DEVICE_FLAGS_YAW_IN_xxx_FRAME flags.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+    invalid = "NaN",
+  )
   public val yawRate: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerControlPitchyaw> {
   override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerControlPitchyaw> =
@@ -192,8 +205,7 @@ public data class Storm32GimbalManagerControlPitchyaw(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit):
-        Storm32GimbalManagerControlPitchyaw = Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerControlPitchyaw = Builder().apply(builderAction).build()
   }
 
   public class Builder {

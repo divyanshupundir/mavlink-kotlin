@@ -7,8 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b00000000
- * indicates that none of the setpoint dimensions should be ignored.
+ * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b00000000 indicates that none of the setpoint dimensions should be ignored.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class AttitudeTargetTypemask(

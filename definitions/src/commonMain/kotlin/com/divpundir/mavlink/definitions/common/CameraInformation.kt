@@ -39,8 +39,7 @@ import kotlin.collections.List
  * units = ms
  * @param vendorName Name of the camera vendor
  * @param modelName Name of the camera model
- * @param firmwareVersion Version of the camera firmware, encoded as: `(Dev & 0xff) << 24 + (Patch &
- * 0xff) << 16 + (Minor & 0xff) << 8 + (Major & 0xff)`. Use 0 if not known.
+ * @param firmwareVersion Version of the camera firmware, encoded as: `(Dev & 0xff) << 24 + (Patch & 0xff) << 16 + (Minor & 0xff) << 8 + (Major & 0xff)`. Use 0 if not known.
  * @param focalLength Focal length. Use NaN if not known.
  * units = mm
  * @param sensorSizeH Image sensor size horizontal. Use NaN if not known.
@@ -54,17 +53,9 @@ import kotlin.collections.List
  * @param lensId Reserved for a lens ID.  Use 0 if not known.
  * @param flags Bitmap of camera capability flags.
  * @param camDefinitionVersion Camera definition version (iteration).  Use 0 if not known.
- * @param camDefinitionUri Camera definition URI (if any, otherwise only basic functions will be
- * available). HTTP- (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both
- * must be supported by any GCS that implements the Camera Protocol). The definition file may be xz
- * compressed, which will be indicated by the file extension .xml.xz (a GCS that implements the
- * protocol must support decompressing the file). The string needs to be zero terminated.  Use a
- * zero-length string if not known.
- * @param gimbalDeviceId Gimbal id of a gimbal associated with this camera. This is the component id
- * of the gimbal device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the
- * camera.
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param camDefinitionUri Camera definition URI (if any, otherwise only basic functions will be available). HTTP- (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported by any GCS that implements the Camera Protocol). The definition file may be xz compressed, which will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support decompressing the file). The string needs to be zero terminated.  Use a zero-length string if not known.
+ * @param gimbalDeviceId Gimbal id of a gimbal associated with this camera. This is the component id of the gimbal device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the camera.
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 259u,
@@ -75,7 +66,10 @@ public data class CameraInformation(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Name of the camera vendor
@@ -88,45 +82,70 @@ public data class CameraInformation(
   @GeneratedMavField(type = "uint8_t[32]")
   public val modelName: List<UByte> = emptyList(),
   /**
-   * Version of the camera firmware, encoded as: `(Dev & 0xff) << 24 + (Patch & 0xff) << 16 + (Minor
-   * & 0xff) << 8 + (Major & 0xff)`. Use 0 if not known.
+   * Version of the camera firmware, encoded as: `(Dev & 0xff) << 24 + (Patch & 0xff) << 16 + (Minor & 0xff) << 8 + (Major & 0xff)`. Use 0 if not known.
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    invalid = "0",
+  )
   public val firmwareVersion: UInt = 0u,
   /**
    * Focal length. Use NaN if not known.
    * units = mm
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "mm",
+    invalid = "NaN",
+  )
   public val focalLength: Float = 0F,
   /**
    * Image sensor size horizontal. Use NaN if not known.
    * units = mm
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "mm",
+    invalid = "NaN",
+  )
   public val sensorSizeH: Float = 0F,
   /**
    * Image sensor size vertical. Use NaN if not known.
    * units = mm
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "mm",
+    invalid = "NaN",
+  )
   public val sensorSizeV: Float = 0F,
   /**
    * Horizontal image resolution. Use 0 if not known.
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+    invalid = "0",
+  )
   public val resolutionH: UShort = 0u,
   /**
    * Vertical image resolution. Use 0 if not known.
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+    invalid = "0",
+  )
   public val resolutionV: UShort = 0u,
   /**
    * Reserved for a lens ID.  Use 0 if not known.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "0",
+  )
   public val lensId: UByte = 0u,
   /**
    * Bitmap of camera capability flags.
@@ -139,27 +158,21 @@ public data class CameraInformation(
   @GeneratedMavField(type = "uint16_t")
   public val camDefinitionVersion: UShort = 0u,
   /**
-   * Camera definition URI (if any, otherwise only basic functions will be available). HTTP-
-   * (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported
-   * by any GCS that implements the Camera Protocol). The definition file may be xz compressed, which
-   * will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support
-   * decompressing the file). The string needs to be zero terminated.  Use a zero-length string if not
-   * known.
+   * Camera definition URI (if any, otherwise only basic functions will be available). HTTP- (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported by any GCS that implements the Camera Protocol). The definition file may be xz compressed, which will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support decompressing the file). The string needs to be zero terminated.  Use a zero-length string if not known.
    */
   @GeneratedMavField(type = "char[140]")
   public val camDefinitionUri: String = "",
   /**
-   * Gimbal id of a gimbal associated with this camera. This is the component id of the gimbal
-   * device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the camera.
+   * Gimbal id of a gimbal associated with this camera. This is the component id of the gimbal device, or 1-6 for non mavlink gimbals. Use 0 if no gimbal is associated with the camera.
    */
   @GeneratedMavField(
     type = "uint8_t",
     extension = true,
+    invalid = "0",
   )
   public val gimbalDeviceId: UByte = 0u,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -257,8 +270,7 @@ public data class CameraInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

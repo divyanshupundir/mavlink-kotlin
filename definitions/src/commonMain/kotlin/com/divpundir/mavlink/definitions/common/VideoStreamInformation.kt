@@ -33,8 +33,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Information about video stream. It may be requested using MAV_CMD_REQUEST_MESSAGE, where param2
- * indicates the video stream id: 0 for all streams, 1 for first, 2 for second, etc.
+ * Information about video stream. It may be requested using MAV_CMD_REQUEST_MESSAGE, where param2 indicates the video stream id: 0 for all streams, 1 for first, 2 for second, etc.
  *
  * @param streamId Video Stream ID (1 for first, 2 for second, etc.)
  * @param count Number of streams available.
@@ -53,11 +52,9 @@ import kotlin.Unit
  * @param hfov Horizontal Field of view.
  * units = deg
  * @param name Stream name.
- * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number
- * (UDP port ground station should listen to).
+ * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number (UDP port ground station should listen to).
  * @param encoding Encoding of stream.
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 269u,
@@ -88,37 +85,55 @@ public data class VideoStreamInformation(
    * Frame rate.
    * units = Hz
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "Hz",
+  )
   public val framerate: Float = 0F,
   /**
    * Horizontal resolution.
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+  )
   public val resolutionH: UShort = 0u,
   /**
    * Vertical resolution.
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+  )
   public val resolutionV: UShort = 0u,
   /**
    * Bit rate.
    * units = bits/s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bits/s",
+  )
   public val bitrate: UInt = 0u,
   /**
    * Video image rotation clockwise.
    * units = deg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "deg",
+  )
   public val rotation: UShort = 0u,
   /**
    * Horizontal Field of view.
    * units = deg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "deg",
+  )
   public val hfov: UShort = 0u,
   /**
    * Stream name.
@@ -126,8 +141,7 @@ public data class VideoStreamInformation(
   @GeneratedMavField(type = "char[32]")
   public val name: String = "",
   /**
-   * Video stream URI (TCP or RTSP URI ground station should connect to) or port number (UDP port
-   * ground station should listen to).
+   * Video stream URI (TCP or RTSP URI ground station should connect to) or port number (UDP port ground station should listen to).
    */
   @GeneratedMavField(type = "char[160]")
   public val uri: String = "",
@@ -140,8 +154,7 @@ public data class VideoStreamInformation(
   )
   public val encoding: MavEnumValue<VideoStreamEncoding> = MavEnumValue.fromValue(0u),
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -241,8 +254,7 @@ public data class VideoStreamInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): VideoStreamInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): VideoStreamInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

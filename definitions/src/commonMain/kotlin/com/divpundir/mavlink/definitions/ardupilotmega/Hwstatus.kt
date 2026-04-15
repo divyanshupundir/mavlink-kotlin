@@ -34,7 +34,10 @@ public data class Hwstatus(
    * Board voltage.
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val vcc: UShort = 0u,
   /**
    * I2C error count.
@@ -79,8 +82,7 @@ public data class Hwstatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Hwstatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Hwstatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

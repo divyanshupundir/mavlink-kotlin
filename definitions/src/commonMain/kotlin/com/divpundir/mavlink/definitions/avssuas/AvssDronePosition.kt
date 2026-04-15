@@ -30,8 +30,7 @@ import kotlin.Unit
  * units = degE7
  * @param alt Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
  * units = mm
- * @param groundAlt Altitude above ground, This altitude is measured by a ultrasound, Laser
- * rangefinder or millimeter-wave radar
+ * @param groundAlt Altitude above ground, This altitude is measured by a ultrasound, Laser rangefinder or millimeter-wave radar
  * units = m
  * @param barometerAlt This altitude is measured by a barometer
  * units = m
@@ -45,38 +44,55 @@ public data class AvssDronePosition(
    * Timestamp (time since FC boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Latitude, expressed
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude, expressed
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Note that virtually all GPS modules provide both WGS84 and MSL.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
-   * Altitude above ground, This altitude is measured by a ultrasound, Laser rangefinder or
-   * millimeter-wave radar
+   * Altitude above ground, This altitude is measured by a ultrasound, Laser rangefinder or millimeter-wave radar
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val groundAlt: Float = 0F,
   /**
    * This altitude is measured by a barometer
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val barometerAlt: Float = 0F,
 ) : MavMessage<AvssDronePosition> {
   override val instanceCompanion: MavMessage.MavCompanion<AvssDronePosition> = Companion
@@ -132,8 +148,7 @@ public data class AvssDronePosition(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDronePosition =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssDronePosition = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -30,8 +30,7 @@ public enum class MavModeGimbal(
   @GeneratedMavEnumEntry
   CALIBRATING_YAW(3u),
   /**
-   * Gimbal has finished calibrating and initializing, but is relaxed pending reception of first
-   * rate command from copter.
+   * Gimbal has finished calibrating and initializing, but is relaxed pending reception of first rate command from copter.
    */
   @GeneratedMavEnumEntry
   INITIALIZED(4u),
@@ -41,8 +40,7 @@ public enum class MavModeGimbal(
   @GeneratedMavEnumEntry
   ACTIVE(5u),
   /**
-   * Gimbal is relaxed because it missed more than 10 expected rate command messages in a row.
-   * Gimbal will move back to active mode when it receives a new rate command.
+   * Gimbal is relaxed because it missed more than 10 expected rate command messages in a row. Gimbal will move back to active mode when it receives a new rate command.
    */
   @GeneratedMavEnumEntry
   RATE_CMD_TIMEOUT(6u),

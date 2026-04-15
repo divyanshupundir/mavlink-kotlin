@@ -25,18 +25,12 @@ import kotlin.collections.List
 /**
  * Set the vehicle attitude and body angular rates.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
- * @param groupMlx Actuator group. The "_mlx" indicates this is a multi-instance message and a
- * MAVLink parser should use this field to difference between instances.
+ * @param groupMlx Actuator group. The "_mlx" indicates this is a multi-instance message and a MAVLink parser should use this field to difference between instances.
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param controls Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for
- * single rotation direction motors is 0..1, negative range for reverse direction. Standard mapping for
- * attitude controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes,
- * landing gear. Load a pass-through mixer to repurpose them as generic outputs.
+ * @param controls Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for single rotation direction motors is 0..1, negative range for reverse direction. Standard mapping for attitude controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes, landing gear. Load a pass-through mixer to repurpose them as generic outputs.
  */
 @GeneratedMavMessage(
   id = 139u,
@@ -44,15 +38,16 @@ import kotlin.collections.List
 )
 public data class SetActuatorControlTarget(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
-   * Actuator group. The "_mlx" indicates this is a multi-instance message and a MAVLink parser
-   * should use this field to difference between instances.
+   * Actuator group. The "_mlx" indicates this is a multi-instance message and a MAVLink parser should use this field to difference between instances.
    */
   @GeneratedMavField(type = "uint8_t")
   public val groupMlx: UByte = 0u,
@@ -67,10 +62,7 @@ public data class SetActuatorControlTarget(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for single rotation
-   * direction motors is 0..1, negative range for reverse direction. Standard mapping for attitude
-   * controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes, landing
-   * gear. Load a pass-through mixer to repurpose them as generic outputs.
+   * Actuator controls. Normed to -1..+1 where 0 is neutral position. Throttle for single rotation direction motors is 0..1, negative range for reverse direction. Standard mapping for attitude controls (group 0): (index 0-7): roll, pitch, yaw, throttle, flaps, spoilers, airbrakes, landing gear. Load a pass-through mixer to repurpose them as generic outputs.
    */
   @GeneratedMavField(type = "float[8]")
   public val controls: List<Float> = emptyList(),
@@ -124,8 +116,7 @@ public data class SetActuatorControlTarget(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SetActuatorControlTarget =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetActuatorControlTarget = Builder().apply(builderAction).build()
   }
 
   public class Builder {

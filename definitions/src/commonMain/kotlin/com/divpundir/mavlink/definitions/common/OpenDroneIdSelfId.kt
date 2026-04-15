@@ -25,19 +25,13 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data for filling the OpenDroneID Self ID message. The Self ID Message is an opportunity for the
- * operator to (optionally) declare their identity and purpose of the flight. This message can provide
- * additional information that could reduce the threat profile of a UA (Unmanned Aircraft) flying in a
- * particular area or manner. This message can also be used to provide optional additional
- * clarification in an emergency/remote ID system failure situation.
+ * Data for filling the OpenDroneID Self ID message. The Self ID Message is an opportunity for the operator to (optionally) declare their identity and purpose of the flight. This message can provide additional information that could reduce the threat profile of a UA (Unmanned Aircraft) flying in a particular area or manner. This message can also be used to provide optional additional clarification in an emergency/remote ID system failure situation.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
  * @param descriptionType Indicates the type of the description field.
- * @param description Text description or numeric value expressed as ASCII characters. Shall be
- * filled with nulls in the unused portion of the field.
+ * @param description Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_903u,
@@ -55,8 +49,7 @@ public data class OpenDroneIdSelfId(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
@@ -66,8 +59,7 @@ public data class OpenDroneIdSelfId(
   @GeneratedMavField(type = "uint8_t")
   public val descriptionType: MavEnumValue<MavOdidDescType> = MavEnumValue.fromValue(0u),
   /**
-   * Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in
-   * the unused portion of the field.
+   * Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in the unused portion of the field.
    */
   @GeneratedMavField(type = "char[23]")
   public val description: String = "",
@@ -124,8 +116,7 @@ public data class OpenDroneIdSelfId(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSelfId =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSelfId = Builder().apply(builderAction).build()
   }
 
   public class Builder {
