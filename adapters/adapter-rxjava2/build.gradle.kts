@@ -22,6 +22,7 @@ dependencies {
 
     testImplementation(testlibs.jupiter.api)
     testRuntimeOnly(testlibs.jupiter.engine)
+    testRuntimeOnly(testlibs.jupiter.launcher)
 }
 
 mavenPublishing {

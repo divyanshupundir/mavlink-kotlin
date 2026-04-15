@@ -1,6 +1,11 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import javax.inject.Inject
+
+interface InjectedExecOps {
+    @get:Inject val execOps: org.gradle.process.ExecOperations
+}
 
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
@@ -12,13 +17,13 @@ plugins {
 
 allprojects {
     tasks.withType<JavaCompile>().configureEach {
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_17.toString()
     }
 
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -63,7 +68,7 @@ allprojects {
     }
 }
 
-task("publishPlugin") {
+tasks.register("publishPlugin") {
     dependsOn(
         ":api:publish",
         ":serialization:publish",
@@ -71,7 +76,7 @@ task("publishPlugin") {
     )
 }
 
-task("publishLibrary") {
+tasks.register("publishLibrary") {
     dependsOn(
         ":definitions:publish",
         ":connections:connection-core:publish",
@@ -83,10 +88,11 @@ task("publishLibrary") {
     )
 }
 
-task("createGitTag") {
+tasks.register("createGitTag") {
+    val injected = project.objects.newInstance<InjectedExecOps>()
     doLast {
         val tagName = "v${Config.Plugin.releaseVersion}"
-        exec { commandLine("git", "tag", tagName) }
-        exec { commandLine("git", "push", "origin", tagName) }
+        injected.execOps.exec { commandLine("git", "tag", tagName) }
+        injected.execOps.exec { commandLine("git", "push", "origin", tagName) }
     }
 }
