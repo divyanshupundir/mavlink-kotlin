@@ -59,9 +59,9 @@ import kotlin.Unit
  * units = m
  * @param dimensionStarboard Distance from lat/lon location to starboard side
  * units = m
- * @param callsign The vessel callsign
- * @param name The vessel name
- * @param tslc Time since last communication in seconds
+ * @param callsign The vessel callsign. Characters are encoded as 7-bit ASCII, but only characters in the [AIS 6-bit ASCII subset](https://en.wikipedia.org/wiki/Six-bit_character_code#AIS_SixBit_ASCII) are permitted. Also set AIS_FLAGS_VALID_CALLSIGN if valid. The string is NULL-terminated if it is shorter than the array length.
+ * @param name The vessel name. Characters are encoded as 7-bit ASCII, but only characters in the [AIS 6-bit ASCII subset](https://en.wikipedia.org/wiki/Six-bit_character_code#AIS_SixBit_ASCII) are permitted. Also set AIS_FLAGS_VALID_NAME if valid. The string is NULL-terminated if it is shorter than the array length.
+ * @param tslc Time since last communication from the vessel, in seconds
  * units = s
  * @param flags Bitmask to indicate various statuses including valid data fields
  */
@@ -79,37 +79,61 @@ public data class AisVessel(
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val lon: Int = 0,
   /**
    * Course over ground
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+    invalid = "UINT16_MAX",
+  )
   public val cog: UShort = 0u,
   /**
    * True heading
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+    invalid = "UINT16_MAX",
+  )
   public val heading: UShort = 0u,
   /**
    * Speed over ground
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+    invalid = "UINT16_MAX",
+  )
   public val velocity: UShort = 0u,
   /**
    * Turn rate, 0.1 degrees per second
    * units = ddeg/s
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "ddeg/s",
+    invalid = "INT8_MAX",
+  )
   public val turnRate: Byte = 0,
   /**
    * Navigational status
@@ -125,41 +149,60 @@ public data class AisVessel(
    * Distance from lat/lon location to bow
    * units = m
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "m",
+    invalid = "UINT16_MAX",
+  )
   public val dimensionBow: UShort = 0u,
   /**
    * Distance from lat/lon location to stern
    * units = m
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "m",
+    invalid = "UINT16_MAX",
+  )
   public val dimensionStern: UShort = 0u,
   /**
    * Distance from lat/lon location to port side
    * units = m
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "m",
+    invalid = "UINT8_MAX",
+  )
   public val dimensionPort: UByte = 0u,
   /**
    * Distance from lat/lon location to starboard side
    * units = m
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "m",
+    invalid = "UINT8_MAX",
+  )
   public val dimensionStarboard: UByte = 0u,
   /**
-   * The vessel callsign
+   * The vessel callsign. Characters are encoded as 7-bit ASCII, but only characters in the [AIS 6-bit ASCII subset](https://en.wikipedia.org/wiki/Six-bit_character_code#AIS_SixBit_ASCII) are permitted. Also set AIS_FLAGS_VALID_CALLSIGN if valid. The string is NULL-terminated if it is shorter than the array length.
    */
   @GeneratedMavField(type = "char[7]")
   public val callsign: String = "",
   /**
-   * The vessel name
+   * The vessel name. Characters are encoded as 7-bit ASCII, but only characters in the [AIS 6-bit ASCII subset](https://en.wikipedia.org/wiki/Six-bit_character_code#AIS_SixBit_ASCII) are permitted. Also set AIS_FLAGS_VALID_NAME if valid. The string is NULL-terminated if it is shorter than the array length.
    */
   @GeneratedMavField(type = "char[20]")
   public val name: String = "",
   /**
-   * Time since last communication in seconds
+   * Time since last communication from the vessel, in seconds
    * units = s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "s",
+  )
   public val tslc: UShort = 0u,
   /**
    * Bitmask to indicate various statuses including valid data fields
@@ -273,8 +316,7 @@ public data class AisVessel(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AisVessel =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AisVessel = Builder().apply(builderAction).build()
   }
 
   public class Builder {

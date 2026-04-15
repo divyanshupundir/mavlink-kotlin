@@ -25,23 +25,17 @@ import kotlin.Unit
 
 /**
  *
- *         Vehicle status report that is sent out while figure eight execution is in progress (see
- * MAV_CMD_DO_FIGURE_EIGHT).
+ *         Vehicle status report that is sent out while figure eight execution is in progress (see MAV_CMD_DO_FIGURE_EIGHT).
  *         This may typically send at low rates: of the order of 2Hz.
  *       
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
- * @param majorRadius Major axis radius of the figure eight. Positive: orbit the north circle
- * clockwise. Negative: orbit the north circle counter-clockwise.
+ * @param majorRadius Major axis radius of the figure eight. Positive: orbit the north circle clockwise. Negative: orbit the north circle counter-clockwise.
  * units = m
- * @param minorRadius Minor axis radius of the figure eight. Defines the radius of two circles that
- * make up the figure.
+ * @param minorRadius Minor axis radius of the figure eight. Defines the radius of two circles that make up the figure.
  * units = m
- * @param orientation Orientation of the figure eight major axis with respect to true north in
- * [-pi,pi).
+ * @param orientation Orientation of the figure eight major axis with respect to true north in [-pi,pi).
  * units = rad
  * @param frame The coordinate system of the fields: x, y, z.
  * @param x X coordinate of center point. Coordinate system depends on frame field.
@@ -55,31 +49,40 @@ import kotlin.Unit
 )
 public data class FigureEightExecutionStatus(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
-   * Major axis radius of the figure eight. Positive: orbit the north circle clockwise. Negative:
-   * orbit the north circle counter-clockwise.
+   * Major axis radius of the figure eight. Positive: orbit the north circle clockwise. Negative: orbit the north circle counter-clockwise.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val majorRadius: Float = 0F,
   /**
-   * Minor axis radius of the figure eight. Defines the radius of two circles that make up the
-   * figure.
+   * Minor axis radius of the figure eight. Defines the radius of two circles that make up the figure.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val minorRadius: Float = 0F,
   /**
    * Orientation of the figure eight major axis with respect to true north in [-pi,pi).
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val orientation: Float = 0F,
   /**
    * The coordinate system of the fields: x, y, z.
@@ -100,7 +103,10 @@ public data class FigureEightExecutionStatus(
    * Altitude of center point. Coordinate system depends on frame field.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
 ) : MavMessage<FigureEightExecutionStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<FigureEightExecutionStatus> = Companion
@@ -167,8 +173,7 @@ public data class FigureEightExecutionStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FigureEightExecutionStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FigureEightExecutionStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

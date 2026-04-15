@@ -52,7 +52,10 @@ public data class AslctrlData(
    *  Timestamp
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    *  ASLCTRL control-mode (manual, stabilized, auto, etc...)
@@ -72,13 +75,19 @@ public data class AslctrlData(
    * Pitch angle
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val pitchangle: Float = 0F,
   /**
    * Pitch angle reference
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val pitchangleref: Float = 0F,
   @GeneratedMavField(type = "float")
   public val q: Float = 0F,
@@ -96,7 +105,10 @@ public data class AslctrlData(
    * Airspeed reference
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val airspeedref: Float = 0F,
   @GeneratedMavField(type = "uint8_t")
   public val spoilersengaged: UByte = 0u,
@@ -104,25 +116,37 @@ public data class AslctrlData(
    * Yaw angle
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val yawangle: Float = 0F,
   /**
    * Yaw angle reference
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val yawangleref: Float = 0F,
   /**
    * Roll angle
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val rollangle: Float = 0F,
   /**
    * Roll angle reference
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val rollangleref: Float = 0F,
   @GeneratedMavField(type = "float")
   public val p: Float = 0F,
@@ -266,8 +290,7 @@ public data class AslctrlData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AslctrlData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AslctrlData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

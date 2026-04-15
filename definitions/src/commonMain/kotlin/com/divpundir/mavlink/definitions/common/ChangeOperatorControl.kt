@@ -23,11 +23,8 @@ import kotlin.Unit
  *
  * @param targetSystem System the GCS requests control for
  * @param controlRequest 0: request control of this MAV, 1: Release control of this MAV
- * @param version 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS
- * should in general use the safest mode possible initially and then gradually move down the encryption
- * level if it gets a NACK message indicating an encryption mismatch.
- * @param passkey Password / Key, depending on version plaintext or encrypted. 25 or less
- * characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
+ * @param version 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
+ * @param passkey Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
  */
 @GeneratedMavMessage(
   id = 5u,
@@ -45,15 +42,12 @@ public data class ChangeOperatorControl(
   @GeneratedMavField(type = "uint8_t")
   public val controlRequest: UByte = 0u,
   /**
-   * 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in
-   * general use the safest mode possible initially and then gradually move down the encryption level
-   * if it gets a NACK message indicating an encryption mismatch.
+   * 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
    */
   @GeneratedMavField(type = "uint8_t")
   public val version: UByte = 0u,
   /**
-   * Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL
-   * terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
+   * Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
    */
   @GeneratedMavField(type = "char[25]")
   public val passkey: String = "",
@@ -103,8 +97,7 @@ public data class ChangeOperatorControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ChangeOperatorControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ChangeOperatorControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

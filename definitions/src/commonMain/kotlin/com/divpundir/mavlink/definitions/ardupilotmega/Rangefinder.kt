@@ -32,13 +32,19 @@ public data class Rangefinder(
    * Distance.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val distance: Float = 0F,
   /**
    * Raw voltage if available, zero otherwise.
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val voltage: Float = 0F,
 ) : MavMessage<Rangefinder> {
   override val instanceCompanion: MavMessage.MavCompanion<Rangefinder> = Companion
@@ -78,8 +84,7 @@ public data class Rangefinder(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Rangefinder =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Rangefinder = Builder().apply(builderAction).build()
   }
 
   public class Builder {

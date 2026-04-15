@@ -28,14 +28,10 @@ import kotlin.Unit
 
 /**
  * Radio link information. Tx: ground-side device, Rx: vehicle-side device.
- *         The values of the fields in this message do normally not or only slowly change with time,
- * and for most times the message can be send at a low rate, like 0.2 Hz.
- *         If values change then the message should temporarily be send more often to inform the
- * system about the changes.
- *         The target_system field should normally be set to the system id of the system the link is
- * connected to, typically the flight controller.
- *         The target_component field can normally be set to 0, so that all components of the system
- * can receive the message.
+ *         The values of the fields in this message do normally not or only slowly change with time, and for most times the message can be send at a low rate, like 0.2 Hz.
+ *         If values change then the message should temporarily be send more often to inform the system about the changes.
+ *         The target_system field should normally be set to the system id of the system the link is connected to, typically the flight controller.
+ *         The target_component field can normally be set to 0, so that all components of the system can receive the message.
  *       
  *
  * @param targetSystem System ID (ID of target system, normally flight controller).
@@ -48,25 +44,14 @@ import kotlin.Unit
  * units = dBm
  * @param txFrameRate Frame rate in Hz (frames per second) for Tx to Rx transmission. 0: unknown.
  * units = Hz
- * @param rxFrameRate Frame rate in Hz (frames per second) for Rx to Tx transmission. Normally equal
- * to tx_packet_rate. 0: unknown.
+ * @param rxFrameRate Frame rate in Hz (frames per second) for Rx to Tx transmission. Normally equal to tx_packet_rate. 0: unknown.
  * units = Hz
- * @param modeStr Operation mode as human readable string. Radio link dependent. Terminated by NULL
- * if the string length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6
- * chars - applications have to provide 6+1 bytes storage if the mode is stored as string. Use a
- * zero-length string if not known.
- * @param bandStr Frequency band as human readable string. Radio link dependent. Terminated by NULL
- * if the string length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6
- * chars - applications have to provide 6+1 bytes storage if the mode is stored as string. Use a
- * zero-length string if not known.
- * @param txSerDataRate Maximum data rate of serial stream in bytes/s for Tx to Rx transmission. 0:
- * unknown. UINT16_MAX: data rate is 64 KBytes/s or larger.
- * @param rxSerDataRate Maximum data rate of serial stream in bytes/s for Rx to Tx transmission. 0:
- * unknown. UINT16_MAX: data rate is 64 KBytes/s or larger.
- * @param txReceiveSensitivity Receive sensitivity of Tx in inverted dBm. 1..255 represents -1..-255
- * dBm, 0: unknown.
- * @param rxReceiveSensitivity Receive sensitivity of Rx in inverted dBm. 1..255 represents -1..-255
- * dBm, 0: unknown.
+ * @param modeStr Operation mode as human readable string. Radio link dependent. Terminated by NULL if the string length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6 chars - applications have to provide 6+1 bytes storage if the mode is stored as string. Use a zero-length string if not known.
+ * @param bandStr Frequency band as human readable string. Radio link dependent. Terminated by NULL if the string length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6 chars - applications have to provide 6+1 bytes storage if the mode is stored as string. Use a zero-length string if not known.
+ * @param txSerDataRate Maximum data rate of serial stream in bytes/s for Tx to Rx transmission. 0: unknown. UINT16_MAX: data rate is 64 KBytes/s or larger.
+ * @param rxSerDataRate Maximum data rate of serial stream in bytes/s for Rx to Tx transmission. 0: unknown. UINT16_MAX: data rate is 64 KBytes/s or larger.
+ * @param txReceiveSensitivity Receive sensitivity of Tx in inverted dBm. 1..255 represents -1..-255 dBm, 0: unknown.
+ * @param rxReceiveSensitivity Receive sensitivity of Rx in inverted dBm. 1..255 represents -1..-255 dBm, 0: unknown.
  */
 @GeneratedMavMessage(
   id = 60_046u,
@@ -86,75 +71,100 @@ public data class MlrsRadioLinkInformation(
   /**
    * Radio link type. 0: unknown/generic type.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "0",
+  )
   public val type: MavEnumValue<MlrsRadioLinkType> = MavEnumValue.fromValue(0u),
   /**
    * Operation mode. Radio link dependent. UINT8_MAX: ignore/unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val mode: UByte = 0u,
   /**
    * Tx transmit power in dBm. INT8_MAX: unknown.
    * units = dBm
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "dBm",
+    invalid = "INT8_MAX",
+  )
   public val txPower: Byte = 0,
   /**
    * Rx transmit power in dBm. INT8_MAX: unknown.
    * units = dBm
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "dBm",
+    invalid = "INT8_MAX",
+  )
   public val rxPower: Byte = 0,
   /**
    * Frame rate in Hz (frames per second) for Tx to Rx transmission. 0: unknown.
    * units = Hz
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "Hz",
+    invalid = "0",
+  )
   public val txFrameRate: UShort = 0u,
   /**
-   * Frame rate in Hz (frames per second) for Rx to Tx transmission. Normally equal to
-   * tx_packet_rate. 0: unknown.
+   * Frame rate in Hz (frames per second) for Rx to Tx transmission. Normally equal to tx_packet_rate. 0: unknown.
    * units = Hz
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "Hz",
+    invalid = "0",
+  )
   public val rxFrameRate: UShort = 0u,
   /**
-   * Operation mode as human readable string. Radio link dependent. Terminated by NULL if the string
-   * length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6 chars -
-   * applications have to provide 6+1 bytes storage if the mode is stored as string. Use a zero-length
-   * string if not known.
+   * Operation mode as human readable string. Radio link dependent. Terminated by NULL if the string length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6 chars - applications have to provide 6+1 bytes storage if the mode is stored as string. Use a zero-length string if not known.
    */
   @GeneratedMavField(type = "char[6]")
   public val modeStr: String = "",
   /**
-   * Frequency band as human readable string. Radio link dependent. Terminated by NULL if the string
-   * length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6 chars -
-   * applications have to provide 6+1 bytes storage if the mode is stored as string. Use a zero-length
-   * string if not known.
+   * Frequency band as human readable string. Radio link dependent. Terminated by NULL if the string length is less than 6 chars and WITHOUT NULL termination if the length is exactly 6 chars - applications have to provide 6+1 bytes storage if the mode is stored as string. Use a zero-length string if not known.
    */
   @GeneratedMavField(type = "char[6]")
   public val bandStr: String = "",
   /**
-   * Maximum data rate of serial stream in bytes/s for Tx to Rx transmission. 0: unknown.
-   * UINT16_MAX: data rate is 64 KBytes/s or larger.
+   * Maximum data rate of serial stream in bytes/s for Tx to Rx transmission. 0: unknown. UINT16_MAX: data rate is 64 KBytes/s or larger.
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "0",
+  )
   public val txSerDataRate: UShort = 0u,
   /**
-   * Maximum data rate of serial stream in bytes/s for Rx to Tx transmission. 0: unknown.
-   * UINT16_MAX: data rate is 64 KBytes/s or larger.
+   * Maximum data rate of serial stream in bytes/s for Rx to Tx transmission. 0: unknown. UINT16_MAX: data rate is 64 KBytes/s or larger.
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "0",
+  )
   public val rxSerDataRate: UShort = 0u,
   /**
    * Receive sensitivity of Tx in inverted dBm. 1..255 represents -1..-255 dBm, 0: unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "0",
+  )
   public val txReceiveSensitivity: UByte = 0u,
   /**
    * Receive sensitivity of Rx in inverted dBm. 1..255 represents -1..-255 dBm, 0: unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "0",
+  )
   public val rxReceiveSensitivity: UByte = 0u,
 ) : MavMessage<MlrsRadioLinkInformation> {
   override val instanceCompanion: MavMessage.MavCompanion<MlrsRadioLinkInformation> = Companion
@@ -245,8 +255,7 @@ public data class MlrsRadioLinkInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MlrsRadioLinkInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MlrsRadioLinkInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

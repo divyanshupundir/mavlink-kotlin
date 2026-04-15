@@ -14,8 +14,7 @@ public enum class MavDoRepositionFlags(
   override val `value`: UInt,
 ) : MavBitmask {
   /**
-   * The aircraft should immediately transition into guided. This should not be set for follow me
-   * applications
+   * The aircraft should immediately transition into guided. This should not be set for follow me applications
    */
   @GeneratedMavEnumEntry
   CHANGE_MODE(1u),

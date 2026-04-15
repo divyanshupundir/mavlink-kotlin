@@ -8,22 +8,14 @@ import kotlin.Deprecated
 import kotlin.UInt
 
 /**
- * Commands to be executed by the MAV. They can be executed on user request, or as part of a mission
- * script. If the action is used in a mission, the parameter mapping to the waypoint/mission message is
- * as follows: Param 1, Param 2, Param 3, Param 4, X: Param 5, Y:Param 6, Z:Param 7. This command list
- * is similar what ARINC 424 is for commercial aircraft: A data format how to interpret
- * waypoint/mission data. NaN and INT32_MAX may be used in float/integer params (respectively) to
- * indicate optional/default values (e.g. to use the component's current yaw or latitude rather than a
- * specific value). See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the
- * structure of the MAV_CMD entries
+ * Commands to be executed by the MAV. They can be executed on user request, or as part of a mission script. If the action is used in a mission, the parameter mapping to the waypoint/mission message is as follows: Param 1, Param 2, Param 3, Param 4, X: Param 5, Y:Param 6, Z:Param 7. This command list is similar what ARINC 424 is for commercial aircraft: A data format how to interpret waypoint/mission data. NaN and INT32_MAX may be used in float/integer params (respectively) to indicate optional/default values (e.g. to use the component's current yaw or latitude rather than a specific value). See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the structure of the MAV_CMD entries
  */
 @GeneratedMavEnum
 public enum class MavCmd(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Navigate to waypoint. This is intended for use in missions (for guided commands outside of
-   * missions use MAV_CMD_DO_REPOSITION).
+   * Navigate to waypoint. This is intended for use in missions (for guided commands outside of missions use MAV_CMD_DO_REPOSITION).
    *
    * index = 1; label = Hold; units = s; 
    * Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing)
@@ -32,12 +24,10 @@ public enum class MavCmd(
    * Acceptance radius (if the sphere with this radius is hit, the waypoint counts as reached)
    *
    * index = 3; label = Pass Radius; units = m; 
-   * 0 to pass through the WP, if > 0 radius to pass by WP. Positive value for clockwise orbit,
-   * negative value for counter-clockwise orbit. Allows trajectory control.
+   * 0 to pass through the WP, if > 0 radius to pass by WP. Positive value for clockwise orbit, negative value for counter-clockwise orbit. Allows trajectory control.
    *
    * index = 4; label = Yaw; units = deg; 
-   * Desired yaw angle at waypoint (rotary wing). NaN to use the current system yaw heading mode
-   * (e.g. yaw towards next waypoint, yaw to home, etc.).
+   * Desired yaw angle at waypoint (rotary wing). NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -60,12 +50,10 @@ public enum class MavCmd(
    * Empty
    *
    * index = 3; label = Radius; units = m; 
-   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive
-   * loiter clockwise, else counter-clockwise
+   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive loiter clockwise, else counter-clockwise
    *
    * index = 4; label = Yaw; units = deg; 
-   * Desired yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next
-   * waypoint, yaw to home, etc.).
+   * Desired yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -85,21 +73,13 @@ public enum class MavCmd(
    * Number of turns.
    *
    * index = 2; label = Heading Required; 
-   * Leave loiter circle only when track heads towards the next waypoint (MAV_BOOL_FALSE: Leave when
-   * turns complete). Values not equal to 0 or 1 are invalid.
+   * Leave loiter circle only when track heads towards the next waypoint (MAV_BOOL_FALSE: Leave when turns complete). Values not equal to 0 or 1 are invalid.
    *
    * index = 3; label = Radius; units = m; 
-   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive
-   * loiter clockwise, else counter-clockwise
+   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive loiter clockwise, else counter-clockwise
    *
    * index = 4; label = Xtrack Location; 
-   * Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving
-   * vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it
-   * leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge
-   * to the direct line between the location that the vehicle exits the loiter radius and the next
-   * waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center
-   * xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use
-   * the current system default xtrack behaviour.
+   * Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge to the direct line between the location that the vehicle exits the loiter radius and the next waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use the current system default xtrack behaviour.
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -113,31 +93,19 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_LOITER_TURNS(18u),
   /**
-   * Loiter at the specified latitude, longitude and altitude for a certain amount of time.
-   * Multicopter vehicles stop at the point (within a vehicle-specific acceptance radius). Forward-only
-   * moving vehicles (e.g. fixed-wing) circle the point with the specified radius/direction. If the
-   * Heading Required parameter (2) is non-zero forward moving aircraft will only leave the loiter
-   * circle once heading towards the next waypoint.
+   * Loiter at the specified latitude, longitude and altitude for a certain amount of time. Multicopter vehicles stop at the point (within a vehicle-specific acceptance radius). Forward-only moving vehicles (e.g. fixed-wing) circle the point with the specified radius/direction. If the Heading Required parameter (2) is non-zero forward moving aircraft will only leave the loiter circle once heading towards the next waypoint.
    *
    * index = 1; label = Time; units = s; 
    * Loiter time (only starts once Lat, Lon and Alt is reached).
    *
    * index = 2; label = Heading Required; 
-   * Leave loiter circle only when track heading towards the next waypoint (MAV_BOOL_FALSE: Leave on
-   * time expiry). Values not equal to 0 or 1 are invalid.
+   * Leave loiter circle only when track heading towards the next waypoint (MAV_BOOL_FALSE: Leave on time expiry). Values not equal to 0 or 1 are invalid.
    *
    * index = 3; label = Radius; units = m; 
-   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive
-   * loiter clockwise, else counter-clockwise.
+   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive loiter clockwise, else counter-clockwise.
    *
    * index = 4; label = Xtrack Location; 
-   * Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving
-   * vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it
-   * leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge
-   * to the direct line between the location that the vehicle exits the loiter radius and the next
-   * waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center
-   * xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use
-   * the current system default xtrack behaviour.
+   * Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge to the direct line between the location that the vehicle exits the loiter radius and the next waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use the current system default xtrack behaviour.
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -189,8 +157,7 @@ public enum class MavCmd(
    * Empty.
    *
    * index = 4; label = Yaw Angle; units = deg; 
-   * Desired yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next
-   * waypoint, yaw to home, etc.).
+   * Desired yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
    *
    * index = 5; label = Latitude; 
    * Latitude.
@@ -204,8 +171,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_LAND(21u),
   /**
-   * Takeoff from ground / hand. Vehicles that support multiple takeoff modes (e.g. VTOL quadplane)
-   * should take off using the currently configured mode.
+   * Takeoff from ground / hand. Vehicles that support multiple takeoff modes (e.g. VTOL quadplane) should take off using the currently configured mode.
    *
    * index = 1; label = Pitch; units = deg; 
    * Minimum pitch (if airspeed sensor present), desired pitch without sensor
@@ -213,12 +179,11 @@ public enum class MavCmd(
    * index = 2; 
    * Empty
    *
-   * index = 3; 
-   * Empty
+   * index = 3; label = Flags; 
+   * Bitmask of options flags.
    *
    * index = 4; label = Yaw; units = deg; 
-   * Yaw angle (if magnetometer present), ignored without magnetometer. NaN to use the current
-   * system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
+   * Yaw angle (if magnetometer present), ignored without magnetometer. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -238,9 +203,7 @@ public enum class MavCmd(
    * Landing target number (if available)
    *
    * index = 2; label = Offset; units = m; 
-   * Maximum accepted offset from desired landing position - computed magnitude from spherical
-   * coordinates: d = sqrt(x^2 + y^2 + z^2), which gives the maximum accepted distance between the
-   * desired landing position and the position where the vehicle is about to land
+   * Maximum accepted offset from desired landing position - computed magnitude from spherical coordinates: d = sqrt(x^2 + y^2 + z^2), which gives the maximum accepted distance between the desired landing position and the position where the vehicle is about to land
    *
    * index = 3; label = Descend Rate; units = m/s; 
    * Landing descend rate
@@ -272,8 +235,7 @@ public enum class MavCmd(
    * Takeoff ascend rate
    *
    * index = 4; label = Yaw; units = rad; 
-   * Yaw angle (if magnetometer or another yaw estimation source present), ignored without one of
-   * these
+   * Yaw angle (if magnetometer or another yaw estimation source present), ignored without one of these
    *
    * index = 5; label = Y Position; units = m; 
    * Y-axis position
@@ -290,8 +252,7 @@ public enum class MavCmd(
    * Vehicle following, i.e. this waypoint represents the position of a moving vehicle
    *
    * index = 1; label = Following; 
-   * Following logic to use (e.g. loitering or sinusoidal following) - depends on specific autopilot
-   * implementation
+   * Following logic to use (e.g. loitering or sinusoidal following) - depends on specific autopilot implementation
    *
    * index = 2; label = Ground Speed; units = m/s; 
    * Ground speed of vehicle to be followed
@@ -314,14 +275,10 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_FOLLOW(25u),
   /**
-   * Continue on the current course and climb/descend to specified altitude.  When the altitude is
-   * reached continue to the next command (i.e., don't proceed to the next command until the desired
-   * altitude is reached.
+   * Continue on the current course and climb/descend to specified altitude.  When the altitude is reached continue to the next command (i.e., don't proceed to the next command until the desired altitude is reached.
    *
    * index = 1; label = Action; 
-   * Climb or Descend (0 = Neutral, command completes when within 5m of this command's altitude, 1 =
-   * Climbing, command completes when at or above this command's altitude, 2 = Descending, command
-   * completes when at or below this command's altitude.
+   * Climb or Descend (0 = Neutral, command completes when within 5m of this command's altitude, 1 = Climbing, command completes when at or above this command's altitude, 2 = Descending, command completes when at or below this command's altitude.
    *
    * index = 2; 
    * Empty
@@ -344,30 +301,19 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_CONTINUE_AND_CHANGE_ALT(30u),
   /**
-   * Begin loiter at the specified Latitude and Longitude.  If Lat=Lon=0, then loiter at the current
-   * position.  Don't consider the navigation command complete (don't leave loiter) until the altitude
-   * has been reached. Additionally, if the Heading Required parameter is non-zero the aircraft will
-   * not leave the loiter until heading toward the next waypoint.
+   * Begin loiter at the specified Latitude and Longitude.  If Lat=Lon=0, then loiter at the current position.  Don't consider the navigation command complete (don't leave loiter) until the altitude has been reached. Additionally, if the Heading Required parameter is non-zero the aircraft will not leave the loiter until heading toward the next waypoint.
    *
    * index = 1; label = Heading Required; 
-   * Leave loiter circle only when track heading towards the next waypoint (MAV_BOOL_FALSE: Leave
-   * when altitude reached). Values not equal to 0 or 1 are invalid.
+   * Leave loiter circle only when track heading towards the next waypoint (MAV_BOOL_FALSE: Leave when altitude reached). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; label = Radius; units = m; 
-   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive
-   * loiter clockwise, negative counter-clockwise, 0 means no change to standard loiter.
+   * Loiter radius around waypoint for forward-only moving vehicles (not multicopters). If positive loiter clockwise, negative counter-clockwise, 0 means no change to standard loiter.
    *
    * index = 3; 
    * Empty
    *
    * index = 4; label = Xtrack Location; 
-   * Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving
-   * vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it
-   * leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge
-   * to the direct line between the location that the vehicle exits the loiter radius and the next
-   * waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center
-   * xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use
-   * the current system default xtrack behaviour.
+   * Loiter circle exit location and/or path to next waypoint ("xtrack") for forward-only moving vehicles (not multicopters). 0 for the vehicle to converge towards the center xtrack when it leaves the loiter (the line between the centers of the current and next waypoint), 1 to converge to the direct line between the location that the vehicle exits the loiter radius and the next waypoint. Otherwise the angle (in degrees) between the tangent of the loiter circle and the center xtrack at which the vehicle must leave the loiter (and converge to the center xtrack). NaN to use the current system default xtrack behaviour.
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -384,8 +330,7 @@ public enum class MavCmd(
    * Begin following a target
    *
    * index = 1; label = System ID; 
-   * System ID (of the FOLLOW_TARGET beacon). Send 0 to disable follow-me and return to the default
-   * position hold mode.
+   * System ID (of the FOLLOW_TARGET beacon). Send 0 to disable follow-me and return to the default position hold mode.
    *
    * index = 2; 
    * Reserved
@@ -394,8 +339,7 @@ public enum class MavCmd(
    * Reserved
    *
    * index = 4; label = Altitude Mode; 
-   * Altitude mode: 0: Keep current altitude, 1: keep altitude difference to target, 2: go to a
-   * fixed altitude above home.
+   * Altitude mode: 0: Keep current altitude, 1: keep altitude difference to target, 2: go to a fixed altitude above home.
    *
    * index = 5; label = Altitude; units = m; 
    * Altitude above home. (used if mode=2)
@@ -404,8 +348,7 @@ public enum class MavCmd(
    * Reserved
    *
    * index = 7; label = Time to Land; units = s; 
-   * Time to land in which the MAV should go to the default position hold mode after a message RX
-   * timeout.
+   * Time to land in which the MAV should go to the default position hold mode after a message RX timeout.
    */
   @GeneratedMavEnumEntry
   DO_FOLLOW(32u),
@@ -436,87 +379,87 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_FOLLOW_REPOSITION(33u),
   /**
-   * Start orbiting on the circumference of a circle defined by the parameters. Setting values to
-   * NaN/INT32_MAX (as appropriate) results in using defaults.
+   * Start orbiting on the circumference of a circle defined by the parameters. Setting values to NaN/INT32_MAX (as appropriate) results in using defaults.
    *
    * index = 1; label = Radius; units = m; 
-   * Radius of the circle. Positive: orbit clockwise. Negative: orbit counter-clockwise. NaN: Use
-   * vehicle default radius, or current radius if already orbiting.
+   * Radius of the circle. Positive: orbit clockwise. Negative: orbit counter-clockwise. NaN: Use vehicle default radius, or current radius if already orbiting.
    *
    * index = 2; label = Velocity; units = m/s; 
-   * Tangential Velocity. NaN: Use vehicle default velocity, or current velocity if already
-   * orbiting.
+   * Tangential Velocity. NaN: Use vehicle default velocity, or current velocity if already orbiting.
    *
    * index = 3; label = Yaw Behavior; 
    * Yaw behavior of the vehicle.
    *
    * index = 4; label = Orbits; units = rad; 
-   * Orbit around the centre point for this many radians (i.e. for a three-quarter orbit set
-   * 270*Pi/180). 0: Orbit forever. NaN: Use vehicle default, or current value if already orbiting.
+   * Orbit around the centre point for this many radians (i.e. for a three-quarter orbit set 270*Pi/180). 0: Orbit forever. NaN: Use vehicle default, or current value if already orbiting.
    *
    * index = 5; label = Latitude/X; 
-   * Center point latitude (if no MAV_FRAME specified) / X coordinate according to MAV_FRAME.
-   * INT32_MAX (or NaN if sent in COMMAND_LONG): Use current vehicle position, or current center if
-   * already orbiting.
+   * Center point latitude (if no MAV_FRAME specified) / X coordinate according to MAV_FRAME. INT32_MAX (or NaN if sent in COMMAND_LONG): Use current vehicle position, or current center if already orbiting.
    *
    * index = 6; label = Longitude/Y; 
-   * Center point longitude (if no MAV_FRAME specified) / Y coordinate according to MAV_FRAME.
-   * INT32_MAX (or NaN if sent in COMMAND_LONG): Use current vehicle position, or current center if
-   * already orbiting.
+   * Center point longitude (if no MAV_FRAME specified) / Y coordinate according to MAV_FRAME. INT32_MAX (or NaN if sent in COMMAND_LONG): Use current vehicle position, or current center if already orbiting.
    *
    * index = 7; label = Altitude/Z; 
-   * Center point altitude (MSL) (if no MAV_FRAME specified) / Z coordinate according to MAV_FRAME.
-   * NaN: Use current vehicle altitude.
+   * Center point altitude (MSL) (if no MAV_FRAME specified) / Z coordinate according to MAV_FRAME. NaN: Use current vehicle altitude.
    */
   @GeneratedMavEnumEntry
   DO_ORBIT(34u),
   /**
    * Fly a figure eight path as defined by the parameters.
    *           Set parameters to NaN/INT32_MAX (as appropriate) to use system-default values.
-   *           The command is intended for fixed wing vehicles (and VTOL hybrids flying in
-   * fixed-wing mode), allowing POI tracking for gimbals that don't support infinite rotation.
-   *           This command only defines the flight path. Speed should be set independently (use
-   * e.g. MAV_CMD_DO_CHANGE_SPEED).
-   *           Yaw and other degrees of freedom are not specified, and will be flight-stack specific
-   * (on vehicles where they can be controlled independent of the heading).
+   *           The command is intended for fixed wing vehicles (and VTOL hybrids flying in fixed-wing mode), allowing POI tracking for gimbals that don't support infinite rotation.
+   *           This command only defines the flight path. Speed should be set independently (use e.g. MAV_CMD_DO_CHANGE_SPEED).
+   *           Yaw and other degrees of freedom are not specified, and will be flight-stack specific (on vehicles where they can be controlled independent of the heading).
    *         
    *
    * index = 1; label = Major Radius; units = m; 
-   * Major axis radius of the figure eight. Positive: orbit the north circle clockwise. Negative:
-   * orbit the north circle counter-clockwise.
+   * Major axis radius of the figure eight. Positive: orbit the north circle clockwise. Negative: orbit the north circle counter-clockwise.
    *         NaN: The radius will be set to 2.5 times the minor radius and direction is clockwise.
    *         Must be greater or equal to two times the minor radius for feasible values.
    *
    * index = 2; label = Minor Radius; units = m; 
-   * Minor axis radius of the figure eight. Defines the radius of the two circles that make up the
-   * figure. Negative value has no effect.
+   * Minor axis radius of the figure eight. Defines the radius of the two circles that make up the figure. Negative value has no effect.
    *         NaN: The radius will be set to the default loiter radius.
    *
    * index = 3; index = 4; label = Orientation; units = rad; 
-   * Orientation of the figure eight major axis with respect to true north (range: [-pi,pi]). NaN:
-   * use default orientation aligned to true north.
+   * Orientation of the figure eight major axis with respect to true north (range: [-pi,pi]). NaN: use default orientation aligned to true north.
    *
    * index = 5; label = Latitude/X; 
-   * Center point latitude/X coordinate according to MAV_FRAME. If no MAV_FRAME specified,
-   * MAV_FRAME_GLOBAL is assumed.
+   * Center point latitude/X coordinate according to MAV_FRAME. If no MAV_FRAME specified, MAV_FRAME_GLOBAL is assumed.
    *         INT32_MAX or NaN: Use current vehicle position, or current center if already loitering.
    *
    * index = 6; label = Longitude/Y; 
-   * Center point longitude/Y coordinate according to MAV_FRAME. If no MAV_FRAME specified,
-   * MAV_FRAME_GLOBAL is assumed.
+   * Center point longitude/Y coordinate according to MAV_FRAME. If no MAV_FRAME specified, MAV_FRAME_GLOBAL is assumed.
    *         INT32_MAX or NaN: Use current vehicle position, or current center if already loitering.
    *
    * index = 7; label = Altitude/Z; 
-   * Center point altitude MSL/Z coordinate according to MAV_FRAME. If no MAV_FRAME specified,
-   * MAV_FRAME_GLOBAL is assumed.
+   * Center point altitude MSL/Z coordinate according to MAV_FRAME. If no MAV_FRAME specified, MAV_FRAME_GLOBAL is assumed.
    *         INT32_MAX or NaN: Use current vehicle altitude.
    */
   @GeneratedMavEnumEntry
   DO_FIGURE_EIGHT(35u),
   /**
-   * Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used
-   * by the vehicle's control system to control the vehicle attitude and the attitude of various
-   * sensors such as cameras.
+   * Circular arc path waypoint.
+   *           This defines the end/exit point and angle (param1) of an arc path from the previous waypoint. A position is required before this command to define the start of the arc (e.g. current position, a MAV_CMD_NAV_WAYPOINT, or a MAV_CMD_NAV_ARC_WAYPOINT).
+   *           The resulting path is a circular arc in the NE frame, with the difference in height being defined by the difference in waypoint altitudes.
+   *         
+   *
+   * index = 1; label = Arc Angle; units = deg; 
+   * The angle in degrees from the starting position to the exit position of the arc in the NE frame. Positive values are CW arcs and negative values are CCW arcs.
+   *
+   * index = 5; label = Latitude; 
+   * Latitude
+   *
+   * index = 6; label = Longitude; 
+   * Longitude
+   *
+   * index = 7; label = Altitude; units = m; 
+   * Altitude
+   */
+  @GeneratedMavEnumEntry
+  NAV_ARC_WAYPOINT(36u),
+  /**
+   * Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras.
    *
    * index = 1; label = ROI Mode; 
    * Region of interest mode.
@@ -539,19 +482,16 @@ public enum class MavCmd(
    * index = 7; label = Z; 
    * z
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   NAV_ROI(80u),
   /**
    * Control autonomous path planning on the MAV.
    *
    * index = 1; label = Local Ctrl; 
-   * 0: Disable local obstacle avoidance / local path planning (without resetting map), 1: Enable
-   * local path planning, 2: Enable and reset local path planning
+   * 0: Disable local obstacle avoidance / local path planning (without resetting map), 1: Enable local path planning, 2: Enable and reset local path planning
    *
    * index = 2; label = Global Ctrl; 
-   * 0: Disable full path planning (without resetting map), 1: Enable, 2: Enable and reset
-   * map/occupancy grid, 3: Enable and reset planned route, but not occupancy grid
+   * 0: Disable full path planning (without resetting map), 1: Enable, 2: Enable and reset map/occupancy grid, 3: Enable and reset planned route, but not occupancy grid
    *
    * index = 3; 
    * Empty
@@ -597,9 +537,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_SPLINE_WAYPOINT(82u),
   /**
-   * Takeoff from ground using VTOL mode, and transition to forward flight with specified heading.
-   * The command should be ignored by vehicles that dont support both VTOL and fixed-wing flight
-   * (multicopters, boats,etc.).
+   * Takeoff from ground using VTOL mode, and transition to forward flight with specified heading. The command should be ignored by vehicles that dont support both VTOL and fixed-wing flight (multicopters, boats,etc.).
    *
    * index = 1; 
    * Empty
@@ -611,8 +549,7 @@ public enum class MavCmd(
    * Empty
    *
    * index = 4; label = Yaw Angle; units = deg; 
-   * Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw
-   * to home, etc.).
+   * Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -638,8 +575,7 @@ public enum class MavCmd(
    * Approach altitude (with the same reference as the Altitude field). NaN if unspecified.
    *
    * index = 4; label = Yaw; units = deg; 
-   * Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw
-   * to home, etc.).
+   * Yaw angle. NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.).
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -648,8 +584,7 @@ public enum class MavCmd(
    * Longitude
    *
    * index = 7; label = Ground Altitude; units = m; 
-   * Altitude (ground level) relative to the current coordinate frame. NaN to use system default
-   * landing altitude (ignore value).
+   * Altitude (ground level) relative to the current coordinate frame. NaN to use system default landing altitude (ignore value).
    */
   @GeneratedMavEnumEntry
   NAV_VTOL_LAND(85u),
@@ -706,10 +641,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_DELAY(93u),
   /**
-   * Descend and place payload. Vehicle moves to specified location, descends until it detects a
-   * hanging payload has reached the ground, and then releases the payload. If ground is not detected
-   * before the reaching the maximum descent value (param1), the command will complete without
-   * releasing the payload.
+   * Descend and place payload. Vehicle moves to specified location, descends until it detects a hanging payload has reached the ground, and then releases the payload. If ground is not detected before the reaching the maximum descent value (param1), the command will complete without releasing the payload.
    *
    * index = 1; label = Max Descent; units = m; 
    * Maximum distance to descend.
@@ -735,8 +667,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_PAYLOAD_PLACE(94u),
   /**
-   * NOP - This command is only used to mark the upper limit of the NAV/ACTION commands in the
-   * enumeration
+   * NOP - This command is only used to mark the upper limit of the NAV/ACTION commands in the enumeration
    *
    * index = 1; 
    * Empty
@@ -788,8 +719,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   CONDITION_DELAY(112u),
   /**
-   * Ascend/descend to target altitude at specified rate. Delay mission state machine until desired
-   * altitude reached.
+   * Ascend/descend to target altitude at specified rate. Delay mission state machine until desired altitude reached.
    *
    * index = 1; label = Rate; units = m/s; 
    * Descent / Ascend rate.
@@ -844,8 +774,7 @@ public enum class MavCmd(
    * Reach a certain target angle.
    *
    * index = 1; label = Angle; units = deg; 
-   * target angle [0-360]. Absolute angles: 0 is north. Relative angle: 0 is initial yaw. Direction
-   * set by param3.
+   * target angle [0-360]. Absolute angles: 0 is north. Relative angle: 0 is initial yaw. Direction set by param3.
    *
    * index = 2; label = Angular Speed; units = deg/s; 
    * angular speed
@@ -868,8 +797,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   CONDITION_YAW(115u),
   /**
-   * NOP - This command is only used to mark the upper limit of the CONDITION commands in the
-   * enumeration
+   * NOP - This command is only used to mark the upper limit of the CONDITION commands in the enumeration
    *
    * index = 1; 
    * Empty
@@ -901,13 +829,10 @@ public enum class MavCmd(
    * Mode flags. MAV_MODE values can be used to set some mode flag combinations.
    *
    * index = 2; label = Custom Mode; 
-   * Custom system-specific mode (see target autopilot specifications for mode information). If
-   * MAV_MODE_FLAG_CUSTOM_MODE_ENABLED is set in param1 (mode) this mode is used: otherwise the field
-   * is ignored.
+   * Custom system-specific mode (see target autopilot specifications for mode information). If MAV_MODE_FLAG_CUSTOM_MODE_ENABLED is set in param1 (mode) this mode is used: otherwise the field is ignored.
    *
    * index = 3; label = Custom Submode; 
-   * Custom sub mode - this is system specific, please refer to the individual autopilot
-   * specifications for details.
+   * Custom sub mode - this is system specific, please refer to the individual autopilot specifications for details.
    *
    * index = 4; 
    * Empty
@@ -924,8 +849,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_MODE(176u),
   /**
-   * Jump to the desired command in the mission list.  Repeat this action only the specified number
-   * of times
+   * Jump to the desired command in the mission list.  Repeat this action only the specified number of times
    *
    * index = 1; label = Number; 
    * Sequence number
@@ -951,8 +875,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_JUMP(177u),
   /**
-   * Change speed and/or throttle set points. The value persists until it is overridden or there is
-   * a mode change
+   * Change speed and/or throttle set points. The value persists until it is overridden or there is a mode change
    *
    * index = 1; label = Speed Type; 
    * Speed type of value set in param2 (such as airspeed, ground speed, and so on)
@@ -971,23 +894,18 @@ public enum class MavCmd(
    *
    *           Sets the home position to either to the current position or a specified position.
    *           The home position is the default position that the system will return to and land on.
-   *           The position is set automatically by the system during the takeoff (and may also be
-   * set using this command).
-   *           Note: the current home position may be emitted in a HOME_POSITION message on request
-   * (using MAV_CMD_REQUEST_MESSAGE with param1=242).
+   *           The position is set automatically by the system during the takeoff (and may also be set using this command).
+   *           Note: the current home position may be emitted in a HOME_POSITION message on request (using MAV_CMD_REQUEST_MESSAGE with param1=242).
    *         
    *
    * index = 1; label = Use Current; 
-   * Use current location (MAV_BOOL_FALSE: use specified location). Values not equal to 0 or 1 are
-   * invalid.
+   * Use current location (MAV_BOOL_FALSE: use specified location). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; label = Roll; units = deg; 
-   * Roll angle (of surface). Range: -180..180 degrees. NAN or 0 means value not set. 0.01 indicates
-   * zero roll.
+   * Roll angle (of surface). Range: -180..180 degrees. NAN or 0 means value not set. 0.01 indicates zero roll.
    *
    * index = 3; label = Pitch; units = deg; 
-   * Pitch angle (of surface). Range: -90..90 degrees. NAN or 0 means value not set. 0.01 means zero
-   * pitch.
+   * Pitch angle (of surface). Range: -90..90 degrees. NAN or 0 means value not set. 0.01 means zero pitch.
    *
    * index = 4; label = Yaw; units = deg; 
    * Yaw angle. NaN to use default heading. Range: -180..180 degrees.
@@ -1004,8 +922,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_HOME(179u),
   /**
-   * Set a system parameter.  Caution!  Use of this command requires knowledge of the numeric
-   * enumeration value of the parameter.
+   * Set a system parameter.  Caution!  Use of this command requires knowledge of the numeric enumeration value of the parameter.
    *
    * index = 1; label = Number; 
    * Parameter number
@@ -1032,7 +949,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_PARAMETER(180u),
   /**
-   * Set a relay to a condition.
+   * Set a relay to a condition. The current value may optionally be reported using RELAY_STATUS.
    *
    * index = 1; label = Instance; 
    * Relay instance number.
@@ -1110,8 +1027,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_SERVO(183u),
   /**
-   * Cycle a between its nominal setting and a desired PWM for a desired number of cycles with a
-   * desired period.
+   * Cycle a between its nominal setting and a desired PWM for a desired number of cycles with a desired period.
    *
    * index = 1; label = Instance; 
    * Servo instance number.
@@ -1138,17 +1054,12 @@ public enum class MavCmd(
   DO_REPEAT_SERVO(184u),
   /**
    * Terminate flight immediately.
-   *           Flight termination immediately and irreversibly terminates the current flight,
-   * returning the vehicle to ground.
+   *           Flight termination immediately and irreversibly terminates the current flight, returning the vehicle to ground.
    *           The vehicle will ignore RC or other input until it has been power-cycled.
-   *           Termination may trigger safety measures, including: disabling motors and deployment
-   * of parachute on multicopters, and setting flight surfaces to initiate a landing pattern on
-   * fixed-wing).
+   *           Termination may trigger safety measures, including: disabling motors and deployment of parachute on multicopters, and setting flight surfaces to initiate a landing pattern on fixed-wing).
    *           On multicopters without a parachute it may trigger a crash landing.
-   *           Support for this command can be tested using the protocol bit:
-   * MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION.
-   *           Support for this command can also be tested by sending the command with param1=0 (<
-   * 0.5); the ACK should be either MAV_RESULT_FAILED or MAV_RESULT_UNSUPPORTED.
+   *           Support for this command can be tested using the protocol bit: MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION.
+   *           Support for this command can also be tested by sending the command with param1=0 (< 0.5); the ACK should be either MAV_RESULT_FAILED or MAV_RESULT_UNSUPPORTED.
    *         
    *
    * index = 1; label = Terminate; 
@@ -1201,9 +1112,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_CHANGE_ALTITUDE(186u),
   /**
-   * Sets actuators (e.g. servos) to a desired value. The actuator numbers are mapped to specific
-   * outputs (e.g. on any MAIN or AUX PWM or UAVCAN) using a flight-stack specific mechanism (i.e. a
-   * parameter).
+   * Sets actuators (e.g. servos) to a desired value. The actuator numbers are mapped to specific outputs (e.g. on any MAIN or AUX PWM or UAVCAN) using a flight-stack specific mechanism (i.e. a parameter).
    *
    * index = 1; label = Actuator 1; 
    * Actuator 1 value, scaled from [-1 to 1]. NaN to ignore.
@@ -1229,25 +1138,15 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_ACTUATOR(187u),
   /**
-   * Mission item to specify the start of a failsafe/landing return-path segment (the end of the
-   * segment is the next MAV_CMD_DO_LAND_START item).
-   *           A vehicle that is using missions for landing (e.g. in a return mode) will join the
-   * mission on the closest path of the return-path segment (instead of MAV_CMD_DO_LAND_START or the
-   * nearest waypoint).
-   *           The main use case is to minimize the failsafe flight path in corridor missions, where
-   * the inbound/outbound paths are constrained (by geofences) to the same particular path.
+   * Mission item to specify the start of a failsafe/landing return-path segment (the end of the segment is the next MAV_CMD_DO_LAND_START item).
+   *           A vehicle that is using missions for landing (e.g. in a return mode) will join the mission on the closest path of the return-path segment (instead of MAV_CMD_DO_LAND_START or the nearest waypoint).
+   *           The main use case is to minimize the failsafe flight path in corridor missions, where the inbound/outbound paths are constrained (by geofences) to the same particular path.
    *           The MAV_CMD_NAV_RETURN_PATH_START would be placed at the start of the return path.
-   *           If a failsafe occurs on the outbound path the vehicle will move to the nearest point
-   * on the return path (which is parallel for this kind of mission), effectively turning round and
-   * following the shortest path to landing.
-   *           If a failsafe occurs on the inbound path the vehicle is already on the return segment
-   * and will continue to landing.
+   *           If a failsafe occurs on the outbound path the vehicle will move to the nearest point on the return path (which is parallel for this kind of mission), effectively turning round and following the shortest path to landing.
+   *           If a failsafe occurs on the inbound path the vehicle is already on the return segment and will continue to landing.
    *           The Latitude/Longitude/Altitude are optional, and may be set to 0 if not needed.
    *           If specified, the item defines the waypoint at which the return segment starts.
-   *           If sent using as a command, the vehicle will perform a mission landing (using the
-   * land segment if defined) or reject the command if mission landings are not supported, or no
-   * mission landing is defined. When used as a command any position information in the command is
-   * ignored.
+   *           If sent using as a command, the vehicle will perform a mission landing (using the land segment if defined) or reject the command if mission landings are not supported, or no mission landing is defined. When used as a command any position information in the command is ignored.
    *         
    *
    * index = 1; 
@@ -1275,19 +1174,12 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_RETURN_PATH_START(188u),
   /**
-   * Mission item to mark the start of a mission landing pattern, or a command to land with a
-   * mission landing pattern.
+   * Mission item to mark the start of a mission landing pattern, or a command to land with a mission landing pattern.
    *
-   *         When used in a mission, this is a marker for the start of a sequence of mission items
-   * that represent a landing pattern.
-   *         It should be followed by a navigation item that defines the first waypoint of the
-   * landing sequence.
-   *         The start marker positional params are used only for selecting what landing pattern to
-   * use if several are defined in the mission (the selected pattern will be the one with the marker
-   * position that is closest to the vehicle when a landing is commanded).
-   *         If the marker item position has zero-values for latitude, longitude, and altitude, then
-   * landing pattern selection is instead based on the position of the first waypoint in the landing
-   * sequence.
+   *         When used in a mission, this is a marker for the start of a sequence of mission items that represent a landing pattern.
+   *         It should be followed by a navigation item that defines the first waypoint of the landing sequence.
+   *         The start marker positional params are used only for selecting what landing pattern to use if several are defined in the mission (the selected pattern will be the one with the marker position that is closest to the vehicle when a landing is commanded).
+   *         If the marker item position has zero-values for latitude, longitude, and altitude, then landing pattern selection is instead based on the position of the first waypoint in the landing sequence.
    *
    * 	      When sent as a command it triggers a landing using a mission landing pattern.
    * 	      The location parameters are not used in this case, and should be set to 0.
@@ -1369,8 +1261,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_GO_AROUND(191u),
   /**
-   * Reposition the vehicle to a specific WGS84 global position. This command is intended for guided
-   * commands (for missions use MAV_CMD_NAV_WAYPOINT instead).
+   * Reposition the vehicle to a specific WGS84 global position. This command is intended for guided commands (for missions use MAV_CMD_NAV_WAYPOINT instead).
    *
    * index = 1; label = Speed; units = m/s; 
    * Ground speed, less than 0 (-1) for default
@@ -1379,13 +1270,10 @@ public enum class MavCmd(
    * Bitmask of option flags.
    *
    * index = 3; label = Radius; units = m; 
-   * Loiter radius for planes. Positive values only, direction is controlled by Yaw value. A value
-   * of zero or NaN is ignored. 
+   * Loiter radius for planes. Positive values only, direction is controlled by Yaw value. A value of zero or NaN is ignored. 
    *
    * index = 4; label = Yaw; units = rad; 
-   * Yaw heading (heading reference defined in Bitmask field). NaN to use the current system yaw
-   * heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). For planes indicates loiter
-   * direction (0: clockwise, 1: counter clockwise)
+   * Yaw heading (heading reference defined in Bitmask field). NaN to use the current system yaw heading mode (e.g. yaw towards next waypoint, yaw to home, etc.). For planes indicates loiter direction (0: clockwise, 1: counter clockwise)
    *
    * index = 5; label = Latitude; 
    * Latitude
@@ -1402,10 +1290,7 @@ public enum class MavCmd(
    * If in a GPS controlled position mode, hold the current position or continue.
    *
    * index = 1; label = Continue; 
-   * Continue mission (MAV_BOOL_TRUE), Pause current mission or reposition command, hold current
-   * position (MAV_BOOL_FALSE). Values not equal to 0 or 1 are invalid. A VTOL capable vehicle should
-   * enter hover mode (multicopter and VTOL planes). A plane should loiter with the default loiter
-   * radius.
+   * Continue mission (MAV_BOOL_TRUE), Pause current mission or reposition command, hold current position (MAV_BOOL_FALSE). Values not equal to 0 or 1 are invalid. A VTOL capable vehicle should enter hover mode (multicopter and VTOL planes). A plane should loiter with the default loiter radius.
    *
    * index = 2; 
    * Reserved
@@ -1454,14 +1339,10 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_REVERSE(194u),
   /**
-   * Sets the region of interest (ROI) to a location. This can then be used by the vehicle's control
-   * system to control the vehicle attitude and the attitude of various sensors such as cameras. This
-   * command can be sent to a gimbal manager but not to a gimbal device. A gimbal is not to react to
-   * this message.
+   * Sets the region of interest (ROI) to a location. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras. This command can be sent to a gimbal manager but not to a gimbal device. A gimbal is not to react to this message.
    *
    * index = 1; label = Gimbal device ID; 
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    *
    * index = 2; 
    * Empty
@@ -1472,10 +1353,10 @@ public enum class MavCmd(
    * index = 4; 
    * Empty
    *
-   * index = 5; label = Latitude; units = degE7; 
+   * index = 5; label = Latitude; 
    * Latitude of ROI location
    *
-   * index = 6; label = Longitude; units = degE7; 
+   * index = 6; label = Longitude; 
    * Longitude of ROI location
    *
    * index = 7; label = Altitude; units = m; 
@@ -1484,14 +1365,10 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_ROI_LOCATION(195u),
   /**
-   * Sets the region of interest (ROI) to be toward next waypoint, with optional pitch/roll/yaw
-   * offset. This can then be used by the vehicle's control system to control the vehicle attitude and
-   * the attitude of various sensors such as cameras. This command can be sent to a gimbal manager but
-   * not to a gimbal device. A gimbal device is not to react to this message.
+   * Sets the region of interest (ROI) to be toward next waypoint, with optional pitch/roll/yaw offset. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras. This command can be sent to a gimbal manager but not to a gimbal device. A gimbal device is not to react to this message.
    *
    * index = 1; label = Gimbal device ID; 
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    *
    * index = 2; 
    * Empty
@@ -1514,16 +1391,10 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_ROI_WPNEXT_OFFSET(196u),
   /**
-   * Cancels any previous ROI command returning the vehicle/sensors to default flight
-   * characteristics. This can then be used by the vehicle's control system to control the vehicle
-   * attitude and the attitude of various sensors such as cameras. This command can be sent to a gimbal
-   * manager but not to a gimbal device. A gimbal device is not to react to this message. After this
-   * command the gimbal manager should go back to manual input if available, and otherwise assume a
-   * neutral position.
+   * Cancels any previous ROI command returning the vehicle/sensors to default flight characteristics. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras. This command can be sent to a gimbal manager but not to a gimbal device. A gimbal device is not to react to this message. After this command the gimbal manager should go back to manual input if available, and otherwise assume a neutral position.
    *
    * index = 1; label = Gimbal device ID; 
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    *
    * index = 2; 
    * Empty
@@ -1546,16 +1417,13 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_ROI_NONE(197u),
   /**
-   * Mount tracks system with specified system ID. Determination of target vehicle position may be
-   * done with GLOBAL_POSITION_INT or any other means. This command can be sent to a gimbal manager but
-   * not to a gimbal device. A gimbal device is not to react to this message.
+   * Mount tracks system with specified system ID. Determination of target vehicle position may be done with GLOBAL_POSITION_INT or any other means. This command can be sent to a gimbal manager but not to a gimbal device. A gimbal device is not to react to this message.
    *
    * index = 1; label = System ID; 
    * System ID
    *
    * index = 2; label = Gimbal device ID; 
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavEnumEntry
   DO_SET_ROI_SYSID(198u),
@@ -1586,9 +1454,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_CONTROL_VIDEO(200u),
   /**
-   * Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used
-   * by the vehicle's control system to control the vehicle attitude and the attitude of various
-   * sensors such as cameras.
+   * Sets the region of interest (ROI) for a sensor set or the vehicle itself. This can then be used by the vehicle's control system to control the vehicle attitude and the attitude of various sensors such as cameras.
    *
    * index = 1; label = ROI Mode; 
    * Region of interest mode.
@@ -1611,13 +1477,10 @@ public enum class MavCmd(
    * index = 7; 
    * MAV_ROI_WPNEXT: yaw offset from next waypoint, MAV_ROI_LOCATION: altitude
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   DO_SET_ROI(201u),
   /**
-   * Configure digital camera. This is a fallback message for systems that have not yet implemented
-   * PARAM_EXT_XXX messages and camera definition files (see
-   * https://mavlink.io/en/services/camera_def.html ).
+   * Configure digital camera. This is a fallback message for systems that have not yet implemented PARAM_EXT_XXX messages and camera definition files (see https://mavlink.io/en/services/camera_def.html ).
    *
    * index = 1; label = Mode; 
    * Modes: P, TV, AV, M, Etc.
@@ -1643,9 +1506,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_DIGICAM_CONFIGURE(202u),
   /**
-   * Control digital camera. This is a fallback message for systems that have not yet implemented
-   * PARAM_EXT_XXX messages and camera definition files (see
-   * https://mavlink.io/en/services/camera_def.html ).
+   * Control digital camera. This is a fallback message for systems that have not yet implemented PARAM_EXT_XXX messages and camera definition files (see https://mavlink.io/en/services/camera_def.html ).
    *
    * index = 1; label = Session Control; 
    * Session control e.g. show/hide lens
@@ -1666,8 +1527,7 @@ public enum class MavCmd(
    * Command Identity
    *
    * index = 7; label = Shot ID; 
-   * Test shot identifier. If set to 1, image will only be captured, but not counted towards
-   * internal frame count.
+   * Test shot identifier. If set to 1, image will only be captured, but not counted towards internal frame count.
    */
   @GeneratedMavEnumEntry
   DO_DIGICAM_CONTROL(203u),
@@ -1695,8 +1555,6 @@ public enum class MavCmd(
    * index = 7; label = Yaw Input Mode; 
    * Yaw input (0 = angle body frame, 1 = angular rate, 2 = angle absolute frame)
    */
-  @Deprecated(message =
-      "This message has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE. The message can still be used to communicate with legacy gimbals implementing it.")
   @GeneratedMavEnumEntry
   DO_MOUNT_CONFIGURE(204u),
   /**
@@ -1723,14 +1581,10 @@ public enum class MavCmd(
    * index = 7; label = Mode; 
    * Mount mode.
    */
-  @Deprecated(message =
-      "This message is ambiguous and inconsistent. It has been superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW and `MAV_CMD_DO_SET_ROI_*` variants. The message can still be used to communicate with legacy gimbals implementing it.")
   @GeneratedMavEnumEntry
   DO_MOUNT_CONTROL(205u),
   /**
-   * Mission command to set camera trigger distance for this flight. The camera is triggered each
-   * time this distance is exceeded. This command can also be used to set the shutter integration time
-   * for the camera.
+   * Mission command to set camera trigger distance for this flight. The camera is triggered each time this distance is exceeded. This command can also be used to set the shutter integration time for the camera.
    *
    * index = 1; label = Distance; units = m; 
    * Camera trigger distance. 0 to stop triggering.
@@ -1742,10 +1596,7 @@ public enum class MavCmd(
    * Trigger camera once, immediately (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid.
    *
    * index = 4; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 5; 
    * Empty
@@ -1763,8 +1614,7 @@ public enum class MavCmd(
    *           Enable the geofence.
    *           This can be used in a mission or via the command protocol.
    *           The persistence/lifetime of the setting is undefined.
-   *           Depending on flight stack implementation it may persist until superseded, or it may
-   * revert to a system default at the end of a mission.
+   *           Depending on flight stack implementation it may persist until superseded, or it may revert to a system default at the end of a mission.
    *           Flight stacks typically reset the setting to system defaults on reboot.
    * 	
    *
@@ -1772,8 +1622,7 @@ public enum class MavCmd(
    * enable? (0=disable, 1=enable, 2=disable_floor_only)
    *
    * index = 2; label = Types; 
-   * Fence types to enable or disable as a bitmask. 0: field is unused/all fences should be enabled
-   * or disabled (for compatibility reasons). Parameter is ignored if param1=2.
+   * Fence types to enable or disable as a bitmask. 0: field is unused/all fences should be enabled or disabled (for compatibility reasons). Parameter is ignored if param1=2.
    *
    * index = 3; 
    * Empty
@@ -1834,8 +1683,7 @@ public enum class MavCmd(
    * Timeout between tests that are run in sequence.
    *
    * index = 5; label = Motor Count; 
-   * Motor count. Number of motors to test in sequence: 0/1=one motor, 2= two motors, etc. The
-   * Timeout (param4) is used between tests.
+   * Motor count. Number of motors to test in sequence: 0/1=one motor, 2= two motors, etc. The Timeout (param4) is used between tests.
    *
    * index = 6; label = Test Order; 
    * Motor test order.
@@ -1875,8 +1723,7 @@ public enum class MavCmd(
    * Mission command to operate a gripper.
    *
    * index = 1; label = Gripper ID; 
-   * Gripper ID. 1-6 for an autopilot connected gripper. In missions this may be set to 1-6 for an
-   * autopilot gripper, or the gripper component id for a MAVLink gripper. 0 targets all grippers.
+   * Gripper ID. 1-6 for an autopilot connected gripper. In missions this may be set to 1-6 for an autopilot gripper, or the gripper component id for a MAVLink gripper. 0 targets all grippers.
    *
    * index = 2; label = Action; 
    * Gripper action to perform.
@@ -1905,9 +1752,7 @@ public enum class MavCmd(
    * Enable autotune (MAV_BOOL_FALSE: disable autotune). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; label = Axis; 
-   * Specify axes for which autotuning is enabled/disabled. 0 indicates the field is unused (for
-   * compatibility reasons). If 0 the autopilot will follow its default behaviour, which is usually to
-   * tune all axes.
+   * Specify axes for which autotuning is enabled/disabled. 0 indicates the field is unused (for compatibility reasons). If 0 the autopilot will follow its default behaviour, which is usually to tune all axes.
    *
    * index = 3; 
    * Empty.
@@ -1953,9 +1798,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_SET_YAW_SPEED(213u),
   /**
-   * Mission command to set camera trigger interval for this flight. If triggering is enabled, the
-   * camera is triggered each time this interval expires. This command can also be used to set the
-   * shutter integration time for the camera.
+   * Mission command to set camera trigger interval for this flight. If triggering is enabled, the camera is triggered each time this interval expires. This command can also be used to set the shutter integration time for the camera.
    *
    * index = 1; label = Trigger Cycle; units = ms; 
    * Camera trigger cycle time. -1 or 0 to ignore.
@@ -1964,10 +1807,7 @@ public enum class MavCmd(
    * Camera shutter integration time. Should be less than trigger cycle time. -1 or 0 to ignore.
    *
    * index = 3; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 4; 
    * Empty
@@ -2007,7 +1847,6 @@ public enum class MavCmd(
    * index = 7; 
    * Empty
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   DO_MOUNT_CONTROL_QUAT(220u),
   /**
@@ -2040,21 +1879,16 @@ public enum class MavCmd(
    * Set limits for external control
    *
    * index = 1; label = Timeout; units = s; 
-   * Timeout - maximum time that external controller will be allowed to control vehicle. 0 means no
-   * timeout.
+   * Timeout - maximum time that external controller will be allowed to control vehicle. 0 means no timeout.
    *
    * index = 2; label = Min Altitude; units = m; 
-   * Altitude (MSL) min - if vehicle moves below this alt, the command will be aborted and the
-   * mission will continue. 0 means no lower altitude limit.
+   * Altitude (MSL) min - if vehicle moves below this alt, the command will be aborted and the mission will continue. 0 means no lower altitude limit.
    *
    * index = 3; label = Max Altitude; units = m; 
-   * Altitude (MSL) max - if vehicle moves above this alt, the command will be aborted and the
-   * mission will continue. 0 means no upper altitude limit.
+   * Altitude (MSL) max - if vehicle moves above this alt, the command will be aborted and the mission will continue. 0 means no upper altitude limit.
    *
    * index = 4; label = Horiz. Move Limit; units = m; 
-   * Horizontal move limit - if vehicle moves more than this distance from its location at the
-   * moment the command was executed, the command will be aborted and the mission will continue. 0
-   * means no horizontal move limit.
+   * Horizontal move limit - if vehicle moves more than this distance from its location at the moment the command was executed, the command will be aborted and the mission will continue. 0 means no horizontal move limit.
    *
    * index = 5; 
    * Empty
@@ -2068,23 +1902,19 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_GUIDED_LIMITS(222u),
   /**
-   * Control vehicle engine. This is interpreted by the vehicles engine controller to change the
-   * target engine state. It is intended for vehicles with internal combustion engines
+   * Control vehicle engine. This is interpreted by the vehicles engine controller to change the target engine state. It is intended for vehicles with internal combustion engines
    *
    * index = 1; label = Start Engine; 
    * Start engine (MAV_BOOL_False: Stop engine). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; label = Cold Start; 
-   * Cold start engine (MAV_BOOL_FALSE: Warm start). Values not equal to 0 or 1 are invalid.
-   * Controls use of choke where applicable
+   * Cold start engine (MAV_BOOL_FALSE: Warm start). Values not equal to 0 or 1 are invalid. Controls use of choke where applicable
    *
    * index = 3; label = Height Delay; units = m; 
-   * Height delay. This is for commanding engine start only after the vehicle has gained the
-   * specified height. Used in VTOL vehicles during takeoff to start engine after the aircraft is off
-   * the ground. Zero for no delay.
+   * Height delay. This is for commanding engine start only after the vehicle has gained the specified height. Used in VTOL vehicles during takeoff to start engine after the aircraft is off the ground. Zero for no delay.
    *
-   * index = 4; 
-   * Empty
+   * index = 4; label = Options; 
+   * A bitmask of options for engine control
    *
    * index = 5; 
    * Empty
@@ -2099,38 +1929,26 @@ public enum class MavCmd(
   DO_ENGINE_CONTROL(223u),
   /**
    *
-   *           Set the mission item with sequence number seq as the current item and emit
-   * MISSION_CURRENT (whether or not the mission number changed).
-   *           If a mission is currently being executed, the system will continue to this new
-   * mission item on the shortest path, skipping any intermediate mission items.
-   * 	  Note that mission jump repeat counters are not reset unless param2 is set (see
-   * MAV_CMD_DO_JUMP param2).
+   *           Set the mission item with sequence number seq as the current item and emit MISSION_CURRENT (whether or not the mission number changed).
+   *           If a mission is currently being executed, the system will continue to this new mission item on the shortest path, skipping any intermediate mission items.
+   * 	  Note that mission jump repeat counters are not reset unless param2 is set (see MAV_CMD_DO_JUMP param2).
    *
-   *           This command may trigger a mission state-machine change on some systems: for example
-   * from MISSION_STATE_NOT_STARTED or MISSION_STATE_PAUSED to MISSION_STATE_ACTIVE.
-   *           If the system is in mission mode, on those systems this command might therefore
-   * start, restart or resume the mission.
-   *           If the system is not in mission mode this command must not trigger a switch to
-   * mission mode.
+   *           This command may trigger a mission state-machine change on some systems: for example from MISSION_STATE_NOT_STARTED or MISSION_STATE_PAUSED to MISSION_STATE_ACTIVE.
+   *           If the system is in mission mode, on those systems this command might therefore start, restart or resume the mission.
+   *           If the system is not in mission mode this command must not trigger a switch to mission mode.
    *
    *           The mission may be "reset" using param2.
-   *           Resetting sets jump counters to initial values (to reset counters without changing
-   * the current mission item set the param1 to `-1`).
-   *           Resetting also explicitly changes a mission state of MISSION_STATE_COMPLETE to
-   * MISSION_STATE_PAUSED or MISSION_STATE_ACTIVE, potentially allowing it to resume when it is (next)
-   * in a mission mode.
+   *           Resetting sets jump counters to initial values (to reset counters without changing the current mission item set the param1 to `-1`).
+   *           Resetting also explicitly changes a mission state of MISSION_STATE_COMPLETE to MISSION_STATE_PAUSED or MISSION_STATE_ACTIVE, potentially allowing it to resume when it is (next) in a mission mode.
    *
-   * 	  The command will ACK with MAV_RESULT_FAILED if the sequence number is out of range
-   * (including if there is no mission item).
+   * 	  The command will ACK with MAV_RESULT_FAILED if the sequence number is out of range (including if there is no mission item).
    *         
    *
    * index = 1; label = Number; 
-   * Mission sequence value to set. -1 for the current mission item (use to reset mission without
-   * changing current mission item).
+   * Mission sequence value to set. -1 for the current mission item (use to reset mission without changing current mission item).
    *
    * index = 2; label = Reset Mission; 
-   * Reset mission (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid. Resets jump counters to
-   * initial values and changes mission state "completed" to be "active" or "paused".
+   * Reset mission (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid. Resets jump counters to initial values and changes mission state "completed" to be "active" or "paused".
    *
    * index = 3; 
    * Empty
@@ -2176,15 +1994,13 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_LAST(240u),
   /**
-   * Trigger calibration. This command will be only accepted if in pre-flight mode. Except for
-   * Temperature Calibration, only one sensor should be set in a single message and all others should
-   * be zero.
+   * Trigger calibration. This command will be only accepted if in pre-flight mode. Except for Temperature Calibration, only one sensor should be set in a single message and all others should be zero.
    *
    * index = 1; label = Gyro Temperature; 
    * 1: gyro calibration, 3: gyro temperature calibration
    *
    * index = 2; label = Magnetometer; 
-   * Magnetometer calibration. Values not equal to 0 or 1 are invalid.
+   * Magnetometer calibration action.
    *
    * index = 3; label = Ground Pressure; 
    * Ground pressure calibration. Values not equal to 0 or 1 are invalid.
@@ -2193,12 +2009,10 @@ public enum class MavCmd(
    * 1: radio RC calibration, 2: RC trim calibration
    *
    * index = 5; label = Accelerometer; 
-   * 1: accelerometer calibration, 2: board level calibration, 3: accelerometer temperature
-   * calibration, 4: simple accelerometer calibration
+   * Accelerometer calibration action.
    *
    * index = 6; label = Compmot or Airspeed; 
-   * 1: APM: compass/motor interference calibration (PX4: airspeed calibration, deprecated), 2:
-   * airspeed calibration
+   * 1: APM: compass/motor interference calibration (PX4: airspeed calibration, deprecated), 2: airspeed calibration
    *
    * index = 7; label = ESC or Baro; 
    * 1: ESC calibration, 3: barometer temperature calibration
@@ -2209,8 +2023,7 @@ public enum class MavCmd(
    * Set sensor offsets. This command will be only accepted if in pre-flight mode.
    *
    * index = 1; label = Sensor Type; 
-   * Sensor to adjust the offsets for: 0: gyros, 1: accelerometer, 2: magnetometer, 3: barometer, 4:
-   * optical flow, 5: second magnetometer, 6: third magnetometer
+   * Sensor to adjust the offsets for: 0: gyros, 1: accelerometer, 2: magnetometer, 3: barometer, 4: optical flow, 5: second magnetometer, 6: third magnetometer
    *
    * index = 2; label = X Offset; 
    * X axis offset (or generic dimension 1), in the sensor's raw units
@@ -2233,10 +2046,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   PREFLIGHT_SET_SENSOR_OFFSETS(242u),
   /**
-   * Trigger UAVCAN configuration (actuator ID assignment and direction mapping). Note that this
-   * maps to the legacy UAVCAN v0 function UAVCAN_ENUMERATE, which is intended to be executed just once
-   * during initial vehicle configuration (it is not a normal pre-flight command and has been poorly
-   * named).
+   * Trigger UAVCAN configuration (actuator ID assignment and direction mapping). Note that this maps to the legacy UAVCAN v0 function UAVCAN_ENUMERATE, which is intended to be executed just once during initial vehicle configuration (it is not a normal pre-flight command and has been poorly named).
    *
    * index = 1; label = Actuator ID; 
    * 1: Trigger actuator ID assignment and direction mapping. 0: Cancel command.
@@ -2262,8 +2072,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   PREFLIGHT_UAVCAN(243u),
   /**
-   * Request storage of different parameter values and logs. This command will be only accepted if
-   * in pre-flight mode.
+   * Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode.
    *
    * index = 1; label = Parameter Storage; 
    * Action to perform on the persistent parameter storage
@@ -2272,8 +2081,7 @@ public enum class MavCmd(
    * Action to perform on the persistent mission storage
    *
    * index = 3; label = Logging Rate; units = Hz; 
-   * Onboard logging: 0: Ignore, 1: Start default rate logging, -1: Stop logging, > 1: logging rate
-   * (e.g. set to 1000 for 1000 Hz logging)
+   * Onboard logging: 0: Ignore, 1: Start default rate logging, -1: Stop logging, > 1: logging rate (e.g. set to 1000 for 1000 Hz logging)
    *
    * index = 4; 
    * Reserved
@@ -2316,17 +2124,13 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   PREFLIGHT_REBOOT_SHUTDOWN(246u),
   /**
-   * Override current mission with command to pause mission, pause mission and move to position,
-   * continue/resume mission. When param 1 indicates that the mission is paused (MAV_GOTO_DO_HOLD),
-   * param 2 defines whether it holds in place or moves to another position.
+   * Override current mission with command to pause mission, pause mission and move to position, continue/resume mission. When param 1 indicates that the mission is paused (MAV_GOTO_DO_HOLD), param 2 defines whether it holds in place or moves to another position.
    *
    * index = 1; label = Continue; 
-   * MAV_GOTO_DO_HOLD: pause mission and either hold or move to specified position (depending on
-   * param2), MAV_GOTO_DO_CONTINUE: resume mission.
+   * MAV_GOTO_DO_HOLD: pause mission and either hold or move to specified position (depending on param2), MAV_GOTO_DO_CONTINUE: resume mission.
    *
    * index = 2; label = Position; 
-   * MAV_GOTO_HOLD_AT_CURRENT_POSITION: hold at current position,
-   * MAV_GOTO_HOLD_AT_SPECIFIED_POSITION: hold at specified position.
+   * MAV_GOTO_HOLD_AT_CURRENT_POSITION: hold at current position, MAV_GOTO_HOLD_AT_SPECIFIED_POSITION: hold at specified position.
    *
    * index = 3; label = Frame; 
    * Coordinate frame of hold point.
@@ -2346,12 +2150,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   OVERRIDE_GOTO(252u),
   /**
-   * Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for
-   * this purpose). The camera is triggered each time this distance is exceeded, then the mount moves
-   * to the next position. Params 4~6 set-up the angle limits and number of positions for oblique
-   * survey, where mount-enabled vehicles automatically roll the camera between shots to emulate an
-   * oblique camera setup (providing an increased HFOV). This command can also be used to set the
-   * shutter integration time for the camera.
+   * Mission command to set a Camera Auto Mount Pivoting Oblique Survey (Replaces CAM_TRIGG_DIST for this purpose). The camera is triggered each time this distance is exceeded, then the mount moves to the next position. Params 4~6 set-up the angle limits and number of positions for oblique survey, where mount-enabled vehicles automatically roll the camera between shots to emulate an oblique camera setup (providing an increased HFOV). This command can also be used to set the shutter integration time for the camera.
    *
    * index = 1; label = Distance; units = m; 
    * Camera trigger distance. 0 to stop triggering.
@@ -2360,19 +2159,16 @@ public enum class MavCmd(
    * Camera shutter integration time. 0 to ignore
    *
    * index = 3; label = Min Interval; units = ms; 
-   * The minimum interval in which the camera is capable of taking subsequent pictures repeatedly. 0
-   * to ignore.
+   * The minimum interval in which the camera is capable of taking subsequent pictures repeatedly. 0 to ignore.
    *
    * index = 4; label = Positions; 
-   * Total number of roll positions at which the camera will capture photos (images captures spread
-   * evenly across the limits defined by param5).
+   * Total number of roll positions at which the camera will capture photos (images captures spread evenly across the limits defined by param5).
    *
    * index = 5; label = Roll Angle; units = deg; 
    * Angle limits that the camera can be rolled to left and right of center.
    *
    * index = 6; label = Pitch Angle; units = deg; 
-   * Fixed pitch angle that the camera will hold in oblique mode if the mount is actuated in the
-   * pitch axis.
+   * Fixed pitch angle that the camera will hold in oblique mode if the mount is actuated in the pitch axis.
    *
    * index = 7; 
    * Empty
@@ -2381,8 +2177,7 @@ public enum class MavCmd(
   OBLIQUE_SURVEY(260u),
   /**
    * Enable the specified standard MAVLink mode.
-   *           If the specified mode is not supported, the vehicle should ACK with
-   * MAV_RESULT_FAILED.
+   *           If the specified mode is not supported, the vehicle should ACK with MAV_RESULT_FAILED.
    *           See https://mavlink.io/en/services/standard_modes.html
    *         
    *
@@ -2405,19 +2200,13 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   MISSION_START(300u),
   /**
-   * Actuator testing command. This is similar to MAV_CMD_DO_MOTOR_TEST but operates on the level of
-   * output functions, i.e. it is possible to test Motor1 independent from which output it is
-   * configured on. Autopilots must NACK this command with MAV_RESULT_TEMPORARILY_REJECTED while armed.
+   * Actuator testing command. This is similar to MAV_CMD_DO_MOTOR_TEST but operates on the level of output functions, i.e. it is possible to test Motor1 independent from which output it is configured on. Autopilots must NACK this command with MAV_RESULT_TEMPORARILY_REJECTED while armed.
    *
    * index = 1; label = Value; 
-   * Output value: 1 means maximum positive output, 0 to center servos or minimum motor thrust
-   * (expected to spin), -1 for maximum negative (if not supported by the motors, i.e. motor is not
-   * reversible, smaller than 0 maps to NaN). And NaN maps to disarmed (stop the motors).
+   * Output value: 1 means maximum positive output, 0 to center servos or minimum motor thrust (expected to spin), -1 for maximum negative (if not supported by the motors, i.e. motor is not reversible, smaller than 0 maps to NaN). And NaN maps to disarmed (stop the motors).
    *
    * index = 2; label = Timeout; units = s; 
-   * Timeout after which the test command expires and the output is restored to the previous value.
-   * A timeout has to be set for safety reasons. A timeout of 0 means to restore the previous value
-   * immediately.
+   * Timeout after which the test command expires and the output is restored to the previous value. A timeout has to be set for safety reasons. A timeout of 0 means to restore the previous value immediately.
    *
    * index = 3; index = 4; index = 5; label = Output Function; 
    * Actuator Output function
@@ -2446,29 +2235,22 @@ public enum class MavCmd(
    * Arm (MAV_BOOL_FALSE: disarm). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; label = Force; 
-   * 0: arm-disarm unless prevented by safety checks (i.e. when landed), 21196: force
-   * arming/disarming (e.g. allow arming to override preflight checks and disarming in flight)
+   * 0: arm-disarm unless prevented by safety checks (i.e. when landed), 21196: force arming/disarming (e.g. allow arming to override preflight checks and disarming in flight)
    */
   @GeneratedMavEnumEntry
   COMPONENT_ARM_DISARM(400u),
   /**
    * Instructs a target system to run pre-arm checks.
-   *           This allows preflight checks to be run on demand, which may be useful on systems that
-   * normally run them at low rate, or which do not trigger checks when the armable state might have
-   * changed.
+   *           This allows preflight checks to be run on demand, which may be useful on systems that normally run them at low rate, or which do not trigger checks when the armable state might have changed.
    *           This command should return MAV_RESULT_ACCEPTED if it will run the checks.
-   *           The results of the checks are usually then reported in SYS_STATUS messages (this is
-   * system-specific).
-   *           The command should return MAV_RESULT_TEMPORARILY_REJECTED if the system is already
-   * armed.
+   *           The results of the checks are usually then reported in SYS_STATUS messages (this is system-specific).
+   *           The command should return MAV_RESULT_TEMPORARILY_REJECTED if the system is already armed.
    *         
    */
   @GeneratedMavEnumEntry
   RUN_PREARM_CHECKS(401u),
   /**
-   * Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark
-   * areas external to the system: e.g. a torch or searchlight (as opposed to a light source for
-   * illuminating the system itself, e.g. an indicator light).
+   * Turns illuminators ON/OFF. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light).
    *
    * index = 1; label = Enable; 
    * Illuminators on/off (MAV_BOOL_TRUE: illuminators on). Values not equal to 0 or 1 are invalid.
@@ -2476,9 +2258,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   ILLUMINATOR_ON_OFF(405u),
   /**
-   * Configures illuminator settings. An illuminator is a light source that is used for lighting up
-   * dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for
-   * illuminating the system itself, e.g. an indicator light).
+   * Configures illuminator settings. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light).
    *
    * index = 1; label = Mode; 
    * Mode
@@ -2496,7 +2276,7 @@ public enum class MavCmd(
   DO_ILLUMINATOR_CONFIGURE(406u),
   /**
    * Request the home position from the vehicle.
-   * 	  The vehicle will ACK the command and then emit the HOME_POSITION message.
+   *           The vehicle will ACK the command and emit the HOME_POSITION message.
    *
    * index = 1; 
    * Reserved
@@ -2519,12 +2299,10 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   GET_HOME_POSITION(410u),
   /**
-   * Inject artificial failure for testing purposes. Note that autopilots should implement an
-   * additional protection before accepting this command such as a specific param setting.
+   * Inject artificial failure for testing purposes. Note that autopilots should implement an additional protection before accepting this command such as a specific param setting.
    *
    * index = 1; label = Failure unit; 
    * The unit which is affected by the failure.
@@ -2551,19 +2329,16 @@ public enum class MavCmd(
   /**
    *
    *           Request the interval between messages for a particular MAVLink message ID.
-   *           The receiver should ACK the command and then emit its response in a MESSAGE_INTERVAL
-   * message.
+   *           The receiver should ACK the command and then emit its response in a MESSAGE_INTERVAL message.
    *         
    *
    * index = 1; label = Message ID; 
    * The MAVLink message ID
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   GET_MESSAGE_INTERVAL(510u),
   /**
-   * Set the interval between messages for a particular MAVLink message ID. This interface replaces
-   * REQUEST_DATA_STREAM.
+   * Set the interval between messages for a particular MAVLink message ID. This interface replaces REQUEST_DATA_STREAM.
    *
    * index = 1; label = Message ID; 
    * The MAVLink message ID
@@ -2572,69 +2347,53 @@ public enum class MavCmd(
    * The interval between two messages. -1: disable. 0: request default rate (which may be zero).
    *
    * index = 3; label = Req Param 3; 
-   * Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in
-   * the requested message. By default assumed not used (0).  When used as an index ID, 0 means "all
-   * instances", "1" means the first instance in the sequence (the emitted message will have an id of 0
-   * if message ids are 0-indexed, or 1 if index numbers start from one).
+   * Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in the requested message. By default assumed not used (0).  When used as an index ID, 0 means "all instances", "1" means the first instance in the sequence (the emitted message will have an id of 0 if message ids are 0-indexed, or 1 if index numbers start from one).
    *
    * index = 4; label = Req Param 4; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0).
    *
    * index = 5; label = Req Param 5; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0/NaN).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0/NaN).
    *
    * index = 6; label = Req Param 6; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0/NaN).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0/NaN).
    *
    * index = 7; label = Response Target; 
-   * Target address of message stream (if message has target address fields). 0: Flight-stack
-   * default (recommended), 1: address of requester, 2: broadcast.
+   * Target address of message stream (if message has target address fields). 0: Flight-stack default (recommended), 1: address of requester, 2: broadcast.
    */
   @GeneratedMavEnumEntry
   SET_MESSAGE_INTERVAL(511u),
   /**
-   * Request the target system(s) emit a single instance of a specified message (i.e. a "one-shot"
-   * version of MAV_CMD_SET_MESSAGE_INTERVAL).
+   * Request the target system(s) emit a single instance of a specified message (i.e. a "one-shot" version of MAV_CMD_SET_MESSAGE_INTERVAL).
    *
    * index = 1; label = Message ID; 
    * The MAVLink message ID of the requested message.
    *
    * index = 2; label = Req Param 1; 
-   * Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in
-   * the requested message. By default assumed not used (0).
+   * Use for index ID, if required. Otherwise, the use of this parameter (if any) must be defined in the requested message. By default assumed not used (0).
    *
    * index = 3; label = Req Param 2; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0).
    *
    * index = 4; label = Req Param 3; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0).
    *
    * index = 5; label = Req Param 4; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0).
    *
    * index = 6; label = Req Param 5; 
-   * The use of this parameter (if any), must be defined in the requested message. By default
-   * assumed not used (0).
+   * The use of this parameter (if any), must be defined in the requested message. By default assumed not used (0).
    *
    * index = 7; label = Response Target; 
-   * Target address for requested message (if message has target address fields). 0: Flight-stack
-   * default, 1: address of requester, 2: broadcast.
+   * Target address for requested message (if message has target address fields). 0: Flight-stack default, 1: address of requester, 2: broadcast.
    */
   @GeneratedMavEnumEntry
   REQUEST_MESSAGE(512u),
   /**
-   * Request MAVLink protocol version compatibility. All receivers should ACK the command and then
-   * emit their capabilities in an PROTOCOL_VERSION message
+   * Request MAVLink protocol version compatibility. All receivers should ACK the command and then emit their capabilities in an PROTOCOL_VERSION message
    *
    * index = 1; label = Protocol; 
-   * Request supported protocol versions by all nodes on the network (MAV_BOOL_TRUE). Values not
-   * equal to 0 or 1 are invalid.
+   * Request supported protocol versions by all nodes on the network (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; 
    * Reserved (all remaining params)
@@ -2643,8 +2402,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   REQUEST_PROTOCOL_VERSION(519u),
   /**
-   * Request autopilot capabilities. The receiver should ACK the command and then emit its
-   * capabilities in an AUTOPILOT_VERSION message
+   * Request autopilot capabilities. The receiver should ACK the command and then emit its capabilities in an AUTOPILOT_VERSION message
    *
    * index = 1; label = Version; 
    * Request autopilot version (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid.
@@ -2652,7 +2410,6 @@ public enum class MavCmd(
    * index = 2; 
    * Reserved (all remaining params)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_AUTOPILOT_CAPABILITIES(520u),
   /**
@@ -2664,7 +2421,6 @@ public enum class MavCmd(
    * index = 2; 
    * Reserved (all remaining params)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_CAMERA_INFORMATION(521u),
   /**
@@ -2676,12 +2432,10 @@ public enum class MavCmd(
    * index = 2; 
    * Reserved (all remaining params)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_CAMERA_SETTINGS(522u),
   /**
-   * Request storage information (STORAGE_INFORMATION). Use the command's target_component to target
-   * a specific component's storage.
+   * Request storage information (STORAGE_INFORMATION). Use the command's target_component to target a specific component's storage.
    *
    * index = 1; label = Storage ID; 
    * Storage ID (0 for all, 1 for first, 2 for second, etc.)
@@ -2692,12 +2446,10 @@ public enum class MavCmd(
    * index = 3; 
    * Reserved (all remaining params)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_STORAGE_INFORMATION(525u),
   /**
-   * Format a storage medium. Once format is complete, a STORAGE_INFORMATION message is sent. Use
-   * the command's target_component to target a specific component's storage.
+   * Format a storage medium. Once format is complete, a STORAGE_INFORMATION message is sent. Use the command's target_component to target a specific component's storage.
    *
    * index = 1; label = Storage ID; 
    * Storage ID (1 for first, 2 for second, etc.)
@@ -2706,9 +2458,7 @@ public enum class MavCmd(
    * Format storage (and reset image log). Values not equal to 0 or 1 are invalid.
    *
    * index = 3; label = Reset Image Log; 
-   * Reset Image Log (without formatting storage medium). This will reset
-   * CAMERA_CAPTURE_STATUS.image_count and CAMERA_IMAGE_CAPTURED.image_index. Values not equal to 0 or
-   * 1 are invalid.
+   * Reset Image Log (without formatting storage medium). This will reset CAMERA_CAPTURE_STATUS.image_count and CAMERA_IMAGE_CAPTURED.image_index. Values not equal to 0 or 1 are invalid.
    *
    * index = 4; 
    * Reserved (all remaining params)
@@ -2724,7 +2474,6 @@ public enum class MavCmd(
    * index = 2; 
    * Reserved (all remaining params)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_CAMERA_CAPTURE_STATUS(527u),
   /**
@@ -2736,7 +2485,6 @@ public enum class MavCmd(
    * index = 2; 
    * Reserved (all remaining params)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_FLIGHT_INFORMATION(528u),
   /**
@@ -2746,23 +2494,15 @@ public enum class MavCmd(
    * Reset all settings (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   RESET_CAMERA_SETTINGS(529u),
   /**
-   * Set camera running mode. Use NaN for reserved values. GCS will send a
-   * MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video
-   * streaming.
+   * Set camera running mode. Use NaN for reserved values. GCS will send a MAV_CMD_REQUEST_VIDEO_STREAM_STATUS command after a mode change if the camera supports video streaming.
    *
    * index = 1; label = id; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 2; label = Camera Mode; 
    * Camera mode
@@ -2781,10 +2521,7 @@ public enum class MavCmd(
    * Zoom value. The range of valid values depend on the zoom type.
    *
    * index = 3; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 4; 
    */
@@ -2800,25 +2537,18 @@ public enum class MavCmd(
    * Focus value
    *
    * index = 3; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 4; 
    */
   @GeneratedMavEnumEntry
   SET_CAMERA_FOCUS(532u),
   /**
-   * Set that a particular storage is the preferred location for saving photos, videos, and/or other
-   * media (e.g. to set that an SD card is used for storing videos).
-   *           There can only be one preferred save location for each particular media type: setting
-   * a media usage flag will clear/reset that same flag if set on any other storage.
+   * Set that a particular storage is the preferred location for saving photos, videos, and/or other media (e.g. to set that an SD card is used for storing videos).
+   *           There can only be one preferred save location for each particular media type: setting a media usage flag will clear/reset that same flag if set on any other storage.
    *           If no flag is set the system should use its default storage.
-   *           A target system can choose to always use default storage, in which case it should ACK
-   * the command with MAV_RESULT_UNSUPPORTED.
-   *           A target system can choose to not allow a particular storage to be set as preferred
-   * storage, in which case it should ACK the command with MAV_RESULT_DENIED.
+   *           A target system can choose to always use default storage, in which case it should ACK the command with MAV_RESULT_UNSUPPORTED.
+   *           A target system can choose to not allow a particular storage to be set as preferred storage, in which case it should ACK the command with MAV_RESULT_DENIED.
    *
    * index = 1; label = Storage ID; 
    * Storage ID (1 for first, 2 for second, etc.)
@@ -2851,10 +2581,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   JUMP_TAG(600u),
   /**
-   * Jump to the matching tag in the mission list. Repeat this action for the specified number of
-   * times. A mission should contain a single matching tag for each jump. If this is not the case then
-   * a jump to a missing tag should complete the mission, and a jump where there are multiple matching
-   * tags should always select the one with the lowest mission sequence number.
+   * Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number.
    *
    * index = 1; label = Tag; 
    * Target tag to jump to.
@@ -2865,20 +2592,13 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_JUMP_TAG(601u),
   /**
-   * Set gimbal manager pitch/yaw setpoints (low rate command). It is possible to set combinations
-   * of the values below. E.g. an angle as well as a desired angular rate can be used to get to this
-   * angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is
-   * to be used to signal unset. Note: only the gimbal manager will react to this command - it will be
-   * ignored by a gimbal device. Use GIMBAL_MANAGER_SET_PITCHYAW if you need to stream pitch/yaw
-   * setpoints at higher rate. 
+   * Set gimbal manager pitch/yaw setpoints (low rate command). It is possible to set combinations of the values below. E.g. an angle as well as a desired angular rate can be used to get to this angle at a certain angular rate, or an angular rate only will result in continuous turning. NaN is to be used to signal unset. Note: only the gimbal manager will react to this command - it will be ignored by a gimbal device. Use GIMBAL_MANAGER_SET_PITCHYAW if you need to stream pitch/yaw setpoints at higher rate. 
    *
    * index = 1; label = Pitch angle; units = deg; 
-   * Pitch angle (positive to pitch up, relative to vehicle for FOLLOW mode, relative to world
-   * horizon for LOCK mode).
+   * Pitch angle (positive to pitch up, relative to vehicle for FOLLOW mode, relative to world horizon for LOCK mode).
    *
    * index = 2; label = Yaw angle; units = deg; 
-   * Yaw angle (positive to yaw to the right, relative to vehicle for FOLLOW mode, absolute to North
-   * for LOCK mode).
+   * Yaw angle (positive to yaw to the right, relative to vehicle for FOLLOW mode, absolute to North for LOCK mode).
    *
    * index = 3; label = Pitch rate; units = deg/s; 
    * Pitch rate (positive to pitch up).
@@ -2890,8 +2610,7 @@ public enum class MavCmd(
    * Gimbal manager flags to use.
    *
    * index = 7; label = Gimbal device ID; 
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavEnumEntry
   DO_GIMBAL_MANAGER_PITCHYAW(1_000u),
@@ -2899,74 +2618,49 @@ public enum class MavCmd(
    * Gimbal configuration to set which sysid/compid is in primary and secondary control.
    *
    * index = 1; label = sysid primary control; 
-   * Sysid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control
-   * (for missions where the own sysid is still unknown), -3: remove control if currently in control).
+   * Sysid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control).
    *
    * index = 2; label = compid primary control; 
-   * Compid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in
-   * control (for missions where the own sysid is still unknown), -3: remove control if currently in
-   * control).
+   * Compid for primary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control).
    *
    * index = 3; label = sysid secondary control; 
-   * Sysid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in
-   * control (for missions where the own sysid is still unknown), -3: remove control if currently in
-   * control).
+   * Sysid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control).
    *
    * index = 4; label = compid secondary control; 
-   * Compid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in
-   * control (for missions where the own sysid is still unknown), -3: remove control if currently in
-   * control).
+   * Compid for secondary control (0: no one in control, -1: leave unchanged, -2: set itself in control (for missions where the own sysid is still unknown), -3: remove control if currently in control).
    *
    * index = 7; label = Gimbal device ID; 
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavEnumEntry
   DO_GIMBAL_MANAGER_CONFIGURE(1_001u),
   /**
    * Start image capture sequence. CAMERA_IMAGE_CAPTURED must be emitted after each capture.
    *
-   *           Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6:
-   * autopilot-connected cameras, 7-255: MAVLink camera component ID.
-   *           It is needed in order to target specific cameras connected to the autopilot, or
-   * specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).
+   *           Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6: autopilot-connected cameras, 7-255: MAVLink camera component ID.
+   *           It is needed in order to target specific cameras connected to the autopilot, or specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).
    *           It is also needed to specify the target camera in missions.
    *
-   *           When used in a mission, an autopilot should execute the MAV_CMD for a specified local
-   * camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 =
-   * 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the
-   * command to zero).
+   *           When used in a mission, an autopilot should execute the MAV_CMD for a specified local camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 = 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the command to zero).
    *           If the param1 is 0 the autopilot should do both.
    *
    *           When sent in a command the target MAVLink address is set using target_component.
-   *           If addressed specifically to an autopilot: param1 should be used in the same way as
-   * it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera
-   * does not exist).
-   *           If addressed to a MAVLink camera, param 1 can be used to address all cameras (0), or
-   * to separately address 1 to 7 individual sensors. Other values should be NACKed with
-   * MAV_RESULT_DENIED.
-   *           If the command is broadcast (target_component is 0) then param 1 should be set to 0
-   * (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local
-   * cameras and forward the command to all channels.
+   *           If addressed specifically to an autopilot: param1 should be used in the same way as it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera does not exist).
+   *           If addressed to a MAVLink camera, param 1 can be used to address all cameras (0), or to separately address 1 to 7 individual sensors. Other values should be NACKed with MAV_RESULT_DENIED.
+   *           If the command is broadcast (target_component is 0) then param 1 should be set to 0 (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local cameras and forward the command to all channels.
    *         
    *
    * index = 1; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 2; label = Interval; units = s; 
-   * Desired elapsed time between two consecutive pictures (in seconds). Minimum values depend on
-   * hardware (typically greater than 2 seconds).
+   * Desired elapsed time between two consecutive pictures (in seconds). Minimum values depend on hardware (typically greater than 2 seconds).
    *
    * index = 3; label = Total Images; 
    * Total number of images to capture. 0 to capture forever/until MAV_CMD_IMAGE_STOP_CAPTURE.
    *
    * index = 4; label = Sequence Number; 
-   * Capture sequence number starting from 1. This is only valid for single-capture (param3 == 1),
-   * otherwise set to 0. Increment the capture ID for each capture command to prevent double captures
-   * when a command is re-transmitted.
+   * Capture sequence number starting from 1. This is only valid for single-capture (param3 == 1), otherwise set to 0. Increment the capture ID for each capture command to prevent double captures when a command is re-transmitted.
    *
    * index = 5; index = 6; index = 7; 
    */
@@ -2975,35 +2669,21 @@ public enum class MavCmd(
   /**
    * Stop image capture sequence.
    *
-   *           Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6:
-   * autopilot-connected cameras, 7-255: MAVLink camera component ID.
-   *           It is needed in order to target specific cameras connected to the autopilot, or
-   * specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).
+   *           Param1 (id) may be used to specify the target camera: 0: all cameras, 1 to 6: autopilot-connected cameras, 7-255: MAVLink camera component ID.
+   *           It is needed in order to target specific cameras connected to the autopilot, or specific sensors in a multi-sensor camera (neither of which have a distinct MAVLink component ID).
    *           It is also needed to specify the target camera in missions.
    *
-   *           When used in a mission, an autopilot should execute the MAV_CMD for a specified local
-   * camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 =
-   * 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the
-   * command to zero).
+   *           When used in a mission, an autopilot should execute the MAV_CMD for a specified local camera (param1 = 1-6), or resend it as a command if it is intended for a MAVLink camera (param1 = 7 - 255), setting the command's target_component as the param1 value (and setting param1 in the command to zero).
    *           If the param1 is 0 the autopilot should do both.
    *
    *           When sent in a command the target MAVLink address is set using target_component.
-   *           If addressed specifically to an autopilot: param1 should be used in the same way as
-   * it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera
-   * does not exist).
-   *           If addressed to a MAVLink camera, param1 can be used to address all cameras (0), or
-   * to separately address 1 to 7 individual sensors. Other values should be NACKed with
-   * MAV_RESULT_DENIED.
-   *           If the command is broadcast (target_component is 0) then param 1 should be set to 0
-   * (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local
-   * cameras and forward the command to all channels.
+   *           If addressed specifically to an autopilot: param1 should be used in the same way as it is for missions (though command should NACK with MAV_RESULT_DENIED if a specified local camera does not exist).
+   *           If addressed to a MAVLink camera, param1 can be used to address all cameras (0), or to separately address 1 to 7 individual sensors. Other values should be NACKed with MAV_RESULT_DENIED.
+   *           If the command is broadcast (target_component is 0) then param 1 should be set to 0 (any other value should be NACKED with MAV_RESULT_DENIED). An autopilot would trigger any local cameras and forward the command to all channels.
    *         
    *
    * index = 1; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 2; index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
@@ -3017,7 +2697,6 @@ public enum class MavCmd(
    *
    * index = 2; index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_CAMERA_IMAGE_CAPTURE(2_002u),
   /**
@@ -3033,16 +2712,12 @@ public enum class MavCmd(
    * 1 to pause triggering, but without switching the camera off or retracting it. -1 to ignore
    *
    * index = 4; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   DO_TRIGGER_CONTROL(2_003u),
   /**
-   * If the camera supports point visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_POINT is set), this
-   * command allows to initiate the tracking.
+   * If the camera supports point visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_POINT is set), this command allows to initiate the tracking.
    *
    * index = 1; label = Point x; 
    * Point to track x value (normalized 0..1, 0 is left, 1 is right).
@@ -3054,16 +2729,12 @@ public enum class MavCmd(
    * Point radius (normalized 0..1, 0 is one pixel, 1 is full image width).
    *
    * index = 4; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   CAMERA_TRACK_POINT(2_004u),
   /**
-   * If the camera supports rectangle visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE is
-   * set), this command allows to initiate the tracking.
+   * If the camera supports rectangle visual tracking (CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE is set), this command allows to initiate the tracking.
    *
    * index = 1; label = Top left corner x; 
    * Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right).
@@ -3078,10 +2749,7 @@ public enum class MavCmd(
    * Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom).
    *
    * index = 5; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   CAMERA_TRACK_RECTANGLE(2_005u),
@@ -3089,10 +2757,7 @@ public enum class MavCmd(
    * Stops ongoing tracking.
    *
    * index = 1; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   CAMERA_STOP_TRACKING(2_010u),
@@ -3103,14 +2768,10 @@ public enum class MavCmd(
    * Video Stream ID (0 for all streams)
    *
    * index = 2; label = Status Frequency; units = Hz; 
-   * Frequency CAMERA_CAPTURE_STATUS messages should be sent while recording (0 for no messages,
-   * otherwise frequency)
+   * Frequency CAMERA_CAPTURE_STATUS messages should be sent while recording (0 for no messages, otherwise frequency)
    *
    * index = 3; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 4; index = 5; index = 6; index = 7; 
    */
@@ -3123,10 +2784,7 @@ public enum class MavCmd(
    * Video Stream ID (0 for all streams)
    *
    * index = 2; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    *
    * index = 3; index = 4; index = 5; index = 6; index = 7; 
    */
@@ -3139,10 +2797,7 @@ public enum class MavCmd(
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    *
    * index = 2; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   VIDEO_START_STREAMING(2_502u),
@@ -3153,10 +2808,7 @@ public enum class MavCmd(
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    *
    * index = 2; label = Target Camera ID; 
-   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the
-   * autopilot, which don't have a distinct component id. 0: all cameras. This is used to target
-   * specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD
-   * is used in a mission.
+   * Target camera ID. 7 to 255: MAVLink camera component id. 1 to 6 for cameras attached to the autopilot, which don't have a distinct component id. 0: all cameras. This is used to target specific autopilot-connected cameras. It is also used to target specific cameras when the MAV_CMD is used in a mission.
    */
   @GeneratedMavEnumEntry
   VIDEO_STOP_STREAMING(2_503u),
@@ -3166,7 +2818,6 @@ public enum class MavCmd(
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_VIDEO_STREAM_INFORMATION(2_504u),
   /**
@@ -3175,7 +2826,6 @@ public enum class MavCmd(
    * index = 1; label = Stream ID; 
    * Video Stream ID (0 for all streams, 1 for first, 2 for second, etc.)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   REQUEST_VIDEO_STREAM_STATUS(2_505u),
   /**
@@ -3247,8 +2897,7 @@ public enum class MavCmd(
    * Request to start/stop transmitting over the high latency telemetry
    *
    * index = 1; label = Enable; 
-   * Start transmission over high latency telemetry (MAV_BOOL_FALSE: stop transmission). Values not
-   * equal to 0 or 1 are invalid.
+   * Start transmission over high latency telemetry (MAV_BOOL_FALSE: stop transmission). Values not equal to 0 or 1 are invalid.
    *
    * index = 2; 
    * Empty
@@ -3291,43 +2940,32 @@ public enum class MavCmd(
    * Request VTOL transition
    *
    * index = 1; label = State; 
-   * The target VTOL state. For normal transitions, only MAV_VTOL_STATE_MC and MAV_VTOL_STATE_FW can
-   * be used.
+   * The target VTOL state. For normal transitions, only MAV_VTOL_STATE_MC and MAV_VTOL_STATE_FW can be used.
    *
    * index = 2; label = Immediate; 
-   * Force immediate transition to the specified MAV_VTOL_STATE. 1: Force immediate, 0: normal
-   * transition. Can be used, for example, to trigger an emergency "Quadchute". Caution: Can be
-   * dangerous/damage vehicle, depending on autopilot implementation of this command.
+   * Force immediate transition to the specified MAV_VTOL_STATE. 1: Force immediate, 0: normal transition. Can be used, for example, to trigger an emergency "Quadchute". Caution: Can be dangerous/damage vehicle, depending on autopilot implementation of this command.
    */
   @GeneratedMavEnumEntry
   DO_VTOL_TRANSITION(3_000u),
   /**
-   * Request authorization to arm the vehicle to a external entity, the arm authorizer is
-   * responsible to request all data that is needs from the vehicle before authorize or deny the
-   * request.
-   * 		If approved the COMMAND_ACK message progress field should be set with period of time that
-   * this authorization is valid in seconds.
-   * 		If the authorization is denied COMMAND_ACK.result_param2 should be set with one of the
-   * reasons in ARM_AUTH_DENIED_REASON.
+   * Request authorization to arm the vehicle to a external entity, the arm authorizer is responsible to request all data that is needs from the vehicle before authorize or deny the request.
+   * 		If approved the COMMAND_ACK message progress field should be set with period of time that this authorization is valid in seconds.
+   * 		If the authorization is denied COMMAND_ACK.result_param2 should be set with one of the reasons in MAV_ARM_AUTH_DENIED_REASON.
    *         
    *
    * index = 1; label = System ID; 
-   * Vehicle system id, this way ground station can request arm authorization on behalf of any
-   * vehicle
+   * Vehicle system id, this way ground station can request arm authorization on behalf of any vehicle
    */
   @GeneratedMavEnumEntry
   ARM_AUTHORIZATION_REQUEST(3_001u),
   /**
-   * This command sets the submode to standard guided when vehicle is in guided mode. The vehicle
-   * holds position and altitude and the user can input the desired velocities along all three axes.
+   * This command sets the submode to standard guided when vehicle is in guided mode. The vehicle holds position and altitude and the user can input the desired velocities along all three axes.
    *                   
    */
   @GeneratedMavEnumEntry
   SET_GUIDED_SUBMODE_STANDARD(4_000u),
   /**
-   * This command sets submode circle when vehicle is in guided mode. Vehicle flies along a circle
-   * facing the center of the circle. The user can input the velocity along the circle and change the
-   * radius. If no input is given the vehicle will hold position.
+   * This command sets submode circle when vehicle is in guided mode. Vehicle flies along a circle facing the center of the circle. The user can input the velocity along the circle and change the radius. If no input is given the vehicle will hold position.
    *                   
    *
    * index = 1; label = Radius; units = m; 
@@ -3378,8 +3016,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   CONDITION_GATE(4_501u),
   /**
-   * Fence return point (there can only be one such point in a geofence definition). If rally points
-   * are supported they should be used instead.
+   * Fence return point (there can only be one such point in a geofence definition). If rally points are supported they should be used instead.
    *
    * index = 1; 
    * Reserved
@@ -3405,19 +3042,15 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_FENCE_RETURN_POINT(5_000u),
   /**
-   * Fence vertex for an inclusion polygon (the polygon must not be self-intersecting). The vehicle
-   * must stay within this area. Minimum of 3 vertices required.
-   *           The vertices for a polygon must be sent sequentially, each with param1 set to the
-   * total number of vertices in the polygon.
+   * Fence vertex for an inclusion polygon (the polygon must not be self-intersecting). The vehicle must stay within this area. Minimum of 3 vertices required.
+   *           The vertices for a polygon must be sent sequentially, each with param1 set to the total number of vertices in the polygon.
    *         
    *
    * index = 1; label = Vertex Count; 
-   * Polygon vertex count. This is the number of vertices in the current polygon (all vertices will
-   * have the same number).
+   * Polygon vertex count. This is the number of vertices in the current polygon (all vertices will have the same number).
    *
    * index = 2; label = Inclusion Group; 
-   * Vehicle must be inside ALL inclusion zones in a single group, vehicle must be inside at least
-   * one group, must be the same for all points in each polygon
+   * Vehicle must be inside ALL inclusion zones in a single group, vehicle must be inside at least one group, must be the same for all points in each polygon
    *
    * index = 3; 
    * Reserved
@@ -3437,15 +3070,12 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_FENCE_POLYGON_VERTEX_INCLUSION(5_001u),
   /**
-   * Fence vertex for an exclusion polygon (the polygon must not be self-intersecting). The vehicle
-   * must stay outside this area. Minimum of 3 vertices required.
-   *           The vertices for a polygon must be sent sequentially, each with param1 set to the
-   * total number of vertices in the polygon.
+   * Fence vertex for an exclusion polygon (the polygon must not be self-intersecting). The vehicle must stay outside this area. Minimum of 3 vertices required.
+   *           The vertices for a polygon must be sent sequentially, each with param1 set to the total number of vertices in the polygon.
    *         
    *
    * index = 1; label = Vertex Count; 
-   * Polygon vertex count. This is the number of vertices in the current polygon (all vertices will
-   * have the same number).
+   * Polygon vertex count. This is the number of vertices in the current polygon (all vertices will have the same number).
    *
    * index = 2; 
    * Reserved
@@ -3475,8 +3105,7 @@ public enum class MavCmd(
    * Radius.
    *
    * index = 2; label = Inclusion Group; 
-   * Vehicle must be inside ALL inclusion zones in a single group, vehicle must be inside at least
-   * one group
+   * Vehicle must be inside ALL inclusion zones in a single group, vehicle must be inside at least one group
    *
    * index = 3; 
    * Reserved
@@ -3550,11 +3179,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_RALLY_POINT(5_100u),
   /**
-   * Commands the vehicle to respond with a sequence of messages UAVCAN_NODE_INFO, one message per
-   * every UAVCAN node that is online. Note that some of the response messages can be lost, which the
-   * receiver can detect easily by checking whether every received UAVCAN_NODE_STATUS has a matching
-   * message UAVCAN_NODE_INFO received earlier; if not, this command should be sent again in order to
-   * request re-transmission of the node information messages.
+   * Commands the vehicle to respond with a sequence of messages UAVCAN_NODE_INFO, one message per every UAVCAN node that is online. Note that some of the response messages can be lost, which the receiver can detect easily by checking whether every received UAVCAN_NODE_STATUS has a matching message UAVCAN_NODE_INFO received earlier; if not, this command should be sent again in order to request re-transmission of the node information messages.
    *
    * index = 1; 
    * Reserved (set to 0)
@@ -3606,9 +3231,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_SET_SAFETY_SWITCH_STATE(5_300u),
   /**
-   * Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an
-   * Air Traffic Controller in controlled airspace. This starts the IDENT which is then typically held
-   * for 18 seconds by the hardware per the Mode A, C, and S transponder spec.
+   * Trigger the start of an ADSB-out IDENT. This should only be used when requested to do so by an Air Traffic Controller in controlled airspace. This starts the IDENT which is then typically held for 18 seconds by the hardware per the Mode A, C, and S transponder spec.
    *
    * index = 1; 
    * Reserved (set to 0)
@@ -3634,26 +3257,19 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_ADSB_OUT_IDENT(10_001u),
   /**
-   * Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the
-   * required release position and velocity.
+   * Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the required release position and velocity.
    *
    * index = 1; label = Operation Mode; 
-   * Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not
-   * execute it. 1: execute payload deploy immediately (rejecting further deploy commands during
-   * execution, but allowing abort). 2: add payload deploy to existing deployment list.
+   * Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not execute it. 1: execute payload deploy immediately (rejecting further deploy commands during execution, but allowing abort). 2: add payload deploy to existing deployment list.
    *
    * index = 2; label = Approach Vector; units = deg; 
-   * Desired approach vector in compass heading. A negative value indicates the system can define
-   * the approach vector at will.
+   * Desired approach vector in compass heading. A negative value indicates the system can define the approach vector at will.
    *
    * index = 3; label = Ground Speed; 
-   * Desired ground speed at release time. This can be overridden by the airframe in case it needs
-   * to meet minimum airspeed. A negative value indicates the system can define the ground speed at
-   * will.
+   * Desired ground speed at release time. This can be overridden by the airframe in case it needs to meet minimum airspeed. A negative value indicates the system can define the ground speed at will.
    *
    * index = 4; label = Altitude Clearance; units = m; 
-   * Minimum altitude clearance to the release position. A negative value indicates the system can
-   * define the clearance at will.
+   * Minimum altitude clearance to the release position. A negative value indicates the system can define the clearance at will.
    *
    * index = 5; label = Latitude; units = degE7; 
    * Latitude.
@@ -3664,15 +3280,13 @@ public enum class MavCmd(
    * index = 7; label = Altitude; units = m; 
    * Altitude (MSL)
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   PAYLOAD_PREPARE_DEPLOY(30_001u),
   /**
    * Control the payload deployment.
    *
    * index = 1; label = Operation Mode; 
-   * Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment
-   * mode. 100: delete first payload deployment request. 101: delete all payload deployment requests.
+   * Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deployment mode. 100: delete first payload deployment request. 101: delete all payload deployment requests.
    *
    * index = 2; 
    * Reserved
@@ -3692,13 +3306,10 @@ public enum class MavCmd(
    * index = 7; 
    * Reserved
    */
-  @Deprecated(message = "")
   @GeneratedMavEnumEntry
   PAYLOAD_CONTROL_DEPLOY(30_002u),
   /**
-   * Magnetometer calibration based on provided known yaw. This allows for fast calibration using
-   * WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and
-   * longitude are both zero then use the current vehicle location.
+   * Magnetometer calibration based on provided known yaw. This allows for fast calibration using WMM field tables in the vehicle, given only the known yaw of the vehicle. If Latitude and longitude are both zero then use the current vehicle location.
    *
    * index = 1; label = Yaw; units = deg; 
    * Yaw of vehicle in earth frame.
@@ -3750,21 +3361,13 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_WINCH(42_600u),
   /**
-   * Provide an external position estimate for use when dead-reckoning. This is meant to be used for
-   * occasional position resets that may be provided by a external system such as a remote pilot using
-   * landmarks over a video link.
+   * Provide an external position estimate for use when dead-reckoning. This is meant to be used for occasional position resets that may be provided by a external system such as a remote pilot using landmarks over a video link.
    *
    * index = 1; label = transmission_time; units = s; 
-   * Timestamp that this message was sent as a time in the transmitters time domain. The sender
-   * should wrap this time back to zero based on required timing accuracy for the application and the
-   * limitations of a 32 bit float. For example, wrapping at 10 hours would give approximately 1ms
-   * accuracy. Recipient must handle time wrap in any timing jitter correction applied to this field.
-   * Wrap rollover time should not be at not more than 250 seconds, which would give approximately 10
-   * microsecond accuracy.
+   * Timestamp that this message was sent as a time in the transmitters time domain. The sender should wrap this time back to zero based on required timing accuracy for the application and the limitations of a 32 bit float. For example, wrapping at 10 hours would give approximately 1ms accuracy. Recipient must handle time wrap in any timing jitter correction applied to this field. Wrap rollover time should not be at not more than 250 seconds, which would give approximately 10 microsecond accuracy.
    *
    * index = 2; label = processing_time; units = s; 
-   * The time spent in processing the sensor data that is the basis for this position. The recipient
-   * can use this to improve time alignment of the data. Set to zero if not known.
+   * The time spent in processing the sensor data that is the basis for this position. The recipient can use this to improve time alignment of the data. Set to zero if not known.
    *
    * index = 3; label = accuracy; 
    * estimated one standard deviation accuracy of the measurement. Set to NaN if not known.
@@ -3779,8 +3382,7 @@ public enum class MavCmd(
    * Longitude
    *
    * index = 7; label = Altitude; units = m; 
-   * Altitude, not used. Should be sent as NaN. May be supported in a future version of this
-   * message.
+   * Altitude, not used. Should be sent as NaN. May be supported in a future version of this message.
    */
   @GeneratedMavEnumEntry
   EXTERNAL_POSITION_ESTIMATE(43_003u),
@@ -3915,8 +3517,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   WAYPOINT_USER_5(31_004u),
   /**
-   * User defined spatial item. Ground Station will not show the Vehicle as flying through this
-   * item. Example: ROI item.
+   * User defined spatial item. Ground Station will not show the Vehicle as flying through this item. Example: ROI item.
    *
    * index = 1; 
    * User defined
@@ -3942,8 +3543,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   SPATIAL_USER_1(31_005u),
   /**
-   * User defined spatial item. Ground Station will not show the Vehicle as flying through this
-   * item. Example: ROI item.
+   * User defined spatial item. Ground Station will not show the Vehicle as flying through this item. Example: ROI item.
    *
    * index = 1; 
    * User defined
@@ -3969,8 +3569,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   SPATIAL_USER_2(31_006u),
   /**
-   * User defined spatial item. Ground Station will not show the Vehicle as flying through this
-   * item. Example: ROI item.
+   * User defined spatial item. Ground Station will not show the Vehicle as flying through this item. Example: ROI item.
    *
    * index = 1; 
    * User defined
@@ -3996,8 +3595,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   SPATIAL_USER_3(31_007u),
   /**
-   * User defined spatial item. Ground Station will not show the Vehicle as flying through this
-   * item. Example: ROI item.
+   * User defined spatial item. Ground Station will not show the Vehicle as flying through this item. Example: ROI item.
    *
    * index = 1; 
    * User defined
@@ -4023,8 +3621,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   SPATIAL_USER_4(31_008u),
   /**
-   * User defined spatial item. Ground Station will not show the Vehicle as flying through this
-   * item. Example: ROI item.
+   * User defined spatial item. Ground Station will not show the Vehicle as flying through this item. Example: ROI item.
    *
    * index = 1; 
    * User defined
@@ -4050,8 +3647,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   SPATIAL_USER_5(31_009u),
   /**
-   * User defined command. Ground Station will not show the Vehicle as flying through this item.
-   * Example: MAV_CMD_DO_SET_PARAMETER item.
+   * User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item.
    *
    * index = 1; 
    * User defined
@@ -4077,8 +3673,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   USER_1(31_010u),
   /**
-   * User defined command. Ground Station will not show the Vehicle as flying through this item.
-   * Example: MAV_CMD_DO_SET_PARAMETER item.
+   * User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item.
    *
    * index = 1; 
    * User defined
@@ -4104,8 +3699,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   USER_2(31_011u),
   /**
-   * User defined command. Ground Station will not show the Vehicle as flying through this item.
-   * Example: MAV_CMD_DO_SET_PARAMETER item.
+   * User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item.
    *
    * index = 1; 
    * User defined
@@ -4131,8 +3725,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   USER_3(31_012u),
   /**
-   * User defined command. Ground Station will not show the Vehicle as flying through this item.
-   * Example: MAV_CMD_DO_SET_PARAMETER item.
+   * User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item.
    *
    * index = 1; 
    * User defined
@@ -4158,8 +3751,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   USER_4(31_013u),
   /**
-   * User defined command. Ground Station will not show the Vehicle as flying through this item.
-   * Example: MAV_CMD_DO_SET_PARAMETER item.
+   * User defined command. Ground Station will not show the Vehicle as flying through this item. Example: MAV_CMD_DO_SET_PARAMETER item.
    *
    * index = 1; 
    * User defined
@@ -4185,8 +3777,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   USER_5(31_014u),
   /**
-   * Request forwarding of CAN packets from the given CAN bus to this component. CAN Frames are sent
-   * using CAN_FRAME and CANFD_FRAME messages
+   * Request forwarding of CAN packets from the given CAN bus to this component via this MAVLink channel. CAN Frames are sent using CAN_FRAME and CANFD_FRAME messages
    *
    * index = 1; label = bus; 
    * Bus number (0 to disable forwarding, 1 for first bus, 2 for 2nd bus, 3 for 3rd bus).
@@ -4231,6 +3822,7 @@ public enum class MavCmd(
       33u -> DO_FOLLOW_REPOSITION
       34u -> DO_ORBIT
       35u -> DO_FIGURE_EIGHT
+      36u -> NAV_ARC_WAYPOINT
       80u -> NAV_ROI
       81u -> NAV_PATHPLANNING
       82u -> NAV_SPLINE_WAYPOINT

@@ -32,13 +32,10 @@ import kotlin.Unit
  *
  * @param state ADS-B transponder status state flags
  * @param squawk Mode A code (typically 1200 [0x04B0] for VFR)
- * @param nicNacp Integrity and Accuracy of traffic reported as a 4-bit value for each field (NACp
- * 7:4, NIC 3:0) and encoded by Containment Radius (HPL) and Estimated Position Uncertainty (HFOM),
- * respectively
+ * @param nicNacp Integrity and Accuracy of traffic reported as a 4-bit value for each field (NACp 7:4, NIC 3:0) and encoded by Containment Radius (HPL) and Estimated Position Uncertainty (HFOM), respectively
  * @param boardtemp Board temperature in C
  * @param fault ADS-B transponder fault flags
- * @param flightId Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or
- * space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable.
+ * @param flightId Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable.
  */
 @GeneratedMavMessage(
   id = 10_008u,
@@ -56,8 +53,7 @@ public data class UavionixAdsbOutStatus(
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
   /**
-   * Integrity and Accuracy of traffic reported as a 4-bit value for each field (NACp 7:4, NIC 3:0)
-   * and encoded by Containment Radius (HPL) and Estimated Position Uncertainty (HFOM), respectively
+   * Integrity and Accuracy of traffic reported as a 4-bit value for each field (NACp 7:4, NIC 3:0) and encoded by Containment Radius (HPL) and Estimated Position Uncertainty (HFOM), respectively
    */
   @GeneratedMavField(type = "uint8_t")
   public val nicNacp: MavEnumValue<UavionixAdsbOutStatusNicNacp> = MavEnumValue.fromValue(0u),
@@ -72,8 +68,7 @@ public data class UavionixAdsbOutStatus(
   @GeneratedMavField(type = "uint8_t")
   public val fault: MavBitmaskValue<UavionixAdsbOutStatusFault> = MavBitmaskValue.fromValue(0u),
   /**
-   * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces
-   * (0x20) used as a trailing pad character, or when call sign is unavailable.
+   * Flight Identification: 8 ASCII characters, '0' through '9', 'A' through 'Z' or space. Spaces (0x20) used as a trailing pad character, or when call sign is unavailable.
    */
   @GeneratedMavField(type = "char[8]")
   public val flightId: String = "",
@@ -140,8 +135,7 @@ public data class UavionixAdsbOutStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

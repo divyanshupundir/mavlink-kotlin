@@ -37,19 +37,28 @@ public data class AoaSsa(
    * Timestamp (since boot or Unix epoch).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Angle of Attack.
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val aoa: Float = 0F,
   /**
    * Side Slip Angle.
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val ssa: Float = 0F,
 ) : MavMessage<AoaSsa> {
   override val instanceCompanion: MavMessage.MavCompanion<AoaSsa> = Companion
@@ -93,8 +102,7 @@ public data class AoaSsa(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AoaSsa =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AoaSsa = Builder().apply(builderAction).build()
   }
 
   public class Builder {

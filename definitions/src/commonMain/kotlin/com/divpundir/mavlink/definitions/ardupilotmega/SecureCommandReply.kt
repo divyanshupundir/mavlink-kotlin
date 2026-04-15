@@ -119,8 +119,7 @@ public data class SecureCommandReply(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SecureCommandReply =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SecureCommandReply = Builder().apply(builderAction).build()
   }
 
   public class Builder {

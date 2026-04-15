@@ -19,8 +19,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * This message is emitted as response to SCRIPT_REQUEST_LIST by the MAV to get the number of
- * mission scripts.
+ * This message is emitted as response to SCRIPT_REQUEST_LIST by the MAV to get the number of mission scripts.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -88,8 +87,7 @@ public data class ScriptCount(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptCount =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptCount = Builder().apply(builderAction).build()
   }
 
   public class Builder {

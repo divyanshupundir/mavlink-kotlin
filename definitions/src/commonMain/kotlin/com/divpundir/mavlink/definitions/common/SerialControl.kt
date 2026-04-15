@@ -30,10 +30,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Control a serial port. This can be used for raw access to an onboard serial peripheral such as a
- * GPS or telemetry radio. It is designed to make it possible to update the devices firmware via
- * MAVLink messages or change the devices settings. A message with zero bytes can be used to change
- * just the baudrate.
+ * Control a serial port. This can be used for raw access to an onboard serial peripheral such as a GPS or telemetry radio. It is designed to make it possible to update the devices firmware via MAVLink messages or change the devices settings. A message with zero bytes can be used to change just the baudrate.
  *
  * @param device Serial control device type.
  * @param flags Bitmap of serial control flags.
@@ -66,19 +63,28 @@ public data class SerialControl(
    * Timeout for reply data
    * units = ms
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "ms",
+  )
   public val timeout: UShort = 0u,
   /**
    * Baudrate of transfer. Zero means no change.
    * units = bits/s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bits/s",
+  )
   public val baudrate: UInt = 0u,
   /**
    * how many bytes in this transfer
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val count: UByte = 0u,
   /**
    * serial data
@@ -167,8 +173,7 @@ public data class SerialControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SerialControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

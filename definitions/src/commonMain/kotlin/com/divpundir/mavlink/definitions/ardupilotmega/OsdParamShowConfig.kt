@@ -106,8 +106,7 @@ public data class OsdParamShowConfig(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamShowConfig =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamShowConfig = Builder().apply(builderAction).build()
   }
 
   public class Builder {

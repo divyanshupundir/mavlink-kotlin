@@ -27,8 +27,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Information about the status of a video stream. It may be requested using
- * MAV_CMD_REQUEST_MESSAGE.
+ * Information about the status of a video stream. It may be requested using MAV_CMD_REQUEST_MESSAGE.
  *
  * @param streamId Video Stream ID (1 for first, 2 for second, etc.)
  * @param flags Bitmap of stream status flags
@@ -44,8 +43,7 @@ import kotlin.Unit
  * units = deg
  * @param hfov Horizontal Field of view
  * units = deg
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 270u,
@@ -66,41 +64,58 @@ public data class VideoStreamStatus(
    * Frame rate
    * units = Hz
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "Hz",
+  )
   public val framerate: Float = 0F,
   /**
    * Horizontal resolution
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+  )
   public val resolutionH: UShort = 0u,
   /**
    * Vertical resolution
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+  )
   public val resolutionV: UShort = 0u,
   /**
    * Bit rate
    * units = bits/s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bits/s",
+  )
   public val bitrate: UInt = 0u,
   /**
    * Video image rotation clockwise
    * units = deg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "deg",
+  )
   public val rotation: UShort = 0u,
   /**
    * Horizontal Field of view
    * units = deg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "deg",
+  )
   public val hfov: UShort = 0u,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -175,8 +190,7 @@ public data class VideoStreamStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): VideoStreamStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): VideoStreamStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

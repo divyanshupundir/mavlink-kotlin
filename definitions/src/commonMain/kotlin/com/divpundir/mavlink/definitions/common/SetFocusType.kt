@@ -18,8 +18,7 @@ public enum class SetFocusType(
   @GeneratedMavEnumEntry
   FOCUS_TYPE_STEP(0u),
   /**
-   * Continuous normalized focus in/out rate until stopped. Range -1..1, negative: in, positive: out
-   * towards infinity, 0 to stop focusing. Other values should be clipped to the range.
+   * Continuous normalized focus in/out rate until stopped. Range -1..1, negative: in, positive: out towards infinity, 0 to stop focusing. Other values should be clipped to the range.
    */
   @GeneratedMavEnumEntry
   FOCUS_TYPE_CONTINUOUS(1u),
@@ -29,9 +28,7 @@ public enum class SetFocusType(
   @GeneratedMavEnumEntry
   FOCUS_TYPE_RANGE(2u),
   /**
-   * Focus value in metres. Note that there is no message to get the valid focus range of the
-   * camera, so this can type can only be used for cameras where the range is known (implying that this
-   * cannot reliably be used in a GCS for an arbitrary camera).
+   * Focus value in metres. Note that there is no message to get the valid focus range of the camera, so this can type can only be used for cameras where the range is known (implying that this cannot reliably be used in a GCS for an arbitrary camera).
    */
   @GeneratedMavEnumEntry
   FOCUS_TYPE_METERS(3u),

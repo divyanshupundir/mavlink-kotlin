@@ -44,25 +44,37 @@ public data class AirspeedAutocal(
    * GPS velocity north.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * GPS velocity east.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * GPS velocity down.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
   /**
    * Differential pressure.
    * units = Pa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "Pa",
+  )
   public val diffPressure: Float = 0F,
   /**
    * Estimated to true airspeed ratio.
@@ -182,8 +194,7 @@ public data class AirspeedAutocal(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AirspeedAutocal =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AirspeedAutocal = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -74,8 +74,7 @@ public data class FlexifunctionCommandAck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionCommandAck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionCommandAck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

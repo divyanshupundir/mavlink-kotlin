@@ -25,12 +25,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Sent from autopilot to simulation. Hardware in the loop control outputs. Alternative to
- * HIL_ACTUATOR_CONTROLS.
+ * Sent from autopilot to simulation. Hardware in the loop control outputs. Alternative to HIL_ACTUATOR_CONTROLS.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param rollAilerons Control output -1 .. 1
  * @param pitchElevator Control output -1 .. 1
@@ -49,11 +46,13 @@ import kotlin.Unit
 )
 public data class HilControls(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Control output -1 .. 1
@@ -182,8 +181,7 @@ public data class HilControls(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HilControls =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilControls = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -35,22 +35,18 @@ import kotlin.collections.List
 
 /**
  * Information about a captured image. This is emitted every time a message is captured.
- *         MAV_CMD_REQUEST_MESSAGE can be used to (re)request this message for a specific sequence
- * number or range of sequence numbers:
- *         MAV_CMD_REQUEST_MESSAGE.param2 indicates the sequence number the first image to send, or
- * set to -1 to send the message for all sequence numbers.
+ *         MAV_CMD_REQUEST_MESSAGE can be used to (re)request this message for a specific sequence number or range of sequence numbers:
+ *         MAV_CMD_REQUEST_MESSAGE.param2 indicates the sequence number the first image to send, or set to -1 to send the message for all sequence numbers.
  *         MAV_CMD_REQUEST_MESSAGE.param3 is used to specify a range of messages to send:
  *         set to 0 (default) to send just the the message for the sequence number in param 2,
- *         set to -1 to send the message for the sequence number in param 2 and all the following
- * sequence numbers,
+ *         set to -1 to send the message for the sequence number in param 2 and all the following sequence numbers,
  *         set to the sequence number of the final message in the range.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param timeUtc Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
  * units = us
- * @param cameraId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id). Field name is usually camera_device_id.
+ * @param cameraId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id). Field name is usually camera_device_id.
  * @param lat Latitude where image was taken
  * units = degE7
  * @param lon Longitude where capture was taken
@@ -60,12 +56,9 @@ import kotlin.collections.List
  * @param relativeAlt Altitude above ground
  * units = mm
  * @param q Quaternion of camera orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
- * @param imageIndex Zero based index of this image (i.e. a new image will have index
- * CAMERA_CAPTURE_STATUS.image count -1)
- * @param captureResult Image was captured successfully (MAV_BOOL_TRUE). Values not equal to 0 or 1
- * are invalid.
- * @param fileUrl URL of image taken. Either local storage or http://foo.jpg if camera provides an
- * HTTP interface.
+ * @param imageIndex Zero based index of this image (i.e. a new image will have index CAMERA_CAPTURE_STATUS.image count -1)
+ * @param captureResult Image was captured successfully (MAV_BOOL_TRUE). Values not equal to 0 or 1 are invalid.
+ * @param fileUrl URL of image taken. Either local storage or http://foo.jpg if camera provides an HTTP interface.
  */
 @GeneratedMavMessage(
   id = 263u,
@@ -76,17 +69,23 @@ public data class CameraImageCaptured(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Timestamp (time since UNIX epoch) in UTC. 0 for unknown.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+    invalid = "0",
+  )
   public val timeUtc: ULong = 0uL,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id). Field name is usually camera_device_id.
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id). Field name is usually camera_device_id.
    */
   @GeneratedMavField(type = "uint8_t")
   public val cameraId: UByte = 0u,
@@ -94,25 +93,37 @@ public data class CameraImageCaptured(
    * Latitude where image was taken
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude where capture was taken
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude (MSL) where image was taken
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * Altitude above ground
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val relativeAlt: Int = 0,
   /**
    * Quaternion of camera orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
@@ -120,8 +131,7 @@ public data class CameraImageCaptured(
   @GeneratedMavField(type = "float[4]")
   public val q: List<Float> = emptyList(),
   /**
-   * Zero based index of this image (i.e. a new image will have index CAMERA_CAPTURE_STATUS.image
-   * count -1)
+   * Zero based index of this image (i.e. a new image will have index CAMERA_CAPTURE_STATUS.image count -1)
    */
   @GeneratedMavField(type = "int32_t")
   public val imageIndex: Int = 0,
@@ -131,8 +141,7 @@ public data class CameraImageCaptured(
   @GeneratedMavField(type = "int8_t")
   public val captureResult: MavBitmaskValue<MavBool> = MavBitmaskValue.fromValue(0u),
   /**
-   * URL of image taken. Either local storage or http://foo.jpg if camera provides an HTTP
-   * interface.
+   * URL of image taken. Either local storage or http://foo.jpg if camera provides an HTTP interface.
    */
   @GeneratedMavField(type = "char[205]")
   public val fileUrl: String = "",
@@ -213,8 +222,7 @@ public data class CameraImageCaptured(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraImageCaptured =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraImageCaptured = Builder().apply(builderAction).build()
   }
 
   public class Builder {

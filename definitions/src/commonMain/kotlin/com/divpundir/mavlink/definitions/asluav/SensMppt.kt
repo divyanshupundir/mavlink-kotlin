@@ -60,25 +60,37 @@ public data class SensMppt(
    *  MPPT last timestamp 
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val mpptTimestamp: ULong = 0uL,
   /**
    *  MPPT1 voltage 
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val mppt1Volt: Float = 0F,
   /**
    *  MPPT1 current 
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val mppt1Amp: Float = 0F,
   /**
    *  MPPT1 pwm 
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val mppt1Pwm: UShort = 0u,
   /**
    *  MPPT1 status 
@@ -89,19 +101,28 @@ public data class SensMppt(
    *  MPPT2 voltage 
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val mppt2Volt: Float = 0F,
   /**
    *  MPPT2 current 
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val mppt2Amp: Float = 0F,
   /**
    *  MPPT2 pwm 
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val mppt2Pwm: UShort = 0u,
   /**
    *  MPPT2 status 
@@ -112,19 +133,28 @@ public data class SensMppt(
    * MPPT3 voltage 
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+  )
   public val mppt3Volt: Float = 0F,
   /**
    *  MPPT3 current 
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+  )
   public val mppt3Amp: Float = 0F,
   /**
    *  MPPT3 pwm 
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val mppt3Pwm: UShort = 0u,
   /**
    *  MPPT3 status 
@@ -213,8 +243,7 @@ public data class SensMppt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensMppt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensMppt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

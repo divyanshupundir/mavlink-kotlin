@@ -57,7 +57,10 @@ public data class GpsRtk(
    * Time since boot of last baseline message received.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeLastBaselineMs: UInt = 0u,
   /**
    * Identification of connected RTK receiver.
@@ -73,7 +76,10 @@ public data class GpsRtk(
    * GPS Time of Week of last baseline
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val tow: UInt = 0u,
   /**
    * GPS-specific health report for RTK data.
@@ -84,7 +90,10 @@ public data class GpsRtk(
    * Rate of baseline messages being received by GPS
    * units = Hz
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "Hz",
+  )
   public val rtkRate: UByte = 0u,
   /**
    * Current number of sats used for RTK calculation.
@@ -95,25 +104,34 @@ public data class GpsRtk(
    * Coordinate system of baseline
    */
   @GeneratedMavField(type = "uint8_t")
-  public val baselineCoordsType: MavEnumValue<RtkBaselineCoordinateSystem> =
-      MavEnumValue.fromValue(0u),
+  public val baselineCoordsType:
+      MavEnumValue<RtkBaselineCoordinateSystem> = MavEnumValue.fromValue(0u),
   /**
    * Current baseline in ECEF x or NED north component.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val baselineAMm: Int = 0,
   /**
    * Current baseline in ECEF y or NED east component.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val baselineBMm: Int = 0,
   /**
    * Current baseline in ECEF z or NED down component.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val baselineCMm: Int = 0,
   /**
    * Current estimate of baseline accuracy.
@@ -210,8 +228,7 @@ public data class GpsRtk(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRtk =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRtk = Builder().apply(builderAction).build()
   }
 
   public class Builder {

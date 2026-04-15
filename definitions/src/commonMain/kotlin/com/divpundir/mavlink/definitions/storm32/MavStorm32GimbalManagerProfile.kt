@@ -6,8 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Gimbal manager profiles. Only standard profiles are defined. Any implementation can define its
- * own profile(s) in addition, and should use enum values > 16.
+ * Gimbal manager profiles. Only standard profiles are defined. Any implementation can define its own profile(s) in addition, and should use enum values > 16.
  */
 @GeneratedMavEnum
 public enum class MavStorm32GimbalManagerProfile(

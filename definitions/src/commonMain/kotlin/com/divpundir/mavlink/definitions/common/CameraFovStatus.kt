@@ -26,8 +26,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Information about the field of view of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE
- * command.
+ * Information about the field of view of a camera. Can be requested with a MAV_CMD_REQUEST_MESSAGE command.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -37,22 +36,18 @@ import kotlin.collections.List
  * units = degE7
  * @param altCamera Altitude (MSL) of camera (INT32_MAX if unknown).
  * units = mm
- * @param latImage Latitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not
- * intersecting with horizon).
+ * @param latImage Latitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting with horizon).
  * units = degE7
- * @param lonImage Longitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not
- * intersecting with horizon).
+ * @param lonImage Longitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting with horizon).
  * units = degE7
- * @param altImage Altitude (MSL) of center of image (INT32_MAX if unknown, INT32_MIN if at
- * infinity, not intersecting with horizon).
+ * @param altImage Altitude (MSL) of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting with horizon).
  * units = mm
  * @param q Quaternion of camera orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
  * @param hfov Horizontal field of view (NaN if unknown).
  * units = deg
  * @param vfov Vertical field of view (NaN if unknown).
  * units = deg
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 271u,
@@ -63,46 +58,70 @@ public data class CameraFovStatus(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Latitude of camera (INT32_MAX if unknown).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val latCamera: Int = 0,
   /**
    * Longitude of camera (INT32_MAX if unknown).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val lonCamera: Int = 0,
   /**
    * Altitude (MSL) of camera (INT32_MAX if unknown).
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+    invalid = "INT32_MAX",
+  )
   public val altCamera: Int = 0,
   /**
-   * Latitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting
-   * with horizon).
+   * Latitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting with horizon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val latImage: Int = 0,
   /**
-   * Longitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting
-   * with horizon).
+   * Longitude of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting with horizon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val lonImage: Int = 0,
   /**
-   * Altitude (MSL) of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not
-   * intersecting with horizon).
+   * Altitude (MSL) of center of image (INT32_MAX if unknown, INT32_MIN if at infinity, not intersecting with horizon).
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+    invalid = "INT32_MAX",
+  )
   public val altImage: Int = 0,
   /**
    * Quaternion of camera orientation (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
@@ -113,17 +132,24 @@ public data class CameraFovStatus(
    * Horizontal field of view (NaN if unknown).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+    invalid = "NaN",
+  )
   public val hfov: Float = 0F,
   /**
    * Vertical field of view (NaN if unknown).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+    invalid = "NaN",
+  )
   public val vfov: Float = 0F,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -203,8 +229,7 @@ public data class CameraFovStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraFovStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraFovStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

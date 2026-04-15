@@ -55,8 +55,7 @@ public enum class CameraCapFlags(
   @GeneratedMavEnumEntry
   HAS_BASIC_FOCUS(128u),
   /**
-   * Camera has video streaming capabilities (request VIDEO_STREAM_INFORMATION with
-   * MAV_CMD_REQUEST_MESSAGE for video streaming info)
+   * Camera has video streaming capabilities (request VIDEO_STREAM_INFORMATION with MAV_CMD_REQUEST_MESSAGE for video streaming info)
    */
   @GeneratedMavEnumEntry
   HAS_VIDEO_STREAM(256u),
@@ -76,14 +75,12 @@ public enum class CameraCapFlags(
   @GeneratedMavEnumEntry
   HAS_TRACKING_GEO_STATUS(2_048u),
   /**
-   * Camera supports absolute thermal range (request CAMERA_THERMAL_RANGE with
-   * MAV_CMD_REQUEST_MESSAGE).
+   * Camera supports absolute thermal range (request CAMERA_THERMAL_RANGE with MAV_CMD_REQUEST_MESSAGE).
    */
   @GeneratedMavEnumEntry
   HAS_THERMAL_RANGE(4_096u),
   /**
-   * Camera supports Moving Target Indicators (MTI) on the camera view (using
-   * MAV_CMD_CAMERA_START_MTI).
+   * Camera supports Moving Target Indicators (MTI) on the camera view (using MAV_CMD_CAMERA_START_MTI).
    */
   @WorkInProgress
   @GeneratedMavEnumEntry

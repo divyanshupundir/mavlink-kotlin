@@ -30,29 +30,22 @@ import kotlin.Unit
 
 /**
  * The global position, as returned by the Global Positioning System (GPS). This is
- *                 NOT the global position estimate of the system, but rather a RAW sensor value.
- * See message GLOBAL_POSITION_INT for the global position estimate.
+ *                 NOT the global position estimate of the system, but rather a RAW sensor value. See message GLOBAL_POSITION_INT for the global position estimate.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param fixType GPS fix type.
  * @param lat Latitude (WGS84, EGM96 ellipsoid)
  * units = degE7
  * @param lon Longitude (WGS84, EGM96 ellipsoid)
  * units = degE7
- * @param alt Altitude (MSL). Positive for up. Note that virtually all GPS modules provide the MSL
- * altitude in addition to the WGS84 altitude.
+ * @param alt Altitude (MSL). Positive for up. Note that virtually all GPS modules provide the MSL altitude in addition to the WGS84 altitude.
  * units = mm
- * @param eph GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to:
- * UINT16_MAX
- * @param epv GPS VDOP vertical dilution of position (unitless * 100). If unknown, set to:
- * UINT16_MAX
+ * @param eph GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
+ * @param epv GPS VDOP vertical dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
  * @param vel GPS ground speed. If unknown, set to: UINT16_MAX
  * units = cm/s
- * @param cog Course over ground (NOT heading, but direction of movement) in degrees * 100,
- * 0.0..359.99 degrees. If unknown, set to: UINT16_MAX
+ * @param cog Course over ground (NOT heading, but direction of movement) in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX
  * units = cdeg
  * @param satellitesVisible Number of satellites visible. If unknown, set to UINT8_MAX
  * @param altEllipsoid Altitude (above WGS84, EGM96 ellipsoid). Positive for up.
@@ -65,8 +58,7 @@ import kotlin.Unit
  * units = mm/s
  * @param hdgAcc Heading / track uncertainty
  * units = degE5
- * @param yaw Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX
- * if this GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
+ * @param yaw Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX if this GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
  * units = cdeg
  */
 @GeneratedMavMessage(
@@ -75,11 +67,13 @@ import kotlin.Unit
 )
 public data class GpsRawInt(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * GPS fix type.
@@ -90,48 +84,72 @@ public data class GpsRawInt(
    * Latitude (WGS84, EGM96 ellipsoid)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude (WGS84, EGM96 ellipsoid)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
-   * Altitude (MSL). Positive for up. Note that virtually all GPS modules provide the MSL altitude
-   * in addition to the WGS84 altitude.
+   * Altitude (MSL). Positive for up. Note that virtually all GPS modules provide the MSL altitude in addition to the WGS84 altitude.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * GPS HDOP horizontal dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val eph: UShort = 0u,
   /**
    * GPS VDOP vertical dilution of position (unitless * 100). If unknown, set to: UINT16_MAX
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    invalid = "UINT16_MAX",
+  )
   public val epv: UShort = 0u,
   /**
    * GPS ground speed. If unknown, set to: UINT16_MAX
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+    invalid = "UINT16_MAX",
+  )
   public val vel: UShort = 0u,
   /**
-   * Course over ground (NOT heading, but direction of movement) in degrees * 100, 0.0..359.99
-   * degrees. If unknown, set to: UINT16_MAX
+   * Course over ground (NOT heading, but direction of movement) in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+    invalid = "UINT16_MAX",
+  )
   public val cog: UShort = 0u,
   /**
    * Number of satellites visible. If unknown, set to UINT8_MAX
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val satellitesVisible: UByte = 0u,
   /**
    * Altitude (above WGS84, EGM96 ellipsoid). Positive for up.
@@ -140,6 +158,7 @@ public data class GpsRawInt(
   @GeneratedMavField(
     type = "int32_t",
     extension = true,
+    units = "mm",
   )
   public val altEllipsoid: Int = 0,
   /**
@@ -149,6 +168,7 @@ public data class GpsRawInt(
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    units = "mm",
   )
   public val hAcc: UInt = 0u,
   /**
@@ -158,6 +178,7 @@ public data class GpsRawInt(
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    units = "mm",
   )
   public val vAcc: UInt = 0u,
   /**
@@ -167,6 +188,7 @@ public data class GpsRawInt(
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    units = "mm/s",
   )
   public val velAcc: UInt = 0u,
   /**
@@ -176,16 +198,18 @@ public data class GpsRawInt(
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    units = "degE5",
   )
   public val hdgAcc: UInt = 0u,
   /**
-   * Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX if this
-   * GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
+   * Yaw in earth frame from north. Use 0 if this GPS does not provide yaw. Use UINT16_MAX if this GPS is configured to provide yaw and is currently unable to provide it. Use 36000 for north.
    * units = cdeg
    */
   @GeneratedMavField(
     type = "uint16_t",
     extension = true,
+    units = "cdeg",
+    invalid = "0",
   )
   public val yaw: UShort = 0u,
 ) : MavMessage<GpsRawInt> {
@@ -279,8 +303,7 @@ public data class GpsRawInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRawInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsRawInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

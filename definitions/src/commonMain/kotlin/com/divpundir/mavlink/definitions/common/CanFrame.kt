@@ -119,8 +119,7 @@ public data class CanFrame(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CanFrame =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CanFrame = Builder().apply(builderAction).build()
   }
 
   public class Builder {

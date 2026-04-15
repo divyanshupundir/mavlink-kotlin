@@ -12,7 +12,6 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8Array
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -28,7 +27,6 @@ import kotlin.collections.List
  * units = bytes
  * @param data Raw data (110 is enough for 12 satellites of RTCMv2)
  */
-@Deprecated(message = "")
 @GeneratedMavMessage(
   id = 123u,
   crcExtra = -6,
@@ -48,7 +46,10 @@ public data class GpsInjectData(
    * Data length
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val len: UByte = 0u,
   /**
    * Raw data (110 is enough for 12 satellites of RTCMv2)
@@ -101,8 +102,7 @@ public data class GpsInjectData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsInjectData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsInjectData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

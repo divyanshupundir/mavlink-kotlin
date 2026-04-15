@@ -6,7 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * MAV FTP opcodes: https://mavlink.io/en/services/ftp.html
+ * MAV FTP opcodes (may be used in FILE_TRANSFER_PROTOCOL). See https://mavlink.io/en/services/ftp.html.
  */
 @GeneratedMavEnum
 public enum class MavFtpOpcode(

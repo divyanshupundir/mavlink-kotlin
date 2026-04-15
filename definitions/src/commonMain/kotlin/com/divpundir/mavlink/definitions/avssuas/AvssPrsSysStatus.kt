@@ -23,8 +23,7 @@ import kotlin.Unit
  * @param timeBootMs Timestamp (time since PRS boot).
  * units = ms
  * @param errorStatus PRS error statuses
- * @param batteryStatus Estimated battery run-time without a remote connection and PRS battery
- * voltage
+ * @param batteryStatus Estimated battery run-time without a remote connection and PRS battery voltage
  * @param armStatus PRS arm statuses
  * @param chargeStatus PRS battery charge statuses
  */
@@ -37,7 +36,10 @@ public data class AvssPrsSysStatus(
    * Timestamp (time since PRS boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * PRS error statuses
@@ -109,8 +111,7 @@ public data class AvssPrsSysStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AvssPrsSysStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvssPrsSysStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

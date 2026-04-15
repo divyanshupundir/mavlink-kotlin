@@ -22,8 +22,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * The MCU status, giving MCU temperature and voltage. The min and max voltages are to allow for
- * detecting power supply instability.
+ * The MCU status, giving MCU temperature and voltage. The min and max voltages are to allow for detecting power supply instability.
  *
  * @param id MCU instance
  * @param mcuTemperature MCU Internal temperature
@@ -49,25 +48,37 @@ public data class McuStatus(
    * MCU Internal temperature
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cdegC",
+  )
   public val mcuTemperature: Short = 0,
   /**
    * MCU voltage
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val mcuVoltage: UShort = 0u,
   /**
    * MCU voltage minimum
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val mcuVoltageMin: UShort = 0u,
   /**
    * MCU voltage maximum
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val mcuVoltageMax: UShort = 0u,
 ) : MavMessage<McuStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<McuStatus> = Companion
@@ -119,8 +130,7 @@ public data class McuStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): McuStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): McuStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

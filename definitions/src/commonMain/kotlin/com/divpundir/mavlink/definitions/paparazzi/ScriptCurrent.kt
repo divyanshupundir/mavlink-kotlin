@@ -64,8 +64,7 @@ public data class ScriptCurrent(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptCurrent =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptCurrent = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -44,25 +44,37 @@ public data class ManualSetpoint(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Desired roll rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val roll: Float = 0F,
   /**
    * Desired pitch rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitch: Float = 0F,
   /**
    * Desired yaw rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yaw: Float = 0F,
   /**
    * Collective thrust, normalized to 0 .. 1
@@ -137,8 +149,7 @@ public data class ManualSetpoint(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ManualSetpoint =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ManualSetpoint = Builder().apply(builderAction).build()
   }
 
   public class Builder {

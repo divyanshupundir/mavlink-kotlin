@@ -23,8 +23,7 @@ public enum class PrecisionLandMode(
   @GeneratedMavEnumEntry
   OPPORTUNISTIC(1u),
   /**
-   * Use precision landing, searching for beacon if not found when land command accepted (land
-   * normally if beacon cannot be found).
+   * Use precision landing, searching for beacon if not found when land command accepted (land normally if beacon cannot be found).
    */
   @GeneratedMavEnumEntry
   REQUIRED(2u),

@@ -24,9 +24,7 @@ import kotlin.collections.List
 /**
  * Motion capture attitude and position
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param q Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
  * @param x X position (NED)
@@ -35,9 +33,7 @@ import kotlin.collections.List
  * units = m
  * @param z Z position (NED)
  * units = m
- * @param covariance Row-major representation of a pose 6x6 cross-covariance matrix upper right
- * triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries
- * are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+ * @param covariance Row-major representation of a pose 6x6 cross-covariance matrix upper right triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 138u,
@@ -45,11 +41,13 @@ import kotlin.collections.List
 )
 public data class AttPosMocap(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
@@ -60,28 +58,36 @@ public data class AttPosMocap(
    * X position (NED)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Y position (NED)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Z position (NED)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
-   * Row-major representation of a pose 6x6 cross-covariance matrix upper right triangle (states: x,
-   * y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW,
-   * etc.). If unknown, assign NaN value to first element in the array.
+   * Row-major representation of a pose 6x6 cross-covariance matrix upper right triangle (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
    */
   @GeneratedMavField(
     type = "float[21]",
     extension = true,
+    invalid = "[NaN:]",
   )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<AttPosMocap> {
@@ -137,8 +143,7 @@ public data class AttPosMocap(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AttPosMocap =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AttPosMocap = Builder().apply(builderAction).build()
   }
 
   public class Builder {

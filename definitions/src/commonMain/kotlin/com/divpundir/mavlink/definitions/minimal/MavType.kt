@@ -6,9 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * MAVLINK component type reported in HEARTBEAT message. Flight controllers must report the type of
- * the vehicle on which they are mounted (e.g. MAV_TYPE_OCTOROTOR). All other components must report a
- * value appropriate for their type (e.g. a camera must use MAV_TYPE_CAMERA).
+ * MAVLINK component type reported in HEARTBEAT message. Flight controllers must report the type of the vehicle on which they are mounted (e.g. MAV_TYPE_OCTOROTOR). All other components must report a value appropriate for their type (e.g. a camera must use MAV_TYPE_CAMERA).
  */
 @GeneratedMavEnum
 public enum class MavType(
@@ -110,39 +108,32 @@ public enum class MavType(
   @GeneratedMavEnumEntry
   ONBOARD_CONTROLLER(18u),
   /**
-   * Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note,
-   * value previously named MAV_TYPE_VTOL_DUOROTOR.
+   * Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR.
    */
   @GeneratedMavEnumEntry
   VTOL_TAILSITTER_DUOROTOR(19u),
   /**
-   * Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value
-   * previously named MAV_TYPE_VTOL_QUADROTOR.
+   * Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR.
    */
   @GeneratedMavEnumEntry
   VTOL_TAILSITTER_QUADROTOR(20u),
   /**
-   * Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to
-   * tilt (some) rotors to provide thrust in cruise flight.
+   * Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight.
    */
   @GeneratedMavEnumEntry
   VTOL_TILTROTOR(21u),
   /**
-   * VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay
-   * (nominally) horizontal in all flight phases.
+   * VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases.
    */
   @GeneratedMavEnumEntry
   VTOL_FIXEDROTOR(22u),
   /**
-   * Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for
-   * hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_TAILSITTER_DUOROTOR or
-   * MAV_TYPE_VTOL_TAILSITTER_QUADROTOR if appropriate.
+   * Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_TAILSITTER_DUOROTOR or MAV_TYPE_VTOL_TAILSITTER_QUADROTOR if appropriate.
    */
   @GeneratedMavEnumEntry
   VTOL_TAILSITTER(23u),
   /**
-   * Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any
-   * attached engine, can tilt between vertical and horizontal mode.
+   * Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode.
    */
   @GeneratedMavEnumEntry
   VTOL_TILTWING(24u),
@@ -242,15 +233,12 @@ public enum class MavType(
   @GeneratedMavEnumEntry
   GENERIC_MULTIROTOR(43u),
   /**
-   * Illuminator. An illuminator is a light source that is used for lighting up dark areas external
-   * to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the
-   * system itself, e.g. an indicator light).
+   * Illuminator. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light).
    */
   @GeneratedMavEnumEntry
   ILLUMINATOR(44u),
   /**
-   * Orbiter spacecraft. Includes satellites orbiting terrestrial and extra-terrestrial bodies.
-   * Follows NASA Spacecraft Classification.
+   * Orbiter spacecraft. Includes satellites orbiting terrestrial and extra-terrestrial bodies. Follows NASA Spacecraft Classification.
    */
   @GeneratedMavEnumEntry
   SPACECRAFT_ORBITER(45u),
@@ -260,9 +248,7 @@ public enum class MavType(
   @GeneratedMavEnumEntry
   GROUND_QUADRUPED(46u),
   /**
-   * VTOL hybrid of helicopter and autogyro. It has a main rotor for lift and separate propellers
-   * for forward flight. The rotor must be powered for hover but can autorotate in cruise flight. See:
-   * https://en.wikipedia.org/wiki/Gyrodyne
+   * VTOL hybrid of helicopter and autogyro. It has a main rotor for lift and separate propellers for forward flight. The rotor must be powered for hover but can autorotate in cruise flight. See: https://en.wikipedia.org/wiki/Gyrodyne
    */
   @GeneratedMavEnumEntry
   VTOL_GYRODYNE(47u),

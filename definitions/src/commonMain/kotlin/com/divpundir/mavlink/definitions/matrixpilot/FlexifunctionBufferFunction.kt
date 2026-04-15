@@ -28,8 +28,7 @@ import kotlin.collections.List
  * @param targetComponent Component ID
  * @param funcIndex Function index
  * @param funcCount Total count of functions
- * @param dataAddress Address in the flexifunction data, Set to 0xFFFF to use address in target
- * memory
+ * @param dataAddress Address in the flexifunction data, Set to 0xFFFF to use address in target memory
  * @param dataSize Size of the 
  * @param data Settings data
  */
@@ -131,8 +130,7 @@ public data class FlexifunctionBufferFunction(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionBufferFunction =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionBufferFunction = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -57,7 +57,10 @@ public data class FenceStatus(
    * Time (since boot) of last breach.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val breachTime: UInt = 0u,
   /**
    * Active action to prevent fence breach
@@ -122,8 +125,7 @@ public data class FenceStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FenceStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FenceStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

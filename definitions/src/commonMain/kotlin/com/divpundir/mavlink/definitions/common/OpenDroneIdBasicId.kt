@@ -22,20 +22,14 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data for filling the OpenDroneID Basic ID message. This and the below messages are primarily
- * meant for feeding data to/from an OpenDroneID implementation. E.g.
- * https://github.com/opendroneid/opendroneid-core-c. These messages are compatible with the ASTM F3411
- * Remote ID standard and the ASD-STAN prEN 4709-002 Direct Remote ID standard. Additional information
- * and usage of these messages is documented at https://mavlink.io/en/services/opendroneid.html.
+ * Data for filling the OpenDroneID Basic ID message. This and the below messages are primarily meant for feeding data to/from an OpenDroneID implementation. E.g. https://github.com/opendroneid/opendroneid-core-c. These messages are compatible with the ASTM F3411 Remote ID standard and the ASD-STAN prEN 4709-002 Direct Remote ID standard. Additional information and usage of these messages is documented at https://mavlink.io/en/services/opendroneid.html.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
  * @param idType Indicates the format for the uas_id field of this message.
  * @param uaType Indicates the type of UA (Unmanned Aircraft).
- * @param uasId UAS (Unmanned Aircraft System) ID following the format specified by id_type. Shall
- * be filled with nulls in the unused portion of the field.
+ * @param uasId UAS (Unmanned Aircraft System) ID following the format specified by id_type. Shall be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_900u,
@@ -53,8 +47,7 @@ public data class OpenDroneIdBasicId(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
@@ -69,8 +62,7 @@ public data class OpenDroneIdBasicId(
   @GeneratedMavField(type = "uint8_t")
   public val uaType: MavEnumValue<MavOdidUaType> = MavEnumValue.fromValue(0u),
   /**
-   * UAS (Unmanned Aircraft System) ID following the format specified by id_type. Shall be filled
-   * with nulls in the unused portion of the field.
+   * UAS (Unmanned Aircraft System) ID following the format specified by id_type. Shall be filled with nulls in the unused portion of the field.
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val uasId: List<UByte> = emptyList(),
@@ -134,8 +126,7 @@ public data class OpenDroneIdBasicId(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdBasicId =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdBasicId = Builder().apply(builderAction).build()
   }
 
   public class Builder {

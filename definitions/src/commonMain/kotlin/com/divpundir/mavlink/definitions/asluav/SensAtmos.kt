@@ -37,19 +37,28 @@ public data class SensAtmos(
    * Time since system boot
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    *  Ambient temperature
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val tempambient: Float = 0F,
   /**
    *  Relative humidity
    * units = %
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "%",
+  )
   public val humidity: Float = 0F,
 ) : MavMessage<SensAtmos> {
   override val instanceCompanion: MavMessage.MavCompanion<SensAtmos> = Companion
@@ -93,8 +102,7 @@ public data class SensAtmos(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensAtmos =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensAtmos = Builder().apply(builderAction).build()
   }
 
   public class Builder {

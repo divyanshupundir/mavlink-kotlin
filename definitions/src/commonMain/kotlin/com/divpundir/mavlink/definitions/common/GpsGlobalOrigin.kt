@@ -18,8 +18,7 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Publishes the GPS coordinates of the vehicle local origin (0,0,0) position. Emitted whenever a
- * new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
+ * Publishes the GPS coordinates of the vehicle local origin (0,0,0) position. Emitted whenever a new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
  *
  * @param latitude Latitude (WGS84)
  * units = degE7
@@ -27,9 +26,7 @@ import kotlin.Unit
  * units = degE7
  * @param altitude Altitude (MSL). Positive for up.
  * units = mm
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  */
 @GeneratedMavMessage(
@@ -41,28 +38,37 @@ public data class GpsGlobalOrigin(
    * Latitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val latitude: Int = 0,
   /**
    * Longitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val longitude: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val altitude: Int = 0,
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
   @GeneratedMavField(
     type = "uint64_t",
     extension = true,
+    units = "us",
   )
   public val timeUsec: ULong = 0uL,
 ) : MavMessage<GpsGlobalOrigin> {
@@ -110,8 +116,7 @@ public data class GpsGlobalOrigin(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsGlobalOrigin =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsGlobalOrigin = Builder().apply(builderAction).build()
   }
 
   public class Builder {

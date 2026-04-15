@@ -52,13 +52,20 @@ public data class LogEntry(
    * UTC timestamp of log since 1970, or 0 if not available
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+    invalid = "0",
+  )
   public val timeUtc: UInt = 0u,
   /**
    * Size of the log (may be approximate)
    * units = bytes
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes",
+  )
   public val size: UInt = 0u,
 ) : MavMessage<LogEntry> {
   override val instanceCompanion: MavMessage.MavCompanion<LogEntry> = Companion
@@ -110,8 +117,7 @@ public data class LogEntry(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LogEntry =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogEntry = Builder().apply(builderAction).build()
   }
 
   public class Builder {

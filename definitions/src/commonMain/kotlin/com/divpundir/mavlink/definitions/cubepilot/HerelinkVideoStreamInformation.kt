@@ -41,8 +41,7 @@ import kotlin.Unit
  * units = bits/s
  * @param rotation Video image rotation clockwise.
  * units = deg
- * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number
- * (UDP port ground station should listen to).
+ * @param uri Video stream URI (TCP or RTSP URI ground station should connect to) or port number (UDP port ground station should listen to).
  */
 @GeneratedMavMessage(
   id = 50_002u,
@@ -63,35 +62,49 @@ public data class HerelinkVideoStreamInformation(
    * Frame rate.
    * units = Hz
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "Hz",
+  )
   public val framerate: Float = 0F,
   /**
    * Horizontal resolution.
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+  )
   public val resolutionH: UShort = 0u,
   /**
    * Vertical resolution.
    * units = pix
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "pix",
+  )
   public val resolutionV: UShort = 0u,
   /**
    * Bit rate.
    * units = bits/s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bits/s",
+  )
   public val bitrate: UInt = 0u,
   /**
    * Video image rotation clockwise.
    * units = deg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "deg",
+  )
   public val rotation: UShort = 0u,
   /**
-   * Video stream URI (TCP or RTSP URI ground station should connect to) or port number (UDP port
-   * ground station should listen to).
+   * Video stream URI (TCP or RTSP URI ground station should connect to) or port number (UDP port ground station should listen to).
    */
   @GeneratedMavField(type = "char[230]")
   public val uri: String = "",
@@ -158,8 +171,7 @@ public data class HerelinkVideoStreamInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HerelinkVideoStreamInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HerelinkVideoStreamInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

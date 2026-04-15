@@ -45,43 +45,64 @@ public data class EkfExt(
    *  Time since system start
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    *  Magnitude of wind velocity (in lateral inertial plane)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val windspeed: Float = 0F,
   /**
    *  Wind heading angle from North
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val winddir: Float = 0F,
   /**
    *  Z (Down) component of inertial wind velocity
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val windz: Float = 0F,
   /**
    *  Magnitude of air velocity
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val airspeed: Float = 0F,
   /**
    *  Sideslip angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val beta: Float = 0F,
   /**
    *  Angle of attack
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val alpha: Float = 0F,
 ) : MavMessage<EkfExt> {
   override val instanceCompanion: MavMessage.MavCompanion<EkfExt> = Companion
@@ -141,8 +162,7 @@ public data class EkfExt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EkfExt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EkfExt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

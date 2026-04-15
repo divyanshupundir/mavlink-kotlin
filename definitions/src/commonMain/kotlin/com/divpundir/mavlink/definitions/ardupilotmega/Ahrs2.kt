@@ -42,37 +42,55 @@ public data class Ahrs2(
    * Roll angle.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch angle.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * Altitude (MSL).
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val altitude: Float = 0F,
   /**
    * Latitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lng: Int = 0,
 ) : MavMessage<Ahrs2> {
   override val instanceCompanion: MavMessage.MavCompanion<Ahrs2> = Companion
@@ -128,8 +146,7 @@ public data class Ahrs2(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Ahrs2 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Ahrs2 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

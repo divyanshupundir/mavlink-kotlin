@@ -56,25 +56,40 @@ public data class AutopilotStateForGimbalDeviceExt(
    * Timestamp (time since system boot).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeBootUs: ULong = 0uL,
   /**
    * Wind X speed in NED (North,Est, Down). NAN if unknown.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val windX: Float = 0F,
   /**
    * Wind Y speed in NED (North, East, Down). NAN if unknown.
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val windY: Float = 0F,
   /**
    * Correction angle due to wind. NaN if unknown.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+    invalid = "NaN",
+  )
   public val windCorrectionAngle: Float = 0F,
 ) : MavMessage<AutopilotStateForGimbalDeviceExt> {
   override val instanceCompanion: MavMessage.MavCompanion<AutopilotStateForGimbalDeviceExt> =
@@ -131,8 +146,7 @@ public data class AutopilotStateForGimbalDeviceExt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotStateForGimbalDeviceExt
-        = Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotStateForGimbalDeviceExt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

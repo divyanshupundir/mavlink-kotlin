@@ -20,8 +20,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data packet for images sent using the Image Transmission Protocol:
- * https://mavlink.io/en/services/image_transmission.html.
+ * Data packet for images sent using the Image Transmission Protocol: https://mavlink.io/en/services/image_transmission.html.
  *
  * @param seqnr sequence number (starting with 0 on every transmission)
  * @param data image data bytes
@@ -79,8 +78,7 @@ public data class EncapsulatedData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EncapsulatedData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EncapsulatedData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

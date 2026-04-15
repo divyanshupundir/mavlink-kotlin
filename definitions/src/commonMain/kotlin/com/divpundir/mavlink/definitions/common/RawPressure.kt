@@ -19,12 +19,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * The RAW pressure readings for the typical setup of one absolute pressure and one differential
- * pressure sensor. The sensor values should be the raw, UNSCALED ADC values.
+ * The RAW pressure readings for the typical setup of one absolute pressure and one differential pressure sensor. The sensor values should be the raw, UNSCALED ADC values.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param pressAbs Absolute pressure (raw)
  * @param pressDiff1 Differential pressure 1 (raw, 0 if nonexistent)
@@ -37,11 +34,13 @@ import kotlin.Unit
 )
 public data class RawPressure(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Absolute pressure (raw)
@@ -51,12 +50,18 @@ public data class RawPressure(
   /**
    * Differential pressure 1 (raw, 0 if nonexistent)
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "0",
+  )
   public val pressDiff1: Short = 0,
   /**
    * Differential pressure 2 (raw, 0 if nonexistent)
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "0",
+  )
   public val pressDiff2: Short = 0,
   /**
    * Raw Temperature measurement (raw)
@@ -113,8 +118,7 @@ public data class RawPressure(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RawPressure =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RawPressure = Builder().apply(builderAction).build()
   }
 
   public class Builder {

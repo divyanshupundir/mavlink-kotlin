@@ -28,11 +28,9 @@ import kotlin.Unit
  * @param session 0: stop, 1: start or keep it up //Session control e.g. show/hide lens.
  * @param zoomPos 1 to N //Zoom's absolute position (0 means ignore).
  * @param zoomStep -100 to 100 //Zooming step value to offset zoom from the current position.
- * @param focusLock 0: unlock focus or keep unlocked, 1: lock focus or keep locked, 3: re-lock
- * focus.
+ * @param focusLock 0: unlock focus or keep unlocked, 1: lock focus or keep locked, 3: re-lock focus.
  * @param shot 0: ignore, 1: shot or start filming.
- * @param commandId Command Identity (incremental loop: 0 to 255)//A command sent multiple times
- * will be executed or pooled just once.
+ * @param commandId Command Identity (incremental loop: 0 to 255)//A command sent multiple times will be executed or pooled just once.
  * @param extraParam Extra parameters enumeration (0 means ignore).
  * @param extraValue Correspondent value to given extra_param.
  */
@@ -77,8 +75,7 @@ public data class DigicamControl(
   @GeneratedMavField(type = "uint8_t")
   public val shot: UByte = 0u,
   /**
-   * Command Identity (incremental loop: 0 to 255)//A command sent multiple times will be executed
-   * or pooled just once.
+   * Command Identity (incremental loop: 0 to 255)//A command sent multiple times will be executed or pooled just once.
    */
   @GeneratedMavField(type = "uint8_t")
   public val commandId: UByte = 0u,
@@ -162,8 +159,7 @@ public data class DigicamControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DigicamControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DigicamControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

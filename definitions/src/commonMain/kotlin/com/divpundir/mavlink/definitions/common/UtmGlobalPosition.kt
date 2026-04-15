@@ -79,7 +79,10 @@ public data class UtmGlobalPosition(
    * Time of applicability of position (microseconds since UNIX epoch).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val time: ULong = 0uL,
   /**
    * Unique UAS ID.
@@ -90,85 +93,128 @@ public data class UtmGlobalPosition(
    * Latitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude (WGS84)
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * Altitude above ground
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val relativeAlt: Int = 0,
   /**
    * Ground X speed (latitude, positive north)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vx: Short = 0,
   /**
    * Ground Y speed (longitude, positive east)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vy: Short = 0,
   /**
    * Ground Z speed (altitude, positive down)
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val vz: Short = 0,
   /**
    * Horizontal position uncertainty (standard deviation)
    * units = mm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mm",
+  )
   public val hAcc: UShort = 0u,
   /**
    * Altitude uncertainty (standard deviation)
    * units = mm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mm",
+  )
   public val vAcc: UShort = 0u,
   /**
    * Speed uncertainty (standard deviation)
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+  )
   public val velAcc: UShort = 0u,
   /**
    * Next waypoint, latitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val nextLat: Int = 0,
   /**
    * Next waypoint, longitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val nextLon: Int = 0,
   /**
    * Next waypoint, altitude (WGS84)
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val nextAlt: Int = 0,
   /**
    * Time until next update. Set to 0 if unknown or in data driven mode.
    * units = cs
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cs",
+    invalid = "0",
+  )
   public val updateRate: UShort = 0u,
   /**
    * Flight state
@@ -288,8 +334,7 @@ public data class UtmGlobalPosition(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UtmGlobalPosition =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UtmGlobalPosition = Builder().apply(builderAction).build()
   }
 
   public class Builder {

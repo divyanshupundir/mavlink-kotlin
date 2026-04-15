@@ -52,67 +52,100 @@ public data class Simstate(
    * Roll angle.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch angle.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * X acceleration.
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val xacc: Float = 0F,
   /**
    * Y acceleration.
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val yacc: Float = 0F,
   /**
    * Z acceleration.
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val zgyro: Float = 0F,
   /**
    * Latitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude.
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lng: Int = 0,
 ) : MavMessage<Simstate> {
   override val instanceCompanion: MavMessage.MavCompanion<Simstate> = Companion
@@ -188,8 +221,7 @@ public data class Simstate(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Simstate =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Simstate = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -23,15 +23,11 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Message reporting the current status of a gimbal manager. This message should be broadcast at a
- * low regular rate (e.g. 1 Hz, may be increase momentarily to e.g. 5 Hz for a period of 1 sec after a
- * change).
+ * Message reporting the current status of a gimbal manager. This message should be broadcast at a low regular rate (e.g. 1 Hz, may be increase momentarily to e.g. 5 Hz for a period of 1 sec after a change).
  *
- * @param gimbalId Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager
- * is responsible for.
+ * @param gimbalId Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager is responsible for.
  * @param supervisor Client who is currently supervisor (0 = none).
- * @param deviceFlags Gimbal device flags currently applied. Same flags as reported by
- * GIMBAL_DEVICE_ATTITUDE_STATUS.
+ * @param deviceFlags Gimbal device flags currently applied. Same flags as reported by GIMBAL_DEVICE_ATTITUDE_STATUS.
  * @param managerFlags Gimbal manager flags currently applied.
  * @param profile Profile currently applied (0 = default).
  */
@@ -41,8 +37,7 @@ import kotlin.Unit
 )
 public data class Storm32GimbalManagerStatus(
   /**
-   * Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager is responsible
-   * for.
+   * Gimbal ID (component ID or 1-6 for non-MAVLink gimbal) that this gimbal manager is responsible for.
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalId: UByte = 0u,
@@ -60,8 +55,8 @@ public data class Storm32GimbalManagerStatus(
    * Gimbal manager flags currently applied.
    */
   @GeneratedMavField(type = "uint16_t")
-  public val managerFlags: MavBitmaskValue<MavStorm32GimbalManagerFlags> =
-      MavBitmaskValue.fromValue(0u),
+  public val managerFlags:
+      MavBitmaskValue<MavStorm32GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
    * Profile currently applied (0 = default).
    */
@@ -129,8 +124,7 @@ public data class Storm32GimbalManagerStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

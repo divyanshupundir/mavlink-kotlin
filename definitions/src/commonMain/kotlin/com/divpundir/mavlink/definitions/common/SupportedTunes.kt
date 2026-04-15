@@ -90,8 +90,7 @@ public data class SupportedTunes(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SupportedTunes =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SupportedTunes = Builder().apply(builderAction).build()
   }
 
   public class Builder {

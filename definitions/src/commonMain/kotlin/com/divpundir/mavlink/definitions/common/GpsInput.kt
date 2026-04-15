@@ -32,16 +32,12 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global
- * position estimate of the system.
+ * GPS sensor input message.  This is a raw sensor value sent by the GPS. This is NOT the global position estimate of the system.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param gpsId ID of the GPS for multiple GPS inputs
- * @param ignoreFlags Bitmap indicating which GPS input flags fields to ignore.  All other fields
- * must be provided.
+ * @param ignoreFlags Bitmap indicating which GPS input flags fields to ignore.  All other fields must be provided.
  * @param timeWeekMs GPS time (from start of GPS week)
  * units = ms
  * @param timeWeek GPS week number
@@ -67,8 +63,7 @@ import kotlin.Unit
  * @param vertAccuracy GPS vertical accuracy
  * units = m
  * @param satellitesVisible Number of satellites visible.
- * @param yaw Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for
- * north
+ * @param yaw Yaw of vehicle relative to Earth's North, zero means not available, use 36000 for north
  * units = cdeg
  */
 @GeneratedMavMessage(
@@ -77,11 +72,13 @@ import kotlin.Unit
 )
 public data class GpsInput(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * ID of the GPS for multiple GPS inputs
@@ -97,7 +94,10 @@ public data class GpsInput(
    * GPS time (from start of GPS week)
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeWeekMs: UInt = 0u,
   /**
    * GPS week number
@@ -113,65 +113,98 @@ public data class GpsInput(
    * Latitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude (MSL). Positive for up.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val alt: Float = 0F,
   /**
    * GPS HDOP horizontal dilution of position (unitless). If unknown, set to: UINT16_MAX
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "UINT16_MAX",
+  )
   public val hdop: Float = 0F,
   /**
    * GPS VDOP vertical dilution of position (unitless). If unknown, set to: UINT16_MAX
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "UINT16_MAX",
+  )
   public val vdop: Float = 0F,
   /**
    * GPS velocity in north direction in earth-fixed NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vn: Float = 0F,
   /**
    * GPS velocity in east direction in earth-fixed NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val ve: Float = 0F,
   /**
    * GPS velocity in down direction in earth-fixed NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vd: Float = 0F,
   /**
    * GPS speed accuracy
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val speedAccuracy: Float = 0F,
   /**
    * GPS horizontal accuracy
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val horizAccuracy: Float = 0F,
   /**
    * GPS vertical accuracy
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val vertAccuracy: Float = 0F,
   /**
    * Number of satellites visible.
@@ -185,6 +218,7 @@ public data class GpsInput(
   @GeneratedMavField(
     type = "uint16_t",
     extension = true,
+    units = "cdeg",
   )
   public val yaw: UShort = 0u,
 ) : MavMessage<GpsInput> {
@@ -295,8 +329,7 @@ public data class GpsInput(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GpsInput =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GpsInput = Builder().apply(builderAction).build()
   }
 
   public class Builder {

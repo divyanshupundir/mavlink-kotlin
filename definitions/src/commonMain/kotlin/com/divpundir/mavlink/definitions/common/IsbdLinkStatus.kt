@@ -24,18 +24,13 @@ import kotlin.Unit
 /**
  * Status of the Iridium SBD link.
  *
- * @param timestamp Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timestamp Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
- * @param lastHeartbeat Timestamp of the last successful sbd session. The receiving end can infer
- * timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+ * @param lastHeartbeat Timestamp of the last successful sbd session. The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param failedSessions Number of failed SBD sessions.
  * @param successfulSessions Number of successful SBD sessions.
- * @param signalQuality Signal quality equal to the number of bars displayed on the ISU signal
- * strength indicator. Range is 0 to 5, where 0 indicates no signal and 5 indicates maximum signal
- * strength.
+ * @param signalQuality Signal quality equal to the number of bars displayed on the ISU signal strength indicator. Range is 0 to 5, where 0 indicates no signal and 5 indicates maximum signal strength.
  * @param ringPending 1: Ring call pending, 0: No call pending.
  * @param txSessionPending 1: Transmission session pending, 0: No transmission session pending.
  * @param rxSessionPending 1: Receiving session pending, 0: No receiving session pending.
@@ -46,18 +41,22 @@ import kotlin.Unit
 )
 public data class IsbdLinkStatus(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
-   * Timestamp of the last successful sbd session. The receiving end can infer timestamp format
-   * (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp of the last successful sbd session. The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val lastHeartbeat: ULong = 0uL,
   /**
    * Number of failed SBD sessions.
@@ -70,8 +69,7 @@ public data class IsbdLinkStatus(
   @GeneratedMavField(type = "uint16_t")
   public val successfulSessions: UShort = 0u,
   /**
-   * Signal quality equal to the number of bars displayed on the ISU signal strength indicator.
-   * Range is 0 to 5, where 0 indicates no signal and 5 indicates maximum signal strength.
+   * Signal quality equal to the number of bars displayed on the ISU signal strength indicator. Range is 0 to 5, where 0 indicates no signal and 5 indicates maximum signal strength.
    */
   @GeneratedMavField(type = "uint8_t")
   public val signalQuality: UByte = 0u,
@@ -152,8 +150,7 @@ public data class IsbdLinkStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): IsbdLinkStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): IsbdLinkStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

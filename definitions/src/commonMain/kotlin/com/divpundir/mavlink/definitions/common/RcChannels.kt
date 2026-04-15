@@ -21,15 +21,11 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * The PPM values of the RC channels received. The standard PPM modulation is as follows: 1000
- * microseconds: 0%, 2000 microseconds: 100%.  A value of UINT16_MAX implies the channel is unused.
- * Individual receivers/transmitters might violate this specification.
+ * The PPM values of the RC channels received. The standard PPM modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%.  A value of UINT16_MAX implies the channel is unused. Individual receivers/transmitters might violate this specification.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
- * @param chancount Total number of RC channels being received. This can be larger than 18,
- * indicating that more channels are available but not given in this message. This value should be 0
- * when no RC channels are available.
+ * @param chancount Total number of RC channels being received. This can be larger than 18, indicating that more channels are available but not given in this message. This value should be 0 when no RC channels are available.
  * @param chan1Raw RC channel 1 value.
  * units = us
  * @param chan2Raw RC channel 2 value.
@@ -66,8 +62,7 @@ import kotlin.Unit
  * units = us
  * @param chan18Raw RC channel 18 value.
  * units = us
- * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254],
- * UINT8_MAX: invalid/unknown.
+ * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown.
  */
 @GeneratedMavMessage(
   id = 65u,
@@ -78,12 +73,13 @@ public data class RcChannels(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
-   * Total number of RC channels being received. This can be larger than 18, indicating that more
-   * channels are available but not given in this message. This value should be 0 when no RC channels
-   * are available.
+   * Total number of RC channels being received. This can be larger than 18, indicating that more channels are available but not given in this message. This value should be 0 when no RC channels are available.
    */
   @GeneratedMavField(type = "uint8_t")
   public val chancount: UByte = 0u,
@@ -91,115 +87,189 @@ public data class RcChannels(
    * RC channel 1 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan8Raw: UShort = 0u,
   /**
    * RC channel 9 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan9Raw: UShort = 0u,
   /**
    * RC channel 10 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan10Raw: UShort = 0u,
   /**
    * RC channel 11 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan11Raw: UShort = 0u,
   /**
    * RC channel 12 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan12Raw: UShort = 0u,
   /**
    * RC channel 13 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan13Raw: UShort = 0u,
   /**
    * RC channel 14 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan14Raw: UShort = 0u,
   /**
    * RC channel 15 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan15Raw: UShort = 0u,
   /**
    * RC channel 16 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan16Raw: UShort = 0u,
   /**
    * RC channel 17 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan17Raw: UShort = 0u,
   /**
    * RC channel 18 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan18Raw: UShort = 0u,
   /**
-   * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
-   * invalid/unknown.
+   * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannels> {
   override val instanceCompanion: MavMessage.MavCompanion<RcChannels> = Companion
@@ -315,8 +385,7 @@ public data class RcChannels(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RcChannels =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RcChannels = Builder().apply(builderAction).build()
   }
 
   public class Builder {

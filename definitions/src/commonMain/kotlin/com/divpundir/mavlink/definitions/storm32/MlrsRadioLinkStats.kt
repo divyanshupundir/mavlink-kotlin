@@ -24,48 +24,33 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Radio link statistics for a MAVLink RC receiver or transmitter and other links. Tx: ground-side
- * device, Rx: vehicle-side device.
- *         The message is normally emitted in regular time intervals upon each actual or expected
- * reception of an over-the-air data packet on the link.
- *         A MAVLink RC receiver should emit it shortly after it emits a RADIO_RC_CHANNELS message
- * (if it is emitting that message).
- *         Per default, rssi values are in MAVLink units: 0 represents weakest signal, 254
- * represents maximum signal, UINT8_MAX represents unknown.
- *         The RADIO_LINK_STATS_FLAGS_RSSI_DBM flag is set if the rssi units are negative dBm:
- * 1..254 correspond to -1..-254 dBm, 0 represents no reception, UINT8_MAX represents unknown.
- *         The target_system field should normally be set to the system id of the system the link is
- * connected to, typically the flight controller.
- *         The target_component field can normally be set to 0, so that all components of the system
- * can receive the message.
- *         Note: The frequency fields are extensions to ensure that they are located at the end of
- * the serialized payload and subject to MAVLink's trailing-zero trimming.
+ * Radio link statistics for a MAVLink RC receiver or transmitter and other links. Tx: ground-side device, Rx: vehicle-side device.
+ *         The message is normally emitted in regular time intervals upon each actual or expected reception of an over-the-air data packet on the link.
+ *         A MAVLink RC receiver should emit it shortly after it emits a RADIO_RC_CHANNELS message (if it is emitting that message).
+ *         Per default, rssi values are in MAVLink units: 0 represents weakest signal, 254 represents maximum signal, UINT8_MAX represents unknown.
+ *         The RADIO_LINK_STATS_FLAGS_RSSI_DBM flag is set if the rssi units are negative dBm: 1..254 correspond to -1..-254 dBm, 0 represents no reception, UINT8_MAX represents unknown.
+ *         The target_system field should normally be set to the system id of the system the link is connected to, typically the flight controller.
+ *         The target_component field can normally be set to 0, so that all components of the system can receive the message.
+ *         Note: The frequency fields are extensions to ensure that they are located at the end of the serialized payload and subject to MAVLink's trailing-zero trimming.
  *       
  *
  * @param targetSystem System ID (ID of target system, normally flight controller).
  * @param targetComponent Component ID (normally 0 for broadcast).
  * @param flags Radio link statistics flags.
- * @param rxLqRc Link quality of RC data stream from Tx to Rx. Values: 1..100, 0: no link
- * connection, UINT8_MAX: unknown.
+ * @param rxLqRc Link quality of RC data stream from Tx to Rx. Values: 1..100, 0: no link connection, UINT8_MAX: unknown.
  * units = c%
- * @param rxLqSer Link quality of serial MAVLink data stream from Tx to Rx. Values: 1..100, 0: no
- * link connection, UINT8_MAX: unknown.
+ * @param rxLqSer Link quality of serial MAVLink data stream from Tx to Rx. Values: 1..100, 0: no link connection, UINT8_MAX: unknown.
  * units = c%
  * @param rxRssi1 Rssi of antenna 1. 0: no reception, UINT8_MAX: unknown.
  * @param rxSnr1 Noise on antenna 1. Radio link dependent. INT8_MAX: unknown.
- * @param txLqSer Link quality of serial MAVLink data stream from Rx to Tx. Values: 1..100, 0: no
- * link connection, UINT8_MAX: unknown.
+ * @param txLqSer Link quality of serial MAVLink data stream from Rx to Tx. Values: 1..100, 0: no link connection, UINT8_MAX: unknown.
  * units = c%
  * @param txRssi1 Rssi of antenna 1. 0: no reception. UINT8_MAX: unknown.
  * @param txSnr1 Noise on antenna 1. Radio link dependent. INT8_MAX: unknown.
- * @param rxRssi2 Rssi of antenna 2. 0: no reception, UINT8_MAX: use rx_rssi1 if it is known else
- * unknown.
- * @param rxSnr2 Noise on antenna 2. Radio link dependent. INT8_MAX: use rx_snr1 if it is known else
- * unknown.
- * @param txRssi2 Rssi of antenna 2. 0: no reception. UINT8_MAX: use tx_rssi1 if it is known else
- * unknown.
- * @param txSnr2 Noise on antenna 2. Radio link dependent. INT8_MAX: use tx_snr1 if it is known else
- * unknown.
+ * @param rxRssi2 Rssi of antenna 2. 0: no reception, UINT8_MAX: use rx_rssi1 if it is known else unknown.
+ * @param rxSnr2 Noise on antenna 2. Radio link dependent. INT8_MAX: use rx_snr1 if it is known else unknown.
+ * @param txRssi2 Rssi of antenna 2. 0: no reception. UINT8_MAX: use tx_rssi1 if it is known else unknown.
+ * @param txSnr2 Noise on antenna 2. Radio link dependent. INT8_MAX: use tx_snr1 if it is known else unknown.
  * @param frequency1 Frequency on antenna1 in Hz. 0: unknown.
  * units = Hz
  * @param frequency2 Frequency on antenna2 in Hz. 0: unknown.
@@ -92,65 +77,98 @@ public data class MlrsRadioLinkStats(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<MlrsRadioLinkStatsFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Link quality of RC data stream from Tx to Rx. Values: 1..100, 0: no link connection, UINT8_MAX:
-   * unknown.
+   * Link quality of RC data stream from Tx to Rx. Values: 1..100, 0: no link connection, UINT8_MAX: unknown.
    * units = c%
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "c%",
+    invalid = "UINT8_MAX",
+  )
   public val rxLqRc: UByte = 0u,
   /**
-   * Link quality of serial MAVLink data stream from Tx to Rx. Values: 1..100, 0: no link
-   * connection, UINT8_MAX: unknown.
+   * Link quality of serial MAVLink data stream from Tx to Rx. Values: 1..100, 0: no link connection, UINT8_MAX: unknown.
    * units = c%
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "c%",
+    invalid = "UINT8_MAX",
+  )
   public val rxLqSer: UByte = 0u,
   /**
    * Rssi of antenna 1. 0: no reception, UINT8_MAX: unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val rxRssi1: UByte = 0u,
   /**
    * Noise on antenna 1. Radio link dependent. INT8_MAX: unknown.
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    invalid = "INT8_MAX",
+  )
   public val rxSnr1: Byte = 0,
   /**
-   * Link quality of serial MAVLink data stream from Rx to Tx. Values: 1..100, 0: no link
-   * connection, UINT8_MAX: unknown.
+   * Link quality of serial MAVLink data stream from Rx to Tx. Values: 1..100, 0: no link connection, UINT8_MAX: unknown.
    * units = c%
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "c%",
+    invalid = "UINT8_MAX",
+  )
   public val txLqSer: UByte = 0u,
   /**
    * Rssi of antenna 1. 0: no reception. UINT8_MAX: unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val txRssi1: UByte = 0u,
   /**
    * Noise on antenna 1. Radio link dependent. INT8_MAX: unknown.
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    invalid = "INT8_MAX",
+  )
   public val txSnr1: Byte = 0,
   /**
    * Rssi of antenna 2. 0: no reception, UINT8_MAX: use rx_rssi1 if it is known else unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val rxRssi2: UByte = 0u,
   /**
    * Noise on antenna 2. Radio link dependent. INT8_MAX: use rx_snr1 if it is known else unknown.
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    invalid = "INT8_MAX",
+  )
   public val rxSnr2: Byte = 0,
   /**
    * Rssi of antenna 2. 0: no reception. UINT8_MAX: use tx_rssi1 if it is known else unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val txRssi2: UByte = 0u,
   /**
    * Noise on antenna 2. Radio link dependent. INT8_MAX: use tx_snr1 if it is known else unknown.
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    invalid = "INT8_MAX",
+  )
   public val txSnr2: Byte = 0,
   /**
    * Frequency on antenna1 in Hz. 0: unknown.
@@ -159,6 +177,8 @@ public data class MlrsRadioLinkStats(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "Hz",
+    invalid = "0",
   )
   public val frequency1: Float = 0F,
   /**
@@ -168,6 +188,8 @@ public data class MlrsRadioLinkStats(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "Hz",
+    invalid = "0",
   )
   public val frequency2: Float = 0F,
 ) : MavMessage<MlrsRadioLinkStats> {
@@ -265,8 +287,7 @@ public data class MlrsRadioLinkStats(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MlrsRadioLinkStats =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MlrsRadioLinkStats = Builder().apply(builderAction).build()
   }
 
   public class Builder {

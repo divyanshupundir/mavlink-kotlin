@@ -27,15 +27,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame
- * (right-handed, Z-up). It  is designed as scaled integer message since the resolution of float is not
- * sufficient. NOTE: This message is intended for onboard networks / companion computers and
- * higher-bandwidth links and optimized for accuracy and completeness. Please use the
- * GLOBAL_POSITION_INT message for a minimal subset.
+ * The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up). It  is designed as scaled integer message since the resolution of float is not sufficient. NOTE: This message is intended for onboard networks / companion computers and higher-bandwidth links and optimized for accuracy and completeness. Please use the GLOBAL_POSITION_INT message for a minimal subset.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param estimatorType Class id of the estimator this estimate originated from.
  * @param lat Latitude
@@ -52,9 +46,7 @@ import kotlin.collections.List
  * units = m/s
  * @param vz Ground Z Speed (Altitude)
  * units = m/s
- * @param covariance Row-major representation of a 6x6 position and velocity 6x6 cross-covariance
- * matrix (states: lat, lon, alt, vx, vy, vz; first six entries are the first ROW, next six entries are
- * the second row, etc.). If unknown, assign NaN value to first element in the array.
+ * @param covariance Row-major representation of a 6x6 position and velocity 6x6 cross-covariance matrix (states: lat, lon, alt, vx, vy, vz; first six entries are the first ROW, next six entries are the second row, etc.). If unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 63u,
@@ -62,11 +54,13 @@ import kotlin.collections.List
 )
 public data class GlobalPositionIntCov(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Class id of the estimator this estimate originated from.
@@ -77,50 +71,72 @@ public data class GlobalPositionIntCov(
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude in meters above MSL
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val alt: Int = 0,
   /**
    * Altitude above ground
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+  )
   public val relativeAlt: Int = 0,
   /**
    * Ground X Speed (Latitude)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * Ground Y Speed (Longitude)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * Ground Z Speed (Altitude)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
   /**
-   * Row-major representation of a 6x6 position and velocity 6x6 cross-covariance matrix (states:
-   * lat, lon, alt, vx, vy, vz; first six entries are the first ROW, next six entries are the second
-   * row, etc.). If unknown, assign NaN value to first element in the array.
+   * Row-major representation of a 6x6 position and velocity 6x6 cross-covariance matrix (states: lat, lon, alt, vx, vy, vz; first six entries are the first ROW, next six entries are the second row, etc.). If unknown, assign NaN value to first element in the array.
    */
-  @GeneratedMavField(type = "float[36]")
+  @GeneratedMavField(
+    type = "float[36]",
+    invalid = "[NaN:]",
+  )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<GlobalPositionIntCov> {
   override val instanceCompanion: MavMessage.MavCompanion<GlobalPositionIntCov> = Companion
@@ -195,8 +211,7 @@ public data class GlobalPositionIntCov(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalPositionIntCov =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalPositionIntCov = Builder().apply(builderAction).build()
   }
 
   public class Builder {

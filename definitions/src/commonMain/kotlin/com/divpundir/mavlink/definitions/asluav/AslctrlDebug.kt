@@ -169,8 +169,7 @@ public data class AslctrlDebug(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AslctrlDebug =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AslctrlDebug = Builder().apply(builderAction).build()
   }
 
   public class Builder {

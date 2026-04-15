@@ -74,8 +74,7 @@ public data class LogErase(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LogErase =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogErase = Builder().apply(builderAction).build()
   }
 
   public class Builder {

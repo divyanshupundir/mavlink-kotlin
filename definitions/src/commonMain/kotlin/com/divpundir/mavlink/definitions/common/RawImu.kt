@@ -22,13 +22,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * The RAW IMU readings for a 9DOF sensor, which is identified by the id (default IMU1). This
- * message should always contain the true raw values without any scaling to allow data capture and
- * system debugging.
+ * The RAW IMU readings for a 9DOF sensor, which is identified by the id (default IMU1). This message should always contain the true raw values without any scaling to allow data capture and system debugging.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param xacc X acceleration (raw)
  * @param yacc Y acceleration (raw)
@@ -39,10 +35,8 @@ import kotlin.Unit
  * @param xmag X Magnetic field (raw)
  * @param ymag Y Magnetic field (raw)
  * @param zmag Z Magnetic field (raw)
- * @param id Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a
- * message with id=0)
- * @param temperature Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C
- * it must send 1 (0.01C).
+ * @param id Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
+ * @param temperature Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1 (0.01C).
  * units = cdegC
  */
 @GeneratedMavMessage(
@@ -51,11 +45,13 @@ import kotlin.Unit
 )
 public data class RawImu(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * X acceleration (raw)
@@ -103,8 +99,7 @@ public data class RawImu(
   @GeneratedMavField(type = "int16_t")
   public val zmag: Short = 0,
   /**
-   * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with
-   * id=0)
+   * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -112,13 +107,13 @@ public data class RawImu(
   )
   public val id: UByte = 0u,
   /**
-   * Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1
-   * (0.01C).
+   * Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1 (0.01C).
    * units = cdegC
    */
   @GeneratedMavField(
     type = "int16_t",
     extension = true,
+    units = "cdegC",
   )
   public val temperature: Short = 0,
 ) : MavMessage<RawImu> {
@@ -197,8 +192,7 @@ public data class RawImu(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RawImu =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RawImu = Builder().apply(builderAction).build()
   }
 
   public class Builder {

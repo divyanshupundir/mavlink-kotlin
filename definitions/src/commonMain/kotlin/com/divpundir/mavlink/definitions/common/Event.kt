@@ -25,10 +25,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Event message. Each new event from a particular component gets a new sequence number. The same
- * message might be sent multiple times if (re-)requested. Most events are broadcast, some can be
- * specific to a target component (as receivers keep track of the sequence for missed events, all
- * events need to be broadcast. Thus we use destination_component instead of target_component).
+ * Event message. Each new event from a particular component gets a new sequence number. The same message might be sent multiple times if (re-)requested. Most events are broadcast, some can be specific to a target component (as receivers keep track of the sequence for missed events, all events need to be broadcast. Thus we use destination_component instead of target_component).
  *
  * @param destinationComponent Component ID
  * @param destinationSystem System ID
@@ -36,9 +33,7 @@ import kotlin.collections.List
  * @param eventTimeBootMs Timestamp (time since system boot when the event happened).
  * units = ms
  * @param sequence Sequence number.
- * @param logLevels Log levels: 4 bits MSB: internal (for logging purposes), 4 bits LSB: external.
- * Levels: Emergency = 0, Alert = 1, Critical = 2, Error = 3, Warning = 4, Notice = 5, Info = 6, Debug
- * = 7, Protocol = 8, Disabled = 9
+ * @param logLevels Log levels: 4 bits MSB: internal (for logging purposes), 4 bits LSB: external. Levels: Emergency = 0, Alert = 1, Critical = 2, Error = 3, Warning = 4, Notice = 5, Info = 6, Debug = 7, Protocol = 8, Disabled = 9
  * @param arguments Arguments (depend on event ID).
  */
 @WorkInProgress
@@ -66,7 +61,10 @@ public data class Event(
    * Timestamp (time since system boot when the event happened).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val eventTimeBootMs: UInt = 0u,
   /**
    * Sequence number.
@@ -74,9 +72,7 @@ public data class Event(
   @GeneratedMavField(type = "uint16_t")
   public val sequence: UShort = 0u,
   /**
-   * Log levels: 4 bits MSB: internal (for logging purposes), 4 bits LSB: external. Levels:
-   * Emergency = 0, Alert = 1, Critical = 2, Error = 3, Warning = 4, Notice = 5, Info = 6, Debug = 7,
-   * Protocol = 8, Disabled = 9
+   * Log levels: 4 bits MSB: internal (for logging purposes), 4 bits LSB: external. Levels: Emergency = 0, Alert = 1, Critical = 2, Error = 3, Warning = 4, Notice = 5, Info = 6, Debug = 7, Protocol = 8, Disabled = 9
    */
   @GeneratedMavField(type = "uint8_t")
   public val logLevels: UByte = 0u,
@@ -143,8 +139,7 @@ public data class Event(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Event =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Event = Builder().apply(builderAction).build()
   }
 
   public class Builder {

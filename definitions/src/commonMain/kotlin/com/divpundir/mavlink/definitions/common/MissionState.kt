@@ -8,8 +8,7 @@ import kotlin.UInt
 /**
  *
  *         States of the mission state machine.
- *         Note that these states are independent of whether the mission is in a mode that can
- * execute mission items or not (is suspended).
+ *         Note that these states are independent of whether the mission is in a mode that can execute mission items or not (is suspended).
  *         They may not all be relevant on all vehicles.
  *       
  */
@@ -28,8 +27,7 @@ public enum class MissionState(
   @GeneratedMavEnumEntry
   NO_MISSION(1u),
   /**
-   * Mission has not started. This is the case after a mission has uploaded but not yet started
-   * executing.
+   * Mission has not started. This is the case after a mission has uploaded but not yet started executing.
    */
   @GeneratedMavEnumEntry
   NOT_STARTED(2u),

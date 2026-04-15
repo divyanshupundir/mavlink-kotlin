@@ -94,8 +94,7 @@ public data class SerialUdbExtraF5(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF5 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SerialUdbExtraF5 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

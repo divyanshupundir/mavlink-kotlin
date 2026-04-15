@@ -18,10 +18,8 @@ import kotlin.Unit
 /**
  * Provides state for additional features
  *
- * @param vtolState The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not
- * in VTOL configuration.
- * @param landedState The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is
- * unknown.
+ * @param vtolState The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not in VTOL configuration.
+ * @param landedState The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown.
  */
 @GeneratedMavMessage(
   id = 245u,
@@ -29,8 +27,7 @@ import kotlin.Unit
 )
 public data class ExtendedSysState(
   /**
-   * The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not in VTOL
-   * configuration.
+   * The VTOL state if applicable. Is set to MAV_VTOL_STATE_UNDEFINED if UAV is not in VTOL configuration.
    */
   @GeneratedMavField(type = "uint8_t")
   public val vtolState: MavEnumValue<MavVtolState> = MavEnumValue.fromValue(0u),
@@ -83,8 +80,7 @@ public data class ExtendedSysState(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ExtendedSysState =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ExtendedSysState = Builder().apply(builderAction).build()
   }
 
   public class Builder {

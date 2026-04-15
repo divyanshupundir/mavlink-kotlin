@@ -27,13 +27,9 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * General status information of an UAVCAN node. Please refer to the definition of the UAVCAN
- * message "uavcan.protocol.NodeStatus" for the background information. The UAVCAN specification is
- * available at http://uavcan.org.
+ * General status information of an UAVCAN node. Please refer to the definition of the UAVCAN message "uavcan.protocol.NodeStatus" for the background information. The UAVCAN specification is available at http://uavcan.org.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param uptimeSec Time since the start-up of the node.
  * units = s
@@ -48,17 +44,22 @@ import kotlin.Unit
 )
 public data class UavcanNodeStatus(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Time since the start-up of the node.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val uptimeSec: UInt = 0u,
   /**
    * Generalized node health status.
@@ -140,8 +141,7 @@ public data class UavcanNodeStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavcanNodeStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavcanNodeStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

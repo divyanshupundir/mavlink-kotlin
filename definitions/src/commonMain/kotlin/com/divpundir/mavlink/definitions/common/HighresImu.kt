@@ -27,9 +27,7 @@ import kotlin.Unit
 /**
  * The IMU readings in SI units in NED body frame
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param xacc X acceleration
  * units = m/s/s
@@ -57,8 +55,7 @@ import kotlin.Unit
  * @param temperature Temperature
  * units = degC
  * @param fieldsUpdated Bitmap for fields that have updated since last message
- * @param id Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a
- * message with id=0)
+ * @param id Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
  */
 @GeneratedMavMessage(
   id = 105u,
@@ -66,77 +63,112 @@ import kotlin.Unit
 )
 public data class HighresImu(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * X acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val xacc: Float = 0F,
   /**
    * Y acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val yacc: Float = 0F,
   /**
    * Z acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val zgyro: Float = 0F,
   /**
    * X Magnetic field
    * units = gauss
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "gauss",
+  )
   public val xmag: Float = 0F,
   /**
    * Y Magnetic field
    * units = gauss
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "gauss",
+  )
   public val ymag: Float = 0F,
   /**
    * Z Magnetic field
    * units = gauss
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "gauss",
+  )
   public val zmag: Float = 0F,
   /**
    * Absolute pressure
    * units = hPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "hPa",
+  )
   public val absPressure: Float = 0F,
   /**
    * Differential pressure
    * units = hPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "hPa",
+  )
   public val diffPressure: Float = 0F,
   /**
    * Altitude calculated from pressure
@@ -147,7 +179,10 @@ public data class HighresImu(
    * Temperature
    * units = degC
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "degC",
+  )
   public val temperature: Float = 0F,
   /**
    * Bitmap for fields that have updated since last message
@@ -155,8 +190,7 @@ public data class HighresImu(
   @GeneratedMavField(type = "uint16_t")
   public val fieldsUpdated: MavBitmaskValue<HighresImuUpdatedFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with
-   * id=0)
+   * Id. Ids are numbered from 0 and map to IMUs numbered from 1 (e.g. IMU1 will have a message with id=0)
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -259,8 +293,7 @@ public data class HighresImu(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HighresImu =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HighresImu = Builder().apply(builderAction).build()
   }
 
   public class Builder {

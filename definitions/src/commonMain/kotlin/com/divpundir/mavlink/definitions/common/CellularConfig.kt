@@ -26,20 +26,13 @@ import kotlin.Unit
  *         This message is re-emitted as an acknowledgement by the modem.
  *         The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE.
  *
- * @param enableLte Enable/disable LTE. 0: setting unchanged, 1: disabled, 2: enabled. Current
- * setting when sent back as a response.
- * @param enablePin Enable/disable PIN on the SIM card. 0: setting unchanged, 1: disabled, 2:
- * enabled. Current setting when sent back as a response.
- * @param pin PIN sent to the SIM card. Blank when PIN is disabled. Empty when message is sent back
- * as a response.
- * @param newPin New PIN when changing the PIN. Blank to leave it unchanged. Empty when message is
- * sent back as a response.
- * @param apn Name of the cellular APN. Blank to leave it unchanged. Current APN when sent back as a
- * response.
- * @param puk Required PUK code in case the user failed to authenticate 3 times with the PIN. Empty
- * when message is sent back as a response.
- * @param roaming Enable/disable roaming. 0: setting unchanged, 1: disabled, 2: enabled. Current
- * setting when sent back as a response.
+ * @param enableLte Enable/disable LTE. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent back as a response.
+ * @param enablePin Enable/disable PIN on the SIM card. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent back as a response.
+ * @param pin PIN sent to the SIM card. Blank when PIN is disabled. Empty when message is sent back as a response.
+ * @param newPin New PIN when changing the PIN. Blank to leave it unchanged. Empty when message is sent back as a response.
+ * @param apn Name of the cellular APN. Blank to leave it unchanged. Current APN when sent back as a response.
+ * @param puk Required PUK code in case the user failed to authenticate 3 times with the PIN. Empty when message is sent back as a response.
+ * @param roaming Enable/disable roaming. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent back as a response.
  * @param response Message acceptance response (sent back to GS).
  */
 @GeneratedMavMessage(
@@ -48,44 +41,37 @@ import kotlin.Unit
 )
 public data class CellularConfig(
   /**
-   * Enable/disable LTE. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent
-   * back as a response.
+   * Enable/disable LTE. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent back as a response.
    */
   @GeneratedMavField(type = "uint8_t")
   public val enableLte: UByte = 0u,
   /**
-   * Enable/disable PIN on the SIM card. 0: setting unchanged, 1: disabled, 2: enabled. Current
-   * setting when sent back as a response.
+   * Enable/disable PIN on the SIM card. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent back as a response.
    */
   @GeneratedMavField(type = "uint8_t")
   public val enablePin: UByte = 0u,
   /**
-   * PIN sent to the SIM card. Blank when PIN is disabled. Empty when message is sent back as a
-   * response.
+   * PIN sent to the SIM card. Blank when PIN is disabled. Empty when message is sent back as a response.
    */
   @GeneratedMavField(type = "char[16]")
   public val pin: String = "",
   /**
-   * New PIN when changing the PIN. Blank to leave it unchanged. Empty when message is sent back as
-   * a response.
+   * New PIN when changing the PIN. Blank to leave it unchanged. Empty when message is sent back as a response.
    */
   @GeneratedMavField(type = "char[16]")
   public val newPin: String = "",
   /**
-   * Name of the cellular APN. Blank to leave it unchanged. Current APN when sent back as a
-   * response.
+   * Name of the cellular APN. Blank to leave it unchanged. Current APN when sent back as a response.
    */
   @GeneratedMavField(type = "char[32]")
   public val apn: String = "",
   /**
-   * Required PUK code in case the user failed to authenticate 3 times with the PIN. Empty when
-   * message is sent back as a response.
+   * Required PUK code in case the user failed to authenticate 3 times with the PIN. Empty when message is sent back as a response.
    */
   @GeneratedMavField(type = "char[16]")
   public val puk: String = "",
   /**
-   * Enable/disable roaming. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when
-   * sent back as a response.
+   * Enable/disable roaming. 0: setting unchanged, 1: disabled, 2: enabled. Current setting when sent back as a response.
    */
   @GeneratedMavField(type = "uint8_t")
   public val roaming: UByte = 0u,
@@ -159,8 +145,7 @@ public data class CellularConfig(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CellularConfig =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CellularConfig = Builder().apply(builderAction).build()
   }
 
   public class Builder {

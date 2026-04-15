@@ -74,8 +74,7 @@ public data class LogRequestEnd(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LogRequestEnd =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogRequestEnd = Builder().apply(builderAction).build()
   }
 
   public class Builder {

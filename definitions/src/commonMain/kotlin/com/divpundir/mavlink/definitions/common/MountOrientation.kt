@@ -12,7 +12,6 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt32
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Float
 import kotlin.Int
 import kotlin.UInt
@@ -29,12 +28,9 @@ import kotlin.Unit
  * units = deg
  * @param yaw Yaw relative to vehicle (set to NaN for invalid).
  * units = deg
- * @param yawAbsolute Yaw in absolute frame relative to Earth's North, north is 0 (set to NaN for
- * invalid).
+ * @param yawAbsolute Yaw in absolute frame relative to Earth's North, north is 0 (set to NaN for invalid).
  * units = deg
  */
-@Deprecated(message =
-    "This message is being superseded by MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW. The message can still be used to communicate with legacy gimbals implementing it.")
 @GeneratedMavMessage(
   id = 265u,
   crcExtra = 26,
@@ -44,25 +40,40 @@ public data class MountOrientation(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Roll in global frame (set to NaN for invalid).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+    invalid = "NaN",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch in global frame (set to NaN for invalid).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+    invalid = "NaN",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw relative to vehicle (set to NaN for invalid).
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+    invalid = "NaN",
+  )
   public val yaw: Float = 0F,
   /**
    * Yaw in absolute frame relative to Earth's North, north is 0 (set to NaN for invalid).
@@ -71,6 +82,8 @@ public data class MountOrientation(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "deg",
+    invalid = "NaN",
   )
   public val yawAbsolute: Float = 0F,
 ) : MavMessage<MountOrientation> {
@@ -122,8 +135,7 @@ public data class MountOrientation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MountOrientation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountOrientation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

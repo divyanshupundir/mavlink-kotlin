@@ -44,13 +44,19 @@ public data class SatcomLinkStatus(
    * Timestamp
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * Timestamp of the last successful sbd session
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val lastHeartbeat: ULong = 0uL,
   /**
    * Number of failed sessions
@@ -144,8 +150,7 @@ public data class SatcomLinkStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SatcomLinkStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SatcomLinkStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

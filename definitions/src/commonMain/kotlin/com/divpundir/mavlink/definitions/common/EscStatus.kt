@@ -26,14 +26,10 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * ESC information for higher rate streaming. Recommended streaming rate is ~10 Hz. Information that
- * changes more slowly is sent in ESC_INFO. It should typically only be streamed on high-bandwidth
- * links (i.e. to a companion computer).
+ * ESC information for higher rate streaming. Recommended streaming rate is ~10 Hz. Information that changes more slowly is sent in ESC_INFO. It should typically only be streamed on high-bandwidth links (i.e. to a companion computer).
  *
- * @param index Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the
- * number.
+ * @param index Index of the first ESC in this message (ESC are indexed in motor order). minValue = 0, maxValue = 60, increment = 4.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
  * units = us
  * @param rpm Reported motor RPM from each ESC (negative for reverse rotation).
  * units = rpm
@@ -49,34 +45,45 @@ import kotlin.collections.List
 )
 public data class EscStatus(
   /**
-   * Index of the first ESC in this message. minValue = 0, maxValue = 60, increment = 4.
+   * Index of the first ESC in this message (ESC are indexed in motor order). minValue = 0, maxValue = 60, increment = 4.
    */
   @GeneratedMavField(type = "uint8_t")
   public val index: UByte = 0u,
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Reported motor RPM from each ESC (negative for reverse rotation).
    * units = rpm
    */
-  @GeneratedMavField(type = "int32_t[4]")
+  @GeneratedMavField(
+    type = "int32_t[4]",
+    units = "rpm",
+  )
   public val rpm: List<Int> = emptyList(),
   /**
    * Voltage measured from each ESC.
    * units = V
    */
-  @GeneratedMavField(type = "float[4]")
+  @GeneratedMavField(
+    type = "float[4]",
+    units = "V",
+  )
   public val voltage: List<Float> = emptyList(),
   /**
    * Current measured from each ESC.
    * units = A
    */
-  @GeneratedMavField(type = "float[4]")
+  @GeneratedMavField(
+    type = "float[4]",
+    units = "A",
+  )
   public val current: List<Float> = emptyList(),
 ) : MavMessage<EscStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<EscStatus> = Companion
@@ -128,8 +135,7 @@ public data class EscStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EscStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EscStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

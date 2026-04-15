@@ -22,20 +22,12 @@ import kotlin.Unit
  *
  *         Time synchronization message.
  *         The message is used for both timesync requests and responses.
- *         The request is sent with `ts1=syncing component timestamp` and `tc1=0`, and may be
- * broadcast or targeted to a specific system/component.
- *         The response is sent with `ts1=syncing component timestamp` (mirror back unchanged), and
- * `tc1=responding component timestamp`, with the `target_system` and `target_component` set to ids of
- * the original request.
- *         Systems can determine if they are receiving a request or response based on the value of
- * `tc`.
- *         If the response has `target_system==target_component==0` the remote system has not been
- * updated to use the component IDs and cannot reliably timesync; the requester may report an error.
- *         Timestamps are UNIX Epoch time or time since system boot in nanoseconds (the timestamp
- * format can be inferred by checking for the magnitude of the number; generally it doesn't matter as
- * only the offset is used).
- *         The message sequence is repeated numerous times with results being filtered/averaged to
- * estimate the offset.
+ *         The request is sent with `ts1=syncing component timestamp` and `tc1=0`, and may be broadcast or targeted to a specific system/component.
+ *         The response is sent with `ts1=syncing component timestamp` (mirror back unchanged), and `tc1=responding component timestamp`, with the `target_system` and `target_component` set to ids of the original request.
+ *         Systems can determine if they are receiving a request or response based on the value of `tc`.
+ *         If the response has `target_system==target_component==0` the remote system has not been updated to use the component IDs and cannot reliably timesync; the requester may report an error.
+ *         Timestamps are UNIX Epoch time or time since system boot in nanoseconds (the timestamp format can be inferred by checking for the magnitude of the number; generally it doesn't matter as only the offset is used).
+ *         The message sequence is repeated numerous times with results being filtered/averaged to estimate the offset.
  *         See also: https://mavlink.io/en/services/timesync.html.
  *       
  *
@@ -43,10 +35,8 @@ import kotlin.Unit
  * units = ns
  * @param ts1 Time sync timestamp 2. Timestamp of syncing component (mirrored in response).
  * units = ns
- * @param targetSystem Target system id. Request: 0 (broadcast) or id of specific system. Response
- * must contain system id of the requesting component.
- * @param targetComponent Target component id. Request: 0 (broadcast) or id of specific component.
- * Response must contain component id of the requesting component.
+ * @param targetSystem Target system id. Request: 0 (broadcast) or id of specific system. Response must contain system id of the requesting component.
+ * @param targetComponent Target component id. Request: 0 (broadcast) or id of specific component. Response must contain component id of the requesting component.
  */
 @GeneratedMavMessage(
   id = 111u,
@@ -57,17 +47,22 @@ public data class Timesync(
    * Time sync timestamp 1. Syncing: 0. Responding: Timestamp of responding component.
    * units = ns
    */
-  @GeneratedMavField(type = "int64_t")
+  @GeneratedMavField(
+    type = "int64_t",
+    units = "ns",
+  )
   public val tc1: Long = 0L,
   /**
    * Time sync timestamp 2. Timestamp of syncing component (mirrored in response).
    * units = ns
    */
-  @GeneratedMavField(type = "int64_t")
+  @GeneratedMavField(
+    type = "int64_t",
+    units = "ns",
+  )
   public val ts1: Long = 0L,
   /**
-   * Target system id. Request: 0 (broadcast) or id of specific system. Response must contain system
-   * id of the requesting component.
+   * Target system id. Request: 0 (broadcast) or id of specific system. Response must contain system id of the requesting component.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -75,8 +70,7 @@ public data class Timesync(
   )
   public val targetSystem: UByte = 0u,
   /**
-   * Target component id. Request: 0 (broadcast) or id of specific component. Response must contain
-   * component id of the requesting component.
+   * Target component id. Request: 0 (broadcast) or id of specific component. Response must contain component id of the requesting component.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -127,8 +121,7 @@ public data class Timesync(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Timesync =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Timesync = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -27,12 +27,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Describe a trajectory using an array of up-to 5 waypoints in the local frame
- * (MAV_FRAME_LOCAL_NED).
+ * Describe a trajectory using an array of up-to 5 waypoints in the local frame (MAV_FRAME_LOCAL_NED).
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param validPoints Number of valid points (up-to 5 waypoints are possible)
  * @param posX X-coordinate of waypoint, set to NaN if not being used
@@ -66,11 +63,13 @@ import kotlin.collections.List
 )
 public data class TrajectoryRepresentationWaypoints(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Number of valid points (up-to 5 waypoints are possible)
@@ -81,72 +80,119 @@ public data class TrajectoryRepresentationWaypoints(
    * X-coordinate of waypoint, set to NaN if not being used
    * units = m
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m",
+    invalid = "[NaN]",
+  )
   public val posX: List<Float> = emptyList(),
   /**
    * Y-coordinate of waypoint, set to NaN if not being used
    * units = m
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m",
+    invalid = "[NaN]",
+  )
   public val posY: List<Float> = emptyList(),
   /**
    * Z-coordinate of waypoint, set to NaN if not being used
    * units = m
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m",
+    invalid = "[NaN]",
+  )
   public val posZ: List<Float> = emptyList(),
   /**
    * X-velocity of waypoint, set to NaN if not being used
    * units = m/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m/s",
+    invalid = "[NaN]",
+  )
   public val velX: List<Float> = emptyList(),
   /**
    * Y-velocity of waypoint, set to NaN if not being used
    * units = m/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m/s",
+    invalid = "[NaN]",
+  )
   public val velY: List<Float> = emptyList(),
   /**
    * Z-velocity of waypoint, set to NaN if not being used
    * units = m/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m/s",
+    invalid = "[NaN]",
+  )
   public val velZ: List<Float> = emptyList(),
   /**
    * X-acceleration of waypoint, set to NaN if not being used
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m/s/s",
+    invalid = "[NaN]",
+  )
   public val accX: List<Float> = emptyList(),
   /**
    * Y-acceleration of waypoint, set to NaN if not being used
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m/s/s",
+    invalid = "[NaN]",
+  )
   public val accY: List<Float> = emptyList(),
   /**
    * Z-acceleration of waypoint, set to NaN if not being used
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "m/s/s",
+    invalid = "[NaN]",
+  )
   public val accZ: List<Float> = emptyList(),
   /**
    * Yaw angle, set to NaN if not being used
    * units = rad
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "rad",
+    invalid = "[NaN]",
+  )
   public val posYaw: List<Float> = emptyList(),
   /**
    * Yaw rate, set to NaN if not being used
    * units = rad/s
    */
-  @GeneratedMavField(type = "float[5]")
+  @GeneratedMavField(
+    type = "float[5]",
+    units = "rad/s",
+    invalid = "[NaN]",
+  )
   public val velYaw: List<Float> = emptyList(),
   /**
    * MAV_CMD command id of waypoint, set to UINT16_MAX if not being used.
    */
-  @GeneratedMavField(type = "uint16_t[5]")
+  @GeneratedMavField(
+    type = "uint16_t[5]",
+    invalid = "[UINT16_MAX]",
+  )
   public val command: List<UShort> = emptyList(),
 ) : MavMessage<TrajectoryRepresentationWaypoints> {
   override val instanceCompanion: MavMessage.MavCompanion<TrajectoryRepresentationWaypoints> =
@@ -235,8 +281,7 @@ public data class TrajectoryRepresentationWaypoints(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TrajectoryRepresentationWaypoints
-        = Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TrajectoryRepresentationWaypoints = Builder().apply(builderAction).build()
   }
 
   public class Builder {

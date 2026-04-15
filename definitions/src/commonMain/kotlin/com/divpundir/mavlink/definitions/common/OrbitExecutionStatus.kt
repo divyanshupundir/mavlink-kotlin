@@ -24,21 +24,15 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Vehicle status report that is sent out while orbit execution is in progress (see
- * MAV_CMD_DO_ORBIT).
+ * Vehicle status report that is sent out while orbit execution is in progress (see MAV_CMD_DO_ORBIT).
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
- * @param radius Radius of the orbit circle. Positive values orbit clockwise, negative values orbit
- * counter-clockwise.
+ * @param radius Radius of the orbit circle. Positive values orbit clockwise, negative values orbit counter-clockwise.
  * units = m
  * @param frame The coordinate system of the fields: x, y, z.
- * @param x X coordinate of center point. Coordinate system depends on frame field: local = x
- * position in meters * 1e4, global = latitude in degrees * 1e7.
- * @param y Y coordinate of center point.  Coordinate system depends on frame field: local = x
- * position in meters * 1e4, global = latitude in degrees * 1e7.
+ * @param x X coordinate of center point. Coordinate system depends on frame field: local = x position in meters * 1e4, global = latitude in degrees * 1e7.
+ * @param y Y coordinate of center point.  Coordinate system depends on frame field: local = x position in meters * 1e4, global = latitude in degrees * 1e7.
  * @param z Altitude of center point. Coordinate system depends on frame field.
  * units = m
  */
@@ -48,18 +42,22 @@ import kotlin.Unit
 )
 public data class OrbitExecutionStatus(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
-   * Radius of the orbit circle. Positive values orbit clockwise, negative values orbit
-   * counter-clockwise.
+   * Radius of the orbit circle. Positive values orbit clockwise, negative values orbit counter-clockwise.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val radius: Float = 0F,
   /**
    * The coordinate system of the fields: x, y, z.
@@ -67,14 +65,12 @@ public data class OrbitExecutionStatus(
   @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
-   * X coordinate of center point. Coordinate system depends on frame field: local = x position in
-   * meters * 1e4, global = latitude in degrees * 1e7.
+   * X coordinate of center point. Coordinate system depends on frame field: local = x position in meters * 1e4, global = latitude in degrees * 1e7.
    */
   @GeneratedMavField(type = "int32_t")
   public val x: Int = 0,
   /**
-   * Y coordinate of center point.  Coordinate system depends on frame field: local = x position in
-   * meters * 1e4, global = latitude in degrees * 1e7.
+   * Y coordinate of center point.  Coordinate system depends on frame field: local = x position in meters * 1e4, global = latitude in degrees * 1e7.
    */
   @GeneratedMavField(type = "int32_t")
   public val y: Int = 0,
@@ -82,7 +78,10 @@ public data class OrbitExecutionStatus(
    * Altitude of center point. Coordinate system depends on frame field.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
 ) : MavMessage<OrbitExecutionStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<OrbitExecutionStatus> = Companion
@@ -141,8 +140,7 @@ public data class OrbitExecutionStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OrbitExecutionStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OrbitExecutionStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

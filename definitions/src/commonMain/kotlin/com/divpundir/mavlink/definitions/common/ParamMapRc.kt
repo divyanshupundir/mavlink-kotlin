@@ -29,19 +29,13 @@ import kotlin.Unit
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
- * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
- * applications have to provide 16+1 bytes storage if the ID is stored as string
- * @param paramIndex Parameter index. Send -1 to use the param ID field as identifier (else the
- * param id will be ignored), send -2 to disable any existing map for this rc_channel_index.
- * @param parameterRcChannelIndex Index of parameter RC channel. Not equal to the RC channel id.
- * Typically corresponds to a potentiometer-knob on the RC.
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramIndex Parameter index. Send -1 to use the param ID field as identifier (else the param id will be ignored), send -2 to disable any existing map for this rc_channel_index.
+ * @param parameterRcChannelIndex Index of parameter RC channel. Not equal to the RC channel id. Typically corresponds to a potentiometer-knob on the RC.
  * @param paramValue0 Initial parameter value
  * @param scale Scale, maps the RC range [-1, 1] to a parameter value
- * @param paramValueMin Minimum param value. The protocol does not define if this overwrites an
- * onboard minimum value. (Depends on implementation)
- * @param paramValueMax Maximum param value. The protocol does not define if this overwrites an
- * onboard maximum value. (Depends on implementation)
+ * @param paramValueMin Minimum param value. The protocol does not define if this overwrites an onboard minimum value. (Depends on implementation)
+ * @param paramValueMax Maximum param value. The protocol does not define if this overwrites an onboard maximum value. (Depends on implementation)
  */
 @GeneratedMavMessage(
   id = 50u,
@@ -59,21 +53,17 @@ public data class ParamMapRc(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
-   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
-   * provide 16+1 bytes storage if the ID is stored as string
+   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
   /**
-   * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be
-   * ignored), send -2 to disable any existing map for this rc_channel_index.
+   * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be ignored), send -2 to disable any existing map for this rc_channel_index.
    */
   @GeneratedMavField(type = "int16_t")
   public val paramIndex: Short = 0,
   /**
-   * Index of parameter RC channel. Not equal to the RC channel id. Typically corresponds to a
-   * potentiometer-knob on the RC.
+   * Index of parameter RC channel. Not equal to the RC channel id. Typically corresponds to a potentiometer-knob on the RC.
    */
   @GeneratedMavField(type = "uint8_t")
   public val parameterRcChannelIndex: UByte = 0u,
@@ -88,14 +78,12 @@ public data class ParamMapRc(
   @GeneratedMavField(type = "float")
   public val scale: Float = 0F,
   /**
-   * Minimum param value. The protocol does not define if this overwrites an onboard minimum value.
-   * (Depends on implementation)
+   * Minimum param value. The protocol does not define if this overwrites an onboard minimum value. (Depends on implementation)
    */
   @GeneratedMavField(type = "float")
   public val paramValueMin: Float = 0F,
   /**
-   * Maximum param value. The protocol does not define if this overwrites an onboard maximum value.
-   * (Depends on implementation)
+   * Maximum param value. The protocol does not define if this overwrites an onboard maximum value. (Depends on implementation)
    */
   @GeneratedMavField(type = "float")
   public val paramValueMax: Float = 0F,
@@ -165,8 +153,7 @@ public data class ParamMapRc(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamMapRc =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamMapRc = Builder().apply(builderAction).build()
   }
 
   public class Builder {

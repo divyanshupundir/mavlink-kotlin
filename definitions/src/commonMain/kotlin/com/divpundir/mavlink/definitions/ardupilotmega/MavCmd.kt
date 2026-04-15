@@ -114,10 +114,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_AUX_FUNCTION(218u),
   /**
-   * Mission command to wait for an altitude or downwards vertical speed. This is meant for high
-   * altitude balloon launches, allowing the aircraft to be idle until either an altitude is reached or
-   * a negative vertical speed is reached (indicating early balloon burst). The wiggle time is how
-   * often to wiggle the control surfaces to prevent them seizing up.
+   * Mission command to wait for an altitude or downwards vertical speed. This is meant for high altitude balloon launches, allowing the aircraft to be idle until either an altitude is reached or a negative vertical speed is reached (indicating early balloon burst). The wiggle time is how often to wiggle the control surfaces to prevent them seizing up.
    *
    * index = 1; label = Altitude; units = m; 
    * Altitude.
@@ -329,9 +326,7 @@ public enum class MavCmd(
    * Initiate a magnetometer calibration.
    *
    * index = 1; label = Magnetometers Bitmask; 
-   * Bitmask of magnetometers to calibrate. Use 0 to calibrate all sensors that can be started
-   * (sensors may not start if disabled, unhealthy, etc.). The command will NACK if calibration does
-   * not start for a sensor explicitly specified by the bitmask.
+   * Bitmask of magnetometers to calibrate. Use 0 to calibrate all sensors that can be started (sensors may not start if disabled, unhealthy, etc.). The command will NACK if calibration does not start for a sensor explicitly specified by the bitmask.
    *
    * index = 2; label = Retry on Failure; 
    * Automatically retry on failure (0=no retry, 1=retry).
@@ -406,8 +401,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   DO_CANCEL_MAG_CAL(42_426u),
   /**
-   * Used when doing accelerometer calibration. When sent to the GCS tells it what position to put
-   * the vehicle in. When sent to the vehicle says what position the vehicle is in.
+   * Used when doing accelerometer calibration. When sent to the GCS tells it what position to put the vehicle in. When sent to the vehicle says what position the vehicle is in.
    *
    * index = 1; label = Position; 
    * Position.
@@ -712,10 +706,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   NAV_ATTITUDE_TIME(42_703u),
   /**
-   * Change flight speed at a given rate. This slews the vehicle at a controllable rate between it's
-   * previous speed and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores these
-   * commands. Designed for onboard companion-computer command-and-control, not normally operator/GCS
-   * control.)
+   * Change flight speed at a given rate. This slews the vehicle at a controllable rate between it's previous speed and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores these commands. Designed for onboard companion-computer command-and-control, not normally operator/GCS control.)
    *
    * index = 1; label = speed type; 
    * Airspeed or groundspeed.
@@ -741,10 +732,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   GUIDED_CHANGE_SPEED(43_000u),
   /**
-   * Change target altitude at a given rate. This slews the vehicle at a controllable rate between
-   * it's previous altitude and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores
-   * these commands. Designed for onboard companion-computer command-and-control, not normally
-   * operator/GCS control.)
+   * Change target altitude at a given rate. This slews the vehicle at a controllable rate between it's previous altitude and the new one. (affects GUIDED only. Outside GUIDED, aircraft ignores these commands. Designed for onboard companion-computer command-and-control, not normally operator/GCS control.)
    *
    * index = 1; 
    * Empty
@@ -753,8 +741,7 @@ public enum class MavCmd(
    * Empty
    *
    * index = 3; label = alt rate-of-change; units = m/s; 
-   * Rate of change, toward new altitude. 0 for maximum rate change. Positive numbers only, as
-   * negative numbers will not converge on the new target alt.
+   * Rate of change, toward new altitude. 0 for maximum rate change. Positive numbers only, as negative numbers will not converge on the new target alt.
    *
    * index = 4; 
    * Empty
@@ -771,10 +758,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   GUIDED_CHANGE_ALTITUDE(43_001u),
   /**
-   * Change to target heading at a given rate, overriding previous heading/s. This slews the vehicle
-   * at a controllable rate between it's previous heading and the new one. (affects GUIDED only.
-   * Exiting GUIDED returns aircraft to normal behaviour defined elsewhere. Designed for onboard
-   * companion-computer command-and-control, not normally operator/GCS control.)
+   * Change to target heading at a given rate, overriding previous heading/s. This slews the vehicle at a controllable rate between it's previous heading and the new one. (affects GUIDED only. Exiting GUIDED returns aircraft to normal behaviour defined elsewhere. Designed for onboard companion-computer command-and-control, not normally operator/GCS control.)
    *
    * index = 1; label = heading type; 
    * course-over-ground or raw vehicle heading.
@@ -800,8 +784,7 @@ public enum class MavCmd(
   @GeneratedMavEnumEntry
   GUIDED_CHANGE_HEADING(43_002u),
   /**
-   * Provide a value for height above ground level. This can be used for things like fixed wing and
-   * VTOL landing.
+   * Provide a value for height above ground level. This can be used for things like fixed wing and VTOL landing.
    *
    * index = 1; label = hagl; units = m; 
    * Height above ground level.
@@ -810,8 +793,7 @@ public enum class MavCmd(
    * estimated one standard deviation accuracy of the measurement. Set to NaN if not known.
    *
    * index = 3; label = timeout; units = s; 
-   * Timeout for this data. The flight controller should only consider this data valid within the
-   * timeout window.
+   * Timeout for this data. The flight controller should only consider this data valid within the timeout window.
    *
    * index = 4; 
    * Empty

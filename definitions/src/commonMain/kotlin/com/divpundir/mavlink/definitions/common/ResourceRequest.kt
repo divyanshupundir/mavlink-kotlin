@@ -23,12 +23,9 @@ import kotlin.collections.List
  *
  * @param requestId Request ID. This ID should be reused when sending back URI contents
  * @param uriType The type of requested URI. 0 = a file via URL. 1 = a UAVCAN binary
- * @param uri The requested unique resource identifier (URI). It is not necessarily a straight
- * domain name (depends on the URI type enum)
- * @param transferType The way the autopilot wants to receive the URI. 0 = MAVLink FTP. 1 = binary
- * stream.
- * @param storage The storage path the autopilot wants the URI to be stored in. Will only be valid
- * if the transfer_type has a storage associated (e.g. MAVLink FTP).
+ * @param uri The requested unique resource identifier (URI). It is not necessarily a straight domain name (depends on the URI type enum)
+ * @param transferType The way the autopilot wants to receive the URI. 0 = MAVLink FTP. 1 = binary stream.
+ * @param storage The storage path the autopilot wants the URI to be stored in. Will only be valid if the transfer_type has a storage associated (e.g. MAVLink FTP).
  */
 @GeneratedMavMessage(
   id = 142u,
@@ -46,8 +43,7 @@ public data class ResourceRequest(
   @GeneratedMavField(type = "uint8_t")
   public val uriType: UByte = 0u,
   /**
-   * The requested unique resource identifier (URI). It is not necessarily a straight domain name
-   * (depends on the URI type enum)
+   * The requested unique resource identifier (URI). It is not necessarily a straight domain name (depends on the URI type enum)
    */
   @GeneratedMavField(type = "uint8_t[120]")
   public val uri: List<UByte> = emptyList(),
@@ -57,8 +53,7 @@ public data class ResourceRequest(
   @GeneratedMavField(type = "uint8_t")
   public val transferType: UByte = 0u,
   /**
-   * The storage path the autopilot wants the URI to be stored in. Will only be valid if the
-   * transfer_type has a storage associated (e.g. MAVLink FTP).
+   * The storage path the autopilot wants the URI to be stored in. Will only be valid if the transfer_type has a storage associated (e.g. MAVLink FTP).
    */
   @GeneratedMavField(type = "uint8_t[120]")
   public val storage: List<UByte> = emptyList(),
@@ -112,8 +107,7 @@ public data class ResourceRequest(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ResourceRequest =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ResourceRequest = Builder().apply(builderAction).build()
   }
 
   public class Builder {

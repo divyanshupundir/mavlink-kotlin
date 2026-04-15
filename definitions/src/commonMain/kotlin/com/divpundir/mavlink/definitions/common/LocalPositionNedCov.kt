@@ -25,12 +25,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is
- * right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
+ * The filtered local position (e.g. fused computer vision and accelerometers). Coordinate frame is right-handed, Z-axis down (aeronautical frame, NED / north-east-down convention)
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param estimatorType Class id of the estimator this estimate originated from.
  * @param x X Position
@@ -51,10 +48,7 @@ import kotlin.collections.List
  * units = m/s/s
  * @param az Z Acceleration
  * units = m/s/s
- * @param covariance Row-major representation of position, velocity and acceleration 9x9
- * cross-covariance matrix upper right triangle (states: x, y, z, vx, vy, vz, ax, ay, az; first nine
- * entries are the first ROW, next eight entries are the second row, etc.). If unknown, assign NaN
- * value to first element in the array.
+ * @param covariance Row-major representation of position, velocity and acceleration 9x9 cross-covariance matrix upper right triangle (states: x, y, z, vx, vy, vz, ax, ay, az; first nine entries are the first ROW, next eight entries are the second row, etc.). If unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 64u,
@@ -62,11 +56,13 @@ import kotlin.collections.List
 )
 public data class LocalPositionNedCov(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Class id of the estimator this estimate originated from.
@@ -77,63 +73,90 @@ public data class LocalPositionNedCov(
    * X Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Y Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Z Position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * X Speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * Y Speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * Z Speed
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
   /**
    * X Acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val ax: Float = 0F,
   /**
    * Y Acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val ay: Float = 0F,
   /**
    * Z Acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val az: Float = 0F,
   /**
-   * Row-major representation of position, velocity and acceleration 9x9 cross-covariance matrix
-   * upper right triangle (states: x, y, z, vx, vy, vz, ax, ay, az; first nine entries are the first
-   * ROW, next eight entries are the second row, etc.). If unknown, assign NaN value to first element
-   * in the array.
+   * Row-major representation of position, velocity and acceleration 9x9 cross-covariance matrix upper right triangle (states: x, y, z, vx, vy, vz, ax, ay, az; first nine entries are the first ROW, next eight entries are the second row, etc.). If unknown, assign NaN value to first element in the array.
    */
-  @GeneratedMavField(type = "float[45]")
+  @GeneratedMavField(
+    type = "float[45]",
+    invalid = "[NaN:]",
+  )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<LocalPositionNedCov> {
   override val instanceCompanion: MavMessage.MavCompanion<LocalPositionNedCov> = Companion
@@ -216,8 +239,7 @@ public data class LocalPositionNedCov(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LocalPositionNedCov =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LocalPositionNedCov = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -22,12 +22,9 @@ import kotlin.Unit
  * @param timeBootMs Timestamp (milliseconds since system boot)
  * @param altGps GPS altitude (MSL) in meters, expressed as * 1000 (millimeters)
  * @param altImu IMU altitude above ground in meters, expressed as * 1000 (millimeters)
- * @param altBarometric barometeric altitude above ground in meters, expressed as * 1000
- * (millimeters)
- * @param altOpticalFlow Optical flow altitude above ground in meters, expressed as * 1000
- * (millimeters)
- * @param altRangeFinder Rangefinder Altitude above ground in meters, expressed as * 1000
- * (millimeters)
+ * @param altBarometric barometeric altitude above ground in meters, expressed as * 1000 (millimeters)
+ * @param altOpticalFlow Optical flow altitude above ground in meters, expressed as * 1000 (millimeters)
+ * @param altRangeFinder Rangefinder Altitude above ground in meters, expressed as * 1000 (millimeters)
  * @param altExtra Extra altitude above ground in meters, expressed as * 1000 (millimeters)
  */
 @GeneratedMavMessage(
@@ -128,8 +125,7 @@ public data class Altitudes(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Altitudes =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Altitudes = Builder().apply(builderAction).build()
   }
 
   public class Builder {

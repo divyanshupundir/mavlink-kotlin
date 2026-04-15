@@ -22,14 +22,11 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Message to a gimbal manager to correct the gimbal roll angle. This message is typically used to
- * manually correct for a tilted horizon in operation. A gimbal device is never to react to this
- * message.
+ * Message to a gimbal manager to correct the gimbal roll angle. This message is typically used to manually correct for a tilted horizon in operation. A gimbal device is never to react to this message.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink
- * gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
+ * @param gimbalId Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
  * @param client Client which is contacting the gimbal manager (must be set).
  * @param roll Roll angle (positive to roll to the right).
  * units = rad
@@ -50,8 +47,7 @@ public data class Storm32GimbalManagerCorrectRoll(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for
-   * all gimbals). Send command multiple times for more than one but not all gimbals.
+   * Gimbal ID of the gimbal manager to address (component ID or 1-6 for non-MAVLink gimbal, 0 for all gimbals). Send command multiple times for more than one but not all gimbals.
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalId: UByte = 0u,
@@ -64,7 +60,10 @@ public data class Storm32GimbalManagerCorrectRoll(
    * Roll angle (positive to roll to the right).
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
 ) : MavMessage<Storm32GimbalManagerCorrectRoll> {
   override val instanceCompanion: MavMessage.MavCompanion<Storm32GimbalManagerCorrectRoll> =
@@ -120,8 +119,7 @@ public data class Storm32GimbalManagerCorrectRoll(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerCorrectRoll =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Storm32GimbalManagerCorrectRoll = Builder().apply(builderAction).build()
   }
 
   public class Builder {

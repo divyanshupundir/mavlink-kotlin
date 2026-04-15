@@ -28,8 +28,7 @@ public enum class LandingTargetType(
   @GeneratedMavEnumEntry
   VISION_FIDUCIAL(2u),
   /**
-   * Landing target represented by a pre-defined visual shape/feature (ex: X-marker, H-marker,
-   * square)
+   * Landing target represented by a pre-defined visual shape/feature (ex: X-marker, H-marker, square)
    */
   @GeneratedMavEnumEntry
   VISION_OTHER(3u),

@@ -21,14 +21,11 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000
- * microseconds: 0%, 2000 microseconds: 100%. A value of UINT16_MAX implies the channel is unused.
- * Individual receivers/transmitters might violate this specification.
+ * The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. A value of UINT16_MAX implies the channel is unused. Individual receivers/transmitters might violate this specification.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
- * @param port Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk
- * should use: 0 = MAIN, 1 = AUX.
+ * @param port Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 = MAIN, 1 = AUX.
  * @param chan1Raw RC channel 1 value.
  * units = us
  * @param chan2Raw RC channel 2 value.
@@ -45,8 +42,7 @@ import kotlin.Unit
  * units = us
  * @param chan8Raw RC channel 8 value.
  * units = us
- * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254],
- * UINT8_MAX: invalid/unknown.
+ * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown.
  */
 @GeneratedMavMessage(
   id = 35u,
@@ -57,11 +53,13 @@ public data class RcChannelsRaw(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
-   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 =
-   * MAIN, 1 = AUX.
+   * Servo output port (set of 8 outputs = 1 port). Flight stacks running on Pixhawk should use: 0 = MAIN, 1 = AUX.
    */
   @GeneratedMavField(type = "uint8_t")
   public val port: UByte = 0u,
@@ -69,55 +67,89 @@ public data class RcChannelsRaw(
    * RC channel 1 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value.
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+    invalid = "UINT16_MAX",
+  )
   public val chan8Raw: UShort = 0u,
   /**
-   * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
-   * invalid/unknown.
+   * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val rssi: UByte = 0u,
 ) : MavMessage<RcChannelsRaw> {
   override val instanceCompanion: MavMessage.MavCompanion<RcChannelsRaw> = Companion
@@ -193,8 +225,7 @@ public data class RcChannelsRaw(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RcChannelsRaw =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RcChannelsRaw = Builder().apply(builderAction).build()
   }
 
   public class Builder {

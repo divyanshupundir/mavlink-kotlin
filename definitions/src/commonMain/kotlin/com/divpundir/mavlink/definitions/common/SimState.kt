@@ -24,14 +24,11 @@ import kotlin.Unit
  * @param q2 True attitude quaternion component 2, x (0 in null-rotation)
  * @param q3 True attitude quaternion component 3, y (0 in null-rotation)
  * @param q4 True attitude quaternion component 4, z (0 in null-rotation)
- * @param roll Attitude roll expressed as Euler angles, not recommended except for human-readable
- * outputs
+ * @param roll Attitude roll expressed as Euler angles, not recommended except for human-readable outputs
  * units = rad
- * @param pitch Attitude pitch expressed as Euler angles, not recommended except for human-readable
- * outputs
+ * @param pitch Attitude pitch expressed as Euler angles, not recommended except for human-readable outputs
  * units = rad
- * @param yaw Attitude yaw expressed as Euler angles, not recommended except for human-readable
- * outputs
+ * @param yaw Attitude yaw expressed as Euler angles, not recommended except for human-readable outputs
  * units = rad
  * @param xacc X acceleration
  * units = m/s/s
@@ -59,11 +56,9 @@ import kotlin.Unit
  * units = m/s
  * @param vd True velocity in down direction in earth-fixed NED frame
  * units = m/s
- * @param latInt Latitude (higher precision). If 0, recipients should use the lat field value
- * (otherwise this field is preferred).
+ * @param latInt Latitude (higher precision). If 0, recipients should use the lat field value (otherwise this field is preferred).
  * units = degE7
- * @param lonInt Longitude (higher precision). If 0, recipients should use the lon field value
- * (otherwise this field is preferred).
+ * @param lonInt Longitude (higher precision). If 0, recipients should use the lon field value (otherwise this field is preferred).
  * units = degE7
  */
 @GeneratedMavMessage(
@@ -95,73 +90,109 @@ public data class SimState(
    * Attitude roll expressed as Euler angles, not recommended except for human-readable outputs
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Attitude pitch expressed as Euler angles, not recommended except for human-readable outputs
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Attitude yaw expressed as Euler angles, not recommended except for human-readable outputs
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * X acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val xacc: Float = 0F,
   /**
    * Y acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val yacc: Float = 0F,
   /**
    * Z acceleration
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val zacc: Float = 0F,
   /**
    * Angular speed around X axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val xgyro: Float = 0F,
   /**
    * Angular speed around Y axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val ygyro: Float = 0F,
   /**
    * Angular speed around Z axis
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val zgyro: Float = 0F,
   /**
    * Latitude (lower precision). Both this and the lat_int field should be set.
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val lat: Float = 0F,
   /**
    * Longitude (lower precision). Both this and the lon_int field should be set.
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val lon: Float = 0F,
   /**
    * Altitude
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val alt: Float = 0F,
   /**
    * Horizontal position standard deviation
@@ -177,38 +208,49 @@ public data class SimState(
    * True velocity in north direction in earth-fixed NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vn: Float = 0F,
   /**
    * True velocity in east direction in earth-fixed NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val ve: Float = 0F,
   /**
    * True velocity in down direction in earth-fixed NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vd: Float = 0F,
   /**
-   * Latitude (higher precision). If 0, recipients should use the lat field value (otherwise this
-   * field is preferred).
+   * Latitude (higher precision). If 0, recipients should use the lat field value (otherwise this field is preferred).
    * units = degE7
    */
   @GeneratedMavField(
     type = "int32_t",
     extension = true,
+    units = "degE7",
+    invalid = "0",
   )
   public val latInt: Int = 0,
   /**
-   * Longitude (higher precision). If 0, recipients should use the lon field value (otherwise this
-   * field is preferred).
+   * Longitude (higher precision). If 0, recipients should use the lon field value (otherwise this field is preferred).
    * units = degE7
    */
   @GeneratedMavField(
     type = "int32_t",
     extension = true,
+    units = "degE7",
+    invalid = "0",
   )
   public val lonInt: Int = 0,
 ) : MavMessage<SimState> {
@@ -331,8 +373,7 @@ public data class SimState(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SimState =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SimState = Builder().apply(builderAction).build()
   }
 
   public class Builder {

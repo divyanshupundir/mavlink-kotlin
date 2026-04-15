@@ -6,7 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * MAV FTP error codes (https://mavlink.io/en/services/ftp.html)
+ * MAV FTP error codes (may be used in FILE_TRANSFER_PROTOCOL). See https://mavlink.io/en/services/ftp.html.
  */
 @GeneratedMavEnum
 public enum class MavFtpErr(

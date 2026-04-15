@@ -7,9 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Smart battery supply status/fault flags (bitmask) for health indication. The battery must also
- * report either MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY if any of these
- * are set.
+ * Smart battery supply status/fault flags (bitmask) for health indication. The battery must also report either MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY if any of these are set.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavBatteryFault(
@@ -26,8 +24,7 @@ public enum class MavBatteryFault(
   @GeneratedMavEnumEntry
   SPIKES(2u),
   /**
-   * One or more cells have failed. Battery should also report MAV_BATTERY_CHARGE_STATE_FAILE (and
-   * should not be used).
+   * One or more cells have failed. Battery should also report MAV_BATTERY_CHARGE_STATE_FAILE (and should not be used).
    */
   @GeneratedMavEnumEntry
   CELL_FAIL(4u),
@@ -47,8 +44,7 @@ public enum class MavBatteryFault(
   @GeneratedMavEnumEntry
   UNDER_TEMPERATURE(32u),
   /**
-   * Vehicle voltage is not compatible with this battery (batteries on same power rail should have
-   * similar voltage).
+   * Vehicle voltage is not compatible with this battery (batteries on same power rail should have similar voltage).
    */
   @GeneratedMavEnumEntry
   INCOMPATIBLE_VOLTAGE(64u),

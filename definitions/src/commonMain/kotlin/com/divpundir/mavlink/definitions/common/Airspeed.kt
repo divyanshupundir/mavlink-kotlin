@@ -50,19 +50,30 @@ public data class Airspeed(
    * Calibrated airspeed (CAS).
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val airspeed: Float = 0F,
   /**
    * Temperature.
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cdegC",
+    invalid = "INT16_MAX",
+  )
   public val temperature: Short = 0,
   /**
    * Raw differential pressure.
    * units = hPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "hPa",
+    invalid = "NaN",
+  )
   public val rawPress: Float = 0F,
   /**
    * Airspeed sensor flags.
@@ -122,8 +133,7 @@ public data class Airspeed(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Airspeed =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Airspeed = Builder().apply(builderAction).build()
   }
 
   public class Builder {

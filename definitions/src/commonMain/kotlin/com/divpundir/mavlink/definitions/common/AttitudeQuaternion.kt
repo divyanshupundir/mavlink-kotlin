@@ -21,8 +21,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
- * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
+ * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -36,12 +35,7 @@ import kotlin.collections.List
  * units = rad/s
  * @param yawspeed Yaw angular speed
  * units = rad/s
- * @param reprOffsetQ Rotation offset by which the attitude quaternion and angular speed vector
- * should be rotated for user display (quaternion with [w, x, y, z] order, zero-rotation is [1, 0, 0,
- * 0], send [0, 0, 0, 0] if field not supported). This field is intended for systems in which the
- * reference attitude may change during flight. For example, tailsitters VTOLs rotate their reference
- * attitude by 90 degrees between hover mode and fixed wing mode, thus repr_offset_q is equal to [1, 0,
- * 0, 0] in hover mode and equal to [0.7071, 0, 0.7071, 0] in fixed wing mode.
+ * @param reprOffsetQ Rotation offset by which the attitude quaternion and angular speed vector should be rotated for user display (quaternion with [w, x, y, z] order, zero-rotation is [1, 0, 0, 0], send [0, 0, 0, 0] if field not supported). This field is intended for systems in which the reference attitude may change during flight. For example, tailsitters VTOLs rotate their reference attitude by 90 degrees between hover mode and fixed wing mode, thus repr_offset_q is equal to [1, 0, 0, 0] in hover mode and equal to [0.7071, 0, 0.7071, 0] in fixed wing mode.
  */
 @GeneratedMavMessage(
   id = 31u,
@@ -52,7 +46,10 @@ public data class AttitudeQuaternion(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Quaternion component 1, w (1 in null-rotation)
@@ -78,31 +75,36 @@ public data class AttitudeQuaternion(
    * Roll angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawspeed: Float = 0F,
   /**
-   * Rotation offset by which the attitude quaternion and angular speed vector should be rotated for
-   * user display (quaternion with [w, x, y, z] order, zero-rotation is [1, 0, 0, 0], send [0, 0, 0, 0]
-   * if field not supported). This field is intended for systems in which the reference attitude may
-   * change during flight. For example, tailsitters VTOLs rotate their reference attitude by 90 degrees
-   * between hover mode and fixed wing mode, thus repr_offset_q is equal to [1, 0, 0, 0] in hover mode
-   * and equal to [0.7071, 0, 0.7071, 0] in fixed wing mode.
+   * Rotation offset by which the attitude quaternion and angular speed vector should be rotated for user display (quaternion with [w, x, y, z] order, zero-rotation is [1, 0, 0, 0], send [0, 0, 0, 0] if field not supported). This field is intended for systems in which the reference attitude may change during flight. For example, tailsitters VTOLs rotate their reference attitude by 90 degrees between hover mode and fixed wing mode, thus repr_offset_q is equal to [1, 0, 0, 0] in hover mode and equal to [0.7071, 0, 0.7071, 0] in fixed wing mode.
    */
   @GeneratedMavField(
     type = "float[4]",
     extension = true,
+    invalid = "[0]",
   )
   public val reprOffsetQ: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternion> {
@@ -170,8 +172,7 @@ public data class AttitudeQuaternion(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeQuaternion =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeQuaternion = Builder().apply(builderAction).build()
   }
 
   public class Builder {

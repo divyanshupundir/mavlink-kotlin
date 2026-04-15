@@ -84,8 +84,7 @@ public data class UalbertaSysStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UalbertaSysStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UalbertaSysStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

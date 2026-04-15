@@ -63,19 +63,28 @@ public data class Collision(
    * Estimated time until collision occurs
    * units = s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "s",
+  )
   public val timeToMinimumDelta: Float = 0F,
   /**
    * Closest vertical distance between vehicle and object
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val altitudeMinimumDelta: Float = 0F,
   /**
    * Closest horizontal distance between vehicle and object
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val horizontalMinimumDelta: Float = 0F,
 ) : MavMessage<Collision> {
   override val instanceCompanion: MavMessage.MavCompanion<Collision> = Companion
@@ -144,8 +153,7 @@ public data class Collision(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Collision =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Collision = Builder().apply(builderAction).build()
   }
 
   public class Builder {

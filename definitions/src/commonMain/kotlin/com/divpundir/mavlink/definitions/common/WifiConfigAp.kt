@@ -19,11 +19,9 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Configure WiFi AP SSID, password, and mode. This message is re-emitted as an acknowledgement by
- * the AP. The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE
+ * Configure WiFi AP SSID, password, and mode. This message is re-emitted as an acknowledgement by the AP. The message may also be explicitly requested using MAV_CMD_REQUEST_MESSAGE
  *
- * @param ssid Name of Wi-Fi network (SSID). Blank to leave it unchanged when setting. Current SSID
- * when sent back as a response.
+ * @param ssid Name of Wi-Fi network (SSID). Blank to leave it unchanged when setting. Current SSID when sent back as a response.
  * @param password Password. Blank for an open AP. MD5 hash when message is sent back as a response.
  * @param mode WiFi Mode.
  * @param response Message acceptance response (sent back to GS).
@@ -34,8 +32,7 @@ import kotlin.Unit
 )
 public data class WifiConfigAp(
   /**
-   * Name of Wi-Fi network (SSID). Blank to leave it unchanged when setting. Current SSID when sent
-   * back as a response.
+   * Name of Wi-Fi network (SSID). Blank to leave it unchanged when setting. Current SSID when sent back as a response.
    */
   @GeneratedMavField(type = "char[32]")
   public val ssid: String = "",
@@ -110,8 +107,7 @@ public data class WifiConfigAp(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): WifiConfigAp =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): WifiConfigAp = Builder().apply(builderAction).build()
   }
 
   public class Builder {

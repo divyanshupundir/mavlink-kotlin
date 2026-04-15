@@ -22,12 +22,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as
- * quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
+ * The attitude in the aeronautical frame (right-handed, Z-down, X-front, Y-right), expressed as quaternion. Quaternion order is w, x, y, z and a zero rotation would be expressed as (1 0 0 0).
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
  * @param rollspeed Roll angular speed
@@ -36,9 +33,7 @@ import kotlin.collections.List
  * units = rad/s
  * @param yawspeed Yaw angular speed
  * units = rad/s
- * @param covariance Row-major representation of a 3x3 attitude covariance matrix (states: roll,
- * pitch, yaw; first three entries are the first ROW, next three entries are the second row, etc.). If
- * unknown, assign NaN value to first element in the array.
+ * @param covariance Row-major representation of a 3x3 attitude covariance matrix (states: roll, pitch, yaw; first three entries are the first ROW, next three entries are the second row, etc.). If unknown, assign NaN value to first element in the array.
  */
 @GeneratedMavMessage(
   id = 61u,
@@ -46,11 +41,13 @@ import kotlin.collections.List
 )
 public data class AttitudeQuaternionCov(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation)
@@ -61,26 +58,36 @@ public data class AttitudeQuaternionCov(
    * Roll angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val rollspeed: Float = 0F,
   /**
    * Pitch angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val pitchspeed: Float = 0F,
   /**
    * Yaw angular speed
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawspeed: Float = 0F,
   /**
-   * Row-major representation of a 3x3 attitude covariance matrix (states: roll, pitch, yaw; first
-   * three entries are the first ROW, next three entries are the second row, etc.). If unknown, assign
-   * NaN value to first element in the array.
+   * Row-major representation of a 3x3 attitude covariance matrix (states: roll, pitch, yaw; first three entries are the first ROW, next three entries are the second row, etc.). If unknown, assign NaN value to first element in the array.
    */
-  @GeneratedMavField(type = "float[9]")
+  @GeneratedMavField(
+    type = "float[9]",
+    invalid = "[NaN:]",
+  )
   public val covariance: List<Float> = emptyList(),
 ) : MavMessage<AttitudeQuaternionCov> {
   override val instanceCompanion: MavMessage.MavCompanion<AttitudeQuaternionCov> = Companion
@@ -136,8 +143,7 @@ public data class AttitudeQuaternionCov(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeQuaternionCov =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeQuaternionCov = Builder().apply(builderAction).build()
   }
 
   public class Builder {

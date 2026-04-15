@@ -74,8 +74,7 @@ public data class FlexifunctionSet(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionSet =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionSet = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -36,13 +36,19 @@ public data class PowerStatus(
    * 5V rail voltage.
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val vcc: UShort = 0u,
   /**
    * Servo rail voltage.
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val vservo: UShort = 0u,
   /**
    * Bitmap of power supply status flags.
@@ -94,8 +100,7 @@ public data class PowerStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): PowerStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): PowerStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

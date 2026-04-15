@@ -24,23 +24,18 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * This message is emitted as response to MISSION_REQUEST_LIST by the MAV and to initiate a write
- * transaction. The GCS can then request the individual mission item based on the knowledge of the
- * total number of waypoints.
+ * This message is emitted as response to MISSION_REQUEST_LIST by the MAV and to initiate a write transaction. The GCS can then request the individual mission item based on the knowledge of the total number of waypoints.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param count Number of mission items in the sequence
  * @param missionType Mission type.
- * @param opaqueId Id of current on-vehicle mission, fence, or rally point plan (on download from
- * vehicle).
+ * @param opaqueId Id of current on-vehicle mission, fence, or rally point plan (on download from vehicle).
  *         This field is used when downloading a plan from a vehicle to a GCS.
  *         0 on upload to the vehicle from GCS.
  *         0 if plan ids are not supported.
- *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to
- * determine if any part of the plan has changed and needs to be re-uploaded.
- *         The ids are recalculated by the vehicle when any part of the on-vehicle plan changes
- * (when a new plan is uploaded, the vehicle returns the new id to the GCS in MISSION_ACK).
+ *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to determine if any part of the plan has changed and needs to be re-uploaded.
+ *         The ids are recalculated by the vehicle when any part of the on-vehicle plan changes (when a new plan is uploaded, the vehicle returns the new id to the GCS in MISSION_ACK).
  *       
  */
 @GeneratedMavMessage(
@@ -76,15 +71,14 @@ public data class MissionCount(
    *         This field is used when downloading a plan from a vehicle to a GCS.
    *         0 on upload to the vehicle from GCS.
    *         0 if plan ids are not supported.
-   *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to
-   * determine if any part of the plan has changed and needs to be re-uploaded.
-   *         The ids are recalculated by the vehicle when any part of the on-vehicle plan changes
-   * (when a new plan is uploaded, the vehicle returns the new id to the GCS in MISSION_ACK).
+   *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to determine if any part of the plan has changed and needs to be re-uploaded.
+   *         The ids are recalculated by the vehicle when any part of the on-vehicle plan changes (when a new plan is uploaded, the vehicle returns the new id to the GCS in MISSION_ACK).
    *       
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    invalid = "0",
   )
   public val opaqueId: UInt = 0u,
 ) : MavMessage<MissionCount> {
@@ -138,8 +132,7 @@ public data class MissionCount(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionCount =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionCount = Builder().apply(builderAction).build()
   }
 
   public class Builder {

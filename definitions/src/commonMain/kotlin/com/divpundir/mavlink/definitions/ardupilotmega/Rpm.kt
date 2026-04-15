@@ -74,8 +74,7 @@ public data class Rpm(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Rpm =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Rpm = Builder().apply(builderAction).build()
   }
 
   public class Builder {

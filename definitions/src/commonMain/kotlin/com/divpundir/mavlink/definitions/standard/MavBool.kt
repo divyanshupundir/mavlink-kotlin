@@ -7,8 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Enum used to indicate true or false (also: success or failure, enabled or disabled, active or
- * inactive).
+ * Enum used to indicate true or false (also: success or failure, enabled or disabled, active or inactive).
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavBool(

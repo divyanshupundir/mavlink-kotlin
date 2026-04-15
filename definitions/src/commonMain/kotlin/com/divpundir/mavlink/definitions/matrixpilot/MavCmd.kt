@@ -10,8 +10,7 @@ public enum class MavCmd(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Request storage of different parameter values and logs. This command will be only accepted if
-   * in pre-flight mode.
+   * Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode.
    *
    * index = 1; 
    * Storage action: Action defined by MAV_PREFLIGHT_STORAGE_ACTION_ADVANCED

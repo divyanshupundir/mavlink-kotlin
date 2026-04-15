@@ -24,14 +24,11 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Reports the current commanded vehicle position, velocity, and acceleration as specified by the
- * autopilot. This should match the commands sent in SET_POSITION_TARGET_LOCAL_NED if the vehicle is
- * being controlled this way.
+ * Reports the current commanded vehicle position, velocity, and acceleration as specified by the autopilot. This should match the commands sent in SET_POSITION_TARGET_LOCAL_NED if the vehicle is being controlled this way.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
- * @param coordinateFrame Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED =
- * 7, MAV_FRAME_BODY_NED = 8, MAV_FRAME_BODY_OFFSET_NED = 9
+ * @param coordinateFrame Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED = 8, MAV_FRAME_BODY_OFFSET_NED = 9
  * @param typeMask Bitmap to indicate which dimensions should be ignored by the vehicle.
  * @param x X Position in NED frame
  * units = m
@@ -45,14 +42,11 @@ import kotlin.Unit
  * units = m/s
  * @param vz Z velocity in NED frame
  * units = m/s
- * @param afx X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
- * N
+ * @param afx X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
  * units = m/s/s
- * @param afy Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
- * N
+ * @param afy Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
  * units = m/s/s
- * @param afz Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
- * N
+ * @param afz Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
  * units = m/s/s
  * @param yaw yaw setpoint
  * units = rad
@@ -68,11 +62,13 @@ public data class PositionTargetLocalNed(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
-   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED
-   * = 8, MAV_FRAME_BODY_OFFSET_NED = 9
+   * Valid options are: MAV_FRAME_LOCAL_NED = 1, MAV_FRAME_LOCAL_OFFSET_NED = 7, MAV_FRAME_BODY_NED = 8, MAV_FRAME_BODY_OFFSET_NED = 9
    */
   @GeneratedMavField(type = "uint8_t")
   public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
@@ -85,67 +81,100 @@ public data class PositionTargetLocalNed(
    * X Position in NED frame
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Y Position in NED frame
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Z Position in NED frame (note, altitude is negative in NED)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * X velocity in NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * Y velocity in NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * Z velocity in NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
   /**
    * X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val afx: Float = 0F,
   /**
    * Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val afy: Float = 0F,
   /**
    * Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val afz: Float = 0F,
   /**
    * yaw setpoint
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * yaw rate setpoint
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawRate: Float = 0F,
 ) : MavMessage<PositionTargetLocalNed> {
   override val instanceCompanion: MavMessage.MavCompanion<PositionTargetLocalNed> = Companion
@@ -239,8 +268,7 @@ public data class PositionTargetLocalNed(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): PositionTargetLocalNed =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): PositionTargetLocalNed = Builder().apply(builderAction).build()
   }
 
   public class Builder {

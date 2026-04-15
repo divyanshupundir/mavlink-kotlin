@@ -19,12 +19,9 @@ import kotlin.ULong
 import kotlin.Unit
 
 /**
- * Wind estimate from vehicle. Note that despite the name, this message does not actually contain
- * any covariances but instead variability and accuracy fields in terms of standard deviation (1-STD).
+ * Wind estimate from vehicle. Note that despite the name, this message does not actually contain any covariances but instead variability and accuracy fields in terms of standard deviation (1-STD).
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param windX Wind in North (NED) direction (NAN if unknown)
  * units = m/s
@@ -32,11 +29,9 @@ import kotlin.Unit
  * units = m/s
  * @param windZ Wind in down (NED) direction (NAN if unknown)
  * units = m/s
- * @param varHoriz Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate
- * (NAN if unknown)
+ * @param varHoriz Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN if unknown)
  * units = m/s
- * @param varVert Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN
- * if unknown)
+ * @param varVert Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN if unknown)
  * units = m/s
  * @param windAlt Altitude (MSL) that this measurement was taken at (NAN if unknown)
  * units = m
@@ -51,59 +46,93 @@ import kotlin.Unit
 )
 public data class WindCov(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Wind in North (NED) direction (NAN if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val windX: Float = 0F,
   /**
    * Wind in East (NED) direction (NAN if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val windY: Float = 0F,
   /**
    * Wind in down (NED) direction (NAN if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val windZ: Float = 0F,
   /**
    * Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val varHoriz: Float = 0F,
   /**
    * Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate (NAN if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val varVert: Float = 0F,
   /**
    * Altitude (MSL) that this measurement was taken at (NAN if unknown)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "NaN",
+  )
   public val windAlt: Float = 0F,
   /**
    * Horizontal speed 1-STD accuracy (0 if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "0",
+  )
   public val horizAccuracy: Float = 0F,
   /**
    * Vertical speed 1-STD accuracy (0 if unknown)
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "0",
+  )
   public val vertAccuracy: Float = 0F,
 ) : MavMessage<WindCov> {
   override val instanceCompanion: MavMessage.MavCompanion<WindCov> = Companion
@@ -171,8 +200,7 @@ public data class WindCov(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): WindCov =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): WindCov = Builder().apply(builderAction).build()
   }
 
   public class Builder {

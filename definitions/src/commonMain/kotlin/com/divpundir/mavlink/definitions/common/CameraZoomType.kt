@@ -18,8 +18,7 @@ public enum class CameraZoomType(
   @GeneratedMavEnumEntry
   ZOOM_TYPE_STEP(0u),
   /**
-   * Continuous normalized zoom in/out rate until stopped. Range -1..1, negative: wide, positive:
-   * narrow/tele, 0 to stop zooming. Other values should be clipped to the range.
+   * Continuous normalized zoom in/out rate until stopped. Range -1..1, negative: wide, positive: narrow/tele, 0 to stop zooming. Other values should be clipped to the range.
    */
   @GeneratedMavEnumEntry
   ZOOM_TYPE_CONTINUOUS(1u),
@@ -29,9 +28,7 @@ public enum class CameraZoomType(
   @GeneratedMavEnumEntry
   ZOOM_TYPE_RANGE(2u),
   /**
-   * Zoom value/variable focal length in millimetres. Note that there is no message to get the valid
-   * zoom range of the camera, so this can type can only be used for cameras where the zoom range is
-   * known (implying that this cannot reliably be used in a GCS for an arbitrary camera)
+   * Zoom value/variable focal length in millimetres. Note that there is no message to get the valid zoom range of the camera, so this can type can only be used for cameras where the zoom range is known (implying that this cannot reliably be used in a GCS for an arbitrary camera)
    */
   @GeneratedMavEnumEntry
   ZOOM_TYPE_FOCAL_LENGTH(3u),

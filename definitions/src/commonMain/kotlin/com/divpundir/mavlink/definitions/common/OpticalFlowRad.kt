@@ -29,19 +29,14 @@ import kotlin.Unit
 /**
  * Optical flow from an angular rate flow sensor (e.g. PX4FLOW or mouse sensor)
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param sensorId Sensor ID
- * @param integrationTimeUs Integration time. Divide integrated_x and integrated_y by the
- * integration time to obtain average flow. The integration time also indicates the.
+ * @param integrationTimeUs Integration time. Divide integrated_x and integrated_y by the integration time to obtain average flow. The integration time also indicates the.
  * units = us
- * @param integratedX Flow around X axis (Sensor RH rotation about the X axis induces a positive
- * flow. Sensor linear motion along the positive Y axis induces a negative flow.)
+ * @param integratedX Flow around X axis (Sensor RH rotation about the X axis induces a positive flow. Sensor linear motion along the positive Y axis induces a negative flow.)
  * units = rad
- * @param integratedY Flow around Y axis (Sensor RH rotation about the Y axis induces a positive
- * flow. Sensor linear motion along the positive X axis induces a positive flow.)
+ * @param integratedY Flow around Y axis (Sensor RH rotation about the Y axis induces a positive flow. Sensor linear motion along the positive X axis induces a positive flow.)
  * units = rad
  * @param integratedXgyro RH rotation around X axis
  * units = rad
@@ -54,8 +49,7 @@ import kotlin.Unit
  * @param quality Optical flow quality / confidence. 0: no valid flow, 255: maximum quality
  * @param timeDeltaDistanceUs Time since the distance was sampled.
  * units = us
- * @param distance Distance to the center of the flow field. Positive value (including zero):
- * distance known. Negative value: Unknown distance.
+ * @param distance Distance to the center of the flow field. Positive value (including zero): distance known. Negative value: Unknown distance.
  * units = m
  */
 @GeneratedMavMessage(
@@ -64,11 +58,13 @@ import kotlin.Unit
 )
 public data class OpticalFlowRad(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Sensor ID
@@ -76,49 +72,67 @@ public data class OpticalFlowRad(
   @GeneratedMavField(type = "uint8_t")
   public val sensorId: UByte = 0u,
   /**
-   * Integration time. Divide integrated_x and integrated_y by the integration time to obtain
-   * average flow. The integration time also indicates the.
+   * Integration time. Divide integrated_x and integrated_y by the integration time to obtain average flow. The integration time also indicates the.
    * units = us
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "us",
+  )
   public val integrationTimeUs: UInt = 0u,
   /**
-   * Flow around X axis (Sensor RH rotation about the X axis induces a positive flow. Sensor linear
-   * motion along the positive Y axis induces a negative flow.)
+   * Flow around X axis (Sensor RH rotation about the X axis induces a positive flow. Sensor linear motion along the positive Y axis induces a negative flow.)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val integratedX: Float = 0F,
   /**
-   * Flow around Y axis (Sensor RH rotation about the Y axis induces a positive flow. Sensor linear
-   * motion along the positive X axis induces a positive flow.)
+   * Flow around Y axis (Sensor RH rotation about the Y axis induces a positive flow. Sensor linear motion along the positive X axis induces a positive flow.)
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val integratedY: Float = 0F,
   /**
    * RH rotation around X axis
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val integratedXgyro: Float = 0F,
   /**
    * RH rotation around Y axis
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val integratedYgyro: Float = 0F,
   /**
    * RH rotation around Z axis
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val integratedZgyro: Float = 0F,
   /**
    * Temperature
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cdegC",
+  )
   public val temperature: Short = 0,
   /**
    * Optical flow quality / confidence. 0: no valid flow, 255: maximum quality
@@ -129,14 +143,19 @@ public data class OpticalFlowRad(
    * Time since the distance was sampled.
    * units = us
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "us",
+  )
   public val timeDeltaDistanceUs: UInt = 0u,
   /**
-   * Distance to the center of the flow field. Positive value (including zero): distance known.
-   * Negative value: Unknown distance.
+   * Distance to the center of the flow field. Positive value (including zero): distance known. Negative value: Unknown distance.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val distance: Float = 0F,
 ) : MavMessage<OpticalFlowRad> {
   override val instanceCompanion: MavMessage.MavCompanion<OpticalFlowRad> = Companion
@@ -216,8 +235,7 @@ public data class OpticalFlowRad(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpticalFlowRad =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpticalFlowRad = Builder().apply(builderAction).build()
   }
 
   public class Builder {

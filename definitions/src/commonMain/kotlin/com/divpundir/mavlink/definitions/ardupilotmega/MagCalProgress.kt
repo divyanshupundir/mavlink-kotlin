@@ -34,8 +34,7 @@ import kotlin.collections.List
  * @param attempt Attempt number.
  * @param completionPct Completion percentage.
  * units = %
- * @param completionMask Bitmask of sphere sections (see
- * http://en.wikipedia.org/wiki/Geodesic_grid).
+ * @param completionMask Bitmask of sphere sections (see http://en.wikipedia.org/wiki/Geodesic_grid).
  * @param directionX Body frame direction vector for display.
  * @param directionY Body frame direction vector for display.
  * @param directionZ Body frame direction vector for display.
@@ -69,7 +68,10 @@ public data class MagCalProgress(
    * Completion percentage.
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+  )
   public val completionPct: UByte = 0u,
   /**
    * Bitmask of sphere sections (see http://en.wikipedia.org/wiki/Geodesic_grid).
@@ -160,8 +162,7 @@ public data class MagCalProgress(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MagCalProgress =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MagCalProgress = Builder().apply(builderAction).build()
   }
 
   public class Builder {

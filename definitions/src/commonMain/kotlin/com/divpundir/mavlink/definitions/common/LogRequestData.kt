@@ -59,7 +59,10 @@ public data class LogRequestData(
    * Number of bytes
    * units = bytes
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes",
+  )
   public val count: UInt = 0u,
 ) : MavMessage<LogRequestData> {
   override val instanceCompanion: MavMessage.MavCompanion<LogRequestData> = Companion
@@ -111,8 +114,7 @@ public data class LogRequestData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LogRequestData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogRequestData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

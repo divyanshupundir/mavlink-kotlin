@@ -40,8 +40,7 @@ public enum class MavState(
   @GeneratedMavEnumEntry
   CRITICAL(5u),
   /**
-   * System is in a non-normal flight mode (failsafe). It lost control over parts or over the whole
-   * airframe. It is in mayday and going down.
+   * System is in a non-normal flight mode (failsafe). It lost control over parts or over the whole airframe. It is in mayday and going down.
    */
   @GeneratedMavEnumEntry
   EMERGENCY(6u),

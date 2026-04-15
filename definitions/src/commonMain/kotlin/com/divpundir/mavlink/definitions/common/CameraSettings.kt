@@ -29,12 +29,9 @@ import kotlin.Unit
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param modeId Camera mode
- * @param zoomlevel Current zoom level as a percentage of the full range (0.0 to 100.0, NaN if not
- * known)
- * @param focuslevel Current focus level as a percentage of the full range (0.0 to 100.0, NaN if not
- * known)
- * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the
- * component is a MAVLink camera (with its own component id).
+ * @param zoomlevel Current zoom level as a percentage of the full range (0.0 to 100.0, NaN if not known)
+ * @param focuslevel Current focus level as a percentage of the full range (0.0 to 100.0, NaN if not known)
+ * @param cameraDeviceId Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
  */
 @GeneratedMavMessage(
   id = 260u,
@@ -45,7 +42,10 @@ public data class CameraSettings(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Camera mode
@@ -58,6 +58,7 @@ public data class CameraSettings(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    invalid = "NaN",
   )
   public val zoomlevel: Float = 0F,
   /**
@@ -66,11 +67,11 @@ public data class CameraSettings(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    invalid = "NaN",
   )
   public val focuslevel: Float = 0F,
   /**
-   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a
-   * MAVLink camera (with its own component id).
+   * Camera id of a non-MAVLink camera attached to an autopilot (1-6).  0 if the component is a MAVLink camera (with its own component id).
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -127,8 +128,7 @@ public data class CameraSettings(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraSettings =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraSettings = Builder().apply(builderAction).build()
   }
 
   public class Builder {

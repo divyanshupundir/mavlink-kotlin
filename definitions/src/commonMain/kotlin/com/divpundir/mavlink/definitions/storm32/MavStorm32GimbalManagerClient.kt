@@ -6,8 +6,7 @@ import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
 /**
- * Gimbal manager client ID. In a prioritizing profile, the priorities are determined by the
- * implementation; they could e.g. be custom1 > onboard > GCS > autopilot/camera > GCS2 > custom2.
+ * Gimbal manager client ID. In a prioritizing profile, the priorities are determined by the implementation; they could e.g. be custom1 > onboard > GCS > autopilot/camera > GCS2 > custom2.
  */
 @GeneratedMavEnum
 public enum class MavStorm32GimbalManagerClient(

@@ -82,8 +82,7 @@ public data class QshotStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): QshotStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): QshotStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

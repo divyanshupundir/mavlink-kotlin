@@ -16,8 +16,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Request all parameters of this component. After this request, all parameters are emitted. The
- * parameter microservice is documented at https://mavlink.io/en/services/parameter.html
+ * Request all parameters of this component. After this request, all parameters are emitted. The parameter microservice is documented at https://mavlink.io/en/services/parameter.html
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -75,8 +74,7 @@ public data class ParamRequestList(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamRequestList =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamRequestList = Builder().apply(builderAction).build()
   }
 
   public class Builder {

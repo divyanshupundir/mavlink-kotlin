@@ -24,9 +24,7 @@ public enum class SerialControlFlag(
   @GeneratedMavEnumEntry
   RESPOND(2u),
   /**
-   * Set if access to the serial port should be removed from whatever driver is currently using it,
-   * giving exclusive access to the SERIAL_CONTROL protocol. The port can be handed back by sending a
-   * request without this flag set
+   * Set if access to the serial port should be removed from whatever driver is currently using it, giving exclusive access to the SERIAL_CONTROL protocol. The port can be handed back by sending a request without this flag set
    */
   @GeneratedMavEnumEntry
   EXCLUSIVE(4u),

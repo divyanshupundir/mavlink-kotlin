@@ -23,8 +23,7 @@ public enum class CameraMode(
   @GeneratedMavEnumEntry
   VIDEO(1u),
   /**
-   * Camera is in image survey capture mode. It allows for camera controller to do specific settings
-   * for surveys.
+   * Camera is in image survey capture mode. It allows for camera controller to do specific settings for surveys.
    */
   @GeneratedMavEnumEntry
   IMAGE_SURVEY(2u),

@@ -16,8 +16,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Emit an encrypted signature / key identifying this system. PLEASE NOTE: This protocol has been
- * kept simple, so transmitting the key requires an encrypted channel for true safety.
+ * Emit an encrypted signature / key identifying this system. PLEASE NOTE: This protocol has been kept simple, so transmitting the key requires an encrypted channel for true safety.
  *
  * @param key key
  */
@@ -65,8 +64,7 @@ public data class AuthKey(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AuthKey =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AuthKey = Builder().apply(builderAction).build()
   }
 
   public class Builder {

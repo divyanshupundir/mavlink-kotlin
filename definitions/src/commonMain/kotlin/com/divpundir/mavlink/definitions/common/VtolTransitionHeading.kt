@@ -33,8 +33,7 @@ public enum class VtolTransitionHeading(
   @GeneratedMavEnumEntry
   SPECIFIED(3u),
   /**
-   * Use the current heading when reaching takeoff altitude (potentially facing the wind when
-   * weather-vaning is active).
+   * Use the current heading when reaching takeoff altitude (potentially facing the wind when weather-vaning is active).
    */
   @GeneratedMavEnumEntry
   ANY(4u),

@@ -21,8 +21,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Acknowledgment message during waypoint handling. The type field states if this message is a
- * positive ack (type=0) or if an error happened (type=non-zero).
+ * Acknowledgment message during waypoint handling. The type field states if this message is a positive ack (type=0) or if an error happened (type=non-zero).
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -30,12 +29,10 @@ import kotlin.Unit
  * @param missionType Mission type.
  * @param opaqueId Id of new on-vehicle mission, fence, or rally point plan (on upload to vehicle).
  *         The id is calculated and returned by a vehicle when a new plan is uploaded by a GCS.
- *         The only requirement on the id is that it must change when there is any change to the
- * on-vehicle plan type (there is no requirement that the id be globally unique).
+ *         The only requirement on the id is that it must change when there is any change to the on-vehicle plan type (there is no requirement that the id be globally unique).
  *         0 on download from the vehicle to the GCS (on download the ID is set in MISSION_COUNT).
  *         0 if plan ids are not supported.
- *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to
- * determine if any part of the plan has changed and needs to be re-uploaded.
+ *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to determine if any part of the plan has changed and needs to be re-uploaded.
  *       
  */
 @GeneratedMavMessage(
@@ -69,17 +66,16 @@ public data class MissionAck(
   /**
    * Id of new on-vehicle mission, fence, or rally point plan (on upload to vehicle).
    *         The id is calculated and returned by a vehicle when a new plan is uploaded by a GCS.
-   *         The only requirement on the id is that it must change when there is any change to the
-   * on-vehicle plan type (there is no requirement that the id be globally unique).
+   *         The only requirement on the id is that it must change when there is any change to the on-vehicle plan type (there is no requirement that the id be globally unique).
    *         0 on download from the vehicle to the GCS (on download the ID is set in MISSION_COUNT).
    *         0 if plan ids are not supported.
-   *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to
-   * determine if any part of the plan has changed and needs to be re-uploaded.
+   *         The current on-vehicle plan ids are streamed in `MISSION_CURRENT`, allowing a GCS to determine if any part of the plan has changed and needs to be re-uploaded.
    *       
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    invalid = "0",
   )
   public val opaqueId: UInt = 0u,
 ) : MavMessage<MissionAck> {
@@ -136,8 +132,7 @@ public data class MissionAck(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionAck =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionAck = Builder().apply(builderAction).build()
   }
 
   public class Builder {

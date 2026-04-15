@@ -43,7 +43,10 @@ public data class AslObctrl(
    *  Time since system start
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    *  Elevator command [~]
@@ -142,8 +145,7 @@ public data class AslObctrl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AslObctrl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AslObctrl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

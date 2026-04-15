@@ -24,8 +24,7 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Handshake message to initiate, control and stop image streaming when using the Image Transmission
- * Protocol: https://mavlink.io/en/services/image_transmission.html.
+ * Handshake message to initiate, control and stop image streaming when using the Image Transmission Protocol: https://mavlink.io/en/services/image_transmission.html.
  *
  * @param type Type of requested/acknowledged data.
  * @param size total data size (set on ACK only).
@@ -33,8 +32,7 @@ import kotlin.Unit
  * @param width Width of a matrix or image.
  * @param height Height of a matrix or image.
  * @param packets Number of packets being sent (set on ACK only).
- * @param payload Payload size per packet (normally 253 byte, see DATA field size in message
- * ENCAPSULATED_DATA) (set on ACK only).
+ * @param payload Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA) (set on ACK only).
  * units = bytes
  * @param jpgQuality JPEG quality. Values: [1-100].
  * units = %
@@ -53,7 +51,10 @@ public data class DataTransmissionHandshake(
    * total data size (set on ACK only).
    * units = bytes
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes",
+  )
   public val size: UInt = 0u,
   /**
    * Width of a matrix or image.
@@ -71,17 +72,22 @@ public data class DataTransmissionHandshake(
   @GeneratedMavField(type = "uint16_t")
   public val packets: UShort = 0u,
   /**
-   * Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA)
-   * (set on ACK only).
+   * Payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA) (set on ACK only).
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val payload: UByte = 0u,
   /**
    * JPEG quality. Values: [1-100].
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+  )
   public val jpgQuality: UByte = 0u,
 ) : MavMessage<DataTransmissionHandshake> {
   override val instanceCompanion: MavMessage.MavCompanion<DataTransmissionHandshake> = Companion
@@ -144,8 +150,7 @@ public data class DataTransmissionHandshake(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DataTransmissionHandshake =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DataTransmissionHandshake = Builder().apply(builderAction).build()
   }
 
   public class Builder {

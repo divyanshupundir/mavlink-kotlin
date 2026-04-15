@@ -44,13 +44,19 @@ public data class HygrometerSensor(
    * Temperature
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cdegC",
+  )
   public val temperature: Short = 0,
   /**
    * Humidity
    * units = c%
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "c%",
+  )
   public val humidity: UShort = 0u,
 ) : MavMessage<HygrometerSensor> {
   override val instanceCompanion: MavMessage.MavCompanion<HygrometerSensor> = Companion
@@ -94,8 +100,7 @@ public data class HygrometerSensor(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HygrometerSensor =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HygrometerSensor = Builder().apply(builderAction).build()
   }
 
   public class Builder {

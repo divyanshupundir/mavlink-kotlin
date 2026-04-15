@@ -18,8 +18,7 @@ import kotlin.Unit
 /**
  * Aircraft Registration.
  *
- * @param registration Aircraft Registration (ASCII string A-Z, 0-9 only), e.g. "N8644B ". Trailing
- * spaces (0x20) only. This is null-terminated.
+ * @param registration Aircraft Registration (ASCII string A-Z, 0-9 only), e.g. "N8644B ". Trailing spaces (0x20) only. This is null-terminated.
  */
 @GeneratedMavMessage(
   id = 10_004u,
@@ -27,8 +26,7 @@ import kotlin.Unit
 )
 public data class UavionixAdsbOutCfgRegistration(
   /**
-   * Aircraft Registration (ASCII string A-Z, 0-9 only), e.g. "N8644B ". Trailing spaces (0x20)
-   * only. This is null-terminated.
+   * Aircraft Registration (ASCII string A-Z, 0-9 only), e.g. "N8644B ". Trailing spaces (0x20) only. This is null-terminated.
    */
   @GeneratedMavField(type = "char[9]")
   public val registration: String = "",
@@ -67,8 +65,7 @@ public data class UavionixAdsbOutCfgRegistration(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfgRegistration =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbOutCfgRegistration = Builder().apply(builderAction).build()
   }
 
   public class Builder {

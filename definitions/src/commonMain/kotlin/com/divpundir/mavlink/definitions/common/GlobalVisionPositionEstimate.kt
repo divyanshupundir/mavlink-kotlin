@@ -41,13 +41,8 @@ import kotlin.collections.List
  * units = rad
  * @param yaw Yaw angle
  * units = rad
- * @param covariance Row-major representation of pose 6x6 cross-covariance matrix upper right
- * triangle (states: x_global, y_global, z_global, roll, pitch, yaw; first six entries are the first
- * ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in
- * the array.
- * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets
- * in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used
- * when e.g an external SLAM system detects a loop-closure and the estimate jumps.
+ * @param covariance Row-major representation of pose 6x6 cross-covariance matrix upper right triangle (states: x_global, y_global, z_global, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+ * @param resetCounter Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
  */
 @GeneratedMavMessage(
   id = 101u,
@@ -58,58 +53,76 @@ public data class GlobalVisionPositionEstimate(
    * Timestamp (UNIX time or since system boot)
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val usec: ULong = 0uL,
   /**
    * Global X position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    * Global Y position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    * Global Z position
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * Roll angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val roll: Float = 0F,
   /**
    * Pitch angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
-   * Row-major representation of pose 6x6 cross-covariance matrix upper right triangle (states:
-   * x_global, y_global, z_global, roll, pitch, yaw; first six entries are the first ROW, next five
-   * entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
+   * Row-major representation of pose 6x6 cross-covariance matrix upper right triangle (states: x_global, y_global, z_global, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array.
    */
   @GeneratedMavField(
     type = "float[21]",
     extension = true,
+    invalid = "[NaN:]",
   )
   public val covariance: List<Float> = emptyList(),
   /**
-   * Estimate reset counter. This should be incremented when the estimate resets in any of the
-   * dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an
-   * external SLAM system detects a loop-closure and the estimate jumps.
+   * Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -180,8 +193,7 @@ public data class GlobalVisionPositionEstimate(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalVisionPositionEstimate =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GlobalVisionPositionEstimate = Builder().apply(builderAction).build()
   }
 
   public class Builder {

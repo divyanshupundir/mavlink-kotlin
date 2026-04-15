@@ -27,9 +27,7 @@ import kotlin.Unit
 /**
  * Optical flow from a flow sensor (e.g. optical mouse sensor)
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param sensorId Sensor ID
  * @param flowX Flow in x-sensor direction
@@ -41,8 +39,7 @@ import kotlin.Unit
  * @param flowCompMY Flow in y-sensor direction, angular-speed compensated
  * units = m/s
  * @param quality Optical flow quality / confidence. 0: bad, 255: maximum quality
- * @param groundDistance Ground distance. Positive value: distance known. Negative value: Unknown
- * distance
+ * @param groundDistance Ground distance. Positive value: distance known. Negative value: Unknown distance
  * units = m
  * @param flowRateX Flow rate about X axis
  * units = rad/s
@@ -55,11 +52,13 @@ import kotlin.Unit
 )
 public data class OpticalFlow(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Sensor ID
@@ -70,25 +69,37 @@ public data class OpticalFlow(
    * Flow in x-sensor direction
    * units = dpix
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "dpix",
+  )
   public val flowX: Short = 0,
   /**
    * Flow in y-sensor direction
    * units = dpix
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "dpix",
+  )
   public val flowY: Short = 0,
   /**
    * Flow in x-sensor direction, angular-speed compensated
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val flowCompMX: Float = 0F,
   /**
    * Flow in y-sensor direction, angular-speed compensated
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val flowCompMY: Float = 0F,
   /**
    * Optical flow quality / confidence. 0: bad, 255: maximum quality
@@ -99,7 +110,10 @@ public data class OpticalFlow(
    * Ground distance. Positive value: distance known. Negative value: Unknown distance
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val groundDistance: Float = 0F,
   /**
    * Flow rate about X axis
@@ -108,6 +122,7 @@ public data class OpticalFlow(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "rad/s",
   )
   public val flowRateX: Float = 0F,
   /**
@@ -117,6 +132,7 @@ public data class OpticalFlow(
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "rad/s",
   )
   public val flowRateY: Float = 0F,
 ) : MavMessage<OpticalFlow> {
@@ -187,8 +203,7 @@ public data class OpticalFlow(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpticalFlow =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpticalFlow = Builder().apply(builderAction).build()
   }
 
   public class Builder {

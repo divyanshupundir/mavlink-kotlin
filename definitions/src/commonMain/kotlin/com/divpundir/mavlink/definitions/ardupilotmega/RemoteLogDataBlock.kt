@@ -103,8 +103,7 @@ public data class RemoteLogDataBlock(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): RemoteLogDataBlock =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): RemoteLogDataBlock = Builder().apply(builderAction).build()
   }
 
   public class Builder {

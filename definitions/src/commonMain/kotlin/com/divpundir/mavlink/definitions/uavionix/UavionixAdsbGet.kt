@@ -63,8 +63,7 @@ public data class UavionixAdsbGet(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbGet =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): UavionixAdsbGet = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -121,8 +121,7 @@ public data class DeviceOpReadReply(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpReadReply =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpReadReply = Builder().apply(builderAction).build()
   }
 
   public class Builder {

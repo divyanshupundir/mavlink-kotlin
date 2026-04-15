@@ -50,7 +50,10 @@ public data class CameraStatus(
    * Image timestamp (since UNIX epoch, according to camera clock).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * System ID.
@@ -161,8 +164,7 @@ public data class CameraStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CameraStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CameraStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

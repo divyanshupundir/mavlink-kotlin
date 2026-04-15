@@ -43,31 +43,46 @@ public data class EscTelemetry9To12(
    * Temperature.
    * units = degC
    */
-  @GeneratedMavField(type = "uint8_t[4]")
+  @GeneratedMavField(
+    type = "uint8_t[4]",
+    units = "degC",
+  )
   public val temperature: List<UByte> = emptyList(),
   /**
    * Voltage.
    * units = cV
    */
-  @GeneratedMavField(type = "uint16_t[4]")
+  @GeneratedMavField(
+    type = "uint16_t[4]",
+    units = "cV",
+  )
   public val voltage: List<UShort> = emptyList(),
   /**
    * Current.
    * units = cA
    */
-  @GeneratedMavField(type = "uint16_t[4]")
+  @GeneratedMavField(
+    type = "uint16_t[4]",
+    units = "cA",
+  )
   public val current: List<UShort> = emptyList(),
   /**
    * Total current.
    * units = mAh
    */
-  @GeneratedMavField(type = "uint16_t[4]")
+  @GeneratedMavField(
+    type = "uint16_t[4]",
+    units = "mAh",
+  )
   public val totalcurrent: List<UShort> = emptyList(),
   /**
    * RPM (eRPM).
    * units = rpm
    */
-  @GeneratedMavField(type = "uint16_t[4]")
+  @GeneratedMavField(
+    type = "uint16_t[4]",
+    units = "rpm",
+  )
   public val rpm: List<UShort> = emptyList(),
   /**
    * count of telemetry packets received (wraps at 65535).
@@ -128,8 +143,7 @@ public data class EscTelemetry9To12(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): EscTelemetry9To12 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): EscTelemetry9To12 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

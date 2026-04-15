@@ -22,8 +22,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Offsets and calibrations values for hardware sensors. This makes it easier to debug the
- * calibration process.
+ * Offsets and calibrations values for hardware sensors. This makes it easier to debug the calibration process.
  *
  * @param magOfsX Magnetometer X offset.
  * @param magOfsY Magnetometer Y offset.
@@ -64,7 +63,10 @@ public data class SensorOffsets(
    * Magnetic declination.
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val magDeclination: Float = 0F,
   /**
    * Raw pressure from barometer.
@@ -184,8 +186,7 @@ public data class SensorOffsets(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensorOffsets =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensorOffsets = Builder().apply(builderAction).build()
   }
 
   public class Builder {

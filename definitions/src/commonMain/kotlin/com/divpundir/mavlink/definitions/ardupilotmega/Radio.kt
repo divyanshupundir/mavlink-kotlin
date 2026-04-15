@@ -49,7 +49,10 @@ public data class Radio(
    * How full the tx buffer is.
    * units = %
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "%",
+  )
   public val txbuf: UByte = 0u,
   /**
    * Background noise level.
@@ -129,8 +132,7 @@ public data class Radio(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Radio =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Radio = Builder().apply(builderAction).build()
   }
 
   public class Builder {

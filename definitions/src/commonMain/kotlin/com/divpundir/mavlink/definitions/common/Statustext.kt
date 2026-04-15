@@ -25,18 +25,12 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Status text message. These messages are printed in yellow in the COMM console of QGroundControl.
- * WARNING: They consume quite some bandwidth, so use only for important status and error messages. If
- * implemented wisely, these messages are buffered on the MCU and sent only at a limited rate (e.g. 10
- * Hz).
+ * Status text message. These messages are printed in yellow in the COMM console of QGroundControl. WARNING: They consume quite some bandwidth, so use only for important status and error messages. If implemented wisely, these messages are buffered on the MCU and sent only at a limited rate (e.g. 10 Hz).
  *
  * @param severity Severity of status. Relies on the definitions within RFC-5424.
- * @param text Status text message, without null termination character
- * @param id Unique (opaque) identifier for this statustext message.  May be used to reassemble a
- * logical long-statustext message from a sequence of chunks.  A value of zero indicates this is the
- * only chunk in the sequence and the message can be emitted immediately.
- * @param chunkSeq This chunk's sequence number; indexing is from zero.  Any null character in the
- * text field is taken to mean this was the last chunk.
+ * @param text Status text message, without null termination character. UTF-8 encoded.
+ * @param id Unique (opaque) identifier for this statustext message.  May be used to reassemble a logical long-statustext message from a sequence of chunks.  A value of zero indicates this is the only chunk in the sequence and the message can be emitted immediately.
+ * @param chunkSeq This chunk's sequence number; indexing is from zero.  Any null character in the text field is taken to mean this was the last chunk.
  */
 @GeneratedMavMessage(
   id = 253u,
@@ -49,14 +43,12 @@ public data class Statustext(
   @GeneratedMavField(type = "uint8_t")
   public val severity: MavEnumValue<MavSeverity> = MavEnumValue.fromValue(0u),
   /**
-   * Status text message, without null termination character
+   * Status text message, without null termination character. UTF-8 encoded.
    */
   @GeneratedMavField(type = "char[50]")
   public val text: String = "",
   /**
-   * Unique (opaque) identifier for this statustext message.  May be used to reassemble a logical
-   * long-statustext message from a sequence of chunks.  A value of zero indicates this is the only
-   * chunk in the sequence and the message can be emitted immediately.
+   * Unique (opaque) identifier for this statustext message.  May be used to reassemble a logical long-statustext message from a sequence of chunks.  A value of zero indicates this is the only chunk in the sequence and the message can be emitted immediately.
    */
   @GeneratedMavField(
     type = "uint16_t",
@@ -64,8 +56,7 @@ public data class Statustext(
   )
   public val id: UShort = 0u,
   /**
-   * This chunk's sequence number; indexing is from zero.  Any null character in the text field is
-   * taken to mean this was the last chunk.
+   * This chunk's sequence number; indexing is from zero.  Any null character in the text field is taken to mean this was the last chunk.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -119,8 +110,7 @@ public data class Statustext(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Statustext =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Statustext = Builder().apply(builderAction).build()
   }
 
   public class Builder {

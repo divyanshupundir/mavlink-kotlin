@@ -26,11 +26,7 @@ import kotlin.Unit
  *
  * @param standardMode Standard mode.
  * @param customMode A bitfield for use for autopilot-specific flags
- * @param intendedCustomMode The custom_mode of the mode that was last commanded by the user (for
- * example, with MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE or via RC). This should usually be
- * the same as custom_mode. It will be different if the vehicle is unable to enter the intended mode,
- * or has left that mode due to a failsafe condition. 0 indicates the intended custom mode is
- * unknown/not supplied
+ * @param intendedCustomMode The custom_mode of the mode that was last commanded by the user (for example, with MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE or via RC). This should usually be the same as custom_mode. It will be different if the vehicle is unable to enter the intended mode, or has left that mode due to a failsafe condition. 0 indicates the intended custom mode is unknown/not supplied
  */
 @GeneratedMavMessage(
   id = 436u,
@@ -48,13 +44,12 @@ public data class CurrentMode(
   @GeneratedMavField(type = "uint32_t")
   public val customMode: UInt = 0u,
   /**
-   * The custom_mode of the mode that was last commanded by the user (for example, with
-   * MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE or via RC). This should usually be the same as
-   * custom_mode. It will be different if the vehicle is unable to enter the intended mode, or has left
-   * that mode due to a failsafe condition. 0 indicates the intended custom mode is unknown/not
-   * supplied
+   * The custom_mode of the mode that was last commanded by the user (for example, with MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE or via RC). This should usually be the same as custom_mode. It will be different if the vehicle is unable to enter the intended mode, or has left that mode due to a failsafe condition. 0 indicates the intended custom mode is unknown/not supplied
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    invalid = "0",
+  )
   public val intendedCustomMode: UInt = 0u,
 ) : MavMessage<CurrentMode> {
   override val instanceCompanion: MavMessage.MavCompanion<CurrentMode> = Companion
@@ -101,8 +96,7 @@ public data class CurrentMode(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CurrentMode =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CurrentMode = Builder().apply(builderAction).build()
   }
 
   public class Builder {

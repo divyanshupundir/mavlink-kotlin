@@ -42,13 +42,19 @@ public data class SensorAirflowAngles(
    * Timestamp
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * Angle of attack
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val angleofattack: Float = 0F,
   /**
    * Angle of attack measurement valid
@@ -59,7 +65,10 @@ public data class SensorAirflowAngles(
    * Sideslip angle
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val sideslip: Float = 0F,
   /**
    * Sideslip angle measurement valid
@@ -116,8 +125,7 @@ public data class SensorAirflowAngles(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SensorAirflowAngles =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SensorAirflowAngles = Builder().apply(builderAction).build()
   }
 
   public class Builder {

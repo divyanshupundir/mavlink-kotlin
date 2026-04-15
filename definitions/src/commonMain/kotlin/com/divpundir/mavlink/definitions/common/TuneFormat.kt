@@ -18,8 +18,7 @@ public enum class TuneFormat(
   @GeneratedMavEnumEntry
   QBASIC1_1(1u),
   /**
-   * Format is Modern Music Markup Language (MML):
-   * https://en.wikipedia.org/wiki/Music_Macro_Language#Modern_MML.
+   * Format is Modern Music Markup Language (MML): https://en.wikipedia.org/wiki/Music_Macro_Language#Modern_MML.
    */
   @GeneratedMavEnumEntry
   MML_MODERN(2u),

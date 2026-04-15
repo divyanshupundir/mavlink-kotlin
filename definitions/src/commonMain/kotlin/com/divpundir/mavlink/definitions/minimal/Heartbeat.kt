@@ -24,21 +24,14 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * The heartbeat message shows that a system or component is present and responding. The type and
- * autopilot fields (along with the message component id), allow the receiving system to treat further
- * messages from this system appropriately (e.g. by laying out the user interface based on the
- * autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html
+ * The heartbeat message shows that a system or component is present and responding. The type and autopilot fields (along with the message component id), allow the receiving system to treat further messages from this system appropriately (e.g. by laying out the user interface based on the autopilot). This microservice is documented at https://mavlink.io/en/services/heartbeat.html
  *
- * @param type Vehicle or component type. For a flight controller component the vehicle type
- * (quadrotor, helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.).
- * This should be used in preference to component id for identifying the component type.
- * @param autopilot Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not
- * flight controllers.
+ * @param type Vehicle or component type. For a flight controller component the vehicle type (quadrotor, helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This should be used in preference to component id for identifying the component type.
+ * @param autopilot Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight controllers.
  * @param baseMode System mode bitmap.
  * @param customMode A bitfield for use for autopilot-specific flags
  * @param systemStatus System status flag.
- * @param mavlinkVersion MAVLink version, not writable by user, gets added by protocol because of
- * magic data type: uint8_t_mavlink_version
+ * @param mavlinkVersion MAVLink version, not writable by user, gets added by protocol because of magic data type: uint8_t_mavlink_version
  */
 @GeneratedMavMessage(
   id = 0u,
@@ -46,15 +39,12 @@ import kotlin.Unit
 )
 public data class Heartbeat(
   /**
-   * Vehicle or component type. For a flight controller component the vehicle type (quadrotor,
-   * helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This
-   * should be used in preference to component id for identifying the component type.
+   * Vehicle or component type. For a flight controller component the vehicle type (quadrotor, helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This should be used in preference to component id for identifying the component type.
    */
   @GeneratedMavField(type = "uint8_t")
   public val type: MavEnumValue<MavType> = MavEnumValue.fromValue(0u),
   /**
-   * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight
-   * controllers.
+   * Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components that are not flight controllers.
    */
   @GeneratedMavField(type = "uint8_t")
   public val autopilot: MavEnumValue<MavAutopilot> = MavEnumValue.fromValue(0u),
@@ -74,8 +64,7 @@ public data class Heartbeat(
   @GeneratedMavField(type = "uint8_t")
   public val systemStatus: MavEnumValue<MavState> = MavEnumValue.fromValue(0u),
   /**
-   * MAVLink version, not writable by user, gets added by protocol because of magic data type:
-   * uint8_t_mavlink_version
+   * MAVLink version, not writable by user, gets added by protocol because of magic data type: uint8_t_mavlink_version
    */
   @GeneratedMavField(type = "uint8_t_mavlink_version")
   public val mavlinkVersion: UByte = 0u,
@@ -145,8 +134,7 @@ public data class Heartbeat(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Heartbeat =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Heartbeat = Builder().apply(builderAction).build()
   }
 
   public class Builder {

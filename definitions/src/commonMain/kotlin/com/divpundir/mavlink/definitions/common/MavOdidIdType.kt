@@ -30,8 +30,7 @@ public enum class MavOdidIdType(
   @GeneratedMavEnumEntry
   UTM_ASSIGNED_UUID(3u),
   /**
-   * A 20 byte ID for a specific flight/session. The exact ID type is indicated by the first byte of
-   * uas_id and these type values are managed by ICAO.
+   * A 20 byte ID for a specific flight/session. The exact ID type is indicated by the first byte of uas_id and these type values are managed by ICAO.
    */
   @GeneratedMavEnumEntry
   SPECIFIC_SESSION_ID(4u),

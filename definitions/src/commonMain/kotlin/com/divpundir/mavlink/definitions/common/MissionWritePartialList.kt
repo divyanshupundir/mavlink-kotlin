@@ -22,14 +22,11 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * This message is sent to the MAV to write a partial list. If start index == end index, only one
- * item will be transmitted / updated. If the start index is NOT 0 and above the current list size,
- * this request should be REJECTED!
+ * This message is sent to the MAV to write a partial list. If start index == end index, only one item will be transmitted / updated. If the start index is NOT 0 and above the current list size, this request should be REJECTED!
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param startIndex Start index. Must be smaller / equal to the largest index of the current
- * onboard list.
+ * @param startIndex Start index. Must be smaller / equal to the largest index of the current onboard list.
  * @param endIndex End index, equal or greater than start index.
  * @param missionType Mission type.
  */
@@ -118,8 +115,7 @@ public data class MissionWritePartialList(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionWritePartialList =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionWritePartialList = Builder().apply(builderAction).build()
   }
 
   public class Builder {

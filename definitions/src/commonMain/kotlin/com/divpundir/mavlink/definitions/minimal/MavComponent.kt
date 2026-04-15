@@ -7,22 +7,17 @@ import kotlin.Deprecated
 import kotlin.UInt
 
 /**
- * Legacy component ID values for particular types of hardware/software that might make up a MAVLink
- * system (autopilot, cameras, servos, avoidance systems etc.).
+ * Legacy component ID values for particular types of hardware/software that might make up a MAVLink system (autopilot, cameras, servos, avoidance systems etc.).
  *       
- *         Components are not required or expected to use IDs with names that correspond to their
- * type or function, but may choose to do so.
- *         Using an ID that matches the type may slightly reduce the chances of component id
- * clashes, as, for historical reasons, it is less likely to be used by some other type of component.
+ *         Components are not required or expected to use IDs with names that correspond to their type or function, but may choose to do so.
+ *         Using an ID that matches the type may slightly reduce the chances of component id clashes, as, for historical reasons, it is less likely to be used by some other type of component.
  *         System integration will still need to ensure that all components have unique IDs.
  *
  *         Component IDs are used for addressing messages to a particular component within a system.
- *         A component can use any unique ID between 1 and 255 (MAV_COMP_ID_ALL value is the
- * broadcast address, used to send to all components).
+ *         A component can use any unique ID between 1 and 255 (MAV_COMP_ID_ALL value is the broadcast address, used to send to all components).
  *         
  *         Historically component ID were also used for identifying the type of component.
- *         New code must not use component IDs to infer the component type, but instead check the
- * MAV_TYPE in the HEARTBEAT message!
+ *         New code must not use component IDs to infer the component type, but instead check the MAV_TYPE in the HEARTBEAT message!
  *       
  */
 @GeneratedMavEnum
@@ -30,273 +25,227 @@ public enum class MavComponent(
   override val `value`: UInt,
 ) : MavEnum {
   /**
-   * Target id (target_component) used to broadcast messages to all components of the receiving
-   * system. Components should attempt to process messages with this component ID and forward to
-   * components on any other interfaces. Note: This is not a valid *source* component id for a message.
+   * Target id (target_component) used to broadcast messages to all components of the receiving system. Components should attempt to process messages with this component ID and forward to components on any other interfaces. Note: This is not a valid *source* component id for a message.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_ALL(0u),
   /**
-   * System flight controller component ("autopilot"). Only one autopilot is expected in a
-   * particular system.
+   * System flight controller component ("autopilot"). Only one autopilot is expected in a particular system.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_AUTOPILOT1(1u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER1(25u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER2(26u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER3(27u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER4(28u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER5(29u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER6(30u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER7(31u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER8(32u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER9(33u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER10(34u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER11(35u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER12(36u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER13(37u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER14(38u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER15(39u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER16(40u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER17(41u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER18(42u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER19(43u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER20(44u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER21(45u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER22(46u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER23(47u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER24(48u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER25(49u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER26(50u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER27(51u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER28(52u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER29(53u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER30(54u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER31(55u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER32(56u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER33(57u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER34(58u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER35(59u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER36(60u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER37(61u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER38(62u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER39(63u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER40(64u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER41(65u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER42(66u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER43(67u),
@@ -306,188 +255,157 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_TELEMETRY_RADIO(68u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER45(69u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER46(70u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER47(71u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER48(72u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER49(73u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER50(74u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER51(75u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER52(76u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER53(77u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER54(78u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER55(79u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER56(80u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER57(81u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER58(82u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER59(83u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER60(84u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER61(85u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER62(86u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER63(87u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER64(88u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER65(89u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER66(90u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER67(91u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER68(92u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER69(93u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER70(94u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER71(95u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER72(96u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER73(97u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER74(98u),
   /**
-   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may
-   * not be published by components outside of the private network.
+   * Id for a component on privately managed MAVLink network. Can be used for any purpose but may not be published by components outside of the private network.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_USER75(99u),
@@ -627,8 +545,7 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_OSD(157u),
   /**
-   * Generic autopilot peripheral component ID. Meant for devices that do not implement the
-   * parameter microservice.
+   * Generic autopilot peripheral component ID. Meant for devices that do not implement the parameter microservice.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_PERIPHERAL(158u),
@@ -699,36 +616,27 @@ public enum class MavComponent(
   @GeneratedMavEnumEntry
   MAV_COMP_ID_MISSIONPLANNER(190u),
   /**
-   * Component that lives on the onboard computer (companion computer) and has some generic
-   * functionalities, such as settings system parameters and monitoring the status of some processes
-   * that don't directly speak mavlink and so on.
+   * Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_ONBOARD_COMPUTER(191u),
   /**
-   * Component that lives on the onboard computer (companion computer) and has some generic
-   * functionalities, such as settings system parameters and monitoring the status of some processes
-   * that don't directly speak mavlink and so on.
+   * Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_ONBOARD_COMPUTER2(192u),
   /**
-   * Component that lives on the onboard computer (companion computer) and has some generic
-   * functionalities, such as settings system parameters and monitoring the status of some processes
-   * that don't directly speak mavlink and so on.
+   * Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_ONBOARD_COMPUTER3(193u),
   /**
-   * Component that lives on the onboard computer (companion computer) and has some generic
-   * functionalities, such as settings system parameters and monitoring the status of some processes
-   * that don't directly speak mavlink and so on.
+   * Component that lives on the onboard computer (companion computer) and has some generic functionalities, such as settings system parameters and monitoring the status of some processes that don't directly speak mavlink and so on.
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_ONBOARD_COMPUTER4(194u),
   /**
-   * Component that finds an optimal path between points based on a certain constraint (e.g. minimum
-   * snap, shortest path, cost, etc.).
+   * Component that finds an optimal path between points based on a certain constraint (e.g. minimum snap, shortest path, cost, etc.).
    */
   @GeneratedMavEnumEntry
   MAV_COMP_ID_PATHPLANNER(195u),
@@ -810,8 +718,7 @@ public enum class MavComponent(
   /**
    * Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.).
    */
-  @Deprecated(message =
-      "System control does not require a separate component ID. Instead, system commands should be sent with target_component=MAV_COMP_ID_ALL allowing the target component to use any appropriate component id.")
+  @Deprecated(message = "System control does not require a separate component ID. Instead, system commands should be sent with target_component=MAV_COMP_ID_ALL allowing the target component to use any appropriate component id.")
   @GeneratedMavEnumEntry
   MAV_COMP_ID_SYSTEM_CONTROL(250u),
   ;

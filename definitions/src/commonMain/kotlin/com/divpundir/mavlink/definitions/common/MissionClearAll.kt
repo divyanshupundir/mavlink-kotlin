@@ -92,8 +92,7 @@ public data class MissionClearAll(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionClearAll =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionClearAll = Builder().apply(builderAction).build()
   }
 
   public class Builder {

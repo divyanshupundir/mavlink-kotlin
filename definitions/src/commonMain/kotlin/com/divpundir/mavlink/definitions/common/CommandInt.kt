@@ -24,14 +24,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Send a command with up to seven parameters to the MAV, where params 5 and 6 are integers and the
- * other values are floats. This is preferred over COMMAND_LONG as it allows the MAV_FRAME to be
- * specified for interpreting positional information, such as altitude. COMMAND_INT is also preferred
- * when sending latitude and longitude data in params 5 and 6, as it allows for greater precision.
- * Param 5 and 6 encode positional data as scaled integers, where the scaling depends on the actual
- * command value. NaN or INT32_MAX may be used in float/integer params (respectively) to indicate
- * optional/default values (e.g. to use the component's current latitude, yaw rather than a specific
- * value). The command microservice is documented at https://mavlink.io/en/services/command.html
+ * Send a command with up to seven parameters to the MAV, where params 5 and 6 are integers and the other values are floats. This is preferred over COMMAND_LONG as it allows the MAV_FRAME to be specified for interpreting positional information, such as altitude. COMMAND_INT is also preferred when sending latitude and longitude data in params 5 and 6, as it allows for greater precision. Param 5 and 6 encode positional data as scaled integers, where the scaling depends on the actual command value. NaN or INT32_MAX may be used in float/integer params (respectively) to indicate optional/default values (e.g. to use the component's current latitude, yaw rather than a specific value). The command microservice is documented at https://mavlink.io/en/services/command.html
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -45,8 +38,7 @@ import kotlin.Unit
  * @param param4 PARAM4, see MAV_CMD enum
  * @param x PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
  * @param y PARAM6 / local: y position in meters * 1e4, global: longitude in degrees * 10^7
- * @param z PARAM7 / z position: global: altitude in meters (relative or absolute, depending on
- * frame).
+ * @param z PARAM7 / z position: global: altitude in meters (relative or absolute, depending on frame).
  */
 @GeneratedMavMessage(
   id = 75u,
@@ -86,37 +78,58 @@ public data class CommandInt(
   /**
    * PARAM1, see MAV_CMD enum
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param1: Float = 0F,
   /**
    * PARAM2, see MAV_CMD enum
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param2: Float = 0F,
   /**
    * PARAM3, see MAV_CMD enum
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param3: Float = 0F,
   /**
    * PARAM4, see MAV_CMD enum
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val param4: Float = 0F,
   /**
    * PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    invalid = "INT32_MAX",
+  )
   public val x: Int = 0,
   /**
    * PARAM6 / local: y position in meters * 1e4, global: longitude in degrees * 10^7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    invalid = "INT32_MAX",
+  )
   public val y: Int = 0,
   /**
    * PARAM7 / z position: global: altitude in meters (relative or absolute, depending on frame).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val z: Float = 0F,
 ) : MavMessage<CommandInt> {
   override val instanceCompanion: MavMessage.MavCompanion<CommandInt> = Companion
@@ -206,8 +219,7 @@ public data class CommandInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CommandInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CommandInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

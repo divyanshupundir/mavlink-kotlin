@@ -28,9 +28,7 @@ import kotlin.collections.List
  * @param timeUsec Timestamp (synced to UNIX time or since system boot).
  * units = us
  * @param count Number of wheels reported.
- * @param distance Distance reported by individual wheel encoders. Forward rotations increase
- * values, reverse rotations decrease them. Not all wheels will necessarily have wheel encoders; the
- * mapping of encoders to wheel positions must be agreed/understood by the endpoints.
+ * @param distance Distance reported by individual wheel encoders. Forward rotations increase values, reverse rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of encoders to wheel positions must be agreed/understood by the endpoints.
  * units = m
  */
 @GeneratedMavMessage(
@@ -42,7 +40,10 @@ public data class WheelDistance(
    * Timestamp (synced to UNIX time or since system boot).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Number of wheels reported.
@@ -50,12 +51,13 @@ public data class WheelDistance(
   @GeneratedMavField(type = "uint8_t")
   public val count: UByte = 0u,
   /**
-   * Distance reported by individual wheel encoders. Forward rotations increase values, reverse
-   * rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of
-   * encoders to wheel positions must be agreed/understood by the endpoints.
+   * Distance reported by individual wheel encoders. Forward rotations increase values, reverse rotations decrease them. Not all wheels will necessarily have wheel encoders; the mapping of encoders to wheel positions must be agreed/understood by the endpoints.
    * units = m
    */
-  @GeneratedMavField(type = "double[16]")
+  @GeneratedMavField(
+    type = "double[16]",
+    units = "m",
+  )
   public val distance: List<Double> = emptyList(),
 ) : MavMessage<WheelDistance> {
   override val instanceCompanion: MavMessage.MavCompanion<WheelDistance> = Companion
@@ -99,8 +101,7 @@ public data class WheelDistance(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): WheelDistance =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): WheelDistance = Builder().apply(builderAction).build()
   }
 
   public class Builder {

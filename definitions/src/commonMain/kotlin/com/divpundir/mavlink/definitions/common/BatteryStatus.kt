@@ -33,21 +33,14 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Battery information. Updates GCS with flight controller battery status. Smart batteries also use
- * this message, but may additionally send BATTERY_INFO.
+ * Battery information. Updates GCS with flight controller battery status. Smart batteries also use this message, but may additionally send BATTERY_INFO.
  *
  * @param id Battery ID
  * @param batteryFunction Function of the battery
  * @param type Type (chemistry) of the battery
  * @param temperature Temperature of the battery. INT16_MAX for unknown temperature.
  * units = cdegC
- * @param voltages Battery voltage of cells 1 to 10 (see voltages_ext for cells 11-14). Cells in
- * this field above the valid cell count for this battery should have the UINT16_MAX value. If
- * individual cell voltages are unknown or not measured for this battery, then the overall battery
- * voltage should be filled in cell 0, with all others set to UINT16_MAX. If the voltage of the battery
- * is greater than (UINT16_MAX - 1), then cell 0 should be set to (UINT16_MAX - 1), and cell 1 to the
- * remaining voltage. This can be extended to multiple cells if the total voltage is greater than 2 *
- * (UINT16_MAX - 1).
+ * @param voltages Battery voltage of cells 1 to 10 (see voltages_ext for cells 11-14). Cells in this field above the valid cell count for this battery should have the UINT16_MAX value. If individual cell voltages are unknown or not measured for this battery, then the overall battery voltage should be filled in cell 0, with all others set to UINT16_MAX. If the voltage of the battery is greater than (UINT16_MAX - 1), then cell 0 should be set to (UINT16_MAX - 1), and cell 1 to the remaining voltage. This can be extended to multiple cells if the total voltage is greater than 2 * (UINT16_MAX - 1).
  * units = mV
  * @param currentBattery Battery current, -1: autopilot does not measure the current
  * units = cA
@@ -55,24 +48,15 @@ import kotlin.collections.List
  * units = mAh
  * @param energyConsumed Consumed energy, -1: autopilot does not provide energy consumption estimate
  * units = hJ
- * @param batteryRemaining Remaining battery energy. Values: [0-100], -1: autopilot does not
- * estimate the remaining battery.
+ * @param batteryRemaining Remaining battery energy. Values: [0-100], -1: autopilot does not estimate the remaining battery.
  * units = %
- * @param timeRemaining Remaining battery time, 0: autopilot does not provide remaining battery time
- * estimate
+ * @param timeRemaining Remaining battery time, 0: autopilot does not provide remaining battery time estimate
  * units = s
- * @param chargeState State for extent of discharge, provided by autopilot for warning or external
- * reactions
- * @param voltagesExt Battery voltages for cells 11 to 14. Cells above the valid cell count for this
- * battery should have a value of 0, where zero indicates not supported (note, this is different than
- * for the voltages field and allows empty byte truncation). If the measured value is 0 then 1 should
- * be sent instead.
+ * @param chargeState State for extent of discharge, provided by autopilot for warning or external reactions
+ * @param voltagesExt Battery voltages for cells 11 to 14. Cells above the valid cell count for this battery should have a value of 0, where zero indicates not supported (note, this is different than for the voltages field and allows empty byte truncation). If the measured value is 0 then 1 should be sent instead.
  * units = mV
- * @param mode Battery mode. Default (0) is that battery mode reporting is not supported or battery
- * is in normal-use mode.
- * @param faultBitmask Fault/health indications. These should be set when charge_state is
- * MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY (if not, fault reporting is
- * not supported).
+ * @param mode Battery mode. Default (0) is that battery mode reporting is not supported or battery is in normal-use mode.
+ * @param faultBitmask Fault/health indications. These should be set when charge_state is MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY (if not, fault reporting is not supported).
  */
 @GeneratedMavMessage(
   id = 147u,
@@ -98,44 +82,61 @@ public data class BatteryStatus(
    * Temperature of the battery. INT16_MAX for unknown temperature.
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cdegC",
+    invalid = "INT16_MAX",
+  )
   public val temperature: Short = 0,
   /**
-   * Battery voltage of cells 1 to 10 (see voltages_ext for cells 11-14). Cells in this field above
-   * the valid cell count for this battery should have the UINT16_MAX value. If individual cell
-   * voltages are unknown or not measured for this battery, then the overall battery voltage should be
-   * filled in cell 0, with all others set to UINT16_MAX. If the voltage of the battery is greater than
-   * (UINT16_MAX - 1), then cell 0 should be set to (UINT16_MAX - 1), and cell 1 to the remaining
-   * voltage. This can be extended to multiple cells if the total voltage is greater than 2 *
-   * (UINT16_MAX - 1).
+   * Battery voltage of cells 1 to 10 (see voltages_ext for cells 11-14). Cells in this field above the valid cell count for this battery should have the UINT16_MAX value. If individual cell voltages are unknown or not measured for this battery, then the overall battery voltage should be filled in cell 0, with all others set to UINT16_MAX. If the voltage of the battery is greater than (UINT16_MAX - 1), then cell 0 should be set to (UINT16_MAX - 1), and cell 1 to the remaining voltage. This can be extended to multiple cells if the total voltage is greater than 2 * (UINT16_MAX - 1).
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t[10]")
+  @GeneratedMavField(
+    type = "uint16_t[10]",
+    units = "mV",
+    invalid = "[UINT16_MAX]",
+  )
   public val voltages: List<UShort> = emptyList(),
   /**
    * Battery current, -1: autopilot does not measure the current
    * units = cA
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cA",
+    invalid = "-1",
+  )
   public val currentBattery: Short = 0,
   /**
    * Consumed charge, -1: autopilot does not provide consumption estimate
    * units = mAh
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mAh",
+    invalid = "-1",
+  )
   public val currentConsumed: Int = 0,
   /**
    * Consumed energy, -1: autopilot does not provide energy consumption estimate
    * units = hJ
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "hJ",
+    invalid = "-1",
+  )
   public val energyConsumed: Int = 0,
   /**
-   * Remaining battery energy. Values: [0-100], -1: autopilot does not estimate the remaining
-   * battery.
+   * Remaining battery energy. Values: [0-100], -1: autopilot does not estimate the remaining battery.
    * units = %
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "%",
+    invalid = "-1",
+  )
   public val batteryRemaining: Byte = 0,
   /**
    * Remaining battery time, 0: autopilot does not provide remaining battery time estimate
@@ -144,6 +145,8 @@ public data class BatteryStatus(
   @GeneratedMavField(
     type = "int32_t",
     extension = true,
+    units = "s",
+    invalid = "0",
   )
   public val timeRemaining: Int = 0,
   /**
@@ -155,20 +158,18 @@ public data class BatteryStatus(
   )
   public val chargeState: MavEnumValue<MavBatteryChargeState> = MavEnumValue.fromValue(0u),
   /**
-   * Battery voltages for cells 11 to 14. Cells above the valid cell count for this battery should
-   * have a value of 0, where zero indicates not supported (note, this is different than for the
-   * voltages field and allows empty byte truncation). If the measured value is 0 then 1 should be sent
-   * instead.
+   * Battery voltages for cells 11 to 14. Cells above the valid cell count for this battery should have a value of 0, where zero indicates not supported (note, this is different than for the voltages field and allows empty byte truncation). If the measured value is 0 then 1 should be sent instead.
    * units = mV
    */
   @GeneratedMavField(
     type = "uint16_t[4]",
     extension = true,
+    units = "mV",
+    invalid = "[0]",
   )
   public val voltagesExt: List<UShort> = emptyList(),
   /**
-   * Battery mode. Default (0) is that battery mode reporting is not supported or battery is in
-   * normal-use mode.
+   * Battery mode. Default (0) is that battery mode reporting is not supported or battery is in normal-use mode.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -176,9 +177,7 @@ public data class BatteryStatus(
   )
   public val mode: MavEnumValue<MavBatteryMode> = MavEnumValue.fromValue(0u),
   /**
-   * Fault/health indications. These should be set when charge_state is
-   * MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY (if not, fault reporting is
-   * not supported).
+   * Fault/health indications. These should be set when charge_state is MAV_BATTERY_CHARGE_STATE_FAILED or MAV_BATTERY_CHARGE_STATE_UNHEALTHY (if not, fault reporting is not supported).
    */
   @GeneratedMavField(
     type = "uint32_t",
@@ -281,8 +280,7 @@ public data class BatteryStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): BatteryStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): BatteryStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

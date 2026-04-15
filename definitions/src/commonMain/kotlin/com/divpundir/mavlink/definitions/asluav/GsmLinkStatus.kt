@@ -42,7 +42,10 @@ public data class GsmLinkStatus(
    * Timestamp (of OBC)
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * GSM modem used
@@ -138,8 +141,7 @@ public data class GsmLinkStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GsmLinkStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GsmLinkStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

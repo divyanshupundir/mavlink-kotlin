@@ -25,8 +25,7 @@ import kotlin.Unit
  * @param inputA Pitch (centi-degrees) or lat (degE7), depending on mount mode.
  * @param inputB Roll (centi-degrees) or lon (degE7) depending on mount mode.
  * @param inputC Yaw (centi-degrees) or alt (cm) depending on mount mode.
- * @param savePosition If "1" it will save current trimmed position on EEPROM (just valid for
- * NEUTRAL and LANDING).
+ * @param savePosition If "1" it will save current trimmed position on EEPROM (just valid for NEUTRAL and LANDING).
  */
 @GeneratedMavMessage(
   id = 157u,
@@ -117,8 +116,7 @@ public data class MountControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MountControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MountControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

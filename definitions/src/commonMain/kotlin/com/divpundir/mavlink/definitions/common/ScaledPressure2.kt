@@ -31,8 +31,7 @@ import kotlin.Unit
  * units = hPa
  * @param temperature Absolute pressure temperature
  * units = cdegC
- * @param temperaturePressDiff Differential pressure temperature (0, if not available). Report
- * values of 0 (or 1) as 1 cdegC.
+ * @param temperaturePressDiff Differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.
  * units = cdegC
  */
 @GeneratedMavMessage(
@@ -44,25 +43,37 @@ public data class ScaledPressure2(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Absolute pressure
    * units = hPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "hPa",
+  )
   public val pressAbs: Float = 0F,
   /**
    * Differential pressure
    * units = hPa
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "hPa",
+  )
   public val pressDiff: Float = 0F,
   /**
    * Absolute pressure temperature
    * units = cdegC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cdegC",
+  )
   public val temperature: Short = 0,
   /**
    * Differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.
@@ -71,6 +82,8 @@ public data class ScaledPressure2(
   @GeneratedMavField(
     type = "int16_t",
     extension = true,
+    units = "cdegC",
+    invalid = "0",
   )
   public val temperaturePressDiff: Short = 0,
 ) : MavMessage<ScaledPressure2> {
@@ -122,8 +135,7 @@ public data class ScaledPressure2(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScaledPressure2 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScaledPressure2 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

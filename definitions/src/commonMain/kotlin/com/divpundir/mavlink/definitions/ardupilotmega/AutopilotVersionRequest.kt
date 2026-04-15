@@ -74,8 +74,7 @@ public data class AutopilotVersionRequest(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotVersionRequest =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AutopilotVersionRequest = Builder().apply(builderAction).build()
   }
 
   public class Builder {

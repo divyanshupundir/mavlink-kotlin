@@ -33,43 +33,34 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The
- * Location message provides the location, altitude, direction and speed of the aircraft.
+ * Data for filling the OpenDroneID Location message. The float data types are 32-bit IEEE 754. The Location message provides the location, altitude, direction and speed of the aircraft.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
  * @param status Indicates whether the unmanned aircraft is on the ground or in the air.
- * @param direction Direction over ground (not heading, but direction of movement) measured
- * clockwise from true North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
+ * @param direction Direction over ground (not heading, but direction of movement) measured clockwise from true North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
  * units = cdeg
- * @param speedHorizontal Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger
- * than 25425 cm/s, use 25425 cm/s.
+ * @param speedHorizontal Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use 25425 cm/s.
  * units = cm/s
- * @param speedVertical The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is
- * larger than 6200 cm/s, use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
+ * @param speedVertical The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s, use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
  * units = cm/s
  * @param latitude Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
  * units = degE7
  * @param longitude Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
  * units = degE7
- * @param altitudeBarometric The altitude calculated from the barometric pressure. Reference is
- * against 29.92inHg or 1013.2mb. If unknown: -1000 m.
+ * @param altitudeBarometric The altitude calculated from the barometric pressure. Reference is against 29.92inHg or 1013.2mb. If unknown: -1000 m.
  * units = m
  * @param altitudeGeodetic The geodetic altitude as defined by WGS84. If unknown: -1000 m.
  * units = m
  * @param heightReference Indicates the reference point for the height field.
- * @param height The current height of the unmanned aircraft above the take-off location or the
- * ground as indicated by height_reference. If unknown: -1000 m.
+ * @param height The current height of the unmanned aircraft above the take-off location or the ground as indicated by height_reference. If unknown: -1000 m.
  * units = m
  * @param horizontalAccuracy The accuracy of the horizontal position.
  * @param verticalAccuracy The accuracy of the vertical position.
  * @param barometerAccuracy The accuracy of the barometric altitude.
  * @param speedAccuracy The accuracy of the horizontal and vertical speed.
- * @param timestamp Seconds after the full hour with reference to UTC time. Typically the GPS
- * outputs a time-of-week value in milliseconds. First convert that to UTC and then convert for this
- * field using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
+ * @param timestamp Seconds after the full hour with reference to UTC time. Typically the GPS outputs a time-of-week value in milliseconds. First convert that to UTC and then convert for this field using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
  * units = s
  * @param timestampAccuracy The accuracy of the timestamps.
  */
@@ -89,8 +80,7 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
@@ -100,50 +90,72 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "uint8_t")
   public val status: MavEnumValue<MavOdidStatus> = MavEnumValue.fromValue(0u),
   /**
-   * Direction over ground (not heading, but direction of movement) measured clockwise from true
-   * North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
+   * Direction over ground (not heading, but direction of movement) measured clockwise from true North: 0 - 35999 centi-degrees. If unknown: 36100 centi-degrees.
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+    invalid = "36100",
+  )
   public val direction: UShort = 0u,
   /**
-   * Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use
-   * 25425 cm/s.
+   * Ground speed. Positive only. If unknown: 25500 cm/s. If speed is larger than 25425 cm/s, use 25425 cm/s.
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+  )
   public val speedHorizontal: UShort = 0u,
   /**
-   * The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s,
-   * use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
+   * The vertical speed. Up is positive. If unknown: 6300 cm/s. If speed is larger than 6200 cm/s, use 6200 cm/s. If lower than -6200 cm/s, use -6200 cm/s.
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+  )
   public val speedVertical: Short = 0,
   /**
    * Current latitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "0",
+  )
   public val latitude: Int = 0,
   /**
    * Current longitude of the unmanned aircraft. If unknown: 0 (both Lat/Lon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "0",
+  )
   public val longitude: Int = 0,
   /**
-   * The altitude calculated from the barometric pressure. Reference is against 29.92inHg or
-   * 1013.2mb. If unknown: -1000 m.
+   * The altitude calculated from the barometric pressure. Reference is against 29.92inHg or 1013.2mb. If unknown: -1000 m.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val altitudeBarometric: Float = 0F,
   /**
    * The geodetic altitude as defined by WGS84. If unknown: -1000 m.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val altitudeGeodetic: Float = 0F,
   /**
    * Indicates the reference point for the height field.
@@ -151,11 +163,14 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "uint8_t")
   public val heightReference: MavEnumValue<MavOdidHeightRef> = MavEnumValue.fromValue(0u),
   /**
-   * The current height of the unmanned aircraft above the take-off location or the ground as
-   * indicated by height_reference. If unknown: -1000 m.
+   * The current height of the unmanned aircraft above the take-off location or the ground as indicated by height_reference. If unknown: -1000 m.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val height: Float = 0F,
   /**
    * The accuracy of the horizontal position.
@@ -178,12 +193,14 @@ public data class OpenDroneIdLocation(
   @GeneratedMavField(type = "uint8_t")
   public val speedAccuracy: MavEnumValue<MavOdidSpeedAcc> = MavEnumValue.fromValue(0u),
   /**
-   * Seconds after the full hour with reference to UTC time. Typically the GPS outputs a
-   * time-of-week value in milliseconds. First convert that to UTC and then convert for this field
-   * using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
+   * Seconds after the full hour with reference to UTC time. Typically the GPS outputs a time-of-week value in milliseconds. First convert that to UTC and then convert for this field using ((float) (time_week_ms % (60*60*1000))) / 1000. If unknown: 0xFFFF.
    * units = s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "s",
+    invalid = "0xFFFF",
+  )
   public val timestamp: Float = 0F,
   /**
    * The accuracy of the timestamps.
@@ -317,8 +334,7 @@ public data class OpenDroneIdLocation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdLocation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdLocation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

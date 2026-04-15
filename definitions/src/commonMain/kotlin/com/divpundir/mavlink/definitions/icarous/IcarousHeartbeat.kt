@@ -67,8 +67,7 @@ public data class IcarousHeartbeat(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): IcarousHeartbeat =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): IcarousHeartbeat = Builder().apply(builderAction).build()
   }
 
   public class Builder {

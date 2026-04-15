@@ -31,8 +31,7 @@ import kotlin.Unit
  * units = us
  * @param lineLength Length of line released. NaN if unknown
  * units = m
- * @param speed Speed line is being released or retracted. Positive values if being released,
- * negative values if being retracted, NaN if unknown
+ * @param speed Speed line is being released or retracted. Positive values if being released, negative values if being retracted, NaN if unknown
  * units = m/s
  * @param tension Tension on the line. NaN if unknown
  * units = kg
@@ -53,44 +52,70 @@ public data class WinchStatus(
    * Timestamp (synced to UNIX time or since system boot).
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Length of line released. NaN if unknown
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "NaN",
+  )
   public val lineLength: Float = 0F,
   /**
-   * Speed line is being released or retracted. Positive values if being released, negative values
-   * if being retracted, NaN if unknown
+   * Speed line is being released or retracted. Positive values if being released, negative values if being retracted, NaN if unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+    invalid = "NaN",
+  )
   public val speed: Float = 0F,
   /**
    * Tension on the line. NaN if unknown
    * units = kg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "kg",
+    invalid = "NaN",
+  )
   public val tension: Float = 0F,
   /**
    * Voltage of the battery supplying the winch. NaN if unknown
    * units = V
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "V",
+    invalid = "NaN",
+  )
   public val voltage: Float = 0F,
   /**
    * Current draw from the winch. NaN if unknown
    * units = A
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "A",
+    invalid = "NaN",
+  )
   public val current: Float = 0F,
   /**
    * Temperature of the motor. INT16_MAX if unknown
    * units = degC
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "degC",
+    invalid = "INT16_MAX",
+  )
   public val temperature: Short = 0,
   /**
    * Status flags
@@ -162,8 +187,7 @@ public data class WinchStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): WinchStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): WinchStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -22,24 +22,16 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * High level message to control a gimbal manually. The angles or angular rates are unitless; the
- * actual rates will depend on internal gimbal manager settings/configuration (e.g. set by parameters).
- * This message is to be sent to the gimbal manager (e.g. from a ground station). Angles and rates can
- * be set to NaN according to use case.
+ * High level message to control a gimbal manually. The angles or angular rates are unitless; the actual rates will depend on internal gimbal manager settings/configuration (e.g. set by parameters). This message is to be sent to the gimbal manager (e.g. from a ground station). Angles and rates can be set to NaN according to use case.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param flags High level gimbal manager flags.
- * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0
- * for all gimbal device components. Send command multiple times for more than one gimbal (but not all
- * gimbals).
+ * @param gimbalDeviceId Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
  * @param pitch Pitch angle unitless (-1..1, positive: up, negative: down, NaN to be ignored).
- * @param yaw Yaw angle unitless (-1..1, positive: to the right, negative: to the left, NaN to be
- * ignored).
- * @param pitchRate Pitch angular rate unitless (-1..1, positive: up, negative: down, NaN to be
- * ignored).
- * @param yawRate Yaw angular rate unitless (-1..1, positive: to the right, negative: to the left,
- * NaN to be ignored).
+ * @param yaw Yaw angle unitless (-1..1, positive: to the right, negative: to the left, NaN to be ignored).
+ * @param pitchRate Pitch angular rate unitless (-1..1, positive: up, negative: down, NaN to be ignored).
+ * @param yawRate Yaw angular rate unitless (-1..1, positive: to the right, negative: to the left, NaN to be ignored).
  */
 @GeneratedMavMessage(
   id = 288u,
@@ -62,31 +54,41 @@ public data class GimbalManagerSetManualControl(
   @GeneratedMavField(type = "uint32_t")
   public val flags: MavBitmaskValue<GimbalManagerFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal
-   * device components. Send command multiple times for more than one gimbal (but not all gimbals).
+   * Component ID of gimbal device to address (or 1-6 for non-MAVLink gimbal), 0 for all gimbal device components. Send command multiple times for more than one gimbal (but not all gimbals).
    */
   @GeneratedMavField(type = "uint8_t")
   public val gimbalDeviceId: UByte = 0u,
   /**
    * Pitch angle unitless (-1..1, positive: up, negative: down, NaN to be ignored).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val pitch: Float = 0F,
   /**
    * Yaw angle unitless (-1..1, positive: to the right, negative: to the left, NaN to be ignored).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val yaw: Float = 0F,
   /**
    * Pitch angular rate unitless (-1..1, positive: up, negative: down, NaN to be ignored).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val pitchRate: Float = 0F,
   /**
-   * Yaw angular rate unitless (-1..1, positive: to the right, negative: to the left, NaN to be
-   * ignored).
+   * Yaw angular rate unitless (-1..1, positive: to the right, negative: to the left, NaN to be ignored).
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    invalid = "NaN",
+  )
   public val yawRate: Float = 0F,
 ) : MavMessage<GimbalManagerSetManualControl> {
   override val instanceCompanion: MavMessage.MavCompanion<GimbalManagerSetManualControl> = Companion
@@ -153,8 +155,7 @@ public data class GimbalManagerSetManualControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetManualControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalManagerSetManualControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

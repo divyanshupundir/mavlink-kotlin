@@ -24,48 +24,29 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * The general system state. If the system is following the MAVLink standard, the system state is
- * mainly defined by three orthogonal states/modes: The system mode, which is either LOCKED (motors
- * shut down and locked), MANUAL (system under RC control), GUIDED (system with autonomous position
- * control, position setpoint controlled manually) or AUTO (system guided by path/waypoint planner).
- * The NAV_MODE defined the current flight state: LIFTOFF (often an open-loop maneuver), LANDING,
- * WAYPOINTS or VECTOR. This represents the internal navigation state machine. The system status shows
- * whether the system is currently active or not and if an emergency occurred. During the CRITICAL and
- * EMERGENCY states the MAV is still considered to be active, but should start emergency procedures
- * autonomously. After a failure occurred it should first move from active to critical to allow manual
- * intervention and then move to emergency after a certain timeout.
+ * Sensor and subsystem status information. Provides a compact representation of sensor/subsystem status and a few other basic statistics.
  *
- * @param onboardControlSensorsPresent Bitmap showing which onboard controllers and sensors are
- * present. Value of 0: not present. Value of 1: present.
- * @param onboardControlSensorsEnabled Bitmap showing which onboard controllers and sensors are
- * enabled:  Value of 0: not enabled. Value of 1: enabled.
- * @param onboardControlSensorsHealth Bitmap showing which onboard controllers and sensors have an
- * error (or are operational). Value of 0: error. Value of 1: healthy.
- * @param load Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be
- * below 1000
+ * @param onboardControlSensorsPresent Bitmap showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present.
+ * @param onboardControlSensorsEnabled Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled.
+ * @param onboardControlSensorsHealth Bitmap showing which onboard controllers and sensors have an error (or are operational). Value of 0: error. Value of 1: healthy.
+ * @param load Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be below 1000
  * units = d%
  * @param voltageBattery Battery voltage, UINT16_MAX: Voltage not sent by autopilot
  * units = mV
  * @param currentBattery Battery current, -1: Current not sent by autopilot
  * units = cA
- * @param batteryRemaining Battery energy remaining, -1: Battery remaining energy not sent by
- * autopilot
+ * @param batteryRemaining Battery energy remaining, -1: Battery remaining energy not sent by autopilot
  * units = %
- * @param dropRateComm Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links
- * (packets that were corrupted on reception on the MAV)
+ * @param dropRateComm Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
  * units = c%
- * @param errorsComm Communication errors (UART, I2C, SPI, CAN), dropped packets on all links
- * (packets that were corrupted on reception on the MAV)
+ * @param errorsComm Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
  * @param errorsCount1 Autopilot-specific errors
  * @param errorsCount2 Autopilot-specific errors
  * @param errorsCount3 Autopilot-specific errors
  * @param errorsCount4 Autopilot-specific errors
- * @param onboardControlSensorsPresentExtended Bitmap showing which onboard controllers and sensors
- * are present. Value of 0: not present. Value of 1: present.
- * @param onboardControlSensorsEnabledExtended Bitmap showing which onboard controllers and sensors
- * are enabled:  Value of 0: not enabled. Value of 1: enabled.
- * @param onboardControlSensorsHealthExtended Bitmap showing which onboard controllers and sensors
- * have an error (or are operational). Value of 0: error. Value of 1: healthy.
+ * @param onboardControlSensorsPresentExtended Bitmap showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present.
+ * @param onboardControlSensorsEnabledExtended Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled.
+ * @param onboardControlSensorsHealthExtended Bitmap showing which onboard controllers and sensors have an error (or are operational). Value of 0: error. Value of 1: healthy.
  */
 @GeneratedMavMessage(
   id = 1u,
@@ -73,60 +54,82 @@ import kotlin.Unit
 )
 public data class SysStatus(
   /**
-   * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.
-   * Value of 1: present.
+   * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present.
    */
-  @GeneratedMavField(type = "uint32_t")
-  public val onboardControlSensorsPresent: MavBitmaskValue<MavSysStatusSensor> =
-      MavBitmaskValue.fromValue(0u),
+  @GeneratedMavField(
+    type = "uint32_t",
+    printFormat = "0x%04x",
+  )
+  public val onboardControlSensorsPresent:
+      MavBitmaskValue<MavSysStatusSensor> = MavBitmaskValue.fromValue(0u),
   /**
-   * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled.
-   * Value of 1: enabled.
+   * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled.
    */
-  @GeneratedMavField(type = "uint32_t")
-  public val onboardControlSensorsEnabled: MavBitmaskValue<MavSysStatusSensor> =
-      MavBitmaskValue.fromValue(0u),
+  @GeneratedMavField(
+    type = "uint32_t",
+    printFormat = "0x%04x",
+  )
+  public val onboardControlSensorsEnabled:
+      MavBitmaskValue<MavSysStatusSensor> = MavBitmaskValue.fromValue(0u),
   /**
-   * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value
-   * of 0: error. Value of 1: healthy.
+   * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value of 0: error. Value of 1: healthy.
    */
-  @GeneratedMavField(type = "uint32_t")
-  public val onboardControlSensorsHealth: MavBitmaskValue<MavSysStatusSensor> =
-      MavBitmaskValue.fromValue(0u),
+  @GeneratedMavField(
+    type = "uint32_t",
+    printFormat = "0x%04x",
+  )
+  public val onboardControlSensorsHealth:
+      MavBitmaskValue<MavSysStatusSensor> = MavBitmaskValue.fromValue(0u),
   /**
    * Maximum usage in percent of the mainloop time. Values: [0-1000] - should always be below 1000
    * units = d%
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "d%",
+  )
   public val load: UShort = 0u,
   /**
    * Battery voltage, UINT16_MAX: Voltage not sent by autopilot
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+    invalid = "UINT16_MAX",
+  )
   public val voltageBattery: UShort = 0u,
   /**
    * Battery current, -1: Current not sent by autopilot
    * units = cA
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cA",
+    invalid = "-1",
+  )
   public val currentBattery: Short = 0,
   /**
    * Battery energy remaining, -1: Battery remaining energy not sent by autopilot
    * units = %
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "%",
+    invalid = "-1",
+  )
   public val batteryRemaining: Byte = 0,
   /**
-   * Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
-   * corrupted on reception on the MAV)
+   * Communication drop rate, (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
    * units = c%
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "c%",
+  )
   public val dropRateComm: UShort = 0u,
   /**
-   * Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were
-   * corrupted on reception on the MAV)
+   * Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
    */
   @GeneratedMavField(type = "uint16_t")
   public val errorsComm: UShort = 0u,
@@ -151,35 +154,35 @@ public data class SysStatus(
   @GeneratedMavField(type = "uint16_t")
   public val errorsCount4: UShort = 0u,
   /**
-   * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present.
-   * Value of 1: present.
+   * Bitmap showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present.
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    printFormat = "0x%04x",
   )
-  public val onboardControlSensorsPresentExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
-      MavBitmaskValue.fromValue(0u),
+  public val onboardControlSensorsPresentExtended:
+      MavBitmaskValue<MavSysStatusSensorExtended> = MavBitmaskValue.fromValue(0u),
   /**
-   * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled.
-   * Value of 1: enabled.
+   * Bitmap showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled.
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    printFormat = "0x%04x",
   )
-  public val onboardControlSensorsEnabledExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
-      MavBitmaskValue.fromValue(0u),
+  public val onboardControlSensorsEnabledExtended:
+      MavBitmaskValue<MavSysStatusSensorExtended> = MavBitmaskValue.fromValue(0u),
   /**
-   * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value
-   * of 0: error. Value of 1: healthy.
+   * Bitmap showing which onboard controllers and sensors have an error (or are operational). Value of 0: error. Value of 1: healthy.
    */
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    printFormat = "0x%04x",
   )
-  public val onboardControlSensorsHealthExtended: MavBitmaskValue<MavSysStatusSensorExtended> =
-      MavBitmaskValue.fromValue(0u),
+  public val onboardControlSensorsHealthExtended:
+      MavBitmaskValue<MavSysStatusSensorExtended> = MavBitmaskValue.fromValue(0u),
 ) : MavMessage<SysStatus> {
   override val instanceCompanion: MavMessage.MavCompanion<SysStatus> = Companion
 
@@ -289,8 +292,7 @@ public data class SysStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SysStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SysStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

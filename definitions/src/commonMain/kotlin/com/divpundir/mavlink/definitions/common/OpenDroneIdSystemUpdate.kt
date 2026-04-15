@@ -23,10 +23,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Update the data in the OPEN_DRONE_ID_SYSTEM message with new location information. This can be
- * sent to update the location information for the operator when no other information in the SYSTEM
- * message has changed. This message allows for efficient operation on radio links which have limited
- * uplink bandwidth while meeting requirements for update frequency of the operator location.
+ * Update the data in the OPEN_DRONE_ID_SYSTEM message with new location information. This can be sent to update the location information for the operator when no other information in the SYSTEM message has changed. This message allows for efficient operation on radio links which have limited uplink bandwidth while meeting requirements for update frequency of the operator location.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
@@ -34,8 +31,7 @@ import kotlin.Unit
  * units = degE7
  * @param operatorLongitude Longitude of the operator. If unknown: 0 (both Lat/Lon).
  * units = degE7
- * @param operatorAltitudeGeo Geodetic altitude of the operator relative to WGS84. If unknown: -1000
- * m.
+ * @param operatorAltitudeGeo Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
  * units = m
  * @param timestamp 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
  * units = s
@@ -59,25 +55,40 @@ public data class OpenDroneIdSystemUpdate(
    * Latitude of the operator. If unknown: 0 (both Lat/Lon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "0",
+  )
   public val operatorLatitude: Int = 0,
   /**
    * Longitude of the operator. If unknown: 0 (both Lat/Lon).
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "0",
+  )
   public val operatorLongitude: Int = 0,
   /**
    * Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+    invalid = "-1000",
+  )
   public val operatorAltitudeGeo: Float = 0F,
   /**
    * 32 bit Unix Timestamp in seconds since 00:00:00 01/01/2019.
    * units = s
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "s",
+  )
   public val timestamp: UInt = 0u,
 ) : MavMessage<OpenDroneIdSystemUpdate> {
   override val instanceCompanion: MavMessage.MavCompanion<OpenDroneIdSystemUpdate> = Companion
@@ -133,8 +144,7 @@ public data class OpenDroneIdSystemUpdate(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSystemUpdate =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdSystemUpdate = Builder().apply(builderAction).build()
   }
 
   public class Builder {

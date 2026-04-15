@@ -25,8 +25,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Terrain data sent from GCS. The lat/lon and grid_spacing must be the same as a lat/lon from a
- * TERRAIN_REQUEST. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
+ * Terrain data sent from GCS. The lat/lon and grid_spacing must be the same as a lat/lon from a TERRAIN_REQUEST. See terrain protocol docs: https://mavlink.io/en/services/terrain.html
  *
  * @param lat Latitude of SW corner of first grid
  * units = degE7
@@ -47,19 +46,28 @@ public data class TerrainData(
    * Latitude of SW corner of first grid
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude of SW corner of first grid
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Grid spacing
    * units = m
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "m",
+  )
   public val gridSpacing: UShort = 0u,
   /**
    * bit within the terrain request mask
@@ -70,7 +78,10 @@ public data class TerrainData(
    * Terrain data MSL
    * units = m
    */
-  @GeneratedMavField(type = "int16_t[16]")
+  @GeneratedMavField(
+    type = "int16_t[16]",
+    units = "m",
+  )
   public val `data`: List<Short> = emptyList(),
 ) : MavMessage<TerrainData> {
   override val instanceCompanion: MavMessage.MavCompanion<TerrainData> = Companion
@@ -122,8 +133,7 @@ public data class TerrainData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): TerrainData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

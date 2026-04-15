@@ -7,10 +7,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of
- * 0b0000000000000000 or 0b0000001000000000 indicates that none of the setpoint dimensions should be
- * ignored. If bit 9 is set the floats afx afy afz should be interpreted as force instead of
- * acceleration.
+ * Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b0000000000000000 or 0b0000001000000000 indicates that none of the setpoint dimensions should be ignored. If bit 9 is set the floats afx afy afz should be interpreted as force instead of acceleration.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class PositionTargetTypemask(

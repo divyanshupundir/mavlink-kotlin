@@ -22,21 +22,17 @@ import kotlin.Unit
  *         This includes time since boot for arm, takeoff, and land, and a flight number.
  *         Takeoff and landing values reset to zero on arm.
  *         This can be requested using MAV_CMD_REQUEST_MESSAGE.
- *         Note, some fields are misnamed - timestamps are from boot (not UTC) and the flight_uuid
- * is a sequence number.
+ *         Note, some fields are misnamed - timestamps are from boot (not UTC) and the flight_uuid is a sequence number.
  *       
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
- * @param armingTimeUtc Timestamp at arming (since system boot). Set to 0 on boot. Set value on
- * arming. Note, field is misnamed UTC.
+ * @param armingTimeUtc Timestamp at arming (since system boot). Set to 0 on boot. Set value on arming. Note, field is misnamed UTC.
  * units = us
- * @param takeoffTimeUtc Timestamp at takeoff (since system boot). Set to 0 at boot and on arming.
- * Note, field is misnamed UTC.
+ * @param takeoffTimeUtc Timestamp at takeoff (since system boot). Set to 0 at boot and on arming. Note, field is misnamed UTC.
  * units = us
  * @param flightUuid Flight number. Note, field is misnamed UUID.
- * @param landingTime Timestamp at landing (in ms since system boot). Set to 0 at boot and on
- * arming.
+ * @param landingTime Timestamp at landing (in ms since system boot). Set to 0 at boot and on arming.
  * units = ms
  */
 @GeneratedMavMessage(
@@ -48,26 +44,38 @@ public data class FlightInformation(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
-   * Timestamp at arming (since system boot). Set to 0 on boot. Set value on arming. Note, field is
-   * misnamed UTC.
+   * Timestamp at arming (since system boot). Set to 0 on boot. Set value on arming. Note, field is misnamed UTC.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+    invalid = "0",
+  )
   public val armingTimeUtc: ULong = 0uL,
   /**
-   * Timestamp at takeoff (since system boot). Set to 0 at boot and on arming. Note, field is
-   * misnamed UTC.
+   * Timestamp at takeoff (since system boot). Set to 0 at boot and on arming. Note, field is misnamed UTC.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+    invalid = "0",
+  )
   public val takeoffTimeUtc: ULong = 0uL,
   /**
    * Flight number. Note, field is misnamed UUID.
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    invalid = "0",
+  )
   public val flightUuid: ULong = 0uL,
   /**
    * Timestamp at landing (in ms since system boot). Set to 0 at boot and on arming.
@@ -76,6 +84,8 @@ public data class FlightInformation(
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    units = "ms",
+    invalid = "0",
   )
   public val landingTime: UInt = 0u,
 ) : MavMessage<FlightInformation> {
@@ -127,8 +137,7 @@ public data class FlightInformation(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlightInformation =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlightInformation = Builder().apply(builderAction).build()
   }
 
   public class Builder {

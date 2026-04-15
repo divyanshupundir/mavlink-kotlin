@@ -38,19 +38,28 @@ public data class Ahrs(
    * X gyro drift estimate.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val omegaix: Float = 0F,
   /**
    * Y gyro drift estimate.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val omegaiy: Float = 0F,
   /**
    * Z gyro drift estimate.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val omegaiz: Float = 0F,
   /**
    * Average accel_weight.
@@ -130,8 +139,7 @@ public data class Ahrs(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Ahrs =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Ahrs = Builder().apply(builderAction).build()
   }
 
   public class Builder {

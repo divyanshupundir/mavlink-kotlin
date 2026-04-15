@@ -20,18 +20,15 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Injected by a radio link endpoint into the MAVLink stream for purposes of flow control. Should be
- * emitted only by components with component id MAV_COMP_ID_TELEMETRY_RADIO.
+ * Injected by a radio link endpoint into the MAVLink stream for purposes of flow control. Should be emitted only by components with component id MAV_COMP_ID_TELEMETRY_RADIO.
  *
  * @param txSerRate Transmitted bytes per second, UINT16_MAX: invalid/unknown.
  * units = bytes/s
  * @param rxSerRate Received bytes per second, UINT16_MAX: invalid/unknown.
  * units = bytes/s
- * @param txUsedSerBandwidth Transmit bandwidth consumption. Values: 0..100, UINT8_MAX:
- * invalid/unknown.
+ * @param txUsedSerBandwidth Transmit bandwidth consumption. Values: 0..100, UINT8_MAX: invalid/unknown.
  * units = c%
- * @param rxUsedSerBandwidth Receive bandwidth consumption. Values: 0..100, UINT8_MAX:
- * invalid/unknown.
+ * @param rxUsedSerBandwidth Receive bandwidth consumption. Values: 0..100, UINT8_MAX: invalid/unknown.
  * units = c%
  * @param txbuf For compatibility with legacy method. UINT8_MAX: unknown.
  * units = c%
@@ -46,31 +43,51 @@ public data class MlrsRadioLinkFlowControl(
    * Transmitted bytes per second, UINT16_MAX: invalid/unknown.
    * units = bytes/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "bytes/s",
+    invalid = "UINT16_MAX",
+  )
   public val txSerRate: UShort = 0u,
   /**
    * Received bytes per second, UINT16_MAX: invalid/unknown.
    * units = bytes/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "bytes/s",
+    invalid = "UINT16_MAX",
+  )
   public val rxSerRate: UShort = 0u,
   /**
    * Transmit bandwidth consumption. Values: 0..100, UINT8_MAX: invalid/unknown.
    * units = c%
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "c%",
+    invalid = "UINT8_MAX",
+  )
   public val txUsedSerBandwidth: UByte = 0u,
   /**
    * Receive bandwidth consumption. Values: 0..100, UINT8_MAX: invalid/unknown.
    * units = c%
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "c%",
+    invalid = "UINT8_MAX",
+  )
   public val rxUsedSerBandwidth: UByte = 0u,
   /**
    * For compatibility with legacy method. UINT8_MAX: unknown.
    * units = c%
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "c%",
+    invalid = "UINT8_MAX",
+  )
   public val txbuf: UByte = 0u,
 ) : MavMessage<MlrsRadioLinkFlowControl> {
   override val instanceCompanion: MavMessage.MavCompanion<MlrsRadioLinkFlowControl> = Companion
@@ -122,8 +139,7 @@ public data class MlrsRadioLinkFlowControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MlrsRadioLinkFlowControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MlrsRadioLinkFlowControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

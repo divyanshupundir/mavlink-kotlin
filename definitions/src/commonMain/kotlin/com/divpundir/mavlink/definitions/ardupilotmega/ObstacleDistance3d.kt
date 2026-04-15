@@ -32,8 +32,7 @@ import kotlin.Unit
  * units = ms
  * @param sensorType Class id of the distance sensor type.
  * @param frame Coordinate frame of reference.
- * @param obstacleId  Unique ID given to each obstacle so that its movement can be tracked. Use
- * UINT16_MAX if object ID is unknown or cannot be determined.
+ * @param obstacleId  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object ID is unknown or cannot be determined.
  * @param x  X position of the obstacle.
  * units = m
  * @param y  Y position of the obstacle.
@@ -54,7 +53,10 @@ public data class ObstacleDistance3d(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Class id of the distance sensor type.
@@ -67,8 +69,7 @@ public data class ObstacleDistance3d(
   @GeneratedMavField(type = "uint8_t")
   public val frame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
   /**
-   *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object
-   * ID is unknown or cannot be determined.
+   *  Unique ID given to each obstacle so that its movement can be tracked. Use UINT16_MAX if object ID is unknown or cannot be determined.
    */
   @GeneratedMavField(type = "uint16_t")
   public val obstacleId: UShort = 0u,
@@ -76,31 +77,46 @@ public data class ObstacleDistance3d(
    *  X position of the obstacle.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val x: Float = 0F,
   /**
    *  Y position of the obstacle.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val y: Float = 0F,
   /**
    *  Z position of the obstacle.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val z: Float = 0F,
   /**
    * Minimum distance the sensor can measure.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val minDistance: Float = 0F,
   /**
    * Maximum distance the sensor can measure.
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val maxDistance: Float = 0F,
 ) : MavMessage<ObstacleDistance3d> {
   override val instanceCompanion: MavMessage.MavCompanion<ObstacleDistance3d> = Companion
@@ -174,8 +190,7 @@ public data class ObstacleDistance3d(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ObstacleDistance3d =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ObstacleDistance3d = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -12,7 +12,6 @@ import com.divpundir.mavlink.serialization.safeDecodeUInt8
 import com.divpundir.mavlink.serialization.truncateZeros
 import kotlin.Byte
 import kotlin.ByteArray
-import kotlin.Deprecated
 import kotlin.Int
 import kotlin.UByte
 import kotlin.UInt
@@ -21,25 +20,19 @@ import kotlin.Unit
 
 /**
  *
- *         Set the mission item with sequence number seq as the current item and emit
- * MISSION_CURRENT (whether or not the mission number changed).
- *         If a mission is currently being executed, the system will continue to this new mission
- * item on the shortest path, skipping any intermediate mission items.
+ *         Set the mission item with sequence number seq as the current item and emit MISSION_CURRENT (whether or not the mission number changed).
+ *         If a mission is currently being executed, the system will continue to this new mission item on the shortest path, skipping any intermediate mission items.
  *         Note that mission jump repeat counters are not reset (see MAV_CMD_DO_JUMP param2).
  *
- *         This message may trigger a mission state-machine change on some systems: for example from
- * MISSION_STATE_NOT_STARTED or MISSION_STATE_PAUSED to MISSION_STATE_ACTIVE.
- *         If the system is in mission mode, on those systems this command might therefore start,
- * restart or resume the mission.
- *         If the system is not in mission mode this message must not trigger a switch to mission
- * mode.
+ *         This message may trigger a mission state-machine change on some systems: for example from MISSION_STATE_NOT_STARTED or MISSION_STATE_PAUSED to MISSION_STATE_ACTIVE.
+ *         If the system is in mission mode, on those systems this command might therefore start, restart or resume the mission.
+ *         If the system is not in mission mode this message must not trigger a switch to mission mode.
  *       
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
  * @param seq Sequence
  */
-@Deprecated(message = "")
 @GeneratedMavMessage(
   id = 41u,
   crcExtra = 28,
@@ -102,8 +95,7 @@ public data class MissionSetCurrent(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MissionSetCurrent =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MissionSetCurrent = Builder().apply(builderAction).build()
   }
 
   public class Builder {

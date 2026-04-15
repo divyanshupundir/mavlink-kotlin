@@ -40,7 +40,10 @@ public data class Meminfo(
    * Free memory.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "bytes",
+  )
   public val freemem: UShort = 0u,
   /**
    * Free memory (32 bit).
@@ -49,6 +52,7 @@ public data class Meminfo(
   @GeneratedMavField(
     type = "uint32_t",
     extension = true,
+    units = "bytes",
   )
   public val freemem32: UInt = 0u,
 ) : MavMessage<Meminfo> {
@@ -92,8 +96,7 @@ public data class Meminfo(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Meminfo =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Meminfo = Builder().apply(builderAction).build()
   }
 
   public class Builder {

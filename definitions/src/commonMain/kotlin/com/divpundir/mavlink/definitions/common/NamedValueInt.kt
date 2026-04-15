@@ -20,8 +20,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but
- * a quite efficient way for testing new messages and getting experimental debug output.
+ * Send a key-value pair as integer. The use of this message is discouraged for normal packets, but a quite efficient way for testing new messages and getting experimental debug output.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -37,7 +36,10 @@ public data class NamedValueInt(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Name of the debug variable
@@ -91,8 +93,7 @@ public data class NamedValueInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): NamedValueInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): NamedValueInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

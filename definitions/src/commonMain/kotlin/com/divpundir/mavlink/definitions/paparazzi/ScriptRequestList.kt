@@ -74,8 +74,7 @@ public data class ScriptRequestList(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptRequestList =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScriptRequestList = Builder().apply(builderAction).build()
   }
 
   public class Builder {

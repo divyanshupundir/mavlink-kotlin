@@ -35,18 +35,27 @@ public data class ButtonChange(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Time of last change of button state.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val lastChangeMs: UInt = 0u,
   /**
    * Bitmap for state of buttons.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    display = "bitmask",
+  )
   public val state: UByte = 0u,
 ) : MavMessage<ButtonChange> {
   override val instanceCompanion: MavMessage.MavCompanion<ButtonChange> = Companion
@@ -90,8 +99,7 @@ public data class ButtonChange(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ButtonChange =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ButtonChange = Builder().apply(builderAction).build()
   }
 
   public class Builder {

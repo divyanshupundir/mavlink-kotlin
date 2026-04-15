@@ -69,13 +69,19 @@ public data class IcarousKinematicBands(
    * min angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val min1: Float = 0F,
   /**
    * max angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val max1: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
@@ -86,13 +92,19 @@ public data class IcarousKinematicBands(
    * min angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val min2: Float = 0F,
   /**
    * max angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val max2: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
@@ -103,13 +115,19 @@ public data class IcarousKinematicBands(
    * min angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val min3: Float = 0F,
   /**
    * max angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val max3: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
@@ -120,13 +138,19 @@ public data class IcarousKinematicBands(
    * min angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val min4: Float = 0F,
   /**
    * max angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val max4: Float = 0F,
   /**
    * See the TRACK_BAND_TYPES enum.
@@ -137,13 +161,19 @@ public data class IcarousKinematicBands(
    * min angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val min5: Float = 0F,
   /**
    * max angle (degrees)
    * units = deg
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg",
+  )
   public val max5: Float = 0F,
 ) : MavMessage<IcarousKinematicBands> {
   override val instanceCompanion: MavMessage.MavCompanion<IcarousKinematicBands> = Companion
@@ -254,8 +284,7 @@ public data class IcarousKinematicBands(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): IcarousKinematicBands =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): IcarousKinematicBands = Builder().apply(builderAction).build()
   }
 
   public class Builder {

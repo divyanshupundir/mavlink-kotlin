@@ -33,8 +33,7 @@ public enum class RebootShutdownAction(
   @GeneratedMavEnumEntry
   REBOOT_TO_BOOTLOADER(3u),
   /**
-   * Power on component. Do nothing if component is already powered (ACK command with
-   * MAV_RESULT_ACCEPTED).
+   * Power on component. Do nothing if component is already powered (ACK command with MAV_RESULT_ACCEPTED).
    */
   @GeneratedMavEnumEntry
   POWER_ON(4u),

@@ -94,8 +94,7 @@ public data class GoproGetResponse(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GoproGetResponse =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GoproGetResponse = Builder().apply(builderAction).build()
   }
 
   public class Builder {

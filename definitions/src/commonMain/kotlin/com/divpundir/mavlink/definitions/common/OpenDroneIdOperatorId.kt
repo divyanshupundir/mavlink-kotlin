@@ -25,16 +25,13 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Data for filling the OpenDroneID Operator ID message, which contains the CAA (Civil Aviation
- * Authority) issued operator ID.
+ * Data for filling the OpenDroneID Operator ID message, which contains the CAA (Civil Aviation Authority) issued operator ID.
  *
  * @param targetSystem System ID (0 for broadcast).
  * @param targetComponent Component ID (0 for broadcast).
- * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at
- * https://mavlink.io/en/services/opendroneid.html. 
+ * @param idOrMac Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
  * @param operatorIdType Indicates the type of the operator_id field.
- * @param operatorId Text description or numeric value expressed as ASCII characters. Shall be
- * filled with nulls in the unused portion of the field.
+ * @param operatorId Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in the unused portion of the field.
  */
 @GeneratedMavMessage(
   id = 12_905u,
@@ -52,8 +49,7 @@ public data class OpenDroneIdOperatorId(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Only used for drone ID data received from other UAs. See detailed description at
-   * https://mavlink.io/en/services/opendroneid.html. 
+   * Only used for drone ID data received from other UAs. See detailed description at https://mavlink.io/en/services/opendroneid.html. 
    */
   @GeneratedMavField(type = "uint8_t[20]")
   public val idOrMac: List<UByte> = emptyList(),
@@ -63,8 +59,7 @@ public data class OpenDroneIdOperatorId(
   @GeneratedMavField(type = "uint8_t")
   public val operatorIdType: MavEnumValue<MavOdidOperatorIdType> = MavEnumValue.fromValue(0u),
   /**
-   * Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in
-   * the unused portion of the field.
+   * Text description or numeric value expressed as ASCII characters. Shall be filled with nulls in the unused portion of the field.
    */
   @GeneratedMavField(type = "char[20]")
   public val operatorId: String = "",
@@ -121,8 +116,7 @@ public data class OpenDroneIdOperatorId(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdOperatorId =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OpenDroneIdOperatorId = Builder().apply(builderAction).build()
   }
 
   public class Builder {

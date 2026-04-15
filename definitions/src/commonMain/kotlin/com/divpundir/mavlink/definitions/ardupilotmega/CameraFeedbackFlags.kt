@@ -30,8 +30,7 @@ public enum class CameraFeedbackFlags(
   @GeneratedMavEnumEntry
   CAMERA_FEEDBACK_CLOSEDLOOP(3u),
   /**
-   * Open loop camera, an image trigger has been requested but we can't know for sure it has
-   * successfully taken a picture.
+   * Open loop camera, an image trigger has been requested but we can't know for sure it has successfully taken a picture.
    */
   @GeneratedMavEnumEntry
   CAMERA_FEEDBACK_OPENLOOP(4u),

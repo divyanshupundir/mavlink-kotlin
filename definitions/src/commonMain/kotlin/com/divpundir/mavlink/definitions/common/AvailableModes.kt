@@ -29,25 +29,20 @@ import kotlin.Unit
 /**
  * Information about a flight mode.
  *
- *         The message can be enumerated to get information for all modes, or requested for a
- * particular mode, using MAV_CMD_REQUEST_MESSAGE.
- *         Specify 0 in param2 to request that the message is emitted for all available modes or the
- * specific index for just one mode.
+ *         The message can be enumerated to get information for all modes, or requested for a particular mode, using MAV_CMD_REQUEST_MESSAGE.
+ *         Specify 0 in param2 to request that the message is emitted for all available modes or the specific index for just one mode.
  *         The modes must be available/settable for the current vehicle/frame type.
  *         Each mode should only be emitted once (even if it is both standard and custom).
- *         Note that the current mode should be emitted in CURRENT_MODE, and that if the mode list
- * can change then AVAILABLE_MODES_MONITOR must be emitted on first change and subsequently streamed.
+ *         Note that the current mode should be emitted in CURRENT_MODE, and that if the mode list can change then AVAILABLE_MODES_MONITOR must be emitted on first change and subsequently streamed.
  *         See https://mavlink.io/en/services/standard_modes.html
  *       
  *
  * @param numberModes The total number of available modes for the current vehicle type.
- * @param modeIndex The current mode index within number_modes, indexed from 1. The index is not
- * guaranteed to be persistent, and may change between reboots or if the set of modes change.
+ * @param modeIndex The current mode index within number_modes, indexed from 1. The index is not guaranteed to be persistent, and may change between reboots or if the set of modes change.
  * @param standardMode Standard mode.
  * @param customMode A bitfield for use for autopilot-specific flags
  * @param properties Mode properties.
- * @param modeName Name of custom mode, with null termination character. Should be omitted for
- * standard modes.
+ * @param modeName Name of custom mode, with null termination character. Should be omitted for standard modes.
  */
 @GeneratedMavMessage(
   id = 435u,
@@ -60,8 +55,7 @@ public data class AvailableModes(
   @GeneratedMavField(type = "uint8_t")
   public val numberModes: UByte = 0u,
   /**
-   * The current mode index within number_modes, indexed from 1. The index is not guaranteed to be
-   * persistent, and may change between reboots or if the set of modes change.
+   * The current mode index within number_modes, indexed from 1. The index is not guaranteed to be persistent, and may change between reboots or if the set of modes change.
    */
   @GeneratedMavField(type = "uint8_t")
   public val modeIndex: UByte = 0u,
@@ -145,8 +139,7 @@ public data class AvailableModes(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AvailableModes =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AvailableModes = Builder().apply(builderAction).build()
   }
 
   public class Builder {

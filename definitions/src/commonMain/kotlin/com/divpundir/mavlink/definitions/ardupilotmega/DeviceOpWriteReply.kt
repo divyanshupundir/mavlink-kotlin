@@ -76,8 +76,7 @@ public data class DeviceOpWriteReply(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpWriteReply =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DeviceOpWriteReply = Builder().apply(builderAction).build()
   }
 
   public class Builder {

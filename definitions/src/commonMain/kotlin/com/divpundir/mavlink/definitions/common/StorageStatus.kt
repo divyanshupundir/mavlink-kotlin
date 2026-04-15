@@ -28,8 +28,7 @@ public enum class StorageStatus(
   @GeneratedMavEnumEntry
   READY(2u),
   /**
-   * Camera does not supply storage status information. Capacity information in STORAGE_INFORMATION
-   * fields will be ignored.
+   * Camera does not supply storage status information. Capacity information in STORAGE_INFORMATION fields will be ignored.
    */
   @GeneratedMavEnumEntry
   NOT_SUPPORTED(3u),

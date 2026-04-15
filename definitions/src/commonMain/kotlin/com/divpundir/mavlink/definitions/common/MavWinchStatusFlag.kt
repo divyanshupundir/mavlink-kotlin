@@ -59,14 +59,12 @@ public enum class MavWinchStatusFlag(
   @GeneratedMavEnumEntry
   MAV_WINCH_STATUS_RETRACTING(256u),
   /**
-   * Winch is redelivering the payload. This is a failover state if the line tension goes above a
-   * threshold during RETRACTING.
+   * Winch is redelivering the payload. This is a failover state if the line tension goes above a threshold during RETRACTING.
    */
   @GeneratedMavEnumEntry
   MAV_WINCH_STATUS_REDELIVER(512u),
   /**
-   * Winch is abandoning the line and possibly payload. Winch unspools the entire calculated line
-   * length. This is a failover state from REDELIVER if the number of attempts exceeds a threshold.
+   * Winch is abandoning the line and possibly payload. Winch unspools the entire calculated line length. This is a failover state from REDELIVER if the number of attempts exceeds a threshold.
    */
   @GeneratedMavEnumEntry
   MAV_WINCH_STATUS_ABANDON_LINE(1_024u),

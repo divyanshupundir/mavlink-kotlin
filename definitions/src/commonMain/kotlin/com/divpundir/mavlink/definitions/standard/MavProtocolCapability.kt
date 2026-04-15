@@ -9,8 +9,7 @@ import kotlin.UInt
 import kotlin.collections.List
 
 /**
- * Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports
- * this capability.
+ * Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports this capability.
  */
 @GeneratedMavEnum(bitmask = true)
 public enum class MavProtocolCapability(
@@ -18,8 +17,7 @@ public enum class MavProtocolCapability(
 ) : MavBitmask {
   /**
    * Autopilot supports the MISSION_ITEM float message type.
-   *           Note that MISSION_ITEM is deprecated, and autopilots should use MISSION_ITEM_INT
-   * instead.
+   *           Note that MISSION_ITEM is deprecated, and autopilots should use MISSION_ITEM_INT instead.
    *         
    */
   @GeneratedMavEnumEntry
@@ -32,8 +30,7 @@ public enum class MavProtocolCapability(
   PARAM_FLOAT(2u),
   /**
    * Autopilot supports MISSION_ITEM_INT scaled integer message type.
-   *           Note that this flag must always be set if missions are supported, because missions
-   * must always use MISSION_ITEM_INT (rather than MISSION_ITEM, which is deprecated).
+   *           Note that this flag must always be set if missions are supported, because missions must always use MISSION_ITEM_INT (rather than MISSION_ITEM, which is deprecated).
    *         
    */
   @GeneratedMavEnumEntry
@@ -44,10 +41,8 @@ public enum class MavProtocolCapability(
   @GeneratedMavEnumEntry
   COMMAND_INT(8u),
   /**
-   * Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields:
-   * https://mavlink.io/en/services/parameter.html#parameter-encoding.
-   *           Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST should be
-   * set if the parameter protocol is supported.
+   * Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.
+   *           Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_C_CAST should be set if the parameter protocol is supported.
    *         
    */
   @GeneratedMavEnumEntry
@@ -113,24 +108,20 @@ public enum class MavProtocolCapability(
   @GeneratedMavEnumEntry
   RESERVED2(65_536u),
   /**
-   * Parameter protocol uses C-cast of parameter values to set the param_value (float) fields:
-   * https://mavlink.io/en/services/parameter.html#parameter-encoding.
-   *           Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be
-   * set if the parameter protocol is supported.
+   * Parameter protocol uses C-cast of parameter values to set the param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.
+   *           Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the parameter protocol is supported.
    *         
    */
   @GeneratedMavEnumEntry
   PARAM_ENCODE_C_CAST(131_072u),
   /**
-   * This component implements/is a gimbal manager. This means the GIMBAL_MANAGER_INFORMATION, and
-   * other messages can be requested.
+   * This component implements/is a gimbal manager. This means the GIMBAL_MANAGER_INFORMATION, and other messages can be requested.
    *         
    */
   @GeneratedMavEnumEntry
   COMPONENT_IMPLEMENTS_GIMBAL_MANAGER(262_144u),
   /**
-   * Component supports locking control to a particular GCS independent of its system (via
-   * MAV_CMD_REQUEST_OPERATOR_CONTROL).
+   * Component supports locking control to a particular GCS independent of its system (via MAV_CMD_REQUEST_OPERATOR_CONTROL).
    */
   @WorkInProgress
   @GeneratedMavEnumEntry

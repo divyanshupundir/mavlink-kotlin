@@ -31,8 +31,7 @@ import kotlin.collections.List
  *
  * @param timestamp Timestamp (time since system boot).
  * units = ms
- * @param estCapabilities bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL
- * = 2, ATT + RATES = 3)
+ * @param estCapabilities bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
  * @param lat Latitude (WGS84)
  * units = degE7
  * @param lon Longitude (WGS84)
@@ -57,7 +56,10 @@ public data class FollowTarget(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "ms",
+  )
   public val timestamp: ULong = 0uL,
   /**
    * bit positions for tracker reporting capabilities (POS = 0, VEL = 1, ACCEL = 2, ATT + RATES = 3)
@@ -68,41 +70,64 @@ public data class FollowTarget(
    * Latitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lat: Int = 0,
   /**
    * Longitude (WGS84)
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lon: Int = 0,
   /**
    * Altitude (MSL)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val alt: Float = 0F,
   /**
    * target velocity (0,0,0) for unknown
    * units = m/s
    */
-  @GeneratedMavField(type = "float[3]")
+  @GeneratedMavField(
+    type = "float[3]",
+    units = "m/s",
+    invalid = "[0]",
+  )
   public val vel: List<Float> = emptyList(),
   /**
    * linear target acceleration (0,0,0) for unknown
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float[3]")
+  @GeneratedMavField(
+    type = "float[3]",
+    units = "m/s/s",
+    invalid = "[0]",
+  )
   public val acc: List<Float> = emptyList(),
   /**
    * (0 0 0 0 for unknown)
    */
-  @GeneratedMavField(type = "float[4]")
+  @GeneratedMavField(
+    type = "float[4]",
+    invalid = "[0]",
+  )
   public val attitudeQ: List<Float> = emptyList(),
   /**
    * (0 0 0 for unknown)
    */
-  @GeneratedMavField(type = "float[3]")
+  @GeneratedMavField(
+    type = "float[3]",
+    invalid = "[0]",
+  )
   public val rates: List<Float> = emptyList(),
   /**
    * eph epv
@@ -188,8 +213,7 @@ public data class FollowTarget(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FollowTarget =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FollowTarget = Builder().apply(builderAction).build()
   }
 
   public class Builder {

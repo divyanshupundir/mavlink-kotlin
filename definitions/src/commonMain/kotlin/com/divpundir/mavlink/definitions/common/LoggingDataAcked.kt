@@ -29,8 +29,7 @@ import kotlin.collections.List
  * @param sequence sequence number (can wrap)
  * @param length data length
  * units = bytes
- * @param firstMessageOffset offset into data where first message starts. This can be used for
- * recovery, when a previous message got lost (set to UINT8_MAX if no start exists).
+ * @param firstMessageOffset offset into data where first message starts. This can be used for recovery, when a previous message got lost (set to UINT8_MAX if no start exists).
  * units = bytes
  * @param data logged data
  */
@@ -58,14 +57,20 @@ public data class LoggingDataAcked(
    * data length
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val length: UByte = 0u,
   /**
-   * offset into data where first message starts. This can be used for recovery, when a previous
-   * message got lost (set to UINT8_MAX if no start exists).
+   * offset into data where first message starts. This can be used for recovery, when a previous message got lost (set to UINT8_MAX if no start exists).
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+    invalid = "UINT8_MAX",
+  )
   public val firstMessageOffset: UByte = 0u,
   /**
    * logged data
@@ -126,8 +131,7 @@ public data class LoggingDataAcked(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LoggingDataAcked =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LoggingDataAcked = Builder().apply(builderAction).build()
   }
 
   public class Builder {

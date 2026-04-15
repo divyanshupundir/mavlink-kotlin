@@ -26,13 +26,9 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Large debug/prototyping array. The message uses the maximum available payload for data. The
- * array_id and name fields are used to discriminate between messages in code and in user interfaces
- * (respectively). Do not use in production code.
+ * Large debug/prototyping array. The message uses the maximum available payload for data. The array_id and name fields are used to discriminate between messages in code and in user interfaces (respectively). Do not use in production code.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param name Name, for human-friendly display in a Ground Control Station
  * @param arrayId Unique ID used to discriminate between arrays
@@ -44,11 +40,13 @@ import kotlin.collections.List
 )
 public data class DebugFloatArray(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Name, for human-friendly display in a Ground Control Station
@@ -113,8 +111,7 @@ public data class DebugFloatArray(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DebugFloatArray =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DebugFloatArray = Builder().apply(builderAction).build()
   }
 
   public class Builder {

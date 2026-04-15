@@ -84,8 +84,7 @@ public data class FlexifunctionCommand(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionCommand =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FlexifunctionCommand = Builder().apply(builderAction).build()
   }
 
   public class Builder {

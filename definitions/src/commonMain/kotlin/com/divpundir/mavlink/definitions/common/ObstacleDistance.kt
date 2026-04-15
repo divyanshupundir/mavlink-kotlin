@@ -31,37 +31,24 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Obstacle distances in front of the sensor, starting from the left in increment degrees to the
- * right
+ * Obstacle distances in front of the sensor, starting from the left in increment degrees to the right
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param sensorType Class id of the distance sensor type.
- * @param distances Distance of obstacles around the vehicle with index 0 corresponding to north +
- * angle_offset, unless otherwise specified in the frame. A value of 0 is valid and means that the
- * obstacle is practically touching the sensor. A value of max_distance +1 means no obstacle is
- * present. A value of UINT16_MAX for unknown/not used. In a array element, one unit corresponds to
- * 1cm.
+ * @param distances Distance of obstacles around the vehicle with index 0 corresponding to north + angle_offset, unless otherwise specified in the frame. A value of 0 is valid and means that the obstacle is practically touching the sensor. A value of max_distance +1 means no obstacle is present. A value of UINT16_MAX for unknown/not used. In a array element, one unit corresponds to 1cm.
  * units = cm
- * @param increment Angular width in degrees of each array element. Increment direction is
- * clockwise. This field is ignored if increment_f is non-zero.
+ * @param increment Angular width in degrees of each array element. Increment direction is clockwise. This field is ignored if increment_f is non-zero.
  * units = deg
  * @param minDistance Minimum distance the sensor can measure.
  * units = cm
  * @param maxDistance Maximum distance the sensor can measure.
  * units = cm
- * @param incrementF Angular width in degrees of each array element as a float. If non-zero then
- * this value is used instead of the uint8_t increment field. Positive is clockwise direction, negative
- * is counter-clockwise.
+ * @param incrementF Angular width in degrees of each array element as a float. If non-zero then this value is used instead of the uint8_t increment field. Positive is clockwise direction, negative is counter-clockwise.
  * units = deg
- * @param angleOffset Relative angle offset of the 0-index element in the distances array. Value of
- * 0 corresponds to forward. Positive is clockwise direction, negative is counter-clockwise.
+ * @param angleOffset Relative angle offset of the 0-index element in the distances array. Value of 0 corresponds to forward. Positive is clockwise direction, negative is counter-clockwise.
  * units = deg
- * @param frame Coordinate frame of reference for the yaw rotation and offset of the sensor data.
- * Defaults to MAV_FRAME_GLOBAL, which is north aligned. For body-mounted sensors use
- * MAV_FRAME_BODY_FRD, which is vehicle front aligned.
+ * @param frame Coordinate frame of reference for the yaw rotation and offset of the sensor data. Defaults to MAV_FRAME_GLOBAL, which is north aligned. For body-mounted sensors use MAV_FRAME_BODY_FRD, which is vehicle front aligned.
  */
 @GeneratedMavMessage(
   id = 330u,
@@ -69,11 +56,13 @@ import kotlin.collections.List
 )
 public data class ObstacleDistance(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Class id of the distance sensor type.
@@ -81,58 +70,64 @@ public data class ObstacleDistance(
   @GeneratedMavField(type = "uint8_t")
   public val sensorType: MavEnumValue<MavDistanceSensor> = MavEnumValue.fromValue(0u),
   /**
-   * Distance of obstacles around the vehicle with index 0 corresponding to north + angle_offset,
-   * unless otherwise specified in the frame. A value of 0 is valid and means that the obstacle is
-   * practically touching the sensor. A value of max_distance +1 means no obstacle is present. A value
-   * of UINT16_MAX for unknown/not used. In a array element, one unit corresponds to 1cm.
+   * Distance of obstacles around the vehicle with index 0 corresponding to north + angle_offset, unless otherwise specified in the frame. A value of 0 is valid and means that the obstacle is practically touching the sensor. A value of max_distance +1 means no obstacle is present. A value of UINT16_MAX for unknown/not used. In a array element, one unit corresponds to 1cm.
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t[72]")
+  @GeneratedMavField(
+    type = "uint16_t[72]",
+    units = "cm",
+    invalid = "[UINT16_MAX]",
+  )
   public val distances: List<UShort> = emptyList(),
   /**
-   * Angular width in degrees of each array element. Increment direction is clockwise. This field is
-   * ignored if increment_f is non-zero.
+   * Angular width in degrees of each array element. Increment direction is clockwise. This field is ignored if increment_f is non-zero.
    * units = deg
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "deg",
+  )
   public val increment: UByte = 0u,
   /**
    * Minimum distance the sensor can measure.
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm",
+  )
   public val minDistance: UShort = 0u,
   /**
    * Maximum distance the sensor can measure.
    * units = cm
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm",
+  )
   public val maxDistance: UShort = 0u,
   /**
-   * Angular width in degrees of each array element as a float. If non-zero then this value is used
-   * instead of the uint8_t increment field. Positive is clockwise direction, negative is
-   * counter-clockwise.
+   * Angular width in degrees of each array element as a float. If non-zero then this value is used instead of the uint8_t increment field. Positive is clockwise direction, negative is counter-clockwise.
    * units = deg
    */
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "deg",
   )
   public val incrementF: Float = 0F,
   /**
-   * Relative angle offset of the 0-index element in the distances array. Value of 0 corresponds to
-   * forward. Positive is clockwise direction, negative is counter-clockwise.
+   * Relative angle offset of the 0-index element in the distances array. Value of 0 corresponds to forward. Positive is clockwise direction, negative is counter-clockwise.
    * units = deg
    */
   @GeneratedMavField(
     type = "float",
     extension = true,
+    units = "deg",
   )
   public val angleOffset: Float = 0F,
   /**
-   * Coordinate frame of reference for the yaw rotation and offset of the sensor data. Defaults to
-   * MAV_FRAME_GLOBAL, which is north aligned. For body-mounted sensors use MAV_FRAME_BODY_FRD, which
-   * is vehicle front aligned.
+   * Coordinate frame of reference for the yaw rotation and offset of the sensor data. Defaults to MAV_FRAME_GLOBAL, which is north aligned. For body-mounted sensors use MAV_FRAME_BODY_FRD, which is vehicle front aligned.
    */
   @GeneratedMavField(
     type = "uint8_t",
@@ -208,8 +203,7 @@ public data class ObstacleDistance(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ObstacleDistance =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ObstacleDistance = Builder().apply(builderAction).build()
   }
 
   public class Builder {

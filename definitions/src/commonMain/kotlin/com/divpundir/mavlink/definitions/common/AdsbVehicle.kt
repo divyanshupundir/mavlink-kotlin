@@ -43,7 +43,7 @@ import kotlin.Unit
  * @param lon Longitude
  * units = degE7
  * @param altitudeType ADSB altitude type.
- * @param altitude Altitude(ASL)
+ * @param altitude Altitude (ASL)
  * units = mm
  * @param heading Course over ground
  * units = cdeg
@@ -53,11 +53,10 @@ import kotlin.Unit
  * units = cm/s
  * @param callsign The callsign, 8+null
  * @param emitterType ADSB emitter type.
- * @param tslc Time since last communication in seconds
+ * @param tslc Time since last communication from the remote vehicle, in seconds.
  * units = s
  * @param flags Bitmap to indicate various statuses including valid data fields
- * @param squawk Squawk code. Note that the code is in decimal: e.g. 7700 (general emergency) is
- * encoded as binary 0b0001_1110_0001_0100, not(!) as 0b0000_111_111_000_000
+ * @param squawk Squawk code. Note that the code is in decimal: e.g. 7700 (general emergency) is encoded as binary 0b0001_1110_0001_0100, not(!) as 0b0000_111_111_000_000
  */
 @GeneratedMavMessage(
   id = 246u,
@@ -73,13 +72,21 @@ public data class AdsbVehicle(
    * Latitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val lat: Int = 0,
   /**
    * Longitude
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+    invalid = "INT32_MAX",
+  )
   public val lon: Int = 0,
   /**
    * ADSB altitude type.
@@ -87,28 +94,44 @@ public data class AdsbVehicle(
   @GeneratedMavField(type = "uint8_t")
   public val altitudeType: MavEnumValue<AdsbAltitudeType> = MavEnumValue.fromValue(0u),
   /**
-   * Altitude(ASL)
+   * Altitude (ASL)
    * units = mm
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "mm",
+    invalid = "INT32_MAX",
+  )
   public val altitude: Int = 0,
   /**
    * Course over ground
    * units = cdeg
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cdeg",
+    invalid = "UINT16_MAX",
+  )
   public val heading: UShort = 0u,
   /**
    * The horizontal velocity
    * units = cm/s
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "cm/s",
+    invalid = "UINT16_MAX",
+  )
   public val horVelocity: UShort = 0u,
   /**
    * The vertical velocity. Positive is up
    * units = cm/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cm/s",
+    invalid = "INT16_MAX",
+  )
   public val verVelocity: Short = 0,
   /**
    * The callsign, 8+null
@@ -121,10 +144,13 @@ public data class AdsbVehicle(
   @GeneratedMavField(type = "uint8_t")
   public val emitterType: MavEnumValue<AdsbEmitterType> = MavEnumValue.fromValue(0u),
   /**
-   * Time since last communication in seconds
+   * Time since last communication from the remote vehicle, in seconds.
    * units = s
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "s",
+  )
   public val tslc: UByte = 0u,
   /**
    * Bitmap to indicate various statuses including valid data fields
@@ -132,8 +158,7 @@ public data class AdsbVehicle(
   @GeneratedMavField(type = "uint16_t")
   public val flags: MavBitmaskValue<AdsbFlags> = MavBitmaskValue.fromValue(0u),
   /**
-   * Squawk code. Note that the code is in decimal: e.g. 7700 (general emergency) is encoded as
-   * binary 0b0001_1110_0001_0100, not(!) as 0b0000_111_111_000_000
+   * Squawk code. Note that the code is in decimal: e.g. 7700 (general emergency) is encoded as binary 0b0001_1110_0001_0100, not(!) as 0b0000_111_111_000_000
    */
   @GeneratedMavField(type = "uint16_t")
   public val squawk: UShort = 0u,
@@ -228,8 +253,7 @@ public data class AdsbVehicle(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AdsbVehicle =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AdsbVehicle = Builder().apply(builderAction).build()
   }
 
   public class Builder {

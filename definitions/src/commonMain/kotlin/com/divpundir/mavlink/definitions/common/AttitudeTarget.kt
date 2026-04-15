@@ -24,9 +24,7 @@ import kotlin.Unit
 import kotlin.collections.List
 
 /**
- * Reports the current commanded attitude of the vehicle as specified by the autopilot. This should
- * match the commands sent in a SET_ATTITUDE_TARGET message if the vehicle is being controlled this
- * way.
+ * Reports the current commanded attitude of the vehicle as specified by the autopilot. This should match the commands sent in a SET_ATTITUDE_TARGET message if the vehicle is being controlled this way.
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -38,8 +36,7 @@ import kotlin.collections.List
  * units = rad/s
  * @param bodyYawRate Body yaw rate
  * units = rad/s
- * @param thrust Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse
- * trust)
+ * @param thrust Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse thrust)
  */
 @GeneratedMavMessage(
   id = 83u,
@@ -50,7 +47,10 @@ public data class AttitudeTarget(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Bitmap to indicate which dimensions should be ignored by the vehicle.
@@ -66,22 +66,31 @@ public data class AttitudeTarget(
    * Body roll rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val bodyRollRate: Float = 0F,
   /**
    * Body pitch rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val bodyPitchRate: Float = 0F,
   /**
    * Body yaw rate
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val bodyYawRate: Float = 0F,
   /**
-   * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)
+   * Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse thrust)
    */
   @GeneratedMavField(type = "float")
   public val thrust: Float = 0F,
@@ -146,8 +155,7 @@ public data class AttitudeTarget(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeTarget =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AttitudeTarget = Builder().apply(builderAction).build()
   }
 
   public class Builder {

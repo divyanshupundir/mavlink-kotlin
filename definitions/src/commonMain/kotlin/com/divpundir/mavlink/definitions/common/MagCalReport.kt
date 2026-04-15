@@ -57,7 +57,10 @@ public data class MagCalReport(
   /**
    * Bitmask of compasses being calibrated.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    display = "bitmask",
+  )
   public val calMask: UByte = 0u,
   /**
    * Calibration Status.
@@ -73,7 +76,10 @@ public data class MagCalReport(
    * RMS milligauss residuals.
    * units = mgauss
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "mgauss",
+  )
   public val fitness: Float = 0F,
   /**
    * X offset.
@@ -259,8 +265,7 @@ public data class MagCalReport(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): MagCalReport =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): MagCalReport = Builder().apply(builderAction).build()
   }
 
   public class Builder {

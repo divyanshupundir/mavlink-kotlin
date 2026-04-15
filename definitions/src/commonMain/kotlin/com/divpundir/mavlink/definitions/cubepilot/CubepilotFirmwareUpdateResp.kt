@@ -44,7 +44,10 @@ public data class CubepilotFirmwareUpdateResp(
    * FW Offset.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "bytes",
+  )
   public val offset: UInt = 0u,
 ) : MavMessage<CubepilotFirmwareUpdateResp> {
   override val instanceCompanion: MavMessage.MavCompanion<CubepilotFirmwareUpdateResp> = Companion
@@ -88,8 +91,7 @@ public data class CubepilotFirmwareUpdateResp(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CubepilotFirmwareUpdateResp =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CubepilotFirmwareUpdateResp = Builder().apply(builderAction).build()
   }
 
   public class Builder {

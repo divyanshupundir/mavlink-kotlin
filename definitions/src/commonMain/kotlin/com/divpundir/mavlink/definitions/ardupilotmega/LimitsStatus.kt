@@ -54,25 +54,37 @@ public data class LimitsStatus(
    * Time (since boot) of last breach.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val lastTrigger: UInt = 0u,
   /**
    * Time (since boot) of last recovery action.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val lastAction: UInt = 0u,
   /**
    * Time (since boot) of last successful recovery.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val lastRecovery: UInt = 0u,
   /**
    * Time (since boot) of last all-clear.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val lastClear: UInt = 0u,
   /**
    * Number of fence breaches.
@@ -172,8 +184,7 @@ public data class LimitsStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LimitsStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LimitsStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

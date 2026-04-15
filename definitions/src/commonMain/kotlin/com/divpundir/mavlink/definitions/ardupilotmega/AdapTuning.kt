@@ -51,13 +51,19 @@ public data class AdapTuning(
    * Desired rate.
    * units = deg/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg/s",
+  )
   public val desired: Float = 0F,
   /**
    * Achieved rate.
    * units = deg/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "deg/s",
+  )
   public val achieved: Float = 0F,
   /**
    * Error between model and vehicle.
@@ -194,8 +200,7 @@ public data class AdapTuning(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): AdapTuning =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): AdapTuning = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -33,8 +33,7 @@ public enum class MavBatteryChargeState(
   @GeneratedMavEnumEntry
   CRITICAL(3u),
   /**
-   * Battery state is too low for ordinary abort sequence. Perform fastest possible emergency stop
-   * to prevent damage.
+   * Battery state is too low for ordinary abort sequence. Perform fastest possible emergency stop to prevent damage.
    */
   @GeneratedMavEnumEntry
   EMERGENCY(4u),
@@ -44,8 +43,7 @@ public enum class MavBatteryChargeState(
   @GeneratedMavEnumEntry
   FAILED(5u),
   /**
-   * Battery is diagnosed to be defective or an error occurred, usage is discouraged / prohibited.
-   * Possible causes (faults) are listed in MAV_BATTERY_FAULT.
+   * Battery is diagnosed to be defective or an error occurred, usage is discouraged / prohibited. Possible causes (faults) are listed in MAV_BATTERY_FAULT.
    */
   @GeneratedMavEnumEntry
   UNHEALTHY(6u),

@@ -51,7 +51,10 @@ public data class LogData(
    * Number of bytes (zero for end of log)
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val count: UByte = 0u,
   /**
    * log data
@@ -104,8 +107,7 @@ public data class LogData(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): LogData =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): LogData = Builder().apply(builderAction).build()
   }
 
   public class Builder {

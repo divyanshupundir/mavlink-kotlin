@@ -40,7 +40,10 @@ public data class Data16(
    * Data length.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val len: UByte = 0u,
   /**
    * Raw data.
@@ -89,8 +92,7 @@ public data class Data16(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Data16 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Data16 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

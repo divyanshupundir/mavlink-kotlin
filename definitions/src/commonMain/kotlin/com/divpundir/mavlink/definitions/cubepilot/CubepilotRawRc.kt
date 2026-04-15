@@ -60,8 +60,7 @@ public data class CubepilotRawRc(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): CubepilotRawRc =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): CubepilotRawRc = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -49,19 +49,28 @@ public data class GimbalControl(
    * Demanded angular rate X.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val demandedRateX: Float = 0F,
   /**
    * Demanded angular rate Y.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val demandedRateY: Float = 0F,
   /**
    * Demanded angular rate Z.
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val demandedRateZ: Float = 0F,
 ) : MavMessage<GimbalControl> {
   override val instanceCompanion: MavMessage.MavCompanion<GimbalControl> = Companion
@@ -113,8 +122,7 @@ public data class GimbalControl(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalControl =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): GimbalControl = Builder().apply(builderAction).build()
   }
 
   public class Builder {

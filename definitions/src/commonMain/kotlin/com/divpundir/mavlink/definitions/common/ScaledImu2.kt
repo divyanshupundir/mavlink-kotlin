@@ -18,8 +18,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * The RAW IMU readings for secondary 9DOF sensor setup. This message should contain the scaled
- * values to the described units
+ * The RAW IMU readings for secondary 9DOF sensor setup. This message should contain the scaled values to the described units
  *
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
@@ -41,8 +40,7 @@ import kotlin.Unit
  * units = mgauss
  * @param zmag Z Magnetic field
  * units = mgauss
- * @param temperature Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C
- * it must send 1 (0.01C).
+ * @param temperature Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1 (0.01C).
  * units = cdegC
  */
 @GeneratedMavMessage(
@@ -54,70 +52,101 @@ public data class ScaledImu2(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * X acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val xacc: Short = 0,
   /**
    * Y acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val yacc: Short = 0,
   /**
    * Z acceleration
    * units = mG
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mG",
+  )
   public val zacc: Short = 0,
   /**
    * Angular speed around X axis
    * units = mrad/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mrad/s",
+  )
   public val xgyro: Short = 0,
   /**
    * Angular speed around Y axis
    * units = mrad/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mrad/s",
+  )
   public val ygyro: Short = 0,
   /**
    * Angular speed around Z axis
    * units = mrad/s
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mrad/s",
+  )
   public val zgyro: Short = 0,
   /**
    * X Magnetic field
    * units = mgauss
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mgauss",
+  )
   public val xmag: Short = 0,
   /**
    * Y Magnetic field
    * units = mgauss
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mgauss",
+  )
   public val ymag: Short = 0,
   /**
    * Z Magnetic field
    * units = mgauss
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "mgauss",
+  )
   public val zmag: Short = 0,
   /**
-   * Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1
-   * (0.01C).
+   * Temperature, 0: IMU does not provide temperature values. If the IMU is at 0C it must send 1 (0.01C).
    * units = cdegC
    */
   @GeneratedMavField(
     type = "int16_t",
     extension = true,
+    units = "cdegC",
+    invalid = "0",
   )
   public val temperature: Short = 0,
 ) : MavMessage<ScaledImu2> {
@@ -193,8 +222,7 @@ public data class ScaledImu2(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ScaledImu2 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ScaledImu2 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

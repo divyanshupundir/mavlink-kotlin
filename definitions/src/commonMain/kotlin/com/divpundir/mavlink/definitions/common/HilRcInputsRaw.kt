@@ -22,13 +22,9 @@ import kotlin.UShort
 import kotlin.Unit
 
 /**
- * Sent from simulation to autopilot. The RAW values of the RC channels received. The standard PPM
- * modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
- * receivers/transmitters might violate this specification.
+ * Sent from simulation to autopilot. The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual receivers/transmitters might violate this specification.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param chan1Raw RC channel 1 value
  * units = us
@@ -54,8 +50,7 @@ import kotlin.Unit
  * units = us
  * @param chan12Raw RC channel 12 value
  * units = us
- * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254],
- * UINT8_MAX: invalid/unknown.
+ * @param rssi Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown.
  */
 @GeneratedMavMessage(
   id = 92u,
@@ -63,89 +58,129 @@ import kotlin.Unit
 )
 public data class HilRcInputsRaw(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * RC channel 1 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan1Raw: UShort = 0u,
   /**
    * RC channel 2 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan2Raw: UShort = 0u,
   /**
    * RC channel 3 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan3Raw: UShort = 0u,
   /**
    * RC channel 4 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan4Raw: UShort = 0u,
   /**
    * RC channel 5 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan5Raw: UShort = 0u,
   /**
    * RC channel 6 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan6Raw: UShort = 0u,
   /**
    * RC channel 7 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan7Raw: UShort = 0u,
   /**
    * RC channel 8 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan8Raw: UShort = 0u,
   /**
    * RC channel 9 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan9Raw: UShort = 0u,
   /**
    * RC channel 10 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan10Raw: UShort = 0u,
   /**
    * RC channel 11 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan11Raw: UShort = 0u,
   /**
    * RC channel 12 value
    * units = us
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "us",
+  )
   public val chan12Raw: UShort = 0u,
   /**
-   * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX:
-   * invalid/unknown.
+   * Receive signal strength indicator in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown.
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    invalid = "UINT8_MAX",
+  )
   public val rssi: UByte = 0u,
 ) : MavMessage<HilRcInputsRaw> {
   override val instanceCompanion: MavMessage.MavCompanion<HilRcInputsRaw> = Companion
@@ -233,8 +268,7 @@ public data class HilRcInputsRaw(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): HilRcInputsRaw =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): HilRcInputsRaw = Builder().apply(builderAction).build()
   }
 
   public class Builder {

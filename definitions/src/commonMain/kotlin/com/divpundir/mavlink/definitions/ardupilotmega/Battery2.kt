@@ -37,13 +37,19 @@ public data class Battery2(
    * Voltage.
    * units = mV
    */
-  @GeneratedMavField(type = "uint16_t")
+  @GeneratedMavField(
+    type = "uint16_t",
+    units = "mV",
+  )
   public val voltage: UShort = 0u,
   /**
    * Battery current, -1: autopilot does not measure the current.
    * units = cA
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    units = "cA",
+  )
   public val currentBattery: Short = 0,
 ) : MavMessage<Battery2> {
   override val instanceCompanion: MavMessage.MavCompanion<Battery2> = Companion
@@ -83,8 +89,7 @@ public data class Battery2(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Battery2 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Battery2 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -5,6 +5,9 @@ import com.divpundir.mavlink.api.GeneratedMavEnumEntry
 import com.divpundir.mavlink.api.MavEnum
 import kotlin.UInt
 
+/**
+ * Reasons for denying an authorization request made with MAV_CMD_ARM_AUTHORIZATION_REQUEST. If the COMMAND_ACK result is MAV_RESULT_DENIED, this is used to set the reason in the result_param2 field.
+ */
 @GeneratedMavEnum
 public enum class MavArmAuthDeniedReason(
   override val `value`: UInt,
@@ -30,8 +33,7 @@ public enum class MavArmAuthDeniedReason(
   @GeneratedMavEnumEntry
   TIMEOUT(3u),
   /**
-   * Airspace of the mission in use by another vehicle, second result parameter can have the
-   * waypoint id that caused it to be denied.
+   * Airspace of the mission in use by another vehicle, second result parameter can have the waypoint id that caused it to be denied.
    */
   @GeneratedMavEnumEntry
   AIRSPACE_IN_USE(4u),

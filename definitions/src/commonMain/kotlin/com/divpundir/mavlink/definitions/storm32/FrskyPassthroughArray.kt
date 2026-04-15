@@ -26,8 +26,7 @@ import kotlin.collections.List
  * @param timeBootMs Timestamp (time since system boot).
  * units = ms
  * @param count Number of passthrough packets in this message.
- * @param packetBuf Passthrough packet buffer. A packet has 6 bytes: uint16_t id + uint32_t data.
- * The array has space for 40 packets.
+ * @param packetBuf Passthrough packet buffer. A packet has 6 bytes: uint16_t id + uint32_t data. The array has space for 40 packets.
  */
 @GeneratedMavMessage(
   id = 60_040u,
@@ -38,7 +37,10 @@ public data class FrskyPassthroughArray(
    * Timestamp (time since system boot).
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * Number of passthrough packets in this message.
@@ -46,8 +48,7 @@ public data class FrskyPassthroughArray(
   @GeneratedMavField(type = "uint8_t")
   public val count: UByte = 0u,
   /**
-   * Passthrough packet buffer. A packet has 6 bytes: uint16_t id + uint32_t data. The array has
-   * space for 40 packets.
+   * Passthrough packet buffer. A packet has 6 bytes: uint16_t id + uint32_t data. The array has space for 40 packets.
    */
   @GeneratedMavField(type = "uint8_t[240]")
   public val packetBuf: List<UByte> = emptyList(),
@@ -93,8 +94,7 @@ public data class FrskyPassthroughArray(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): FrskyPassthroughArray =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): FrskyPassthroughArray = Builder().apply(builderAction).build()
   }
 
   public class Builder {

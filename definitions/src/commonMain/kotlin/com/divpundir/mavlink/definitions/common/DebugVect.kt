@@ -25,9 +25,7 @@ import kotlin.Unit
  * To debug something using a named 3D vector.
  *
  * @param name Name
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param x x
  * @param y y
@@ -44,11 +42,13 @@ public data class DebugVect(
   @GeneratedMavField(type = "char[10]")
   public val name: String = "",
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * x
@@ -115,8 +115,7 @@ public data class DebugVect(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): DebugVect =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): DebugVect = Builder().apply(builderAction).build()
   }
 
   public class Builder {

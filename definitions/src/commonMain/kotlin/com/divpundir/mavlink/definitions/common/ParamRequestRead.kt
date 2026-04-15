@@ -22,20 +22,12 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Request to read the onboard parameter with the param_id string id. Onboard parameters are stored
- * as key[const char*] -> value[float]. This allows to send a parameter to any other component (such as
- * the GCS) without the need of previous knowledge of possible parameter names. Thus the same GCS can
- * store different parameters for different autopilots. See also
- * https://mavlink.io/en/services/parameter.html for a full documentation of QGroundControl and IMU
- * code.
+ * Request to read the onboard parameter with the param_id string id. Onboard parameters are stored as key[const char*] -> value[float]. This allows to send a parameter to any other component (such as the GCS) without the need of previous knowledge of possible parameter names. Thus the same GCS can store different parameters for different autopilots. See also https://mavlink.io/en/services/parameter.html for a full documentation of QGroundControl and IMU code.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16
- * human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars -
- * applications have to provide 16+1 bytes storage if the ID is stored as string
- * @param paramIndex Parameter index. Send -1 to use the param ID field as identifier (else the
- * param id will be ignored)
+ * @param paramId Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
+ * @param paramIndex Parameter index. Send -1 to use the param ID field as identifier (else the param id will be ignored)
  */
 @GeneratedMavMessage(
   id = 20u,
@@ -53,17 +45,17 @@ public data class ParamRequestRead(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and
-   * WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to
-   * provide 16+1 bytes storage if the ID is stored as string
+   * Onboard parameter id, terminated by NULL if the length is less than 16 human-readable chars and WITHOUT null termination (NULL) byte if the length is exactly 16 chars - applications have to provide 16+1 bytes storage if the ID is stored as string
    */
   @GeneratedMavField(type = "char[16]")
   public val paramId: String = "",
   /**
-   * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be
-   * ignored)
+   * Parameter index. Send -1 to use the param ID field as identifier (else the param id will be ignored)
    */
-  @GeneratedMavField(type = "int16_t")
+  @GeneratedMavField(
+    type = "int16_t",
+    invalid = "-1",
+  )
   public val paramIndex: Short = 0,
 ) : MavMessage<ParamRequestRead> {
   override val instanceCompanion: MavMessage.MavCompanion<ParamRequestRead> = Companion
@@ -111,8 +103,7 @@ public data class ParamRequestRead(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamRequestRead =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamRequestRead = Builder().apply(builderAction).build()
   }
 
   public class Builder {

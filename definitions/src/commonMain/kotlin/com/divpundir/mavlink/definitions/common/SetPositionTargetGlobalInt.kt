@@ -29,18 +29,13 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Sets a desired vehicle position, velocity, and/or acceleration in a global coordinate system
- * (WGS84). Used by an external controller to command the vehicle (manual controller or other system).
+ * Sets a desired vehicle position, velocity, and/or acceleration in a global coordinate system (WGS84). Used by an external controller to command the vehicle (manual controller or other system).
  *
- * @param timeBootMs Timestamp (time since system boot). The rationale for the timestamp in the
- * setpoint is to allow the system to compensate for the transport delay of the setpoint. This allows
- * the system to compensate processing latency.
+ * @param timeBootMs Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow the system to compensate for the transport delay of the setpoint. This allows the system to compensate processing latency.
  * units = ms
  * @param targetSystem System ID
  * @param targetComponent Component ID
- * @param coordinateFrame Valid options are: MAV_FRAME_GLOBAL = 0, MAV_FRAME_GLOBAL_RELATIVE_ALT =
- * 3, MAV_FRAME_GLOBAL_TERRAIN_ALT = 10 (MAV_FRAME_GLOBAL_INT, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
- * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT are allowed synonyms, but have been deprecated)
+ * @param coordinateFrame Valid options are: MAV_FRAME_GLOBAL = 0, MAV_FRAME_GLOBAL_RELATIVE_ALT = 3, MAV_FRAME_GLOBAL_TERRAIN_ALT = 10 (MAV_FRAME_GLOBAL_INT, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, MAV_FRAME_GLOBAL_TERRAIN_ALT_INT are allowed synonyms, but have been deprecated)
  * @param typeMask Bitmap to indicate which dimensions should be ignored by the vehicle.
  * @param latInt Latitude in WGS84 frame
  * units = degE7
@@ -54,14 +49,11 @@ import kotlin.Unit
  * units = m/s
  * @param vz Z velocity in NED frame
  * units = m/s
- * @param afx X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
- * N
+ * @param afx X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
  * units = m/s/s
- * @param afy Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
- * N
+ * @param afy Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
  * units = m/s/s
- * @param afz Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or
- * N
+ * @param afz Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
  * units = m/s/s
  * @param yaw yaw setpoint
  * units = rad
@@ -74,12 +66,13 @@ import kotlin.Unit
 )
 public data class SetPositionTargetGlobalInt(
   /**
-   * Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow
-   * the system to compensate for the transport delay of the setpoint. This allows the system to
-   * compensate processing latency.
+   * Timestamp (time since system boot). The rationale for the timestamp in the setpoint is to allow the system to compensate for the transport delay of the setpoint. This allows the system to compensate processing latency.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val timeBootMs: UInt = 0u,
   /**
    * System ID
@@ -92,9 +85,7 @@ public data class SetPositionTargetGlobalInt(
   @GeneratedMavField(type = "uint8_t")
   public val targetComponent: UByte = 0u,
   /**
-   * Valid options are: MAV_FRAME_GLOBAL = 0, MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,
-   * MAV_FRAME_GLOBAL_TERRAIN_ALT = 10 (MAV_FRAME_GLOBAL_INT, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
-   * MAV_FRAME_GLOBAL_TERRAIN_ALT_INT are allowed synonyms, but have been deprecated)
+   * Valid options are: MAV_FRAME_GLOBAL = 0, MAV_FRAME_GLOBAL_RELATIVE_ALT = 3, MAV_FRAME_GLOBAL_TERRAIN_ALT = 10 (MAV_FRAME_GLOBAL_INT, MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, MAV_FRAME_GLOBAL_TERRAIN_ALT_INT are allowed synonyms, but have been deprecated)
    */
   @GeneratedMavField(type = "uint8_t")
   public val coordinateFrame: MavEnumValue<MavFrame> = MavEnumValue.fromValue(0u),
@@ -107,67 +98,100 @@ public data class SetPositionTargetGlobalInt(
    * Latitude in WGS84 frame
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val latInt: Int = 0,
   /**
    * Longitude in WGS84 frame
    * units = degE7
    */
-  @GeneratedMavField(type = "int32_t")
+  @GeneratedMavField(
+    type = "int32_t",
+    units = "degE7",
+  )
   public val lonInt: Int = 0,
   /**
    * Altitude (MSL, Relative to home, or AGL - depending on frame)
    * units = m
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m",
+  )
   public val alt: Float = 0F,
   /**
    * X velocity in NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vx: Float = 0F,
   /**
    * Y velocity in NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vy: Float = 0F,
   /**
    * Z velocity in NED frame
    * units = m/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s",
+  )
   public val vz: Float = 0F,
   /**
    * X acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val afx: Float = 0F,
   /**
    * Y acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val afy: Float = 0F,
   /**
    * Z acceleration or force (if bit 10 of type_mask is set) in NED frame in meter / s^2 or N
    * units = m/s/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "m/s/s",
+  )
   public val afz: Float = 0F,
   /**
    * yaw setpoint
    * units = rad
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad",
+  )
   public val yaw: Float = 0F,
   /**
    * yaw rate setpoint
    * units = rad/s
    */
-  @GeneratedMavField(type = "float")
+  @GeneratedMavField(
+    type = "float",
+    units = "rad/s",
+  )
   public val yawRate: Float = 0F,
 ) : MavMessage<SetPositionTargetGlobalInt> {
   override val instanceCompanion: MavMessage.MavCompanion<SetPositionTargetGlobalInt> = Companion
@@ -269,8 +293,7 @@ public data class SetPositionTargetGlobalInt(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): SetPositionTargetGlobalInt =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): SetPositionTargetGlobalInt = Builder().apply(builderAction).build()
   }
 
   public class Builder {

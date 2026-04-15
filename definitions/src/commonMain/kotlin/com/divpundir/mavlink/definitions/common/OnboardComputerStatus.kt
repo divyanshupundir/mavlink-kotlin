@@ -38,59 +38,38 @@ import kotlin.collections.List
 /**
  * Hardware status sent by an onboard computer.
  *
- * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can
- * infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the
- * number.
+ * @param timeUsec Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
  * units = us
  * @param uptime Time since system boot.
  * units = ms
- * @param type Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup
- * 1, 2: Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
- * @param cpuCores CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies
- * the field is unused.
- * @param cpuCombined Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows
- * to identify spikes in load that max out the system, but only for a short amount of time. A value of
- * UINT8_MAX implies the field is unused.
- * @param gpuCores GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies
- * the field is unused.
- * @param gpuCombined Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows
- * to identify spikes in load that max out the system, but only for a short amount of time. A value of
- * UINT8_MAX implies the field is unused.
- * @param temperatureBoard Temperature of the board. A value of INT8_MAX implies the field is
- * unused.
+ * @param type Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2: Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
+ * @param cpuCores CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is unused.
+ * @param cpuCombined Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX implies the field is unused.
+ * @param gpuCores GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is unused.
+ * @param gpuCombined Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX implies the field is unused.
+ * @param temperatureBoard Temperature of the board. A value of INT8_MAX implies the field is unused.
  * units = degC
- * @param temperatureCore Temperature of the CPU core. A value of INT8_MAX implies the field is
- * unused.
+ * @param temperatureCore Temperature of the CPU core. A value of INT8_MAX implies the field is unused.
  * units = degC
  * @param fanSpeed Fan speeds. A value of INT16_MAX implies the field is unused.
  * units = rpm
- * @param ramUsage Amount of used RAM on the component system. A value of UINT32_MAX implies the
- * field is unused.
+ * @param ramUsage Amount of used RAM on the component system. A value of UINT32_MAX implies the field is unused.
  * units = MiB
- * @param ramTotal Total amount of RAM on the component system. A value of UINT32_MAX implies the
- * field is unused.
+ * @param ramTotal Total amount of RAM on the component system. A value of UINT32_MAX implies the field is unused.
  * units = MiB
- * @param storageType Storage type: 0: HDD, 1: SSD, 2: EMMC, 3: SD card (non-removable), 4: SD card
- * (removable). A value of UINT32_MAX implies the field is unused.
- * @param storageUsage Amount of used storage space on the component system. A value of UINT32_MAX
- * implies the field is unused.
+ * @param storageType Storage type: 0: HDD, 1: SSD, 2: EMMC, 3: SD card (non-removable), 4: SD card (removable). A value of UINT32_MAX implies the field is unused.
+ * @param storageUsage Amount of used storage space on the component system. A value of UINT32_MAX implies the field is unused.
  * units = MiB
- * @param storageTotal Total amount of storage space on the component system. A value of UINT32_MAX
- * implies the field is unused.
+ * @param storageTotal Total amount of storage space on the component system. A value of UINT32_MAX implies the field is unused.
  * units = MiB
- * @param linkType Link type: 0-9: UART, 10-19: Wired network, 20-29: Wifi, 30-39: Point-to-point
- * proprietary, 40-49: Mesh proprietary
- * @param linkTxRate Network traffic from the component system. A value of UINT32_MAX implies the
- * field is unused.
+ * @param linkType Link type: 0-9: UART, 10-19: Wired network, 20-29: Wifi, 30-39: Point-to-point proprietary, 40-49: Mesh proprietary
+ * @param linkTxRate Network traffic from the component system. A value of UINT32_MAX implies the field is unused.
  * units = KiB/s
- * @param linkRxRate Network traffic to the component system. A value of UINT32_MAX implies the
- * field is unused.
+ * @param linkRxRate Network traffic to the component system. A value of UINT32_MAX implies the field is unused.
  * units = KiB/s
- * @param linkTxMax Network capacity from the component system. A value of UINT32_MAX implies the
- * field is unused.
+ * @param linkTxMax Network capacity from the component system. A value of UINT32_MAX implies the field is unused.
  * units = KiB/s
- * @param linkRxMax Network capacity to the component system. A value of UINT32_MAX implies the
- * field is unused.
+ * @param linkRxMax Network capacity to the component system. A value of UINT32_MAX implies the field is unused.
  * units = KiB/s
  * @param statusFlags Bitmap of status flags.
  */
@@ -100,103 +79,140 @@ import kotlin.collections.List
 )
 public data class OnboardComputerStatus(
   /**
-   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp
-   * format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
+   * Timestamp (UNIX Epoch time or time since system boot). The receiving end can infer timestamp format (since 1.1.1970 or since system boot) by checking for the magnitude of the number.
    * units = us
    */
-  @GeneratedMavField(type = "uint64_t")
+  @GeneratedMavField(
+    type = "uint64_t",
+    units = "us",
+  )
   public val timeUsec: ULong = 0uL,
   /**
    * Time since system boot.
    * units = ms
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "ms",
+  )
   public val uptime: UInt = 0u,
   /**
-   * Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2:
-   * Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
+   * Type of the onboard computer: 0: Mission computer primary, 1: Mission computer backup 1, 2: Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
    */
   @GeneratedMavField(type = "uint8_t")
   public val type: UByte = 0u,
   /**
-   * CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
-   * unused.
+   * CPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is unused.
    */
-  @GeneratedMavField(type = "uint8_t[8]")
+  @GeneratedMavField(
+    type = "uint8_t[8]",
+    invalid = "[UINT8_MAX]",
+  )
   public val cpuCores: List<UByte> = emptyList(),
   /**
-   * Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
-   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
-   * implies the field is unused.
+   * Combined CPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX implies the field is unused.
    */
-  @GeneratedMavField(type = "uint8_t[10]")
+  @GeneratedMavField(
+    type = "uint8_t[10]",
+    invalid = "[UINT8_MAX]",
+  )
   public val cpuCombined: List<UByte> = emptyList(),
   /**
-   * GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is
-   * unused.
+   * GPU usage on the component in percent (100 - idle). A value of UINT8_MAX implies the field is unused.
    */
-  @GeneratedMavField(type = "uint8_t[4]")
+  @GeneratedMavField(
+    type = "uint8_t[4]",
+    invalid = "[UINT8_MAX]",
+  )
   public val gpuCores: List<UByte> = emptyList(),
   /**
-   * Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify
-   * spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX
-   * implies the field is unused.
+   * Combined GPU usage as the last 10 slices of 100 MS (a histogram). This allows to identify spikes in load that max out the system, but only for a short amount of time. A value of UINT8_MAX implies the field is unused.
    */
-  @GeneratedMavField(type = "uint8_t[10]")
+  @GeneratedMavField(
+    type = "uint8_t[10]",
+    invalid = "[UINT8_MAX]",
+  )
   public val gpuCombined: List<UByte> = emptyList(),
   /**
    * Temperature of the board. A value of INT8_MAX implies the field is unused.
    * units = degC
    */
-  @GeneratedMavField(type = "int8_t")
+  @GeneratedMavField(
+    type = "int8_t",
+    units = "degC",
+    invalid = "INT8_MAX",
+  )
   public val temperatureBoard: Byte = 0,
   /**
    * Temperature of the CPU core. A value of INT8_MAX implies the field is unused.
    * units = degC
    */
-  @GeneratedMavField(type = "int8_t[8]")
+  @GeneratedMavField(
+    type = "int8_t[8]",
+    units = "degC",
+    invalid = "[INT8_MAX]",
+  )
   public val temperatureCore: List<Byte> = emptyList(),
   /**
    * Fan speeds. A value of INT16_MAX implies the field is unused.
    * units = rpm
    */
-  @GeneratedMavField(type = "int16_t[4]")
+  @GeneratedMavField(
+    type = "int16_t[4]",
+    units = "rpm",
+    invalid = "[INT16_MAX]",
+  )
   public val fanSpeed: List<Short> = emptyList(),
   /**
    * Amount of used RAM on the component system. A value of UINT32_MAX implies the field is unused.
    * units = MiB
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "MiB",
+    invalid = "UINT32_MAX",
+  )
   public val ramUsage: UInt = 0u,
   /**
    * Total amount of RAM on the component system. A value of UINT32_MAX implies the field is unused.
    * units = MiB
    */
-  @GeneratedMavField(type = "uint32_t")
+  @GeneratedMavField(
+    type = "uint32_t",
+    units = "MiB",
+    invalid = "UINT32_MAX",
+  )
   public val ramTotal: UInt = 0u,
   /**
-   * Storage type: 0: HDD, 1: SSD, 2: EMMC, 3: SD card (non-removable), 4: SD card (removable). A
-   * value of UINT32_MAX implies the field is unused.
+   * Storage type: 0: HDD, 1: SSD, 2: EMMC, 3: SD card (non-removable), 4: SD card (removable). A value of UINT32_MAX implies the field is unused.
    */
-  @GeneratedMavField(type = "uint32_t[4]")
+  @GeneratedMavField(
+    type = "uint32_t[4]",
+    invalid = "[UINT32_MAX]",
+  )
   public val storageType: List<UInt> = emptyList(),
   /**
-   * Amount of used storage space on the component system. A value of UINT32_MAX implies the field
-   * is unused.
+   * Amount of used storage space on the component system. A value of UINT32_MAX implies the field is unused.
    * units = MiB
    */
-  @GeneratedMavField(type = "uint32_t[4]")
+  @GeneratedMavField(
+    type = "uint32_t[4]",
+    units = "MiB",
+    invalid = "[UINT32_MAX]",
+  )
   public val storageUsage: List<UInt> = emptyList(),
   /**
-   * Total amount of storage space on the component system. A value of UINT32_MAX implies the field
-   * is unused.
+   * Total amount of storage space on the component system. A value of UINT32_MAX implies the field is unused.
    * units = MiB
    */
-  @GeneratedMavField(type = "uint32_t[4]")
+  @GeneratedMavField(
+    type = "uint32_t[4]",
+    units = "MiB",
+    invalid = "[UINT32_MAX]",
+  )
   public val storageTotal: List<UInt> = emptyList(),
   /**
-   * Link type: 0-9: UART, 10-19: Wired network, 20-29: Wifi, 30-39: Point-to-point proprietary,
-   * 40-49: Mesh proprietary
+   * Link type: 0-9: UART, 10-19: Wired network, 20-29: Wifi, 30-39: Point-to-point proprietary, 40-49: Mesh proprietary
    */
   @GeneratedMavField(type = "uint32_t[6]")
   public val linkType: List<UInt> = emptyList(),
@@ -204,25 +220,41 @@ public data class OnboardComputerStatus(
    * Network traffic from the component system. A value of UINT32_MAX implies the field is unused.
    * units = KiB/s
    */
-  @GeneratedMavField(type = "uint32_t[6]")
+  @GeneratedMavField(
+    type = "uint32_t[6]",
+    units = "KiB/s",
+    invalid = "[UINT32_MAX]",
+  )
   public val linkTxRate: List<UInt> = emptyList(),
   /**
    * Network traffic to the component system. A value of UINT32_MAX implies the field is unused.
    * units = KiB/s
    */
-  @GeneratedMavField(type = "uint32_t[6]")
+  @GeneratedMavField(
+    type = "uint32_t[6]",
+    units = "KiB/s",
+    invalid = "[UINT32_MAX]",
+  )
   public val linkRxRate: List<UInt> = emptyList(),
   /**
    * Network capacity from the component system. A value of UINT32_MAX implies the field is unused.
    * units = KiB/s
    */
-  @GeneratedMavField(type = "uint32_t[6]")
+  @GeneratedMavField(
+    type = "uint32_t[6]",
+    units = "KiB/s",
+    invalid = "[UINT32_MAX]",
+  )
   public val linkTxMax: List<UInt> = emptyList(),
   /**
    * Network capacity to the component system. A value of UINT32_MAX implies the field is unused.
    * units = KiB/s
    */
-  @GeneratedMavField(type = "uint32_t[6]")
+  @GeneratedMavField(
+    type = "uint32_t[6]",
+    units = "KiB/s",
+    invalid = "[UINT32_MAX]",
+  )
   public val linkRxMax: List<UInt> = emptyList(),
   /**
    * Bitmap of status flags.
@@ -348,8 +380,7 @@ public data class OnboardComputerStatus(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OnboardComputerStatus =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OnboardComputerStatus = Builder().apply(builderAction).build()
   }
 
   public class Builder {

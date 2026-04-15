@@ -79,8 +79,7 @@ public data class OsdParamConfigReply(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamConfigReply =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): OsdParamConfigReply = Builder().apply(builderAction).build()
   }
 
   public class Builder {

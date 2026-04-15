@@ -16,8 +16,7 @@ import kotlin.UInt
 import kotlin.Unit
 
 /**
- * Request all parameters of this component. All parameters should be emitted in response as
- * PARAM_EXT_VALUE.
+ * Request all parameters of this component. All parameters should be emitted in response as PARAM_EXT_VALUE.
  *
  * @param targetSystem System ID
  * @param targetComponent Component ID
@@ -75,8 +74,7 @@ public data class ParamExtRequestList(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtRequestList =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): ParamExtRequestList = Builder().apply(builderAction).build()
   }
 
   public class Builder {

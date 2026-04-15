@@ -40,7 +40,10 @@ public data class Data64(
    * Data length.
    * units = bytes
    */
-  @GeneratedMavField(type = "uint8_t")
+  @GeneratedMavField(
+    type = "uint8_t",
+    units = "bytes",
+  )
   public val len: UByte = 0u,
   /**
    * Raw data.
@@ -89,8 +92,7 @@ public data class Data64(
       )
     }
 
-    public operator fun invoke(builderAction: Builder.() -> Unit): Data64 =
-        Builder().apply(builderAction).build()
+    public operator fun invoke(builderAction: Builder.() -> Unit): Data64 = Builder().apply(builderAction).build()
   }
 
   public class Builder {

@@ -7,8 +7,7 @@ import kotlin.Deprecated
 import kotlin.UInt
 
 /**
- * Enumeration of possible mount operation modes. This message is used by obsolete/deprecated gimbal
- * messages.
+ * Enumeration of possible mount operation modes. This message is used by obsolete/deprecated gimbal messages.
  */
 @Deprecated(message = "")
 @GeneratedMavEnum
